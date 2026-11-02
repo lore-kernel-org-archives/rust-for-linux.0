@@ -1,104 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.42
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793607697;
-	b=foJuOAAYxB4y8CUXlJxbyRRU15+2T44GSxgNEbS4MqVl+sGCUIl+5vOybjDsc3WhWSXU
-	 O3+6lVXlTSSNW+xyetKTzNXa7W+WSEiYCem+eqj1BdbFzWQbFUhMJEprvmolJpJKPkAv3
-	 S7/LCbFGMuOBPA93R1kxA5Gb2rMPij+HRHtoMTt7lmduTxoKGP6C1to3SPAYEi4fzBYHg
-	 zKo8w0G0Lhz5e9GQY0X0wcc7TOgF0qhDATZgH5Q64MJjbVlNazFIIlLkQrJWBCo1iTZRk
-	 zaU45s8Ig6Nv2NNQqMg3WTI8dqkmfX+6aqVBogAXLI0Q525mD816FGKDpS3RDBByIlQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793607697;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Content-Type:Date:
-	 Message-Id:Cc:Subject:From:To:Content-Transfer-Encoding:References:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:
-	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=hgAECrPxCDihEIhhzCzItgrQLvPPNEcG1lVh2uC3oQo=;
-	b=0c+QCiDbnRM+5t/xPw2V2zqQ+a6Vc24SOqFPqAj/f5IFqEnuoccY63U6KfOJZhQUKQXW
-	 TIiLGhVUuAX2erVvLPOFNKAKHuBI+M4qJmq1zMN6/Vl8huZ1uv2qtimp5MxjecGqpJ91O
-	 wIdW9U4Y37H791lGlZYSaMlv4rdlREUvnKu+tpSca39zz7/zuASsoQyqBqBM3M6NplwZP
-	 z/C0K2y9zCm3ononH8Os8IkamvOTHnjpFIcsHqBHT6XtCm7W8n7kRbm2RK48BUCNalUdD
-	 ieEnPpeTq845MyRekAev1syIKCLuB+1hp7HIrvDCkCvnQJ5PZMgmKuqv0a9uvSm6kAA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=OlNtePyd;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.42
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013042.outbound.protection.outlook.com [40.93.196.42])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=80.241.56.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793612167;
+	b=D4/TI1sqRAy9n7G7dBoOiAi8I5Lu3gM1bLJ8f2PEaAPIImb/aEffPSrsJEsX+xTLkQJ3
+	 /GZg+mt7TexQ5jVr21JKjT3N7OqJlJHDzpF3mitMVx3DwfqNlAxKTT4626Fu3I18b9v8Z
+	 OqAad4O3Ye+rdwg5m0elm7b5MMlCA+6AoAS37N+cxHeEDL36Ff4EZ7tfBCVfyh+QRunME
+	 gT0FwVP6qkEluTZwScGug2iggh7pIPZC+O6Nv79gIFWtSQXCM98LLYbinW3sLRSfZUZht
+	 +UEcxsrFgsbl/dmaGhj0MAvguz2bhnrjcVJxGD+U6OFOiNAno017br6MX5xvBEdYb3Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793612167;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Subject:From:
+	 Reply-To:To:Cc:Date:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:User-Agent:MIME-Version:X-MBO-RS-ID:
+	 X-MBO-RS-META;
+	bh=+/sMZYds1uhOZXW3Ia/g+6VA7auA/l8PP9TjhomiEy4=;
+	b=M4HSH7aUzHtqfWCQZzcQWYE2HRh+9QEDRzKsTOHOorsEWZyg6pQoSa7eahPZT18Zp2lP
+	 ccsjkVDoIKgzNT+hMTmDmPv/AmK0PsVVAhJmx0IOrS7lLpUlYOTouyVgUqpPezgoFzhHg
+	 m+LOV6p/krdFnQDAVZgXguky4VieZyzGWkoK2GcLLqYAkGPC8cDds2g/8/aS248hipOEc
+	 skMlK4rwYc/reWB/rAudPXDeE5wIEVAleQK/mNt9RGd18eeQPnvX2tA29i/6Upo1tj1z4
+	 lk3YZYhMoBwV3ZnEl+Y9/AokXBxWeZLJWflwYM8EeDkngAHol4rlq0axDPDXjqIEWUg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=mailbox.org;
+	spf=pass smtp.mailfrom=mailbox.org;
+	dkim=pass header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=LdTYYRbv;
+	arc=none smtp.remote-ip=80.241.56.172
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E36606A329;
-	Mon,  2 Nov 2026 08:21:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 00E36606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131CC606A338;
+	Mon,  2 Nov 2026 09:36:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 131CC606A338
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=OlNtePyd
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mPKb9jwWkWIr70xsp9ksDJY3UnbYyFCGtCsIdFQj0nbZFNbpAwMzw9B0oM42I7WARCBO0p/QfMucrX0m6HIkNcACB6umMb8u7WhTMq3+Ixki0Jlds51vI5YHkgIkKYod6nktCwwZsMOoeLyNDEvn3fVbNiBYphvbMCoJrGZ4yCRZ82TPBdxBFhHi49cXHZzqgx496OcdXMnlpSrSerSaHLmPRAWry3fbaFYK+0qwJ9CVujY+IhjFaBWcvSfEmcJbgw7bFoFQpOk3lHNdXvn6ZPY7N0jeEBrLjM7yUHdEye/ZdF4y1MhuwTAMKaMgVt1Z7JMXzR1lDtGb+ldo36Ryhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hgAECrPxCDihEIhhzCzItgrQLvPPNEcG1lVh2uC3oQo=;
- b=aQg8mLx4vysIPLlM6kyB/qK/EiKhPZfqGEtLdjzANN3ni5hVKzROodKxXI+UW3RDo3qT63RNC2H3eIfPOJ4DO1mnxCGY4v7Pjr+Y90rYsW/R3gXTkcZaYsljSe69+hMW33u/0HX10ALNRozLQBzYQNvwNhPCbY6K14Zl3IgloiH+ou/9vmzilootdznycVzXD3i9vW3mp0161cDi/68wQNHk4FAIz5HSNaXXfP7ZraT9x4P+AHVmW1UIkHNmmrnA+DqN/2BShkbUSWSQSk2QU9s8790Cc3kPf8tHsWAfyzTNUBzPUb4c1oRbFMZfGEeogJForZyPBJlcjreRs1M/Eg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hgAECrPxCDihEIhhzCzItgrQLvPPNEcG1lVh2uC3oQo=;
- b=OlNtePyd/dRNma1R5IVBLa3iqz9dbAgtMrH87ZgOpnKk/T4LeywxQ1vnsakXMBEpsx7Zzbh5zp+nyNRVF5eyVIRDZXpVB2aYR7Ln3+gTy7acjKkZwGMIl3lTvCvrlYXLnkid6hqZzA709VuKaJz25fvG89iI6VwB5tM7ZYirNysll0KjTxytbei/mU2C6qkCN6w7ijUTJpojIMAa92in5Yq2ZR9sDWL4BHITpPwzZ3HJL3fVk/ks6BfKvqD18DO2AFqM3OR6D7BMo5/uJDi9W3y6OG6H8SOvei8UY04+X9F8nodGZ6HIts9qmeREn2I4pxB1dPZPEuuqsoKzvca7YQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by SJ1PR12MB6243.namprd12.prod.outlook.com (2603:10b6:a03:456::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
- 2026 08:21:32 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
- 08:21:32 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 02 Nov 2026 17:21:29 +0900
-Message-Id: <DMKKV1J4QREH.3STUO5UXGPVL7@nvidia.com>
-Cc: "Yury Norov" <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v5 2/2] gpu: nova-core: use cv! for constant casts
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Eliot Courtney" <ecourtney@nvidia.com>
+	dkim=pass (2048-bit key, unprotected) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=LdTYYRbv
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4jJ65Z1smrzMlFg;
+	Mon, 02 Nov 2026 10:36:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1793612162; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+/sMZYds1uhOZXW3Ia/g+6VA7auA/l8PP9TjhomiEy4=;
+	b=LdTYYRbve+2a9AsrYz20m520ncMvUqWtNFNrebXBDHnKI8ybVi/PYzzpfE9c2aWuFQazCh
+	Yanfhn1iktpfZnQvu6kAr70M9l9F5WvWdkfMTslOXz1AiDpwxsLPj04BF7RZ5NgJt2Mrio
+	YY5bbjEEPl6bCHSmIjrPAAqY8i0x94+e6LlSve+QrM9iyCGTKdUjw9uOK33jJpYH+ZHH/Q
+	ZXCFvol5foGJGa5kgTewdfkcTM6PPV/7x+yH/OVp/6tN+BAr23IGPKCZD7XpsivZOn9fCH
+	C3bAI15a1dLfcj0+ibFzUcP+JhkDXEA4k6fD+tfyudO2wKsvS/NOOAMT/wbNdg==
+Message-ID: <3a81450158fe5a46d76257c5018eaf5592168f18.camel@mailbox.org>
+Subject: Re: [RFC PATCH v2 0/3] Solve dma_fence's problems by locking
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, 
+	phasta@kernel.org, Sumit Semwal <sumit.semwal@linaro.org>, Jani Nikula	
+ <jani.nikula@linux.intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>,  Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,  Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>,  Gary Guo <gary@garyguo.net>,
+ =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,  Benno
+ Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Daniel Almeida	
+ <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=
+ <work@onurozkan.dev>, Boris Brezillon	 <boris.brezillon@collabora.com>,
+ Alex Deucher <alexdeucher@gmail.com>
+Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org, 
+	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Date: Mon, 02 Nov 2026 10:35:57 +0100
+In-Reply-To: <5d15d668-7191-4e96-922c-82982787b50c@amd.com>
+References: <20261020100034.759183-2-phasta@kernel.org>
+	 <3e8bc11d-6f90-47a4-ae63-cf2ff37f1ff6@amd.com>
+	 <ca78cdb7c24a9be9b640db782168cdcc5fe30b60.camel@mailbox.org>
+	 <ed2728bd-1df4-478e-9e6f-a96dfd172b48@amd.com>
+	 <4a7294da65c8744ba6355730e304b5250d0ca351.camel@mailbox.org>
+	 <d13d1a6e-bba2-4275-984b-145e0252eb0f@amd.com>
+	 <320b6e7c75da6f05c015e89df0e2c7d11f20d70a.camel@mailbox.org>
+	 <22d66945-8854-442f-a69d-fe02726eccda@amd.com>
+	 <f9a47d563f896e0789fffa72df5847e2878cbe5e.camel@mailbox.org>
+	 <5d15d668-7191-4e96-922c-82982787b50c@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-References: <20261013-cv-v5-0-113a538dfaef@nvidia.com>
- <20261013-cv-v5-2-113a538dfaef@nvidia.com>
-In-Reply-To: <20261013-cv-v5-2-113a538dfaef@nvidia.com>
-X-ClientProxiedBy: TY6PR01CA0012.jpnprd01.prod.outlook.com
- (2603:1096:405:3bc::17) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -108,78 +100,220 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|SJ1PR12MB6243:EE_
-X-MS-Office365-Filtering-Correlation-Id: b9ec6ef8-3730-4777-9745-08df38ba4d5f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|23010399003|10070799003|18002099003|22082099003|10067099003|56012099006|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	d9Y99m7HvkKcTPWNlHXU2XVRzH+Pwy17fvbtCq/1z1v/8XRIi7X69r8ys2vUQOW27coiozIt9GM0L0EINQRDi1OqUQAKoG7agsXr4GhKI1eh54gqYOEOmj5CwB71TZKVCWiPqRADQDUVON4E0paG+nHcageVSvrDYYzGniRwwxxLF2U3nV6Ws15kovazxz1p9vbobH+9wooxGJ9gWM2gvmibSPSJ/pNbvTXq+n7OjjKlTLTgtvVoQAy+N6ibGlZ0jLOstDp/3I0jccT0GAFwvv+bvmsP113AjL4aLKelzz7YelXhDsf7eWbqslUbhfL2w2uUFta/mlVDOGSA40uB+48FiUTJuiZ86J59p2T9tmdHNdTVcSNxGUhTXwc52iTqIjEGrHASowjoDp9lJPwHFmXWimnwnPfEGtbV4KpMh0ginwDmFPrDnXEXvIV6rL+g1/TOUTu5Fr26BbJErOeIYhPX1BsEMalRQdzy4Fb/BETde+r1Rl4BRFaNHZt7QDWiC4dE9t8WjaqGu3hIYafUzSWFbM1yF+vYeTWurXCsNm3UjYTgs2360xgs+mhvBbhuY+uiM73i0x61ErHfilTPkyL0qkci8uX945N+QiB10eNX4bfw4CCpDFwRUZdD6PVNwJxWRyJZYUyM7Go+cLHj9tkgQKsXlbAZqFulj8AZCkw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(23010399003)(10070799003)(18002099003)(22082099003)(10067099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WG4wUXNXSTBNWFd2ZEZpV1JjcHBuZTFBUCtNcVUwQkZ6R3ZkSmM4NUN1ZEZS?=
- =?utf-8?B?MmJMYmJ4SHd0UktaMDNpM1FDTzBjbTNrRlRlZzJoQU0ydjJkZVFVNTFQRG5Z?=
- =?utf-8?B?QmZpNXU4NWtkbE5ZK0JQZDFxZzlzT2VsNzE5NlhuNHJHY1Z1ZExNUzFkOGRO?=
- =?utf-8?B?OXRBNWJnbExQbGREMjc4TzNXSUxzeVVPMHFURVBZUnB2RVFtQkZjR2tiUjNu?=
- =?utf-8?B?c3pQQ2NLZHMrNExMMkRMQm0rc2FoMWhGNURNUklKZ0VhWlY3VGNzVElGc2xx?=
- =?utf-8?B?UTRZSEcvdERyOTMxRjBNLzhub3Y5N1JIME9oelRYTCtocWxNTjZYOGIyV3pB?=
- =?utf-8?B?K1l0amRqdkJjMit4ejVnaWhtb2pQb0VBWFNBRXhvS3NVZ3VqQ1IyYytCV2Uw?=
- =?utf-8?B?UUEzbG9QNzNLVUd5ejdnVE9DdUhKRkcyVWJpN3ltcHdoMlArbUsvWWl2U0pP?=
- =?utf-8?B?VzY2emRvMEJIbnh1d09JV2dzZGM1cjB4TytIU21kYnVVZVI4cVF5U0tITHoy?=
- =?utf-8?B?SVFBeW9FcHNMRjFSZWsvYVBUTHJjcnlyRzNTeGJ0UXVselRaWWtIRDIwOFRS?=
- =?utf-8?B?dFFwYWlMeGZPUko3VW95b2ZtOTdWNEEvL09WRXd2TkJNWUUyb3JJZlZmSUwr?=
- =?utf-8?B?ZkpPdlYyajFHWUZHV08va2hqNzFocWROeDgrSWE5c0J5dXpZa0NubVBlRmFw?=
- =?utf-8?B?SnpnYkM2Y0l3NWVPUmdaVm5ORTdNMHVTQkd4SVozTWovY1NxSkkybFZJWGY5?=
- =?utf-8?B?UWYwZ05obUx2VVJsVXBFbDRHOEcrMDdSWW5kZmQzNnY1MTc0VFRlNVpidHAv?=
- =?utf-8?B?WVR3cWxFV2FIVVRPTEZwczhCem1QL3pLYWx0djRFK3lyUURsYTZwUjBBWGtE?=
- =?utf-8?B?NWl6aGcrTVNmcUFzTHJqUTU3dHdXTjEzVmtKLzRkbWFIL3UzV2RRSXd5WUln?=
- =?utf-8?B?YVZTVlp5ZkNUMzcvdjdPSGhWdGVJTHNvRkl3dndZUGpOVjlnUVBUaWF1a3BU?=
- =?utf-8?B?RFQ1M2hZc0RTWkhjbFBVb1ZBREwySm9icm1xZHBkbyswRUVoOGhyOVcvZENa?=
- =?utf-8?B?aEZ6SUNkWWRZcTN1MkVVOFU0VmkwZ0pLR0dHS05iN2xJK3MxMGN5b0Q2U0I5?=
- =?utf-8?B?cmJwMjJxMW5KQ253SEMwdVU3bmx2YUhBMlBYbTVsQlljS3h3WXcyNHVoN3ZF?=
- =?utf-8?B?WHhVcjNKNUhsK1Z4YjFYMUtOd1JESVdIZHRLODFuam91NmdkclBQK1NpbFlH?=
- =?utf-8?B?T3JOMFcwcTQ1cDlRVThKd1JRWjF0L091bC8wSXZkN21tSDh4MXBQbmFaT3ZR?=
- =?utf-8?B?Z2FoMG1vUFRUczhEa2o2dXJNSGkrc0pSQ0IyWENGSTMxbVJralp5cDQ0SlFU?=
- =?utf-8?B?bmk0NFp3akhhaXh1Z2tvNkYwNzNiNkJkZG94WEdWa2l5SW5jekE1cVVZUHFX?=
- =?utf-8?B?SmxTSllld3F4M1pORGxJU0gvelZKOVR4VUhtQUtZcWFXRWtpM3RLZ0wxczB3?=
- =?utf-8?B?bjdZV1lwOU1zQ2xCTTJHTHczeHBBWExHVHRTTHUvVHVPcmdORW5DR1k5ejJO?=
- =?utf-8?B?c3NFYjhYQzhXWG9jZENxcE96cm93ejBKOXU0cVNEVHpvcFQxRzlmRWw0Zmts?=
- =?utf-8?B?cDhmRzVwRXduTEZ1Q0NQMUxsbHNiZE1uLytPRWlWTURoUmVkRnRpWWtNM3g5?=
- =?utf-8?B?ZFhmMlNoN2dqbVlNY0U5eXFFUkJtbjdHSmg3Q0FDSEoxWXhBVGdzVGxWU2lv?=
- =?utf-8?B?dTlOcUZHQkFvalRSRDNQajFGbFh0dlVEUE5vM3ZGNFBHdURqK09zT01oZSti?=
- =?utf-8?B?QUxEREFYK010TTBpVGI1T253ODV3Wkg2MFVHOEJBTHp0dFdkMjB3bjc5TFJ3?=
- =?utf-8?B?alAySzJrWHNjQ3QvSUlrc0hSMnlnbEo0U2pyMzB6clBSd2VrOTZacEZydWRv?=
- =?utf-8?B?aDF3bkgvL0tCUWNhVGViRFpVZExDQnRpWTU5Nmc4YmMrOUR5bnJ3dzYycEts?=
- =?utf-8?B?aDZkZk5BOE5YOGlWS1lramRXajQwMHoxK2lqZzRkUlBKcFgzSHdIeXFaY3FK?=
- =?utf-8?B?TElXWE5pOTNZcHdpL1poajN2Tm1yNXI1amdpV3hrUVovNHVjS3MzV1NodkpQ?=
- =?utf-8?B?VlFubElPSnJqRXMxd0pKeThZSFJONis3T0c0MWE5c0R4NlJtVTJ4UHBXZDRi?=
- =?utf-8?B?T0FvaWRGa3RkMG5XTitERldPMUVvaEY1OHVmeWwrZHZaR2YvbmlNekxkTE9s?=
- =?utf-8?B?V0tBdGptMHduTm5FWk8zNXpUQWFXQ2thS0Z3b29qenB5TTZZUDI2dDVlUlRz?=
- =?utf-8?B?TUtyalJMMnRCbWczNTFwNkljbjhqR0NFVWJ2aXQ0amFkc3RGcWJqdWpnaE50?=
- =?utf-8?Q?eIrTFDIBfFcZ8TMarNNEIVIgPNki52N52QEw7JmyKrvOc?=
-X-MS-Exchange-AntiSpam-MessageData-1: UKyZKDSSBNNpMQ==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b9ec6ef8-3730-4777-9745-08df38ba4d5f
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 08:21:32.4127
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: C8/lKJE4D++AfAaSBhfJmClrZaxbRuroV4/TYBcvGSkNy5Gpu3/zytbGxxVLOEHWUwHhK4ejloPrx94+tZHlew==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6243
+X-MBO-RS-ID: 9c9e0b972831da15e15
+X-MBO-RS-META: rpf1r7o51nkurn4xtfgfh9p8yhndq3x9
 
-On Tue Oct 13, 2026 at 2:58 PM JST, Eliot Courtney wrote:
-> The new `cv!` macro allows safe casting of constant expressions in a
-> const context. Update code in nova-core to use it.
->
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+On Wed, 2026-10-28 at 14:38 +0100, Christian K=C3=B6nig wrote:
+> On 10/28/26 10:47, Philipp Stanner wrote:
+> > > > 	commit c8a5d5ea3ba6 ("nouveau: fix client work fence deletion race=
+")
+> > >=20
+> > > This bug is exactly what I'm trying to prevent here.
+> >=20
+> > What is your proposed strategy for preventing it?
+>=20
+> nouveau_fence_signal() is consistently used by all signaling path to
+> both signal and cleanup a fence.
 
-Pushed to drm-rust-next, thanks!
+No, you miss the point. Look at the bug. It exists because nouveau
+thinks it can drop a reference now because the fence is signaled.
+
+I grant the point, though, that this is actually a refcounting issue.
+The path that is signaling does not have its own extra reference.
+
+> When we stop calling callbacks with locks held and signaling fences
+> from dma_fence_is_signaled() and dma_fence_enable_signaling() nouveau
+> can call nouveau_fence_signal() consistently from all cleanup paths
+> with the proper handling.
+>=20
+> This makes it completely unecessary to have those cleanup hacks as
+> well as the nouveau_fence_release() callback.
+>=20
+> Background is that you can then put the fence context directly after
+> the fence is signaled=20
+>=20
+> > > This problem only exists because we call the backend operations with
+> > > the lock held!
+> >=20
+> > Nope, this particular bug exists because Nouveau thought that it can
+> > drop its reference when dma_fence_is_signaled() returns true, which is
+> > not the case, because the fence backend has a race condition there.
+>=20
+> No it doesn't, the fence backend works exactly like intended.
+
+You mean the lockless checking of a bit that is set under lock-
+protection works as intended?
+
+>=20
+> I agree that we made tons of mistakes here but that is actually one
+> of the few things which we got right on dma_fences from the very
+> beginning.
+> > A race condition that was allowed for performance reasons.
+>=20
+> Well it is at least partially for correctness as well.
+>=20
+> It is mandatory for quite a number of use cases that the signaling
+> status becomes visible before the callbacks finish because otherwise
+> you run into race conditions with the callbacks again.
+
+That's not what I mean. There are two things here:
+
+a) signaled-bit is read without lock-protection
+b) signaled-bit is set before callbacks execute
+
+fixing a) makes b) irrelevant.
+
+But that's not even my point in this mail.
+
+
+I'm still interested btw in who is busy-polling on a fence, waiting
+until the signaled-bit gets true (that would be the "performance"
+argument).
+
+If you want to know when a fence changes from unsignaled to signaled,
+use this function:
+
+dma_fence_add_callback()
+
+problem solved.
+
+> > What signaling handler are you referring to?
+>=20
+> Take a look at the hack nouveau_fence_is_signaled() does for example.
+> The cleanup part the other signaling call path do is completely
+> missing here because the function can't take the fctx->lock.
+
+Again, ops->signaled() merely has to read an atomic64_t and return a
+bool. Driver locks are not required here.
+
+>=20
+> Yes, but if we want to get away from the external lock concept in
+> dma_fence we must allow drivers to take their own fctx->lock inside
+> the enable_signaling callback.
+>=20
+> Just take a look at what nouveau_fence_enable_signaling() does, that
+> is only possible because the dma_fence framework has grabbed fctx-
+> >lock before calling this function.
+>=20
+> The alternative is forcing drivers to use lockless approaches for
+> their internal handling, and that is much much worse than that a
+> dma_fence signaling status is visible without taking the lock.
+
+[=E2=80=A6]
+
+> Just take nouveau_fence_enable_signaling() as an example, if we don't
+> use fctx->lock as external dma_fence lock then the whole approach
+> used here doesn't work any more.
+
+My entire point is that the driver does not need any driver-lock
+conflicting with the fence-lock-order at all.
+
+I tried to point this out several times, but you keep iterating back to
+"this is what nouveau does".
+
+That nouveau does it does not proof that it's necessary. It just proofs
+that nouveau does it.
+
+> > >=20
+> > My impression was more that central design criteria for dma_fence (like
+> > module unload of the driver who issued your fence, which is designed to
+> > live arbitrarily long) were ignored, there was no clear guidance for
+> > drivers how they should use what callback, and then driver problems
+> > were solved in dma_fence, for instance with this shared lock. So same
+> > story as with drm_sched.
+>=20
+> Yes, exactly that.
+
+Good!
+
+So we agree that the dma_fence backend should give clear guidance about
+what a driver must, must not and should do in its backend_ops
+implementations.
+
+Right?
+
+Because so far the conversation sounded to me like "the driver must be
+able to do whatever it wants and therefore needs to be able to grab
+whatever locks".
+
+>=20
+>=20
+> And that is strong evidence. Nouveau is actually the perfect example
+> of why this approach causes so much trouble for driver
+> implementations.
+
+Calling Nouveau a "perfect example" is like calling Ronald McDonald a
+role model in dietary choices.
+
+Nova is being written right now, for reasons.
+
+>=20
+> And such guidance should not exist in the first place.
+>=20
+> It is up to the driver if they want to use locks for their internal
+> state protection and the dma_fence framework should absolutely not
+> enforce anything it doesn't need to deal with.
+>=20
+> That the dma_fence lock should protect the state of the dma_fence is
+> something I can perfectly agree on, but that does not include the ops
+> call chain because that isn't dma_fence state in the first place.
+>=20
+> > The only evidence I have ever seen is the fence-list-lock, and it's
+> > just not clear at all why any callback would need access to that.
+>=20
+> Because they need to clean things up after signaling.
+>=20
+> > Let's walk it through together, shall we?
+> >=20
+> > ops->release() and ->wait(): deprecated
+> >=20
+> > ops->get_XXX_name() -> never needs driver locks
+> >=20
+> > ops->signaled(): "Driver, here you read an atomic integer, the sequence
+> > number, and tell the fence backend whether this fence shall be regarded
+> > as completed"
+> > No need for any driver lock.
+>=20
+> Incorrect, you can only work without driver locks here when you delegate =
+the cleanup.
+>=20
+> In other words either to a worker or the ->release callback, both are thi=
+ngs we try to avoid.
+>=20
+> Again see nouveau as a perfect example of the problem.
+>=20
+> > If this particular driver also signals fences through an interrupt
+> > handler, it can take a list lock, then signal the fence. The ops must
+> > not do that.
+> > Why would a driver need both modes, sw *and* hw signaling? And why then
+> > is it supposedly the case that both paths need to keep a list updated?
+>=20
+> Because the signaling through the interrupt is mandatory for correct,
+> the signaling through the is_signaled callback is then on top for
+> performance optimizations.
+
+is_signaled() never conflicts with any lock, see my list above.
+
+I think at this point you and I should really first get in sync
+regarding what the backend_ops are supposed to do, because we seem to
+turn in circles a bit in our discussion.
+
+And the only ops that seems to be controversial and that informs the
+nouveau argument is ops->enable_signaling()
+
+What should enable_signaling() do, in your mind? What should we tell
+the driver to do in there?
+
+And why does nouveau even implement it, when its interrupt handler will
+ultimately signal the fence anyways. Since, as usual, nothing is
+documented, and one enable_signaling function carries literally the
+name "no_signaling", I don't give it the benefit of the doubt and just
+assume that this is broken, bad design.
+
+
+My impression is that ops->enable_signaling() and having an interrupt
+handler signaling fences is mutually exclusive design-wise.
+
+
+P.
+>=20
