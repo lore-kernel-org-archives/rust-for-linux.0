@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793632082;
-	b=BtLYRKk3P6IqGOzzPwTXQmxJfJS/OQO3ekiaBVMfaRQoXovfrOqT2MH3oCw6fpEkAtM9
-	 3EuzrbprSoW63a7m6PYJJHwZA2qgbcc3zIFMM1cfhjjXt4aMsEsW+O5hOFJQ5TpbZy8rR
-	 wj0XpX9R0jyH3iHrdkXqd3e8LgbbZUK4mfjZMIAZACR7KfRQHyKHRkAcoEF3xtTHsqqb5
-	 KGqom9zsC8uPxb/xHtsCGfVT6qnWhM0NCikn/FR9X/39zs12MWjZ2IIjdK3QuMKbvyXk/
-	 1nMMyQtLwS4YmnDWCZ17WMhrjpLjJuq3lvfm2I2HQWp6zMH8mqT78NZQYB/wopu0z8Q==
+	t=1793632087;
+	b=E8AI46ULjBWcRVaevnky+0rt9v28gi/324/+Sa4XBDNJu11OI3WLqLIrF878/xxrKsx5
+	 SgVWmsYeprWORbX5zRQfZj2tgrQTfTJHnoed0+5dInRHHaAr/C2l3wIVtfvPbUtLciktO
+	 RpQxoIry0w7byhjS9N4vPLNAMYAbvUk7w9cN+eyTzGamKbTdP+myR27u2HGE6m50ges4O
+	 Q50xV2e83oJYz206JbM3EzFObIzrH2Yo/SAxbZjXMxKSunijDah2W7PymuDoYIcI6f93N
+	 Bc1HfgZzZLDAHbKNLiB+3/ShQWe8xyzK200YR8qlg6HNGlLRckOHOaDmZUOCjBZ3Fwg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793632082;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793632087;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=x9Hqqsl9MJqk2+H/AcnqKEgvlj98SIvK5idOHtd0XmU=;
-	b=0izy+xhzzdNUZ0FPljh1NF5cwbXdjylEb4j/yMqGQxnycUqCLWfDTa3RUvxs7oTvvYg0
-	 2KmU/N+ReqJ5/Fi/XJNEns0z0CX8B5i6RApWLdY+jF77Xdzp77irbuStlCFZfsLkOTVxS
-	 X5yGO5AoZJWoQcg3AGUgi8rYveuln+dp0lbQQ1HFj3/hvru4Zdu1UBgEryEbu0RFH85sc
-	 yI4eopsobSpxZS5es+dHhiCoaDfcu5CVK4cU8k6CFZDiW1JY9sX9jWLl+PEHBCxly21y8
-	 Ohoae9OBTSDMqVZBmG7F1SPQC7GJz320sHuoRMo1qYj31H0Nm/B0p6t+oyEy91JoTqQ==
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=nbIBXMzmQWZlHkVrJLt2el9arFLvMWt8H0pfM2TvZ70=;
+	b=wBk1Tb/eim/PzKntIbGccr5VmtI71VSkZaUXR8l58S/yrc0nvCk8fg7Kle0YIH0DgebR
+	 ljS/OQu8FqCeRNR03IDwlt/IqoHWl1/HKlZM5etL938kB7msiuQqsAYwRIvEbnLlsj0pd
+	 ltlfAgcFjdhpte4EZfJUVgXjXtQ8onKwvBS1Sk4UH43GnEeozk+niW46COLhMm6HQ4rz0
+	 KXQH+ixUwMeg/7WqG12W9w+nlhYOlyGpOLOAWEi6oCyVBZjsCrRvGkOod1nw28bJVKhV/
+	 LJRXNW5zUKS3DvVoNvMkYGAhZANH4caFzJDOtS89nkkYd1uQ7GYBu7mfn1adfcOx29g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kYEp1CcF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fQ6AThzL;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C74F606B0E7;
-	Mon,  2 Nov 2026 15:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B10C60A0FFA;
+	Mon,  2 Nov 2026 15:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kYEp1CcF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8636D1F00A18;
-	Mon,  2 Nov 2026 15:07:57 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fQ6AThzL
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7178E1F00A16;
+	Mon,  2 Nov 2026 15:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793632082;
-	bh=x9Hqqsl9MJqk2+H/AcnqKEgvlj98SIvK5idOHtd0XmU=;
-	h=From:To:Cc:Subject:Date;
-	b=kYEp1CcFjkvMSgj09SKJcdpImoLX9XUhUobPf60D4GoJpnT98QSJjfg+vekciPWiV
-	 rgW9ws4KeSCMJkBaEZqRh2YrrawQzdGlhp1j4Y6CWP+8CmudCiCOMe/5VeVyXrcU90
-	 aOdwd+2jH0jUO3mkuAnfPjLwQpBfukf5SzGRba0Bmb54x3SAa5WvO6tjOlNafNfyCA
-	 WfqGJrvZfQS2jQ8NWjxTMWutFVlaiDGef8rDgKJVO+02Ui1LAiJ8mjRA1fIocI0cyF
-	 CWfScizMrADBLO8piHcZsL7UY1PWx4JyB+7czTeYGh2C9GwkicYfGJNmNHX37rjVAE
-	 NLRJ/IcOLGoWA==
+	s=k20260515; t=1793632086;
+	bh=nbIBXMzmQWZlHkVrJLt2el9arFLvMWt8H0pfM2TvZ70=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=fQ6AThzLEEWi7nExBbcCZi3D6tD8DFAWlSnWil2Sv3ZuBdVXKMb5Yb6Jn/K4wmFRw
+	 Hxg4mROQspxZSdJAMA/n5LdG3U7BIzvsmb+Wp6IdgKd4qAuimH3sc7u+aa58oElry5
+	 wgso3TSznifEdtHRUixNcVQ9rcsGsjA2mGIEajrdTfsTUg/MlUEyyvDvRzPWy2m3yH
+	 TKECuA9j+B7z9ZoMlmy7n80Jvv4diaBqjy3LH0bgt95eWoN8xbnE1t3h9BQm+ghqzk
+	 70qPkTHR7ASmJPM3MdoaGpuMskA1J4EAH9dVIvAq7Lj3/USFoSPIkx4fYKgYjkiArX
+	 pJhOHB9D+46Hw==
 From: Philipp Stanner <phasta@kernel.org>
 To: Danilo Krummrich <dakr@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
@@ -60,10 +60,12 @@ Cc: linux-media@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] rust: Adjust dma_buf::DriverFence::drop()
-Date: Mon,  2 Nov 2026 16:06:16 +0100
-Message-ID: <20261102150617.527772-2-phasta@kernel.org>
+Subject: [PATCH 1/2] rust: DmaFence: Don't drop on signal
+Date: Mon,  2 Nov 2026 16:06:17 +0100
+Message-ID: <20261102150617.527772-3-phasta@kernel.org>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261102150617.527772-2-phasta@kernel.org>
+References: <20261102150617.527772-2-phasta@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -75,25 +77,65 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-While moving our collaborative drm::JobQueue draft forward, we
-discovered that some changes to DmaFence are necessary so that the
-design fits into various requirements regarding atomic context.
+The original design for DmaFence intended to comply as strictly as
+possible with the "dma_fence contract", which, according to some, says
+that a fence must only be signaled once. Thus, the implementation was
+made so that a DriverFence drops on signal.
 
-This mini-series is a requirement for upstreaming drm::JobQueue:
+While extending JobQueue's capabilities, it was discovered that this
+characteristic causes - unnecessary - trouble: fence-data must be
+dropped in an RCU-deferred manner because the C backend demands that.
+However, fences are often signaled in atomic context (e.g., interrupt
+handler) where you don't want to drop, but signal as quickly as
+possible.
 
-https://lore.kernel.org/rust-for-linux/20261016085724.1031766-2-phasta@kernel.org/
+Actually, there is no real hard reason to enforce that a fence can only
+get signaled once, because the C backend is robust against multiple
+signal attempts.
 
-This is tested with current JobQueue and a dummy driver.
+What is decisive is that a) all fences signal and b) they only drop no
+earlier than 1 RCU grace period after signaling.
 
-Philipp Stanner (2):
-  rust: DmaFence: Don't drop on signal
-  rust: DmaFence: Replace call_rcu() with synchronize_rcu()
+Don't drop a DriverFence on signal().
 
- rust/kernel/dma_buf/dma_fence.rs | 100 ++++++++++---------------------
- 1 file changed, 32 insertions(+), 68 deletions(-)
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+---
+ rust/kernel/dma_buf/dma_fence.rs | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-
-base-commit: 9fe580fd90e20c8432832c5f9a7e92b049ae9af6
+diff --git a/rust/kernel/dma_buf/dma_fence.rs b/rust/kernel/dma_buf/dma_fence.rs
+index a1d851656562..3022bdb5f7c3 100644
+--- a/rust/kernel/dma_buf/dma_fence.rs
++++ b/rust/kernel/dma_buf/dma_fence.rs
+@@ -805,7 +805,7 @@ pub fn as_fence(&self) -> &Fence {
+     }
+ 
+     /// Signal the fence. This will invoke all registered callbacks.
+-    pub fn signal(self, res: Result) {
++    pub fn signal(&self, res: Result) {
+         let fence = self.as_fence().lock();
+ 
+         // SAFETY: `fence` is valid because `self` is valid. The lock must be
+@@ -816,14 +816,15 @@ pub fn signal(self, res: Result) {
+                 // must not have been signaled yet, which we check directly above.
+                 unsafe { bindings::dma_fence_set_error(fence.as_raw(), err.to_errno()) };
+             }
++
++            // SAFETY: `self.data` is valid because `self` is valid.
++            let fctx = unsafe { self.data.as_ref().fctx };
++            let _ = fctx.nr_of_unsignaled_fences.fetch_sub(1, Relaxed);
++
+             // SAFETY: `fence` is valid because `self` is valid. The lock must
+             // be held, which we acquired above.
+             unsafe { bindings::dma_fence_signal_locked(fence.as_raw()) };
+         }
+-
+-        // SAFETY: `self.data` is valid because `self` is valid.
+-        let fctx = unsafe { self.data.as_ref().fctx };
+-        let _ = fctx.nr_of_unsignaled_fences.fetch_sub(1, Relaxed);
+     }
+ }
+ 
 -- 
 2.56.0
 
