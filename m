@@ -1,131 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.152
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793593559;
-	b=Qm2PA6dmoXf4BNlSx1v+oe+YacVsExRP56GQoGPpmlrybzZiM/zwcYfdeQ4UVT2b53up
-	 M1eaFQ/50jAti5zG4sfiOLMibfEuCfCEtT6TCrvvI7tzV8aPUdi1wBi/z2so56IvTkh3J
-	 nVhdn4awW1mDTer6acwUNRAAvn3hGBfHdnJe9x8Ba/pLh7IIqudBwYN+GF7ZSqTbgwPhK
-	 UzlTcaVgVheRZfCEqTefJACTfN6bXQBzAgYZJRSJUCviokEivnPJrwjlHr0TAR+ENASUa
-	 rpMpDxupqe9xtajJgAHTUMEgSFZysLUF4EQ6c0p3zPFfHxSQLsqhk1+M8P1cZKWCh2Q==
+	t=1793598353;
+	b=yzZg3OMweGTp1M4YN13cM6oPtmq/tq7gFmBSFzBbn5VnhEytbCTA4K9ayjAIow+Hj+cx
+	 Qma9/C6WWhXqH5lxpUUhpUNYFlbvcJyEcUBalZgjVJ1z0ryYqPticB2oQu0qzlCHde219
+	 sI4MBHsIa01pBNip6WDSEPlimTXlqQWZe/IquN2TBDSBV1HyaJeNmFp7WOVV3c//xa2Vm
+	 qi3ixaXcn10jI2LKZ5QI0fimzJkrESAD2AK5NzH7F9rvJJyTVIJzhwMNHJ2IKW8Y1v1MF
+	 YAijBWZWXLrOWJFkpJjmwuHmcWEAEbGTKHTqFmoBsJL2A+3ADg3JKlP10GsKw6IS6kA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793593559;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793598353;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:X-Mimecast-Spam-Score:
+	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=klnJ767tqKG1qIa3oLewxoXioZCGvLHmRpYlw+alCWo=;
-	b=DWvj3OUmhHCor3kkSFsrsOgo3zwRgvTln45ak4PJsa5aoQ5/0hMsbu6Arj2rdWwK+3XZ
-	 NV8mf1fKtvFRnllCw4bfprAhbe4nkwSU42hYFc4EHgFPqPwhi2VjsSIOkJGDyL7WDJ6a5
-	 69Rl8vR+Sx26hdU6gfdTok6rzniwFVZN3ZbrMHmLkVG9MsvopnvqJiP9Sdm5kc1zxiYwd
-	 LE/CRFDzeiVDvLVNZ0NKVtx0oZ+uDutQ9WxHx4ndNH+fznpsVHWHlnUX6wPeYB2YatnG1
-	 RVi1/1ipOs4SFj4ZUvdQjQOqF7hGFolyhq4uzMmXf0IwxcrkUTkasjsNl+XK4FguXCA==
+	bh=0EWff2/RckXT/gjbZywWMm8CMyCYWgzGjOrw+JSfBks=;
+	b=RvFMLicRykxRNGAqif4Xty5KEnWGFA/6LZwx23XJatKNluChONrunX0y4WwCioQ4jWcj
+	 KrYQpxH57JHZh7fjE1SYwCpzr10Wc9jdG5tIq//j6fZyXOJKdPRIROulRXkd2qCe1Gb55
+	 gYRmH27HC3VlFVV1NxEVLXgTRqiOjHMnkEUL42kGIUN128mODJJWdif/GptMQz+01bhSU
+	 uPF9mC1OGpFqka0OCFJQMHrLdBmYPGg9sSv0vH2OMsg/txYPw5NoCyM1BPGJ4iXVIv4eR
+	 whWdexr0KWKm0Z+9H8zwfxM9xdAR91Vh39BXOhSy0WqOMZuFpI1Kqbu5bxWMu1vfJUQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=flapping.org;
-	spf=pass smtp.mailfrom=flapping.org;
-	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=d6i1pC0W;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=dScwr9dt;
-	arc=none smtp.remote-ip=103.168.172.152
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZFfNIr+S;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1F3606A324
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Nov 2026 04:25:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AC1F3606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F730606A324
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Nov 2026 05:45:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F730606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=d6i1pC0W;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=dScwr9dt
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id E595B14001F3
-	for <rust-for-linux@vger.kernel.org>; Sun,  1 Nov 2026 23:25:57 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Sun, 01 Nov 2026 23:25:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm1; t=1793593557; x=1793679957; bh=klnJ767tqKG1qIa3oLewx
-	oXioZCGvLHmRpYlw+alCWo=; b=d6i1pC0WrWfROelt8IQUr4gJBr2wLqg3PWkH2
-	F8GcSL2xq0x3rPHt/XKPOz89AaSo+5K17kBbpXh2eYRBnYIsVj193VhQAArBcgD2
-	sJpY7K/r7QaVF7l95xEwSymisAGTyHZNvgeioMmakB7hk39bPeVpWRkQgOhNBwdQ
-	9V1IJPOV5ssdb1NTS4evjbOGpyeGztWlL50uPLkfxt4XKZ72j5gwlbnZ3gAeH+2u
-	rFDdifVqbNJ2Lg35DGGIaBBdVLGdHXDuuV1Q2JQhMNfoVnAy2KgZNwmM1Dt91sqW
-	KpjVOoMkLs/RCKvF37xnp+Qasv+DIIj9SSz92ROTQEo3QFwEg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1793593557; x=1793679957; bh=klnJ767tqKG1qIa3oLewxoXioZCGvLHmRpY
-	lw+alCWo=; b=dScwr9dtd/nLMlrrd90p7Vq7IfkOBXH80KkBuIClNdJ2qD6enZg
-	U01OyG9QQGc1tcYqARveIYqnnowAN7kqfHovoc/B+PBSgXmb+wVE2XHetQAl6eWh
-	RqTr5RyztTv+wZPJxWlIQbdIeUEVZh5XMjJRsVjyAZXiBajpKXgGRWWevSaALKNU
-	jQjDtSRu5JepYI3gvfaAiU0gJGlo9dwb0yBaPqME+UGKm5c80VuMXU0UvWQeodXL
-	ZFsEQxOvxiiAr2Dvp9MwEyleNEgS26l+z67soL2itD2zMWo1FGmf2tJKzQjvb9OD
-	203cXLTruOquZOPvda9xbXy9ZosetKA5zsg==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793593557; d=flapping.org;
-	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
-	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm1:rsa-sha256:jv9tlf8cniNImfdS4uGnOrpgRedd/pouE3xT122YExa8eOh
-	JlH2ZKYpfNIatSoqyJcjUwxgfR/KpRKuLw0JgsCP51TBaLGYacb75sL18VJCcapq
-	p17k9GiYdjqTIRppbe20DFv4MESiNFuAbzoib+T6ejGMpeJpdnLHzGxGe7a+2Uu4
-	6pvTIy5Vy7DEc4RyeLnmU7PRHQ9fKHqMG7l+ozm16MqNLjbcITFpuQ2CxJe6IzPF
-	gsILDeyYxWA3mTdeF1XYb683DTx4xyvkzWlt8sMALr2O5fuoWS17YZ2P/cIow2SO
-	kUyaFWhRVZ8LFb99hGs52r5bRKZAZz2GJ3WogUg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=mi-m=1; hc=9;
-	hn=cc,content-transfer-encoding,date,feedback-id,from,
-	message-id,mime-version,subject,to;
-Message-Instance: m=1; h=sha256:QYm0gva6nC/nVsUHtWy2w8oCekIikhZIKqhc3GP1GCE=:iAe3dGD1Qb2QnpBuCTTNkd3st7jLGB7g01nDaRlk7Ak=;
-X-ME-Sender: <xms:1RDoav5Ub9qPJxhBM4ifU8JIgSvC4TtrREv3DbLoOYRbBNAguTW1aw>
-    <xme:1RDoajaicYW11uWQOoaZEACMeQPd0ZWs5Q3J35XokL8E4ldCYPdfjizBdCS7JyqKE
-    xJdSlxDuoQAmMkcl7ZbIBEskcFOp9M9rLfJqk9icDpx0aQF814fV85l>
-X-ME-Received: <xmr:1RDoatSw4rxhodhaju_NV8k2QYjibqgg-2VHBClJiBDuCuhvGwpzK36Ak5AEN4Sp88knztVyD0imlzKQawM>
-X-ME-Proxy-Cause: dmFkZTF3ZencbtGG7L9Gv9Csmc37umqGN/XPSMbJDpNXz6WATRE1rfzC7fR9599qRYMq1q
-    JEKLrbcKPVw+zElvEZqgw2LOi9ZYyZk1TzHUL+xjgFdIvfFx6iKFJ+XZgTk4AeH0fNfDup
-    PlovRNZw3UKTU0m6B/Vpx9xLxetDd6cWMDMtRaXWkLnUqFf3t0Vze7NWR5XIYAWi59rRk/
-    p6O7+FFKwFD38fGxttGs7CH8xhw8GAwNDFBLT8ZNRq/PGfGqeXdEM6iTg1304WJHyUJpk6
-    7Xa9sckRqXobGtUM86dgzMXGKSgMjpZR34cA191uJ6vNoViQMTFJxpIRWzo5mxXMRWMEYh
-    n54SW9hY17V+wvqNXeT11fB2ne06T2qFsfUBecEvebmzLACS6zY8aESu+o8NAw0OdiRVmA
-    QBuan4bKoIOuHV50ibC4pnP1IOES5DY+cltle18eMt/5o2z7Xqy8quR8em9ULcW7clahzv
-    rosGlWSM6+JkuCeEoAYV6CkJrrYMPOn8otkQXlMA351zeWs3VBJg/lOCetcdQ83wssBcGM
-    j5vcW0C3icrmJJEwQv5Ng1VuKMW7IQKLKNvV54v7XG6s0wHe397Yzdr+SpKWumN3jVDb58
-    dgO+ZVzp8YHESb8h3ZgbQ+KVUt7OHxd7URDuMfiMaVeM2iV99EgCi457PQ1w
-X-ME-Proxy: <xmx:1RDoagIOOsR1kkkqdTH8OiN0OcUvNaN3-4b04t7puHi7Q1mQ46JO3A>
-    <xmx:1RDoarUAJSsvUxewHNO-P6fgYUQSxc9KvjTBog4grIzeMTPwACi_5Q>
-    <xmx:1RDoakhpeHZSRy6iTKw3FRbbnlh6TfIl7i698b4aI171KXCEZu5mTg>
-    <xmx:1RDoanuJ6Pwe2Vg6EeVbfTMgmEaiMHB3wBEv_LKlA_jgON5zsNu_ZQ>
-    <xmx:1RDoaiT2Puwjaq-gGTapCqQzCl2l0SVnrH5rBQY81b1GWiuYnRFtUzJN>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 1 Nov 2026 23:25:53 -0500 (EST)
-From: FUJITA Tomonori <tomo@flapping.org>
-To: dakr@kernel.org,
-	ojeda@kernel.org,
-	tj@kernel.org
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	jiangshanlai@gmail.com,
-	lossin@kernel.org,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v9] rust: workqueue: take a Delta<Jiffy> for the enqueue delay
-Date: Mon,  2 Nov 2026 13:25:24 +0900
-Message-ID: <20261102042524.735613-1-tomo@flapping.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZFfNIr+S
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793598352;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0EWff2/RckXT/gjbZywWMm8CMyCYWgzGjOrw+JSfBks=;
+	b=ZFfNIr+StHPksHOP1R1EhaN93iyTXILP2EOcEQ/ohHx2Vp/7bAD0xuc7YrICYRjNHGFc0E
+	AqfenI3gTAVOeH4qbNRla2oRGRUHsgsRY912nVKT9dyDNvPACIcP5MXLHjlugf/v3BSlmG
+	NragMVLcwV3SShYuaAcgknrp5GX1tfo=
+Received: from mail-dl1-f70.google.com (mail-dl1-f70.google.com
+ [74.125.82.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-453-X7n_9WbjP4Cs77RBuDP46w-1; Mon, 02 Nov 2026 00:45:51 -0500
+X-MC-Unique: X7n_9WbjP4Cs77RBuDP46w-1
+X-Mimecast-MFC-AGG-ID: X7n_9WbjP4Cs77RBuDP46w_1793598350
+Received: by mail-dl1-f70.google.com with SMTP id a92af1059eb24-1aa0fb7f157so4165937c88.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 01 Nov 2026 21:45:51 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793598350; x=1794203150;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0EWff2/RckXT/gjbZywWMm8CMyCYWgzGjOrw+JSfBks=;
+        b=071IlCGWa49LmyrL0m4E0dZCI7Kc+iRvIpisSkhaqIIAuhcKYUJSzEnYjxrpzcWMWx
+         vEwf+vUTeoXm7bPhO9HIortfBEbTydjt8uLPL206+vLfnj7FQWanEttadPEP9LcThP+X
+         ka+akUdLPfsTtNPw2tAAaGppqg5src4voPkXkxu6hrSmWqbrhtz+BEAvuCCpx13SUj4s
+         fCLb/9UUqSOi/CaLs+FRLmyhaDVJeHaStev6Yl64x+QylNXMaVTJLahJ2TMNdKZjTyGt
+         NDghx1wMDQtpFXkDXyd8R+k52zU4bDaMZJ2jaMZPq3e8oNmdZZYHYwPkLbbVfIXYmOCz
+         rTZg==
+X-Forwarded-Encrypted: i=1; AKwUvBwGwfa+Kqmxe6dOAB/A3VIDzhMGtsMftxim5Wab34Ejp2bfdcBjeTenj4HRMh6LGTT1nMK6Aq5TgkSvG3EDDQ==@vger.kernel.org
+X-Gm-Message-State: AFq9FYLxsh4rxdHpg5SFnxmG226LAPOZJA/uxjD9iVnbMRgjn16KNeZl
+	rTAbE6gEU5iGWYA2JnmcZd7ER47metMmxlPibzFzD+aEzGsD2+Bz6Um7dS2C+1GRsXL4DcULD5b
+	g2xRB9pZhivVuw0n7WmNohd+vJkRn+dEWVRSeY4SjrnFHPIInz5/XBgL8dwbqcI0qINwS6C9CLh
+	DWBW+OA1MG8e4xYgqjBWUXO4avnuPNWV3ZEMiULrT9vIc=
+X-Gm-Gg: AYBFou14wFIy0Jt6skFkdeBDn7pUYchhhoVI+2JVuwMP0BnfelT9am54NKJaXY0An6z
+	mnFsKr1JbBNrHp1G8IdotloC1LK7BGkUPEWCJ/LRqoQrqirdWH/qia4xRqPQG5D9+IeyJVTRXUs
+	KlCTtC8Jvv4jrYWuWAoX3+0yY8WSAoAtGa3/IXNakJC1uZHmIgDgp8buDSknaC01LmrqJt3sGju
+	Qbuq5uGpQfltUt5
+X-Received: by 2002:a05:7022:4b:b0:1a3:dbb2:478a with SMTP id a92af1059eb24-1ac5c92de5dmr17383098c88.27.1793598349861;
+        Sun, 01 Nov 2026 21:45:49 -0800 (PST)
+X-Received: by 2002:a05:7022:4b:b0:1a3:dbb2:478a with SMTP id
+ a92af1059eb24-1ac5c92de5dmr17383031c88.27.1793598348917; Sun, 01 Nov 2026
+ 21:45:48 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -135,77 +91,54 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20261026-drm-rust-next-v1-0-14a4ae469175@redhat.com>
+ <20261026-drm-rust-next-v1-1-14a4ae469175@redhat.com> <DMF058O3CRIB.1C2PJYOCEBTXI@kernel.org>
+In-Reply-To: <DMF058O3CRIB.1C2PJYOCEBTXI@kernel.org>
+From: David Airlie <airlied@redhat.com>
+Date: Mon, 2 Nov 2026 15:45:36 +1000
+X-Gm-Features: AclHuK8exQT8deCs0skNOyZ9XxNBt9vf9v6qGrUakoponbSopJ5SLjaDTOgiRKc
+Message-ID: <CAMwc25o22q1LT61YFAeZQBpVxmFZGYNr7Q3TvHoC+bd1HU5WAA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust/timer: expose as_nanos for clock sources.
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Dave Airlie via B4 Relay <devnull+airlied.redhat.com@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Lyude Paul <lyude@redhat.com>, 
+	Gary Guo <gary@garyguo.net>, Alexandre Courbot <acourbot@nvidia.com>, rust-for-linux@vger.kernel.org, 
+	nova-gpu@lists.linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: -4U2x0BJva2Yya-3wRRo8QOFYjUAcGxRV5crLEh_i3M_1793598350
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Tue, Oct 27, 2026 at 5:04=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> On Mon Oct 26, 2026 at 3:56 AM CET, Dave Airlie via B4 Relay wrote:
+> > The nouveau C driver does ktime_to_ns(ktime_get()) to program
+> > the cpu ns into some hw/fw, so allow this method for rust drivers.
+>
+> It's kinda implicit, but I'd rather justify the change through how the HW=
+ timer
+> within some NVIDIA GPUs works.
+>
+> There's also other HW that works similarly (e.g. a bunch of net devices),=
+ which
+> share a common abstraction through struct cyclecounter / struct timecount=
+er.
+>
+> Having similar Rust infrastructure seems reasonable for use-cases as the =
+nova
+> one.
 
-enqueue_delayed() takes the delay as a raw Jiffies, which is a c_ulong
-alias. The type does not show the unit, so callers pass a bare integer.
+Just to clarify what I talked to Danilo about, I've no intention of
+publishing the nvidia timer hw as a timer for use in the driver or
+system.
 
-Take the delay as Delta<Jiffy> instead. A caller that already has a
-value in jiffies passes it without conversion. A caller that has a
-Delta in nanoseconds converts it with Delta::to_jiffies_timeout(),
-which rounds up, so a short delay does not become zero.
+We have to initialise the timer hardware for the GSP init process.
+Depending on the hw platform we have to read the timer once to do
+that, but we do not want to provide a time source from this timer at
+this point in time.
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
-v9:
-- Send as a single patch. Patches 1/4 and 2/4 of v8 are in v7.4-rc1,
-  and the condvar patch was sent separately
-- Rebase on v7.4-rc1. The doc example now uses system_dfl()
-v8: https://lore.kernel.org/rust-for-linux/20261002050428.2746277-1-tomo@flapping.org/
----
- rust/kernel/workqueue.rs | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index a872f9fffb90..e9bf30570aee 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -171,7 +171,7 @@
- //! /// This method will enqueue the struct for execution on the system workqueue, where its value
- //! /// will be printed 12 jiffies later.
- //! fn print_later(val: Arc<MyStruct>) {
--//!     let _ = workqueue::system_dfl().enqueue_delayed(val, 12);
-+//!     let _ = workqueue::system_dfl().enqueue_delayed(val, kernel::time::Delta::from_jiffies(12));
- //! }
- //!
- //! /// It is also possible to use the ordinary `enqueue` method together with `DelayedWork`. This
-@@ -197,7 +197,10 @@
-         Arc,
-         LockClassKey, //
-     },
--    time::Jiffies,
-+    time::{
-+        Delta,
-+        Jiffy, //
-+    },
-     types::Opaque,
- };
- use core::{marker::PhantomData, ptr::NonNull};
-@@ -303,7 +306,9 @@ pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::EnqueueOutput
-     /// This may fail if the work item is already enqueued in a workqueue.
-     ///
-     /// The work item will be submitted using `WORK_CPU_UNBOUND`.
--    pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Jiffies) -> W::EnqueueOutput
-+    ///
-+    /// A negative delay is treated as zero.
-+    pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Delta<Jiffy>) -> W::EnqueueOutput
-     where
-         W: RawDelayedWorkItem<ID> + Send + 'static,
-     {
-@@ -328,7 +333,7 @@ pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Jiffies) -> W::Enqu
-                     bindings::wq_misc_consts_WORK_CPU_UNBOUND as ffi::c_int,
-                     queue_ptr,
-                     container_of!(work_ptr, bindings::delayed_work, work),
--                    delay,
-+                    delay.as_jiffies_unsigned(),
-                 )
-             })
-         }
-
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
--- 
-2.43.0
+Dave.
 
