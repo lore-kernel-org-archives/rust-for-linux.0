@@ -1,103 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.44
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.173
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793701935;
-	b=pChzQ3olON5pVLwGS6jtJ8Oq4Im/OOLcfCzuZW05N5u5S2glKgpPU2lVrX+MwfnDX7kF
-	 RfgLUqMLwwgvkiT05+UEibNYH8cJaE/li9vVvwUIIfGUZZQI0j6VIwCxxloizz4n7lWcG
-	 nW5n29f5C5iq9DP/AS8cKkZiOnRAZMDoDIWsrg5i3MWnO6R8o6wBY1OAIA8zYJyTZrqun
-	 2KCcNp1+3CuIU4e2xUybPHlOZFJKiQzlzaQfo0lh1qTfJIJ41c30tVOheJvQJ+mtueEFb
-	 569zCQvrp2fpUFQUsRLGrDhrqDHGOz9djQj2HwSAfXaArHFJv4zFHxZPE+SFSaF05DQ==
+	t=1793702294;
+	b=ta+Q0vAln66cS7+b4TS49XkkMJ2/bLHDwXiB7KJP9wPmzNnTnD69q2WwwJWF3/kHixKF
+	 nz4i9mj9jNefLaAMGLonN8stYund1ioA5nF/pzZnmkcQruyRHrLTXS4+LR6WXT1JqUFOc
+	 PwTee7PrrfFQVGeeBVnAZspNxplagJsAIMRqv8fkHcewEqQf7sgjfTWd/QYVcufTFXtKU
+	 bs+6ZS1ePI3tDqDKjSmI5M4kpeCr9OYf79KlxP/Cdw9oxsNnVevDicJlE3Ep//8dyY1oS
+	 wymiB1RLXt8WmDPgNtHCw8/2JfazTEnyf1sOq2rE+osLcpIpEJaPRug0I5wLXAIqF6A==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793701935;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793702294;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Received:MIME-Version:From:Date:X-Gm-Features:Message-ID:Subject:To:
 	 Cc:Content-Type;
-	bh=5wF0zewFpsOiJBtoZv6gxgfRVpLXGxk558GJSrFJvyE=;
-	b=UCyFxHJgwDfqw+O7PC6CnpWwwxAZufBJAWEIcERSp1kqt0fDZNodDmyREOnl/bXLuhv1
-	 n64z60gukB9x0LNbpoC93lCiJnqR3Uxse6SHYlWDo4+YnGs04P5BMxLYcQ53ErY5+StKU
-	 g2qZKQ/ap5qKH9crUQtsrmuWlO+1SwbWyzvqQe9VVHsUxQIjHbXVLRN+yTczXjQv/LUFh
-	 bTrUBcjkyL75MviOCZBKqbpqWn+cjZSpGMYKftGNlD0RlXY5uVUmAuIavRGi57Q+XF2Nx
-	 X4bRVq5ac0HLM0XM6GoXONdWKvLfFFpHz+CzuepmOyaWG320aaa5tueLO+e2qn3ZQ1A==
+	bh=geMjJFNKKykGkLhJdWftFFIjpClvfEV0OD82CBvxC4s=;
+	b=YHNjD+REPhstYjd1gFjSrvXNhREzMwX1q/jjPaWTxBkCroD55Z3TLSHLBYvmGlPiWtf7
+	 ma8dOXGvuV+vyLeKlxizHUWXK/B5XxG8Nz8TTNLWUU1Y05h3PQN+RWJrpYdvo8SEoHCET
+	 JAZ/IBqD25lXgo5FgcULI4xR0QsAQyWp3LpQ6u5y1aCRmuPzscQ4PnXX7aQcIrujSMcrU
+	 9U+kEereJyWCfmRCoSOj6DmV2YZupwOnt482FBO1FPN1hI5tgBPgpX4RidBAsikv73GnG
+	 YQPle9et1p5XD0FLrP6iw1ck+m8SDocAG3dK6EyRTUZvIxFckhpBxcyxpWJLhPzLF1Q==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zgCUCSBG;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.44
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w76UtIeB;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.173
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AE6606BA41
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 10:32:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8AE6606BA41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE8B607153F
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 10:38:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DE8B607153F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zgCUCSBG
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-67a80d827e8so2448031d50.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 02:32:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793701934; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w76UtIeB
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-8b125371596so4260407b3.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 02:38:14 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793702293; cv=none;
         d=google.com; s=arc-20260327;
-        b=c3VWtrDMxNtrA93WJdFYb6iWfdzoutct1HMf81MFjU4SSeyadcg8i1ESGL83F24THP
-         rXFFt1iNKaNcd/+YzLPIVUmtWHhf3KNQCtZC1up/z3M556AAKWvA0DqnlHq++nUnDCoM
-         SLM24qwePgocAOrFTu0IKNUwgXo6w+b6AJRBSRuxLiwuT4KJxP3Eu8gortqutY3qcHXm
-         Q7P8PnslO9yvy9T/n0Jc4vJ4JOtq/bCaur4UnRihqyxYMwVq6nDsK9coHlnLlVSxKSrF
-         c2CAMYw94xPbcHrUEbaUVwZ5xkZ5hEnYelFL0HDpD+5QJ3bPhRVYWZzOEA1DRq2UUrH1
-         wMCQ==
+        b=IWZtB8M86OZRi8hW2XupexBwKfNLbhNKkrJ8qOLKAmP0gm4EGSTmhFzte3smRFR9wA
+         GhFEQRNFBlcLtRlyf4do8L3YBg7lN01QJSOJD9eauvGTGbTd5QeddOX4xMIlaQnWhiLA
+         qKEyfPmSvUmd3xF54NbCdc2UgBSsR4Cv9jrosPN2cZm5+pRilOnQ4kQYBktfjInJ0Co5
+         nvRMaQ4ALuJ8AeSm16HfbQs6BGmreas2pQr50idsbVWd80acWYSUSKnAn6d6HljNCITX
+         Ltd6lQ4uGOQHIi+i5rkzA7jkso/1BXE/+pSo/b1g1QmUeGuKVnAI21rfTX7We16UoWgg
+         xcfg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=5wF0zewFpsOiJBtoZv6gxgfRVpLXGxk558GJSrFJvyE=;
-        fh=1yWuzn+Znx/5nTSh8ebmE1YmrbzgNcun4IrRfFQYX/Q=;
-        b=IjPCE5vMmwzcWWZ43L6d8IpLA3/uKjCzW7hyGsHlJxjW7RJNKLVkc3RqrdoPSINQ7n
-         kcEK4WswVwO4u0TvZzpochfcqYsPQWMgE7775xT0x1bWObUNlBpnShGSDqfTOEHioRxu
-         pljp3GftsTHWoaMfZSWg8+Yt2Mv9HIjtpjDZ1whk5/vrKTwkZx0odp561wcLYT7dcSoj
-         KapNcbcv06Vbcy1YNKVMt69VDkDRR2D+xugn3FBUiiUfz1/fCaMq2v+0T0wJGPTxIoP/
-         Vovb/iQBoCj1pFDzcTCgJ6anaAdK3/mKqIGo6Uwb45uklEn8i8CJjHppNKL70rDVwP99
-         FJSQ==;
+        bh=geMjJFNKKykGkLhJdWftFFIjpClvfEV0OD82CBvxC4s=;
+        fh=jFFItRx3SmnPLWdAtDSh+gZd6HWhgLbxkdUX9SLXY4I=;
+        b=F0FhppL8n9mLgKCnU665DUd+r1p6hrh02wrsU6l/mbwwHVyJXNELCUb4wQo81Nv3Wn
+         9Rxn0kKscdqxh/S5dczyDkTwFmIjwy3gqyJGcOs1Z6boC5s/YBjfhA+eLxfR4q0D54We
+         FCiq1a3v+p/lawrC8q4Q12JFBvm6E8tI+ZTbcv9FQKW44k+14nF/m1xaZpmFdCBe8j4b
+         J9GwSfKJFq8UTkvMTaK2ttEBSeASCsK3yYUOmrJ/PxEqOF2mRoZD1s4o3hft9Nub+aCO
+         JbKnNb7RcDZ7EIR/e0IYm1NNI/R+w5vCf4gWfGY0D4iTg5hDithx5NFnv1kNNBUfh+o3
+         DOYA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793701934; x=1794306734; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793702293; x=1794307093; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:mime-version:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5wF0zewFpsOiJBtoZv6gxgfRVpLXGxk558GJSrFJvyE=;
-        b=zgCUCSBGSQZBUYWaWNgYpejQ2dJxrcAj6UKNDz5HgBWz3DoCtsm0Q4a3vcVS1i2bKX
-         1KOuCZTR2KJAmN5ijRVRAcqbvGDKZ4XF8c2aYDEU0GNCg8q2huF/8rXyVkWSBQ0dq2Rw
-         +yJrsSI1sk+5d/IV5fnNOfe3f+MOmcr6XLbOm3qn/zHmD0yIOtagNYo6zKVh6ZpSFaRG
-         bCXMHbjpKXoyWn0leS8hK9y9cIQBC3xMB2N6Cg53PjVYqXmkeoRm3VPIN1u5BHYCXbfw
-         n7QXKrE4BZMU0RnAAbEHOxXR43ah7rX3CHbsVdngHzinsTcuGP2m5V/hAtWoIV5pxMfJ
-         anEw==
+        bh=geMjJFNKKykGkLhJdWftFFIjpClvfEV0OD82CBvxC4s=;
+        b=w76UtIeBbvbl48JVj1miebuP7+QqmS8voOeBlJC7dJ/FMq2JDvBsF8/P6Ks6pgb6Im
+         xeS1wgEq3ityfS6e432FdqLsf2Xhh5Hu5P1ulRst+CbsUvtEI7b1iQpHLiRVg/TQHncj
+         sP+JqoldE4VPrwZQg8VkfDx7nXVC2Mm/OWGsjlQMMZOnuVEYg9wNvLRmD4U07IVz05Dc
+         04e1voBf+M35rwdkZOr4M1etuFYq1w9gvlw2mzFOeJHUIJG2q57U/85YwkIJl5o2f6qd
+         ZChk83j5vYeA+Vi/V5ssr8jO0YXJ397Il8sr//ISrDwG//UBUM+RDM8tPllS2ENy6nAw
+         4IAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793701934; x=1794306734;
+        d=1e100.net; s=20260707; t=1793702293; x=1794307093;
         h=content-type:cc:to:subject:message-id:date:from:mime-version
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=5wF0zewFpsOiJBtoZv6gxgfRVpLXGxk558GJSrFJvyE=;
-        b=JQgZi8/PrVfGsCGBu68p9jLse8fd0a7T0RneSSy0S9SWATKSzZkCdkQbb783XvKrLv
-         gCPxq2usTYbiv92sLfySPmVsx/BgIB1eAqVfJFoQpP39XrugiLEOrJKIE1FP8JgG+MGi
-         APua+Keok7CL+Tm2KGxZmSzEJbZr0zrHUKTAqHdrpQi/ojxx5D59YloSztd26EfREbwD
-         /uv0FmO41w7SVtfRXrdIXw3rUQeSlJTTyZZiesWVlitL9s7p0Zy1MmHT2OQXX4UwPs5b
-         Rw1lZbRMcSAXSFtlmXmQjiabTHl87goV5wi7gXzyWKFcD6qZN+voT5MHEo7UDU/zfvu5
-         r84g==
-X-Forwarded-Encrypted: i=1; AKwUvBwliZc6+patHsOvwMVKrnB2CqlK5xEg0ab/4kajR2wD/5IS/+2vVH1P/a002GUX6CJioz0tHIZa/ZHMLDeTRg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8N+VsZrlxE6ORLeE8HPSTm2EB9gF4Zr7uAlFNxicaBDvKU8U1y
-	Iv/ILz8gH8ELflhEF8gFbIwWisKO/Kn+3kC0orKo5CPDw1hEYwhp4/MOpHZ8SE/oC7/YL62sqnp
-	PDh9K7QgqgE/jUGg9MVTO+64jDtLcvg0=
-X-Gm-Gg: AYBFou1xSAieqRDIWJNTEf2VuQLfgoivWrXBPSamgeGs84Jz1FpTplbnqkm5qjXx9B7
-	vBHS7HKvryGj+RVB7k2aJQB/IoAGphkW8msua3gW1ALqj/eSsy2e2XIIcKSi0vaHso0fSLYwW+P
-	z4udmYxDN3OPqjYa/NWGJjDhef6nUNKdf9m4udgrPJG5xCuXgeMYLhhNTcNMPSK8PLVJgQ2eyig
-	QqoDS3Su3KcrnEBFbcWb6mlknhsVOitUHogG1ZIT4QkkSzoVmeLm0d3D2eCk9ZbZ+Frbu4haf49
-	lmntJZ6XSPTJrw2RyKIEV32mBNM0uULHd7Ph2i8xmB//Xt0jysI7+v1SqtquQYoOIRfl097zVM9
-	1KMYwdq+CXBjO+XeijunY+O01LlVTdkM4e+DDVj+hRbK1HK7/4+ty7k3IVR3+wgbVBV50dWyqfh
-	FujWfSIPu/dWmra20WcQPCJJRinjoz0aooYdplwMEzn+2ydyhjG4XcuBbj2dR7MyxY0NS6jdxpx
-	Hsdiw==
-X-Received: by 2002:a05:690e:439a:b0:676:bf92:2520 with SMTP id
- 956f58d0204a3-67ba50c7b2emr4676467d50.89.1793701933775; Tue, 03 Nov 2026
- 02:32:13 -0800 (PST)
+        bh=geMjJFNKKykGkLhJdWftFFIjpClvfEV0OD82CBvxC4s=;
+        b=26PY292Om5fS5SIULKUmsjwAAbt9oWfKlqVuEjcLExebPPkbloW4vQRV+i5hz0SKMy
+         cSoEtWCbxYPtMnSOULlBMnqBU5aabdCrdZ4Fv79Bd8rlQoGTj0D5IYVXNiWp3M/hrvh4
+         KXssMmdICNqYRH3lRyGJULMwG+RyElHKBMk0qzoNa1Q2MkN3zcpfsITSXqcn5BqMa+/v
+         56rjHfXo2PCjXUPLMjvWmSi7s5vIAfm+ubBelcdZFYfhWJ0Y7YO4A2fgOetNFbBfJjKM
+         0ZIAe+Pw+wIZ8EmWaMjyQZGTq+Sm3IkuQaqK9fviF25AQUgChhB202y+57PDrhnl7OYZ
+         hAmg==
+X-Forwarded-Encrypted: i=1; AKwUvBw70z2kZwPU8v2PZuNBHhFcQzJto2FxSUnmfQpxpFyuMm92M2jouFMDWXTNW/wzsMwyIQgSF6uMGmn6U1OrZA==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8JUe9s/8QXv9WZS+YURQPiDwwbsxeuaNeFibi1FK/WDgiVeKSe
+	fJB0LIcCh3Pci4Kr3qxGddXfgFy+xhcY+tTB7uQCVv3zzyhszSQQMcMOAfsiipRLfgzL+9sjCJb
+	r07kE1034OjAuY2PL95G84N+mtXtBzig=
+X-Gm-Gg: AYBFou0UJQvpBM6SOszB5YtLoNkdGffk4jPtNR4bAFf8fMV295uvxhRYJDNmKK9nmYS
+	AOs0/So1kcXvAvrN6+ZSB4ixjAw6CvwY+8KaXPnJm7zACzSq2re72MqgCce+ljY/H2vDgXZPMfM
+	76vT5bSZOhF0qI7pL3SqYOIMr7lTlcGzzBLEgd/NipvDzlzh+qN28kYw2yIcuYjElXDCLnpgP7e
+	qmMGFQYRX/JOjVjBkiLLJR0XaX8uGltCjzmpBgIt1K438b6m4dHFZ6sUzF2UTaV9ZVQfHRn1z6F
+	7DB5pGRWUEyw0yHc1NB9u+NfME7JoVeqAXl5KBLM1EDzwjgisELPkTLjkJIMKjZgebIIzCQ29GW
+	BXtWGnY3PGxnwiQapn+5qXrQXGaqAV5u1pdZn4XCEq+UgkoPiJrKa7NcCQKlTpbeRqIjEG2iCHZ
+	sJT+vTdjoNI5/SV6umzXCztUtAHvaDWA7bklKoIqDmgB5CYAmVLpr3agEH1xQwkN3Of3Eo6f61+
+	Uur2A==
+X-Received: by 2002:a05:690e:148b:b0:679:a89d:d23d with SMTP id
+ 956f58d0204a3-67a8d39881cmr11442946d50.11.1793702293253; Tue, 03 Nov 2026
+ 02:38:13 -0800 (PST)
 Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Tue, 3 Nov 2026 04:32:13 -0600
+ Tue, 3 Nov 2026 02:38:12 -0800
 Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Tue, 3 Nov 2026 04:32:13 -0600
+ Tue, 3 Nov 2026 02:38:12 -0800
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -108,10 +108,10 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 From: Peder Bergan <peder.bergan@gmail.com>
-Date: Tue, 3 Nov 2026 04:32:13 -0600
-X-Gm-Features: AclHuK96gvYRqRgBDT03v_6oIAmN1e7Nl712wgD5TpWQ9zekVuOi8l-OEed9qRo
-Message-ID: <CAKHwh-E-7CRRG-DH6-rDfGUCFAxG6JNgswk-suTaGKqMbig5Jg@mail.gmail.com>
-Subject: [PATCH] rust: alloc: test drop behavior of Vec::drain_all
+Date: Tue, 3 Nov 2026 02:38:12 -0800
+X-Gm-Features: AclHuK97Lxt4O2xlEcDKgfS5TIHK1JX32ZvuOwLNv4iZ8tf8lb7mEWhkgmNWMM0
+Message-ID: <CAKHwh-E_A7Bp1oP5PYkgE62hh0cJMQRuxOM6yXGF7OB1QR0BhQ@mail.gmail.com>
+Subject: [PATCH v2] rust: alloc: test drop behavior of Vec::drain_all
 To: dakr@kernel.org, aliceryhl@google.com
 Cc: ljs@kernel.org, vbabka@kernel.org, liam@infradead.org, urezki@gmail.com, 
 	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
@@ -133,6 +133,8 @@ empties the vector without changing its capacity.
 
 Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
 ---
+v2: Split a long test comment to avoid mail transport line wrapping.
+
 This adds KUnit coverage for the ownership and destruction behavior of
 Vec::drain_all. The existing example consumes integers to exhaustion,
 which cannot exercise destruction of unconsumed resource-owning values.
@@ -162,14 +164,14 @@ destruction.
 Base: alloc-next at 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4.
 The patch changes only the existing KUnit module in kvec.rs.
 
- rust/kernel/alloc/kvec.rs | 88 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 88 insertions(+)
+ rust/kernel/alloc/kvec.rs | 89 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 89 insertions(+)
 
 diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-index c7546b9da..fe113c7ff 100644
+index c7546b9da..01d468239 100644
 --- a/rust/kernel/alloc/kvec.rs
 +++ b/rust/kernel/alloc/kvec.rs
-@@ -1540,6 +1540,94 @@ fn drop(&mut self) {
+@@ -1540,6 +1540,95 @@ fn drop(&mut self) {
  mod tests {
      use super::*;
      use crate::prelude::*;
@@ -196,8 +198,8 @@ index c7546b9da..fe113c7ff 100644
 +        let first = drain.next().ok_or(EINVAL)?;
 +        drop(drain);
 +
-+        // The caller owns the yielded value, while the drain drops
-the remaining values.
++        // The caller owns the yielded value.
++        // The drain drops the remaining values.
 +        assert_eq!(drops.each_ref().map(Cell::get), [0, 1, 1]);
 +        assert!(v.is_empty());
 +        assert_eq!(v.capacity(), capacity);
@@ -265,5 +267,7 @@ the remaining values.
 
      #[test]
      fn test_kvec_retain() {
+
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
 -- 
 2.56.0
