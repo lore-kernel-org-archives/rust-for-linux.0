@@ -1,90 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.58.211
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793699620;
-	b=nRA7CWvPjI10COXy/8/WUQcVX/2KfquZiZDlIplKnjAPeDhkSvh/FM9GxCsi6/wn4R09
-	 AM+C18aHceOQcEka4qMZsLdmgD4i+O05PINiAL++UazUw0bdDc/QA/4se1I9HwtlWJit5
-	 Lxbadx3z4Rx/RID6thAq5v0oc2j3iVDdDaoq2K1zsVLj5Ht0mGW+ua8HbwWCtk5JMR/YE
-	 8aV15H0tZosGn7hZ89NUIYFDw+LKTQ/3Xf25z+3sMlHr9K4YsMxO6h9V44P0VNYyEBKDe
-	 Vb1sRgPITsyYW8BI0uEhrkV3IG+LnKyhwKWYOMc0YfUW6eXj5z/8jfuL7qPc5FbZD4w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793699620;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=exuUVrZEzA5+Clh7tzMZyi/JBKCYe76w9r6sEUWqx6M=;
-	b=HlytfLaQ12WlOyv8pqrYgbNVb7BDij1Sj22m80Kt51hD4ErMEWc3/KcSH56F6AzUpDoV
-	 XxklgBKNbJa0ZPhCiu7akX0cm0IVEPdnmBQ77fQBkQXv7y/65wJconN2s7E89WZYWeaQK
-	 dZQTjZDuOcBUXIkwq0ACuv3gpByDNYySDL0OkWcpTOgNjI07yHXvJFNkzlKO56+KHsjlL
-	 5TarUOywCkBYqqi6+ug+OSSQ/clOxd4I+yZapCJ3pi6I48lBmz+5JOBmRZKIWqeqSPIuw
-	 VSO0QpGK6CzBmEkviVaZh9zZR1mbzYyWNgw0JtwWAC7aypQG6Gb14Y4yrOFY8deNdvg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=rPxgZSle;
-	arc=none smtp.remote-ip=162.62.58.211
-Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.198.62
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793701371;
+	b=3mAhGxBB1cR9k+q+KWL20VOpZri3GLGsFpxGXNj1nzkwE+uXMuViXA4eV/NyRwZBo+Zy
+	 lsXY1QQ7R28x5l0VjrJ/rEBtJZRvlEs3KYkPyjynrWvRt6+fn8kRo6kU+JpA/nFjVcbhC
+	 dbXkcZxW10+fwon9Wnh25x5Tq1CLt8NhfoikfqTpKODetbK/NJNSli8SAoqZ5EY4vwwpz
+	 EmzZoz6QYXpul2drg4oXUtb83G34k8piBQhnnF2IdoN/m0+rp644svJezbR4MywARzOPg
+	 ZFdG9inaYs6m/8lkLczwEodYz6L/Nb5CwaSRM6BgoPHU9erU8PBmBSw3AzPZHbiIzpg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793701371;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:Subject:Date:
+	 Message-Id:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=xvf0+nqmtlK1+3bpi548XBQ7asgxtrWap46UZiDU0ZM=;
+	b=5g544U3iJSftVeYy35fjO68YEY1s3pDBGhWOxYpqRG6aM1wiT2eKA49RKw6Jt9rnG0dV
+	 0L6FiFBNIJUWgKja2fqlef3v/FZ8Q9cNCw3FOXwzT1PJp+iwOlCbP8hiKSF1zkBwxdT76
+	 dHLgvupshDqqD70lHWhS2BOdfFwVw150NQ8DOBmliwWljlm9EAMgjxlSHR6OzdfB1xhpa
+	 cq1o/Q0gpVU+yZHe2qO0SyWkqvUEGkcBTE2Fwo0YYWTW/NIGfqpiMLRvjC/wI1rD82bTq
+	 L4XBNWFO0pAbTa/SbAcnuXabF3X5eAakLjGURlaoSjvdKe9s92JvOTcStYw4WzVEy0Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=sj4VEzz6;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.198.62
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010062.outbound.protection.outlook.com [40.93.198.62])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F120A606D802;
-	Tue,  3 Nov 2026 09:53:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F120A606D802
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AAFA606A333;
+	Tue,  3 Nov 2026 10:22:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0AAFA606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=rPxgZSle
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1793699606; bh=exuUVrZEzA5+Clh7tzMZyi/JBKCYe76w9r6sEUWqx6M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rPxgZSle8nDOKptywmWbOo0z8RQ3mCDoGToo1AGOo0lRHC5vhQFlXeejPPN6cN9MA
-	 9NBZ3MZiVaq2/5FHBGuNpvM9Bv6aJyR3hTS8FjXIF6W68J5AsXSxSbrkWn8MsYwcYo
-	 UwcXoG4ZNNWAN04+No32w2/wu9ScEzdkl4iaZvPY=
-Received: from shuai-VMware-Virtual-Platform.. ([218.28.192.28])
-	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
-	id D563F852; Tue, 03 Nov 2026 17:53:22 +0800
-X-QQ-mid: xmsmtpt1793699602td0red6kd
-Message-ID: <tencent_173B7731E90B9624F9F82613DC3031B70907@qq.com>
-X-QQ-XMAILINFO: M07Ulnfy3VHKaC+H0tf4KCWjgzzzUw8hDxsxEI2gxvotU7+hRHwycOPVkOx2oT
-	 U5ys/Cz/e69cQee+tNseErHvnO81TO8tQyWRyu8KlKcmvXvfNlFe6OXXf9RrysGhnBZlCpDQqWtL
-	 RQijzEpKYUc6uPDXuN5T3tMpQNlmdKQZHXu4BUkP7SUWl0umrUwbRkb5LgswdDDn6H4RUa0clWyu
-	 2TPJm+v5ugYa4Pxb5sSpBylPnxqVL2tkKmve0+6Lx5QKnjtZIQU4zuh6lJf3zcysxVxoOt9w///x
-	 BVdf4KsULJ138dM6RaT8ZRKVkYWGDQMvCDBlUBks1AKsR/ah03oGSdnynxyHkyoTrmf45Dx/eLVd
-	 iq2oXUL4j6hgpwKEi/fCBxN6kpF1ISCjOg4G/5313dE7b9Sggcfs7hD8wgZYFcHNNPTQdHzXu10K
-	 /bRNGj9hLgcY8SDfCfWutZL0Bt03VkQJT4h51KzozPZd5yRsSRBFqdmDQ3NK3hVjOyKzSCoDNsiV
-	 8opEGCHuRGMt1OIZEeV7kUQShMKg8Uq0KxZ+h/hesM3pJC4OtjVMmao6Ud+IAmNN5H4vyEtru8Zb
-	 yIti6IKLmLSfjxAYDCllF8eFycihYFCSm4eMK1XnrFzqgDrwfvarMtXIDCeXSlCRfKT9C9oyMGPK
-	 WsIr6R2svBOxoMRmT0A/DONZxSbJnVlcPnh7chV8Jd8gh7RBs9linMoJgU8ZPSlRHgK2tP5tcbcT
-	 COcvXmo6riN7Bru2P1ipuY27DkJ+eKfxPR1PWx3eVg2izsrimhMcPz/GXTfPlvSo6EwtP/x6F6vN
-	 U4Ls19KlLAdCIX/cRL154u7meTEN7FRUZKUoVEp8RfHSYkK/LeQJY3CF2bEfMikRydXKDbIqPI/h
-	 NX6jsTL/dUN/2gNrkyQWc75aaErMY5FgF+Pbp23tOCl9n5L2pTSllLOed0yVTxIUphatUjStIlc7
-	 f5etLVsfTixJiJ/leLP1MAf2lyhZRFKVAIVtBe6en+nnMQv4ocDJlJuX9OQqRmzFPboor/eAXDBj
-	 +d7GosoY2Jbqhc62nwmoqjabP7wo7e6z0DTNUXqIonpAbXQEVGKbaxoAtTi/z7XO1YaEy8+rLteA
-	 wZ+ucu
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-From: Shuai Liu <847807867@qq.com>
-To: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Cc: Shuai Liu <847807867@qq.com>,
-	Igor Korotin <igor.korotin@linux.dev>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Mark Brown <broonie@kernel.org>,
-	Brandon StJohn <branstj@gmail.com>,
-	linux-iio@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v6 0/4] iio: position: add Rust driver for ams AS5600
-Date: Tue,  3 Nov 2026 17:53:22 +0800
-X-OQ-MSGID: <20261103095322.297395-1-847807867@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261016154819.17936-1-muchamadcoirulanwar@gmail.com>
-References: <20261016154819.17936-1-muchamadcoirulanwar@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=sj4VEzz6
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=W6Se8HUWDpw/XT3cMQVqoVMW42ytXUj7BGPFawyx2sKBIMbXzX0aMplUHq4wlLT5gIafvWc9KPYyFZQx4FoXlMGfemIQ0pV7w/qH6lu8tqA4Qamg7rULHH+Sui9zNA4aVdTAjOB5Apv5zmfe5EH+ZFYIlS+jFUARlSCZTS1L/nMiKASI1N6k/GaJWThNrWn0mxXU2ABWm4Ged+H3kFPZmz6ry1tYmvS2PET5tnIxSoBgBUT4/Y+BZ+c9UVDXmXYwBr6HoMRHl3PLy2kshsvNrKQwHNX+fG5L8qjxVVkYaVgMURfGX1W/We4o/RHfy7mwMtmucNxuQn1i2UyezmY53Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xvf0+nqmtlK1+3bpi548XBQ7asgxtrWap46UZiDU0ZM=;
+ b=NHGfwfdmCVuieXLWu8KYysVKBzw2N91dmk2CAZ1P078RiILblU8BYALLX6BXIDx62ZzDHj6kVwNCSVHIpHbsTT3PtRXo8zTfB0JlRMWel4ZJtx6AsqQPM+E0E+sMjrzIOP+Mlgnr0b1i45OBVLNg2IhI6nuzKzGltCiiJQOl0rmCwWd4T2bhDjOB4cZQlF4WkMvQw1U0xK6zHPBekj+m/wRayPCUxLmFADZHsu28FkRI+hbNxnMI8Jg19bwSLQfzYKfirzYsVI3JXfEySJKvqTjgbX4GIQLR8uuIy4RQSRH0N03taIfyhXiUHHTTyv3DzJfcFseHB7VBtX54m9sqAQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xvf0+nqmtlK1+3bpi548XBQ7asgxtrWap46UZiDU0ZM=;
+ b=sj4VEzz6Q+Xn9I/6kjSam2ke3xz/qdlN4XyhBu7z9R04IkrB0GxFmRHAPCNAqi3XQ/CzXnxPiYShgLD4VKGz+70TdmNAlq7JABhXXq+mjDzPbHFTOUTWOCUyk4W7JZWiPkMM9cShIMES7UAcWaeXnTisgXYDmnStdEQyNecI0KPWwUycLT9bTyr7JJ4gHV14kxoh26DJcyeGRabIq2fq0/r+zue9jJtUmjEYaX5b8aQl2sCLqrXpfqotlzVSJ6eG+AJPCwewnARGUrG3JltYL967urbHJCtT7F0dgJLpk1vH2jfbxPY/Na0B9jEDliJpexFqGPJXyB9AEf5B9ZzSwQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by MW3PR12MB4475.namprd12.prod.outlook.com (2603:10b6:303:55::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
+ 2026 10:22:47 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0592.007; Tue, 3 Nov 2026
+ 10:22:47 +0000
+From: Alexandre Courbot <acourbot@nvidia.com>
+Subject: [PATCH 0/7] gpu: nova-core: generic bootloader and falcon DMA
+ changes for r000
+Date: Tue, 03 Nov 2026 19:22:38 +0900
+Message-Id: <20261103-r000-fw-v1-0-e3d38fc130e3@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzNDQwNj3SIDAwPdtHJdAwuLFGPLRDMT4yRzJaDqgqLUtMwKsEnRsRB+cWl
+ SVmpyCUi7Um0tAGDz9OxrAAAA
+X-Change-ID: 20261103-r000-fw-088d39a643b7
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: John Hubbard <jhubbard@nvidia.com>, 
+ Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+ Eliot Courtney <ecourtney@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
+ nova-gpu@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: TYCP301CA0050.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:400:384::14) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -94,87 +104,127 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|MW3PR12MB4475:EE_
+X-MS-Office365-Filtering-Correlation-Id: 07ad4134-75ea-4bc8-a9c9-08df39946815
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|23010399003|366016|1800799024|376014|261021123027099003|261022115727099003|261022105027099003|261021121427099003|261009223027099003|261102123227099003|261022075727099003|261102130727099003|261026140227099003|261026121527099003|261028144727099003|11063799006|56012099006|10067099003|18002099003|6133799003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	PZ6nz+48r7r7L4/wrRk4jNkMefIlHcihRtQkgEV4tnzhHyZnH1tfLQP2lXOA1yQWUnRUEs3SM1e9loiDI2YWUXd5FqqZBXfNz7oGhZwo66pBP1yxzpy9wmWKlvJqCUVKEDVLnn6uuEwQUFyC+IVBqs49aS1uaIQBLwoymf3/Fo/wXf0hooBl+tYNO6VufhQHDF/kXTtmtjex+phD94Q09Nz7J9WJujKUiEb5UCHXcpl3noj93bTlMRz9J0+pUyjGq5ayBWUd2Czng0d9U0K2scTljmugOMn7IOOSwOaaK8Q9Z4QGqy4xtlFedZOFnb25kUlTQTQv6c3hlKNc2NOCYVPE0YZ3Gs1DSF0yzNKOmcxJoBey1ngrPPh3uhv3r/E5pp+cIqCbyWVolVXcPlTZLcYK9d0CzAbY5YWGPr+Sg70JByLhb+GBQUB7eADLHeWBjVIrfsXBsLBl3IUbNA623+Vjh+g/qDUBjC5MRi91tMumVDcpZ8sohmbsE3dngnCNaz8nOuRkROPhvKS2BQYsu69wAw0ANy8fgOrsBpQJMxDB6GG0ZVhmU1jwG1OVRyoC8crP5mAcJQVmWFO4Fvmu1zVPpdTH2ThbA8KHaNu5Zii/TJm5BF457XzjmhK+IMJCJL4rdeMpri6ZMwnHJ1i1TP+n6C6/mKytW60BkP7rqi8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(23010399003)(366016)(1800799024)(376014)(261021123027099003)(261022115727099003)(261022105027099003)(261021121427099003)(261009223027099003)(261102123227099003)(261022075727099003)(261102130727099003)(261026140227099003)(261026121527099003)(261028144727099003)(11063799006)(56012099006)(10067099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NFlxMDN1eDNnU1o5bWs5anYxZldaU1lrcEM1QUVHZjlucjhUZ2ZkR2lKU0pE?=
+ =?utf-8?B?dWZncGlSdVI0b21Gayt0ZjN1VVNYVmF5bWhIZGJNcHVOWEJHWXkyeVI5d3VX?=
+ =?utf-8?B?ZmNEcGNrWVJOQXlQYWhGUTBvNDc3T0RYU3l0R1hwV3BHNi9MRVNBemliRXhl?=
+ =?utf-8?B?d1hVanFIMUdhUnpxTE9mdC9YRWgrZVJpZVNCMUJZYzJOSWhCd01xWHZuN215?=
+ =?utf-8?B?RVRWdU5sblQvMG8wNDdxbGhEY05CZ0czSjdTZSthZDdVVmx6RkNqMjJWTjV2?=
+ =?utf-8?B?MWpSSWtwbjU3RUozTzVaNk5UaWF3UUx4N2VuRkZNUU5BL1FWc1JjQlNsalBi?=
+ =?utf-8?B?T0Uzd2hmVC9JNUZOdXdZZ056dXk1S1JXdXp2VDdjYnIxcWVzQlpQNXdRRC9y?=
+ =?utf-8?B?YnRWS3FUMW1IUGgvRE85UlgwckNEUUdSVVFyamRiQ0p3WE0vQ2xUS1MwRndX?=
+ =?utf-8?B?aEVXWkVnZkJHQnE4dHNuaWROb2E3VHpXaVFvSUltODRqMlJmbm0zWk5PaVl2?=
+ =?utf-8?B?N3BobE5Zc0tyT2E1eFZkSkUwOU50TGpxTWtlYmVEaGU2K1llY0JNcmh1RHhq?=
+ =?utf-8?B?L1J4TFFCQ1dySkN5TnphYzlVbTZ4aG9uWEd5eGxVbjkyYUgvL2dRV1p5SGJ5?=
+ =?utf-8?B?Q1puU2tSdTNFcks3U3dBVm03b2d4Z1N2UExmQ3RXcFNIMExEOCs3cDVJbURk?=
+ =?utf-8?B?Qk9KYVVqZ1lNN21NSVBsWDhCTm5NTS9xMXpJTFFBWXFkbThCRmh5Ny9rY1dH?=
+ =?utf-8?B?Y0wrWG5XNkM5SVB1SU5BVXBscjdOUG5WZWFuYWFNc1haMXhHQ0MrZWtHQzk1?=
+ =?utf-8?B?SU4rZVd1OU94MnlkUEU1Q3YxbHljRHY0SUl2NVhEcGtta1N1RWt1QmdzNjdr?=
+ =?utf-8?B?QTdrWXBDbDdqUVQ2RHlUYS9QVFkwTzNwQVlBbFVlS2QzT0N6cUk2SDVVd2pT?=
+ =?utf-8?B?NGZ6RlYyL0E0K2tzdi9PNjd2ZDVERzVFVmlKWlVuSS9TUk9MTUtqNHZMdU96?=
+ =?utf-8?B?ZjFZVGQ1N2RKaXRSSk9pQ1haeFVPTG9MVjcraHpXbjQ0L1FtMVoyaUV4QmU3?=
+ =?utf-8?B?ZVgzWEloZkNLRjlMTmsrNUZ5MUZhbXRkQ3ZPaVIvaWtRYjhrOWcvbHFaSFpw?=
+ =?utf-8?B?YWw1MkZBNW9aQ1VBN3VKSytxZDl1MGp1V2RhR3dqb1pyOUlJclBya0c4MXA3?=
+ =?utf-8?B?akNYbzVXMEpXYUJhcmZRd3BFSTdnVjh4S0NXV3dvN0o5WG5BM3hXYjZ1dEN6?=
+ =?utf-8?B?UHc3OTJ5RDE5NndlSlFLL1hMaUg0L3kwNVozRjVKWFpBUE53SFY3V3pqZm1P?=
+ =?utf-8?B?TCtxMkYvaVRpdEJnNWttWTJ3eWF1VUNlK0tnY1A0aHlmYXR2QU8vemcwblg3?=
+ =?utf-8?B?TUoveUJOMlhXYzFMN0dLQ0x2NmNhY1FZbVhRREMyN09ZNUJGVHNYemRXdTVP?=
+ =?utf-8?B?anJLZElvVSttc0xIN1VtWjIxVEVXSTZNRVpUNDBoN2llWWFZOEU3Z3hVY1Qv?=
+ =?utf-8?B?aGtSY21DM1R6NHA0eFFXOUM1ZmxtaXFJdlp3b2VHNjF0ZlMxYmI3andDa1Zm?=
+ =?utf-8?B?ellJcFVtRkU0NU9iU1VJemQ3UFdTQ2xnWWRVTWdycFgrT2g0aWUyVU9Iems0?=
+ =?utf-8?B?RGh4RjFkMUFwTEN1QmY5SGlzdmRUUzVyYnpySDlpRUg3cHcyOUk1dDgyR0JB?=
+ =?utf-8?B?TUl0MjR1K0FSYjQ1a2dEUVZ0U0ZDRHdBdktBRThSbnI5aGorb29LMEpQMk01?=
+ =?utf-8?B?M3M4UDZEeFZRTGp2VCtiQ0Y1WEN6ZUFCUlNqTVBsMVFyU2JIaDB1VkkzNm5l?=
+ =?utf-8?B?bzJ2L05YQjNBU0tFaUtxdXZBUkptWFhSdkdPcTRqMFZSMFVCL1hTajNxN0k5?=
+ =?utf-8?B?WjZjeWtIRmdtb25lSWsxNVNQL0RlQUVCMEhvdUs4S0ZLQmJlTmgvTUVWNUhr?=
+ =?utf-8?B?Qkp3RkdEdmdVRnJnR2VzOGVBNkdGZ000cVkrVHAvMlViSllTMTA5MUI3YTZN?=
+ =?utf-8?B?UDB3bzBYeml3SHB6RUp4K1F0dVd3emp1ck5jNXk2R3RUcFljaW5jZW56Y3hP?=
+ =?utf-8?B?VS9aQ2ZhVitVdE94eElTR29tbTc0dUZUcmNza3lMbkFycGJRcGF2aThyNUlD?=
+ =?utf-8?B?SHFBTUo5a2FQbFZPK3RxUFNwRkZlREtOR1I2NTNJZVdpdmpscXhpbCtzK0lo?=
+ =?utf-8?B?ckc4QTZPZU9IZkYwbVVmaWNQM2tJNGVXTDFjYlZZNVZSOFZ5anJjemdYRkRr?=
+ =?utf-8?B?c0ZDOUQwNWszVWJEVGpaWE9tWTFJM2N4ZWd6RGEyS25HUkk3bUE0bVQ5Vms1?=
+ =?utf-8?B?YUE0TjBDMVhxMzNFeHVxOTI1UW0zNmNvMnpSQlFtbWt0dG55SmRwd3c2ZzRu?=
+ =?utf-8?Q?M7hS31rRV7hDepEGhlznBG6kQPYUEgvj+mNpoxx3L27ax?=
+X-MS-Exchange-AntiSpam-MessageData-1: 9Ks7cbs06sOEOQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 07ad4134-75ea-4bc8-a9c9-08df39946815
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 10:22:47.5528
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3dIEd7lzpWWPxHz7tyhO4QoLjf4zG782z4xVGNkphw8iDiY0UYJi/UlvN3gul/1iUrDTuQTXxLGZTtf6TLLgUQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4475
 
-Hi Coirul,
+This series contains patches 13, 14, 16 and 17 from John's r000 series
+v3 [1], that prepare the generic falcon bootloader and the falcon DMA
+code for the r000 boot protocol. They are submitted separately as they
+do not depend on the command queue work, and are valuable on their own.
 
-Thanks for the series. I read through v6, including Igor's registration
-rework proposal in this thread. The comments below do not overlap with
-that rework and should carry over to v7 unchanged, as far as I can tell.
+Patches 1 to 4 make the generic bootloader its own type, usable with any
+DMEM descriptor and not just FWSEC's, and place it at the top of IMEM as
+reported by the HWCFG register instead of assuming a 64 KiB IMEM.
+Patches 5 to 7 let falcon DMA transfers read from a framebuffer address
+and tag DMEM blocks, and check the per-block offsets for overflow. These
+three are extracted from a single commit into their own patches.
 
-1. clippy warnings
+Apart from the bootloader placement, no functional change is introduced
+by this series. The new DMA capabilities remain unused until the r000
+load-and-execute handlers land.
 
-`make LLVM=1 CLIPPY=1` reports four warnings on this series, which the
-Rust CI gates on. Three are `clippy::ptr_as_ptr` in the IIO abstraction
-and one is `clippy::useless_conversion` in the driver:
+Based on `drm-rust-next`, tested with TU106 and GA107 using both the
+570.144 and 615.71.09 firmware images.
 
-    --- a/rust/kernel/iio.rs
-    +++ b/rust/kernel/iio.rs
-    @@ -202,1 +202,1 @@
-    -    let priv_ptr = unsafe { (*indio_dev).priv_ as *mut T };
-    +    let priv_ptr = unsafe { (*indio_dev).priv_.cast::<T>() };
+[1] https://lore.kernel.org/20260918010719.1176945-1-jhubbard@nvidia.com
 
-    (the same pattern at lines 334 and 397; line 334 is already inside
-    an unsafe block and just needs `.cast::<T>()`)
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+---
+Changes since John's v3:
+- Split the IMEM placement change out of the bootloader extraction.
+- Keep the DMEM descriptor fields private behind a constructor.
+- Replace the exported bootloader pairing type with a `run()` method.
+- Make `dma_wr()` able to work with different sources instead of adding
+  a second DMA method.
+- Split the DMEM tagging and overflow checks into their own patches.
 
-    --- a/drivers/iio/position/as5600.rs
-    +++ b/drivers/iio/position/as5600.rs
-    @@ -133,1 +133,1 @@
-    -                Ok(IioVal::Int(angle as i32))
-    +                Ok(IioVal::Int(i32::from(angle)))
+---
+Alexandre Courbot (2):
+      gpu: nova-core: falcon: allow DMEM DMA transfers to request tagging
+      gpu: nova-core: falcon: allow DMA transfers to read from a framebuffer address
 
-2. ignored doctest in the SMBus word helper
+John Hubbard (5):
+      gpu: nova-core: separate the generic falcon bootloader from FWSEC
+      gpu: nova-core: place the generic bootloader at the top of IMEM
+      gpu: nova-core: move the bootloader DMEM descriptor out of FWSEC
+      gpu: nova-core: run the generic bootloader from its own type
+      gpu: nova-core: falcon: check the per-block DMA offsets for overflow
 
-The example on `smbus_read_word_swapped()` (rust/kernel/i2c.rs:841) is
-marked "ignore" and references driver-specific facts (the AS5600).
-Ignored examples are not compiled or run by rusttest, so the helper
-currently ships with no tested usage. A generic, compilable example
-works here:
+ drivers/gpu/nova-core/falcon.rs                    |  89 +++++--
+ drivers/gpu/nova-core/firmware.rs                  |   1 +
+ drivers/gpu/nova-core/firmware/fwsec/bootloader.rs | 202 +++------------
+ drivers/gpu/nova-core/firmware/gen_bootloader.rs   | 270 +++++++++++++++++++++
+ drivers/gpu/nova-core/gsp/hal/tu102.rs             |   6 +-
+ drivers/gpu/nova-core/regs.rs                      |   7 +-
+ 6 files changed, 375 insertions(+), 200 deletions(-)
+---
+base-commit: 1c221646e5e5f8a1d2f29cc8250b5785433bda37
+change-id: 20261103-r000-fw-088d39a643b7
 
-    --- a/rust/kernel/i2c.rs
-    +++ b/rust/kernel/i2c.rs
-    @@ -841,8 +841,15 @@
-     /// ```
-    -/// // AS5600 stores the 12-bit raw angle at command byte 0x0C with its
-    -/// // high byte first, so the SMBus (low byte first) word result must
-    -/// // be swapped.
-    -/// let raw = client.smbus_read_word_swapped(0x0C)?;
-    -/// # Ok::<(), Error>(())
-    +/// use kernel::{i2c::I2cClient, prelude::*};
-    +///
-    +/// fn read_hi_first_register(client: &I2cClient<kernel::device::Bound>) -> Result<u16> {
-    +///     // A device whose 16-bit register selected by command byte 0x0C
-    +///     // transmits the high byte first needs the SMBus (low byte first)
-    +///     // word swapped.
-    +///     client.smbus_read_word_swapped(0x0C)
-    +/// }
-     /// ```
-
-3. repeated unsafe blocks in the SMBus access helpers
-
-Patch 2 implements the `FallibleIoCapable` impls for `u8`/`u16` with
-five near-identical unsafe blocks wrapping `bindings::i2c_smbus_*`
-calls plus error conversion. Extracting four small safe helpers would
-put the safety argument in one place and turn each call site into a
-one-liner:
-
-    fn smbus_read_byte(client: &I2cClient<device::Bound>, reg: u8)
-        -> Result<u8>;
-    fn smbus_write_byte(client: &I2cClient<device::Bound>, reg: u8, value: u8)
-        -> Result;
-    fn smbus_read_word_data(client: &I2cClient<device::Bound>, reg: u8)
-        -> Result<u16>;
-    fn smbus_write_word_data(client: &I2cClient<device::Bound>, reg: u8, value: u16)
-        -> Result;
-
-For example, `io_try_write` for `u8` then reduces to
-`smbus_write_byte(client, reg, value)`. Happy to send the full diff if
-that is useful as a starting point.
-
-With 1 and 2 applied (and 3 sketched on top), `make LLVM=1 CLIPPY=1
-drivers/iio/position/as5600.o` builds with no warnings and the rusttest
-doctests pass.
-
-Thanks,
-Shuai Liu
+Best regards,
+--  
+Alexandre Courbot <acourbot@nvidia.com>
 
