@@ -1,63 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=168.119.38.16
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793698558;
-	b=Ppi9PzePlMFdxSc9cPMoxo9qtOqR6eE5bpKkgc/vFnMer+P4eEXvmF5j3MGcSsweYLQ+
-	 WmTNKls90QkDhAK379zkFzDm5W7RuBUUNasR26031D4mxaq8G0AWhRaVm7yO6UMkdEAYZ
-	 QA8plAnlZenY+iBYHHBYcnrj4A+uMz6PgZ+SlDTBxQ4cImjjrARw+kkBuBVglF8fDxdub
-	 Wxk2Lk+75ArPTOdDjSlOp4a2kHBKZghowRjwMe2LSUZZPdd+ioWDryUyOIIvYmAzG4tJF
-	 2ZNEzNRBoCfwpksUsikYfyevG0qPEl3Cy/TimaWrZnrb8Tboh28C8ZBLWd55oBUUooA==
+	t=1793698769;
+	b=0VvR745Msdn2HB+OqKHVu7qXT3Xf3YPsKFFYBPfUx931oGSjD0Ks3aVn7dwxsNNiaao3
+	 uSw/LKHCJ1xzST2+MlA+0/Kmcu6qfbpsHTHKOu+MdMJc6HhMfmi06OtYoFJ0X+QcTK3SA
+	 xi2htk3MWYFsZmSYIXnUOPEy92MUqpfNq5QmFTWB6SkF1FTQwOkQ0jdxBD1+BUttaWvXS
+	 thmBq4BKqT88ofbmYSv96d+U8MrUYjEfIPqTAazE5hGCxkYqcslr3BxtRaAP95FdGtBT0
+	 wRjVsjiWoR+8+vL+xL7ERTPQg/jJei4GZ5dRyEaCc4ZseEabPwdGb1L7iTHTN7YN+nA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793698558;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
-	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=aUMV5ZRa8v4aOXUFqdsZtdk8NjIisN//Dq6gb0EQEJs=;
-	b=SKrh06CjMYxvUQ94yzvPMd9VFaQp3bF/gsftj2nfO1F3zcVwnzgaQ/jn/qezBW8hPzgg
-	 HqtOPWtttyAboWsT0djxxDa/0wV2cNck7S0zJuoB/211mUfomOVQEd8ecJ29u7wPvrywy
-	 qkPk1jZ45lR6mqK6ESM9r1wTiT48lobHpBGJGnN0AoYA14EuBlUS+SQnJzDnKJuJIuGZ0
-	 dyzySMdgoNeaxJae5pIySzqakrCXx8U28eVuQEEGXrrWiEVGzPtWNeSrlyj+wPgNz7Xuy
-	 whQP2+gmFEx/tDh+Tu1zKdnmsvlyFbC+IbfzYj9oe54jyYh2Lt7p2m5uB0X81ehKYCw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793698769;
+	h=DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:Date:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version:X-malware-bazaar;
+	bh=OnJjS8Dd9kV1QuRv0ju2mVkDrGbSfyDN4nVRbAhdHVw=;
+	b=ic430kTf9g4nfLMj9RiXjbLzV6D9GF89J3af3M/FmH/5ZUhSL6A2i2T8bTbUn/M3eH/Z
+	 1S6LOwEONx5CtUwYsnl1nhUdHZmGmLm6JI7/eaNjLMDUF/yoVxdJ54E/EQHYBoQDpc8Eb
+	 XX+9RMD8UR8ZNce+yDbAr/3TOfRZ6rSzz/5Ur+Lg5Yc8fCcIvqKCj8JIc0sWeQh1FLXRv
+	 0taF5p87YkDEcIf13YGCG+Qg+5kWNQxh2cfObjuxnS+L6ZTJiezg8hQB1jjfjE7HZKwCf
+	 H5189WZ/YW6DKslwO88DrsWoGXV9oQp7rwk706J5KZCZAps6oViAYaZvVNqq3DIXjcg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="VGJ7D/eB";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=permerror header.from=sipsolutions.net;
+	spf=pass smtp.mailfrom=sipsolutions.net;
+	dkim=pass header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=urqAoxd+;
+	arc=none smtp.remote-ip=168.119.38.16
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B8E606A324
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 09:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2F6606A329
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 09:39:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VGJ7D/eB
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3EE81F000C1;
-	Tue,  3 Nov 2026 09:35:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793698558;
-	bh=aUMV5ZRa8v4aOXUFqdsZtdk8NjIisN//Dq6gb0EQEJs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=VGJ7D/eBn/Jkkd4tKnh3mhzQqo9YDUjsjEtYuZzzwi+krdBOrqDa4Gpp7HqUbXmxQ
-	 Wzjog/nywvejNWy2C14Ou1O7sfp97iIUyHIhQQZ670BOIaIGVKwLJ5GH6mpBJX20cN
-	 MDLWNxhaO6oPYRoPz0hDC8a7DQAUTVtsLxhh17VY+HIcwG6WZD6ypyz7td9mribExk
-	 TNpkFw1yNTDpwHbFbxt7yE8p6LJIviOgPNz1fTqCH/m6AifdWuD2GYrY4QSY2MXztX
-	 gPBFaueC86mDRBPxshaCsXZmqEeUX3l0Qfj+tphTRYlBONup2SWTkYR7JWd6oBEJy6
-	 exlGdGK77RWmA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, FUJITA Tomonori
- <tomo@flapping.org>
-Cc: ojeda@kernel.org, boqun@kernel.org, acourbot@nvidia.com,
- aliceryhl@google.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
- dakr@kernel.org, daniel.almeida@collabora.com, frederic@kernel.org,
- gary@garyguo.net, jstultz@google.com, lossin@kernel.org, lyude@redhat.com,
- mike@fireburn.co.uk, sboyd@kernel.org, tamird@kernel.org, tglx@kernel.org,
- tmgross@umich.edu, work@onurozkan.dev, rust-for-linux@vger.kernel.org,
- fujita.tomonori@gmail.com
-Subject: Re: [PATCH v1 0/2] rust: time: seconds based Instant
-In-Reply-To: <CANiq72ka+YS+O31zm7sm7-at1TyPky+7W_5cNMLvqTK3=mHEgw@mail.gmail.com>
-References: <8yvpSoQ7ihtTj508nQU_nAlk2eMmGH5zK6H5pow6z5cTYGO3yL_DvqwbFMwqzhtbL-52eMYXpT5Cyg0g7fUN7w==@protonmail.internalid>
- <20261031003334.4161188-1-tomo@flapping.org>
- <87h5hzmfui.fsf@t14s.mail-host-address-is-not-set>
- <20261103.083342.865260022622203055.tomo@flapping.org>
- <CANiq72ka+YS+O31zm7sm7-at1TyPky+7W_5cNMLvqTK3=mHEgw@mail.gmail.com>
-Date: Tue, 03 Nov 2026 10:30:28 +0100
-Message-ID: <878q3amfd7.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key, unprotected) header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=urqAoxd+
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=OnJjS8Dd9kV1QuRv0ju2mVkDrGbSfyDN4nVRbAhdHVw=;
+	t=1793698768; x=1794908368; b=urqAoxd+qZ+SiGxwEAlvXUJf4UI11Uc3L5BpmQjb4VcL1VT
+	H0DxY6FVyoLjpobwJXBMOEzTbZFG5MHPb+/M6Z3ztq5hm1HTSKtD/3QgYIKod4nNn3TfCREbACGJV
+	Kr2QgF7w5MDIrH89r1n1GELsV30TQJa6/E0nXDfll+W4HnrkYTiibvVM7mdFW44K+llErt0vFc8B9
+	wHfnP/mrkzEc6FtJMxg9E/V9LOsAGx7tC3DRaPiRL+rQjGM6WAblNcGLC3LWKeI2hiLAVWGs1SBZx
+	B0PlR57+/x3leoXEVrgiDBTAUvDUU/sYwCAw7k2aSQRk3h2Wj0cpYeDrhic1qFpA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1xOAz2-00000003EMq-39l8;
+	Tue, 03 Nov 2026 10:39:12 +0100
+Message-ID: <0730c9d467af3897a547860d036a5591cb40905b.camel@sipsolutions.net>
+Subject: Re: [PATCH v1] rust: arch/um: Fix loading Rust modules
+From: Johannes Berg <johannes@sipsolutions.net>
+To: FUJITA Tomonori <tomo@flapping.org>, richard@nod.at, 
+	anton.ivanov@cambridgegreys.com
+Cc: ojeda@kernel.org, a.hindborg@kernel.org, acourbot@nvidia.com, 
+	aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun@kernel.org,
+ dakr@kernel.org, 	daniel.almeida@collabora.com, david@davidgow.net,
+ gary@garyguo.net, 	linux-um@lists.infradead.org, lossin@kernel.org,
+ tamird@kernel.org, 	tmgross@umich.edu, work@onurozkan.dev,
+ rust-for-linux@vger.kernel.org, 	fujita.tomonori@gmail.com
+Date: Tue, 03 Nov 2026 10:39:11 +0100
+In-Reply-To: <20261103.180207.1243555897796693771.tomo@flapping.org>
+References: <20261004121230.373216-1-tomo@flapping.org>
+	 <20261103.180207.1243555897796693771.tomo@flapping.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -67,27 +74,36 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-malware-bazaar: not-scanned
 
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
+On Tue, 2026-11-03 at 18:02 +0900, FUJITA Tomonori wrote:
+> >=20
+> > diff --git a/arch/um/Makefile b/arch/um/Makefile
+> > index 937639edc295..c4a99073f014 100644
+> > --- a/arch/um/Makefile
+> > +++ b/arch/um/Makefile
+> > @@ -62,8 +62,6 @@ KBUILD_CFLAGS +=3D $(CFLAGS) $(CFLAGS-y) -D__arch_um_=
+_ \
+> > =C2=A0=C2=A0	-Din6addr_any=3Dkernel_in6addr_any -Dstrrchr=3Dkernel_strr=
+chr \
+> > =C2=A0=C2=A0	-D__close_range=3Dkernel__close_range
+> > =C2=A0=20
+> > -KBUILD_RUSTFLAGS +=3D -Crelocation-model=3Dpie
+> > -
+> > =C2=A0 KBUILD_AFLAGS +=3D $(ARCH_INCLUDE)
+> > =C2=A0=20
+> > =C2=A0 USER_CFLAGS =3D $(patsubst $(KERNEL_DEFINES),,$(patsubst -I%,,$(=
+KBUILD_CFLAGS))) \
+> >=20
+> > base-commit: 2dee3d3adcadcc57d62ba6608cd02f50b0c10264
+>=20
+> Gentle ping. The patch still applies cleanly on top of v7.4-rc1. If
+> it looks fine, could you take it through the UML tree?
 
-> On Tue, Nov 3, 2026 at 12:33=E2=80=AFAM FUJITA Tomonori <tomo@flapping.or=
-g> wrote:
->>
->> Mike's drm/vino series will use Instant<C, Sec>, and that series is
->> based on drm-rust-next. There are other time patches on the list, so
->> it might be simpler to take these two patches through rust-next or
->> timekeeping-next, and provide a tag that drm-rust-next can also merge.
->> Andreas, Miguel, would that work for you?
->
-> Up to Andreas and what his plans are for timekeeping-next this cycle,
-> but whatever is easiest I would say -- thanks!
+I guess I figured with the "rust:" prefix it'd go through their tree,
+but either way during the merge window and all I wasn't really paying
+attention to UML.
 
-Yes, these will go through the rust timekeeping tree. I plan to apply
-them around rc2, does that work?
+I'll pick it up now.
 
-Best regards,
-Andreas Hindborg
-
-
+johannes
