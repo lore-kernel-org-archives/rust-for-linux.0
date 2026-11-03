@@ -1,102 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793706428;
-	b=q+4Hhejo9kC2U/LeRBcKldrRvkikIPuMNkW/yge5cFwZnYdG/wxF0DGiA/X939UdZ5YJ
-	 mwyAHo/b58TZPDDiWSMuw66Qy3eKYrNXdQcbwrBmT+b1/kjlKPqTNpxKrHFb/gH+FVSRA
-	 D6cfIbPoTJIGZdrk4s5MgaweOg+wX4RXb6UYARckwO4J0JzeNaQsSOmqu0L44wO1FixVv
-	 5LELlHDtoFtnsdDG0pAmjxyO66Qdq2Fc9y2B5mQ8ija2BgjCfBF+T7EuXZm6hAonavjfw
-	 jmP8G5ceE95Aa+IXhBk39GH0LeLPjj2Te7Qzj4qdzBCROjwU2oeSsF1f3sy0I0nlHAA==
+	t=1793706655;
+	b=ru8SGqbMAxBJsC4GijotoebhZ5rCRQvMzad10wBFbohaxhJsWLtEmybBxDBun14GPPav
+	 3nUs5ZlocW4y3okaKNLw6k+z4a9HRLqcYSETd2FJ9PqIH3SRsgWQicQjOP/NCqrefUdJh
+	 1gQrbrVX8GUxFPY/znWQ+nF+xtj5n9So4uzF4nO8cKVTCLMQcMu41viS82e/xnzE1Y7we
+	 CP6jozFvf4F6y7XbtPdAIp+fUCUE5utFP4fm2sy8r9qSTr3MkEm2sqj6B80kOyh9IgVaa
+	 kQ9d2L+AFqYIG0TID1uJ+PL0wHWMQ0+PGTbhcDJ5kYf0f9HjvMM3PbX7SSsRc2jheeA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793706428;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=63+Sr6N15Tem/PaC69dUwWhb1EfP7tKH84k+JQqk90c=;
-	b=JMhJrhf49VKlR1xx9hJ5QFwFYYHeezgN1RS9jJQrAXSV188RGbZ5VO54f4TUjuOUQ+Ns
-	 VwqPX5ugGEtfIojyoPKBTmgyJXRWPPhE5Cje4+zPgtO3A8OT7Vq9gpQdMN//VLLdyNnfu
-	 1vkO8zsdwqYMdYMxuEu4MU8IRg/IsygZ/DJ/Bu/m0G11pG1iR7rxNLgD9U/3wJyL2FHIx
-	 UAB2TtVHkcG3cWUwoUC+U8lsxIsCBHujNGYeylXupyCySSU8I+WuFktUk+hw18hu/0ix5
-	 WQ4VcVQwrvNIzoix7HK8XS+WhX0Ss893U5qFAwYKnj/W4Fu1Y+P+4twZaJ5s3crgTIA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793706655;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=JVZ7ZPe0mun5HPLz14I9dlYljWHoQNvQgiP47jOr2E0=;
+	b=Ko+gsFraL6SP8xglwMriBfZOX5dkqXcso3ledXeHTgAu2KPdgU8Vy/N/KpgyHCAxfWR0
+	 Yd9m09lDkaiLtVnsgWd/bxpu4yYoccpPOtWb+MtaMZxy3S/j58Sgn9chyIN6TG3Jljkor
+	 liJQa96mQbQBuXjWr3cO4Xzm2a23IoheX8bMdfT+C8nQrb6Ufg/OI3fw7qXY28lYuc4mN
+	 9yR6MMq72hliWgeSMOM/0T+XtiA9g0wUnhg15h6nNSW2VaPKWcodpJrmh09LueGqXK/aK
+	 WwFv5V95VgGfxbrA7GBr/m1SMNYiU6r07mZnos49EJSwbnJItdiD+FzMCw2LEkAMuyQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=j8ZwgK5e;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.176
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ENnxHu7q;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685C2606EE99;
+	Tue,  3 Nov 2026 11:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ENnxHu7q
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793706655;
+	b=JaITYJgMfHkuGRYUPRg/47yrE4HfQ1tscLs0daMlAwtcqT7W9K/mhnt7eBJ4kYP/SUhU
+	 FnX2AX07N2UTY9N7dx09GOtFOpMS8yHh9vHgAPgsOU4Gmz03Ldd+2A1FIA0l4EaYekYUF
+	 qDzz44XPGnXmIrYqTRcBe/s0JamFXrN9TGrudoIt3uui7N9FhJKakoUVV+sG7p4XTSjym
+	 MbFEVcefJeqHA5eSscVslq8xxBGyhO3W+vY9OR2u+18wYMY5lvtk0TbvNuHYKtpZX2V1L
+	 wAqMYcffqrNm3tN/bz3mKtMX9my4N8I2c51WKq3O4qGxyyJe8WZcBrW/jYH6roZZpEA==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793706655;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=JVZ7ZPe0mun5HPLz14I9dlYljWHoQNvQgiP47jOr2E0=;
+	b=S6UFZMHpRtgZPgtNXxzJOEYWZMULJvtn1Fbl7mdTTYIkhTg22nqhbW3a9Qvu00rFg3So
+	 RRKP6cij9psj+n8z/Azyfi98FOAbBaTPP3nWX/vhMoTfau9GQ/mC9QyvtT1HrLfWjIvfd
+	 tFc/aHsCFBc+HWWiYDXfrEqfvpYiBFdny0a6ysC6uskUTkpUSGHkk4tdA1oTEJchazYUC
+	 xg3HW68R5dUGMLxFrU4Ka4OZ/lJVIemmXDWR/2eSOxrTcr2Sq8xvTYSbc9leXkaJBHDmv
+	 ljmxhday9kIuYaGpO0mVERXosRnd0GXL8srtEiwf3+R8GH0gjU9hStlXqpbgW1sYVxQ==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B0A606A339
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 11:47:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53B0A606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=j8ZwgK5e
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-3550dd02c9cso343388eec.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 03:47:08 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793706427; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YldBLYybItoguC/wDGviZPWzSDPaTkRwDPqJTrR/3ivQVnHrFZbnMKT+lVI60OA7hN
-         kfsr4CNMkmeJ/UTjjJFBjMs/ObB5ZOZZidUzQAlV8PZbLR1sMXWeQDWtUdhrWfVqG2rU
-         AfQc3BZtzP4xwQUeRiXLKK7WTHmBLjiHOChbesVd7xMGE6deMcmCJsJnofTeKvyDbSvr
-         d2ItXW70za30C84GlHWtkf+UslsLSPP98ROheIGgGceFD1dDUbhYwY2F8whh3iR4turk
-         KAmbVqA6wlzOPlG6dT0gGbKSRewJKiQPeIv0LhLDEj4sxQz3t9/26rdQdkp0uw2ZxgD/
-         wZ3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=63+Sr6N15Tem/PaC69dUwWhb1EfP7tKH84k+JQqk90c=;
-        fh=HLa/RaSiUf6HiKLYch69XGGuVtlnxJ3P5OfgVpH466Y=;
-        b=LS/dvnkl8vkRP7qGMq0X4spyJKAdquaI1HOyH7yBhvMiqPbP1rpNiz50bWRGF4t4SI
-         KBd78+D7NdyLGqCKkExSt5PImhv4MysI5qI8qhD0aS0P2m11Sq42Y9zg7slrcN/v9MKO
-         GOns18ibg1C71XKCdzbqV/IDBApGweCGNuhmpX78e1vKJZzC0Yi3hGIxzxsRAze4oEX7
-         d9K+bsyF5jOMzIZ9+/ErfUxub1j4o3O2VtmCfDWEyw2ogEkJ5LnbJ3Bht1E1HjXcRTlH
-         9Wy3l8f8Pd2yDJsdGYmoxBvTYCgD4hRQS/Aog6NZfPF5KalUBLTEHlLFK4vEo85AdfDN
-         fFVw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793706427; x=1794311227; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=63+Sr6N15Tem/PaC69dUwWhb1EfP7tKH84k+JQqk90c=;
-        b=j8ZwgK5e+Ep8//cGU13Dkjva8YN4XYwT0Apjx7nC2RLmVsnctKBz4oiBwJb2FU30B0
-         4/w9wIMneMh/hdKyE8mKeSmYEhdyLBPT+acCHcH/JM6eHpvx+uUfCpucxatJI3JtHyW4
-         tU4L12H3ua5/BRkOnfXW6k2WQKvhxc1yQQeFNuqhy4CtWyU2aQBtOTifEpX8X0mnX7vv
-         4M88GpusUCUv/3uvBBUm99RO2cAf9gqaQol2o1Tt/CEh5HoVpkNrdFK6210gJHrMphbd
-         XsYlFVlBQwM5Z6l1P/t5YAHiGV/Tq7JwG40AlmU6JVIL8+9s0Sd5uUBgaURKgrglNcQE
-         fJ/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793706427; x=1794311227;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=63+Sr6N15Tem/PaC69dUwWhb1EfP7tKH84k+JQqk90c=;
-        b=em0tGbg1beK3P+jM0JuT54StTPEWWYdJmF2nE3eSgYpicULpXLYhLK9SQMiuA4keXS
-         FDlcFl1zBn2FUoT5zMUkqQkjUekRfJvoLNPoTvcoQ+CTmKm2FZdBy2m5nWwJgxntlh2N
-         GaKZ/ORc50iNi4qGpL+PySQc3qg0OmjWhZwcpVM/1KjlnkWAdh1DUaGah7f9iXyViZ7N
-         LRrRVA0lX05hm564XUz2DvBsh0sFYWE6R+L/9+0EFCYlLWnayQv5g7e7l6f2ScyuvuWh
-         IHq79Goenbyx17yzr0eefwalBSkosCkjmZCvEvdVceQKHXZPfo1ewP4mr06Rt1P+QKGt
-         mtVA==
-X-Forwarded-Encrypted: i=1; AKwUvBzq7H2q/UuKXaTkvVcwNC9ZMSpYHcKJTIFiN9z9xLut1191bM0aTz2uYrCi4LGOXHA7+xMylVNKtdl3ibaI/Q==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8GQdUu0uxAb5equVjH/MaLnQGcj2V+zDyA2NmcgAJeL7QlZLva
-	TR8eMMoBFl5v9oMOFbxKo68lT3mJWD33u40BxaP8S8CPrS9gZXKvYnlQidekxcR0cd/jcJ1/jCJ
-	7/5mgED9xJ+VSxlwyOhBXGvRZZz1rY4o=
-X-Gm-Gg: AYBFou124GWMWkA26XbR0TJlwBPnBAbX7lXigmrVAQp1nzc4GTiizdTrwbnYtVAFWb2
-	clhbjtqKFNuhjGsTRBGu/1AT7CZd6KRrHYU30V/4Ug3CQFpejCjOaa3YOdBWibkXZdkThkSyQt9
-	1NLRLFUoe+bqee3zD+Ik8mjWgnHGxN5XFXWglnWOIMArIIbBOIc8ZfSmkKy9hbBBUMtgVaZPaYH
-	Ftt15ZIFnvn8oOlCTx4t02X4KavZoBQN/iIiPY7YT+bOb/4B1tnVgMRgSL/89ePXWObutQcBbby
-	pdLxb3RnQ/TBjxKilyFeDUDSF1GFPMm8OTx+90lijTGq3WrcsZMLBlaCZS87IPiIM+s6FT9MXzJ
-	v5mCGg++amkVNkKQTBKRUPC7vGG6xlxlXlzo8/YW/XytLs/cab5fF2pUJCy3fynOuzGq5+wAMZg
-	KFkxgVjQWa/xBNuY4HsXmyxIWHO0AjVLuBZfL5CNViD0Wvb3BXQMDBtOiDO5cLS2ERWPaUDqwgR
-	w7IpSeCtipSl4+4SoTLp9WuTKN4CewvmRXN
-X-Received: by 2002:a05:7022:c46:b0:1a1:9106:cfff with SMTP id
- a92af1059eb24-1ac5c45fd28mr27168655c88.2.1793706427433; Tue, 03 Nov 2026
- 03:47:07 -0800 (PST)
+	by smtp.kernel.org (Postfix) with ESMTPS id 677EC1F000C1;
+	Tue,  3 Nov 2026 11:50:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793706655;
+	bh=JVZ7ZPe0mun5HPLz14I9dlYljWHoQNvQgiP47jOr2E0=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=ENnxHu7qffUAIukvdpgDwFYtpuuHeyEkUrABB4I9URZSjOjXBwLDxwJ0dLnyQseTe
+	 Y3CteUsEzq0lT/BDXVY36Rv/PONvTFyMiRPH6vTo/r1XiYc+DkyuZFYR0tyaeHXH2C
+	 csfY0N1rmoknw5nHKQqluhlGg48GM7uloki/2C5XZnCRoH+ndm60d5FUabG4L71ooa
+	 F7ERklaX/QbjDlGHqi5CUwV++U7QjltIg/p1ewgmhXQtcTgQ+/GRBhE4t0c3mnnpj6
+	 c48r7Klphu1XKgKLBmxqrKpkSHXjnj4YD3XQrNjgidTVWtoVix2zBL09O0lBlfZq+R
+	 tHoSQ8LENTjjg==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id D7E6546903;
+	Tue,  3 Nov 2026 11:50:53 +0000 (UTC)
+From: Peder Bergan via B4 Relay <devnull+peder.bergan.gmail.com@kernel.org>
+Date: Tue, 03 Nov 2026 12:50:54 +0100
+Subject: [PATCH v3] rust: alloc: test drop behavior of Vec::drain_all
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -106,36 +82,191 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <8yvpSoQ7ihtTj508nQU_nAlk2eMmGH5zK6H5pow6z5cTYGO3yL_DvqwbFMwqzhtbL-52eMYXpT5Cyg0g7fUN7w==@protonmail.internalid>
- <20261031003334.4161188-1-tomo@flapping.org> <87h5hzmfui.fsf@t14s.mail-host-address-is-not-set>
- <20261103.083342.865260022622203055.tomo@flapping.org> <CANiq72ka+YS+O31zm7sm7-at1TyPky+7W_5cNMLvqTK3=mHEgw@mail.gmail.com>
- <878q3amfd7.fsf@t14s.mail-host-address-is-not-set>
-In-Reply-To: <878q3amfd7.fsf@t14s.mail-host-address-is-not-set>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 3 Nov 2026 12:46:54 +0100
-X-Gm-Features: AclHuK83vbBpXLFhNime5MS1HVJ1Vb5imDYJL5PHXd0R75LF_EmvGw_Q-XbMv7E
-Message-ID: <CANiq72mMOQBcuUuxaArY_c5wxNG_O9D26roi9XQyODy87CHPxg@mail.gmail.com>
-Subject: Re: [PATCH v1 0/2] rust: time: seconds based Instant
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: FUJITA Tomonori <tomo@flapping.org>, ojeda@kernel.org, boqun@kernel.org, 
-	acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de, 
-	bjorn3_gh@protonmail.com, dakr@kernel.org, daniel.almeida@collabora.com, 
-	frederic@kernel.org, gary@garyguo.net, jstultz@google.com, lossin@kernel.org, 
-	lyude@redhat.com, mike@fireburn.co.uk, sboyd@kernel.org, tamird@kernel.org, 
-	tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
-	rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261103-test-drain-all-drop-v3-1-5f936d67b099@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAJ3K6WoC/12PTW+DMAyG/0rFeZkIHSDtNOjopnYthe6wD1VTS
+ F2S8RGW0AKq+O9L2G0Xy+9r+7F9tRRIDsq6n10tCReuuKi1mN/MLMpInQPiR60tx3Y8jO05akG
+ 16CgJrxEpS52JBgHGbnaXYYJd29KTjYQT7yfq5+FPq3P2DbQ1KNOREQUok6SmzFiaJCiqoW9N8
+ SRFhVomgUyrF8GW//hOvV2+rNnQicddWhWw2ncFS4IF+YDQ2XNRiO41jjziyTjsHirCy9t8ilR
+ UBsq4aoUcpkcvjrlMg9fPHUPRV+CHDRY7d/de5JHnMGbT1SZJz3288Ya3p6UfhzhJ7ZAl/8GHc
+ Rx/AStyP+VEAQAA
+X-Change-ID: 20261103-test-drain-all-drop-e115b4b1a150
+To: dakr@kernel.org, aliceryhl@google.com
+Cc: ljs@kernel.org, vbabka@kernel.org, liam@infradead.org, urezki@gmail.com, 
+ ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+ tmgross@umich.edu, daniel.almeida@collabora.com, tamird@kernel.org, 
+ acourbot@nvidia.com, work@onurozkan.dev, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+ Peder Bergan <peder.bergan@gmail.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793706653; l=5159;
+ i=peder.bergan@gmail.com; s=kernel-contributions;
+ h=from:subject:message-id;
+ bh=wr/rttULwHjMnmBYWzKteJlebu8bZItM0swWuvHRT9c=;
+ b=5p3SMMkQOKo0XCI42eM0AUc1B3PVKIfyk2qbx17Q94TNLlbypZ8ylbFv9THdeHN9xFxxDavTZ
+ +2knCtYHWwgAfnROMLyd8bXqluwloB+z4+TcIoTpnILDRDu41gQnFO6
+X-Developer-Key: i=peder.bergan@gmail.com; a=ed25519;
+ pk=39790pn1YZCulHBoUG1uiQI1Hm01EvhBEa2zVrS/yN0=
+X-Endpoint-Received: by B4 Relay for
+ peder.bergan@gmail.com/kernel-contributions with auth_id=1395
+X-Original-From: Peder Bergan <peder.bergan@gmail.com>
+Reply-To: peder.bergan@gmail.com
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 3, 2026 at 10:35=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
->
-> Yes, these will go through the rust timekeeping tree. I plan to apply
-> them around rc2, does that work?
+From: Peder Bergan <peder.bergan@gmail.com>
 
-For me, of course, but I guess you are asking DRM.
+The drain_all example consumes the entire iterator and uses integers, so
+it cannot detect missing drops of unconsumed values or premature drops
+of values yielded to the caller.
 
-Thanks!
+Add KUnit tests with per-element drop counters for partially consumed,
+unconsumed and exhausted drains, plus an empty-vector case. Keep a
+yielded value alive after both the drain and vector are dropped to check
+that its ownership stays with the caller. Also check that draining
+empties the vector without changing its capacity.
 
-Cheers,
-Miguel
+Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
+---
+v3:
+- Remove the repeated commit summary from the submission notes.
+- Keep the base in git format-patch's machine-readable base-commit footer.
+- Restore the original comment instead of changing it for mail transport.
+- Send with b4 through the kernel.org web endpoint.
+
+v2:
+- Split a long test comment to avoid mail transport line wrapping.
+
+Based on alloc-next. The original v1 test source is restored exactly.
+
+Previous revision:
+https://lore.kernel.org/rust-for-linux/CAKHwh-E_A7Bp1oP5PYkgE62hh0cJMQRuxOM6yXGF7OB1QR0BhQ@mail.gmail.com/
+
+Validation on x86_64 under QEMU:
+
+- The original rust_kvec suite passed before the change.
+- All nine tests passed with the change, including a CLIPPY=1 build.
+- Making DrainAll::drop temporarily empty caused exactly the partial and
+  unconsumed tests to fail. Restoring it returned the suite to passing.
+
+The tests used Rust 1.99.1, LLVM 23.1.4, bindgen 0.73.2 and QEMU 11.1.3.
+The minimal configuration has an existing unused-function warning in
+io/resource.rs, also seen before this change.
+
+OpenAI Codex assisted with coding and testing this issue.
+The requested work was to test Vec::drain_all ownership and destruction,
+validate the tests under QEMU, and prove that they detect skipped
+destruction.
+---
+ rust/kernel/alloc/kvec.rs | 88 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 88 insertions(+)
+
+diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+index c7546b9da..fe113c7ff 100644
+--- a/rust/kernel/alloc/kvec.rs
++++ b/rust/kernel/alloc/kvec.rs
+@@ -1540,6 +1540,94 @@ fn drop(&mut self) {
+ mod tests {
+     use super::*;
+     use crate::prelude::*;
++    use core::cell::Cell;
++
++    struct DropSpy<'a>(&'a Cell<usize>);
++
++    impl Drop for DropSpy<'_> {
++        fn drop(&mut self) {
++            self.0.set(self.0.get() + 1);
++        }
++    }
++
++    #[test]
++    fn test_kvec_drain_all_partial() -> Result {
++        let drops = [const { Cell::new(0) }; 3];
++        let mut v = KVec::new();
++        for counter in &drops {
++            v.push(DropSpy(counter), GFP_KERNEL)?;
++        }
++        let capacity = v.capacity();
++
++        let mut drain = v.drain_all();
++        let first = drain.next().ok_or(EINVAL)?;
++        drop(drain);
++
++        // The caller owns the yielded value, while the drain drops the remaining values.
++        assert_eq!(drops.each_ref().map(Cell::get), [0, 1, 1]);
++        assert!(v.is_empty());
++        assert_eq!(v.capacity(), capacity);
++
++        drop(v);
++        assert_eq!(drops.each_ref().map(Cell::get), [0, 1, 1]);
++
++        drop(first);
++        assert_eq!(drops.each_ref().map(Cell::get), [1, 1, 1]);
++        Ok(())
++    }
++
++    #[test]
++    fn test_kvec_drain_all_unconsumed() -> Result {
++        let drops = [const { Cell::new(0) }; 3];
++        let mut v = KVec::new();
++        for counter in &drops {
++            v.push(DropSpy(counter), GFP_KERNEL)?;
++        }
++        let capacity = v.capacity();
++
++        drop(v.drain_all());
++        assert_eq!(drops.each_ref().map(Cell::get), [1, 1, 1]);
++        assert!(v.is_empty());
++        assert_eq!(v.capacity(), capacity);
++
++        drop(v);
++        assert_eq!(drops.each_ref().map(Cell::get), [1, 1, 1]);
++        Ok(())
++    }
++
++    #[test]
++    fn test_kvec_drain_all_consumed() -> Result {
++        let drops = [const { Cell::new(0) }; 3];
++        let mut v = KVec::new();
++        for counter in &drops {
++            v.push(DropSpy(counter), GFP_KERNEL)?;
++        }
++        let capacity = v.capacity();
++
++        let mut drain = v.drain_all();
++        for value in drain.by_ref() {
++            drop(value);
++        }
++        assert_eq!(drops.each_ref().map(Cell::get), [1, 1, 1]);
++        drop(drain);
++        assert!(v.is_empty());
++        assert_eq!(v.capacity(), capacity);
++
++        drop(v);
++        assert_eq!(drops.each_ref().map(Cell::get), [1, 1, 1]);
++        Ok(())
++    }
++
++    #[test]
++    fn test_kvec_drain_all_empty() {
++        let mut v = KVec::<DropSpy<'_>>::new();
++        let capacity = v.capacity();
++        let mut drain = v.drain_all();
++        assert!(drain.next().is_none());
++        drop(drain);
++        assert!(v.is_empty());
++        assert_eq!(v.capacity(), capacity);
++    }
+ 
+     #[test]
+     fn test_kvec_retain() {
+
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20261103-test-drain-all-drop-e115b4b1a150
+
+Best regards,
+--  
+Peder Bergan <peder.bergan@gmail.com>
+
+
