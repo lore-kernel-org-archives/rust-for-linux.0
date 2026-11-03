@@ -1,48 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793722602;
-	b=ssdQGd3BabJD+ZbMC+mmF0rRYZzHVI/x5NahS+N1ZwXmJDogGXsdQNm3IdDjKo0STFMz
-	 vUoEE+RniTWkNyiUwie7reDsZUF1OSybAhMLnO6nkyg52ZPDKSPtaUKTS/7x5TbKgw5h5
-	 493c/kQUpCOlvjj7t1Ea8OMjqPzYP0O8SMWCfgzHbTCGjcQJT6STlSdgySMllJYvYU2gT
-	 ivNgJDsHW/fORIgmkHYG9xkMW8z4QE+L30Pq71xfj0044TRr02tU5zfQnBOTVIUsFftur
-	 JFDncQIYvz714OzzMgO//Jf9AY/M1dUm25fHtK2TIwwySgQS+vxrXUlhftls5ETnq0A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793722602;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=BSURkJWn0WOY0anZbHcDJ2sPzRJFppuAJJqratEJAWY=;
-	b=V48a2c1EoQVZYWhvvm8X1QzL03PJKEZP6FB4LG7zJExb8RPWtRcb7/guzyvRS2y40uPP
-	 sJeNWGb5Lp1+6iEginrbmCM99kw/77JiqGI5/Ta7d2V+OGYHPqW1C1L/+UYDc4EP0Wlns
-	 5enU4bbZDZJgpXhf9wFGaEYzJk9RTUs+rxvlkwqowMDja+jjSetoH24yCRDTH3ALOEpcN
-	 ZMsBOI+L0UTHYrPJQq3c2ml2vVbJZViVMgCS1/jPjenH/F3cTvhtmI2xBbUNQTnQ6ELki
-	 gYmKp6xRAtOOWTb1icXy1KkgaihJNXcWntviDrqoGgHiqL48z3CqtZuQFt+W9xuzHGA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MOkTSrTI;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.175
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793723142;
+	b=YeGq0/NLi7OKPcR8qwhR7MK9FYYb2x42QGoz7bDD3AUwZFxd5EkMHmPvwmrOzNZjeHUv
+	 xiY0ncyvdU/zFw4tzfu9p/ToVh/kqAjQQJXVWzuglkl3ejrIMkLGstNbCROOOLaTAMqIN
+	 JVM9lMCpsWBLpvTd0ngwtJ4dF/TIuEBXEZmF4Oz76M5uxMSA1v69/lxdVXEZrY0xB/ash
+	 Tnli3kYFo1/Bg6DnZHETLR/QSeYgEP9naZ+vfIkd0e8A/8rMXVZvAecz39FN6l0ZLJYji
+	 8uPY7fu6ExgsvGSns/8Qf1786ulbi7N7nULJV/YdyBqvjjfAi/sAnuZpaXynIEN6LeA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793723142;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=ucTwJsfrEI4hG4ToLcJXFo+0eiVcR5dBAvRyAcGuUSQ=;
+	b=wUvmHFNhK9b2y5de52pa9aBDZ3QWES9fjkmSA8+31Tt5/yFgqykCLjo0luyFRB6ylmlg
+	 rEBEESj1cBYFOJ7MNeCT10NpuxiJ+c/Fs722npEMSnyIwSy5dJzRxMIHBBkgQD2kofAhT
+	 cZDKl4P3hChjX7K4+8Wp92P+wsgWc/Y5rNH+TBa/LBLmqLl1Sl8T0hb1mz6KrCqYDvnVk
+	 WXwHcZD1O6Emzov3VayqD4Q4jhT/3KMk+cGz/zLibZa+ki57tq8/DrhbKrt3yB8kERuRJ
+	 MNCqa7qE1DkufFWRI3o5adUS5FegUlbOszb5Fb5qdayJXoF+Dz7iD6DJ+IqzIVgx0BA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cUIIDOwS;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.175
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B254F606D804;
-	Tue,  3 Nov 2026 16:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BAF606A326
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 16:25:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58BAF606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MOkTSrTI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62EDB1F000C1;
-	Tue,  3 Nov 2026 16:16:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793722601;
-	bh=BSURkJWn0WOY0anZbHcDJ2sPzRJFppuAJJqratEJAWY=;
-	h=From:Date:Subject:To:Cc;
-	b=MOkTSrTIeM+eTu168yZYd31L2CQqTHYREHA0mjZ2RTauoPD132dnddGqfjNGf6jqk
-	 n0T4hVGKXBmHUV1dcw2NXZj7p5t1Js8Juqqapz4epAZ6PO6UDhDtLJovUyg2jKYUN3
-	 DpXPNJqeySMwq2EosO9byTSUHxZo3MUTCtZiEbq8XhGDR/2kcMzN9ZGmOHiobowVjT
-	 aasPoMQdrX8tIwaGL4FSjeEuCpoUiD5+PTNP5kaMLB9/ENUkzrHfIZ4SM34WgRB1cB
-	 d2zZobkPo69q6KfKWVDPPyE/7wKfYHbwIkCi3xaAU22GFz6aqnQ5QgtqjtoDxwF0Qi
-	 XwoCR8Xg9I7cw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 03 Nov 2026 17:16:28 +0100
-Subject: [PATCH v3] rust: xarray: fix false positive lockdep warnings
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cUIIDOwS
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-533202fe429so333731cf.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 08:25:42 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793723141; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hQp0BuC2Ey5pn4GVQUw4QHYblEu/B/RijgNwB83TUAyryi1X0jeKTxdq8AkrE90AtU
+         JTiv5F4Y1AuazkljnhAVnaUTyNpUy3FuzJnPiaZFUKAn4sFTKXxbw/Lze9j4NC9MK8Gn
+         3HPkbxuz3FBKfA1/1SVD3Fdrn9lBxcV3hzUsXRu8sEgy+KSHjuKsw0u3vxrM96/l3UJi
+         dxfmYf0FG3w4nhVOryUBj/BhPIeM2rE3XbVRYLWuwQA236M9SKEX7CqUOTMUzwigvubJ
+         lrGy6oehgaY4Yyeq5Vn3N+j7UY+i4wiIHhpZ9ULH6ax77u2RZ1RS0nKUFbCxnIkTR2tM
+         /tpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=ucTwJsfrEI4hG4ToLcJXFo+0eiVcR5dBAvRyAcGuUSQ=;
+        fh=hCUm/KHSV8Og5vcVSgsP67jFeySfI2keks/+FS5x0A4=;
+        b=h760BydZpBWffa0/oyzbznXcfE84UXa/qK9dszn+nR9K4vEAjmDwkKACwEN/3u4F/r
+         EvtNrVzuf0HHsjKcEgBlO0ZOpXNfNsRQfdp1S3PhY6GU1AyLTO9wZ+XgxfFL8p8Mh4KT
+         ZRUdZP9GsxT2toRnumAm6RfhB/NQRC7G2jrLBq0xxkXc4cl3Ga9p0gYOUJUVTrGIT0gb
+         m5+4zCWZml/CbpPcxZ7UHCE9iOLBc9uUxxv0jSVpp1RJjy6FunCumayZww9+D7KymYvB
+         w0yn8+lnFLvtybMmGqYrGIACO37hW8STxHPw/BiGL5CuRxP6pAmzwg4xFa8Wc35xH6Bx
+         jRSg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793723141; x=1794327941; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ucTwJsfrEI4hG4ToLcJXFo+0eiVcR5dBAvRyAcGuUSQ=;
+        b=cUIIDOwSgEY4sB/0Tg2p1iGB8ZqP+oT+zRWYbpJ5HDp4fFkm+00ZhLSRbuR1w60LEW
+         v/5VgDjhNdTrk7C+It+m9RQlpHOPBKKJ8MIFzOSFtB8x1OyuG4X2s3u4rRoZu/ZfFV5H
+         Kazq+csKerHRwdWninAXLvUt+3O5h/nVEi5AXCOF9iT+3xZCeU/uPt7XR77RdCWH5NRW
+         TLTC2oJxRgwsHEhfTzkjustTzb6f8S34Z27msGHq4tfZ24CS8qYD+kcafFVm7P7Bd23S
+         at6fseXnLSYGGN2I2uY6DnwYEb7hDJvQTMUDsN2LGq54ItEStcbdIx6aQJO2F6al54hU
+         E0YA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793723141; x=1794327941;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ucTwJsfrEI4hG4ToLcJXFo+0eiVcR5dBAvRyAcGuUSQ=;
+        b=WJ1wY22S6bw42c4jUZ3auQD2pJsq/LTSW4j5BSKtJR7UjtoVrvO/srYZuGrPFcFhIT
+         tLcNUJMkamJbL6ndpfbxYNFxe9EHj79WuGEQ5Pn0Q2GZLiSHcUN0QsHn3lfFt77lcUOU
+         IwkkQ94Y6T82JUrz9JcLwGGoLCTQBs4YLUcXUr2gkNg1+9/VmFANHKiGAS+VsgVTD+rB
+         X3XeowYJUrUbZ+8hIdALI4XyeFf/wyLIs8QNvo4a5q3rkpiWdGA3HJ2hQB9M4m1tKq9O
+         TIQnZ7LACiUDvRxJg+VIGcZ9EGG63SdbYuT/6NC9UmucaHgCy02T8V1NnLLHazuYQ6ew
+         DJjA==
+X-Forwarded-Encrypted: i=1; AKwUvBxzD+qidpWvNLlLKxA+Y8hnOSe8IBKaQPY9biWlcxWcVUwJOeWFqDh9RCb9J+PDYshI3wAsK9tX2RbT1zp1eQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9ztYnLywX4PRudxAoznBtuqIX3HLElFB76AOrlO9K/Honb/ojY
+	prv61auHZ5XO7uIvt2H1wlH7lbPHY+s+sicDLAi9o0Zd/wflQhL03/yoQS9AMIPZzwTJHDL3HtF
+	LbGLT8QkOTa+q5CYSprSihd6cjznCeKINmdibUhou
+X-Gm-Gg: AYBFou0y39BJqU0AFLhhfEMbRIJjEFed1eq0f+AE1PjYHaivbDK2+5KlTH1nFUNAgmc
+	9xA0zyF06j7eTZ+8UeOK/eX58adh16Jl0YGXKHTCghxb5EPObZydl+9ulCEEwhHFxl7jEZdlBhn
+	mbA7mtn5QRQNwsNCjzg06ZtYq1FUKcziaxkS36vAU2x4tcd8SDieHxofq+FaweUUfv96hRFlgIG
+	HvjCHIkIT3mwxbwQ8ZM2I4EBBHCTYW6HOp8Tk/XdnNYpD0sqteWXdWojRR1nMHosgclzgvO0uT0
+	mmEbYYLIVdKbdj+zThcU7VCFhp1vdL4jvPAk5LSNvhftHb9JYtOFp9H2tcJg6WZxyhud8Qko335
+	yBqN+uMrp80f7jP/g/RO6VhArHX879xzGPR4556LHjy7izbqvGNOMM1bi6eokhvCjFRc=
+X-Received: by 2002:ac8:5cca:0:b0:536:934f:7da2 with SMTP id
+ d75a77b69052e-549ba517bd1mr23041891cf.2.1793723140630; Tue, 03 Nov 2026
+ 08:25:40 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -52,199 +103,78 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261103-xarray-lockdep-fix-v3-1-e188bec82003@kernel.org>
-X-B4-Tracking: v=1; b=H4sIANsI6moC/33NTQqDMBAF4KuUWTclPyTVrnqP0kWMowbFyKQER
- bx7o5tSKGVW78H7ZoWI5DHC7bQCYfLRhzEHdT6B6+zYIvN1ziC5NFxyw2ZLZBc2BNfXOLHGz0z
- wRjhnCtT1FfJwIsz1gT6eOXc+vgItx48k9vYvlwTLp5TQpRZVocy9RxpxuARqYfeS/BiG65+Gz
- IbUVmte2gpRfRnbtr0B/8uH3vkAAAA=
-X-Change-ID: 20260206-xarray-lockdep-fix-10f1cc68e5d7
-To: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Tamir Duberstein <tamird@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Boqun Feng <boqun@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6528; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=zW8CTkyLa5/Xfhlku1cMkbmOKZnpkUiI+klPyk+NhXo=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq6gjdBsVxhiVB6uBDIGlVa6URlAS8YvNrGesx3
- JMDoCqkW0KJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCauoI3QAKCRD6UCkIqsW9
- 0FDyD/9ROvfEc0GytNOQPMYsfGyCck2Ua1VwykH6yuTHUIaj0O/N7ga1X7iUPOQnvNDKluqQhmA
- YmI6+SlcH7u/mdQXEr4y/7jOvZZ6mg9LWMWrOz2ciMqiK2XAcEVc9DhnKZLbvPUYGQZVhMo2YB8
- BxgLqjR6y6u3UIf0trVaCG4KY86z1fywyk+wXWbbnEnEOY6IPaKhZ3I1qhN6nF7HSWdn6redSdd
- cQBrdn63U4QNJihQ261c6naXbk6Fwf1pSYSP1yNMeCjyUJVJ5RZ0pHdoPFG1L7luq0U44jfHHix
- RCmMxmEoOMc5Nbsgcgv4nEOndZTdVuwGDJpTiNOfCfhA0JUkLgxaGt71i8si+fwcgtCS/G3uBhZ
- l3/Xh5qF4ob4F4PRpf4yeNsOmLPTBWJVJsfBg+NMNErrKnFpOauPuDlm+cW2EP4EqDlUJ7VBGyl
- YEUQJ/vSW6gDcDu1APt7VPbRa/ptgPeGaI3kSd2Bwc19JdHv6AKkdajLos8BdXzSwzmY5NyYiNT
- Hav8zziTjx7d97kXZIGYmy01J18MLdfLKXsqz0QyZREVGS+fTjDMZqWVPYZ/U9fmMrBsBxHpDXK
- ohsvDf0VSYxVhbX22c53AuqBk6qlTyoBAUTF4sggArxmgqioEBSjeRzTPkPEah9N0zyq9DIeni3
- DmRyCcTqbSg2wSw==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+References: <20261022134617.228229-1-gprocida@google.com> <20261103125814.258105-2-gprocida@google.com>
+ <0ddac462-b4b3-4844-8a00-fbe5f043885c@suse.com>
+In-Reply-To: <0ddac462-b4b3-4844-8a00-fbe5f043885c@suse.com>
+From: Giuliano Procida <gprocida@google.com>
+Date: Tue, 3 Nov 2026 16:25:02 +0000
+X-Gm-Features: AclHuK-6CCPIkFp5_oqua3MDBxS7jekauX_rpV7FSKbhPTEfW6LwwMQZwtaQ9bA
+Message-ID: <CAGvU0Hm04LXTywU0eL6KN4=SoOAC+LU3BKqENnLR-WV-sHsuNA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] rust: move EXPORT_SYMBOL_RUST_GPL to include/linux/export.h
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	linux-modules@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, 
+	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Aaron Tomlin <atomlin@atomlin.com>
+Content-Type: text/plain; charset="UTF-8"
 
-`xa_init_flags()` is a static inline that expands `spin_lock_init()`,
-which generates a single static `lock_class_key` per compilation unit.
-When used through the Rust binding helper, every Rust `XArray`
-instance ends up sharing that single key. Lockdep then sees concurrent
-locking of distinct Rust `XArray`s as recursive locking on the same
-class and emits false-positive lock-ordering reports.
+On Tue, 3 Nov 2026 at 15:57, Petr Pavlu <petr.pavlu@suse.com> wrote:
+>
+> On 11/3/26 1:58 PM, Giuliano Procida wrote:
+> > diff --git a/scripts/misc-check b/scripts/misc-check
+> > index 40e5a4b01ff4..b39d731cb413 100755
+> > --- a/scripts/misc-check
+> > +++ b/scripts/misc-check
+> > @@ -45,7 +45,7 @@ check_tracked_ignored_files () {
+> >  # does not automatically fix it.
+> >  check_missing_include_linux_export_h () {
+> >
+> > -     git -C "${srctree:-.}" grep --files-with-matches -E 'EXPORT_SYMBOL((_NS)?(_GPL)?|_FOR_MODULES)\(.*\)' \
+> > +     git -C "${srctree:-.}" grep --files-with-matches -E 'EXPORT_SYMBOL((_RUST)?(_NS)?(_GPL)?|_FOR_MODULES)\(.*\)' \
+> >           -- '*.[ch]' :^tools/ :^include/linux/export.h |
+> >       xargs -r git -C "${srctree:-.}" grep --files-without-match '#include[[:space:]]*<linux/export\.h>' |
+> >       xargs -r printf "%s: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing\n" >&2
+> > @@ -58,7 +58,7 @@ check_unnecessary_include_linux_export_h () {
+> >
+> >       git -C "${srctree:-.}" grep --files-with-matches '#include[[:space:]]*<linux/export\.h>' \
+> >           -- '*.[c]' :^tools/ |
+> > -     xargs -r git -C "${srctree:-.}" grep --files-without-match -E 'EXPORT_SYMBOL((_NS)?(_GPL)?|_FOR_MODULES)\(.*\)' |
+> > +     xargs -r git -C "${srctree:-.}" grep --files-without-match -E 'EXPORT_SYMBOL((_RUST)?(_NS)?(_GPL)?|_FOR_MODULES)\(.*\)' |
+> >       xargs -r printf "%s: warning: EXPORT_SYMBOL() is not used, but #include <linux/export.h> is present\n" >&2
+> >  }
+> >
+>
+> This is minor, but the updated pattern matches non-existent
+> EXPORT_SYMBOL() variants. To preserve the current strict matching, it
+> should instead be changed to:
+>
+> EXPORT_SYMBOL((_NS)?(_GPL)?|_FOR_MODULES|_RUST_GPL)\(.*\)
 
-Add a custom helper `xa_init_flags_with_key()` that mirrors
-`xa_init_flags()` but takes an explicit name and `struct
-lock_class_key` from the caller. Update `XArray::new` to take a name
-and a `LockClassKey`, and add a `new_xarray!` macro that uses
-`optional_name!` and `static_lock_class!` to generate a unique class
-per instantiation site.
+I'll take this suggestion which was also my initial thought.
 
-Remove the now unused `rust_helper_xa_init_flags`.
+My second thought was that if Linux were ever going to allow non-GPL
+or namespaced
+Rust symbols, the syntax I came up with would be the best future-proofing.
 
-This was previously part of the series at [1].
+> Alternatively, I think the pattern could be made more permissive in
+> general, something like:
+>
+> EXPORT_SYMBOL(_[A-Z_]+)?\(.*\)
+>
+> This has the advantage of not requiring changes when a variant of
+> EXPORT_SYMBOL() is added/removed and shouldn't sacrifice any of the
+> desired functionality.
 
-Link: https://lore.kernel.org/r/20251203-xarray-entry-send-v1-0-9e5ffd5e3cf0@kernel.org [1]
-Fixes: 210b81578efbe ("rust: xarray: Add an abstraction for XArray")
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Tamir Duberstein <tamird@kernel.org>
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
-This now mirrors `init_work_with_key()` in `rust/helpers/workqueue.c`,
-which takes a name and a `struct lock_class_key` from the caller for
-exactly the same reason: the C initializer it replaces produces one static
-lock class per call site, so routing every Rust caller through a single
-helper would collapse them all onto one class.
+AI analysis: Using a permissive regex in check_missing_include_linux_export_h
+introduces 81 to 84 false-positive warnings across the kernel.
 
-Changes in v3:
-- Rebase on v7.4-rc1.
-- Reword the comment on `xa_init_flags_with_key()` to describe the helper
-  for its caller rather than its implementation (Tamir).
-- Drop the unnecessary type ascription in the `XArray` example (Tamir).
-- Link to v2: https://msgid.link/20260605-xarray-lockdep-fix-v2-1-25a5509abee3@kernel.org
+Things like: EXPORT_SYMBOL_IF_KUNIT, EXPORT_SYMBOL_ACPI_LIB.
 
-Changes in v2:
-- Use a C helper `xa_init_flags_with_key()` that calls
-  `lockdep_set_class_and_name()` to install the caller-supplied key,
-  rather than calling `__spin_lock_init()` from Rust. Mirrors the
-  `init_work_with_key()` pattern in `rust/helpers/workqueue.c`
-  (suggested by Alice Ryhl, seconded by Tamir Duberstein).
-- Add `Suggested-by: Alice Ryhl <aliceryhl@google.com>`.
-- Correct Tamir's `Acked-by:` email to `tamird@kernel.org`.
-- Rebase on v7.1-rc2.
-- Link to v1: https://msgid.link/20260206-xarray-lockdep-fix-v1-1-13315951b836@kernel.org
----
- rust/helpers/xarray.c | 17 +++++++++++++++--
- rust/kernel/xarray.rs | 27 +++++++++++++++++++++++----
- 2 files changed, 38 insertions(+), 6 deletions(-)
-
-diff --git a/rust/helpers/xarray.c b/rust/helpers/xarray.c
-index 08979b304341..f6cc05b26cc0 100644
---- a/rust/helpers/xarray.c
-+++ b/rust/helpers/xarray.c
-@@ -7,9 +7,22 @@ __rust_helper int rust_helper_xa_err(void *entry)
- 	return xa_err(entry);
- }
- 
--__rust_helper void rust_helper_xa_init_flags(struct xarray *xa, gfp_t flags)
-+/*
-+ * Initialize `xa` with `flags` and register its internal spinlock with the
-+ * caller-supplied lockdep class `key` and name `name`, both of which must
-+ * live for the lifetime of `xa`.
-+ *
-+ * `xa_init_flags()` cannot be used instead: it expands `spin_lock_init()`,
-+ * which yields one static lockdep class per compilation unit, so every
-+ * caller reaching it through a Rust helper would share a single class.
-+ */
-+__rust_helper void rust_helper_xa_init_flags_with_key(struct xarray *xa,
-+						      gfp_t flags,
-+						      const char *name,
-+						      struct lock_class_key *key)
- {
--	return xa_init_flags(xa, flags);
-+	xa_init_flags(xa, flags);
-+	lockdep_set_class_and_name(&xa->xa_lock, key, name);
- }
- 
- __rust_helper int rust_helper_xa_trylock(struct xarray *xa)
-diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index 987c9c0c2198..84e7fb051612 100644
---- a/rust/kernel/xarray.rs
-+++ b/rust/kernel/xarray.rs
-@@ -10,6 +10,8 @@
-     build_assert::build_assert,
-     error::{Error, Result},
-     ffi::c_void,
-+    str::{CStr, CStrExt},
-+    sync::LockClassKey,
-     types::{
-         ForeignOwnable,
-         NotThreadSafe,
-@@ -19,6 +21,19 @@
- use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
- use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
- 
-+/// Creates a [`XArray`] initialiser with the given name and a newly-created lock class.
-+///
-+/// It uses the name if one is given, otherwise it generates one based on the file name and line
-+/// number.
-+#[macro_export]
-+macro_rules! new_xarray {
-+    ($kind:expr $(, $name:literal)? $(,)?) => {
-+        $crate::xarray::XArray::new(
-+            $kind, $crate::optional_name!($($name)?), $crate::static_lock_class!())
-+    };
-+}
-+pub use new_xarray;
-+
- /// An array which efficiently maps sparse integer indices to owned objects.
- ///
- /// This is similar to a [`crate::alloc::kvec::Vec<Option<T>>`], but more efficient when there are
-@@ -33,9 +48,9 @@
- ///
- /// ```rust
- /// use kernel::alloc::KBox;
--/// use kernel::xarray::{AllocKind, XArray};
-+/// use kernel::xarray::{new_xarray, AllocKind, XArray};
- ///
--/// let xa = KBox::pin_init(XArray::new(AllocKind::Alloc1), GFP_KERNEL)?;
-+/// let xa = KBox::pin_init(new_xarray!(AllocKind::Alloc1), GFP_KERNEL)?;
- ///
- /// let dead = KBox::new(0xdead, GFP_KERNEL)?;
- /// let beef = KBox::new(0xbeef, GFP_KERNEL)?;
-@@ -92,7 +107,11 @@ pub enum AllocKind {
- 
- impl<T: ForeignOwnable> XArray<T> {
-     /// Creates a new initializer for this type.
--    pub fn new(kind: AllocKind) -> impl PinInit<Self> {
-+    pub fn new(
-+        kind: AllocKind,
-+        name: &'static CStr,
-+        key: Pin<&'static LockClassKey>,
-+    ) -> impl PinInit<Self> {
-         let flags = match kind {
-             AllocKind::Alloc => bindings::XA_FLAGS_ALLOC,
-             AllocKind::Alloc1 => bindings::XA_FLAGS_ALLOC1,
-@@ -102,7 +121,7 @@ pub fn new(kind: AllocKind) -> impl PinInit<Self> {
-             //
-             // INVARIANT: `xa` is initialized here to an empty, valid [`bindings::xarray`].
-             xa <- Opaque::ffi_init(|xa| unsafe {
--                bindings::xa_init_flags(xa, flags)
-+                bindings::xa_init_flags_with_key(xa, flags, name.as_char_ptr(), key.as_ptr())
-             }),
-             _p: PhantomData,
-         })
-
----
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-change-id: 20260206-xarray-lockdep-fix-10f1cc68e5d7
-
-Best regards,
---  
-Andreas Hindborg <a.hindborg@kernel.org>
-
-
+> -- Petr
