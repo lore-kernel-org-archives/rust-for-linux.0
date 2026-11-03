@@ -1,102 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.178
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.177
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793705643;
-	b=eSXy1p5o/11uaimkmiQy7kTdFN5t6nh4Sy70TOHE/HRnxlEOZHiOWdfWyjBYzb7/I/07
-	 y8X5+Mr45InPVYf2TAG8m9T2SBz5ZmLNkZndZa8oLTIp8PmVAgUUBofLEW7Bb1Ov/js8G
-	 +hP4GGmmpMY9g+ryPpVHwgqX8tUtXLltqwj5nlkVtMGOz85/QfVoCTFcpEeMT1i5QeCkZ
-	 fsWrLkugiB0/MIll5ePMN33zivkRoIcXuUQ1lVgDR9s/PeJ6C4Q2+pfDh89EVd/H2sO+Y
-	 XTwueZz4bJyjIPK5G6USwGV5buae4N/SqL8j07yerXQE2ArBidcl6ru/4EABWjnzd+Q==
+	t=1793705880;
+	b=J7G+w/S43NXWSAMiugmg5OiHAAwxLLPfKwDf43kREqmo1aUfwQy14lBmhuU/nG452SpC
+	 tiI/nYXA7Coo8C7yc9lYmXrhoNhrHtFPsDlV7pN6Ag8B5Imu68oasaDjstgxqDYkaTol0
+	 uQqvSki2cSTXqRGjPj1OqFpqwFSlI4v7hvOYtO/hqruG3CBvyXUoWzD3G/15+ufLgGgqD
+	 r/TgUtIHanaXgOvGfPUyDQs6pmDnKlJsRDo5kzisdq+G7JK2F6wBstSTfVx9WBsxhoAEg
+	 aHuoqXrzLETHu+yBy7okt7wYkwjIwYGa4sNtJZo1giarp5Ffe7uMD8dWEpM4heViDiw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793705643;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793705880;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=cfOvbnreRRmSZwsiQ6nUYAkQQRmf3bNRhquYM+8iOsA=;
-	b=zuHMFOzxrTiDuMrolk59hNgWAipo5uONClmqRLpAOHwTZ1tEBxB7PH9VK5NQUwwNwTK/
-	 ih0YjsO5Di6eEoG/Sc3/JQDxmxhFrRqR4nC9/s8ur6hCCEANU2KcSYFS/z5QbmUTmKWrU
-	 7Ue5ANaRER7W051pwpAb1CYPZPvIhk4fUkP3yBPpDwjCwTWSHL2Kkx7E7UsinhUq98TXr
-	 63v5xt5Q0LMNNcOqOGOODDxoh/QPyeSqx5gf4m/M/t3QbpOg4PLdmVDPrX0UkbBAgxlDj
-	 8nwxLIUBTON9agHS6lL9dHvcKClq/IHCKp6V8LPwtyb46COaWEmP5pY31FYUx46zhZA==
+	bh=ox9VPdNe/5nvNwvY5JemNTpyw3tSN5sVHQ5SBOK6/8M=;
+	b=hEfaqiqzJDv48/y3yc7asO9vh1ramvSkWQ58ElG4GgMFcQVOun4iPDXEqXBDBPRRlpzo
+	 UNEo8DCHIdLgXP3ECWsjr10UT1ixAdX81u+D2zcYbBYyE/snJ5wbB1BVaCdrFkzts3xf9
+	 rZVe9xP4g+PbNwTt/rE6wmwMLHDTpQCnmDz5TcpByC9TLxcVubhzNShtl8U6NbAko2tOI
+	 yt4+c/ELrsgtY4zk8/Ko8ZLJ/T3Kzg1PuIw9kvrypWWeFwaQP6K8SdkjdM+KRdUDg+L1v
+	 SzeAGShJdbWAYrNLIWEQXXLOECkenDvWX6wSstrGPgb5yFK3obLSxiMrZXPXcUgoYYQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vc59Z5mq;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.178
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WP3UI+8B;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.177
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514DA606A326
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 11:34:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 514DA606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096B3606A334
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 11:37:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 096B3606A334
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vc59Z5mq
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-36a1c464349so530525eec.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 03:34:02 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793705642; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WP3UI+8B
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2e8c028eefeso6240975ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 03:37:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793705879; cv=none;
         d=google.com; s=arc-20260327;
-        b=ViOvtq8jfxqKehylgR0hhdq1OkoesE0l91LRHf5lA0v55CpaXXscOXkvq/ryQ3cJrw
-         vpudBg7rIW3nP2OMG4TP9RXrJFjj9vWA2uo07ul5qacpAiX6JLfNwXhMt2oJ+EzjbuDm
-         nnPn2nUDgo4v2rwo7z7PCl6cZDvcFbp3sYh4yFXRfdtEjG9bZBQJHyyaxpOgHp/ocdKJ
-         D7r0GqJdi2VRMi08CLGLXXE2x2yIlGYG6OVRcz6OPF/u/iem5GfE8R0EubA2s9JcZDCN
-         axhzuvTydNQ2qIEJxe9yAAqe4+J6zZBuSltfH6PSZx61n+AmBBSGzX7pfWmR/rIAy0xW
-         +eEg==
+        b=K6/UNHuTRqHz7wRxPEvtiD+AoZ/UE7pwwyLbXHTXUas54kEqkazAWoeX6gH+VhrhCD
+         NFGE3g0f4Tty0mOF3Cpk5eHrMOnEESXkWKPq3pTWOLk8bX3mK5tDpomonN4saal5udJP
+         UMwUzkZOqyflFAeEMMHACoFo4AUvl/Yj2LRT42fAJ62ZVaVGVU+Vey0xru9iCNwwloUV
+         YkQedZTJ7qGviznGCUZ09Mp0r4J7NcWTSY66p1NNQabMEx0PUG3M4wA8snoTINgMqnwr
+         T23rqyKsmk4Kueg7dTu/+IB7o/hP+eycRh/CAFO1zId37YAhG6Unop6CclJypdC3wmBC
+         9+oA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=cfOvbnreRRmSZwsiQ6nUYAkQQRmf3bNRhquYM+8iOsA=;
-        fh=iAqRR0qLqbKnOoYEsQveleqZRquZGWX85Yazi0TvNjM=;
-        b=Lg3Q1NnJoeS596yfELuUfP/cG4+d9LaGPuM2c6JYMPTeay6Zs7tFTHE4IWNaZNP+a0
-         SrJ3omeEkj84Q51bh3zv7JbEgoDpXBOk9aNutqRI4I0VDmFEdFmAomPb++Hhi3zTMLJU
-         axWh1aggwNcUrcgeUUNT+68o7yvf5ym0Bw1GqRC9zJi1x3tRC9ZXwX4WfrwgTWEPMya7
-         a2oe4er8rXkwE2zV97lTjO0amVNLU3EaR6QjwnMjKSIyeMgPTAo8YjK4yue9+LZDWtQY
-         EqXwcut72mU0m7KYbMyfGPz9Bm5CxXVcDeCXeWzoLrVNlXlzl6zTVitkhZaWID2VrNx/
-         qgWQ==;
+        bh=ox9VPdNe/5nvNwvY5JemNTpyw3tSN5sVHQ5SBOK6/8M=;
+        fh=6YVBP9PIG/fEnOlqQdjs78VnnJ7drqKRu+tAFiRODRM=;
+        b=XpSV50P6//4TZd7L1e7BKKyQpEgPWl0+coG2zFXGcDU4p8Ce6qRnN0SpxIlPSpo/jY
+         nLzYthIL1xifgCVBuF78rZ2QdaMWcVySTMGFsuUzfdeH0Pr+AF6AoPFAv0Ma66LHdLa1
+         /5CCZuaSemSk+5EMOkPx2SPyQoInn0KcOhZzHEZkdJgXkWSx/IXjDW+StRYVja68yQ97
+         R/oyge6tGkW21dpOLc6iJH/2gPkgVpkC59voL/jApNRalMyOhiyweLeK5d09iuTaAfz5
+         xMkQM950LjxyZ/hr45DDyeR40pjxkntUI5DkjhxpuJykNEgaQZSd/ed+T+uKI3uLtOp1
+         gyUg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793705642; x=1794310442; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793705879; x=1794310679; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=cfOvbnreRRmSZwsiQ6nUYAkQQRmf3bNRhquYM+8iOsA=;
-        b=vc59Z5mqgpqw+XuHGExMjcxe+s1YwaxnpmpGsKrQniN3Qus0WPN8zyiA73TCOGOIg0
-         zZbVgzvgFgxJw2cqjCD/sUOitM5pxutoZU/fEN4t7seN4rggPMBXw+BCFtjGM6e/rGtS
-         qmhHuUiRC+ic/4hXmX34btjze1VF/CRx1PV0h5ZLNrl8MtLuwSCV//BKRRXrzG/EbY1O
-         ltbbFIJo7nNpgKBqmWqMhBWd8PvtqH2ovfpE2cUwoPkccCNOYXDlp1zqRZDdqxUR9OlP
-         iaZpvZZ4cpcwuKBfEf++4bTv1igu+j4gvAxdFh9085kKkcKQk18V6/+ed1FQ4v4oGuqS
-         YZgg==
+        bh=ox9VPdNe/5nvNwvY5JemNTpyw3tSN5sVHQ5SBOK6/8M=;
+        b=WP3UI+8BsHGl9aTBu+w7LEFUJBnmtfgg7/jdcLdhAXj4N1YI75wsuI6+fX8Gg+ocSD
+         lPBTpkVa90LCDn4Pgr5wL9teswpO6rgGZCgFB35Nauvxr1A2/TbRCnPHMZ4CBlgmaWh0
+         OJudTryF9ZKukrDWGaoCiMFm+S7WTXXGqATVk5Y3O7aYSYK9M+R6/el7uJrKKM7kyeQN
+         8Vm4JZby8127WQCNQUs8cfK7f7nTnw2Y/3Rz0Y9Y1NMF/DsNqOQPbDPQDRu99AaPQCRu
+         aDABgWeAoMrkmXFdvx7QBvbEKOoIleyQ7eJxubf1TWy0/eg1X5R1w8S/LtkcdD0QpSyG
+         prXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793705642; x=1794310442;
+        d=1e100.net; s=20260707; t=1793705879; x=1794310679;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=cfOvbnreRRmSZwsiQ6nUYAkQQRmf3bNRhquYM+8iOsA=;
-        b=0lwSc/Tt16370VOtwIZs2PvBnn09bODF+CYqkIDe0YNXjFvW4lKir7ov5ynGbhrbOZ
-         mhdCYetkx2IPcy1JOksDqNr5t2bjW/GjSOeWGOnpbAQhg0XlLvdaUr+c1ta1373fbjim
-         TYwtPV78TudTXKJIb9jTp526LXCIPVVugBbbpkW2KRKnh3xWXnst8n7MQ5k8caRAJg0E
-         hgCabhDlqmPXUZkjcEvSbL0Z2phBIMI1909IYSZz7bXlN6BtiaydNBXfuZL9aawhJBey
-         ipDFzrfw4zMLHGWOf6iX2cPgCQKglmclwCNjmOjoFankiqQCfoaYMwZPiGo7IE4eaqiM
-         pI4w==
-X-Forwarded-Encrypted: i=1; AKwUvBxkFoIjFr6MvK1EZ7Es00f4chzpwW19PMgshxvnwXHKl30ZBQ7P46b7UnUW41ZieZRAG06H3FTs/FUECeiuwA==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/0RFXLdWt2Uktxe98YHxOcPaMhcHy4RuemgjrT05vEpdrFr6ld
-	nEPQ2MPWrtpl3TkweWNc0fgUba2GEHzzdbpB63pBSB5buVRbCPaJQJKzo3fW1Qed+/pn79CCE86
-	hGWRg0x3/RbMgZ1WQNnEcN+/ON2ZhmOg=
-X-Gm-Gg: AYBFou0Bd7v558XqbqLkO/rPWGtBU5wrkOHEI0Lmwdryu1IJGYo/xn+CUAbvriy5SCm
-	tzQkWscEi+KcDlFxUaXDF8KQG3exNFYAfSM38uvQ0T83zVHLUb8xT1xgaaTamw6FeIXz8hfTKXN
-	vki8IbsZgvzlHGCOeYe8t5C87zJ5J/NOM0cPDl3rdKkCXBPUFr0DMZHrW6aAWEKxz0p/xG9WIQO
-	BEAIo6xSX+SUYRsYNtlLdLR8VrbyQSX7ZRKvJhnaPfMh4MCbGV3+2smnV+7/emklyltSUgM8TCq
-	LoIeEXtqp/xbifPzJkr2TqJ4+ZfDbIINv0mU5LOSyjnCymnFiG/zIsbpl09fZ4GKhXatXiqWMrK
-	S1ydUkcPVaSOhsSuIAfrMTRro8liy4lSeTPZIU4qgKHUL+4zD+FpiQoddVCM/B+JCvZkBGw1rgd
-	C0wwzhEjK3f8BbEjRquIsOfZmpXeUcaNFHrDn7mbWk+ei1ezt80GW/VZ2vOUcNj4VjUy0Bkb9kN
-	Btis+Ku2HVtfDWqXlr6XtWw1F/6C07EfvH2Fg==
-X-Received: by 2002:a05:7300:ae18:b0:36a:13fd:b5c with SMTP id
- 5a478bee46e88-36a4235ceddmr26403282eec.2.1793705642096; Tue, 03 Nov 2026
- 03:34:02 -0800 (PST)
+        bh=ox9VPdNe/5nvNwvY5JemNTpyw3tSN5sVHQ5SBOK6/8M=;
+        b=XSjt5FIYXvjWBHGXHGFpXnIpT+hLBxapmnjmT2TJMlAYvEnWcD/Zz6HGBU28X7chY3
+         spMd+a9kQ4bslpQPiXCMiAJkbPGxyU3Ik+RpMoTte5lo5uEjkvcZJlxp0efPeYjvCBgm
+         O5Nv/RuMxNaPDkJw2xhgjsQ8ny1bnPhjPpIy9jlr3KM2dZh4l2NIkYhBAXudcg5U4OfB
+         IPl56O7nZD/9/Go/eNTHTPUBMR1X5I722K++te14j6jdmWJbZGG7qMpRbhTC5mAhneqo
+         ZSyYdzzy084ADV4crTroDg+B9ncKcJ94VR0vxQQ31rDQ+g0Vr4qSkgN/a/BoeNWy8s/h
+         lZCg==
+X-Forwarded-Encrypted: i=1; AKwUvBxU4T46GfG9Bma3m0YEk+qi8/5p51/gRzAKGqU53z7Ahjs1CDUlDQQsl1FstM+ec3Jb3fQnkG8iFEBvXLJo/Q==@vger.kernel.org
+X-Gm-Message-State: APuU4Z849QC1tO2oS2gimdHvsFmdUX+XxeCGp3NNnp81Pa0aVQkdUJGU
+	/SS4TOtFj6XJVbWyzkUoGXBbCtmiJ/JJoJxlAjlfsZStUL49Jr4RZ9cIWzG1uB5Pb9Lqq8FoFuv
+	3LNKCqUlT8FZBaBCJQXlj2Er4vCGmKFg=
+X-Gm-Gg: AYBFou2e2nXLByE7Fj/t82/jT6ZLiGI/ujEYTrIe8BcPZ0AbBazdxX/OHzA59TQNhcQ
+	0l+MLtQqPKaA0WrMbs5goW3WDUZ+2Hi8zXAeO9Y79EfBAG/8IR8UCntwUVGx90wA1nmAP9h96o6
+	HpVszuLBAKwP6RlvIUrEwZPMaymS336SASAVINKnaT2E7YsG0yKP8cKh+OHI4kCQ5/HFDZEYlGX
+	+QPlnlacg3KtV5mc7hJWS/+hAnN5VSmfxMNs9GBqrGwuplrwIKjTR42EgjIMRAccINruz1OuKEJ
+	JfS6GfVMOGK5ZvcK34ADktRHBCmONj4Rd6a7DceZdvNlmbKeQclicUiuIigWIv9RCVBrQPzHAQY
+	91eTCKPxrHoQxCGI6AZXOaoCkkMQD+vBlGZ4KMXHoJvRIJqkvFsHCKJC+evhdKh35eMzoyjX5rx
+	/mIcozD8Cc7dyP8d11XMW5WhsG84I2c4omSVYq8wyiNeKact8cCZt2aTeCH6G5c6wyddbUSfHya
+	kQn674dtgEIvRRmT/JwxNGYRPSwUUEkoVEp
+X-Received: by 2002:a17:902:d501:b0:2e9:6468:1ff1 with SMTP id
+ d9443c01a7336-2eb3648bf2cmr192226705ad.2.1793705879368; Tue, 03 Nov 2026
+ 03:37:59 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -106,13 +106,13 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <CAKHwh-E-7CRRG-DH6-rDfGUCFAxG6JNgswk-suTaGKqMbig5Jg@mail.gmail.com>
-In-Reply-To: <CAKHwh-E-7CRRG-DH6-rDfGUCFAxG6JNgswk-suTaGKqMbig5Jg@mail.gmail.com>
+References: <CAKHwh-E_A7Bp1oP5PYkgE62hh0cJMQRuxOM6yXGF7OB1QR0BhQ@mail.gmail.com>
+In-Reply-To: <CAKHwh-E_A7Bp1oP5PYkgE62hh0cJMQRuxOM6yXGF7OB1QR0BhQ@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 3 Nov 2026 12:33:49 +0100
-X-Gm-Features: AclHuK-iMhGiUjJv_8E5Imp48tsrm0NqaTaFIcoPNcGmyO5xXsgwEO2YqTM6jGc
-Message-ID: <CANiq72kw9+VSV8A+GvsYQrV0Qw19=6hg10Zjw9pDPOD-1nR-7Q@mail.gmail.com>
-Subject: Re: [PATCH] rust: alloc: test drop behavior of Vec::drain_all
+Date: Tue, 3 Nov 2026 12:37:45 +0100
+X-Gm-Features: AclHuK_NW8SW_bjub3r4YsgwDQ-uRt3rX5_H7c3gsxcyLDfpG0dMRGLtAyOVWec
+Message-ID: <CANiq72nNFLKhywoDPRmkeJSwkhQACaZeB2SiokowTOE6a6rOBw@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: alloc: test drop behavior of Vec::drain_all
 To: Peder Bergan <peder.bergan@gmail.com>
 Cc: dakr@kernel.org, aliceryhl@google.com, ljs@kernel.org, vbabka@kernel.org, 
 	liam@infradead.org, urezki@gmail.com, ojeda@kernel.org, boqun@kernel.org, 
@@ -123,34 +123,20 @@ Cc: dakr@kernel.org, aliceryhl@google.com, ljs@kernel.org, vbabka@kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 3, 2026 at 11:32=E2=80=AFAM Peder Bergan <peder.bergan@gmail.co=
+On Tue, Nov 3, 2026 at 11:38=E2=80=AFAM Peder Bergan <peder.bergan@gmail.co=
 m> wrote:
 >
-> This adds KUnit coverage for the ownership and destruction behavior of
-> Vec::drain_all. The existing example consumes integers to exhaustion,
-> which cannot exercise destruction of unconsumed resource-owning values.
->
-> The new tests cover partial, absent and complete consumption, plus an
-> empty vector. In the partial case, the first yielded value stays alive
-> after both the drain and the vector are dropped. Per-element counters
-> check that each value is destroyed exactly once by its current owner.
+> v2: Split a long test comment to avoid mail transport line wrapping.
 
-[ A couple procedural nits, since the message joined my inbox while I
-was there. ]
+No, we don't change diffs just to work around wrapping or sending issues.
 
-This seems to repeat part of the commit message -- is there a reason?
+Instead, please use `git send-email` and `b4` so that you can send the
+patches properly.
 
-> Base: alloc-next at 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4.
-
-The hash should go into `--base` in `git format-patch`, that way other
-tooling can pick it up (it is good to mention the branch name here,
-nevertheless).
-
-> +        // The caller owns the yielded value, while the drain drops
-> the remaining values.
-
-I think your patch may be wrapped and so it cannot be easily applied
--- please use `git send-email` or `b4` to handle that.
+I see you used `base-commit` in v2, so my v1 was outdated already --
+that was quick, I guess you may be using the LLM to send them and it
+decided to add it after it tried to apply the v1 to double-check or
+similar? :)
 
 I hope that helps!
 
