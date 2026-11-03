@@ -1,129 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.58.211
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793699349;
-	b=2GuA4Ctlb5LGmdoRlFAeEAla4/h1J6sJpDPYFKfglg2eWbbIOunzLgC041ZKbc9aWY8r
-	 rd1vK0/xP/XD1SvXZ+pClvuwWNtxxK3ZEPdxkbdt+agL73JwtBYYWsWxstBX6ECmZprpd
-	 3c9u4472Vaf3b2mHkkChZuYe3wxc3vRrJ/XM/oKqR4m5P6aPkGLDdPx1rN9TeRFHEWU79
-	 k2XE9AiUFLWLUJ/W9SGPlXDthIxG5RD+51r6M8G/Lwd00P88UtzVOWhfrniqyQF7/396v
-	 +m8jcBo8LTAKsRFBizqLzKICwfB2nMiRRIhfj5yAiXF87vThQBKyaBS2ppAe0hpL+Lg==
+	t=1793699620;
+	b=nRA7CWvPjI10COXy/8/WUQcVX/2KfquZiZDlIplKnjAPeDhkSvh/FM9GxCsi6/wn4R09
+	 AM+C18aHceOQcEka4qMZsLdmgD4i+O05PINiAL++UazUw0bdDc/QA/4se1I9HwtlWJit5
+	 Lxbadx3z4Rx/RID6thAq5v0oc2j3iVDdDaoq2K1zsVLj5Ht0mGW+ua8HbwWCtk5JMR/YE
+	 8aV15H0tZosGn7hZ89NUIYFDw+LKTQ/3Xf25z+3sMlHr9K4YsMxO6h9V44P0VNYyEBKDe
+	 Vb1sRgPITsyYW8BI0uEhrkV3IG+LnKyhwKWYOMc0YfUW6eXj5z/8jfuL7qPc5FbZD4w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793699349;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding;
-	bh=OG7G7PorkiRlIdo4/3T/y2XzMFds8zQXDfkhHN9H58Q=;
-	b=MXhyq61LDvWZgx/UFcMK9m0ZUR4qTnafGFITg9PPmS/wXknPCEDcyoz9h6ECqbuxF92n
-	 62yDV1opMbLlG+2K7UPGGtHC8U+k8lKzwwhueRLGuLtq7GAS0PxXxZ2wzaxwOhxD9RHUJ
-	 nn0/H7SYYCuvjnO7N1Eld+NGjANHkYqs9L02ioC1eCRlZSjM0DVLAvId3t9hsMumRDOTW
-	 NtqCj2YvYsoYQjw/JPl4Zxb9gOTAIMQiphLT76MkoL+G18MtrrrpfxSN6ZLu9bKKYuviu
-	 NGDPP+Ndw/9y9VKKnU7Dhf/nH37jNHS4bJZEO1n3Xn877sd/+I0Mo7Razua58l13t3A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793699620;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=exuUVrZEzA5+Clh7tzMZyi/JBKCYe76w9r6sEUWqx6M=;
+	b=HlytfLaQ12WlOyv8pqrYgbNVb7BDij1Sj22m80Kt51hD4ErMEWc3/KcSH56F6AzUpDoV
+	 XxklgBKNbJa0ZPhCiu7akX0cm0IVEPdnmBQ77fQBkQXv7y/65wJconN2s7E89WZYWeaQK
+	 dZQTjZDuOcBUXIkwq0ACuv3gpByDNYySDL0OkWcpTOgNjI07yHXvJFNkzlKO56+KHsjlL
+	 5TarUOywCkBYqqi6+ug+OSSQ/clOxd4I+yZapCJ3pi6I48lBmz+5JOBmRZKIWqeqSPIuw
+	 VSO0QpGK6CzBmEkviVaZh9zZR1mbzYyWNgw0JtwWAC7aypQG6Gb14Y4yrOFY8deNdvg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=flapping.org;
-	spf=pass smtp.mailfrom=flapping.org;
-	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=YmV6RvIl;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=dc7YS7E4;
-	arc=none smtp.remote-ip=202.12.124.154
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=qq.com;
+	spf=pass smtp.mailfrom=qq.com;
+	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=rPxgZSle;
+	arc=none smtp.remote-ip=162.62.58.211
+Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1548C606A327
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 09:49:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1548C606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F120A606D802;
+	Tue,  3 Nov 2026 09:53:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F120A606D802
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=YmV6RvIl;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=dc7YS7E4
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 51B9B7A016D
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 04:49:08 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Tue, 03 Nov 2026 04:49:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1793699345;
-	 x=1793785745; bh=OG7G7PorkiRlIdo4/3T/y2XzMFds8zQXDfkhHN9H58Q=; b=
-	YmV6RvIlPYeodh59rkbGI5zqJRCYlOa7gMl0n9WZXPGF8bld9Ui+8PNS+fXrtvhf
-	3Q04AU4OPyuOwAmuEPkTEeLZ/4EkGevbsf+juEFiXbTfZLRHbc5EnQTtifVM8rLH
-	PXbjhCTZRwLQSvHHZ3ROuyL5J3xkDimv9Xwp2hDzM/onfotvSBcEc+Bq7q0ccPCy
-	TcclLdfayPIs44bZ1TfJjkmVPNQEDcpCZCvCrz8wi//XOu5ZejDmSlwqVy6cO5Nr
-	RmHyXV3ZJGD6cCepWl/yJ1EswFnOVJiNlQRUht3iguxqNkU4BUZVs1juDE6+M4QK
-	3EadjNls3DjUScjCYNHIew==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793699345; x=
-	1793785745; bh=OG7G7PorkiRlIdo4/3T/y2XzMFds8zQXDfkhHN9H58Q=; b=d
-	c7YS7E4H+TBEtgldCTpv22V9t48KUldRdHrTmscixOKvYNUaCigHs3KZ2Uq01e1/
-	XnstUaFPFQKZw81hLvXK37HOBN85EkI86PhPvlhQ15KMO0xbyptPwPs/gybdEDG1
-	kKnhgXVL2eGXWvzq8VO58DzlHJ0d/vWL7Yt9rKYH9r4QXTh900bgI6SHdMauGwXZ
-	IgLc4QjS2MOPtNiDjwgdEB8EWAwGLglAuRoqUbn2NNmxoYImSL7svsA0Jip0QgYG
-	dkCyFcEeu4efLY/DyH3g3ZXJopEyE+5uBBiLFty0wMmaKIeU9g6UOPRUP7GzTUSE
-	l8v4cNafxyG1rqQoS+j9Q==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793699345; d=flapping.org;
-	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
-	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm1:rsa-sha256:XcQaRhpExKVKdBp4S0A2cYvYHANsAgvTIH/E9VinthNqnB5
-	+zlRhxE2CZV19n1jpNh0nr1DAIoTQVjYd7t/UA9yYLQwv0fecSjfLNcdvvVR/6hm
-	szHcFzoaIw8eKqO6su+jwlfar7D4Ch5412wvzaUm7hnzieHnlaAZGByLYkwI4VGM
-	F+NVV+lusKAtP0dL4k+1Ic6lgYZUxB1CvZb62/a3YZd8a1T5tpVZuKbD+tJAaeC7
-	c7FAtYnWStrBBwmkdljNpm7Tx8FF+E1HRbGBKzMaFRAxQncYm61WVb+O2G3kA4Uy
-	EPCyWe4p1vzlwWBL9ElV3YZFbk3jYfl1wS7HuJg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:KFEYeJSeqaQvdhSfOiFj3pESt9ROi+/kLsY54sLVMnQ=:A69AET1Hnmc2CppcAFFTir5bItDWu7qWG+xCGZtT8N8=;
-X-ME-Sender: <xms:EK7panJYqIeXKlzyb6RoVeAgS3geUr915EtAV6OD-2UYHkbvHh_uxQ>
-    <xme:EK7pagKyYa1o55Q3frqsugecORLznxWZCW4-92hD4s0OqcBTONOdR3fHC0EKwgzGu
-    q8VP1wTjlcv6F8hSu2ySvIv_7WzsTUCu_EfUZpXUip0r1VeXDMw1mGa>
-X-ME-Received: <xmr:EK7pagley4nv7EFzEUeN3saxq8aXmmzmPxNYSJbz1OZ9wPHV3VJXkMksh8zvrXxt-DcHawFTE5u75CxYQoEOTWUA>
-X-ME-Proxy-Cause: dmFkZTGoAdnMZpSzRxjqGakBDdmQBjBOFDndVX07QMFZZzrUmDy5sPPmTzyIX+5y2ejCSm
-    k29jl5O6VozixDzDldi3Dxucr92wBgwkB7AFKK+oJRd1vvaGeznaUxq/Ge83a4h0bDAIID
-    LUXb3jKBN+Dyids7eIDdNJ69zI3GAppKgn2TPI+407ytDKj+HrZ6k7r3kqSIkVD7ZSeT/X
-    4TRTGrSmr5eXXMnSSE6VCvLeaJSQu9hXBTna8wz8ToUeLLIxgGKeJ5go0kqwiibYNlqYpu
-    womEK5z3VLYxCyk3zpnVdd1on5EzmFysqm7Uq0a2dQZjDhSoYG9+wjubq8XEj6WoKrvFGv
-    Cp9M/YhHv//3rjPbK/K+DMm5MRq8aLjx+9xCSZuhzKjFWhsuPOscy4By1Uu06h/cpDYHAd
-    fbWc4buaUhPxaWVYqi/VZ4XEKEOVj+WxKVsfjKdLPYWTAMQlK7PtCY2+YNcFZp66k7ulJy
-    0LAt9U1k9w73KjUQvgoVRzyBouELenbH0/sTcp8SQD6XB8NZ9dPX6isKJ/3OtZgMyxB1BS
-    EQUxpo+pk+ceBmBolZBLZTTC2p5B/SFrudk15CTxcMQLTljaA3Mr/H+lq8Ed4b4E77cnwU
-    8sZ6nWtYMVptckoZ9Vz10p2LepBv8U0/K81szq1wR3FmJP0neGYTxuWSIVLg
-X-ME-Proxy: <xmx:EK7pamJjHbUZv5oF3g4dFGL0JiI6jyTvKj9DYg7SPHHJGC4BmmVTSg>
-    <xmx:EK7parWzXTUrbuO0iPy1sCGhUEJni6dZNS9khgzOBwxGpcTEMfkX0g>
-    <xmx:EK7parOa7YBXhVg7ITjmD0t_zI_z2kBY-ztTWrpAatQCYTt-kEfLmw>
-    <xmx:EK7panm39Ep6Gs_hlyKss_7Ms9mC_01o7eDgxoJqRgqH9Tudi_mzYw>
-    <xmx:Ea7pasn1Ec0ISS5__DG-weNW_Qzj96UHVwyc8HeYKvup-V9lQsJQp7I7>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Nov 2026 04:49:00 -0500 (EST)
-Date: Tue, 03 Nov 2026 18:48:57 +0900 (JST)
-Message-Id: <20261103.184857.703333269279645088.tomo@flapping.org>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: tomo@flapping.org, linux@armlinux.org.uk, ojeda@kernel.org,
- ardb@kernel.org, chrisi.schrefl@gmail.com,
- linux-arm-kernel@lists.infradead.org, a.hindborg@kernel.org,
- acourbot@nvidia.com, aliceryhl@google.com, bjorn3_gh@protonmail.com,
- boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com,
- gary@garyguo.net, lossin@kernel.org, tamird@kernel.org, tmgross@umich.edu,
- work@onurozkan.dev, rust-for-linux@vger.kernel.org,
- fujita.tomonori@gmail.com, guptarud@gmail.com
-Subject: Re: [PATCH v1] ARM: rust: Generate unwind tables for Rust code
- with ARM_UNWIND
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <CANiq72=Mb7Vn9O0baOJFRf68UiZoxK0RjdXBFLw_hCHcqCkZ_g@mail.gmail.com>
-References: <20261009124124.1176706-1-tomo@flapping.org>
-	<20261103.182511.1470121559944018656.tomo@flapping.org>
-	<CANiq72=Mb7Vn9O0baOJFRf68UiZoxK0RjdXBFLw_hCHcqCkZ_g@mail.gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=rPxgZSle
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1793699606; bh=exuUVrZEzA5+Clh7tzMZyi/JBKCYe76w9r6sEUWqx6M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=rPxgZSle8nDOKptywmWbOo0z8RQ3mCDoGToo1AGOo0lRHC5vhQFlXeejPPN6cN9MA
+	 9NBZ3MZiVaq2/5FHBGuNpvM9Bv6aJyR3hTS8FjXIF6W68J5AsXSxSbrkWn8MsYwcYo
+	 UwcXoG4ZNNWAN04+No32w2/wu9ScEzdkl4iaZvPY=
+Received: from shuai-VMware-Virtual-Platform.. ([218.28.192.28])
+	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
+	id D563F852; Tue, 03 Nov 2026 17:53:22 +0800
+X-QQ-mid: xmsmtpt1793699602td0red6kd
+Message-ID: <tencent_173B7731E90B9624F9F82613DC3031B70907@qq.com>
+X-QQ-XMAILINFO: M07Ulnfy3VHKaC+H0tf4KCWjgzzzUw8hDxsxEI2gxvotU7+hRHwycOPVkOx2oT
+	 U5ys/Cz/e69cQee+tNseErHvnO81TO8tQyWRyu8KlKcmvXvfNlFe6OXXf9RrysGhnBZlCpDQqWtL
+	 RQijzEpKYUc6uPDXuN5T3tMpQNlmdKQZHXu4BUkP7SUWl0umrUwbRkb5LgswdDDn6H4RUa0clWyu
+	 2TPJm+v5ugYa4Pxb5sSpBylPnxqVL2tkKmve0+6Lx5QKnjtZIQU4zuh6lJf3zcysxVxoOt9w///x
+	 BVdf4KsULJ138dM6RaT8ZRKVkYWGDQMvCDBlUBks1AKsR/ah03oGSdnynxyHkyoTrmf45Dx/eLVd
+	 iq2oXUL4j6hgpwKEi/fCBxN6kpF1ISCjOg4G/5313dE7b9Sggcfs7hD8wgZYFcHNNPTQdHzXu10K
+	 /bRNGj9hLgcY8SDfCfWutZL0Bt03VkQJT4h51KzozPZd5yRsSRBFqdmDQ3NK3hVjOyKzSCoDNsiV
+	 8opEGCHuRGMt1OIZEeV7kUQShMKg8Uq0KxZ+h/hesM3pJC4OtjVMmao6Ud+IAmNN5H4vyEtru8Zb
+	 yIti6IKLmLSfjxAYDCllF8eFycihYFCSm4eMK1XnrFzqgDrwfvarMtXIDCeXSlCRfKT9C9oyMGPK
+	 WsIr6R2svBOxoMRmT0A/DONZxSbJnVlcPnh7chV8Jd8gh7RBs9linMoJgU8ZPSlRHgK2tP5tcbcT
+	 COcvXmo6riN7Bru2P1ipuY27DkJ+eKfxPR1PWx3eVg2izsrimhMcPz/GXTfPlvSo6EwtP/x6F6vN
+	 U4Ls19KlLAdCIX/cRL154u7meTEN7FRUZKUoVEp8RfHSYkK/LeQJY3CF2bEfMikRydXKDbIqPI/h
+	 NX6jsTL/dUN/2gNrkyQWc75aaErMY5FgF+Pbp23tOCl9n5L2pTSllLOed0yVTxIUphatUjStIlc7
+	 f5etLVsfTixJiJ/leLP1MAf2lyhZRFKVAIVtBe6en+nnMQv4ocDJlJuX9OQqRmzFPboor/eAXDBj
+	 +d7GosoY2Jbqhc62nwmoqjabP7wo7e6z0DTNUXqIonpAbXQEVGKbaxoAtTi/z7XO1YaEy8+rLteA
+	 wZ+ucu
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+From: Shuai Liu <847807867@qq.com>
+To: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+Cc: Shuai Liu <847807867@qq.com>,
+	Igor Korotin <igor.korotin@linux.dev>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Mark Brown <broonie@kernel.org>,
+	Brandon StJohn <branstj@gmail.com>,
+	linux-iio@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v6 0/4] iio: position: add Rust driver for ams AS5600
+Date: Tue,  3 Nov 2026 17:53:22 +0800
+X-OQ-MSGID: <20261103095322.297395-1-847807867@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261016154819.17936-1-muchamadcoirulanwar@gmail.com>
+References: <20261016154819.17936-1-muchamadcoirulanwar@gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -132,21 +93,88 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, 3 Nov 2026 10:34:59 +0100
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+Hi Coirul,
 
-> On Tue, Nov 3, 2026 at 10:25 AM FUJITA Tomonori <tomo@flapping.org> wrote:
->>
->> Gentle ping. The patch still applies cleanly on top of v7.4-rc1.
->>
->> Which tree should this go through?
-> 
-> I guess arm's ideally, but I am happy to take it with their OK (do you
-> want this Cc: stable@?)
+Thanks for the series. I read through v6, including Igor's registration
+rework proposal in this thread. The comments below do not overlap with
+that rework and should carry over to v7 unchanged, as far as I can tell.
 
-I don't think it needs Cc: stable. It only affects the backtrace in an
-Oops or a WARNING, not how the kernel runs.
+1. clippy warnings
+
+`make LLVM=1 CLIPPY=1` reports four warnings on this series, which the
+Rust CI gates on. Three are `clippy::ptr_as_ptr` in the IIO abstraction
+and one is `clippy::useless_conversion` in the driver:
+
+    --- a/rust/kernel/iio.rs
+    +++ b/rust/kernel/iio.rs
+    @@ -202,1 +202,1 @@
+    -    let priv_ptr = unsafe { (*indio_dev).priv_ as *mut T };
+    +    let priv_ptr = unsafe { (*indio_dev).priv_.cast::<T>() };
+
+    (the same pattern at lines 334 and 397; line 334 is already inside
+    an unsafe block and just needs `.cast::<T>()`)
+
+    --- a/drivers/iio/position/as5600.rs
+    +++ b/drivers/iio/position/as5600.rs
+    @@ -133,1 +133,1 @@
+    -                Ok(IioVal::Int(angle as i32))
+    +                Ok(IioVal::Int(i32::from(angle)))
+
+2. ignored doctest in the SMBus word helper
+
+The example on `smbus_read_word_swapped()` (rust/kernel/i2c.rs:841) is
+marked "ignore" and references driver-specific facts (the AS5600).
+Ignored examples are not compiled or run by rusttest, so the helper
+currently ships with no tested usage. A generic, compilable example
+works here:
+
+    --- a/rust/kernel/i2c.rs
+    +++ b/rust/kernel/i2c.rs
+    @@ -841,8 +841,15 @@
+     /// ```
+    -/// // AS5600 stores the 12-bit raw angle at command byte 0x0C with its
+    -/// // high byte first, so the SMBus (low byte first) word result must
+    -/// // be swapped.
+    -/// let raw = client.smbus_read_word_swapped(0x0C)?;
+    -/// # Ok::<(), Error>(())
+    +/// use kernel::{i2c::I2cClient, prelude::*};
+    +///
+    +/// fn read_hi_first_register(client: &I2cClient<kernel::device::Bound>) -> Result<u16> {
+    +///     // A device whose 16-bit register selected by command byte 0x0C
+    +///     // transmits the high byte first needs the SMBus (low byte first)
+    +///     // word swapped.
+    +///     client.smbus_read_word_swapped(0x0C)
+    +/// }
+     /// ```
+
+3. repeated unsafe blocks in the SMBus access helpers
+
+Patch 2 implements the `FallibleIoCapable` impls for `u8`/`u16` with
+five near-identical unsafe blocks wrapping `bindings::i2c_smbus_*`
+calls plus error conversion. Extracting four small safe helpers would
+put the safety argument in one place and turn each call site into a
+one-liner:
+
+    fn smbus_read_byte(client: &I2cClient<device::Bound>, reg: u8)
+        -> Result<u8>;
+    fn smbus_write_byte(client: &I2cClient<device::Bound>, reg: u8, value: u8)
+        -> Result;
+    fn smbus_read_word_data(client: &I2cClient<device::Bound>, reg: u8)
+        -> Result<u16>;
+    fn smbus_write_word_data(client: &I2cClient<device::Bound>, reg: u8, value: u16)
+        -> Result;
+
+For example, `io_try_write` for `u8` then reduces to
+`smbus_write_byte(client, reg, value)`. Happy to send the full diff if
+that is useful as a starting point.
+
+With 1 and 2 applied (and 3 sketched on top), `make LLVM=1 CLIPPY=1
+drivers/iio/position/as5600.o` builds with no warnings and the rusttest
+doctests pass.
+
+Thanks,
+Shuai Liu
+
