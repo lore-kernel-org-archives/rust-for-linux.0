@@ -1,73 +1,126 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=34.202.193.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.149
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793744876;
-	b=WcvBbYm3Q/1q8it2eNCpg+hb/Uq+IKoLEV/NIr7+FVmjfuRLCoJPdgPj5ewXA7FtUCMd
-	 gYPuybcZL517DPaJoaenRWqLYOeEiXLWxrQT3dE71GUUUuptIyJNE7eM+kBHrKk6ZMYQ6
-	 0/6xYlWXiXQgASLenGcoLoq8db7tf0RtuJrGS5pNUajEMsCSb5TYf8hOmx0dND3eTMS4W
-	 +jwhO/oq0BqqzVBr79yJj8ROGvMrU1buxCWQeO+klox2MGZ0ZDUTqu9MxQtBDO6u6yGLA
-	 xm2Cjl7ULsWkJey2YSwlriYTfhK2uy9lPur/+fQerS9XaNBkQx37hQAkGC5HuE0YIzQ==
+	t=1793746633;
+	b=MvVFzEaN3ir0qftY/3X8ExVBgj6Bffamc7Uwce5n/MJOecZe1XvksuRry2EfX/x6vbk4
+	 2EVn8oskB03iAgFM3hdTQPM4WUzEDkbFcjovcdYvGqdih4CFlXvAgepKu9FfdnbSOj6m4
+	 DR2IVSVMLyJe3G3S/7sJeASlt73QPxgWQme9WWZP5OtP9gnG+MxkhfxAWdkBWfC7RoW6L
+	 LJlG91iLPneEJ5LP/l6CiYM9tNBRchmKAs2uXrxAZyufDMRX9EvyrS/pKA5l6uW0FoCST
+	 ss2LXGhMNdSEfMcEm17vSYjlpWMWRLiIQZFr56Q8bdAw/ZNcioY9/WB2J9TSHzqXEPA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793744876;
-	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:Feedback-ID:
-	 X-Pm-Original-To:Received:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=zjzl9J9U/1rMnpr8gwO3O8LBEUxBqcyHgeaIxj/4Jss=;
-	b=n8+sygxKKj+vvJrz38EBauLubKq3ow/o08/NpQY8rOvSZXKNGF8AVdBHXNjytu4t8+/X
-	 WLYnI4jPBhbt7+fAs5hbvjLpGQKhvtIV35U773m96+Bi8UPlTsUsVykbHAIM32wl3kzt7
-	 5SvqlcWlozp3x6sSKmmOLbjz6G+jCYm10OxhHp2Bx6x99i5K8QdBo51YGDsD1tXzwWFJC
-	 bQ/nKUJle00DudCP7b7XkRfhlKB3voqUv8cArk2TOKe4ezuLXiPt6AydwkrIB82t1eY4K
-	 nA6dBC2e4o7W5hH6w79WQRKbxYM5TKS7tC/KAOXU3NRrQ2ougLDEivltx9G3OvPKqJw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793746633;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type:Content-Transfer-Encoding;
+	bh=7UfDuvA+DcmTExnwRftrBJzWN7YKIGf3Km/PAUva35s=;
+	b=CeO5SsmHoJuipx9p86u5YM+u/zK1WZTPzaAAx39PEh7gQTNjaw4nuvvUzTgIqiSj6wT/
+	 gc+NBbYCO0O71NeMRZ4o2KrjNRpIrP4FGjNtyVt0XRTV82zeGYSa+Dm1QIrA2JW87h3+q
+	 AiTgimvauiiWXsKS3wse3ZeRS2+4yuj7yaTO8QJ294AHPxZouoWvxgbRzwaWG3BeoRShv
+	 UmNrH98OxqmHfe9/LV7b1XxwVcokv11a0kEzkWHNdUvq/s/2pAB3AmkIyE1vK8/KvMaUZ
+	 H2RLOHLJrs5HvpjB9q87nAweLclKoW2bWkBjNq4fxql9Genl6Kpc7+saCS/rH3rPL2A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=younes.io;
-	spf=pass smtp.mailfrom=younes.io;
-	dkim=pass header.d=younes.io header.i=@younes.io header.a=rsa-sha256 header.s=purelymail2 header.b=WEOgnaLp;
-	dkim=pass header.d=purelymail.com header.i=@purelymail.com header.a=rsa-sha256 header.s=purelymail2 header.b=rMKX5RLn;
-	arc=none smtp.remote-ip=34.202.193.197
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+	dmarc=none header.from=flapping.org;
+	spf=pass smtp.mailfrom=flapping.org;
+	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=lWd66D4u;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=YH8XTJlP;
+	arc=none smtp.remote-ip=202.12.124.149
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BF3606A32F
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 22:27:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76BF3606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=younes.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=younes.io
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B3C606A31B
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 22:57:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 01B3C606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=younes.io header.i=@younes.io header.a=rsa-sha256 header.s=purelymail2 header.b=WEOgnaLp;
-	dkim=pass (2048-bit key, unprotected) header.d=purelymail.com header.i=@purelymail.com header.a=rsa-sha256 header.s=purelymail2 header.b=rMKX5RLn
-DKIM-Signature: a=rsa-sha256; b=WEOgnaLpfE8i+jsglAmkqHM5VbIWJQG1CWzEPffhfvaX3Qmex7PeFjG+Wu5jpUu+T+kBR1Jg1Cp454IaDPgPFT1nlmL2LzYOshcgQvle+zLFeqCNT3j4234NUNO132k6pA4FeR+juJj9bFZZT0REkDmgF366pd3bntkbOWU+EAJzMB5Vh3IOKrI3uiPNP6uS6DiEGI9tRmzxhkoSSe/cxpdyEPnmk8bcTOpIcEjxiKufuuOWUpwl1HTZTLv0Q5txymOHqAtSx2XYvF+SfF+aKgCtQxgICqmdLY9/AQQ/UU9dD9US84j38UYHPLdTaDfmN/Ukqx8r3y3dpc4pxQWi0g==; s=purelymail2; d=younes.io; v=1; bh=d+vV3gaJFjmLIOLiJUMcIH25fkVHN9ZB+h3Maan5FdE=; h=Received:From:To:Subject:Date;
-DKIM-Signature: a=rsa-sha256; b=rMKX5RLnYe6l3x4zWy0Jy5YeDMTN0ifRpBrUh0FLCWPOdzSclItz35a9Yd0uZsadUR8YTOD8d5ZPS+FchX22OaTYGx+2ymd62sqkaNLxnq9SSUPFLTobqX4FTBKSiqZptXCaWkbOAzpcGJ1/R75LEmqZ7Fch1J1C6NQx+lXj0RZFD11fqisJYfB7X39SEUke9CMNd8Ab52ZPUHhLc+pe4Sb04xqFfarvDYBSqd0AqLnmfmlL34azA+epbr1+bll04ZmFBjG5omJjnlp18clZ1W/A7Lp/b56gi54B8onUlS3Jrj7cSuZJoWgUM5aTGyW7D2Y++M3L9LIyQbqg7qN0Cg==; s=purelymail2; d=purelymail.com; v=1; bh=d+vV3gaJFjmLIOLiJUMcIH25fkVHN9ZB+h3Maan5FdE=; h=Feedback-ID:Received:From:To:Subject:Date;
-Feedback-ID: 1578161:62319:null:purelymail
-X-Pm-Original-To: rust-for-linux@vger.kernel.org
-Authentication-Results: purelymail.com; auth=pass
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 465182662;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Tue, 03 Nov 2026 22:27:04 +0000 (UTC)
-From: Younes Akhouayri <git@younes.io>
-To: Philipp Stanner <phasta@kernel.org>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH v7 8/8] samples: rust: Add JobQueue Tester
-Date: Tue, 3 Nov 2026 22:27:01 +0000
-Message-ID: <kw-1793744821.998563484-558346-1@younes.io>
-In-Reply-To: <20261103153138.1087330-10-phasta@kernel.org>
-References: <20261103153138.1087330-2-phasta@kernel.org>
- <20261103153138.1087330-10-phasta@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=lWd66D4u;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=YH8XTJlP
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfout.stl.internal (Postfix) with ESMTP id 577F51D00135
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 17:57:12 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Tue, 03 Nov 2026 17:57:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1793746629;
+	 x=1793833029; bh=7UfDuvA+DcmTExnwRftrBJzWN7YKIGf3Km/PAUva35s=; b=
+	lWd66D4uxSpYbIeMqGhsLNnBVXONgDJCn/wl3XEoCZ+q92vAMEDCpMjaiIVtoppJ
+	mLG6HHgsl4nZbpVhQGkYAe5ors7gzjF+7yEcCt/lWjWThb2frIEWHkyO+WE9X2Nc
+	yAnzWUWij+vmHyWZ8MHxUuqLSxTgQp/ZmcaZr9veSFV+on5dCHHS2C9BgXgriyde
+	2mAvY+RmukdVKjIr2UuY52amsKtKHIF6gKbwYqmJrcDPbh9l478p4RbYOjypTDDG
+	vqdmV1YUak20p9hRj3mbO1fySDNm5MslgQgu5Z1qL0MSBhT/uUiBiA+DXYalY6l5
+	fFTRAVpm6ybK3PeaEGLvUA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793746629; x=
+	1793833029; bh=7UfDuvA+DcmTExnwRftrBJzWN7YKIGf3Km/PAUva35s=; b=Y
+	H8XTJlPDy0sTQXGJB76UYhYHNp+FeSYiHVaJcKcgH8NFHoPHvmMhJoyzU0PhoRjk
+	KPKKYW6ivjg75j/Y6rOKfDGfNDEjufqHZ6ITqfD0r+doppLTv3Ue06/TKmYNIdPc
+	7MrREEBOoTix6ABE6C66iBmjqjpZDr9xNma/FNSh0gX57RUKCe+qgD6wXVRCxWog
+	c2GYQBLbq90CpMADbvA2yko7SPC8xVMreJFpC8BXW3l3Tt+Kgh1pF+AbqIpxYxOz
+	znd93jtWza/3IVGkaTMkIsMZaxWHuuHZ8R8PS9ESY9TuyHcs5IW8S2+nwI9Ak0nH
+	g/pOaL+zTZISkGyCy1+Lw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=sign d=flapping.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793746629; d=flapping.org;
+	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
+	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
+	s=fm1:rsa-sha256:EF3At49yvgI/3kvRtirllTVyyL04yt3QKmJPevwOvIj6EyM
+	R7CEn6YLDGUC5IqB3wvaswW0xSEr9NIGojzhsvGhKIKWviG0NFRf6mdnJ8z0Sd4R
+	AMG6KX7EnX0kV4btNrU+7bIwsO2VnSRzaEM7tQtX+gaJi/Fzl6kEEhb2+5Z/NYGe
+	n25Wqk0QCGFccZFH3E9MytEvnUuNpptbA0q548FoAk4yVpeDO/DyBeO/6t29GyEc
+	Y59pxEx9/zyJAjTGgmBGuYZSA+XynXUtORZdK8HN3ObJjQD8sxyJeuhi5dZHtUzJ
+	32ffwj+yVjjPZ4qmkNGU4zofAv7HVNznlgkGmXQ==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:nNQyfHotBFZdmnLf8VBfampmR/3jp0Nty2kPI3VgJeE=:je0xRR9AtCyaD57WTqX/T+P9SmKXGZKhKCtk9KzsgH8=;
+X-ME-Sender: <xms:xWbqasqp0m3z5AqbsNEeRHkSUXUSe9Hmv_6aGh1GHL_wzNwK3_c8lA>
+    <xme:xWbqahIF_Ji9rujCbVl88Lq__YpLpAbcRbW297M_H7j89SB5EVLA6YZHVISuyeNdI
+    ig5hOXcSgvZn6kT1rT21CtOGeAna-JSzVukDRYKya34JmQPHKjYF5bK>
+X-ME-Received: <xmr:xWbqaoBwcE7ACD0_8TosI3unxfHsAPTE68urv1yyIjQvstAPqzg09rzQIQCRpVn48Xu11KAtW0hObH-23-m9ADkz>
+X-ME-Proxy-Cause: dmFkZTEL5z/GH+jhqJ+hy5QcDI2QZOuPBjY17Iq+jmtB+p6D+ZwgA207QoViIqmeSArGz2
+    919UhKHhWOjWIFPQt+7m65eSzTfd7oJ/Mie6OVIh3WzIBbVtXlZNit1pBeBiK+feCUyUYf
+    MiDwaUaFe8EyFNpKm8F4+gU4O/fsYACPdcETBH3tF5M5M3aWNhQbauQIWDHad2pcjzOxVY
+    C6A21gNdMq+GezobA/PX/NM4MQMgVKSLdIvdVObnGQTD6vIA96JCXcj6JKK6rpQHVYJuNR
+    WXGz6E+Lp/AzHP6s0Gr0UacpcySZFbMfTzlqbRW2Ii7vM2V4tX2Ee4TrU6ilMPLRp/dlk/
+    rLqFelI5Lfqx7z1J5oDF6HQHUI6NhRW9iOM8fxypZJh5aF8XVOfRsMIzCRdS1tUfJro//D
+    0ARGm2li0e3GzMUlB5xVjH0TiN5PUWmuiZj+/+wZ91rXZ0AIKjdzs+NJI+YYFHs4Jn2bPd
+    ODmnNqfCXPjyqTEE5W+krlT4RTzJQZ2z4pQtuQlbAREKquEI/3ygOQ27rJ3wLbjPCeOEi/
+    /S9LDWHto9nuFzyjDSpVr9EN9emam5ROI5LfEUFMZ9GR4EchtDe8HcXbTpjIT/4cYSEoHA
+    6qPabKswsYrJwh2b7mje/LcXa6jZD98yTvs7FCXTxTlaO6Ii5lehvjYJVQ6A
+X-ME-Proxy: <xmx:xWbqaj4yWfLjbtPeFapT5A9kgd5BXNCbKHMthvtNUqxsc-C72Zp_7A>
+    <xmx:xWbqakFWRThuXp9EOZuRuM3jTmZkHvzDwXkRixb-dKVPFqnQUm0_Mg>
+    <xmx:xWbqauSdKF_WcZ0baplMM6aNx2bRonPnb-KjbD3z-bajXSHoxtBq6Q>
+    <xmx:xWbqaucXAyeuMZaupxaa7AIUCPBba7RmDx2pZY_gqo8klIJ5yYkZgg>
+    <xmx:xWbqal5OZzXXU_PKcdH52tlbvXd0l5mqPyPdytHbpBGb5OBQQc1ORJWt>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 3 Nov 2026 17:57:05 -0500 (EST)
+Date: Wed, 04 Nov 2026 07:57:02 +0900 (JST)
+Message-Id: <20261104.075702.612319673416199209.tomo@flapping.org>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: tomo@flapping.org, gary@garyguo.net, ojeda@kernel.org,
+ a.hindborg@kernel.org, acourbot@nvidia.com, aliceryhl@google.com,
+ bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
+ daniel.almeida@collabora.com, lossin@kernel.org, tamird@kernel.org,
+ tmgross@umich.edu, work@onurozkan.dev, rust-for-linux@vger.kernel.org,
+ fujita.tomonori@gmail.com
+Subject: Re: [PATCH v4] rust: compiler_builtins: Fix silent trap in
+ prohibited intrinsics
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <CANiq72nxjrWpBjwzgdWncKECKwzj6zfjS3XC=da62xr8wiSxEQ@mail.gmail.com>
+References: <20261009224626.1331914-1-tomo@flapping.org>
+	<CANiq72nxjrWpBjwzgdWncKECKwzj6zfjS3XC=da62xr8wiSxEQ@mail.gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -76,59 +129,94 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On Tue, 3 Nov 2026 16:31:38 +0100, Philipp Stanner wrote:
-> +            drop(jq); // Release lock.
-> +            T::run_job(work.fctx, runnable_job);
-> +            jq = work.inner.lock(); // Retake lock.
-> +
-> +            // run_job() above needs to be called without lock protection. Thus,
-> +            // it is possible that the driver instructed completion right before
-> +            // we could re-take the lock.
-> +            if jq.last_completed >= seqno {
-> +                fence.signal(Ok(()));
-> +
-> +                // Drop here directly if possible. Otherwise, let the DropWorker
-> +                // take care of it.
-> +                if core::mem::needs_drop::<T::JobDataType>() {
-> +                    jq.drop_list.push_back(job);
-> +                }
-> +            } else {
-> +                jq.running_jobs.push_back(job);
-> +            }
+On Tue, 3 Nov 2026 11:54:26 +0100
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-Hi Philip,
+> On Sat, Oct 10, 2026 at 12:46 AM FUJITA Tomonori <tomo@flapping.org> wrote:
+>>
+>> +$(obj)/kernel.o: private rustc_objcopy = -w -W '__rust__*'
+> 
+> Hmm... I am a bit worried about doing this here, in `kernel`, because
+> it is a big crate with many other things around. The pattern shouldn't
+> match something else, though.
 
-The job's cost is subtracted from jq.capacity further up in the loop.
-complete_jobs_up_to_seqno() restores capacity only for jobs it pops from
-running_jobs, and a job that takes this branch never gets there. So each
-completion that wins the race against the worker leaves `cost` credits
-consumed for good, and a queue with a small capacity would stall after a few
-of them.
+Agreed. In v5, I will move the stubs to a separate, small crate, as
+you suggested below.
 
-The tester takes this branch too, since it calls complete_jobs_up_to_seqno()
-right after submit, before the worker has run. Each job costs 1 out of a
-capacity of 1_000_000, so the leak never shows there.
+> By the way, since this is here (in `kernel`), do we need then the
+> original one in `compiler_builtins`?
 
-Is there a reason the credits are meant to stay consumed here, or should
-this branch do
+No. With this patch, compiler_builtins.rs is empty, so I will drop it.
 
-+               *jq.as_mut().project().capacity += u64::from(job.cost);
+> Actually, taking a look at that, I don't think we needed it (for the
+> original reason, at least) after commit
+> 
+>   cb7d9defdafb ("rust: compiler_builtins: make stubs non-global")
 
-as well?
+Right, the stubs have the __rust prefix, so that reason is gone.
 
-> +                last_completed: 0,
+> And now, here, in `kernel`, we don't seem to need it either for the
+> original reason, except for the `objtool`, but also for yet another
+> reason: if they weren't weak, they would be exported
+> (`EXPORT_SYMBOL_RUST_GPL`). Which again points to the fact that we
+> should probably clarify all this with a good comment or that we should
+> do this sort of thing in another way, e.g. in a separate, small crate.
 
-FenceContext::new(initial_seqno, ...) hands out initial_seqno as the first
-fence seqno, and both the doc example and the tester pass 0. For that first
-job the check above becomes `0 >= 0`, so the worker signals the fence Ok
-right after run_job() returns, while the hardware is still working on it.
+Right. The new crate is not in exports.c, so the stubs are not
+exported. Then the weakening is needed only for objtool. I tried the
+new crate. Without the weakening, I got an objtool warning with
+CONFIG_X86_KERNEL_IBT=y:
 
-Should last_completed start at initial_seqno.wrapping_sub(1), or is
-initial_seqno >= 1 an intended requirement that just needs documenting?
+  vmlinux.o: warning: objtool: _RNvNtNtCshy5ABSPeoCG_4core3fmt3num8exp_u128+0x381: __rust__udivti3() missing __noreturn in .c/.h or NORETURN() in noreturns.h
 
-Best regards,
-Younes
+> So this paragraph we have (please see below) was outdated anyway
+> already, no? i.e. this one:
+> 
+>> -//! In any case, all these symbols are weakened to ensure we do not override
+>> -//! those that may be provided by the rest of the kernel.
+> 
+> So we should probably move this weakening explanation somewhere else
+> if we still need to do it (e.g. to the top of the new `-W` or to the
+> new file).
+
+Yes. I will explain the weakening (for objtool) in the new file.
+
+> And if we didn't actually need to weaken the symbols after
+> cb7d9defdafb, and it was just about `objtool`, then we could consider
+> doing something else, e.g. an exception in `objtool` for this set of
+> symbols. (Of course, that can be a different patch, but we should
+> understand that part above for this one anyway).
+
+Yeah, Josh's objtool series would solve this, I guess.
+
+>> +//! Since we do not need the vast majority of them, we avoid the dependency.
+>> +//! But `rustc` still needs a `#![compiler_builtins]` crate for every crate it
+>> +//! builds, so this crate is provided and left empty. The few builtins that
+>> +//! `core` needs are in the `kernel` crate (`rust/kernel/core_builtins.rs`).
+> 
+> I was going to say we should say "why" here, e.g.
+> 
+>     //! ....... so that `panic!` works as usual, without getting converted into
+>     //! `core::intrinsics::abort`, i.e. a trap, by the compiler
+>     //! (https://github.com/rust-lang/rust/pull/122580).
+> 
+> but part of this is in the other file -- so maybe here we can just add:
+> 
+>     //!  -- please see the details there.
+> 
+> (But please see below)
+> 
+>> +//! The stubs are here and not in `compiler_builtins`, because code in a
+>> +//! `#![compiler_builtins]` crate cannot link to functions in other crates.
+>> +//! There, `rustc` turns a call to [`panic!`] into a trap that prints no
+>> +//! message.
+> 
+> I think this explanation may be helped by mentioning the PR link, and
+> perhaps shifting it to say it is a decision by the compiler, e.g.
+
+Makes sense. I will update the comments as you suggested, with links
+to the PR and to the new issue (rust-lang/rust#165399).
