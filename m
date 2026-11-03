@@ -1,98 +1,128 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.40
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793664198;
-	b=uNgpMAdnJIJKw4UW/0UQGkPhYxrwpc91oR24ukN+QwTU/Aov608kPwKAEFCJCxJluQSU
-	 5d3ACWtJzjLwfudjtCOUcAzDXqnBJGBXQHZUHW0luDE+BqB6dgh6isfX+k5Qb7R98Ze0k
-	 /RkbScZ7usi3Nkrd4CirP+aJ+neBR8NTZZXE7QMuYO4z1j3kfIuhxQoz17/gx5ahH3z92
-	 UPmlHrjJwod6CBb5HuxgH2fAMuqIsNUqHbQcBq7wCpBUFZ36MppCTyw0W2zOHws3giMo5
-	 Lv7wpeRtR+EiEF7PFWtRHJu2sDLy5VMBZkAeFnTS3RrqYWQhS0XgXTxOpmMB0p23FbQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793664198;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:Date:Subject:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:
-	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=0CXnJ9L57Cufxz3vo3ETwKI7ZvDGuJE0rFM/17MsLlc=;
-	b=J0X+iJxZMK63KX5TBYoX/kQzH1AMqcxiYmneQNFlEe/59E64D/mXk2fcreP+sLBn4gfn
-	 0g0VlcmfJBIO7X/CUzvrhnsNpzDiYL4QojPU30S3jHeuiUKpg2//82g+p86TBi/9dXWuM
-	 R3igtrQWIl/tfzsp2fs27ZcSuzQ0GpBUgUknNsK+bo1JxNN65NkAJd1YGMPNejToCWbkC
-	 s0kjFBpo+yKRztJ/yEUXamQ7s49Rvw04h/2sMKvhi3gLgFH0NuG/xFXSymtoI1VE6DT54
-	 qpnVATHgEOVC7oZWgHBS+qI4sFUacLjHWFrJSuWN5iaKQMahAVDf3xsevJ9dUtzu4uw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=QjTDsW8j;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.40
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010040.outbound.protection.outlook.com [52.101.201.40])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.158
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793664590;
+	b=joYDchbKn5AcfIbwY6Akkh9r0HGyh00CbaSf4mJITrPPL39VYI7aWuk5Xt5MZycVUrHy
+	 SCNqrQ7uKSHpcgA37eBy1rBYQz6kzH3mBbf9I1hp/jpY+WVEFnA1UnwVKfCwu1njcyYvi
+	 MzBKJUovsd4VCze8aBnwHsBJJF79N8TsOlfzFh3J+7sBSwlCgrzkqtwqR1HHj7yZielEn
+	 23ED03eIGt8O7hr2kTbDxRwfl5TBCJKdl5vPKtDi8gsPWGe0Yic//+luAkcuQyVdHpUWP
+	 eAM4I9h9qJViPSCKnz/lOWzPTOEyxYWfN+bXkLNdKO3D1Qt5Wxe5E5gOWcaISVerCUA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793664590;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type:Content-Transfer-Encoding;
+	bh=mDHKJyK5c1CJp4RtBvlfo+it5c3vxzVpCCGcJ32CrV4=;
+	b=Bik4571IgNMUF5738iJfyQUZieT02CDASM+jm8t5BHbW0jbgQiFKtQgWR/pyvTlW0fPS
+	 hlIJ3fbRW8DUx9mUXQCz3Jt1CQPSAvoLO55U96QhYJ1okKmFRf9vS66U50q3zjEIB7/Eu
+	 yaFI8G7ixM5BRLDbUbHii3KdjsDhe6CQjBGBur9p0KfmhVfjytzE8U4V9yHgdiLAi94dn
+	 NdTwbaEKaxN8q90GheOcIEXUAfowo5ecJQcpEyIszErAqHz5B+uTV+zkcyTwqSfV0anQC
+	 28rLvQI+KFbf/VHCQQPf7rxwJB+s9QPq5pHy1+0mmVCa8sC2xAoVao+6nAXMWUrg5Pg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=flapping.org;
+	spf=pass smtp.mailfrom=flapping.org;
+	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=Hp9Mrree;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=V75K01UH;
+	arc=none smtp.remote-ip=103.168.172.158
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6986F606A338;
-	Tue,  3 Nov 2026 00:03:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6986F606A338
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01A5606A324
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 00:09:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C01A5606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=QjTDsW8j
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XFTQP2oFOOHMUnUib3uGYhvRuyUIyR6M2XX2TzYB65knH5gtJEBZAQqyu8FJxSwKbNf3gvXz7mPx8o/RKTZ/fuzCMuG7DvjDi7pD47TKnrMclaUKmdZ0EJdw0rhZ9jugUVPq8IcWMBdQHveLif82NZmkDEQXEJ0cUq0+TunSlDUzjUOOZ79grYn2mfCiaQ0NrTFT89PUXYlEoQ9GD566uDD9JdBJ+ysoib3DcwDoADG4gQTsaPmB+ETMhrTWR+QPPitWk72n12/juUMgcRBdfr8W7eAxhYXceq+YJerfI5EZO5UlEiVaxU3C4kGJa1xMX7JzjEu0ehYJOLXGdHkEkg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0CXnJ9L57Cufxz3vo3ETwKI7ZvDGuJE0rFM/17MsLlc=;
- b=pbzm95q2oobuh3k8Tp84r6YN+MacNNodZEee3x2S84t/7qJVwu11I4ed8xq0VF76kBzMyGApxbMSZoROkAZHmuCGaiH1PhOEwv39LhAkzElsIdTGGV2gDhmx7jMAQw1YaF1x9SsAxCZhMuuPi4iLYLY00tcZoeGmzoldq968ym48+JBgQmwaxMBm5vpdQmuDs7961EoiHQM3xaJDy+0YPshXJujpkrtMrfLmd8moBsIHbyzi+GbQxIfUdtomzp5kYuT6SJObIBR7Ka7Eo72vxqXRzpNlwbfNNOLqi/rlGK1t2r5wdiMVYbC7bAr1wE4zy1kDiQIo+o3NyH5NjKikug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0CXnJ9L57Cufxz3vo3ETwKI7ZvDGuJE0rFM/17MsLlc=;
- b=QjTDsW8jCfptQQ9306lYfQCajcOqcxIVD8EtTk5+DP8A46xWIvvZeKRgFs+vqKk/MMJM7C02b2AX8qSJ1cqG8CwVkwVdoDeVzE1IkPZ1gr25ivmcpORsYjahdOLF8aR5YV6nBJJroH5zHv3PkSlQDJoauVZX0K6mCMIs1ntVg96bckfHn2hbVBR+nmCdoD3mfcg8NLLTTKHSgST9Fl15CkQGGkpyOnWF/7uO6LByjyjHxnsQWJWs+YWGL9Sl8jjkX7N3R6IJfascEGYpLdzbbtNBD9SH0eXwXMhPUy4ZJNny+YgjMb6Nc+ELUK+GihoCs+gRzIkGazgPizMwemKYIA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH7PR12MB6858.namprd12.prod.outlook.com (2603:10b6:510:1b4::20)
- by DM3PR12MB9415.namprd12.prod.outlook.com (2603:10b6:8:1ac::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
- 2026 00:03:13 +0000
-Received: from PH7PR12MB6858.namprd12.prod.outlook.com
- ([fe80::a550:dbcf:2fcf:463d]) by PH7PR12MB6858.namprd12.prod.outlook.com
- ([fe80::a550:dbcf:2fcf:463d%6]) with mapi id 15.21.0569.011; Tue, 3 Nov 2026
- 00:03:13 +0000
-From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Tue, 03 Nov 2026 09:02:54 +0900
-Subject: [PATCH 4/4] gpu: nova-core: gsp: cmdq: add the GMC receive path
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261103-r000_rebase_on_cmdq-rpc-v1-4-189f9ff3bfd2@nvidia.com>
-References: <20261103-r000_rebase_on_cmdq-rpc-v1-0-189f9ff3bfd2@nvidia.com>
-In-Reply-To: <20261103-r000_rebase_on_cmdq-rpc-v1-0-189f9ff3bfd2@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>
-Cc: John Hubbard <jhubbard@nvidia.com>, 
- Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
- Eliot Courtney <ecourtney@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
- linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev, 
- rust-for-linux@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: TYCP286CA0083.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:2b3::11) To PH7PR12MB6858.namprd12.prod.outlook.com
- (2603:10b6:510:1b4::20)
+	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=Hp9Mrree;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=V75K01UH
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 000BA1400238
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Nov 2026 19:09:48 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Mon, 02 Nov 2026 19:09:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1793664588;
+	 x=1793750988; bh=mDHKJyK5c1CJp4RtBvlfo+it5c3vxzVpCCGcJ32CrV4=; b=
+	Hp9Mrree3VnbpxT5gxkY433aIYABxyK1h95QBeSCj09UBtA+FNtuqP29ruvoU5yj
+	3477c89h4xGZ01WYyglDA9D9fpfJmKgUnL9ldlXN/mmA2DS7pGVKzdftoSnqR7tL
+	dSH1k5E3Zml2JFoA1fzKLl+iu6Og6GPIYwhsL8RDygiAmE9MlGZVWsyPLJiKeKiA
+	eSPABcHcQfeqsc2qjuk/V4iDOX8Hcvatd1F1mc39nfIxyCh3W6IHnER5I+w6pauo
+	N0QkaYRbcvCrnuOZpXV+tgjKehg+Ndd3kgs7+cJm9v45iQHt3JpGpUTDcs4mNwPv
+	3Krn3G+Gf+qphW/pbOv5sA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793664588; x=
+	1793750988; bh=mDHKJyK5c1CJp4RtBvlfo+it5c3vxzVpCCGcJ32CrV4=; b=V
+	75K01UHIv5eCEnyst9Q8Bf1nYJCp/TZLZmCz8VZ/C0sQoV6svLJNXYgRHoZkZSX/
+	h66fYFDNgHK2cU5ab1LWJt3nZ8Aam/XEL4Ow3VaRndzu8l5oc1ueQzwj2f5mz5K9
+	dCsG5vg4oI1DoYOuxalPXoPPi6NNstsiugDQNji9dEx+f1wKPgK3XKxausK6Sl7N
+	JRARfaZUPYiv/JzYRqg3V8+FPw3KGBgmPNdZf4QvUslwrvhNCKLGx/tPPGa2+MW2
+	HeqtRW6df9Yc1guk1lPX+c1ZXyc06v37JgCirbOragGezAJoMonqdk9/Bh+Fq2ZZ
+	gu++8GfQMSbtA7Em/spXA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=sign d=flapping.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793664588; d=flapping.org;
+	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
+	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
+	s=fm1:rsa-sha256:h75IqoFQCDCGIrghAH7QN7myV+8rF4AmLrYzP2Q200JzKGv
+	+fRNEDAL+bK+dOqZ68FQ3UvOMVy/0r6y+2Z2YfbgzXKvPKrcP0AZd/rN6embnQ6c
+	d/rQrdKnpcL6dTD+ViUWre63ur/rXMiPXsvNDhw4kaqK6dWVs+od7UeH8k7B6A38
+	GMgD0a3soXW69/A1N7lK0xtG8GQBxcssvtS3TXA+UJ73fkkYUJB3G68ywq8un1iD
+	qs3guFD69rViy20yQS5QZpzuSHwHr10Ql5O5V9zoNK11GPy30z6DyN756TXV/ikL
+	a0ycNXJzKTnDwYkc7azeSJ3yUv9xKd9UlWcF77w==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:aqhEssKWk1rEt2kkqV3wnQnZaFRM9Gy039LCdv9N9SE=:s04PlBV1l9I+ZNkUIn0NuF3aBDUOBu14aCARp2OF4vY=;
+X-ME-Sender: <xms:TCbpage6r2MXflGVS7Z0sXAPYN4QQ6mQqwVIOzAvyuv7s6y_sOxsmA>
+    <xme:TCbpavbVoPlj7lYEgyGinzUUvPAYshhj_F4BLgtQhPQ5fR1y3XFzCRYdvd_xFg6Jd
+    UxlqIHudWnhuzXj22ejMmbcjAtEIGA19zWS2XyeboXAabDLgiMY-rE>
+X-ME-Received: <xmr:TCbpamCWNVTUBCkbao21-ShPS68mSxU-uo4gp2xDcpgqCL7dE21BbjV4ewYPEPV4i9PYZ3kIT9B_wTs8keOhzcbZ>
+X-ME-Proxy-Cause: dmFkZTE4dGC5aH3pUEK+WuNNJghp4gp1C/HfLybS5qkgQ4M/8HSC4SBwuAumiylDZsYl7h
+    AceqeRoypc6ArWbSKhg8acKoNijhwLGigROiT//Du/4rVdoGWi/4MVw0CHcDKhj52DHcYR
+    pgN1EiUMDwyiTLUy72R0iygDc/+QIZYydT+TYCUbneNM8BLRCLUlQv7A4BLoPPHOGpo2rC
+    U3OzAHyw96aOw0JK7hi5rcV6GW+qs+sNGXWm4iEvsx9sKgoYZmfuLnO9SvcvgaQafTy0IM
+    bMJ+SUsdSCmcgNb91iRRthIBujs4OsWzK31NOmhRTiuRYd46XprMdhVaVwxMSV913ZWuEv
+    BsnlpmkDImtoTeHoKs2KE1/ffzMGJxP+WeB+IcXOLWRxFY5HNYn3WC+2X9fJJYh2y6l+Ib
+    pFThVkMfKtIam62Ce/5uymht/rF1LHi+Q8N3t1X//FhCuJFB88XnrPaDP/lCzdQSEkS43p
+    m6+sYVg+yP4f+ZXepYhTF+ieGkaYsj3z7SPiLyZm0cRNcXcQoaAUszHLvhVqcnj8sXB4aK
+    zJTktCvlSh/JkdOBj1siaaagzuWo3wsHh83VDD533V64oNGprzWdob3MVx1E7a7abxxip1
+    AwF1Evhh3gzJQLPmekckMBdpIYTm1hol4PPy2VY64aG2m8NoOMO+uC8mK0fg
+X-ME-Proxy: <xmx:TCbpaiJONPZMkXuP_Az_axzFxLh8rF7Y34ljLP0p-oM97MS9TY0MXA>
+    <xmx:TCbpatq1kbwqNVuDlQARVQk5b4tmgETJfSQbUChI71_vk1UVC0aI1w>
+    <xmx:TCbparPwdapiqLmIROxXaS47rGHtQOUkRwrN4WJBta5pq6aubFuvIQ>
+    <xmx:TCbpaqPqdnclNMegqznfEsgjcAodJ-ASx-qrkgpzRg7EGxh4_7Ul6w>
+    <xmx:TCbpahBTwgZC23DwkB55Jr0Hbc38EpK4D-n9aMKIKFffVChCemI4PTwz>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 2 Nov 2026 19:09:43 -0500 (EST)
+Date: Tue, 03 Nov 2026 09:09:41 +0900 (JST)
+Message-Id: <20261103.090941.728506274497185931.tomo@flapping.org>
+To: boqun@kernel.org
+Cc: tomo@flapping.org, aliceryhl@google.com, arve@android.com,
+ brauner@kernel.org, cmllamas@google.com, gary@garyguo.net,
+ gregkh@linuxfoundation.org, ojeda@kernel.org, tkjos@android.com,
+ a.hindborg@kernel.org, acourbot@nvidia.com, bjorn3_gh@protonmail.com,
+ dakr@kernel.org, daniel.almeida@collabora.com, lossin@kernel.org,
+ lyude@redhat.com, tamird@kernel.org, tmgross@umich.edu,
+ work@onurozkan.dev, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Subject: Re: [PATCH v9] rust: sync: condvar: use Delta<Jiffy> for timeout
+ and result
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <auixgbeSSfBWwVS9@tardis.local>
+References: <20261102035934.711973-1-tomo@flapping.org>
+	<auixgbeSSfBWwVS9@tardis.local>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -101,413 +131,63 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB6858:EE_|DM3PR12MB9415:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2467be2f-439e-40e4-c7a2-08df393ddab4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|10070799003|6133799003|10067099003|22082099003|261102123227099003|18002099003|3023799007|56012099006|11063799006|5023799004|261022105027099003|261021121427099003|261026121527099003|261026140227099003|261021123027099003|261022075727099003|261009223027099003|261028144727099003|261021135927099003;
-X-Microsoft-Antispam-Message-Info:
-	HVPEy+D+66L57EKSzoT/hAz6h4E9cJGBGXWM42wfGqC1icEeqkyDOVNTEibSpmPOJIwOtEhJ2ZF6ZiKOKXymhi4EYhKE0+C7297B7N5KAHMKKBiiSmswhZ6hxeqw0z4/xaG4KJJ7ao3FcyQAYD10WsOVoQf1m6HjoSPsnezLh1In54idxdph5YQxE36Gg20S4EVVkhXR4d3KryzOVJ3p8naKJcS0fI/HSCa/CB+s01B/RYFvDelRWd77qD05ArY6behW5Eqcw6eQ335qO5BmnLIK7IqKuY+pMW8UycMMJcnOSth8jHgMKEzswtyJ6epmK84hUKBVR9rkNXEDiEFvBcofcbsCr6YGzdq6UXIt2HR1mwfcVAMKxEMEqh39oCFCWO8dLVsrFso5ISDZBAhVMAvLIFj477yEcM0SCcyCGdqg8ukUIJj/Qdb7hHvBXlG3IjkhGIhNer0KiPiRYnJ0V0UgL2YUmODjEdahO/6aanqXLrCgfV2BvtV+wJrcRZIoVSdtCiOOoIAx2tFsnwW32wSwnGN1lIJ+32QT2pP7PT+lAOnwZKYgTgOXt9oP1CjsN4eBaC7Rv7ix4gehNJ2XHEue1vhO3UHbPwc2ZJZCpV8n5rJ9lsoFJw4pm9QO+zFR1mzFMg74KT3HSqHMGtUr5WCcWHh5h5Iz7BBZ8O2yBKI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB6858.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(10070799003)(6133799003)(10067099003)(22082099003)(261102123227099003)(18002099003)(3023799007)(56012099006)(11063799006)(5023799004)(261022105027099003)(261021121427099003)(261026121527099003)(261026140227099003)(261021123027099003)(261022075727099003)(261009223027099003)(261028144727099003)(261021135927099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?U0dHVGlqRitzTThqbVZTU2M3N0QrUlNlWjZKcVNMS3ZFTkErQkpKVjZVS0RD?=
- =?utf-8?B?bVp2MmtNRVpxeUlNQU5FTWdOZFRYZzF4YmtTUmsxR24vZS9LanVmbG4rZkpl?=
- =?utf-8?B?aVFrS1hSdXRKeUUwZzFTc0FIaE1IUXdyTmExSkhsaG1kajZjbzgxWk9OQ1NK?=
- =?utf-8?B?bE5oSHR0MnJJamZiVE80a3dMYnZ4dWhwR0Jldm81U2FPV2JDa2tRdlhyeHNy?=
- =?utf-8?B?Y21HbWNtMzdxZmI1Mk5pTm83TjY3Y0g5YUlmTmdlMU00U3J0ZUtBMmNubHdR?=
- =?utf-8?B?cis1NmUwUjJZT1lrZWU0cCt2VkMzak04aVR2UDhNSU0raXcyQUlEbXhFL2hw?=
- =?utf-8?B?VHFoSXYvdWV3Z1dsM1lUd3d1QmpML05xNkdFaTBGRFZERjJTTk9MbXZPWW1j?=
- =?utf-8?B?SWFTZ2FuMkNyVGQrdUR1ZzRoakhoaG9jdlYzRitqNkxoT2wyTFdPZXNCTzc1?=
- =?utf-8?B?c1lXUDg4WENIVlJrUHg3M2EzZ0pCRUo0QTZ2aUYzWHBvQ084TysxbTdmM0RF?=
- =?utf-8?B?RnVMTFJuUDArUmxuZy84OGduYm1ESUF1eElkK25NVk1JLzNCMzlFVCtNYit2?=
- =?utf-8?B?Q2hhZy80U2xFMmUwb3g5UEc3R3M4NDZiVDhBNDhzcWFPWEdlZWJJS3dhUGU3?=
- =?utf-8?B?NFd6c3BhYmtvV0NjNVlMVDNYaklOYk1XOHdKUHBqTzlwL2w4Rjl1VjZIQ09i?=
- =?utf-8?B?b0FCeDV1eUNCSE5iUWpnN2pWeUJER0YxdGcwSnRxWVhySXZFbXpneG1obnF1?=
- =?utf-8?B?TGhJV1B0TzdMV2JUSmIwUE5DWGV1SnBqaEN6OTkzSmV4MktURnM5YzRZSHBo?=
- =?utf-8?B?QW1ac0p2WXBHTzVra09aN1hVVVhiSG1tRmduc0ZjMHYvRlRHczQrY3k2bm5l?=
- =?utf-8?B?QlpDSG5LdEszK2hkNXBFclVLNXAwZVM0b2g1KzU3K3BLeGRkT0JRdjRWVWhX?=
- =?utf-8?B?eUN6byt4emorZFFqZnZtV2thTkxPc3h3aWlLVVk0Tk4vdjBpY05RcVBlTDMr?=
- =?utf-8?B?UG5Zd1ovL2c4Q2F6TWU1S2h6b3JhYmdDSFhKekZMdmc3YjJHYVpDRllIUDZR?=
- =?utf-8?B?V1hUekN5cmVoR0EvSXcvRHpHRGc4WFd0MFNsaldDSGY3cmJweFdtZHlrRVdP?=
- =?utf-8?B?eDkwU3IzaHBqaTRNQlJBR0NvSVlFaVNsdW02eisyUGZIM3B2NSsyM25vTENh?=
- =?utf-8?B?K1E2NVFvMjBmcU1UdEFPRzVhVEhMUlVJRDhMSFlkOGtIQ2xHWWwrNFdDU2J6?=
- =?utf-8?B?azl4YWpWcW1LTlIvWmdCS0pYL2dDTExlY2VUZlBuUUdMNTQxSUhaVWRvR0tl?=
- =?utf-8?B?OHNxRUtkZWlLUVU0eU1nZkNBb0JpSUJleVBSbnlTMElxdlB1SndMWEhxZ2tz?=
- =?utf-8?B?TGVHMEhFU0xESW1uOFQ1QlhlaklrTllUQmFheWVlMURmcUJzU2NZL3AyTDJm?=
- =?utf-8?B?eHVnSlVvYWl3QU1wV3dPT3NQZStYKzNiTm9zZFZGQXZPVHM5bG1CdVQvOGJD?=
- =?utf-8?B?YWhXWE1IYkpWem50c01JMEZOblBsOGszY0lpQXlHTFFNVHJIQTJxNzdHaU1Q?=
- =?utf-8?B?cy94eWpScHZVeHBwcm1DSTRJRmd0b0c3dDBpMXQwbGYvOFV4czBXU0pQa0Jx?=
- =?utf-8?B?dGk0QzhSQnQzSGMydHkyR3M3U0xCNXRUL1pWYUFKQVJqeldBQmRYdVJhNUJz?=
- =?utf-8?B?KzYxd01samtzcHVxVmFxRzlRUXhiNytYa3FlQ00xZ0V6T2ZsNnYxc0gyN0Mz?=
- =?utf-8?B?VzFUQTQ3aUNIRVQxcTcxdEd4MWFGWGVudlRLckJkV0g2YUhyQ3J3K0NFaWtx?=
- =?utf-8?B?WHp2bHRJWjlXRFkwdlBSOHRFYVVQZzZhZ0lBaWVPTUtlRGRZclh0Ymt5a3hP?=
- =?utf-8?B?d0N5RTVsSG96UElMRTFUWnhuaFBtNmM1SXh2Y3pmdllyQWY5Z1R1dVFGeU91?=
- =?utf-8?B?Tk9wRnFPeTVrbEdSYlFsbzlIc1dZN3UvbXZjUEpmZ3Bvc2tJNTYzZ3FIcEZB?=
- =?utf-8?B?UENXUFVXU1VPblgrY0VpY285Z2lWTmVEUzc0aVI4NUoyY3c4T0tYNnl6bmFE?=
- =?utf-8?B?Tm54YWsvQ1p3Vm0vSFd4TlY0SndXZ2w5ZWJhTjlmVlNwU2VYYUlMZW5FMWVM?=
- =?utf-8?B?L01IVkNUeVhVVlByRUdES3d5c1RUTzFpWnhXb2ppUGdTNURvdGZscWNVNmRH?=
- =?utf-8?B?ZWVDclJ6YzkyUzM2SXFhbVhWTzBhdVcvRVNXOFRDZS9TbHZZdTJLc2lQdytq?=
- =?utf-8?B?MVY4RzVtRGVkMklUWVpxUGZCZmQ1bnplZEpkWjF1VUg4SlNBaWFHWmlOemdk?=
- =?utf-8?B?LzJnQnpKS2Nla2l3MlhiTHNudE5qNCtJWHdBcFYvMkFlREhjYmlmYnBQamZx?=
- =?utf-8?Q?ZNlSIZWRnULpNx97IgiRBpFruu0KCJBBrFw0fV3bI+JIH?=
-X-MS-Exchange-AntiSpam-MessageData-1: ojPuIytHpXup/w==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2467be2f-439e-40e4-c7a2-08df393ddab4
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6858.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 00:03:13.6057
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: syQrt2eaudWNzqdWOT+dxqiV+0n5y5MJhJsRxPYaFv1Vw9JG0Gjy1o3joPADrQuVgd7RZt8MKS5TiY9FwrMcEg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9415
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-From: John Hubbard <jhubbard@nvidia.com>
+On Mon, 2 Nov 2026 07:51:29 -0800
+Boqun Feng <boqun@kernel.org> wrote:
 
-GSP-RM answers a GMC request with a GMC message whose command word
-carries the response flag and the id of the request, and whose sequence
-number is that of the request. It also raises GMC events, named by a
-command id. During boot, the load-and-execute events arrive while the
-driver is waiting for the GSP_INIT reply, and GSP-RM only answers once
-they have been handled.
+> On Mon, Nov 02, 2026 at 12:59:34PM +0900, FUJITA Tomonori wrote:
+>> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> 
+>> wait_interruptible_timeout() takes the timeout as a raw Jiffies, and
+>> CondVarTimeoutResult reports the remaining time as a raw Jiffies. The
+>> type does not show the unit.
+>> 
+>> Switch the parameter and the result fields to Delta<Jiffy>.
+>> 
+>> Delta<Jiffy> is signed, but schedule_timeout() prints an error and a
+>> stack dump for a negative timeout. Clamp a negative timeout to zero, so
+>> it means an immediate timeout.
+>> 
+>> Update the only user, binder. It now converts the freeze timeout with
+>> Delta::to_jiffies_timeout() instead of msecs_to_jiffies(). Both round
+>> up, so a short timeout does not become zero. They differ only for a
+>> very long timeout. msecs_to_jiffies() returns MAX_JIFFY_OFFSET for
+>> 2^31 ms (about 24.9 days) or more, which means an infinite
+>> timeout. to_jiffies_timeout() has no such special case. It converts
+>> such a value to the matching number of jiffies, so the wait is long
+>> but finite.
+>> 
+>> Reviewed-by: Gary Guo <gary@garyguo.net>
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> 
+> Thanks. Alice, any concern regarding the change in binder?
+> 
+> I have some naming suggestion, please see below:
 
-Add the receive side of the gmc sub-module, mirroring the
-already-existing rpc sub-module.
+[...]
 
-The transport cannot produce GMC messages yet: the r570 queue element
-header does not carry the type of the message it transports, so the Gmc
-variant of GspParsedMessage is only constructed once the switch to r000
-makes the transport dispatch on the NVDM type. The RPC receive path and
-drain() account for it by logging unclaimed GMC messages.
+>> @@ -248,11 +261,11 @@ pub enum CondVarTimeoutResult {
+>>      /// Somebody woke us up.
+>>      Woken {
+>>          /// Remaining sleep duration.
+>> -        jiffies: Jiffies,
+>> +        jiffies: Delta<Jiffy>,
+>>      },
+>>      /// A signal occurred.
+>>      Signal {
+>>          /// Remaining sleep duration.
+>> -        jiffies: Jiffies,
+>> +        jiffies: Delta<Jiffy>,
+> 
+> Similar for these two: s/jiffies/remainder
+> 
+> Thoughts?
 
-Assisted-by: LLM
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-Co-developed-by: Alexandre Courbot <acourbot@nvidia.com>
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
----
- drivers/gpu/nova-core/gsp/cmdq.rs     |   7 ++
- drivers/gpu/nova-core/gsp/cmdq/gmc.rs | 230 +++++++++++++++++++++++++++++++++-
- drivers/gpu/nova-core/gsp/cmdq/rpc.rs |   8 +-
- drivers/gpu/nova-core/gsp/fw.rs       |   1 -
- 4 files changed, 243 insertions(+), 3 deletions(-)
+Sounds good to me. Now that the type shows the unit, the names should
+say what the value means. I'll rename all of them in v10.
 
-diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
-index 629ab8d35f87..a1fa7a3b4079 100644
---- a/drivers/gpu/nova-core/gsp/cmdq.rs
-+++ b/drivers/gpu/nova-core/gsp/cmdq.rs
-@@ -420,6 +420,12 @@ struct GspMessage<'a> {
- enum GspParsedMessage<'a> {
-     /// A [RPC message](rpc::RpcMessage).
-     Rpc(rpc::RpcMessage<'a>),
-+    /// A [GMC message](gmc::GmcMessage).
-+    //
-+    // The transport header of the r570 firmware carries no message type, so this variant cannot
-+    // be constructed before the switch to r000.
-+    #[expect(dead_code)]
-+    Gmc(gmc::GmcMessage<'a>),
- }
- 
- impl GspParsedMessage<'_> {
-@@ -427,6 +433,7 @@ impl GspParsedMessage<'_> {
-     fn log(&self, dev: &device::Device) {
-         match self {
-             GspParsedMessage::Rpc(rpc) => rpc.log(dev),
-+            GspParsedMessage::Gmc(gmc) => gmc.log(dev),
-         }
-     }
- }
-diff --git a/drivers/gpu/nova-core/gsp/cmdq/gmc.rs b/drivers/gpu/nova-core/gsp/cmdq/gmc.rs
-index b035f30479a8..9adba5cbcd5c 100644
---- a/drivers/gpu/nova-core/gsp/cmdq/gmc.rs
-+++ b/drivers/gpu/nova-core/gsp/cmdq/gmc.rs
-@@ -29,7 +29,9 @@
- use super::{
-     Cmdq,
-     CmdqInner,
--    CommandElement, //
-+    CommandElement,
-+    GspMessage,
-+    GspParsedMessage, //
- };
- 
- /// Trait implemented by types representing a GMC command to send to the GSP.
-@@ -150,7 +152,167 @@ fn write(&self, dev: &device::Device, seq: u32, dst: &mut GspCommand<'_>) -> Res
-     }
- }
- 
-+/// Trait representing GMC messages received from the GSP.
-+///
-+/// These can be either replies to sent commands that expect a reply, or an event not bound to any
-+/// command.
-+pub(crate) trait MessageFromGsp: Sized {
-+    /// Id of the command this is the reply to.
-+    const COMMAND: GmcCommandId;
-+
-+    /// Error type returned by [`MessageFromGsp::read`].
-+    type InitError;
-+
-+    /// Method reading the reply from the payload of the message and returning it.
-+    fn read(
-+        payload: &mut SBufferIter<core::array::IntoIter<&[u8], 2>>,
-+    ) -> Result<Self, Self::InitError>;
-+}
-+
-+/// A GMC message ready to be processed from the message queue.
-+pub(crate) struct GmcMessage<'a> {
-+    // Reference to the GMC API header of the message.
-+    header: &'a GmcApiHeader,
-+    // Slices to the payload of the message. The second slice is empty unless the message loops
-+    // over the message queue.
-+    contents: (&'a [u8], &'a [u8]),
-+}
-+
-+impl<'a> GmcMessage<'a> {
-+    /// Validate the GMC layer of `element` and returns its GMC API header and its contents trimmed
-+    /// down to the GMC payload.
-+    ///
-+    /// # Errors
-+    ///
-+    /// - `EIO` if the element is shorter than the GMC API header, or than the payload length
-+    ///   advertised by the GMC API header.
-+    pub(super) fn parse(dev: &device::Device, element: GspMessage<'a>) -> Result<GmcMessage<'a>> {
-+        let GspMessage {
-+            contents: (slice_1, slice_2),
-+            ..
-+        } = element;
-+
-+        // The GSP message header and the GMC API header together are guaranteed to fit entirely
-+        // into a single page, so it's ok to only look at `slice_1` here.
-+        let (gmc_header, slice_1) = GmcApiHeader::from_bytes_prefix(slice_1).ok_or(EIO)?;
-+        let payload_size = gmc_header.payload_size();
-+
-+        dev_dbg!(
-+            dev,
-+            "GSP GMC: receive: seq# {}, command={:?}, length=0x{:x}\n",
-+            gmc_header.sequence(),
-+            gmc_header.command(),
-+            payload_size,
-+        );
-+
-+        // Check that the driver read area is large enough for the message.
-+        if slice_1.len() + slice_2.len() < payload_size {
-+            return Err(EIO);
-+        }
-+
-+        // Cut the message slices down to the actual length of the message.
-+        let (slice_1, slice_2) = if slice_1.len() > payload_size {
-+            // PANIC: we checked above that `slice_1` is at least as long as `payload_size`.
-+            (slice_1.split_at(payload_size).0, &slice_2[0..0])
-+        } else {
-+            (
-+                slice_1,
-+                // PANIC: we checked above that `slice_1.len() + slice_2.len()` is at least as
-+                // large as `payload_size`.
-+                slice_2.split_at(payload_size - slice_1.len()).0,
-+            )
-+        };
-+
-+        Ok(GmcMessage {
-+            header: gmc_header,
-+            contents: (slice_1, slice_2),
-+        })
-+    }
-+
-+    /// Returns the GMC API header of the message.
-+    pub(crate) fn header(&self) -> &'a GmcApiHeader {
-+        self.header
-+    }
-+
-+    /// Returns the payload of the message.
-+    ///
-+    /// The second slice is empty unless the message loops over the message queue.
-+    pub(crate) fn payload(&self) -> (&'a [u8], &'a [u8]) {
-+        self.contents
-+    }
-+
-+    /// Returns the status code of this message if it is the reply to `command` sent with sequence
-+    /// number `seq`, `None` otherwise.
-+    fn is_reply_to(&self, command: GmcCommandId, seq: u32) -> Option<u32> {
-+        if matches!(self.header.command().id(), Ok(id) if id == command)
-+            && self.header.sequence() == u64::from(seq)
-+        {
-+            self.header.status()
-+        } else {
-+            None
-+        }
-+    }
-+
-+    /// Logs an event, meaning a message that no caller was waiting for.
-+    ///
-+    /// A reply that nobody claimed (e.g. one that arrived after its request timed out) and an
-+    /// unknown command id are logged at warning level. Other events are not logged.
-+    pub(super) fn log(&self, dev: &device::Device) {
-+        let command = self.header.command();
-+        let seq = self.header.sequence();
-+
-+        match command.id() {
-+            Ok(id) if command.is_response() => {
-+                dev_warn!(dev, "unclaimed GSP GMC reply to {:?} (seq {})\n", id, seq);
-+            }
-+            // Nothing to do for the remaining known command ids.
-+            Ok(_) => {}
-+            Err(_) => {
-+                dev_warn!(dev, "unknown GSP GMC command {:?} (seq {})\n", command, seq);
-+            }
-+        }
-+    }
-+}
-+
- impl Cmdq<'_> {
-+    /// Sends `command` to the GSP and waits for the reply.
-+    ///
-+    /// GMC events that arrive before the reply are passed to `on_event`, and RPC messages are
-+    /// logged and consumed. The boot sequence relies on this to handle the load-and-execute
-+    /// events that GSP-RM raises before it answers `GSP_INIT`.
-+    ///
-+    /// The queue is locked for the entire send+receive cycle, including the calls to `on_event`,
-+    /// to ensure that no other command can be interleaved. `on_event` must thus not use the queue.
-+    ///
-+    /// # Errors
-+    ///
-+    /// - `EMSGSIZE` if the command does not fit in a single command queue element.
-+    /// - `ETIMEDOUT` if space does not become available to send the command, or if the reply does
-+    ///   not arrive within [`Self::RECEIVE_TIMEOUT`] of the send, however many events arrive
-+    ///   while waiting.
-+    /// - `EIO` if the variable payload requested by the command has not been entirely
-+    ///   written to by its [`GmcCommand::init_variable_payload`] method, or if the reply carries
-+    ///   a status other than `NV_OK`.
-+    ///
-+    /// Error codes returned by the command and reply initializers, and by `on_event`, are
-+    /// propagated as-is.
-+    pub(crate) fn send_gmc_command<C>(
-+        &self,
-+        command: C,
-+        on_event: impl Fn(&GmcMessage<'_>) -> Result,
-+    ) -> Result<C::Reply>
-+    where
-+        C: CommandToGsp,
-+        C::Reply: MessageFromGsp,
-+        Error: From<C::InitError>,
-+        Error: From<<C::Reply as MessageFromGsp>::InitError>,
-+    {
-+        let mut inner = self.inner.lock();
-+        let seq = inner.send_gmc_command(command)?;
-+
-+        inner.await_gmc_reply(seq, on_event)
-+    }
-+
-     /// Sends `command` to the GSP without waiting for a reply.
-     ///
-     /// # Errors
-@@ -191,4 +353,70 @@ fn send_gmc_command<C>(&mut self, command: C) -> Result<u32>
-     {
-         self.send_command_element(GmcCommandElement(command))
-     }
-+
-+    /// Receives the reply of type `R` to the command sent with sequence number `seq`, waiting up
-+    /// to [`Cmdq::RECEIVE_TIMEOUT`] from the call.
-+    ///
-+    /// Any GMC event that arrives first is passed to `on_event`, and any RPC message is logged.
-+    /// Neither extends the deadline.
-+    ///
-+    /// # Errors
-+    ///
-+    /// - `ETIMEDOUT` if the reply does not arrive before the deadline, however many other messages
-+    ///   arrive while waiting.
-+    /// - `EIO` if a message fails framing or checksum validation, or if the reply carries a status
-+    ///   other than `NV_OK`.
-+    ///
-+    /// Error codes returned by [`MessageFromGsp::read`] and by `on_event` are propagated as-is.
-+    fn await_gmc_reply<R: MessageFromGsp>(
-+        &mut self,
-+        seq: u32,
-+        on_event: impl Fn(&GmcMessage<'_>) -> Result,
-+    ) -> Result<R>
-+    where
-+        // This allows all error types, including `Infallible`, to be used for `R::InitError`.
-+        Error: From<R::InitError>,
-+    {
-+        let dev = self.dev;
-+
-+        self.await_msg_with(|message| {
-+            let gmc_message = match message {
-+                GspParsedMessage::Gmc(gmc_message) => gmc_message,
-+                _ => {
-+                    message.log(dev);
-+                    return Err(ENOMSG);
-+                }
-+            };
-+
-+            match gmc_message.is_reply_to(R::COMMAND, seq) {
-+                // Message is not the reply to our command, log it.
-+                None => {
-+                    on_event(&gmc_message)?;
-+                    return Err(ENOMSG);
-+                }
-+                // Reply has an error status.
-+                Some(status @ 1..) => {
-+                    dev_err!(
-+                        dev,
-+                        "GSP GMC: command {:?} failed with status {:#x}\n",
-+                        R::COMMAND,
-+                        status
-+                    );
-+
-+                    return Err(EIO);
-+                }
-+                // Reply indicates the command has succeeded.
-+                Some(0) => (),
-+            }
-+
-+            let mut sbuffer =
-+                SBufferIter::new_reader([gmc_message.contents.0, gmc_message.contents.1]);
-+
-+            R::read(&mut sbuffer).map_err(|e| e.into()).inspect(|_| {
-+                if !sbuffer.is_empty() {
-+                    dev_warn!(dev, "GSP GMC reply {:?} has unprocessed data\n", R::COMMAND);
-+                }
-+            })
-+        })
-+    }
- }
-diff --git a/drivers/gpu/nova-core/gsp/cmdq/rpc.rs b/drivers/gpu/nova-core/gsp/cmdq/rpc.rs
-index 36cba7c28d3e..de3734daa99e 100644
---- a/drivers/gpu/nova-core/gsp/cmdq/rpc.rs
-+++ b/drivers/gpu/nova-core/gsp/cmdq/rpc.rs
-@@ -387,7 +387,13 @@ fn await_rpc_msg<M: MessageFromGsp>(&mut self) -> Result<M>
-         Error: From<M::InitError>,
-     {
-         let f = |message: GspParsedMessage<'_>| {
--            let GspParsedMessage::Rpc(rpc_message) = message;
-+            let rpc_message = match message {
-+                GspParsedMessage::Rpc(rpc_message) => rpc_message,
-+                _ => {
-+                    message.log(self.dev);
-+                    return Err(ENOMSG);
-+                }
-+            };
-             let function = rpc_message.header.function();
-             if matches!(function, Ok(f) if f == M::FUNCTION) {
-                 let (cmd, contents_1) =
-diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp/fw.rs
-index 367c8b5e3443..de61afd60403 100644
---- a/drivers/gpu/nova-core/gsp/fw.rs
-+++ b/drivers/gpu/nova-core/gsp/fw.rs
-@@ -935,7 +935,6 @@ pub(crate) struct GmcCommandWord(u32) {
- /// In a queue element, it follows the queue element header and precedes the payload of the
- /// command.
- #[repr(transparent)]
--#[expect(dead_code)]
- pub(crate) struct GmcApiHeader {
-     inner: r000_00::GMCAPI_HEADER,
- }
-
--- 
-2.56.0
-
+I'll wait a few days for Alice's comment on the binder change before
+sending v10.
