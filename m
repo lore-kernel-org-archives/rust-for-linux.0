@@ -1,75 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=34.202.193.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793725124;
-	b=kMyZdAFvc5eKfgtBQIB3Fjtdv8i2Fzc9umzWf5nodXMmWlSTfmMJf/T4M6OxJEt+CyB8
-	 AuhqqwjNO5Hgxuz2rNZqCSpzPr5xxlVquCwnKBpJzG3ye7uOhe5kKOhSjkTB6vA9uDumB
-	 BgaxXyrdM4eb7LO0v1un83ZPQqsfN5VBKsdfLDJG/G/7GFYZUpBGV8lC3WaOgAYtG4q76
-	 VzTBZ1r/WMAixdT/P2W+azFLmdiw9XPJAN1r83UtzX0dBm/7IG71Y3heDH1rJKyxdmoTL
-	 teN3WAJn1CmBCfic8Ft5k1t6is7fE73tdn+N92ZGa55ARSC5VRgC15/Tx5kqQUuCP8w==
+	t=1793732278;
+	b=hIv84RVuwO5O4sw3Q1M+L24N2X+SwQ2nwyX8CUZ+TBWwyt/ZOtNX/A/L2IiSYzOb/j+S
+	 4cF1jDSe8jCrNZJqeDHU58uX7mMFXY3hZLTFkATyJX9X0l2u5R8LrctoCwaZuiRZter1x
+	 mtln6f9ezQ901eSKGoOMt4nxrN7rvV4BE/LbIgutPB+DfutBO7f9Cu5TZoDEvy/ghOD/r
+	 4Bi+vk5RJ/oXg6o7nxcOffsA4iYRmNH7BsdHtWuKwqH02ewQbkx7BskZxggP3MVM8xDlS
+	 K2wIzpeGOXtI8+0fOw68sNB8AXfir9LH+w8TdBLKxd2DQFEGs4w/L7MOz9h4gKn+bOQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793725124;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=XA8gwtcBTdgYB+sh1p56Z459oRwVTCtDjhOE2Ccb1U8=;
-	b=p0QlnlQbbw/fFjHDHCetgNGq4WM3s1fx8fyIltcbGNukn4biYYw6Xz9WVyaEJZht0bHu
-	 y6i65phDECCrN0o4kJPVA1xwLOfzdtayf2qyZruFurYjgnKu5J86RgdMi/c+P6YsjyiWk
-	 rN2swm7zro/JFgcP/FpRhqutsy8H88SaW92sJjxeX+reHkRsyiTSyT3uUhhSzF+MiQt+m
-	 r8fV3mX9VkNkdVCoJFMDW5MLKx6dN6gc84YyO4rpqsfAiMIN7R9SRKqUchdXxOIGoAMvl
-	 0H4vhrKb6o5Uh9XYtMo+H+uGSNtXgDTTlyjZO2FjEpNEn4aC/kBhUtD1KtK2SwhDvrA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793732278;
+	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:Feedback-ID:
+	 X-Pm-Original-To:Received:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=avI2EbYgNRPXKkraqnrdCs5YzD5PnreD3EwEaWpbIZc=;
+	b=ZJXXUFHlEL1c5o088j3YHaycxizwwOix/Jyh9Xbm406I3/c5P2AR75xMV7viY375csp7
+	 BOrWuwoGBBsl/mLiIkkB1eZj+bPHttUvQoSwenzGZ1v9m6BuIujAYSIfjJHVCcq4g9wLm
+	 eAL09WYGr521/PlF+eS02aRgvw/pd5ankpYuVcyt20Bk2vEdsMWvcZoaN7Mby/Vzk0Hju
+	 5bbr5C2ulOa1KrboF/dGowc0ip0mnwHt4Ih9fj2o4D3AoN8Tk9hkK1ovK7b3lAVGifj/M
+	 KCfoEkMIeBiQUnaJy6MyosF8pxxl2o8YFjW3D+n9DWkYbqQmhIkwHe+iZ2ndMm0YuSQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--gprocida.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=pB8etkic;
-	arc=none smtp.remote-ip=209.85.208.70
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=younes.io;
+	spf=pass smtp.mailfrom=younes.io;
+	dkim=pass header.d=younes.io header.i=@younes.io header.a=rsa-sha256 header.s=purelymail2 header.b=dgiyYrTv;
+	dkim=pass header.d=purelymail.com header.i=@purelymail.com header.a=rsa-sha256 header.s=purelymail2 header.b=dhVLQ6pE;
+	arc=none smtp.remote-ip=34.202.193.197
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC9E606A324
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 16:58:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ADC9E606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--gprocida.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5B2606A31B
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 18:57:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F5B2606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=younes.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=younes.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=pB8etkic
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6b49684d3c3so4558050a12.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 08:58:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793725122; x=1794329922; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XA8gwtcBTdgYB+sh1p56Z459oRwVTCtDjhOE2Ccb1U8=;
-        b=pB8etkicOYe00DZzvop7+bECMfFT4oJ+zMB0lVQp8Z1ANPzDVHcJOjau3Gofrbcfv1
-         OLKgLtl6i2hbfKGD+zW6UjtIW+7BvNL6MW8CYC4nch2sndEBEP9WipJg6BifdF7pNQjR
-         DFhEyzVMlsiv0C5LsKIxpbyJgELrgdtU5FRKbpajMfEAKWyceUolca8zdp0Trh71T/a7
-         WrH85phxF26uAgKazsWjTdCQSS0q9OL39KT1KljyZdE4BcKztjNUTH5EOHMjqgj0iO04
-         3UsJN9GQn+w8dESE1mH9A6jw4BgTYX4tWTb7cuKmUrUTooRXbiFbeNYxTDtUIihypahg
-         kvQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793725122; x=1794329922;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XA8gwtcBTdgYB+sh1p56Z459oRwVTCtDjhOE2Ccb1U8=;
-        b=FCeXnzsJtV5RXFzWaC+Wtb5wZf9ymy6XSJoGGhGUPoRCOoRKqMfNUl2KdgVbcX/WsO
-         ftZFmBTDygy45hDkGPH/1IxaOU+96/teCVkUh7YEFIoyFy5HudWrP6zmhWhmWyqMIOMu
-         OHnTCJKulD7mf7c8UW2xamwYCyDezAmEPvgp3tzqXmiWGjAXCKG0BQ8Wt8CgDnt/47ix
-         UsVqgjX8VeUi7wmTIxPMbabQ1DFx8PawblCiR1Ac36FBv9SXe6thJX9O6Lw/aj5ia2Ms
-         bXYUTo7+u4rlopf2Q/jb8FaquEwP+bLsEWg+yQb944dmVBFptxMVdgKTcBlnQnd4HLDf
-         ApbA==
-X-Forwarded-Encrypted: i=1; AKwUvBx2ou8cIlAtF9ASRfKi0FiaqX2rUbFdG8XDN1enEjl8mSLG+m4yKzgil6k2wq1Zd6LcxKNRHOgw3R61gXczBQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+zPa2+JF7AHDxI8PzBH3Rp2sAvEjLxjGLGTH2yy19lFA69JEgm
-	dckswMkNvtsmRhs27bOUlvf2ORcnk0emyBX7ClQlJ36rrWAaOmRjiNwHczhbUVm+4jZqKWM+mkG
-	lcXePLmDG6GZddQ==
-X-Received: from edew28-n1.prod.google.com ([2002:a05:6402:a21c:10b0:6b4:ba34:851e])
- (user=gprocida job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:c514:10b0:6b3:c74e:b287 with SMTP id 4fb4d7f45d1cf-6b4d4c70be6mr6988759a12.22.1793725121995;
- Tue, 03 Nov 2026 08:58:41 -0800 (PST)
-Date: Tue,  3 Nov 2026 16:58:33 +0000
-In-Reply-To: <CAGvU0Hm04LXTywU0eL6KN4=SoOAC+LU3BKqENnLR-WV-sHsuNA@mail.gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=younes.io header.i=@younes.io header.a=rsa-sha256 header.s=purelymail2 header.b=dgiyYrTv;
+	dkim=pass (2048-bit key, unprotected) header.d=purelymail.com header.i=@purelymail.com header.a=rsa-sha256 header.s=purelymail2 header.b=dhVLQ6pE
+DKIM-Signature: a=rsa-sha256; b=dgiyYrTvV7t4To99U68kwIUXVlaMtR9y1zCzpBGZG0QlMK0gvaeVDAZjM1rAxHKwMfyYaWv7xhvp4utQaB083LlDnETqp7RZW4SYHDL7fgkTmhBVgoIKuxWb5tDioDr1UMRM6/dmAzGRr7T+ZiCVie46/ndliHVM4YVuE2OE0HJ6nqB3Cq7kCrcg/HqjOOtYdaZ2XPVGb2jXbnGIud6CDDlT0YEweH0CpDndT88EXyDjP/yJ9NIJ1UZ0k1NAbDlp0EpyIY7TNPghcv4JLP/BKnK3S5RtjCiGsPn33KST7M5sjVYqeSzdMIhXWbAp0tt23Cbcxso1hafcofgLbtXnJg==; s=purelymail2; d=younes.io; v=1; bh=avI2EbYgNRPXKkraqnrdCs5YzD5PnreD3EwEaWpbIZc=; h=Received:From:To:Subject:Date;
+DKIM-Signature: a=rsa-sha256; b=dhVLQ6pEIAm2H/PN8mm3hajkx5eOf625EVdTy/LC8kQb1B4/A1sB0P2jsmnLNxHsRmPcekEVg+aVsXRjh+TPxJcyd67Hg/rPVDxVOCmWG3Z0C2fQlbAH1E3M0WlVCk65qx39OgyInxXeeLmvqhLPgTobsk3s72bCL2EdRO17ICs/2TUTmUunz/2RmVD2y1ooRij68g2gLacyJuAtzgWT10LsPx0Xw+RKCpuxCiSsNd3vItjz+4yE1LqrSd5G/cRJKTIGHsPQGmx2+tQZ9RbGU6ll6bJbt8cEwiRfAsr+Rmmle8q6FvHhYu0dyrad/V4+SZt7Dh2VUG3oxom1T5K6vw==; s=purelymail2; d=purelymail.com; v=1; bh=avI2EbYgNRPXKkraqnrdCs5YzD5PnreD3EwEaWpbIZc=; h=Feedback-ID:Received:From:To:Subject:Date;
+Feedback-ID: 1578161:62319:null:purelymail
+X-Pm-Original-To: rust-for-linux@vger.kernel.org
+Authentication-Results: purelymail.com; auth=pass
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id -1005783735;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Tue, 03 Nov 2026 18:57:14 +0000 (UTC)
+From: Younes Akhouayri <git@younes.io>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+ Yury Norov <yury.norov@gmail.com>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>,
+ =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: num: document why Integer is sealed
+Date: Tue, 3 Nov 2026 18:57:13 +0000
+Message-ID: <kw-1793732233.597158895-521702-0@younes.io>
+In-Reply-To: <DLLXR6CQZ78C.2LLHVA9ITM040@nvidia.com>
+References: <20260916-docs-rust-num-integer-sealing-safety-v3-1-00f950426c85@younes.io>
+ <DLLXR6CQZ78C.2LLHVA9ITM040@nvidia.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -78,109 +71,22 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <CAGvU0Hm04LXTywU0eL6KN4=SoOAC+LU3BKqENnLR-WV-sHsuNA@mail.gmail.com>
-X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
-Message-ID: <20261103165833.418845-3-gprocida@google.com>
-Subject: [PATCH v4 2/2] rust: exports: emit ___EXPORT_SYMBOL without C declarations
-From: Giuliano Procida <gprocida@google.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, linux-modules@vger.kernel.org, 
-	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Aaron Tomlin <atomlin@atomlin.com>, Giuliano Procida <gprocida@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Define `EXPORT_SYMBOL_RUST_GPL(sym)` using `___EXPORT_SYMBOL` directly:
+On Wed, 23 Sep 2026 00:04:22 +0900, Alexandre Courbot wrote:
+> That being said, I know Miguel asked for these mentions on v1, and I
+> don't want to send you back and forth between two reviewers. Miguel,
+> would you be OK with keeping this to the trait comment and
+> `fits_within`?
 
-	asm(__stringify(___EXPORT_SYMBOL(sym, "GPL", "")))
+Hi Miguel,
 
-matching the `__ASSEMBLY__` path.
+Gentle ping on this. Would you be fine with Alexandre's suggestion of
+keeping only the comment on the `Integer` trait and the one in
+`fits_within`, and dropping the sealing mentions from the individual
+SAFETY comments?
 
-Previously, `EXPORT_SYMBOL_RUST_GPL(sym)` declared `extern int sym;` so
-that it could invoke `EXPORT_SYMBOL_GPL(sym)`, which required `sym` to
-be a declared C identifier for `typeof(sym)`, `__ADDRESSABLE(sym)`, and
-(when `CONFIG_GENDWARFKSYMS` is enabled) `__GENDWARFKSYMS_EXPORT(sym)`.
-
-This resulted in the compiler emitting DWARF debug information in
-`rust/exports.o` and `drivers/gpu/nova-core/nova_core_exports.o`
-describing every exported Rust symbol, functions and data alike, as a C
-`int` variable.
-
-Although `rust/Makefile` sets `skip_gendwarfksyms = 1` on `exports.o`
-and `drivers/gpu/Makefile` runs `gendwarfksyms` on `nova_core.o` rather
-than `nova_core_exports.o`, the bogus `int` DWARF entries were still
-present in `vmlinux` and `nova-core.ko`, where they conflicted with the
-true DWARF types emitted by `rustc` and confused DWARF consumers such as
-debuggers and ABI analysis tools.
-
-Omitting the C-level wrappers from `__EXPORT_SYMBOL` is safe because:
-- `__GENDWARFKSYMS_EXPORT(sym)` is unneeded because `gendwarfksyms` runs
-  directly on the defining Rust and helper object files rather than on
-  `rust/exports.o` or `nova_core_exports.o`.
-- `extern int sym;`, `extern typeof(sym) sym;`, and `__ADDRESSABLE(sym)`
-  have no effect in `rust/exports.c` or `nova_core_exports.c`: the
-  symbols are already emitted in separate translation units (scraped via
-  `nm --defined-only`), the fake `extern int` declaration never produced
-  kCFI function type IDs, and `___EXPORT_SYMBOL` already emits a
-  `.quad`/`.long` reference to `sym` in `.export_symbol` that satisfies
-  both ELF linking and LTO module-asm symbol resolution.
-- `DEFAULT_SYMBOL_NAMESPACE`, `__DISABLE_EXPORTS`, and `__GENKSYMS__`
-  are not used by `rust/exports.c` or `nova_core_exports.c`.
-
-Signed-off-by: Giuliano Procida <gprocida@google.com>
----
- drivers/gpu/Makefile   | 4 ++--
- include/linux/export.h | 9 +++++----
- 2 files changed, 7 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/gpu/Makefile b/drivers/gpu/Makefile
-index e372fc02139f..1269ce862ad2 100644
---- a/drivers/gpu/Makefile
-+++ b/drivers/gpu/Makefile
-@@ -47,8 +47,8 @@ $(obj)/nova-core/nova_core_exports.o: $(obj)/nova-core/exports_nova_core_generat
- CFLAGS_nova-core/nova_core_exports.o := -I $(objtree)/$(obj)/nova-core
- 
- ifdef CONFIG_MODVERSIONS
--# The C export shim declares Rust symbols as `extern int`, so reuse its export
--# list but generate symbol CRCs from the Rust object instead of the shim's DWARF.
-+# The C export shim has no DWARF type info for Rust symbols, so reuse
-+# its export list but generate symbol CRCs from the Rust object.
- $(obj)/nova-core/nova_core_exports.o: private cmd_gensymtypes_c = \
- 	$(call getexportsymbols,\1) | \
- 	$(objtree)/scripts/gendwarfksyms/gendwarfksyms \
-diff --git a/include/linux/export.h b/include/linux/export.h
-index 4aeb422d86af..2a0362cc54e1 100644
---- a/include/linux/export.h
-+++ b/include/linux/export.h
-@@ -94,16 +94,17 @@
- #define EXPORT_SYMBOL_FOR_MODULES(sym, mods) __EXPORT_SYMBOL(sym, "GPL", "module:" mods)
- 
- /*
-- * A hack to export Rust symbols for loadable modules without having to redo
-- * the entire `EXPORT_SYMBOL_GPL` logic in Rust.
-+ * Export Rust symbols for loadable modules without having to redo the entire
-+ * `EXPORT_SYMBOL_GPL` logic in Rust.
-  *
-  * This requires Rust's new/future `v0` mangling scheme because the default one
-  * ("legacy") uses invalid characters for C identifiers (thus we cannot use the
-  * `EXPORT_SYMBOL_*` macros).
-  *
-  * All symbols are exported as GPL-only to guarantee no GPL-only feature is
-- * accidentally exposed.
-+ * accidentally exposed. There is no support for symbol namespaces.
-  */
--#define EXPORT_SYMBOL_RUST_GPL(sym) extern int sym; EXPORT_SYMBOL_GPL(sym)
-+#define EXPORT_SYMBOL_RUST_GPL(sym)				\
-+	asm(__stringify(___EXPORT_SYMBOL(sym, "GPL", "")))
- 
- #endif /* _LINUX_EXPORT_H */
--- 
-2.56.0.385.gac671c819a-goog
-
+Thanks,
+Younes
