@@ -1,44 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.29.242.92
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793718357;
-	b=KggTDTIHQtyXOOd6Zvdhx4SspXsosbdTDu2zOhGXcam8VGLtZgDaLAzpPSpE3tX5bfSa
-	 E3kNrlQb2dLG/5p6XBv6fDhnJEJ+yQlUQ/L++aRa3c1mME08Ydn6qqMAQZRoMXct5oDnH
-	 H/nU4cBET+u40uARgys+pP3FjBEaQAuF+40ubnKOdS+36lGA7s12/XMHlEfeSH0zkmZxi
-	 OpJG58G7YG9ZIipciq3tDCIHLA5RyMjuIQrDsKnStZVHJ9mbJfIl5no2TPIlvwnzZ7tTp
-	 c1Wz/t8lzuU65xhCRNCWc6l3LOrCBTkRnsriwRLYwfp1GPWwSuKarr10Hkygy/b+QAw==
+	t=1793719514;
+	b=O+1OeCvba8HIyBF0MkMbtUGEXpsGhYQ/UnX9oOILCHWcpRL1SH3PpP9Tanqy9IEwyzNT
+	 KDQIWbklB5zSAAPzIxYuKMBVXyveskT6w6ppy3P9AGjkXpKxY1jx1j+ohxj4j18Wqn+k+
+	 UEY22NO9itR7Erzbo/D+Ed+80JqzuseMXpN15QzyNkYfAPTYM54dOqOqB0LydpRNtjjOV
+	 NGVMbB4YKV4fOKv2XjpYB5I+XZflvt4Yi4ojNOH2QFAVAOlEtSLDnaJTcUpS724hJydpk
+	 4Gd+bPlODqnsSKWHrK90GkrPEXbnSIS8L2Rkai6i0Y3pA97z2EupUS3WP/MgVmp1vOw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793718357;
-	h=DMARC-Filter:Received:X-Spam-Checker-Version:X-Spam-Level:
-	 X-Spam-Status:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=C9mGMY/NcmGa/5ufEWTJ1c6Uow/xSKfjaWA14ecFym4=;
-	b=ZasqFIFzGtYkMwTWfr9mNJUbxpZ+QscTIodP69S8zfvjDqlemowZZyShMurtWaD986RS
-	 nXp2avVVrqMz9gvcQCMOsCJnHX7A5IjbSnwTsb/Q9yq32AMzmc78AZyIOInxO91pMQeT5
-	 bwAKvneJbOMpED7tEM5oEkMccGSnLYX49/0SKnvoIiVQOAWCDSvkNEz6EvfbZ2dVLIrZC
-	 yCsEIVkNWORy2g2RILMZZMA/CdqMBEuonTbHfpknw7RLM8cbvslU0dt4HByLsKEWM1fvj
-	 CpajVHiPD0oAa4eQemXo8K26RoW9EVgNjdrlDK/RSWc630s8JZ/GJSzCGYjBzfV6N2g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793719514;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=i/Ej15tfeSmYdgpSmH5cUz5DZDqMYWq5E19FEzZp+1A=;
+	b=L4PAwhCEW0UcM+bten3h65Q/FGOQym9fiR+VPEE81CDxuE++aZk81nG2/JB+wmIEJFzN
+	 Ke+A/KXlorJ8KwvXTZAp9j8NzNXOJSr06jOHOITDYhYBcyBXIskdUVLQyb+lL8wyiHmah
+	 ewFM9DLMnDjhiiF4Y+Rh5wRBj8m9T3OaIqB0uLrDOWRBnNFynAyKqFzBaq7VSw39u0zgu
+	 8J+T9/kkUkHI1nYF9wJdcukiHyeH/3yX8ZhvTaBl3pJn0h2wpfBJ2F+o7HAIpSxbHGHE/
+	 wrYfIrAvqkNpCtqp53FYyNChCK4PukI76PBV0JM1bJAWm+/E5k65rPeeZWQsCkkX0dw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=davidgow.net;
-	spf=pass smtp.mailfrom=davidgow.net;
-	arc=none smtp.remote-ip=203.29.242.92
-Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ou41TXyg;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44DA8606EEB9;
-	Tue,  3 Nov 2026 15:05:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 44DA8606EEB9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidgow.net
-Received: by sphereful.davidgow.net (Postfix, from userid 119)
-	id 4918A200B16; Tue,  3 Nov 2026 23:05:49 +0800 (AWST)
-X-Spam-Level: 
-Received: from [IPV6:2001:8003:8802:7000::41b] (unknown [IPv6:2001:8003:8802:7000::41b])
-	by sphereful.davidgow.net (Postfix) with ESMTPSA id 7FBCC200AF7;
-	Tue,  3 Nov 2026 23:05:45 +0800 (AWST)
-Message-ID: <afdefb9a-7f59-4f37-9c6f-682ea411bde8@davidgow.net>
-Date: Tue, 3 Nov 2026 23:05:43 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB34606A328;
+	Tue,  3 Nov 2026 15:25:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ou41TXyg
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A06891F000C1;
+	Tue,  3 Nov 2026 15:25:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793719513;
+	bh=i/Ej15tfeSmYdgpSmH5cUz5DZDqMYWq5E19FEzZp+1A=;
+	h=From:Date:Subject:To:Cc;
+	b=ou41TXygeIWmYPtE4tUr3U8wObLJTkY+k6BBfQGBC5tKpv+5tJIHHnijT8LS2U6bP
+	 FWim6P3zwDljPF9TbKrpkIvoBi/y6OavBbCd+d9wyLmqbI/5IKCRkMOLNj/06oW7V4
+	 PK+Ye2nw7S1WLpdBH9Pgt3lKoM48tdG/em12JRRIdcxtKlusNoFfO5uXm01V0RJHxA
+	 PadwTlI8+bu8wWS6RkxmVnIjmJtUqp3s52xbPkwz1FKIcBqzu1SJ8+EuClFOi8JVC+
+	 1QDq2I32wppbyU1qRKMmevOjHHId+viQDDTUgMUHUSHbIXpdIbLsW7rgXVRc0yUF5I
+	 3m0gUK8TJW1oA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Tue, 03 Nov 2026 16:23:40 +0100
+Subject: [PATCH v2] rust: time: implement `Display` for `Delta`
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -48,128 +52,102 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] rust: kunit: add #[should_panic] support
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- =?UTF-8?Q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Benno Lossin <lossin@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>,
- Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?Q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, Alexandre Courbot <acourbot@nvidia.com>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Burak Emir <burak.emir@gmail.com>, Rae Moar <raemoar63@gmail.com>,
- Tamir Duberstein <tamird@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Yury Norov <yury.norov@gmail.com>, kunit-dev@googlegroups.com,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <20261029-rust_kunit_v6_send-v2-0-5ce551efc48e@gmail.com>
- <20261029-rust_kunit_v6_send-v2-1-5ce551efc48e@gmail.com>
- <DMKTARY7GF4B.27HUM6XMDTQNV@gmail.com>
- <CANiq72n3YfMpWndR06B0s1Mj_PjAR8MJ+0nP4XXPkaFh3zX7pA@mail.gmail.com>
- <DML0UIHJNE2R.3JDG4HTEN6U0S@gmail.com>
- <CANiq72nVDshaUDKzLKsa-4kB13XvrB1-f-WaVkBecf-B45m=ag@mail.gmail.com>
-Content-Language: en-US
-From: David Gow <david@davidgow.net>
-In-Reply-To: <CANiq72nVDshaUDKzLKsa-4kB13XvrB1-f-WaVkBecf-B45m=ag@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261103-time-delta-display-v2-1-b01b1fe9ff9f@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAHv86WoC/32NQQ6CMBBFr0Jm7Zi2iVBdeQ/DApwBJmJL2oZIS
+ O9u5QAu30v++ztEDsIRbtUOgVeJ4l0Bc6rgOXVuZBQqDEaZWhl9wSRvRuI5dUgSl7nbkBpluGm
+ sJUNQhkvgQT5H9NEWniQmH7bjY9U/+ze3atTYU4nVfLXcD/cXB8fz2YcR2pzzF2aa6UW1AAAA
+X-Change-ID: 20260215-time-delta-display-d702e7788d2d
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+ Thomas Gleixner <tglx@kernel.org>, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+ John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Boqun Feng <boqun@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1926; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=iEj9ez/vAS3FjjGj+7/Nlb2TJHGgpURbp2hLXENzRyM=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq6fx8hvd/cw96LCqCTRvSbnx1UppgETI2kXOox
+ YxGHi+PkiCJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaun8fAAKCRD6UCkIqsW9
+ 0EUSEACYIQXlvw1HvQmKQ0fP3arQvFwVYoohAEl1SbFqKX94nDHJDUdi5/9L9S4OuTJraATXBL8
+ KZTRx9LgyAG2DkouUg5UBL2pcw6oE+5lvIvgKokLAEdK2JG7pJSVM3Qm5J/tGJCi/ePi0hOgJyN
+ 4X05BjIH2a9ibZBpQEDH8LxwzpwercNp7pDKEzGdRHQQq2ZnF0+6mCpsKdRD8nAoBf1szADnoBb
+ cGzPyml+NbCavbMNhkr2zumUvfpBRywNnnKPks/I95ql+mC3V8W1K23TX6xrxsJQqI0JKk3U3Ic
+ 8E3WlLgTMMsh4eA6zo5GlX4mnMV6vHQ8mRwHKWO1CGjrZGAd1ihqWDOCMATcPT1THRPR8ba0VUx
+ ovJfsg/l/gp45mE2sWgK9fpFmGr+3oFI7dSRToQeG73YNoKmDt5pbYU1S40pUXvcwuy2b6IVFgp
+ 1gWx8voVZSSL9ow1jtzUA2PJz9hMkJerHzRs7CoMXRaF5qSQeZCz6VDj6NtXGBr8VtRG70wsQDH
+ sS8pzPsthr5VQPq1OHWC3dB6uxt51eqL/kxjoAsv0cDvhmW8xIcL0xJokPbz4t1LqH+CUHJ1mA6
+ 6tq1RgcOGELKZbABlC5Ok0aE+BECB51ILJmyecTCh65x0bYDbRk9BDx5+5vXm8sk4BPUG8d7elb
+ jmOkE3I5UvJzUDw==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Le 03/11/2026 à 05:25, Miguel Ojeda a écrit :
-> On Mon, Nov 2, 2026 at 9:53 PM Nicolás Antinori
-> <nico.antinori.7@gmail.com> wrote:
->>
->> I first thought of disabling `#[should_panic]` tests by directly
->> checking the conditions in the macro code. I ended up creating a new
->> config because I thought it would be cleaner codewise, if a new
->> constraint arises in the future, we just have to add it to the
->> `depends on` clause instead of modifying the macro code.
-> 
-> It depends on what we want: if it is meant to be configurable, then it
-> should be a visible Kconfig symbol; if not, then it should remain an
-> implementation detail (which could perhaps be a non-visible Kconfig
-> symbol).
-> 
+Implement the `Display` trait for `Delta` so that it can be displayed by a
+formatter.
 
-The reason KUNIT_FAULT_TEST was user-configurable is that some test 
-harnesses / CI systems would automatically mark a test failed if they 
-saw a panic/WARN stacktrace in the kernel output.
+Assisted-by: LLM
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+Changes in v2:
+- Rebased on v7.4-rc1.
+- Suffix the formatted value with `ns` (Alice, Gary, Miguel).
+- Write the value directly rather than via `write_fmt` and `fmt!` (Alice).
+- Document the format with a rustdoc example.
+- Drop the `rnull` user, which will call `Delta::as_nanos` instead (Gary).
+- Link to v1: https://msgid.link/20260215-time-delta-display-v1-1-bdd2d6e98ebf@kernel.org
+---
+ rust/kernel/time.rs | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
->> Yes! they are pretty similar, for `KUNIT_FAULT_TEST`:
-> 
-> Yeah, in that case, I think a new visible Kconfig symbol may be
-> justifiable -- please see below.
-> 
->> The only one that is different in `RUST_KUNIT_TESTS` is:
->>
->> #[test]
->> #[should_panic]
->> fn rust_test_assert_false_success_with_should_panic() {
->>      assert!(false)
->> }
-> 
-> I guess it is reasonable to expect this test to pass, since `assert!`
-> doesn't return and actually panics in normal Rust.
-> 
-> Having said that, I would expect our `should_panic` tests to be
-> generally about non-`assert*!` panics.
-> 
+diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+index b6a2aab12a50..eac581e845a6 100644
+--- a/rust/kernel/time.rs
++++ b/rust/kernel/time.rs
+@@ -669,6 +669,25 @@ pub fn rem_nanos(self, dividend: i32) -> Self {
+     }
+ }
+ 
++impl kernel::fmt::Display for Delta {
++    /// Formats the span as a number of nanoseconds, suffixed with `ns`.
++    ///
++    /// ```
++    /// # use kernel::{prelude::fmt, str::CString, time::Delta};
++    /// let delta = Delta::from_micros(5);
++    /// let formatted = CString::try_from_fmt(fmt!("{delta}"))?;
++    /// assert_eq!(formatted.to_bytes(), b"5000ns");
++    ///
++    /// let negative = Delta::from_millis(-2);
++    /// let formatted = CString::try_from_fmt(fmt!("{negative}"))?;
++    /// assert_eq!(formatted.to_bytes(), b"-2000000ns");
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    fn fmt(&self, f: &mut kernel::fmt::Formatter<'_>) -> kernel::fmt::Result {
++        write!(f, "{}ns", self.as_nanos())
++    }
++}
++
+ #[cfg(CONFIG_RUST_TIME_KUNIT_TEST)]
+ #[macros::kunit_tests(rust_kernel_time)]
+ mod tests {
 
-Yeah, I really don't like the way this effectively reverses what 
-assert!() does. I'm sort-of okay with it in indirectly-called code (I 
-want to check that this function panics if I pass an invalid input, and 
-don't care whether it calls assert!() or panic!()), but it's really 
-confusing from within the test function.
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20260215-time-delta-display-d702e7788d2d
 
-Plus there's a whole bunch of special-cased code to make kunit_assert!() 
-behave this way in this patch, and if we could get rid of that, the 
-whole thing would be much cleaner.
-
-(Of course, that introduces an inconsistency depending on where the 
-assert!() is, which isn't particularly nice, though I'd be prepared to 
-tolerate it to make everything else behave as expected.)
-
->> On top of the reasons I gave above, I tried to follow the same as
->> `CONFIG_RUST_BUG_KUNIT_TEST` or `CONFIG_KUNIT_FAULT_TEST` are doing, but
->> in this case in particular, the config is not for enabling a test suite
->> but for enabling a feature that can affect multiple suites (in this
->> patch series the ones behind `CONFIG_RUST_KUNIT_TESTS` and
->> `CONFIG_RUST_BITMAP_KUNIT_TESTS`).
-> 
-> Yeah, it is a "mode" -- that is why originally I thought we would try
-> to just do the right thing automatically, i.e. enable them when
-> possible, but then when I saw the description of
-> `CONFIG_KUNIT_FAULT_TEST`:
-> 
->      Enables fault handling tests for the KUnit framework. These tests may
->      trigger a kernel BUG(), and the associated stack trace, even when they
->      pass. If this conflicts with your test infrastrcture (or is confusing
->      or annoying), they can be disabled by setting this to N.
-> 
-> and I thought it may be fair to have the Kconfig symbol, i.e. it could
-> also be annoying to see the traces or similar, and thus it may be that
-> someone needs to disable this.
-> 
-> Having said that, if nobody has asked, we could keep it simple for now
-> as well -- that may be fine too.
-> 
-> David: what do you think? Is it something that was discussed back then
-> for that one in C?
-I've always thought of CONFIG_KUNIT_FAULT_TEST as being a more general 
-switch for tests which can cause faults, but the name and description to 
-imply it's more of a switch for just those tests. I'm happy to keep 
-CONFIG_KUNIT_FAULT_TEST as the generic implementation here, but if we 
-really want another one, they both probably should chain off a single 
-CONFIG_HAVE_KUNIT_FAULT_HANDLER or similar.
-
-That being said, I'd prefer we go back to the panic_handler 
-implementation for should_panic, as I think we're asking for trouble 
-with Rust tests which deliberately panic in C code. Ideally, Rust tests 
-will only trigger Rust panics deliberately. The panic_handler-based 
-imeplementation works fine on UML.
+Best regards,
+--  
+Andreas Hindborg <a.hindborg@kernel.org>
 
 
-Cheers,
--- David
