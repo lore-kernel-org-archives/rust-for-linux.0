@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793719963;
-	b=NgayWnQFAoDr+OoQZWAfXESGLXMRIP2u8Ryx3MklUbPgXdZOa3aC5uZDwkvDALeOB/Z2
-	 I4IVaOTA1+WLxujftauj+ILQpNdlU1T6lNtINXQP/Z5H8LRDTl0E+I0qoOWVwMp1Zng+9
-	 G1FmvzV58fb3UF5ovhgDaECdUgGu3oyRyqw9FmVVjf1TJeLMicHr1YNGz9lenA6wFFbXb
-	 KQNfO9leuNiQHNblqyIPWXgxCyl8Q3Z8yHqqUOu5/beTUw6QYc8YLgbJjNqSbI2AnelER
-	 zn+TG+EYac+eeYuc1eg45StAIC1tJer+xRpPMzkQaOWty/32HlXZTfj2hzq/jSnRtnA==
+	t=1793719968;
+	b=lTx0rKe0rRfF/e+aVdxzN4Cf9wZ2nGcTj8AoU2omTVtTc2VxBJqF8AYYI5WLwx6+lzKT
+	 EpNG4P0H43R8mlbGdkHGME5R0SjvwSIiS2V4gDh+Lk0rpYK/hw6ffS/c2HF3LZpwZlz1J
+	 YKpyPD75VxVBFgH9uxlTkJBppecaTptf/6rsr31m5OZ1Bw6slyOArT/KWqeGXcrPFVFYp
+	 NyqBastM8Kc2P1ryI2QfMNKmjYFrNVhSiYzOBnBbxVa/PVQkrjFRVJbv6eEr3pnhywx/5
+	 alcGJ2wQRbJifmCGEZVsKdte2h5KEBkYT7DvTqBj/iLMhyKtBK7z26iDWIylamA+RvQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793719963;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793719968;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=kFO2o9d1HuvRpw65wW5KNZGSLKA1liz6URUAihp77/E=;
-	b=EUaKlnhdNspf1Lz7OeiyHAA1crDmoQxFvHhk3+ac50U5KqA8vKsO8szrDz5QJ4BQuKpE
-	 zdYE5PPhBCzntF03yuwAy5wR4xwxtxlDU3dQ1VcmU2F8NJXRrDvCNQxIyuleKfWNgqL8J
-	 xuL2HG/1OZerjvEXj4sb/cU9nANiMW5ppiGsydlWh8BNOFyTh2ldVLw9AnGFFjf/RE4uz
-	 hpaHyFyWde12SxXR5867Ag9asfuo4IcIwekipLEf5og5QNeUhQJ/mEZxc3FcGyzasdVhV
-	 LQBckqd6VFgc0FKbLdoKWdHS8OiQ9P1nMLJ2/VsbXok9bwSXh0vyhbG1as/ijga+2Aw==
+	bh=SCU/DvMkSxwxIfic3xBnQP84VqPgPVXH8KbJhUsz/5k=;
+	b=pKO5Q0B4n0VGpURtU7g1nFb8RPFodK7/gMJbcoGVH/IN6YnBVmxpVj++g/vTTrVuA8HI
+	 US0FWvMSbKn+kYLmYSkBDaTwEMsEv46leKo2K2tYcp9zM7ScEcwUjMWUwX0DXhbHO7SXm
+	 zZvwepjeV9qn+Qr50m97Vhn3VCSO7ezuoMHZqlpnsIwu/838c1CSrTqu3SLHTkkrKqBAg
+	 +9XaFdXOBZiyTI4cMD6T21v5lESuighbFqfBPGhX/FAqVyzT/Sjz4PSVtqYucRDDAEWek
+	 EKyT/9JpRvjRKSVjzQQTGxA5RVeSCS7STU4EhqrT2odVgHqr4R99QljVSSVe5Ys1SIg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DCtFjDG9;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B0yxTWAv;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BE9606A327;
-	Tue,  3 Nov 2026 15:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E587606A32E;
+	Tue,  3 Nov 2026 15:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DCtFjDG9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0238E1F00919;
-	Tue,  3 Nov 2026 15:32:37 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B0yxTWAv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669A71F00A02;
+	Tue,  3 Nov 2026 15:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793719963;
-	bh=kFO2o9d1HuvRpw65wW5KNZGSLKA1liz6URUAihp77/E=;
+	s=k20260515; t=1793719968;
+	bh=SCU/DvMkSxwxIfic3xBnQP84VqPgPVXH8KbJhUsz/5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DCtFjDG9eV+fa59I6iiRc3Jh1cm0vdF7xBOyfm+1PZYgyfmCC2M1jcJBDIKq95B71
-	 kTnroD6VjHT9elzS+w4M3SCwmQHfyDe5OwyNSqbP3JntanU5KRb+hvN3RZPTzZyEpu
-	 es27V97O6J6flpnWbHHDLSGojWL5dWatMxK4Diln5wTg2YM4mAXvCSeYVAvD29WGM+
-	 xgkAD9eYB+KyeXEtqrLnXakonyM5+WtSrEHCHXhPRDK151YYkbQnSZD5Hhvn6t6lKJ
-	 Wa3VtFH4vYzkswqDFpeR1bQVaonVGWMsQH/dFbU7vJcaRGS678z13pgeIl75yn1/WZ
-	 PG/zAWGwOiTtQ==
+	b=B0yxTWAvVolr4lfh0X1ZwxIq0xJgv3B1SG5Lpa3EB5zqO3VDQLr5VHMN9Du1ZCJt5
+	 GoVyU01HMg+T/rP2lQb5iEJE9ZDd5+MxtcYd/uQhfJdTaXuJ/5p7lNmDU7RoZzAWzE
+	 5pOOVJT4I8lhSGhHgoTWH22yyae0N6KC81DTrN9EIrhi8+10GJqA9gIAmVJzWU83il
+	 NWQ/CHKnNDGpP+0Zenod3OFTN3vUmx0ig8MI95u6HQDG7/6aIiiB7Mz7BoqVXeXF1P
+	 ZFp4RUFex8uVpT4vhOp1InWCrwld24ZcLr429cMw0KzE/Lgw5+MWEdjAic3e/qFdK9
+	 1dzSAFFcjYEhw==
 From: Philipp Stanner <phasta@kernel.org>
 To: Sumit Semwal <sumit.semwal@linaro.org>,
 	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
@@ -63,9 +63,9 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-media@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org
-Subject: [RFC PATCH v7 2/8] rust: DmaFence: Add ID accessor for fctx
-Date: Tue,  3 Nov 2026 16:31:32 +0100
-Message-ID: <20261103153138.1087330-4-phasta@kernel.org>
+Subject: [RFC PATCH v7 3/8] rust: DmaFence: Don't drop on signal
+Date: Tue,  3 Nov 2026 16:31:33 +0100
+Message-ID: <20261103153138.1087330-5-phasta@kernel.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261103153138.1087330-2-phasta@kernel.org>
 References: <20261103153138.1087330-2-phasta@kernel.org>
@@ -80,34 +80,65 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A FenceContext has a fence context number, which can serve as an ID
-field. This number can be useful for owners of multiple contexts to
-identify them, store them in an XArray etc.
+The original design for DmaFence intended to comply as strictly as
+possible with the "dma_fence contract", which, according to some, says
+that a fence must only be signaled once. Thus, the implementation was
+made so that a DriverFence drops on signal.
 
-Add an accessor for fctx.nr.
+While extending JobQueue's capabilities, it was discovered that this
+characteristic causes - unnecessary - trouble: fence-data must be
+dropped in an RCU-deferred manner because the C backend demands that.
+However, fences are often signaled in atomic context (e.g., interrupt
+handler) where you don't want to drop, but signal as quickly as
+possible.
+
+Actually, there is no real hard reason to enforce that a fence can only
+get signaled once, because the C backend is robust against multiple
+signal attempts.
+
+What is decisive is that a) all fences signal and b) they only drop no
+earlier than 1 RCU grace period after signaling.
+
+Don't drop a DriverFence on signal().
 
 Signed-off-by: Philipp Stanner <phasta@kernel.org>
 ---
- rust/kernel/dma_buf/dma_fence.rs | 6 ++++++
- 1 file changed, 6 insertions(+)
+ rust/kernel/dma_buf/dma_fence.rs | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/rust/kernel/dma_buf/dma_fence.rs b/rust/kernel/dma_buf/dma_fence.rs
-index 5300448882e7..897308f60dd3 100644
+index 897308f60dd3..c04b68fe67fe 100644
 --- a/rust/kernel/dma_buf/dma_fence.rs
 +++ b/rust/kernel/dma_buf/dma_fence.rs
-@@ -135,6 +135,12 @@ pub fn new<E>(
-         })
+@@ -820,7 +820,7 @@ pub fn as_fence(&self) -> &Fence {
      }
  
-+    /// Obtain the FenceContext's ID number.
-+    #[inline]
-+    pub fn id(&self) -> u64 {
-+        self.nr
-+    }
+     /// Signal the fence. This will invoke all registered callbacks.
+-    pub fn signal(self, res: Result) {
++    pub fn signal(&self, res: Result) {
+         let fence = self.as_fence().lock();
+ 
+         // SAFETY: `fence` is valid because `self` is valid. The lock must be
+@@ -831,14 +831,15 @@ pub fn signal(self, res: Result) {
+                 // must not have been signaled yet, which we check directly above.
+                 unsafe { bindings::dma_fence_set_error(fence.as_raw(), err.to_errno()) };
+             }
 +
-     fn next_seqno(&self) -> u64 {
-         self.seqno.fetch_add(1, Relaxed)
++            // SAFETY: `self.data` is valid because `self` is valid.
++            let fctx = unsafe { self.data.as_ref().fctx };
++            let _ = fctx.nr_of_unsignaled_fences.fetch_sub(1, Relaxed);
++
+             // SAFETY: `fence` is valid because `self` is valid. The lock must
+             // be held, which we acquired above.
+             unsafe { bindings::dma_fence_signal_locked(fence.as_raw()) };
+         }
+-
+-        // SAFETY: `self.data` is valid because `self` is valid.
+-        let fctx = unsafe { self.data.as_ref().fctx };
+-        let _ = fctx.nr_of_unsignaled_fences.fetch_sub(1, Relaxed);
      }
+ }
+ 
 -- 
 2.56.0
 
