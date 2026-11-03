@@ -1,98 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=52.101.43.9
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793701392;
-	b=CAMQiDivhFR5rPuOJs7KZZ1AK6XBeoI8OJ+1JEs4RcNLh/rJAc8Zd0UpL/1/w834bTqU
-	 QJIVhlKKBZCd3W/W48pAZkHDzssoo7EBFnHEVpgTo1EBMOYoWA00mhpiVk3xl539Ke3Ub
-	 O7iscApq5yY+A4ojomde5CqFLsii6U793NqEWnLN7vUDMeVLeNw2ZHOJbkyP+vatXK3VZ
-	 vwq7YtA2B3uu3hjH37tLKFrCuOFsaf53wwiAQqIH+Snjf1MIm9mORZR/LwSvmrDaiPiDy
-	 qWY9Atrl2hXP1LPieofEsDkmbo59yUbc2H6zgSzlFn9b43OigFyFXlEkP8N6yPDToug==
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.44
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793701935;
+	b=pChzQ3olON5pVLwGS6jtJ8Oq4Im/OOLcfCzuZW05N5u5S2glKgpPU2lVrX+MwfnDX7kF
+	 RfgLUqMLwwgvkiT05+UEibNYH8cJaE/li9vVvwUIIfGUZZQI0j6VIwCxxloizz4n7lWcG
+	 nW5n29f5C5iq9DP/AS8cKkZiOnRAZMDoDIWsrg5i3MWnO6R8o6wBY1OAIA8zYJyTZrqun
+	 2KCcNp1+3CuIU4e2xUybPHlOZFJKiQzlzaQfo0lh1qTfJIJ41c30tVOheJvQJ+mtueEFb
+	 569zCQvrp2fpUFQUsRLGrDhrqDHGOz9djQj2HwSAfXaArHFJv4zFHxZPE+SFSaF05DQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793701392;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:Date:Subject:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:
-	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=aaDnAr6w7aAnquu/PbS3fqYj5MgcHgPn8J8ydYeWfWo=;
-	b=SbTmOJ+MdlkBzT3TSMUrb2z+diyvWb3a7UYVmYjA7eu6SMYXXAmzZDda5dyA4geXN8KW
-	 JccxLCeLg0k4SC+aoeinvIasDvTUyVcnr1FUQM6u8K/DGCy6zgaMENo8qXvfzCFlB7oqT
-	 ov6d5nVfreSRgrfQ778djftooUWp0DaVphQvzcaxXtJTcpXo/uSBCYw5BU9n/djDiyFT7
-	 3rcSq0Gyq8h1Irur+Sgnc9uMcG3u1wJ8mjGBd1wMTkyodCF7yjkQc1elNcg1JHqRoghjp
-	 C8fJEBLu5RK7N81QqENODu1EsBJy+nS+Gz8HUICcQBfcW5dtsORuaLchUn4Rct69IQg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793701935;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:MIME-Version:From:Date:X-Gm-Features:Message-ID:Subject:To:
+	 Cc:Content-Type;
+	bh=5wF0zewFpsOiJBtoZv6gxgfRVpLXGxk558GJSrFJvyE=;
+	b=UCyFxHJgwDfqw+O7PC6CnpWwwxAZufBJAWEIcERSp1kqt0fDZNodDmyREOnl/bXLuhv1
+	 n64z60gukB9x0LNbpoC93lCiJnqR3Uxse6SHYlWDo4+YnGs04P5BMxLYcQ53ErY5+StKU
+	 g2qZKQ/ap5qKH9crUQtsrmuWlO+1SwbWyzvqQe9VVHsUxQIjHbXVLRN+yTczXjQv/LUFh
+	 bTrUBcjkyL75MviOCZBKqbpqWn+cjZSpGMYKftGNlD0RlXY5uVUmAuIavRGi57Q+XF2Nx
+	 X4bRVq5ac0HLM0XM6GoXONdWKvLfFFpHz+CzuepmOyaWG320aaa5tueLO+e2qn3ZQ1A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=uGxTNPu+;
-	arc=fail smtp.remote-ip=52.101.43.9
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012009.outbound.protection.outlook.com [52.101.43.9])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zgCUCSBG;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.44
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BC560A3824;
-	Tue,  3 Nov 2026 10:23:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29BC560A3824
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AE6606BA41
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 10:32:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8AE6606BA41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=uGxTNPu+
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rvuyrMLuVx5BDFklxpYzQ2V8sG9vfEitnRKG5joG3tOdlFmE12VGaUK/bBgKKZSfrGqrGZ4ZJGiVeauhe6fuIs6pMpnOmBC59pzDlOn1+Y++kT6LFCzrxSCNPKLFqlgTyvr6IwmnsvTWLziNQYIitbO1t7x1ijEvzKqWIrSGGqjicLzvU43Uo2yYitZp+stdnnNe+MN8P6bN8tpgZLopQ2se0UTfcyl/1v8ZDNC4b0qvxBAyOg4zzQgdYPgcYc5BQzeLjHF2zxV1ltQPhCogvnZMsc5sIMLpJBYcGlr/Z1DficgNmeOZnspg5lCEDVpZAyDSjB+LefHR1bKZQAXpTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aaDnAr6w7aAnquu/PbS3fqYj5MgcHgPn8J8ydYeWfWo=;
- b=pupIRJahHZ1Rjo/Ooi8q7mI/GeeKlMVwzNm24SxI0LtyE6VZak6pXiNuuKxE8j4uyOzaQDhM3rZAdZHRDpcNLS+m4qhMlsAKY7oTHhdEooZurf+PeLDTQXlmriNuYfEIK4r9gsn/4+UCEuc1lhpECs4I6Dcu48ArjFm0a7kt6jnOpDXUyphldRlTPp2znGHVIQXSt7WubfEcvMI4fbBs131IVe1Xxnlp80eUkv+NuuKf33FxE5BF1pSrKkk/lxsrRJulM1TWwRLevAhQ1jdHWzXrWriRoyneZgWZT4dGkhcoAvLm+VDsPywuoq5ulAo/X4ZlmNauy5NjHj0OE4QNeQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aaDnAr6w7aAnquu/PbS3fqYj5MgcHgPn8J8ydYeWfWo=;
- b=uGxTNPu+gNpLy7vRJvqRPit8GVXtgrUFyT+QgZ9j0dUNgS1Gz8W4Sjpc9O+besmMNsYpbE+SYRiOZEfnYG3fYtR+mwCIsWEfAlwztUqTCHeQjSOITyp+mhwhxN4e5IhkFgHWBdIly7KBUyJsWnfPbghf5j0bTfnZKxgmkfBSBPXLqNp/FcBA02SUIfp/zKtHPfleffVNlWVFKtMYs0LvMWjJk4IsDZANT0FYPZWAYi6Fx+uNe+Fv6hrEjDEO5xDtsxSVsFSOz6F69M7ezJHKhTotbj+emD+ah0XaY8la+t5tZGXWmpx8d8l7c06iJC2+s8Y7DiEg6kEbu0fLQ+8VZw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by PH0PR12MB8149.namprd12.prod.outlook.com (2603:10b6:510:297::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Tue, 3 Nov 2026
- 10:23:09 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0592.007; Tue, 3 Nov 2026
- 10:23:08 +0000
-From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Tue, 03 Nov 2026 19:22:45 +0900
-Subject: [PATCH 7/7] gpu: nova-core: falcon: check the per-block DMA
- offsets for overflow
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261103-r000-fw-v1-7-e3d38fc130e3@nvidia.com>
-References: <20261103-r000-fw-v1-0-e3d38fc130e3@nvidia.com>
-In-Reply-To: <20261103-r000-fw-v1-0-e3d38fc130e3@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: John Hubbard <jhubbard@nvidia.com>, 
- Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
- Eliot Courtney <ecourtney@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
- nova-gpu@lists.linux.dev, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: TYCP286CA0078.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:2b3::15) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zgCUCSBG
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-67a80d827e8so2448031d50.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 02:32:14 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793701934; cv=none;
+        d=google.com; s=arc-20260327;
+        b=c3VWtrDMxNtrA93WJdFYb6iWfdzoutct1HMf81MFjU4SSeyadcg8i1ESGL83F24THP
+         rXFFt1iNKaNcd/+YzLPIVUmtWHhf3KNQCtZC1up/z3M556AAKWvA0DqnlHq++nUnDCoM
+         SLM24qwePgocAOrFTu0IKNUwgXo6w+b6AJRBSRuxLiwuT4KJxP3Eu8gortqutY3qcHXm
+         Q7P8PnslO9yvy9T/n0Jc4vJ4JOtq/bCaur4UnRihqyxYMwVq6nDsK9coHlnLlVSxKSrF
+         c2CAMYw94xPbcHrUEbaUVwZ5xkZ5hEnYelFL0HDpD+5QJ3bPhRVYWZzOEA1DRq2UUrH1
+         wMCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=5wF0zewFpsOiJBtoZv6gxgfRVpLXGxk558GJSrFJvyE=;
+        fh=1yWuzn+Znx/5nTSh8ebmE1YmrbzgNcun4IrRfFQYX/Q=;
+        b=IjPCE5vMmwzcWWZ43L6d8IpLA3/uKjCzW7hyGsHlJxjW7RJNKLVkc3RqrdoPSINQ7n
+         kcEK4WswVwO4u0TvZzpochfcqYsPQWMgE7775xT0x1bWObUNlBpnShGSDqfTOEHioRxu
+         pljp3GftsTHWoaMfZSWg8+Yt2Mv9HIjtpjDZ1whk5/vrKTwkZx0odp561wcLYT7dcSoj
+         KapNcbcv06Vbcy1YNKVMt69VDkDRR2D+xugn3FBUiiUfz1/fCaMq2v+0T0wJGPTxIoP/
+         Vovb/iQBoCj1pFDzcTCgJ6anaAdK3/mKqIGo6Uwb45uklEn8i8CJjHppNKL70rDVwP99
+         FJSQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793701934; x=1794306734; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5wF0zewFpsOiJBtoZv6gxgfRVpLXGxk558GJSrFJvyE=;
+        b=zgCUCSBGSQZBUYWaWNgYpejQ2dJxrcAj6UKNDz5HgBWz3DoCtsm0Q4a3vcVS1i2bKX
+         1KOuCZTR2KJAmN5ijRVRAcqbvGDKZ4XF8c2aYDEU0GNCg8q2huF/8rXyVkWSBQ0dq2Rw
+         +yJrsSI1sk+5d/IV5fnNOfe3f+MOmcr6XLbOm3qn/zHmD0yIOtagNYo6zKVh6ZpSFaRG
+         bCXMHbjpKXoyWn0leS8hK9y9cIQBC3xMB2N6Cg53PjVYqXmkeoRm3VPIN1u5BHYCXbfw
+         n7QXKrE4BZMU0RnAAbEHOxXR43ah7rX3CHbsVdngHzinsTcuGP2m5V/hAtWoIV5pxMfJ
+         anEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793701934; x=1794306734;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=5wF0zewFpsOiJBtoZv6gxgfRVpLXGxk558GJSrFJvyE=;
+        b=JQgZi8/PrVfGsCGBu68p9jLse8fd0a7T0RneSSy0S9SWATKSzZkCdkQbb783XvKrLv
+         gCPxq2usTYbiv92sLfySPmVsx/BgIB1eAqVfJFoQpP39XrugiLEOrJKIE1FP8JgG+MGi
+         APua+Keok7CL+Tm2KGxZmSzEJbZr0zrHUKTAqHdrpQi/ojxx5D59YloSztd26EfREbwD
+         /uv0FmO41w7SVtfRXrdIXw3rUQeSlJTTyZZiesWVlitL9s7p0Zy1MmHT2OQXX4UwPs5b
+         Rw1lZbRMcSAXSFtlmXmQjiabTHl87goV5wi7gXzyWKFcD6qZN+voT5MHEo7UDU/zfvu5
+         r84g==
+X-Forwarded-Encrypted: i=1; AKwUvBwliZc6+patHsOvwMVKrnB2CqlK5xEg0ab/4kajR2wD/5IS/+2vVH1P/a002GUX6CJioz0tHIZa/ZHMLDeTRg==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8N+VsZrlxE6ORLeE8HPSTm2EB9gF4Zr7uAlFNxicaBDvKU8U1y
+	Iv/ILz8gH8ELflhEF8gFbIwWisKO/Kn+3kC0orKo5CPDw1hEYwhp4/MOpHZ8SE/oC7/YL62sqnp
+	PDh9K7QgqgE/jUGg9MVTO+64jDtLcvg0=
+X-Gm-Gg: AYBFou1xSAieqRDIWJNTEf2VuQLfgoivWrXBPSamgeGs84Jz1FpTplbnqkm5qjXx9B7
+	vBHS7HKvryGj+RVB7k2aJQB/IoAGphkW8msua3gW1ALqj/eSsy2e2XIIcKSi0vaHso0fSLYwW+P
+	z4udmYxDN3OPqjYa/NWGJjDhef6nUNKdf9m4udgrPJG5xCuXgeMYLhhNTcNMPSK8PLVJgQ2eyig
+	QqoDS3Su3KcrnEBFbcWb6mlknhsVOitUHogG1ZIT4QkkSzoVmeLm0d3D2eCk9ZbZ+Frbu4haf49
+	lmntJZ6XSPTJrw2RyKIEV32mBNM0uULHd7Ph2i8xmB//Xt0jysI7+v1SqtquQYoOIRfl097zVM9
+	1KMYwdq+CXBjO+XeijunY+O01LlVTdkM4e+DDVj+hRbK1HK7/4+ty7k3IVR3+wgbVBV50dWyqfh
+	FujWfSIPu/dWmra20WcQPCJJRinjoz0aooYdplwMEzn+2ydyhjG4XcuBbj2dR7MyxY0NS6jdxpx
+	Hsdiw==
+X-Received: by 2002:a05:690e:439a:b0:676:bf92:2520 with SMTP id
+ 956f58d0204a3-67ba50c7b2emr4676467d50.89.1793701933775; Tue, 03 Nov 2026
+ 02:32:13 -0800 (PST)
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Tue, 3 Nov 2026 04:32:13 -0600
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Tue, 3 Nov 2026 04:32:13 -0600
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -102,109 +107,163 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|PH0PR12MB8149:EE_
-X-MS-Office365-Filtering-Correlation-Id: 86e29c72-3738-47f3-06d7-08df399474ab
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|366016|10070799003|1800799024|11063799006|56012099006|261009223027099003|261021121427099003|261028144727099003|261022105027099003|261021135927099003|261021123027099003|261102123227099003|261026121527099003|261026140227099003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	d1SHO+97EgTygd3L8Y10HQw7l/axyskpaHe4C7AUPG51yB4ue8SnWcuVgFc+C4AZ87hqn+vAXRvm+1z/RKbFLQ2FOD08SRIIVzmRjzexfiBXzqIzEVRFPMY5r81/dQpg86Ly8FSlRh1RXTj4YbetU+WpMkwRyR/Ev/4+OMO2EPbsr9XxBJCMkw70DBQqoAVJsoME4TROkzMv+YOLNCRr1vfaaAOBh0ixoHurnadCKLaZn+QM3tRR6ehe346+EPO/bym8T82PmMN8HbOZp37trt2BY4o8G0PNxxZjEiDrs6XEqFgwVcRuQ+4fmTE4v+U8kbeA3gtNU6dDIT94Ee8T2DbJKahN0yuhnejbMjS+p/iQ0isFnloMfx0kfV148sSmlFxF67hNaZykStLFAw222Gx2Bp1oJ0f4/dLgACORqUrdFpCBI1+VUN02qqTxXCbG2qZ7ycgd9Ubr0UpfldPou7jy/6HeHAyUiTGR40I7Yf5c5j+shk2ETOlRPIZ0XdSOLIenH9ngcVuiaVoFjm4C1mH6WATolQYetRsuk66BGNcfqinXZhSIN+3x3dE6zVxYa5fyPJbylDXuckc4/aJytdH3OqI0NSocXNy3fLWzrkDEA3IRQuIW8dseEv99C9gUB7V1V90i3GSeFdTFnCtkk3ECa7qK5v6UnUrids8k5Yo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(10070799003)(1800799024)(11063799006)(56012099006)(261009223027099003)(261021121427099003)(261028144727099003)(261022105027099003)(261021135927099003)(261021123027099003)(261102123227099003)(261026121527099003)(261026140227099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VlA2S3VrbDhoTjBGaVdPNi95RlpLYkQ1eTcrMkNVeVQzMERRc2VjSjJBbE1H?=
- =?utf-8?B?emRIVVZyeG1qZ1llZldNUW0zVkxFTGgyZzk3L0d2cW9NeXNEZFNxMUpuYnh6?=
- =?utf-8?B?bFRiekg4eWdjbWtGRUpYWWFyNDF5OHhkTnhPYmVab1NrVGJOUjNRUllZRnZC?=
- =?utf-8?B?RXpsckNwUlN0bkMreDFVcmJFTjN1RWhEcFRJRnltNFUwbnFPQ0x4TzkxbmJa?=
- =?utf-8?B?eXRySGRyRVJWRWlDaFpVWVNkU280OHF0c2hOMDduaDRNSWl5Y0Q4TzloTXFD?=
- =?utf-8?B?L293TElEc0N1RFo1OGlPZEFySUtBWHJYUDE1NVZ5NFVkKzBTTTJQSnM3eGRB?=
- =?utf-8?B?Zkx6RzlyMG9JUGVxc1NnMzFOaVdiOFh5aHFITWM1bzBYcEJGV2NGRkRIRWtx?=
- =?utf-8?B?YjhvdG9xU1VzSnBHYlNIWWJBTHBRNExQc25wekYvNWZNMVRCSWhJNWFuT3NM?=
- =?utf-8?B?MFpVM3R4ajg1SVJuZGZZa1B2ME01MzZUYXdna3Z1dy9nSXJQZ29hTW9aTEFH?=
- =?utf-8?B?RmFyNG9PSlZEMDFLd2c2WEJ3YUFQL3pzWlVKcGhRcjFRV0VORlMyaEYrTDZX?=
- =?utf-8?B?Z3ZIWm9aQjB3UGg1YlcxaTNyQXYzUm9LcnAzcWNWd2o1eFRFRHh1VHJ0MmNl?=
- =?utf-8?B?TGFHY1pNS0dSMVg5NUw2Ty9JMDVYWFVWS05xa0hVS09BZ3ZvSjF3QjZnMGRr?=
- =?utf-8?B?YkhiZzM1TlQvcnkvZCs1clg1cHpjM2xuRTB2ajdUcUZnKzdqbk9iUDQyZGxE?=
- =?utf-8?B?TVdSRjcxNWJVblZqanFZejg0aXFuUERXSlFtUkh4amtLMVNkTHJ5SVp0dlVx?=
- =?utf-8?B?VzMrRVZDMkxmejJwZHdPR3JiU2xWUmw4Mm5FWnBhS3BEYndwa1l2M1J0cFhE?=
- =?utf-8?B?a0orN2pVVGhVUnJucko0aUpqODlob0xDWXJZdEFmR2hUZmt2VG9QTy8zT2kv?=
- =?utf-8?B?VzFaVVdOZFRLMmR2dlFJd1hMTnVxdG5mVkNEckk4aTJ2OTVRa3U4ekh6Snp3?=
- =?utf-8?B?d1pJWFR1U0RWWldxRjE2M2gyNXM2dFNBUGhrN2hxd1p1Y2V5d3Y3Q3RWcllz?=
- =?utf-8?B?Q0R3LzJtRkY4RmlnQVZzeVNvbXdJSUxGbGlLdGw1dExwTFhvdXFVeURYNklq?=
- =?utf-8?B?NzVZTHhRam5xVktnTXVReHJLYnZUQjRzRU9FU0JocSs5RTdzbmQyRTFPVko1?=
- =?utf-8?B?Y0dVS2xPaUt3YU5PQnlIN1pPOFB1THJ2UFc1OEFUQTl1eDJRMjU0WUFTTWxT?=
- =?utf-8?B?cjVOU0Z4aW5wZmdLVU9CUEorTzJTamdPQnNuckw5WlgzTkhBdmYrZDI4MXl1?=
- =?utf-8?B?RnFFMytwSkw2clI1QzdKZVNDbGZhSUY5WXF0S1ZqaFQ3dWhTVHlvVE0xNHA4?=
- =?utf-8?B?SGFGNENGRDlWOVMxcFZSSWFsZmY2OW1GenJyZytvYzRhUDI4RzRHdDVFVitP?=
- =?utf-8?B?VHRtbTRHcXExS2JWdmRXVmRiZnBYRmJpeXBXN1hKVnArdmJLTDczMHpLcTM5?=
- =?utf-8?B?eDBBWmx6OVhXVFBIOHJNcERlVjhsRk5UMnZqempNdWFQeDJxNUxiVEh5ZWU3?=
- =?utf-8?B?SWpabTVnQTBZOUxjR1p1cURQTWFQamM2MFZyaUZKQktYMUM2UzRTY1picjVz?=
- =?utf-8?B?d0NpRFo3cU1SNG9jRjZid1pGSGtBYnhsMW9QRDhWVXc0YUlCWVIrWU5XU05K?=
- =?utf-8?B?dHh5TFFjZ1NOa25KWjBEZ3F3VFltSERUQWoxWUZOOE92amhIK2JZb0l0cHRL?=
- =?utf-8?B?WVljSFR1VDY2eUltaXdZcm0xemRPL2VVa2MreEFKOTFhYURCMFZzeFhxYVBu?=
- =?utf-8?B?Z1V0M2Q2QXdldmNuV1UwQ1JnRFgzTnNBM0gvYlI3UU1ldjhmRGNGWVRJaGZl?=
- =?utf-8?B?WGtGd1J1QzNuR0wzY0RzWmROOVBZU1ArR2xWWmx6VXVkVmJkYjF4dEV1TVFD?=
- =?utf-8?B?UHI1L0tBOTNhQk5WdnpqSnVzWEpJTmdvaXdRVTNVbFY0UGVibEVWeGVTc3BL?=
- =?utf-8?B?emVBRmRuRUowUWlhYjVlb3c3cWtQUjhHaFVzSU9XekMybFROOWxwS2FoUGhM?=
- =?utf-8?B?Q0o0MnhUMVVrN3liN29LVGlCMndYUmxIcGk1VG1aa3NPTzl0bTEwc0JxOW43?=
- =?utf-8?B?RUlBQmk0UGgvTVVYaEZlQVNqOW1wMnlyWTNrNWd2WXlvOEZpSWtpSUNxSnNq?=
- =?utf-8?B?WjgxeHNoM1VEbitsaS95c2Z6czdNa1JDeWJEMWp1ekhJVlRUSUN5bE9CMjUz?=
- =?utf-8?B?WFR6aVRDWjJKM1ZqNmIra05vaXZBMzZNOFp0azVNd1dBWkJvRWE0ZnBHV2dH?=
- =?utf-8?B?YUlRS013dDUxMWtqWmQxMFR6R0FSaXNQZWtzd0UrVHRHdnA2endYK21vWjlE?=
- =?utf-8?Q?/sX27ika7mQ1l/XzbNyRYqJxZDFZHTzORjwfNzwbaLadE?=
-X-MS-Exchange-AntiSpam-MessageData-1: lDJaKzfhUxmGmw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86e29c72-3738-47f3-06d7-08df399474ab
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 10:23:08.6480
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WA4hlWu6xfy5Q3sgqAg4Z9cNFvxTBkLMk2/zWSnZUa+ET3vQw4I+8rpeWjVZviZRIMwZ63E0xa7WRisWTIVUcw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8149
+From: Peder Bergan <peder.bergan@gmail.com>
+Date: Tue, 3 Nov 2026 04:32:13 -0600
+X-Gm-Features: AclHuK96gvYRqRgBDT03v_6oIAmN1e7Nl712wgD5TpWQ9zekVuOi8l-OEed9qRo
+Message-ID: <CAKHwh-E-7CRRG-DH6-rDfGUCFAxG6JNgswk-suTaGKqMbig5Jg@mail.gmail.com>
+Subject: [PATCH] rust: alloc: test drop behavior of Vec::drain_all
+To: dakr@kernel.org, aliceryhl@google.com
+Cc: ljs@kernel.org, vbabka@kernel.org, liam@infradead.org, urezki@gmail.com, 
+	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, daniel.almeida@collabora.com, tamird@kernel.org, 
+	acourbot@nvidia.com, work@onurozkan.dev, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: John Hubbard <jhubbard@nvidia.com>
+The drain_all example consumes the entire iterator and uses integers, so
+it cannot detect missing drops of unconsumed values or premature drops
+of values yielded to the caller.
 
-Each block of a falcon DMA transfer is addressed by the start offset of
-the transfer plus the block's position. The two additions were plain, so
-a source or destination offset near the top of the 32-bit range would
-have wrapped or panicked rather than failing the transfer.
+Add KUnit tests with per-element drop counters for partially consumed,
+unconsumed and exhausted drains, plus an empty-vector case. Keep a
+yielded value alive after both the drain and vector are dropped to check
+that its ownership stays with the caller. Also check that draining
+empties the vector without changing its capacity.
 
-Add the two with checked arithmetic and fail the transfer with EOVERFLOW
-when a sum does not fit.
-
-Assisted-by: LLM
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-[acourbot: split out of the DMA helper patch of v3.]
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
 ---
- drivers/gpu/nova-core/falcon.rs | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+This adds KUnit coverage for the ownership and destruction behavior of
+Vec::drain_all. The existing example consumes integers to exhaustion,
+which cannot exercise destruction of unconsumed resource-owning values.
 
-diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
-index fb43d0ed2821..c54875e55da5 100644
---- a/drivers/gpu/nova-core/falcon.rs
-+++ b/drivers/gpu/nova-core/falcon.rs
-@@ -599,10 +599,11 @@ fn dma_wr(
-             // Perform a transfer of size `DMA_LEN`.
-             self.pfalcon.write_reg(
-                 regs::NV_PFALCON_FALCON_DMATRFMOFFS::zeroed()
--                    .try_with_offs(load_offsets.dst_start + pos)?,
-+                    .try_with_offs(load_offsets.dst_start.checked_add(pos).ok_or(EOVERFLOW)?)?,
-             );
-             self.pfalcon.write_reg(
--                regs::NV_PFALCON_FALCON_DMATRFFBOFFS::zeroed().with_offs(src_start + pos),
-+                regs::NV_PFALCON_FALCON_DMATRFFBOFFS::zeroed()
-+                    .with_offs(src_start.checked_add(pos).ok_or(EOVERFLOW)?),
-             );
- 
-             self.pfalcon.write_reg(cmd);
+The new tests cover partial, absent and complete consumption, plus an
+empty vector. In the partial case, the first yielded value stays alive
+after both the drain and the vector are dropped. Per-element counters
+check that each value is destroyed exactly once by its current owner.
 
+Validation on x86_64 under QEMU:
+
+- The original rust_kvec suite passed before the change.
+- All nine tests passed with the change, including a CLIPPY=1 build.
+- Making DrainAll::drop temporarily empty caused exactly the partial and
+  unconsumed tests to fail. Restoring it returned the suite to passing.
+- rustfmtcheck and checkpatch --strict --no-signoff passed on the draft.
+
+I used Rust 1.99.1, LLVM 23.1.4, bindgen 0.73.2 and QEMU 11.1.3.
+The minimal configuration has an existing unused-function warning in
+io/resource.rs, also seen before this change.
+
+OpenAI Codex assisted with coding and testing this issue.
+The requested work was to test Vec::drain_all ownership and destruction,
+validate the tests under QEMU, and prove that they detect skipped
+destruction.
+
+Base: alloc-next at 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4.
+The patch changes only the existing KUnit module in kvec.rs.
+
+ rust/kernel/alloc/kvec.rs | 88 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 88 insertions(+)
+
+diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+index c7546b9da..fe113c7ff 100644
+--- a/rust/kernel/alloc/kvec.rs
++++ b/rust/kernel/alloc/kvec.rs
+@@ -1540,6 +1540,94 @@ fn drop(&mut self) {
+ mod tests {
+     use super::*;
+     use crate::prelude::*;
++    use core::cell::Cell;
++
++    struct DropSpy<'a>(&'a Cell<usize>);
++
++    impl Drop for DropSpy<'_> {
++        fn drop(&mut self) {
++            self.0.set(self.0.get() + 1);
++        }
++    }
++
++    #[test]
++    fn test_kvec_drain_all_partial() -> Result {
++        let drops = [const { Cell::new(0) }; 3];
++        let mut v = KVec::new();
++        for counter in &drops {
++            v.push(DropSpy(counter), GFP_KERNEL)?;
++        }
++        let capacity = v.capacity();
++
++        let mut drain = v.drain_all();
++        let first = drain.next().ok_or(EINVAL)?;
++        drop(drain);
++
++        // The caller owns the yielded value, while the drain drops
+the remaining values.
++        assert_eq!(drops.each_ref().map(Cell::get), [0, 1, 1]);
++        assert!(v.is_empty());
++        assert_eq!(v.capacity(), capacity);
++
++        drop(v);
++        assert_eq!(drops.each_ref().map(Cell::get), [0, 1, 1]);
++
++        drop(first);
++        assert_eq!(drops.each_ref().map(Cell::get), [1, 1, 1]);
++        Ok(())
++    }
++
++    #[test]
++    fn test_kvec_drain_all_unconsumed() -> Result {
++        let drops = [const { Cell::new(0) }; 3];
++        let mut v = KVec::new();
++        for counter in &drops {
++            v.push(DropSpy(counter), GFP_KERNEL)?;
++        }
++        let capacity = v.capacity();
++
++        drop(v.drain_all());
++        assert_eq!(drops.each_ref().map(Cell::get), [1, 1, 1]);
++        assert!(v.is_empty());
++        assert_eq!(v.capacity(), capacity);
++
++        drop(v);
++        assert_eq!(drops.each_ref().map(Cell::get), [1, 1, 1]);
++        Ok(())
++    }
++
++    #[test]
++    fn test_kvec_drain_all_consumed() -> Result {
++        let drops = [const { Cell::new(0) }; 3];
++        let mut v = KVec::new();
++        for counter in &drops {
++            v.push(DropSpy(counter), GFP_KERNEL)?;
++        }
++        let capacity = v.capacity();
++
++        let mut drain = v.drain_all();
++        for value in drain.by_ref() {
++            drop(value);
++        }
++        assert_eq!(drops.each_ref().map(Cell::get), [1, 1, 1]);
++        drop(drain);
++        assert!(v.is_empty());
++        assert_eq!(v.capacity(), capacity);
++
++        drop(v);
++        assert_eq!(drops.each_ref().map(Cell::get), [1, 1, 1]);
++        Ok(())
++    }
++
++    #[test]
++    fn test_kvec_drain_all_empty() {
++        let mut v = KVec::<DropSpy<'_>>::new();
++        let capacity = v.capacity();
++        let mut drain = v.drain_all();
++        assert!(drain.next().is_none());
++        drop(drain);
++        assert!(v.is_empty());
++        assert_eq!(v.capacity(), capacity);
++    }
+
+     #[test]
+     fn test_kvec_retain() {
 -- 
 2.56.0
-
