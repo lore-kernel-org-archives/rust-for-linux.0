@@ -1,99 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.169
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793723142;
-	b=YeGq0/NLi7OKPcR8qwhR7MK9FYYb2x42QGoz7bDD3AUwZFxd5EkMHmPvwmrOzNZjeHUv
-	 xiY0ncyvdU/zFw4tzfu9p/ToVh/kqAjQQJXVWzuglkl3ejrIMkLGstNbCROOOLaTAMqIN
-	 JVM9lMCpsWBLpvTd0ngwtJ4dF/TIuEBXEZmF4Oz76M5uxMSA1v69/lxdVXEZrY0xB/ash
-	 Tnli3kYFo1/Bg6DnZHETLR/QSeYgEP9naZ+vfIkd0e8A/8rMXVZvAecz39FN6l0ZLJYji
-	 8uPY7fu6ExgsvGSns/8Qf1786ulbi7N7nULJV/YdyBqvjjfAi/sAnuZpaXynIEN6LeA==
+	t=1793723573;
+	b=XKRw0mQsAw/R4Sqa5puITs8IKIVeu2KeUGoIjz+F5vG49VVQuT8txTIyEEAEp+KTtllg
+	 Evgv2udGaV2T2JmAM6qRvKGbPvfaMhZ2NJL8qFF/KQgO2W0+urQbyJoYK/W5XF5WQlL4O
+	 rMhvpvuCFwCT3x585QN/8IpJJhGlzHK4VzfXzfuIQw5Cfux20iTskt5Y2Wazo/br8bwlx
+	 lo5VtLUYgQphzKfOdDDUvtuixSiApX0eWQnPF2VUFfpKBtaAG5ZQ54EM4tjBYWaQsWVXk
+	 ebgiJ2ZW4OO/onMOJDpnzyhS0uypMUJ3G28g0orYdTRoXT/STqZOpoiNo4HWbW6EXdg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793723142;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793723573;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=ucTwJsfrEI4hG4ToLcJXFo+0eiVcR5dBAvRyAcGuUSQ=;
-	b=wUvmHFNhK9b2y5de52pa9aBDZ3QWES9fjkmSA8+31Tt5/yFgqykCLjo0luyFRB6ylmlg
-	 rEBEESj1cBYFOJ7MNeCT10NpuxiJ+c/Fs722npEMSnyIwSy5dJzRxMIHBBkgQD2kofAhT
-	 cZDKl4P3hChjX7K4+8Wp92P+wsgWc/Y5rNH+TBa/LBLmqLl1Sl8T0hb1mz6KrCqYDvnVk
-	 WXwHcZD1O6Emzov3VayqD4Q4jhT/3KMk+cGz/zLibZa+ki57tq8/DrhbKrt3yB8kERuRJ
-	 MNCqa7qE1DkufFWRI3o5adUS5FegUlbOszb5Fb5qdayJXoF+Dz7iD6DJ+IqzIVgx0BA==
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=oMXVh8m9JA3+VOPHTMjFKEf5mQ5MCDe9p1cShRw1s5g=;
+	b=oSKPxdq/dw3oqOdoOoYrydGnXJheaKS7DZwuy77Qi5pc88VrQr4gfPSXP5r+uKEgDrr+
+	 T06uh9TSkMeUAkj2zkqUaMhMZ0kntHVnzoaLIyC2g4qqcRUxDJtVLnZPJh7DSFPKeo+4y
+	 et0BPki6uD7oe0yg5WPnKk7BbS0zd6d14qepu83+/LYlvlbbn9dhL18Zy9lSj3uyUAr+8
+	 wyNRTpV9jfuHGA6acVG27k3BN11V7BrYONCrIoSHWe9pvPz9hW2yrSN4TW3NZRGPwq/JK
+	 s3TRL1Hel5/XeLVvi5olBOxDsRu/S/KGbC+unm4GXAS/VytWq2hRSrgW8dLqdBJraoQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cUIIDOwS;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.175
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=q3FJQM3C;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.169
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BAF606A326
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 16:25:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58BAF606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70517606A332
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 16:32:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 70517606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cUIIDOwS
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-533202fe429so333731cf.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 08:25:42 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793723141; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=q3FJQM3C
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-36a1c464349so578590eec.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 08:32:53 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793723572; cv=none;
         d=google.com; s=arc-20260327;
-        b=hQp0BuC2Ey5pn4GVQUw4QHYblEu/B/RijgNwB83TUAyryi1X0jeKTxdq8AkrE90AtU
-         JTiv5F4Y1AuazkljnhAVnaUTyNpUy3FuzJnPiaZFUKAn4sFTKXxbw/Lze9j4NC9MK8Gn
-         3HPkbxuz3FBKfA1/1SVD3Fdrn9lBxcV3hzUsXRu8sEgy+KSHjuKsw0u3vxrM96/l3UJi
-         dxfmYf0FG3w4nhVOryUBj/BhPIeM2rE3XbVRYLWuwQA236M9SKEX7CqUOTMUzwigvubJ
-         lrGy6oehgaY4Yyeq5Vn3N+j7UY+i4wiIHhpZ9ULH6ax77u2RZ1RS0nKUFbCxnIkTR2tM
-         /tpw==
+        b=B5AIR2IFZY7I1U4Ixxw8FPrqfRaH3Q/YIzb+i9c36EyankOa3t3rT488+4BiVgztrW
+         ISGbIR4Jpm0DFXmwUl7B5IQmoHUiEuOCVStFaBFA1wSQEIdaYAo665hDRg2JCpTs1Zu1
+         lqkIohdbm/DllCEvcAup+PSvUu/y7Ma2UxFJKz7jq2BbgLb8+7UcNHDogUkfnK13kcy5
+         hXiQYU0f6q0JW07xEpI1gq0qb3lVKVkXJoSLIJsRt6LufVMyFjqXhVYkLkThQVMMLQWf
+         xL4LI+4WMqK/pOF/pR1HUuL+jbeArcHfjwPbU0ZoVK74LetGin4gPrRYQ4WfI67CGncO
+         n+Rg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=ucTwJsfrEI4hG4ToLcJXFo+0eiVcR5dBAvRyAcGuUSQ=;
-        fh=hCUm/KHSV8Og5vcVSgsP67jFeySfI2keks/+FS5x0A4=;
-        b=h760BydZpBWffa0/oyzbznXcfE84UXa/qK9dszn+nR9K4vEAjmDwkKACwEN/3u4F/r
-         EvtNrVzuf0HHsjKcEgBlO0ZOpXNfNsRQfdp1S3PhY6GU1AyLTO9wZ+XgxfFL8p8Mh4KT
-         ZRUdZP9GsxT2toRnumAm6RfhB/NQRC7G2jrLBq0xxkXc4cl3Ga9p0gYOUJUVTrGIT0gb
-         m5+4zCWZml/CbpPcxZ7UHCE9iOLBc9uUxxv0jSVpp1RJjy6FunCumayZww9+D7KymYvB
-         w0yn8+lnFLvtybMmGqYrGIACO37hW8STxHPw/BiGL5CuRxP6pAmzwg4xFa8Wc35xH6Bx
-         jRSg==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=oMXVh8m9JA3+VOPHTMjFKEf5mQ5MCDe9p1cShRw1s5g=;
+        fh=bpTnb637mIqXBkPlDk6uxbsdAfZIPiZXOXJeuO0pThk=;
+        b=baBQa1ZIRoH4LzsLHJEzVp1smtwTjkwo4vzA/WJxq7ksSsd0sbffb+2w3ivKqQfL+U
+         0DaYVqWbxcP6VVgmBpVhqOYsBFcMJhgNBrzlaOo9yROVVP06OnpZz2YSa1AhlxcwwtaM
+         Gr78fRL+4LCDivzhiPDR80cHrR71tzWOxz62XECE9pp9tqgtZvh9/ApJWGSS+CDh2Evm
+         FmWfX4968CO5ZhrTpWixqlQrhFqVDnUvdBQubikIQ20e857ydFIxmWy6ARryfWmsgxHr
+         ug8dsbMqbMvVyato9Tfh2/LVKwAmeC6q3ToA49Zv6cYDsadfG4rD1g0oeOhfptMdBvUk
+         T+AQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793723141; x=1794327941; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ucTwJsfrEI4hG4ToLcJXFo+0eiVcR5dBAvRyAcGuUSQ=;
-        b=cUIIDOwSgEY4sB/0Tg2p1iGB8ZqP+oT+zRWYbpJ5HDp4fFkm+00ZhLSRbuR1w60LEW
-         v/5VgDjhNdTrk7C+It+m9RQlpHOPBKKJ8MIFzOSFtB8x1OyuG4X2s3u4rRoZu/ZfFV5H
-         Kazq+csKerHRwdWninAXLvUt+3O5h/nVEi5AXCOF9iT+3xZCeU/uPt7XR77RdCWH5NRW
-         TLTC2oJxRgwsHEhfTzkjustTzb6f8S34Z27msGHq4tfZ24CS8qYD+kcafFVm7P7Bd23S
-         at6fseXnLSYGGN2I2uY6DnwYEb7hDJvQTMUDsN2LGq54ItEStcbdIx6aQJO2F6al54hU
-         E0YA==
+        d=gmail.com; s=20260707; t=1793723572; x=1794328372; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=oMXVh8m9JA3+VOPHTMjFKEf5mQ5MCDe9p1cShRw1s5g=;
+        b=q3FJQM3CxAp6nXOI7CrIcPwt0ftF1W1wq2B+rAtXOlUHVSX/WwEvf2/4lc2ZHoSmKz
+         lnYXZtTv2P2QyyDtQUEgOUQoJkvotlVEjNzE09zJVAbHxhi6XXgNHQ1cEKP0stCoHCYC
+         ++eJ1PHCvPzL/r+hM8dBmy9CYmZ2Wv/P3ojk3TN4ga5dbA5TjgOC7rKO9DwwO8uEYUQ/
+         i9VXMSRdf8VlHX862nFR4uFY5XCI98B7n7+DXFoZG6ZpUw7R4kSQjt6E6yliUWxYFdEV
+         YIVP2G/KStUn6XIkORPoM+IFZM7A/2gtwvghB8fP9b86UPdgBA2WIpPnjTqvvxiZ2fm7
+         J0eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793723141; x=1794327941;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ucTwJsfrEI4hG4ToLcJXFo+0eiVcR5dBAvRyAcGuUSQ=;
-        b=WJ1wY22S6bw42c4jUZ3auQD2pJsq/LTSW4j5BSKtJR7UjtoVrvO/srYZuGrPFcFhIT
-         tLcNUJMkamJbL6ndpfbxYNFxe9EHj79WuGEQ5Pn0Q2GZLiSHcUN0QsHn3lfFt77lcUOU
-         IwkkQ94Y6T82JUrz9JcLwGGoLCTQBs4YLUcXUr2gkNg1+9/VmFANHKiGAS+VsgVTD+rB
-         X3XeowYJUrUbZ+8hIdALI4XyeFf/wyLIs8QNvo4a5q3rkpiWdGA3HJ2hQB9M4m1tKq9O
-         TIQnZ7LACiUDvRxJg+VIGcZ9EGG63SdbYuT/6NC9UmucaHgCy02T8V1NnLLHazuYQ6ew
-         DJjA==
-X-Forwarded-Encrypted: i=1; AKwUvBxzD+qidpWvNLlLKxA+Y8hnOSe8IBKaQPY9biWlcxWcVUwJOeWFqDh9RCb9J+PDYshI3wAsK9tX2RbT1zp1eQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z9ztYnLywX4PRudxAoznBtuqIX3HLElFB76AOrlO9K/Honb/ojY
-	prv61auHZ5XO7uIvt2H1wlH7lbPHY+s+sicDLAi9o0Zd/wflQhL03/yoQS9AMIPZzwTJHDL3HtF
-	LbGLT8QkOTa+q5CYSprSihd6cjznCeKINmdibUhou
-X-Gm-Gg: AYBFou0y39BJqU0AFLhhfEMbRIJjEFed1eq0f+AE1PjYHaivbDK2+5KlTH1nFUNAgmc
-	9xA0zyF06j7eTZ+8UeOK/eX58adh16Jl0YGXKHTCghxb5EPObZydl+9ulCEEwhHFxl7jEZdlBhn
-	mbA7mtn5QRQNwsNCjzg06ZtYq1FUKcziaxkS36vAU2x4tcd8SDieHxofq+FaweUUfv96hRFlgIG
-	HvjCHIkIT3mwxbwQ8ZM2I4EBBHCTYW6HOp8Tk/XdnNYpD0sqteWXdWojRR1nMHosgclzgvO0uT0
-	mmEbYYLIVdKbdj+zThcU7VCFhp1vdL4jvPAk5LSNvhftHb9JYtOFp9H2tcJg6WZxyhud8Qko335
-	yBqN+uMrp80f7jP/g/RO6VhArHX879xzGPR4556LHjy7izbqvGNOMM1bi6eokhvCjFRc=
-X-Received: by 2002:ac8:5cca:0:b0:536:934f:7da2 with SMTP id
- d75a77b69052e-549ba517bd1mr23041891cf.2.1793723140630; Tue, 03 Nov 2026
- 08:25:40 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793723572; x=1794328372;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oMXVh8m9JA3+VOPHTMjFKEf5mQ5MCDe9p1cShRw1s5g=;
+        b=HWWUEYNIsOUnAwZLkdFwojZfp5khd8BaxCjMu04+IJhWm/L4+r+TeSuXR/V/5XLiff
+         FdAhHd7NcM+0xJPmq9if0UX/yXQro0ZHffDZKzBhmtVrNxisJNBiHBzwUsLtHPr5sRQt
+         3ADvNa7+ZVteL9kaUYIxE4fW3WWlyQP6ntJ+o9q1zvYp8oiDdk5xLN+fe174bu1f/Wc8
+         cxNpV1WoBQSRjmt0be5kS52Pk0/F4EZB+4QDze5wYschriU2DeeYPRA6acojhpmmhn+D
+         v3fjRvy9XuczEmFZOGk253WBdBkwjXOC2jQYlTgYv6j/RLXD3f2hG4UpAPJo0jpb4bsT
+         D+OQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwPNQWiJgBIH7x/VJgQajyb/3JB5AOVls0+LedV3HcDwdWehD2/YWeVe6Ml7LRyE3Oii+LXz0dlumSApB1kng==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/yb5kddKNuCz12ElbAFxKE3O6ipZ8/Z6TLbcpOiH1Fzl3BLGcy
+	VlMq59S4MBEvelnUM4px8zDF4wNlB+uetEBjpUgyHQl3I03JfbmX14s+Qr9lqTh6m5xgKnJoi1t
+	ZPsYLjbV9G8mWMG5ammsWb82ZcpnCbJhSROYT
+X-Gm-Gg: AYBFou20go4YrNkVtqAb9Ikjah34o8sOzo8rsbTNi4mMP03ICLZ224PaSgrK6FBlHHm
+	3xtZTJN+5QosVSzPliHt6Ctp1FtUWttXDNozw73OaOiu0QXbcn5MhOooAy46wwOvj3wjUWFEWb5
+	LnN5TgdGiVY4DpU/2+Ysi+qj3sv3TcDVDCS3M8EYrkVKCcTjBb4syOjfmlDyymmSmUMM7YcQuuz
+	5FMN10wM7/1UV7U2aYTg2CG/oJ6QdGWkaUmIdtlm+cS3PXQjV0OiD4wViWz4yf58LWMzhja9OzY
+	7Bo6Bbdfw4utdYcx+uZ2Dy9OrakTfyNHTct1GBmYwP6NPPBh/ur+bxnwr2ayQr4dZfXvXn8MLZi
+	XIFNoSBGBwv3gi4qp65US1Ex+ezj6kxffgRX8MpeNYaBaEkn1zTNxdgbK3yv9QBRRSh6lnA6K9Y
+	jyafDdzaaOVgTv8U2SMEtyfZV7KqeMF9vb6Deq5Mb1Dby6wda8HmVU4sfcSTfx54JVk2JnIz3y1
+	/7hDaW3rNWtCtOWxSAk/DmeKnXNp2VS51RZ
+X-Received: by 2002:a05:7300:ae18:b0:36a:13fd:b5c with SMTP id
+ 5a478bee46e88-36a4235ceddmr27747765eec.2.1793723572486; Tue, 03 Nov 2026
+ 08:32:52 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -103,78 +106,70 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261022134617.228229-1-gprocida@google.com> <20261103125814.258105-2-gprocida@google.com>
- <0ddac462-b4b3-4844-8a00-fbe5f043885c@suse.com>
-In-Reply-To: <0ddac462-b4b3-4844-8a00-fbe5f043885c@suse.com>
-From: Giuliano Procida <gprocida@google.com>
-Date: Tue, 3 Nov 2026 16:25:02 +0000
-X-Gm-Features: AclHuK-6CCPIkFp5_oqua3MDBxS7jekauX_rpV7FSKbhPTEfW6LwwMQZwtaQ9bA
-Message-ID: <CAGvU0Hm04LXTywU0eL6KN4=SoOAC+LU3BKqENnLR-WV-sHsuNA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] rust: move EXPORT_SYMBOL_RUST_GPL to include/linux/export.h
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+References: <20261029-rust_kunit_v6_send-v2-0-5ce551efc48e@gmail.com>
+ <20261029-rust_kunit_v6_send-v2-1-5ce551efc48e@gmail.com> <6d7a63ae-f08f-4973-b2d5-27be454380ef@davidgow.net>
+In-Reply-To: <6d7a63ae-f08f-4973-b2d5-27be454380ef@davidgow.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 3 Nov 2026 17:32:38 +0100
+X-Gm-Features: AclHuK90AIFn4pqC962aeL0MAPJKIlqb3W_SNsS254mHQiyiX6txvzvtQ8rl_to
+Message-ID: <CANiq72mf6Hx1YZDKv0GKwEd2gDfQtUkuA4RGhgUEfOCpR0ixDw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] rust: kunit: add #[should_panic] support
+To: David Gow <david@davidgow.net>
+Cc: nico.antinori.7@gmail.com, Alice Ryhl <aliceryhl@google.com>, 
+	Benno Lossin <lossin@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	linux-modules@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Aaron Tomlin <atomlin@atomlin.com>
+	Burak Emir <burak.emir@gmail.com>, Rae Moar <raemoar63@gmail.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Trevor Gross <tmgross@umich.edu>, Yury Norov <yury.norov@gmail.com>, 
+	kunit-dev@googlegroups.com, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 3 Nov 2026 at 15:57, Petr Pavlu <petr.pavlu@suse.com> wrote:
+On Tue, Nov 3, 2026 at 3:46=E2=80=AFPM David Gow <david@davidgow.net> wrote=
+:
 >
-> On 11/3/26 1:58 PM, Giuliano Procida wrote:
-> > diff --git a/scripts/misc-check b/scripts/misc-check
-> > index 40e5a4b01ff4..b39d731cb413 100755
-> > --- a/scripts/misc-check
-> > +++ b/scripts/misc-check
-> > @@ -45,7 +45,7 @@ check_tracked_ignored_files () {
-> >  # does not automatically fix it.
-> >  check_missing_include_linux_export_h () {
-> >
-> > -     git -C "${srctree:-.}" grep --files-with-matches -E 'EXPORT_SYMBOL((_NS)?(_GPL)?|_FOR_MODULES)\(.*\)' \
-> > +     git -C "${srctree:-.}" grep --files-with-matches -E 'EXPORT_SYMBOL((_RUST)?(_NS)?(_GPL)?|_FOR_MODULES)\(.*\)' \
-> >           -- '*.[ch]' :^tools/ :^include/linux/export.h |
-> >       xargs -r git -C "${srctree:-.}" grep --files-without-match '#include[[:space:]]*<linux/export\.h>' |
-> >       xargs -r printf "%s: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing\n" >&2
-> > @@ -58,7 +58,7 @@ check_unnecessary_include_linux_export_h () {
-> >
-> >       git -C "${srctree:-.}" grep --files-with-matches '#include[[:space:]]*<linux/export\.h>' \
-> >           -- '*.[c]' :^tools/ |
-> > -     xargs -r git -C "${srctree:-.}" grep --files-without-match -E 'EXPORT_SYMBOL((_NS)?(_GPL)?|_FOR_MODULES)\(.*\)' |
-> > +     xargs -r git -C "${srctree:-.}" grep --files-without-match -E 'EXPORT_SYMBOL((_RUST)?(_NS)?(_GPL)?|_FOR_MODULES)\(.*\)' |
-> >       xargs -r printf "%s: warning: EXPORT_SYMBOL() is not used, but #include <linux/export.h> is present\n" >&2
-> >  }
-> >
+> I'd rather this not pass, personally. I think that an assert!() within a
+> test should work normally (i.e., it's possible to assert that the test
+> state is normal, and a failing assert will fail the test).
 >
-> This is minor, but the updated pattern matches non-existent
-> EXPORT_SYMBOL() variants. To preserve the current strict matching, it
-> should instead be changed to:
->
-> EXPORT_SYMBOL((_NS)?(_GPL)?|_FOR_MODULES|_RUST_GPL)\(.*\)
+> I could be talked out of this if it's really unpleasantly different from
+> non-kernel Rust, but in that case I think we'd want to make sure that
+> kunit_assert!() within a test behaves like a normal assert even in a
+> should_panic test.
 
-I'll take this suggestion which was also my initial thought.
+Yeah, it all boils down to what we mean by `assert!()`.
 
-My second thought was that if Linux were ever going to allow non-GPL
-or namespaced
-Rust symbols, the syntax I came up with would be the best future-proofing.
+When I implemented it back then, I intended to allow people to write
+the normal asserts they would write (which could help in case we were
+to e.g. import code from elsewhere, like a vendored library), as if
+would have "Rust-panicked", but not "kernel-panicked".
 
-> Alternatively, I think the pattern could be made more permissive in
-> general, something like:
->
-> EXPORT_SYMBOL(_[A-Z_]+)?\(.*\)
->
-> This has the advantage of not requiring changes when a variant of
-> EXPORT_SYMBOL() is added/removed and shouldn't sacrifice any of the
-> desired functionality.
+Viewed in that light, `BUG()` would not necessarily need to make
+`should_panic` succeed or not [*], but an `assert!(false)` would need
+to make the test succeed. And then we could have a
+`should_kernel_panic` and maybe expose a public `kunit_assert!` etc.
+to distinguish them and so on.
 
-AI analysis: Using a permissive regex in check_missing_include_linux_export_h
-introduces 81 to 84 false-positive warnings across the kernel.
+Having said that, I am not sure how many tests would actually rely on
+such differences... I think the core requirement is that, as you say,
+we are able to test for Rust panics in functions we call within the
+test (and ideally also other Rust panics within the test body too,
+when viewed in the light above). But if something simplifies
+implementation significantly, then we can consider other things.
 
-Things like: EXPORT_SYMBOL_IF_KUNIT, EXPORT_SYMBOL_ACPI_LIB.
+[*] I asked an LLM to test what happens in userspace Rust when one
+aborts/traps/etc., and it differs in stable between a normal test and
+a doctest (with the default `panic=3Dunwind`): essentially, the former
+dies, the latter succeeds -- it doesn't seem to be well-defined yet.
+There is an issue for the doctest side of it:
 
-> -- Petr
+  https://github.com/rust-lang/rust/issues/143009
+
+and there is a bunch of discussion on the different linked PRs.
+
+Cheers,
+Miguel
