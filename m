@@ -1,75 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793719996;
-	b=Mtko5vByEd9iKIkbk/p0pXryWqkmIho4USjYOBq1RraejBDnKNN8VZRz5IgML8hZJZ04
-	 WBGRH9nnpIwivCC9VfOvMpXmjPDfM+nMNlKDPApwhSI2lGh7crOCtdVEHobPJuuUbCdCD
-	 bTTNNoe/bQTzIpFqPeccFpLGQZb23KAbbumu/iV+CGZ5QqoPRgJOJg1rmoTKh+6ogGtfS
-	 s2eBza5RueRci19evAtIjBHtrgpYk/7lrKNiKmD5BtlXk/nMb1xL66gvae02I8/dGnX8/
-	 zlwQp11gb3Es82Fne0Y1/rdWzghS/V1G2JMXc2IZi4i9WkLjjx7D3f5hFz1difovJRg==
+	t=1793721424;
+	b=CHLIwiKNk/rvEWkCoA3gSwiMmijBDiwIb6QDUguZ0DvAHE0m1wrl7qSXQlU4LbcP8JDX
+	 LhPZuPXuM32ozk9lIDr3EzlzZz2AnlTyXnPkQdAJpD9gu2kqHAD5+p2s53LYD8KxgKKMY
+	 j/H49t3YDtOOWdP0r2US/qBR3oF1SIYraafm15bGOXLnIxi+HhfkuvYGEN0XmY1DwwOKP
+	 2b3+0PDuDffOkVKM3d3h6mkbHR15CKwXcsTR+s+2lsMCMRH3Umzb7w9j3kDS0hBuRRCSh
+	 W09nnyLJ86SrcSzWnzxZ+tluuLnOhNPbYW3+n16sPKiLiVRjYXwQUtFdFjQ/UdS8Ybw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793719996;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793721424;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=wdz+UoLmdeuO/9e+1/ijBJsXh3Mk16TKUgOURfVhGuo=;
-	b=MbMxcDEqPHmKvm8hhnrhmypDMbd7W5v4CkhrMZI57hwTu++rnr6O7ByNzz8df+wci96O
-	 +AUo9mcYiFUacuPhbBkrdrOLVAl6WUHVYl6SQAUHkwAw7qNaCgYxOYdtf19HM8vD14R7L
-	 PnLh9TuaYagrDOy55l3WeGcbAR1qhwKMh1XD9ou9MqRb8oIclpZhPKUBCN1OBqxZf7MaD
-	 Xzm6zvqRfizikWIvUQJBeE4NCt8NBk+1pW3Dhar/p2kf/4/u2+pGDrua3un8RjJY+grBT
-	 zFHiC3r9iuDS/CNlTVS5oG5MDFhBXyUYo0JMfS5G7ev1QM1lXj2rTozxOj0H2pve8sA==
+	bh=Ds1cm/r+J5ogP0Oi85siueuJoBsjSaeimvYRj3GfO3Y=;
+	b=f6b4icvQU4VE01vcE9pUABI18RyilzVZDZsVmc4HKpbWRg44aKKSFnsmb7DxgxhT1Uog
+	 dkAXsIdUkp8pAnhsEdnxWL4xOCxSKLhPbwCYkSMcNL9gLMwAbRBK34KrWQF5il65hyXVI
+	 VRDWe9M/FDFNKFBrBvVGSDekHYhwYVg2kR8hWpR5Lh4I86td4zWawt4asZwHKVbF5XUWd
+	 l6TZ2tVUhal4+AKjurRGH3UF8FVoeVNFw8OKb+mMWT9PnAqj0FHc1m9s6DxEAgI1T2XOA
+	 4Oe1e/ZvCfkIJSe/5O4Pg/ILashzffRnF+pzy2f9j77ycI0q9Zm59+ss6LYXBHR1jQw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SrYk7Riw;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=suse.com;
+	spf=pass smtp.mailfrom=suse.com;
+	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b="OQyd9tD/";
+	arc=none smtp.remote-ip=209.85.128.43
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2107606D804;
-	Tue,  3 Nov 2026 15:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE37606D837
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 15:57:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FE37606D837
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SrYk7Riw
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BCC61F00A02;
-	Tue,  3 Nov 2026 15:33:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793719995;
-	bh=wdz+UoLmdeuO/9e+1/ijBJsXh3Mk16TKUgOURfVhGuo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SrYk7Riw66F3Sk4QneGV7ZpKJcGR6IqkeVr6i9KlEI8QRnIns0UQZQkSsm+hYhiZi
-	 2O2JZ+fskwU7ybwEXwL/Gq4ZUnRph3P2Q47UxDVds0d1KnnzcESIDyuZgdWgNhYImF
-	 jEzn60nj3S2FxWGLcx69ZjMchRX69RvTet85tZwyHiEq0AxD0uKlkZhLAvoxcUQ/lw
-	 FZGylD5m3W0dMJzZgzi6QZd+VVgHwYGl2Xm9qsShHf4W/k02pbmgT7nxtLpRZ61F7b
-	 hxTX13gYJAu8zsh1+ylez2l6cBGIyt2fke1gDTd2BJBZdlhR6Pc6m0Hkhb4oNRQQCP
-	 lXCrVXqoC6Kqg==
-From: Philipp Stanner <phasta@kernel.org>
-To: Sumit Semwal <sumit.semwal@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org
-Subject: [RFC PATCH v7 8/8] samples: rust: Add JobQueue Tester
-Date: Tue,  3 Nov 2026 16:31:38 +0100
-Message-ID: <20261103153138.1087330-10-phasta@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261103153138.1087330-2-phasta@kernel.org>
-References: <20261103153138.1087330-2-phasta@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=OQyd9tD/
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a4d7ae1ae9so43117785e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 07:57:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1793721422; x=1794326222; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ds1cm/r+J5ogP0Oi85siueuJoBsjSaeimvYRj3GfO3Y=;
+        b=OQyd9tD/8TQOt52lQsWFnhzNzYJd8rgIeATGn0HbW5YbJ0qOm+aUzz0gKTIlMS6Ux4
+         8uXXHnbExRiP5Huc8SqpAIpjf/AXk42hAjhNh9I2I6b8OqBuxh/3LSRu1Jn3j43FBHqJ
+         S+XkV8xg48nTjJ88cEsHAmkY7hhB8I+9GD72G3LFAmt7QH04WMg0Vvjswb3glBMJDVq7
+         3JwXc+h9z0GFb05Uu8k/fl/T8MH8whVD05s5kNu/lcbwdaa6H5eQ9hjAak1unQMOgBNd
+         +QWzAdibssaKAE3bpR3DOmkPcVDpdmMp4YtT6qELztOUIfqWNP8wqKYlhRielrP122BQ
+         9k5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793721422; x=1794326222;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ds1cm/r+J5ogP0Oi85siueuJoBsjSaeimvYRj3GfO3Y=;
+        b=LAWvD+Ss6ZZt6XGrf49zzqYEmM1utacQshYT0+tvt2OC0xPKKVOjk9Ujy4AGrSAedO
+         XW2QV5Yi5enXLc0o5FFVHZq4YPA8JwxhnxIbaUZf9JgxmhPjsUuveeASOkZGG97jq9Qq
+         sgI+6Rvfoce9k5n+yn3egAHjGCX8HVcycN5U9/00w1xiJAQ50znIXIPqABUp4wFs4tyC
+         BFrBWjA7C09aN+bBQ6fuEtZzk139HcRNBqU0Z5eSArXGPkc+3dG+F8NwCgNbY2AkJVu9
+         qvsOkFFfxLhkUyB1xX8ublXdplWKRL8i50qkWdgBn48L2cykgyHwABLG6cC+a1nnkf0j
+         FqNA==
+X-Forwarded-Encrypted: i=1; AKwUvBzYptGkPhbN+Af3olSJOEXDjU2cc+4Cjm99h0h5XvERMAIBGMfahgqBHAjcMoJMZyilSdwL6dVy2IQvk/XMnw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/vSRsnPRZpf1M6D8WbBVgoeZHXpjkZ3CHChxKFAw2KgVvOv5rr
+	Bjz+Cb0gQythSWPuH43w0LQhQf91nuMBL56S8kCc6nkgcA1nwpz8ImfjnwIEKt362wo=
+X-Gm-Gg: AYBFou2RqoRInfognrQyDVtRXgu66BCoyM+xi1WyzPtIjut556Gv4GhRbXizsnhkFx9
+	sAqxlW3h/W6f9ki/1nnew3CaqPJQn1abSChx4c/cRpI4w3CgHY7k1tD8v+x+WI6kUwm0eF3fyyC
+	XApZVdaZh1Qs0QMglZ6JKEw4tYpVVjeNJLxys1ukdI8HTOxiyCnEvz6m9Tfuh5QmqQH69uyVLkU
+	Yxqyf6+Hn1NbBvaaPHby4O1HQAYkulHnMmSKL3/bZwtoinGUatLRKHymF2bTKkVZMg6iJ3TR8nr
+	oXPKwlNzVRsOUjKmwBuQP3rGprGdVzw+DiTt8mXqFzO7UpoEnhpP5HQtKKz0S09kI7ZS3DbWi9M
+	/m6gAPxX5b4ijegh2OW1Pu5caUADqI+BeCzo4zmEc5jRMZKxdiWXjoCHk3ouOnAyhfk8SLMn0G+
+	qJPwmY3HtiZBrEtcDRrbzzaL7oIrY7JwPmlfEXf3M5VRxL6gQa8g12zITKg9G4xJVmhOPoCuY/j
+	ejit50bbSUuKj+ZxOP1EJELQXAXVzjnkCpNgRW71kBJYSLQGU55UC/TI0oIv8zPQi9NP2jm4nIu
+	2q8MSRXDKIEDXvTOaPG51nd1wmagM6V//Ccg5UtmwKxy5Y0TBnayuEPj/T3eLfZmEA==
+X-Received: by 2002:a05:600c:e555:10b0:4b2:61e5:b2f4 with SMTP id 5b1f17b1804b1-4b261e5b38bmr58131845e9.11.1793721422629;
+        Tue, 03 Nov 2026 07:57:02 -0800 (PST)
+Received: from ?IPV6:2a07:de40:8100:0:89a9:fd0e:583d:4a53? ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b78a4csm25946508f8f.23.2026.11.03.07.57.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Nov 2026 07:57:02 -0800 (PST)
+Message-ID: <0ddac462-b4b3-4844-8a00-fbe5f043885c@suse.com>
+Date: Tue, 3 Nov 2026 16:57:01 +0100
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -79,299 +92,68 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] rust: move EXPORT_SYMBOL_RUST_GPL to
+ include/linux/export.h
+To: Giuliano Procida <gprocida@google.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
+ Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ linux-modules@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ Aaron Tomlin <atomlin@atomlin.com>
+References: <20261022134617.228229-1-gprocida@google.com>
+ <20261103125814.258105-2-gprocida@google.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20261103125814.258105-2-gprocida@google.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-From: Gary Guo <gary@garyguo.net>
+On 11/3/26 1:58 PM, Giuliano Procida wrote:
+> diff --git a/scripts/misc-check b/scripts/misc-check
+> index 40e5a4b01ff4..b39d731cb413 100755
+> --- a/scripts/misc-check
+> +++ b/scripts/misc-check
+> @@ -45,7 +45,7 @@ check_tracked_ignored_files () {
+>  # does not automatically fix it.
+>  check_missing_include_linux_export_h () {
+>  
+> -	git -C "${srctree:-.}" grep --files-with-matches -E 'EXPORT_SYMBOL((_NS)?(_GPL)?|_FOR_MODULES)\(.*\)' \
+> +	git -C "${srctree:-.}" grep --files-with-matches -E 'EXPORT_SYMBOL((_RUST)?(_NS)?(_GPL)?|_FOR_MODULES)\(.*\)' \
+>  	    -- '*.[ch]' :^tools/ :^include/linux/export.h |
+>  	xargs -r git -C "${srctree:-.}" grep --files-without-match '#include[[:space:]]*<linux/export\.h>' |
+>  	xargs -r printf "%s: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing\n" >&2
+> @@ -58,7 +58,7 @@ check_unnecessary_include_linux_export_h () {
+>  
+>  	git -C "${srctree:-.}" grep --files-with-matches '#include[[:space:]]*<linux/export\.h>' \
+>  	    -- '*.[c]' :^tools/ |
+> -	xargs -r git -C "${srctree:-.}" grep --files-without-match -E 'EXPORT_SYMBOL((_NS)?(_GPL)?|_FOR_MODULES)\(.*\)' |
+> +	xargs -r git -C "${srctree:-.}" grep --files-without-match -E 'EXPORT_SYMBOL((_RUST)?(_NS)?(_GPL)?|_FOR_MODULES)\(.*\)' |
+>  	xargs -r printf "%s: warning: EXPORT_SYMBOL() is not used, but #include <linux/export.h> is present\n" >&2
+>  }
+>  
 
-Some test code for the JobQueue
----
- samples/rust/Kconfig                 |  11 ++
- samples/rust/Makefile                |   1 +
- samples/rust/rust_jobqueue_tester.rs | 242 +++++++++++++++++++++++++++
- 3 files changed, 254 insertions(+)
- create mode 100644 samples/rust/rust_jobqueue_tester.rs
+This is minor, but the updated pattern matches non-existent
+EXPORT_SYMBOL() variants. To preserve the current strict matching, it
+should instead be changed to:
 
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index 31d62533ef25..a5754fe03fd5 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -190,4 +190,15 @@ config SAMPLE_RUST_HOSTPROGS
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_JOBQUEUE_TESTER
-+	tristate "Jobqueue Tester"
-+	select JOBQUEUE_TESTER
-+	help
-+	  This option builds the Rust Jobqueue Tester.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_jobqueue_tester.
-+
-+	  If unsure, say N.
-+
- endif # SAMPLES_RUST
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index b986b681cde5..69dd0b8d2597 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -17,6 +17,7 @@ obj-$(CONFIG_SAMPLE_RUST_DRIVER_AUXILIARY)	+= rust_driver_auxiliary.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_SERDEV)		+= rust_driver_serdev.o
- obj-$(CONFIG_SAMPLE_RUST_CONFIGFS)		+= rust_configfs.o
- obj-$(CONFIG_SAMPLE_RUST_SOC)			+= rust_soc.o
-+obj-$(CONFIG_SAMPLE_RUST_JOBQUEUE_TESTER)	+= rust_jobqueue_tester.o
- 
- rust_print-y := rust_print_main.o rust_print_events.o
- 
-diff --git a/samples/rust/rust_jobqueue_tester.rs b/samples/rust/rust_jobqueue_tester.rs
-new file mode 100644
-index 000000000000..48dd1188f7db
---- /dev/null
-+++ b/samples/rust/rust_jobqueue_tester.rs
-@@ -0,0 +1,242 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Small example demonstrating how to use [`drm::JobQueue`].
-+
-+use kernel::dma_buf::{FenceContext, FenceContextOps, Fence, FenceStatus};
-+use kernel::drm::{JobQueue, JobQueueOps, JobRunnable};
-+use kernel::prelude::*;
-+use kernel::str::CString;
-+use kernel::task::might_sleep;
-+use kernel::time::{delay::fsleep, Delta};
-+
-+module! {
-+    type: RustJobqueueTester,
-+    name: "rust_jobqueue_tester",
-+    authors: ["Philipp Stanner"],
-+    description: "Rust minimal sample",
-+    license: "GPL",
-+}
-+
-+// -- FenceContext data for external dependency fences -------------------------
-+
-+#[pin_data]
-+struct DepFenceCtxData {}
-+
-+impl DepFenceCtxData {
-+    fn new() -> impl PinInit<Self> {
-+        pin_init!(Self {})
-+    }
-+}
-+
-+impl FenceContextOps for DepFenceCtxData {
-+    type FenceDataType = ();
-+}
-+
-+// -- JobQueue data and ops ----------------------------------------------------
-+
-+#[pin_data]
-+struct JqData {}
-+
-+impl JqData {
-+    fn new() -> impl PinInit<Self> {
-+        pin_init!(Self {})
-+    }
-+}
-+
-+struct JobPayload {}
-+
-+impl Drop for JobPayload {
-+    fn drop(&mut self) {
-+        might_sleep();
-+    }
-+}
-+
-+impl JobQueueOps for JqData {
-+    type JobDataType = JobPayload;
-+
-+    fn run_job<'a>(&self, job: JobRunnable<'a, JobPayload>) {
-+        // Simulate GPU work completing after a short delay. In a real driver
-+        // this would submit work to the hardware ring.
-+        pr_info!("run_job: seqno {}\n", job.seqno);
-+    }
-+
-+    fn kill(&self, _jq_nr: u64, _err: Error) {
-+
-+    }
-+}
-+
-+fn is_signaled(fence: &Fence) -> bool {
-+    match fence.status() {
-+        FenceStatus::Unsignaled => false,
-+        FenceStatus::Signaled(_) => true,
-+    }
-+}
-+
-+struct RustJobqueueTester {}
-+
-+impl kernel::Module for RustJobqueueTester {
-+    fn init(_module: &'static ThisModule) -> Result<Self> {
-+        pr_info!("Rust Jobqueue Tester (init)\n");
-+        pr_info!("Am I built-in? {}\n", !cfg!(MODULE));
-+
-+        // A standalone FenceContext for creating external dependency fences.
-+        let dep_fctx = KBox::pin_init(
-+            FenceContext::new(
-+                0,
-+                c"rust-jq-tester",
-+                c"dep-timeline",
-+                DepFenceCtxData::new(),
-+            ),
-+            GFP_KERNEL,
-+        )?;
-+
-+        let driver_name = CString::try_from_fmt(fmt!("rust-jobqueue-tester"))?;
-+        let timeline_name = CString::try_from_fmt(fmt!("rust-jq-tester-hw-timeline"))?;
-+        let jq = KBox::pin_init(
-+            JobQueue::new(0, driver_name, timeline_name, 1_000_000, JqData::new()),
-+            GFP_KERNEL,
-+        )?;
-+
-+        pr_info!("Test 1: Test submitting two jobs without dependencies.\n");
-+        let job1 = jq.new_job(1, JobPayload {})?;
-+        let job2 = jq.new_job(1, JobPayload {})?;
-+
-+        let fence1 = job1.submit();
-+        let fence2 = job2.submit();
-+
-+        // Complete both jobs by seqno so their fences get signaled.
-+        jq.complete_jobs_up_to_seqno(fence2.seqno());
-+
-+        // Give the submit worker a chance to run.
-+        fsleep(Delta::from_millis(100));
-+
-+        if !is_signaled(&fence1) || !is_signaled(&fence2) {
-+            pr_info!("Test 1 failed.\n");
-+            return Err(EAGAIN);
-+        }
-+        pr_info!("Test 1 succeeded.\n");
-+
-+        pr_info!("Test 2: Test submitting a job with already-fulfilled dependency.\n");
-+        let mut job3 = jq.new_job(1, JobPayload {})?;
-+        job3.add_dependency(&fence1)?;
-+
-+        let fence3 = job3.submit();
-+        jq.complete_jobs_up_to_seqno(fence3.seqno());
-+
-+        // Give the submit worker a chance to run.
-+        fsleep(Delta::from_millis(100));
-+
-+        if !is_signaled(&fence3) {
-+            pr_info!("Test 2 failed.\n");
-+            return Err(EAGAIN);
-+        }
-+        pr_info!("Test 2 succeeded.\n");
-+
-+        pr_info!("Test 3: Test that a job with unfulfilled dependency does not get run.\n");
-+        let unsignaled_alloc = dep_fctx.new_fence_allocation(())?;
-+        let unsignaled_fence = unsignaled_alloc.new_fence();
-+
-+        let mut job4 = jq.new_job(1, JobPayload {})?;
-+        job4.add_dependency(unsignaled_fence.as_fence())?;
-+
-+        let blocked_job_fence = job4.submit();
-+
-+        // Give the submit worker a chance to run (it should NOT run job4).
-+        fsleep(Delta::from_millis(100));
-+
-+        if is_signaled(&blocked_job_fence) {
-+            pr_info!("Test 3 failed.\n");
-+            return Err(EAGAIN);
-+        }
-+        pr_info!("Test 3 succeeded.\n");
-+
-+        pr_info!("Test 4: Test whether Test 3's blocked job can be unblocked.\n");
-+        unsignaled_fence.signal(Ok(()));
-+
-+        // Give the submit worker a chance to run the now-unblocked job.
-+        fsleep(Delta::from_millis(500));
-+
-+        // Complete it.
-+        jq.complete_jobs_up_to_seqno(blocked_job_fence.seqno());
-+        fsleep(Delta::from_millis(100));
-+
-+        if !is_signaled(&blocked_job_fence) {
-+            pr_info!("Test 4 failed.\n");
-+            return Err(EAGAIN);
-+        }
-+        pr_info!("Test 4 succeeded.\n");
-+
-+        pr_info!("Test 5: Submit unblocked jobs, then a blocked one, then unblocked ones.\n");
-+        let job1 = jq.new_job(1, JobPayload {})?;
-+        let job2 = jq.new_job(1, JobPayload {})?;
-+        let mut job3 = jq.new_job(1, JobPayload {})?;
-+        let job4 = jq.new_job(1, JobPayload {})?;
-+        let job5 = jq.new_job(1, JobPayload {})?;
-+
-+        let unsignaled_alloc1 = dep_fctx.new_fence_allocation(())?;
-+        let unsignaled_fence1 = unsignaled_alloc1.new_fence();
-+        let unsignaled_alloc2 = dep_fctx.new_fence_allocation(())?;
-+        let unsignaled_fence2 = unsignaled_alloc2.new_fence();
-+        let unsignaled_alloc3 = dep_fctx.new_fence_allocation(())?;
-+        let unsignaled_fence3 = unsignaled_alloc3.new_fence();
-+
-+        job3.add_dependency(unsignaled_fence1.as_fence())?;
-+        job3.add_dependency(unsignaled_fence2.as_fence())?;
-+        job3.add_dependency(unsignaled_fence3.as_fence())?;
-+
-+        let fence1 = job1.submit();
-+        let fence2 = job2.submit();
-+        let fence3 = job3.submit();
-+
-+        // Complete unblocked jobs 1 and 2.
-+        jq.complete_jobs_up_to_seqno(fence2.seqno());
-+        fsleep(Delta::from_millis(100));
-+
-+        if is_signaled(&fence3) || !is_signaled(&fence1) || !is_signaled(&fence2) {
-+            pr_info!("Test 5 failed (phase 1).\n");
-+            return Err(EAGAIN);
-+        }
-+
-+        // Signal two of three dependencies — job3 should still be blocked.
-+        unsignaled_fence1.signal(Ok(()));
-+        unsignaled_fence3.signal(Ok(()));
-+        fsleep(Delta::from_millis(200));
-+
-+        if is_signaled(&fence3) {
-+            pr_info!("Test 5 failed (phase 2).\n");
-+            return Err(EAGAIN);
-+        }
-+
-+        // Signal the last dependency — job3 should now be runnable.
-+        unsignaled_fence2.signal(Ok(()));
-+        fsleep(Delta::from_millis(500));
-+
-+        // Complete job3 and the remaining jobs.
-+        jq.complete_jobs_up_to_seqno(fence3.seqno());
-+        fsleep(Delta::from_millis(100));
-+
-+        if !is_signaled(&fence3) {
-+            pr_info!("Test 5 failed (phase 3).\n");
-+            return Err(EAGAIN);
-+        }
-+
-+        let fence4 = job4.submit();
-+        let fence5 = job5.submit();
-+        jq.complete_jobs_up_to_seqno(fence5.seqno());
-+        fsleep(Delta::from_millis(100));
-+
-+        if !is_signaled(&fence4) || !is_signaled(&fence5) {
-+            pr_info!("Test 5 failed (phase 4).\n");
-+            return Err(EAGAIN);
-+        }
-+        pr_info!("Test 5 succeeded.\n");
-+
-+        Ok(RustJobqueueTester {})
-+    }
-+}
-+
-+impl Drop for RustJobqueueTester {
-+    fn drop(&mut self) {
-+        pr_info!("Rust Jobqueue Tester (exit)\n");
-+    }
-+}
--- 
-2.56.0
+EXPORT_SYMBOL((_NS)?(_GPL)?|_FOR_MODULES|_RUST_GPL)\(.*\)
 
+Alternatively, I think the pattern could be made more permissive in
+general, something like:
+
+EXPORT_SYMBOL(_[A-Z_]+)?\(.*\)
+
+This has the advantage of not requiring changes when a variant of
+EXPORT_SYMBOL() is added/removed and shouldn't sacrifice any of the
+desired functionality.
+
+-- Petr
