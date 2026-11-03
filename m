@@ -1,75 +1,44 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.29.242.92
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793710782;
-	b=lY01YFoYnQ4vtv2WdspoUoFFTJwLdmpBDhJTQo/kSF2t53yqkf2gXHFh5Z1kfrmvBCXp
-	 jSg9a6ww/tofB4OXu50mtRBjF/u+FFkWuhCXcd8Ne6jr1YlbZu60YUNS/eeMXno8Fdz+0
-	 ZalG+JC5QJkaNgPp1EtFILAIFyUvSImXc7dzuqq+Sx/DgTbGzjeu+R+ZzO9s4T9WI+q+o
-	 JtBxKEEXVDnjS6k/WGqfdsCNGeqG+cZsDfC/s27Hu2Vrxlnfp9jm0Y3lfnNbEjQDaLTsJ
-	 UlhH1a9H5f7JR2fO8NB0wD5G8+tjOYWUfLgD3C6qYUQ0hP0gWbIsz4YFUqF6pdHrCJQ==
+	t=1793717159;
+	b=q19Z3jTgBRA9GEi9juKSxnC6fDd1Ki/fKbibgmHohVwY4pExCpYcv02qhxs5Lf+jl7Cm
+	 mbbgqiHO5JySLL+fqftJWwVGSsw365UUog/HnTwXBsVlwyykmji3ZsadyyURI/KmjQm2U
+	 F+qKixpO/k3aoiAPeym3kXZEfTnCBoLpOg5y4lVOOUAI6IT46C/iVwaFr+Q9NWi6yzc3B
+	 7tjUhv6tVDE4Hts4zwqi629y2J0IeW/YvO/fnlE+OhB4caZSM9JhJmdg36e5KYOofkZeN
+	 TP9yn6o3ilHqRVXv46uCWNsQgT7GS4tTyXSo8JHOip3801qZ7oBfS9Djrk4ZEARKCDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793710782;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=XA8gwtcBTdgYB+sh1p56Z459oRwVTCtDjhOE2Ccb1U8=;
-	b=DAHlVLH0Mid7YmHRMxpQbrq9ePImgKfQhR1CksU5U4Ioasw68SCYTT6M6cD/NVyGhA+j
-	 bRTNX8dHl53k6sjfdhreR39lcoubJXs+fqoVJjh1MAuEQjp1LrM73FRQEgNv0v/lh/Rpj
-	 s2cxUB2NPuzBLiZo5qTgLgajjWPgmtowjFKD1xw3lPZp7G7hB9V2VXCT9xG3rfdmVGe6K
-	 QESbsehepR6aPbjB4MJQjx2sHY3AX3wVgEtdvWZndtAQBLLRYsLQp5+ACrv+a3dGquTen
-	 GDGcRqhCLyubMFzWgCLUnV1CrjC3KQ01h+vJx5SPSHHiZol0AHCjFKkZP76S8FATyxw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793717159;
+	h=DMARC-Filter:Received:X-Spam-Checker-Version:X-Spam-Level:
+	 X-Spam-Status:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=TWkxYsyQ175zAT7PvX0d/6/Q2MTcK82yiJRpTdRcvCQ=;
+	b=yuMjpII9f2wRuVQQ7WjugNodxoBLPpHjyos2fRyZ0OU3oLErdBLeiLc6gAYl+fm1raeJ
+	 Le+hM0kI3gJH3ZGRuHcNt4t/vxdex0WnOixxUVEs+Y0ZeCDHRcFqsPhmQGnbf7PYATt5I
+	 fxHS+9WTKjK7CpeX48jNx4kNz4Pk4KA6rk2rpxqlrGCAQND/kS5Y9XmwBocZRNvLmtWDB
+	 FL6CIh3l6jzg2co8VDm9XhG4usXxbR9ikI7ZFQdMosYmLVtb0tP9gQc4Ys7AlFCcNvao+
+	 Za+XNev4G/Sg4UfisFU5o4WKXJhZaqfUiyv8iv0CL+GD770L68ZB2p3JTBr92owZuuA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--gprocida.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=MuCrWwLd;
-	arc=none smtp.remote-ip=209.85.128.70
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=davidgow.net;
+	spf=pass smtp.mailfrom=davidgow.net;
+	arc=none smtp.remote-ip=203.29.242.92
+Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223F5606A326
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Nov 2026 12:59:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 223F5606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--gprocida.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=MuCrWwLd
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a204f135ffso23543655e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 04:59:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793710780; x=1794315580; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XA8gwtcBTdgYB+sh1p56Z459oRwVTCtDjhOE2Ccb1U8=;
-        b=MuCrWwLdN8lWKJqzlvJepW9HZ37onxzXfP0ZCDcuRdeU6CgHtLmHO3ehxudyuiz307
-         B8N0ginxAd6niIdXltDEsK5UHC0/GcVSh5bvXtiyO2EXI6e0nl8lAkoWgY6KPA0aWKsw
-         9pcwjEvxEVC1IbPQIW1TR7RquNIJJGzV6YIC6Mpa3xd1CoExvSMeDk0GUTkd+JnOsQoh
-         wN5sjan+wZoQxdf6ezQnPZnve6uBKZoZQCiZIAnNcARg8fLRLlkc9EWuFcl1SNF9n2IL
-         JWat+SpfzchBS8QgzIdnw5HtYe8E5eKc9sgsocgR5LjZFEvtMfyIvIngYQNEnmZ6YO2I
-         3cIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793710780; x=1794315580;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XA8gwtcBTdgYB+sh1p56Z459oRwVTCtDjhOE2Ccb1U8=;
-        b=sV6PWetdyTZL6eAwv7NgreXhctbIHkjE5gveax+jpX1NiI7LJJHOZUAGz3om86d1NZ
-         0UpVnuTHtQHMfZGTkafjVEh+acmTfwtHE1yV4zkei4tWMZeExCm+GTJh07OK05uBmEbV
-         P+8z2GvpJ1JyecuE1Ix46iVMXhm/p96kLS59eapiPRTEPeqRFij5zzt2Y/kPcXEhKAxt
-         rsgzK58SgBrnjIscOTkk13U9URzRyXiQ9BkyIlCF/RqRF/0F8QKQUkFizHcE2iKFqZyr
-         tKN8sEzpAaxfcc6xsfTGHfCsLfzFRt2bBeiYjfC6pnKyeNJ9DwLlh0gNzeVzxY/loELY
-         PjFA==
-X-Forwarded-Encrypted: i=1; AKwUvBzGZ9n2GY1H3R+0j8pGTeEE3WVjOs54NVHqo1+c6AGraxrjTPjBGjw6S2wcTi8+PMAVYXbNBpmG8Moglk1iDg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+lqfon/tPI3IqbQlpZl7fe9LzXKGhto6wp6LR11iuvhGEcePR3
-	CGdZIBJ0c8vRmwqm803kNF17Ey+c7+Om736IHaOfeXJgvykLZ4D8lnD83vIFwHDJ/Gn7mPFlTg7
-	9v7/2fZPYcMVEFQ==
-X-Received: from wmhj19.prod.google.com ([2002:a05:600c:3013:b0:4a1:93c0:d3c4])
- (user=gprocida job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:474f:b0:4a1:f8cb:7d70 with SMTP id 5b1f17b1804b1-4ac1793ed87mr302225515e9.24.1793710780367;
- Tue, 03 Nov 2026 04:59:40 -0800 (PST)
-Date: Tue,  3 Nov 2026 12:58:14 +0000
-In-Reply-To: <20261022134617.228229-1-gprocida@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB34606A324;
+	Tue,  3 Nov 2026 14:45:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DB34606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidgow.net
+Received: by sphereful.davidgow.net (Postfix, from userid 119)
+	id 8A2D3200B11; Tue,  3 Nov 2026 22:45:49 +0800 (AWST)
+X-Spam-Level: 
+Received: from [IPV6:2001:8003:8802:7000::41b] (unknown [IPv6:2001:8003:8802:7000::41b])
+	by sphereful.davidgow.net (Postfix) with ESMTPSA id A9BB0200B03;
+	Tue,  3 Nov 2026 22:45:44 +0800 (AWST)
+Message-ID: <35284b5b-bf0c-4585-ad3e-a76bae4be7df@davidgow.net>
+Date: Tue, 3 Nov 2026 22:45:41 +0800
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -78,109 +47,164 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261022134617.228229-1-gprocida@google.com>
-X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
-Message-ID: <20261103125814.258105-3-gprocida@google.com>
-Subject: [PATCH v3 2/2] rust: exports: emit ___EXPORT_SYMBOL without C declarations
-From: Giuliano Procida <gprocida@google.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, linux-modules@vger.kernel.org, 
-	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Aaron Tomlin <atomlin@atomlin.com>, Giuliano Procida <gprocida@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] rust: kunit: support #[should_panic] and same test
+ name with different #[cfg(...)]
+To: nico.antinori.7@gmail.com, Alice Ryhl <aliceryhl@google.com>,
+ Benno Lossin <lossin@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Brendan Higgins <brendan.higgins@linux.dev>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>,
+ Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?Q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Burak Emir <burak.emir@gmail.com>, Rae Moar <raemoar63@gmail.com>,
+ Tamir Duberstein <tamird@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Yury Norov <yury.norov@gmail.com>, kunit-dev@googlegroups.com,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <20261029-rust_kunit_v6_send-v2-0-5ce551efc48e@gmail.com>
+Content-Language: en-US
+From: David Gow <david@davidgow.net>
+In-Reply-To: <20261029-rust_kunit_v6_send-v2-0-5ce551efc48e@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Define `EXPORT_SYMBOL_RUST_GPL(sym)` using `___EXPORT_SYMBOL` directly:
+Thanks very much, Nicolás.
 
-	asm(__stringify(___EXPORT_SYMBOL(sym, "GPL", "")))
+I've had a closer look at the new version of this, and have a few 
+comments. Ultimately, I think a mix of this version and the original RFC 
+is probably best, and in particular, using a panic_handler instead of 
+modifying kunit_try_catch, and removing the special-case assert!() 
+handling would be ideal.
 
-matching the `__ASSEMBLY__` path.
+Le 30/10/2026 à 00:59, Nicolás Antinori via B4 Relay a écrit :
+> This patch series intends to implement two features for KUnit tests
+> written in Rust. The work is based on a TODO comment made in the
+> `bitmap.rs` module [1].
+> 
+> Changelog:
+> 
+> v2:
+> - Added more tests in `rust/kernel/kunit.rs` testing Sashiko findings
+>    and changes.
+> - Solved Sashiko: "[Low] kunit: spurious "try faulted" error logs for
+>    successful #[should_panic] tests": Solved by adding
+>    `rust_should_panic` in `kunit_try_catch` C struct to check if the test
+>    is expected to panic and act accordingly. Dismissed what I first talked
+>    about in [3].
 
-Previously, `EXPORT_SYMBOL_RUST_GPL(sym)` declared `extern int sym;` so
-that it could invoke `EXPORT_SYMBOL_GPL(sym)`, which required `sym` to
-be a declared C identifier for `typeof(sym)`, `__ADDRESSABLE(sym)`, and
-(when `CONFIG_GENDWARFKSYMS` is enabled) `__GENDWARFKSYMS_EXPORT(sym)`.
+I think if we only handle Rust panics, this should go away, right?
 
-This resulted in the compiler emitting DWARF debug information in
-`rust/exports.o` and `drivers/gpu/nova-core/nova_core_exports.o`
-describing every exported Rust symbol, functions and data alike, as a C
-`int` variable.
+> - Solved Sashiko: "[Medium] kunit: assert! macro in #[should_panic]
+>    tests causes unexpected failure": Solved by making `kunit_assert`
+>    macro aware if the test should panic and act accordingly. Dismissed what
+>    I first talked about in [3]
+> - Solved Sashiko: "[Low] kunit: missing diagnostic log for
+>    #[should_panic] tests that fail to panic": Added an error message when
+>    a test that was expected to panic do not
+> - Solved Sashiko: "[Low] kunit: dead_code error for test wrappers with
+>    inactive cfg": Solved by moving the #[cfg(..)] attributes on top of
+>    the wrapper functions
+> - Dismissed Sashiko: "[Medium] rust: bitmap: memory leak in
+>    owned_bitmap_out_of_bounds() test panic": Not sure if can be done
+>    anything. If I am not mistaken this is the same issue as stated here [4].
 
-Although `rust/Makefile` sets `skip_gendwarfksyms = 1` on `exports.o`
-and `drivers/gpu/Makefile` runs `gendwarfksyms` on `nova_core.o` rather
-than `nova_core_exports.o`, the bogus `int` DWARF entries were still
-present in `vmlinux` and `nova-core.ko`, where they conflicted with the
-true DWARF types emitted by `rustc` and confused DWARF consumers such as
-debuggers and ABI analysis tools.
+Yes, the issue in [4] (that tests exiting early is unsafe) is known and 
+kind-of unfixable. It does mean that we'd want to avoid deliberately 
+panic-ing if we at all can.
 
-Omitting the C-level wrappers from `__EXPORT_SYMBOL` is safe because:
-- `__GENDWARFKSYMS_EXPORT(sym)` is unneeded because `gendwarfksyms` runs
-  directly on the defining Rust and helper object files rather than on
-  `rust/exports.o` or `nova_core_exports.o`.
-- `extern int sym;`, `extern typeof(sym) sym;`, and `__ADDRESSABLE(sym)`
-  have no effect in `rust/exports.c` or `nova_core_exports.c`: the
-  symbols are already emitted in separate translation units (scraped via
-  `nm --defined-only`), the fake `extern int` declaration never produced
-  kCFI function type IDs, and `___EXPORT_SYMBOL` already emits a
-  `.quad`/`.long` reference to `sym` in `.export_symbol` that satisfies
-  both ELF linking and LTO module-asm symbol resolution.
-- `DEFAULT_SYMBOL_NAMESPACE`, `__DISABLE_EXPORTS`, and `__GENKSYMS__`
-  are not used by `rust/exports.c` or `nova_core_exports.c`.
+It's possible to avoid resource leaks by using the KUnit resource / 
+defer functionality, but that's not readily exposed in Rust at the 
+moment (and it's likely to be highly non-idiomatic).
 
-Signed-off-by: Giuliano Procida <gprocida@google.com>
----
- drivers/gpu/Makefile   | 4 ++--
- include/linux/export.h | 9 +++++----
- 2 files changed, 7 insertions(+), 6 deletions(-)
+> 
+> Sashiko report links: https://sashiko.dev/#/patchset/20260930-rust_kunit_v4-v1-0-e3b0d45311dd@gmail.com?part=1
+> 
+> v1:
+> - Removed 'stringification' of test names (to avoid clash of names for
+>    different configurations now a number is appended).
+> - Added bool `rust_should_panic` attribute to `kunit_attributes` C
+>    struct
 
-diff --git a/drivers/gpu/Makefile b/drivers/gpu/Makefile
-index e372fc02139f..1269ce862ad2 100644
---- a/drivers/gpu/Makefile
-+++ b/drivers/gpu/Makefile
-@@ -47,8 +47,8 @@ $(obj)/nova-core/nova_core_exports.o: $(obj)/nova-core/exports_nova_core_generat
- CFLAGS_nova-core/nova_core_exports.o := -I $(objtree)/$(obj)/nova-core
- 
- ifdef CONFIG_MODVERSIONS
--# The C export shim declares Rust symbols as `extern int`, so reuse its export
--# list but generate symbol CRCs from the Rust object instead of the shim's DWARF.
-+# The C export shim has no DWARF type info for Rust symbols, so reuse
-+# its export list but generate symbol CRCs from the Rust object.
- $(obj)/nova-core/nova_core_exports.o: private cmd_gensymtypes_c = \
- 	$(call getexportsymbols,\1) | \
- 	$(objtree)/scripts/gendwarfksyms/gendwarfksyms \
-diff --git a/include/linux/export.h b/include/linux/export.h
-index 4aeb422d86af..2a0362cc54e1 100644
---- a/include/linux/export.h
-+++ b/include/linux/export.h
-@@ -94,16 +94,17 @@
- #define EXPORT_SYMBOL_FOR_MODULES(sym, mods) __EXPORT_SYMBOL(sym, "GPL", "module:" mods)
- 
- /*
-- * A hack to export Rust symbols for loadable modules without having to redo
-- * the entire `EXPORT_SYMBOL_GPL` logic in Rust.
-+ * Export Rust symbols for loadable modules without having to redo the entire
-+ * `EXPORT_SYMBOL_GPL` logic in Rust.
-  *
-  * This requires Rust's new/future `v0` mangling scheme because the default one
-  * ("legacy") uses invalid characters for C identifiers (thus we cannot use the
-  * `EXPORT_SYMBOL_*` macros).
-  *
-  * All symbols are exported as GPL-only to guarantee no GPL-only feature is
-- * accidentally exposed.
-+ * accidentally exposed. There is no support for symbol namespaces.
-  */
--#define EXPORT_SYMBOL_RUST_GPL(sym) extern int sym; EXPORT_SYMBOL_GPL(sym)
-+#define EXPORT_SYMBOL_RUST_GPL(sym)				\
-+	asm(__stringify(___EXPORT_SYMBOL(sym, "GPL", "")))
- 
- #endif /* _LINUX_EXPORT_H */
--- 
-2.56.0.385.gac671c819a-goog
+I like this, but if we're calling it 'rust_should_panic', it should only 
+affect Rust panics.
 
+> - Removed #[panic_handler] in Rust side, checking for aborts in the C
+>    side (`kunit_run_case_catch_errors` function). This allow to catch
+>    panics triggered, for example in a Rust function that called a panicking
+>    C function.
+
+Ultimately, I think that we probably want to restrict #[should_panic] to 
+Rust panics at this stage, so using #[panic_handler] would work best.
+
+This greatly simplifies the implementation, and makes it much more targeted.
+
+If we do really want to support panics from C, then I think we want to 
+build this on top of the warning suppression feature[1], and expose it 
+from C as well as Rust. It only traps WARN(), rather than BUG(), though.
+
+> - Now the tests that have an inactive #[cfg(..)] do not appear un the
+>    KUnit execution summary as ignored, they just do not run.
+> Link to v1: https://lore.kernel.org/all/20260930-rust_kunit_v4-v1-0-e3b0d45311dd@gmail.com/
+> 
+> - RFC patch: https://lore.kernel.org/rust-for-linux/cover.1789500084.git.nico.antinori.7@gmail.com/
+> 
+> 1. Supporting `#[should_panic]` [2]:
+> 
+> KUnit tests in Rust follow the user-space syntax, but at the moment
+> `#[should_panic]` is not supported. The first patch of this series adds
+> support for the attribute (only in its basic form, `#[should_panic =
+> "message"]` is not supported yet).
+> 
+> The way it is supported is by adding a new boolean property called
+> `rust_should_panic` to `kunit_attributes` struct in kunit/test.h and in
+> `kunit_attributes` in kunit/try-catch.h and check for the
+> `try_catch->try_result` code and the named flag to detect if there was a
+> panic in `kunit_try_catch_run` function.
+
+I think rust_should_panic as an attribute is good, but it should just be 
+checked from a panic_handler. If it supports more than just rust panics, 
+it probably shouldn't be called *rust_*should_panic (and again, should 
+probably be based on the warning suppression instead).
+
+
+> 2. Allow same test name with different #[cfg(...)]:
+> 
+> When testing `#[should_panic]` in `bitmap.rs` (check the last patch of
+> the series) I found that the test that was supposed to panic had the
+> same name as another one, but they were run on different configurations.
+> This caused the following compilation error:
+> 
+> ERROR:root:error[E0428]: the name `kunit_rust_wrapper_owned_bitmap_out_of_bounds` is defined multiple times
+>     --> ../rust/kernel/bitmap.rs:503:1
+>      |
+> 503 | #[macros::kunit_tests(rust_kernel_bitmap)]
+>      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `kunit_rust_wrapper_owned_bitmap_out_of_bounds` redefined here
+>      |
+>      = note: `kunit_rust_wrapper_owned_bitmap_out_of_bounds` must be defined only once in the value namespace of this module
+>      = note: this error originates in the attribute macro `macros::kunit_tests` (in Nightly builds, run with -Z macro-backtrace for more info)
+> 
+> Now, only the tests with an active `#[cfg(...)]` will be executed by the
+> runner. Tests with an inactive `#[cfg(...)]` will not appear in the
+> report since they are not added to the TEST_CASES array.
+
+This is great, thanks!
+
+> 
+> [1] https://github.com/Rust-for-Linux/linux/blob/fd73f4a6659897191fa0d40695fe370925dd3780/rust/kernel/bitmap.rs#L592-L600
+> [2] https://doc.rust-lang.org/rust-by-example/testing/unit_testing.html#testing-panics
+> [3] https://lore.kernel.org/all/DM41PHVITKOG.3I6P2X8048BEP@gmail.com/
+> [4] https://github.com/Rust-for-Linux/linux/blob/fd73f4a6659897191fa0d40695fe370925dd3780/rust/kernel/kunit.rs#L129-L136
+> 
+> Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
+> ---
+
+Cheers,
+-- David
+
+[1]: 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=85347718ab0dd7ede9c3e1dcff2d604c7073df05
