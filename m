@@ -1,49 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793799843;
-	b=cYRkL7rDgF80Vt/3WaeYvG1umXTwJ37n5gSij2QfKn0Iw/UtQmDvbyIn0TIRfuQwCbOs
-	 Aoms6nIIHcc3CNVRRUk14176eZhdhimhi7g2FRvvOhyvOYP4I6Y4wPTTfCjHCm2DWnzEZ
-	 6NXOm4xGCCyz2WFyYL2/LXEPL58wAmYG2k0omWxkP4aNd0RKQVG8YpYROrxID7a8MQ1Lz
-	 A7ixMCi4D0AbNZosfnxWxZiuwqn8EOdvT88mpuDcNMBgDTdMSBa/sQvvHZJm0g5hhZz8/
-	 e1CktEcrwuZU+YvwgfyDV+krSOK5mL+4pVubagQC7wU7rOoswBUiZQtdOPPAMg3k3Mw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793799843;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=cUUslosnGpCPPQgi+adGQwIsKcX5he24sFJpO5UMCtw=;
-	b=R7z7joFQJjkTAJuKN68KVZnznt1Fn4f7Z6mAPSDMsa+nZ+xZBuhdXVLCvT4DiD1yrp5V
-	 NIAjmbvRkTULnBODPn/zk5LY2p0Cym/VCbZLyTzE0GW7IFw1AAAW5kz/U0icQoit1Ubre
-	 KHug/ALB+cM67E98IEGDP8YbsGTQtg9ldX3Cr3RarjzmK4VIOg87VjBIDdbCMOpgpVOHG
-	 z0ZmyZh655V2RCUygKgJlg4/DbzAsEdBE4Sh/tHebQtqixt+PrFnFEJTxQoXMogt1aOzC
-	 Yfy9S3M91CXX106r1ikQG/Zw6yMtzsKqN6m0NIrFu53vf5wSuk5FmB8sjckic9HDumA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YaAxrkXm;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.21
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793801064;
+	b=XbQkQIUDFq7Y9iANpy8+gmYR9x/M0LY8BeFb8nMuL40XSmljlrUQTflW8QSj07NyTrNw
+	 xOWdH9R/aLlZ8CAedNZBXjJdo4mknvCRhXqcEpbZM1RZA59oOP9lk3B7f83JsdDRYFMTq
+	 ghKyuDcXO4nR8y2Mg63TM+C/NCqXuQvl2/OPA5qWik8CasitWoUr86THXwRHeYS99aZjI
+	 KgErHz/Y0/xeGJ+LC928Xx7JGGrUXIQllt3ajEWEHzzBakrfis+llo+zk94jRw07OwqrB
+	 zfPOrseB5fbzzSINTPtGY5WwIsd1Ls4sLQQpoSYJUG8tuhyTTpxuntZ3o2bPMlegsSQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793801064;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
+	 From:To:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=3HoGQkJxlGzC+wl0E1lMqOLgG1xmUxYpjwJkGlmj/C4=;
+	b=QeUAYj5qsGuqsW5sQliA20yav3CTWpI2kaaEDDcI3iSw2gY1Y/pQKrvZJ9SyG0VhZzka
+	 NdjKBOtG+7gTwmoAm7Xgh0UdeYNtKIdtoTaNk7vVyiZU7c1OMDRUfjDD0g/tOYYH7pqQ3
+	 X2DPvdKdGj6+1M0acCrrXg46ozcKrQkFbSEvcZoIJX9j0jvc2dWMQzKHx8nfv/3EUWfgt
+	 rLGfBIe4M3eqZAtP6Juk1d3P3oUSBwjqKztzITP5SeMYGoHiEP45xl+BdDstR8goE/wn2
+	 z4dpY/AQB2OYfmGpO4wKdBpCjVOgtdlXRQnxtt4KxOluI+OmaVv9GCdTjXVmIq+odhg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=imkigC+8;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.21
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011021.outbound.protection.outlook.com [40.107.208.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04AC2606A328;
-	Wed,  4 Nov 2026 13:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3ED606A32C;
+	Wed,  4 Nov 2026 14:04:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD3ED606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YaAxrkXm
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E321F0093A;
-	Wed,  4 Nov 2026 13:43:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793799842;
-	bh=cUUslosnGpCPPQgi+adGQwIsKcX5he24sFJpO5UMCtw=;
-	h=From:Date:Subject:To:Cc;
-	b=YaAxrkXmIKYHexFCTw02jEA/dqZDC5GNoV4ikYpgyYbtbGyAFiGJ+XUsN8qjZPNbR
-	 odoG4Xg7dkVoMMYxtgMKn1Ujyx9MhFec+JkOlAw0ho+1sTFPjWOiPmmw0r4xyhx0ME
-	 /0ZtHeIuVCKYlg/IaVssyiNM/M4RSTyb99XF24IcANTz4nWR5fcCWAry1quhzYkyHC
-	 xJFrsgDD0wR5nUTQDP7iVvtAukskIgjEm8XB/OP6z5OIa6vzNbpGnQjnJnpLX8EZYF
-	 dL2r9QFnsq5nPJcc85fkBCyCllB6XKkdVLEiTnE2vWA6KPKScRWiLtMhi5/+36BjUm
-	 928CMHItTPI2Q==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Wed, 04 Nov 2026 14:43:19 +0100
-Subject: [PATCH v3] rust: impl_flags: add method to return underlying
- integer
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=imkigC+8
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=meBw6b9lHsVg9lcT0+pH8y9TvmbnMwD7MOX1vbj9UxHs8G6s6FSuA6IlCKHxqwIbIkEPpZtn0HcYQ8t5DqZFoH1Tbk0JU4wePRp9Pt1WsiPAO2t8FI2pQq6nE+5+m7v92H3TGqY7DFKgP/aEGPgLaWJellDkkdJzfxqOQqyPp+apauDQQw49eg2Hf2MIRTIYSLBT3RiGB/jeYUZ55UbEOxaBipm8mAhHFMAmb1+Y5xV/7/+IQAQCADOkBhn+wYKSg7dBdo8MAVjvqQvS3UbIRcSuiYH0Kk6VHYu5DQcmJrPiZUhq/73cizHBeflQteuViaZjpPfrMJrjd4hTLSwMWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3HoGQkJxlGzC+wl0E1lMqOLgG1xmUxYpjwJkGlmj/C4=;
+ b=panp5AZwIWM8P2t+lQkzUG9vkXtP5IpjrI83hkEfvqUaSUTa0Aiy/eUJ63ILKRxSjXTsBGAc11q2ChE0pGs73DjC+oNAnLOoHaWKWpQlGXrB5ZvitTbj/0jjO9HbbWQ8oSOlOGEnZ5F3VZOKoSaxJBF3dYaBtf+Km7ZMkGq2quk0XCAGFvX+Fbkvw3oEsEzRqiJ+9YSYg7Rho2y8z2sdMxXWoJcbMuPWTEQnV9mEgAHYIvAYrSXJVpCYyrpxnR3ru43+lIZt91rhDZdetx9TxVPm+U8OleIPLssspNhQANXzuK6lQKtHvRZS550cGjVf9kht1WHJ7XXekJ2ORk9NsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3HoGQkJxlGzC+wl0E1lMqOLgG1xmUxYpjwJkGlmj/C4=;
+ b=imkigC+8ErYmnsnnlTX7BV5DYE+xazn7wIofH6zx1b7VORi8Kpx2BtS58eL6QmpMqu+D2vutUZGOce9pxJ/6lZCb0Mytseanwqhbvh9sCZf4bNbD4/+cD4KywpBKn4WYXJeKkbhV+yAUGIEfVVkN7shqPORcktFPxr7e/5PybAxTg9pcCuFHXi0+Yu9iQibruhsaUBbam+uXQHD+LKAqsCuCaMFH5+HZkWspKSeNTQdaLJ6IxX7vGXvq2OqpJ9YirCmsot688M70WDPeDUQhP+XxozNpddRuafHyYQyKXJHTnI8haGLHM/3/akB6w1wX4j5vPDSvBFk3XrM5LjQXWA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by CH3PR12MB7594.namprd12.prod.outlook.com (2603:10b6:610:140::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Wed, 4 Nov 2026
+ 14:04:16 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0592.007; Wed, 4 Nov 2026
+ 14:04:14 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Nov 2026 23:04:11 +0900
+Message-Id: <DMMHEIW2LX0T.2CCR3WAKAXC60@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Benno Lossin" <lossin@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, <nova-gpu@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2 4/5] gpu: nova-core: gsp: cmdq: compute the queue
+ regions from a count and a slot
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Eliot Courtney" <ecourtney@nvidia.com>
+References: <20261102-r000-cmdq-prep-v2-0-c2c2b69bdec0@nvidia.com>
+ <20261102-r000-cmdq-prep-v2-4-c2c2b69bdec0@nvidia.com>
+ <DMKRDBNW6KIO.OT0T0M6JFRDY@nvidia.com>
+In-Reply-To: <DMKRDBNW6KIO.OT0T0M6JFRDY@nvidia.com>
+X-ClientProxiedBy: TYCP286CA0256.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:455::14) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -53,111 +104,171 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261104-impl-flags-inner-v3-1-2968b1303d8b@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAHY262oC/33NwQrCMAyA4VcZPVtps9k6T76HeOjWdAvObrRSl
- LF3t9tFBJGc/kC+zCxiIIzsVMwsYKJIo89R7grW9sZ3yMnmZiBACZDA6T4N3A2mi5y8x8BbJWt
- dNaAbeWT5bAro6LmRl2vunuJjDK/tQ5Lr9g+WJM+DgLatFVZanG8YPA77MXRs1RJ8BCUOPwTIg
- rHSudJpY6H5EpZleQN2vZbT8wAAAA==
-X-Change-ID: 20260212-impl-flags-inner-c61974b27b18
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2658; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=K9QW0maz21yD9tB+JIt8DPORgeABVcgWs/zw+G7IAuE=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq6zZ452g3oLyBhxjvrkGXG+H+RLmPW9XIwvxhG
- JFpMKQtH3aJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaus2eAAKCRD6UCkIqsW9
- 0KM0EACfjAb9ceSqa+p2P85dipfEiNn3pPiSOWab4VDczDh8e2NXKyEvfcff1HSZ4O09OFbyEU+
- 3WAADbv6vXKQ9n0lGJwLNbjV0ZVen4LD1ZsNyr24rLPgta81d2NsLJGy39OkGoFwCZZSekDgEcn
- gmQ6YDO0YP+Gdap6cUg2lExH5RhLKXj0HBk/snHNIr8GREQyzwAky2tgZkPeqjR7ygRAuze61yk
- t0LnhrutM4EzaJIyb5ZkUL1Qvl3ial5LB7v/0Dlzt8EOaQ5OA5sYV9FYw/LrkCeg7O0PycNVDFy
- MBiYpuyaTUKzv5gp7ih08/0hRLFp2876NF9g0qVFKQ78i3PaXkEsfHIWWWryqIfTfdJzP1d29tj
- UuxhCvbLYr2fhQB4onH66WZLv26KPpTMqfUzC98mPfuXTh3+IqWzu7e9VWOQ2WXle61Jp6JCIlA
- Uhy6YSTcIa0p42eosqYMfv9z4iZupN6ALYtx6iHlIyhlfOR76FVfdpWKlnU7MqlDZB6A551mccr
- /uWx25xWiD9NLFrLJGKygdzixtrVFJXaN8haLCm2VCFcR1qe9nyT8bv7X1Y0wIAAbnRPbzjIjPb
- 3mfpjB5P9nl7ti5QesUdf6x7hWseuyeUV1cYFEPPAm2zOyUzhL2nqkEHx+OD4ECKjGFI55YNfMu
- eHAt1TCk9qFuGfg==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|CH3PR12MB7594:EE_
+X-MS-Office365-Filtering-Correlation-Id: aa375e11-6f39-49b4-8a09-08df3a7c820b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|10070799003|366016|1800799024|10063799003|10067099003|6133799003|22082099003|18002099003|4143699003|56012099006|261021121427099003|261022105027099003|261009223027099003|261021123027099003|261026140227099003|261026121527099003|261028144727099003|261102123227099003|11063799006|261021135927099003;
+X-Microsoft-Antispam-Message-Info:
+	r8LT0NP4yhSIo5YifvwHrgeVHs4r6ZbnJaGGyVmFs8RzAtJK7MB2ZmHFRVy37YN5p4k044KSsHdDTYLO6I8SFtpDNL0uPQWmrxOx8LrpGJsZhOBsn8CN1Qpws5I9SbAvh/j+WKMsl0fdCdOeM58JUiU74TZROcfZ0l9D3G7zq00dBHwCBROSXKPNyWl9ag7tkwipHjSWTvSmlT6ihvGPOpRsymysOoc7kNHdUeXLh7EmkMtXIy36L7iSkQTY5osd5h9HuDgw5ehD8XD60TDTxCnnLG6LJkQ+vFajgOaIH0Dpop2lgS2pJ/cB1Ha+CO/E/m7cUHEJawLr2VriKC5RUTxLf9ocp2d+LfW/QqaigXLuVdHWgfr+Z6ayX6cmrt0pWPnQ5IWdJogmwHcGgRE96Iv02uK3BrACwGhAEU+p6o56y9VGqLsB3yLaowP1SVyI1eFgyEsfgGqa6Kd3KzZdZ9wj1tFPjIfaZuRP8FrRcYbguSpa1TiIEEAyCMAMuJBaXldyT4fETWo9KqhMlue+UWFc49YRsPEnBpB4JnfZA07IndaaZuuKCluyt5Wp1G3WwgyLQSCP5EDsVXqbkTGgbk+Cgcek2e2skJV0+oKRXn5pwyrs1SXnZBBsaPxwkORpQPuplfhMXyZ44x36k9NJAcPZmxdrGjZileORCdLl0xk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(10070799003)(366016)(1800799024)(10063799003)(10067099003)(6133799003)(22082099003)(18002099003)(4143699003)(56012099006)(261021121427099003)(261022105027099003)(261009223027099003)(261021123027099003)(261026140227099003)(261026121527099003)(261028144727099003)(261102123227099003)(11063799006)(261021135927099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Mnp4WFp1cEpMWkNTOGVzRmhCTlpNLzlYQkIvSmY0NVZiK1pPVE8zcFgybFN4?=
+ =?utf-8?B?R3EvY0JYQzB5ZnhPS0tLVWZrelM5V00rWUlSQUczckR6SmlwTlpQQWwrZ085?=
+ =?utf-8?B?Q2E1UlRMRzVnbnFYSlRkN1hmTHpIQ0FRcC9NczdpMEQrVzJIeGgrN2JGMGZM?=
+ =?utf-8?B?OVNVUEVUcWtXK0FIZzViU3IyRndoUEpyRjVCenhFTFYydjlUaVpTQkhSUzNr?=
+ =?utf-8?B?bUt5TThSODBhdzBsVFFaYVFKK3ViRlFrK3RIdVdkNlA5MmIxbVB4M2lFUGxF?=
+ =?utf-8?B?WXJ5anY5N2hqREhWcFh6Uko0WmpvQmRmeDh1SGMySEN6alhsRkV3YXZjVWw3?=
+ =?utf-8?B?dWpVU1E3MnBzMmlsaTVDTmNUT0NGZFlrRzRBWWw1SHZJOU80allwSEo4Ym5U?=
+ =?utf-8?B?dndWMGRlYm9vZkE2SnpRemRyVUJtYnJ3ZVptUlRMTjllNVJ3L1ZiQWpYYXVv?=
+ =?utf-8?B?S2x3dVN1QW1lNlBkMHkyaWdEaW53STNQcktOeTdBUEtteCtXNVBjQ1o0WHc3?=
+ =?utf-8?B?Vkhac2NIUitDWXRGMGNOMWx4aHZhV3B2ZGNGZG9adkRvY2I0bloxc1RYd0J3?=
+ =?utf-8?B?TjRHaUxKUlZabjU1QXVGYXE2WjkyOGVCOHNOK3pMT1Vlbm5uaEU3MGVUNHhQ?=
+ =?utf-8?B?ZFErMWhaU01LajhoL1VJYlBtdnFaT0IwdFlOMHVPU3NxOTA0clNWUndyWndl?=
+ =?utf-8?B?SERkMEFxUStJWDR2OFBSVkEvVlhlQ0xtSkZCQTNpT0lISXZXdko0MW5DSXU1?=
+ =?utf-8?B?Y0VaVGcwY3ZITHF5d2V0UjM4Wi9JZTlocEttVjMyYk5CaUFPWUs1M2dMTEg2?=
+ =?utf-8?B?eEg3QUovbmQ4K0ZvRS9uRXBXNmN3RFY1MzJYRTd5U2xDQWxXZnRHMmk1dzY1?=
+ =?utf-8?B?MVArMGJvemZIN3FRZlpoeEdEVVozZjVFS2JyMnhOMGY5cVprcGNLK25kcWpj?=
+ =?utf-8?B?Rks4SXNiWmljbFlmUFg4SDMycExQRHJSaytONWY2S0tBY1FHNFhvR0tnRmJo?=
+ =?utf-8?B?dklLMmhURjZEZ0phTnFtSGkvczljWnlMY0g5TkduVk5jOHJLNjVoNzhCOFRi?=
+ =?utf-8?B?dVVkVGh4eks3YzR0elFJNlFqNnhYeWZyU1BJb3BQc2twd0EybnVOcDVCT1pw?=
+ =?utf-8?B?aFZCMjJvQ0xnRjJMamJ0ZjJlYXVzYW80TG1halhVbmlCdkF6dUE4a210aUxE?=
+ =?utf-8?B?WlR4Y3oyak9VVnUwZTZwbTZGZURMMWRZWU8xakVyQUxCZEFJREpteFhHYzZo?=
+ =?utf-8?B?azFvb0tMbmxGS3FNSWRMUnpxZVFiU1RNYmIyNnp1eENtQkl2aWRVY09seTcz?=
+ =?utf-8?B?dWs1VFdxMkVIelVFODVsRmNQL2NZSzVnNmU2QjUzL05HcExWb2dWR2hJeWJ5?=
+ =?utf-8?B?ajU2eThPZWNyT3llNzNLYzdRUit1alN4eUFGRkRqYnNISjlFZVZua0haMTYz?=
+ =?utf-8?B?MnJsdHlKMUdpNExiR1k5ZTZycEZYRWVpTk8xcTMra2NjdXVDdFkwZlBSM09i?=
+ =?utf-8?B?anpWT3JWV2dUU0hjb1pnaUhKQ0JXRFczckRDM1VVd2ZRaWZNeUJJbjZxQmNq?=
+ =?utf-8?B?K21iNGwyUHVRMGhvOUxmMitDT1phZWJWcDMxM2NvVDh2c2Fvd2ZjTyswQURW?=
+ =?utf-8?B?bVRtTG45QlAzUlFBdnNOMGRpNnAvaEZ1MjkvQUdEL0pWT3NQUHppRHM3RzI2?=
+ =?utf-8?B?YnorbnB0QnQvUEJFd2psajB6SCttZGZYa2ZjSlRCUFByK20xbUpTVHBsbWtY?=
+ =?utf-8?B?cGtTdEJFeEo2bW1oa2g1R29ucVVUdDlKTThqTXJIcVlEcGliSnY5NUxTaXB2?=
+ =?utf-8?B?ZmdZMVh5M1JkTUsrZ0Y2VEROVHRoT0RteG8yT1A3ZUZRVlFWazA5VytFazRS?=
+ =?utf-8?B?S0FlaWVtMlE2UWFJdnN2cjhjL2VFNEdqM0lQRE1FclI4K0UxTWxZTDFUZGw5?=
+ =?utf-8?B?d1hkQXNrWkJoVTVGOEM0Y2hRSDNybTNxaTArOXR5bUc3OXhERzZlSlE1UjNC?=
+ =?utf-8?B?eE5jSVUvVTBsOGFOY1gyZ013SUVMQTVGcTlkakIwaGFId2VnZS93VGpWSVpr?=
+ =?utf-8?B?ZitNMk55R09NampNdmUyZ3dremdKaUdrYnRmb3plOGQ2RUx6Y05jSFJIMnUv?=
+ =?utf-8?B?azJ1TmFiTGNMMFh3MVpOaVFzSzFKOVJXWEZ6cDYrenNPMHl0dUdxSVhVTHR1?=
+ =?utf-8?B?TXlvWVRpb1RtWmVkVjlBK0taOTdIaUZ2ZkZlZkx2V0JsdTVrbFRTOHZ2L2hW?=
+ =?utf-8?B?OGFTY2t0cFFnSjlibjNQOE03RDhWdXFnODF1dzdxVEZSSGF3VEg3Q2R0MFlo?=
+ =?utf-8?B?Sm50LzRlTWpuOVBod0tmbnV3SWprMGlZdkRwdGV5REQvMFhFWjdKd0dERm0r?=
+ =?utf-8?Q?KCzdl8CrqHKITgeSaYDG3x/TqMGrET1O6OG07JM08zRmu?=
+X-MS-Exchange-AntiSpam-MessageData-1: P6MrcdABs7uEkw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aa375e11-6f39-49b4-8a09-08df3a7c820b
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 14:04:14.5987
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7v8vYqC2jdO2FX89iXWEIPEfpYw9vAdtycuRAyNEUcXS02S6wdVYsHnHXaz34vii0U3QbpkhBTHYqcumevNNZA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7594
 
-Add a `bits` method to return a copy of the underlying integer used to
-represent the flags. This is useful when passing flag values to C APIs.
+On Mon Nov 2, 2026 at 10:27 PM JST, Eliot Courtney wrote:
+> On Mon Nov 2, 2026 at 9:09 PM JST, Alexandre Courbot wrote:
+>> From: John Hubbard <jhubbard@nvidia.com>
+>>
+>> `driver_write_area` and `driver_read_area` both branch on the relative
+>> position of the read and write pointers to decide where the two slices
+>> they return end. This works for msgq v0, where the pointers are indices
+>> into the ring, but msgq v2 (used by the r000 firmware) keeps them in
+>> BAR0 registers as free-running counters, so the branches and their
+>> SAFETY arguments would have to be rewritten for it.
+>>
+>> Instead, compute the number of slots available to the driver and the
+>> slot they start at, and derive the slices from that. The slot counts
+>> come from one helper per queue, which are the only two places msgq v2
+>> will need to touch.
+>>
+>> Use I/O projections to limit the amount of unsafe code to the bare
+>> minimum.
+>>
+>> No functional change intended.
+>>
+>> Assisted-by: LLM
+>> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+>> Co-developed-by: Alexandre Courbot <acourbot@nvidia.com>
+>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>> ---
+>>  drivers/gpu/nova-core/gsp/cmdq.rs | 130 +++++++++++++++++--------------=
+-------
+>>  1 file changed, 58 insertions(+), 72 deletions(-)
+>>
+>> diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/g=
+sp/cmdq.rs
+>> index 90e26c4dcc28..33cb9174c1e6 100644
+>> --- a/drivers/gpu/nova-core/gsp/cmdq.rs
+>> +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+>> @@ -19,8 +19,8 @@
+>>          Io, //
+>>      },
+>>      new_mutex,
+>> +    num::casts::FromSafeCast,
+>>      prelude::*,
+>> -    ptr,
+>>      sync::{
+>>          barrier::{
+>>              dma_mb,
+>> @@ -186,60 +186,58 @@ fn new(dev: &'a device::Device<device::Bound>, bar=
+: Bar0<'a>) -> Result<Self> {
+>>      /// As the message queue is a circular buffer, the region may be di=
+scontiguous in memory. In
+>>      /// that case the second slice will have a non-zero length.
+>>      fn driver_write_area(&mut self) -> (&mut [[u8; GSP_PAGE_SIZE]], &mu=
+t [[u8; GSP_PAGE_SIZE]]) {
+>> -        let tx =3D self.cpu_write_ptr();
+>> -        let rx =3D self.gsp_read_ptr();
+>> +        let avail =3D usize::from_safe_cast(self.cpuq_free_slots());
+>> +        let w_slot =3D usize::from_safe_cast(self.cpu_write_ptr());
+>> =20
+>> -        // Pointer to the first entry of the CPU message queue.
+>> -        let data =3D ptr::project!(mut self.mem.as_mut_ptr(), .cpuq.msg=
+q.data[build: 0]);
+>> +        // `w_slot` is below `MSGQ_NUM_PAGES` per the invariant of `cpu=
+_write_ptr`, so the
+>> +        // subtraction cannot underflow.
+>> +        let before_wrap =3D avail.min(cv!(MSGQ_NUM_PAGES =3D> usize) - =
+w_slot);
+>> +        // Per the line above, `before_wrap` is less or equal to `avail=
+` so the subtraction cannot
+>> +        // underflow.
+>> +        let after_wrap =3D avail - before_wrap;
+>> =20
+>> -        let (tail_end, wrap_end) =3D if rx =3D=3D 0 {
+>> -            // The write area is non-wrapping, and stops at the second-=
+to-last entry of the command
+>> -            // queue (to leave the last one empty).
+>> -            (MSGQ_NUM_PAGES - 1, 0)
+>> -        } else if rx <=3D tx {
+>> -            // The write area wraps and continues until `rx - 1`.
+>> -            (MSGQ_NUM_PAGES, rx - 1)
+>> -        } else {
+>> -            // The write area doesn't wrap and stops at `rx - 1`.
+>> -            (rx - 1, 0)
+>> -        };
+>> +        // PANIC: `w_slot + before_wrap` is at most `MSGQ_NUM_PAGES` by=
+ construction of
+>> +        // `before_wrap`.
+>> +        let after =3D io_project!(self.mem, .cpuq.msgq.data[panic: w_sl=
+ot..w_slot + before_wrap]);
+>> +        // PANIC: `after_wrap` is at most `avail`, which is below `MSGQ=
+_NUM_PAGES`.
+>> +        let before =3D io_project!(self.mem, .cpuq.msgq.data[panic: ..a=
+fter_wrap]);
+>
+> It looks like compared to v1, this kept the `after` and `before` names I
+> suggested but changed the indices (e.g. in_after =3D> before_wrap). It
+> means that "before" and "after" are being used in two different ways in
+> this function ("after wrapping" and "after write pointer"). What about
+> picking one usage for the entire function? Either is fine imo. Same for
+> the other spot (read side).
 
-The macro already generates a public `From<$flags> for $ty` conversion, so
-this does not expose anything that was not already reachable by users of
-the generated types.
-
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
-Changes in v3:
-- Make `bits()` unconditionally public and drop the inner-field visibility
-  specifier from v2. The bit pattern is already reachable through the
-  generated `From` implementation, so gating the accessor hid
-  nothing (Gary, Miguel).
-- Leave the bitmask struct declaration in the doctest unchanged and only
-  add a line exercising `bits()` (Miguel).
-- Rebase on v7.4-rc1.
-- Link to v2: https://msgid.link/20260605-impl-flags-inner-v2-1-ad1ff3f7ad2b@kernel.org
-
-Changes in v2:
-- Rename the accessor from `into_inner` to `bits`, matching the
-  name used by the `bitflags` crate (Gary).
-- Tie the visibility of `bits` to the visibility of the inner
-  field of the bitmask struct, so callers must explicitly write
-  `pub` to expose the bit pattern outside the defining module (Gary).
-- Extend the macro's doctest to declare the inner field `pub`
-  and exercise the `bits` accessor.
-- Link to v1: https://msgid.link/20260212-impl-flags-inner-v1-1-1e2edc96e470@kernel.org
----
- rust/kernel/impl_flags.rs | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/rust/kernel/impl_flags.rs b/rust/kernel/impl_flags.rs
-index fdf44d5eea9c..6051487f6e28 100644
---- a/rust/kernel/impl_flags.rs
-+++ b/rust/kernel/impl_flags.rs
-@@ -68,6 +68,11 @@
- /// let negated = !read_only;
- /// assert!(negated.contains(Permission::Write));
- /// assert!(!negated.contains(Permission::Read));
-+///
-+/// // Obtain the raw integer representation with `bits()`, which is
-+/// // useful for passing the value to a C API.
-+/// let raw: u32 = read_only.bits();
-+/// assert_eq!(raw, Permission::Read as u32);
- /// ```
- #[macro_export]
- macro_rules! impl_flags {
-@@ -270,6 +275,12 @@ pub fn contains_any(self, flags: $flags) -> bool {
-             pub fn contains_all(self, flags: $flags) -> bool {
-                 (self.0 & flags.0) == flags.0
-             }
-+
-+            /// Return a copy of the inner representation of the flags.
-+            #[inline]
-+            pub fn bits(self) -> $ty {
-+                self.0
-+            }
-         }
-     };
- }
-
----
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-change-id: 20260212-impl-flags-inner-c61974b27b18
-
-Best regards,
---  
-Andreas Hindborg <a.hindborg@kernel.org>
-
-
+Indeed, this was a bit confusing. I have used `after_len/before_len` for
+the length, and kept `after/before` for the slices, so things should be
+more consistent now.
