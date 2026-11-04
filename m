@@ -1,129 +1,135 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.157
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.156
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793833846;
-	b=oz88RB+3v/MreYCjIF9YpqxMTasLFCNcQmKKTs4FC0tZLQmxwXdgNqx76ixg0sOirlfp
-	 QyQeuZk9EVDk06YBXO2Q4xTgiFn0vvxqdAhWWMspdu+YWRhu5CU5b/30OxLmRmkV4tmuP
-	 WqR6zFgXfzpFtUtlWnt/z9e2z/ij6s5no9g9mFLH2QlK2sbXUuZE2fdkWBLnUg260Gn8o
-	 MYyvdYkPTdt1lpe2W4HHMK92oupL+pKprj4pWSjVegDGoWdQbf7KIyvm1qgduAnuqUoiF
-	 7f/aQMLRg1vUa7WvLU9P8fd69fOCA+e0JyWhJJsB+ovencv8hdXSUc15tbRIMFR6rqw==
+	t=1793836871;
+	b=FlsYwxQDjVVNoARjSjePoFMFJe9cJ1WX3eLndB+UrTX8gM5p8styFmxQtUKPlswaslpc
+	 8pXl90+LHn7fo3CF/W5++MOC/M06rlQuUY/tWrnN2n2m8fJk0ez1QGNzPP4DifbfUxem6
+	 wPPTZ/VIzJxufT23xpQJZFKmXGkDbkIGCXyXFWhdgXLC9D8s6W5rAadDkQT6xqo4efEHe
+	 l2YhsDL0YCE42tQZ26xsKFQqnlJ/eNbpITtwc79YzFjDBcOvsChRrmeBuhwSYaIX+oawv
+	 NJ/ZzWxwzdglM7AtqF8TiC/7+nfaVWWndgTn2yXhUQ0Ul/FbLXYsibbGwB66yMmdzZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793833846;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793836871;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
 	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
 	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
 	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=fpnhJCiU1sdsmFO7PW5FOFGZE7WdVRl/wv8CzGaZG4Y=;
-	b=vyuio0zh023vc1FKOoEHIcsqvq5C1R7Pa5CLMfinJ11CzKJBzaZnTe/E1lFjiZiIQs+i
-	 ZC+BsYzrVOJEpZ2Qf7eoiL24jlQFrktpU6RP2SqK9Xitaeq9imfqXJI1F08oIp6pXPIQS
-	 2sg9yCtlhG8M5nOIDDLnxKwQr9mjgmZ5xkNzybvPgtvLJQBcIg+CD/zr93MlFxAT7tyaU
-	 qwwtJuXAkYTkvW2GZaORSrRDVwnQZXytgfbrMGGn95u9ebiyOin/cym/NE0vKo9FeWSj4
-	 Mkfm63DfMG6A6xicOueUS7PYuhhBKLZOYhbOhY9KO9YVx0tQZrCs6nXu6Z2JLJjKyfA==
+	bh=KpRZu8OW+Om4bwh+lGy0Rfa1S2m1Xm1r8qtD+tdi+9s=;
+	b=znIfKT03DhV2O/+KOW495ORn5zrA7m7mZLnF8EEfg7mO5p6k8uHSk9AoBjud5Hqhxojw
+	 Wo9C4bqKoJrbk8tssXjR45XZ60WhvF031P8YT8X4ng9VT/9NmsXfEmVwY0sd0i/2NUZ6r
+	 HZSgT95t9RQH6U6i8mIBs9Y8G6kgAfkEPO2DXy8hEQFwHL6IFWqo+DvZIt0vSrMm2p40l
+	 mNjQBbt1hXiie2VJp25Cv7hNpZ8K3l1Os2q73BsL7VULgITl4pUDOcEJz1tJwkHwygBLz
+	 DrfIoyyLLuS0BoV2DsIdNsf7DQELRQbTR0M0xxyay/0ciss6M/vRtUTtW2aM29lFPPg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=flapping.org;
 	spf=pass smtp.mailfrom=flapping.org;
-	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=T0HfhEIW;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=iommtikA;
-	arc=none smtp.remote-ip=202.12.124.157
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=KG36lIqd;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b="2MO/qA4R";
+	arc=none smtp.remote-ip=103.168.172.156
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76550606A326
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 23:10:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76550606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F47606A328
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Nov 2026 00:01:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29F47606A328
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=T0HfhEIW;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=iommtikA
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id D45307A0053
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 18:10:44 -0500 (EST)
+	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=KG36lIqd;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=2MO/qA4R
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 5B8CA14001C7
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 19:01:10 -0500 (EST)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Wed, 04 Nov 2026 18:10:44 -0500
+  by phl-compute-01.internal (MEProxy); Wed, 04 Nov 2026 19:01:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm1; t=1793833842; x=1793920242; bh=fpnhJCiU1sdsmFO7PW5FO
-	FGZE7WdVRl/wv8CzGaZG4Y=; b=T0HfhEIWu9KPhW1H5EDeyzwJ0nGIpA2Rh5QIS
-	EGwHoZqit6Lj/l3JCRSDaGDl8Zy7Aeu0wPUSz6v4tqwnNDEwdFQm4zZeSmQPiT4L
-	dSnJhyeXGSm+oBIbtmWam6eMJ7ifGOT0t9529uUunp0B8wYioCMEzbgjEhrZ+8+V
-	Q6/nxmrFAIoxjDLB9j1DtlTtYH5/sqyxtJKxpOr4Q2u1S+kv+t1SLxXLPuxYeDt5
-	4uxCmnwJIJ8CiYeEMdoPTVf2MIr4aDijtLD/QNiWW3TdNViGqlM3/QEfiK6aXbSh
-	lhjjbxg57QT2Ohni7wAlVA2DtwVAEfinylY3bhDi1ZRQP2JZA==
+	:to; s=fm1; t=1793836870; x=1793923270; bh=KpRZu8OW+Om4bwh+lGy0R
+	fa1S2m1Xm1r8qtD+tdi+9s=; b=KG36lIqdfCYKCaaVPDmiwVrmEI2CrjNXdVNs7
+	2nyD4iQWqXigiSgIm7MnrCuzXRDViOezv/MJWQnvr+Da33Uo4h+sxRDj4nsUi4f1
+	mc0nQPrqKKzn4t9owNxKP4u0QoGdEuP28g8dF5S/jghCHExVMDWCmvK/MY6JXWpL
+	Bl2jgxwUk8WpPOW2vIupXJJ8GwxdOSkVbf6uIajJr0AjU33FG1s9TEpPaVhxTf1Q
+	+8L6EoaQyMCWgeSncMQvPp+jfS28+8vKu41QI95Rm/xdiflIeoyIdH//74+tl2wA
+	fogYCBi9aO/deVU+cbuc69yLZbUjeuCyLxy98KRuxM7FWPx8A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1793833842; x=1793920242; bh=fpnhJCiU1sdsmFO7PW5FOFGZE7WdVRl/wv8
-	CzGaZG4Y=; b=iommtikAxZXBeYESkLxAJDnECkl0WWOXFqVbOA31u14z7xSmUMc
-	exKNpix5H7UZ1XDzbIjsLFctTHlUh+tAHFTZpvM0DkgtaoB1VgjNpf1AcmL9t3fE
-	0qKcjrHihiGBb4il/sKKAIOvusIEqwlXkybO/KOMqWgt4NeOPE8u8gue/98Sgshf
-	gvQemp1zKBueQnzjXwDpMC37fFU2hsBUFG67U+KJjgMW8Ny6IhKW8guvVmgEqvoM
-	37QpzgDswDYtQjEVXQyt4XCFhtuK0Z3dzKejh9gkGQlcsbYC0bQfJ+2SbkE+U1xJ
-	tWF7+s12yTF5sAXR5JwdaioJevimxMHLwrA==
+	1793836870; x=1793923270; bh=KpRZu8OW+Om4bwh+lGy0Rfa1S2m1Xm1r8qt
+	D+tdi+9s=; b=2MO/qA4RqpvcjXS0DPz1puDXeFyoVLwNwWuDTpWLpM32UymIIYR
+	3ITfzxWzTILVyA8ZIP0fkCzlw4fVjMpLjEH2h4IZxMkOZHRv1ZbyCmzvqiH3S5Dg
+	a2g9eMtec8OQbAQY8q9HWAFG3/KVBrIWHvMirhow0y2WXDReEoYtGFPoKNqXzwOK
+	EKCOHoyh77sT4ML6f/ksPRS2PyIA9mOkUM4GnNkJXGAeCCaHHFx4G3ZbmZM/A65U
+	mRo6hSmzGS681pWpthNRlz2JbqB5tfno+JWasvHvS5aU5aJBcMr0JSvkO8tXkKLj
+	zBCW9Hp3/AGznDf4sqylzTg/sXbLxAWTBYA==
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
 	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
 	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793833842; d=flapping.org;
+DKIM2-Signature: i=1; m=1; t=1793836870; d=flapping.org;
 	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
 	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm1:rsa-sha256:NzUiqENNr8lX2sduoe3UMh56wwosuLJCVLZ1Cz0pG+wKOfb
-	5SGErzlBEL5sKqYS+QU+CpDItj4OCKI24TLvKW7ATCfaoRP1AIUhH39hiwAAMil6
-	W0p0CzouFYBb+DAhy2GhI9/kTV/H2N3csEWloy1toBTmcOVswhBuc0WJsnszU4gV
-	iG36zB0bl7LxMeR/97h5zo7ou1FKzoJ2oIjEdCtbRJjmWxvdHkZ5zPmXNwDC7hEv
-	yHZR6gkX5mHLRGjKshHhwSvNZwgSxY77HVHxEE2BrY4rTpE1U0JtFGlNNMkRjDg9
-	RYaHoUfwPj7klBe2uUqHqiuqkD/fDGFmGR3dTvg==;
+	s=fm1:rsa-sha256:qCm2R/ak+JbnluKVeWvVfGTNz+mbX8uEKsLgALsG1/kYh+q
+	Q7Urz8iuEL1X0Mkwkey5jnBZpokf/EN/Mdpdo1GjwlwaO154b4Q0dGwyvCvjNa14
+	F7LWRxDiXOBeoaZhMzzVSlRvDgULX1ZkGaopIGGVr6WCRgmiUFOl0mG1KnK/deSn
+	ILWq6tN3dMOhDs7oDsyd30KI4bEkfSlGP4V+MpRmU7bRY6ZImViDF0eHKJCrjOiw
+	ZNKZ02pG2Q7EZ3KU9OmLC87Lokf74J9OP35N0xJau0dlq1sMd6bDXi1cHxzImtGB
+	lHRrWnDHj0DudrnUfOE+l4WF680IIgENFU+BMHA==;
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
 	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
 	action=mi-m=1; hc=9;
 	hn=cc,content-transfer-encoding,date,feedback-id,from,
 	message-id,mime-version,subject,to;
-Message-Instance: m=1; h=sha256:/TLpRtnhwSHrAGabWccnlghMOI/nYpfgkXWqNhJTCwM=:5/v9NjnE43fTF3mUnpGsF4jY5Rjh1FL5EZMwa/WOVPQ=;
-X-ME-Sender: <xms:crvrauBE55mfonla5axagavibLPeGY7i1ZHmIlSZz3EhyfZFZ0_VSg>
-    <xme:crvrao8GhEGfq744lG-tr9rgw6w0PFi3hmm0PlK9ABZ4QyK1c0j0C9Vk64UH-Y_wv
-    BXnj_7yIb06QkQ_BFROAjuDoJskJNT-AU46mp18vaip2Cz33yEzE-0>
-X-ME-Received: <xmr:crvrahW10vGC3c5mDfmq8PyW2Ttrn171TshbGKcNCxwPAwh_h6cMODll8kETiF4Ioeb7SrY4BbT5ZRX6M9M>
-X-ME-Proxy-Cause: dmFkZTEbfQFywZX6hiVMnCnzGsivDJyC6rNIpxMuDZnF2aHcT2K8mBwvA+heHnKnSE4GPq
-    z4rWKOsS+SqRfMLOvW9sfQgkhcNi5FHaD5HNwMpp3MF3rPsc6b63zpViB42wD4epbl9gjA
-    KBmuDolNBXielKs/7RUcl1l01J6BM+DJEjvKRRYhX+LiOpEbkwqosT/+0JWhqw9FF45xAH
-    YSerk3eHm5CS5uQhTcIG1ahUkJnIR/K7NnCXm0T+OCDviFGL/6/Vv0dR6AMIlmXxMq98Jb
-    z205skKuewo2erk7X3Kk4FCwYCmm0TvbVWbAAIiSQSvN6G5Vli4ktrMwpRyVs9WNKZAAhp
-    IFPWjSl4gc0RCpiOVnCGVW8rBa9o8ToSuZLvn/0aMfZTrA42x71lBQqZ5IfTQLxLgmMZGd
-    HabLpaS+f7KcqYdgrdwUjdQskkpzzoNw7JA81qFScJXQ7j0M4lDNpW5eCE4gAdGGYypi4k
-    3mI8X+XIm9JyrgFmQndsESH/HquQnkDHgK5Gr6Ii6+ixpHJRHAug48KyY+5S3qPoCuk6eQ
-    s+JV6wY+MlPV8wkwKgsOqfF1LLrIr5Hzqht2vfN+kOL45FVcdjuJqzyril9tNcEbujyjyZ
-    qf3wCH8OK5ntR1xtijNJQDZMMfwXMl0I1JOfIjb8Lw65G/aU+lQRGcOjDibA
-X-ME-Proxy: <xmx:crvrapLHVcFHWoTjtCQXFxcRBNqLjTE06Zf1exGjWlLvaREdH4CrwQ>
-    <xmx:crvratAvFhSSbCwAPILppj21V4Y5qLraB_QHwKwVZpQFWfrih0OtWA>
-    <xmx:crvrahGb2qPZFta9q1TunDpbJ9zdSonO_UbzuvLPd1hbzBTmKHU9Gg>
-    <xmx:crvraiLUYvH6cTwqQG-yCqwwAf4I9tZItsr0JzZe2SjjaXJnSq5tpQ>
-    <xmx:crvrajXgWP2zbadNhe9UMnX5EqEuYL4uEA1qqQp3-EBhbYQEOIPYT8Fo>
+Message-Instance: m=1; h=sha256:IfXpViXlts4BSGudMImtrFC5W2nWwI9uCRuWbqJQnCg=:vclFgmUSNSdG477UymHVK0Zr6iubd8poqn7hWo/JIFo=;
+X-ME-Sender: <xms:RcfranRdMI-7GJ-yUj14YGCsrO6rKCnx6uS4SA04MBHNqM_Gmp6kOQ>
+    <xme:RcfraqGzT8gotFVrSH49yOYT37wfuW5p8WVvKMhVNhCagznDhPlknqylEAedjoBdN
+    1ve0ZoktOVXJWhn4cyTTqmfkQEtn8C4CrZE9yA8r4dwYYBxk7o4pOk>
+X-ME-Received: <xmr:Rcfrahcm7bYIZHD6x4q1IlG51Qg0chq1TKRE9ENiqkIdgXvqbtSWhXuvmqNegRVWyE0iP2667dJ-Cbt9SMc>
+X-ME-Proxy-Cause: dmFkZTEFQi/34h6RHhj4Hc/NcFs4kpV3WRpmCgXhrkHn0q4aYa2oJorLj/1OwPYMs2eJv8
+    RYbTKBIgEjf29lYXIKf9CBFiLU2SpPDMI6cwKqxPUwJKzSn7iBvhIWbrsQPp+xVopJgZMe
+    Sadw2d/LbjYl2b4DUOAU5vE9aA/ku0CpwZc95TqDvfMTmtl7jbG8Vcwya4Hdd9h+n5THsC
+    2pEfWfBFaN3ezIW+x9WCPvtTkIjzAxWH5MdsKGsmgb4uzrlkh4dzKohBt4pwAkbosoi20M
+    2A0sU4fiRE2vNpKo6g4TRhRpzjmv5zMauEmGjXt/l1I142q9GzTofrPkXOQNOOf+Bz0rak
+    jYv0KmCtzIyf5ygb62eFCMlXU+i8WX4G3htcVQIdoGj82sfm4ilGG46O63j4l9f5IcI5AW
+    7+fE4ag+kIQfB0oh4AYbDdk8Vnpb+tGyPA7YeRsdDarcf5uLBskFiSV/Jp5AA9ZrZU06i1
+    3SCLKgrZJtK8LfeNVzT30hw2X/UIZ9CLPzun9L7KjCkvRZdcouLKp4tAQ0qhECh3E76+BX
+    iPzu2LHnzsbInp2hK8gCAeGiXYljL6b03nrfBPU7ZGXoB3taTz/VfzjOxFJDd/L7vyNu/w
+    NBNL5Ys45sOwvyl5lbbdE0WS4SmABXHp5coXijfw4euVLVsy3A/+4Ic7StFQ
+X-ME-Proxy: <xmx:RcfrapuJIa3FXeVtB-gWWkMmbsgiIameBYbBT4dDHK7qY0rexFLIPw>
+    <xmx:Rcfrand28mOCg8WZTMHs3gLnCFjGHHSns9ft3SoELZieq7YxOIemwA>
+    <xmx:RcfratohzOdGK6xzhPBBoxTTj5hjaAx7AuJPgD-UZZkZ0Q-9xOH8tQ>
+    <xmx:Rcfral-JCi7R8og3PtNkodWKRCq4M5blz37_7m64_UC0S56Yi5zXYg>
+    <xmx:RsfravlPBk5IpJ3IeV8A9Io4ObKWaEC0XlA-hf6LGqxr5hS_u3Fe05V3>
 Feedback-ID: i51fe4b43:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 4 Nov 2026 18:10:38 -0500 (EST)
+ 4 Nov 2026 19:01:04 -0500 (EST)
 From: FUJITA Tomonori <tomo@flapping.org>
-To: ojeda@kernel.org
+To: aliceryhl@google.com,
+	arve@android.com,
+	boqun@kernel.org,
+	brauner@kernel.org,
+	cmllamas@google.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	ojeda@kernel.org,
+	tkjos@android.com
 Cc: a.hindborg@kernel.org,
 	acourbot@nvidia.com,
-	aliceryhl@google.com,
 	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
 	dakr@kernel.org,
 	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	jpoimboe@kernel.org,
 	lossin@kernel.org,
+	lyude@redhat.com,
 	tamird@kernel.org,
 	tmgross@umich.edu,
 	work@onurozkan.dev,
+	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v5] rust: compiler_builtins: Fix silent trap in prohibited intrinsics
-Date: Thu,  5 Nov 2026 08:10:07 +0900
-Message-ID: <20261104231007.1240323-1-tomo@flapping.org>
+Subject: [PATCH v10] rust: sync: condvar: use Delta<Jiffy> for timeout and result
+Date: Thu,  5 Nov 2026 08:59:29 +0900
+Message-ID: <20261104235929.1282640-1-tomo@flapping.org>
 X-Mailer: git-send-email 2.43.0
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -138,259 +144,160 @@ Content-Transfer-Encoding: 7bit
 
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-When core calls one of the stubs for builtins that should not be used,
-the stub runs a trap instruction that prints no message, and the Oops
-shows a wrong name. For example, when __rust__udivti3() is called on
-x86_64, the Oops shows:
+wait_interruptible_timeout() takes the timeout as a raw Jiffies, and
+CondVarTimeoutResult reports the remaining time as a raw Jiffies. The
+type does not show the unit.
 
-  Oops: invalid opcode: 0000 [#1] SMP
-  RIP: 0010:__rust__adddf3+0x0/0x10
+Switch the parameter and the result fields to Delta<Jiffy>.
 
-The stubs call panic!(), but since Rust 1.79, rustc converts calls to
-panic!() in a `#![compiler_builtins]` crate into
-core::intrinsics::abort(), i.e. a trap that prints no message [1][2].
-In addition, all the stubs have the same code, so LLVM merges them into
-one function.
+Delta<Jiffy> is signed, but schedule_timeout() prints an error and a
+stack dump for a negative timeout. Clamp a negative timeout to zero, so
+it means an immediate timeout.
 
-Move the stubs to a new small crate, core_builtins, where panic!() works
-as usual. Add the name of each stub to the panic message, so the stubs
-are no longer merged:
+Update the only user, binder. It now converts the freeze timeout with
+Delta::to_jiffies_timeout() instead of msecs_to_jiffies(). Both round
+up, so a short timeout does not become zero. They differ only for a
+very long timeout. msecs_to_jiffies() returns MAX_JIFFY_OFFSET for
+2^31 ms (about 24.9 days) or more, which means an infinite
+timeout. to_jiffies_timeout() has no such special case. It converts
+such a value to the matching number of jiffies, so the wait is long
+but finite.
 
-  rust_kernel: panicked at rust/core_builtins.rs:64:1:
-  __udivti3 called: `u128` should not be used
-  kernel BUG at rust/helpers/bug.c:7!
-
-Weaken the stubs in core_builtins.o, as was done in compiler_builtins.o.
-Otherwise objtool treats them as noreturn functions and warns.
-
-compiler_builtins.rs is now empty, but the crate is still needed because
-rustc requires a `#![compiler_builtins]` crate. Remove the weakening of
-compiler_builtins.o, as it has no symbols now.
-
-Link: https://github.com/rust-lang/rust/pull/122580 [1]
-Link: https://github.com/rust-lang/rust/issues/165399 [2]
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
-v5:
-- Move the stubs to a new crate, core_builtins, instead of the kernel
-  crate (Miguel)
-- Remove the weakening of compiler_builtins.o (Miguel)
-- Explain why the stubs are weakened in core_builtins.rs (Miguel)
-- Reword why the stubs are not in compiler_builtins and add links (Miguel)
-v4: https://lore.kernel.org/rust-for-linux/20261009224626.1331914-1-tomo@flapping.org/
-- Weaken the stubs in kernel.o to fix an objtool warning
-  https://lore.kernel.org/oe-kbuild-all/202610100054.UyoZyPQ5-lkp@intel.com/
-v3: https://lore.kernel.org/rust-for-linux/20261008114717.992497-1-tomo@flapping.org/
-- Rename rust/kernel/intrinsics.rs to rust/kernel/core_builtins.rs (Gary)
-- Reword the doc of compiler_builtins.rs (Gary)
-v2: https://lore.kernel.org/rust-for-linux/20261003124828.119912-1-tomo@flapping.org/
-- Move the stubs to the kernel crate and use panic!() there (Gary)
-v1: https://lore.kernel.org/rust-for-linux/20261002014739.2566289-1-tomo@flapping.org/
----
- rust/Makefile                                 |  8 +-
- rust/compiler_builtins.rs                     | 98 +------------------
- ...{compiler_builtins.rs => core_builtins.rs} | 28 +++---
- 3 files changed, 23 insertions(+), 111 deletions(-)
- copy rust/{compiler_builtins.rs => core_builtins.rs} (73%)
+v10:
+- Rename variables and fields to describe their role, since the type now
+  shows the unit (suggested by Boqun):
+  - binder: the local variable `jiffies` to `timeout`
+  - wait_interruptible_timeout(): the parameter `delta` to `timeout`
+  - the `jiffies` match bindings and the `jiffies` field of
+    CondVarTimeoutResult::{Woken, Signal} to `remainder`
+- Add Alice's Reviewed-by
+v9: https://lore.kernel.org/rust-for-linux/20261102035934.711973-1-tomo@flapping.org/
+- Send as a single patch. Patches 1/4 and 2/4 of v8 are in v7.4-rc1,
+  and the workqueue patch will be sent separately
+- Rebase on v7.4-rc1
+- Drop the comparison with enqueue_delayed() from the commit message
+v8: https://lore.kernel.org/rust-for-linux/20261002050428.2746277-1-tomo@flapping.org/
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 0ac9ab28cc2b..8eec45636062 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -6,7 +6,7 @@ rustdoc_output := $(objtree)/Documentation/output/rust/rustdoc
- # Clean generated host directory
- clean-files := host/
+Boqun, would you take this through the rust-sync tree?
+---
+ drivers/android/binder/process.rs | 13 +++++++------
+ rust/kernel/sync/condvar.rs       | 31 ++++++++++++++++++++++---------
+ 2 files changed, 29 insertions(+), 15 deletions(-)
+
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index 1f4cb43f1de6..0ed6a4b1c74b 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -35,6 +35,7 @@
+         Arc, ArcBorrow, CondVar, CondVarTimeoutResult, SetOnce, SpinLock, UniqueArc,
+     },
+     task::{Pid, Task},
++    time::Delta,
+     uaccess::{UserSlice, UserSliceReader},
+     uapi,
+     workqueue::{self, Work},
+@@ -1552,25 +1553,25 @@ pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
+         inner.is_frozen = IsFrozen::InProgress;
  
--obj-$(CONFIG_RUST) += core.o compiler_builtins.o ffi.o
-+obj-$(CONFIG_RUST) += core.o compiler_builtins.o core_builtins.o ffi.o
- always-$(CONFIG_RUST) += exports_core_generated.h
+         if info.timeout_ms > 0 {
+-            let mut jiffies = kernel::time::msecs_to_jiffies(info.timeout_ms);
+-            while jiffies > 0 {
++            let mut timeout = Delta::from_millis(info.timeout_ms.into()).to_jiffies_timeout();
++            while timeout.as_jiffies() > 0 {
+                 if inner.outstanding_txns == 0 {
+                     break;
+                 }
  
- obj-$(CONFIG_RUST) += zerocopy.o
-@@ -745,10 +745,14 @@ endif
- KCOV_INSTRUMENT_core.o := n
- 
- $(obj)/compiler_builtins.o: private skip_gendwarfksyms = 1
--$(obj)/compiler_builtins.o: private rustc_objcopy = -w -W '__*'
- $(obj)/compiler_builtins.o: $(src)/compiler_builtins.rs $(obj)/core.o FORCE
- 	+$(call if_changed_rule,rustc_library)
- 
-+$(obj)/core_builtins.o: private skip_gendwarfksyms = 1
-+$(obj)/core_builtins.o: private rustc_objcopy = -w -W '__rust__*'
-+$(obj)/core_builtins.o: $(src)/core_builtins.rs $(obj)/compiler_builtins.o FORCE
-+	+$(call if_changed_rule,rustc_library)
-+
- $(obj)/zerocopy.o: private skip_clippy = 1
- $(obj)/zerocopy.o: private skip_gendwarfksyms = 1
- $(obj)/zerocopy.o: private rustc_target_envs := $(zerocopy-envs)
-diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
-index fc6b54636dd5..467020fac09e 100644
---- a/rust/compiler_builtins.rs
-+++ b/rust/compiler_builtins.rs
-@@ -3,18 +3,11 @@
- //! Our own `compiler_builtins`.
- //!
- //! Rust provides [`compiler_builtins`] as a port of LLVM's [`compiler-rt`].
--//! Since we do not need the vast majority of them, we avoid the dependency
--//! by providing this file.
--//!
--//! At the moment, some builtins are required that should not be. For instance,
--//! [`core`] has 128-bit integers functionality which we should not be compiling
--//! in. We will work with upstream [`core`] to provide feature flags to disable
--//! the parts we do not need. For the moment, we define them to [`panic!`] at
--//! runtime for simplicity to catch mistakes, instead of performing surgery
--//! on `core.o`.
--//!
--//! In any case, all these symbols are weakened to ensure we do not override
--//! those that may be provided by the rest of the kernel.
-+//! Since we do not need the vast majority of them, we avoid the dependency.
-+//! But `rustc` still needs a `#![compiler_builtins]` crate for every crate it
-+//! builds, so this crate is provided and left empty. The few builtins that
-+//! `core` needs are in the `core_builtins` crate (`rust/core_builtins.rs`).
-+//! Please see the details there.
- //!
- //! [`compiler_builtins`]: https://github.com/rust-lang/compiler-builtins
- //! [`compiler-rt`]: https://compiler-rt.llvm.org/
-@@ -24,84 +17,3 @@
- #![compiler_builtins]
- #![no_builtins]
- #![no_std]
--
--macro_rules! define_panicking_intrinsics(
--    ($reason: tt, { $($ident: ident, )* }) => {
--        $(
--            #[doc(hidden)]
--            #[export_name = concat!("__rust", stringify!($ident))]
--            pub extern "C" fn $ident() {
--                panic!($reason);
--            }
--        )*
--    }
--);
--
--define_panicking_intrinsics!("`f32` should not be used", {
--    __addsf3,
--    __eqsf2,
--    __extendsfdf2,
--    __gesf2,
--    __lesf2,
--    __ltsf2,
--    __mulsf3,
--    __nesf2,
--    __truncdfsf2,
--    __unordsf2,
--});
--
--define_panicking_intrinsics!("`f64` should not be used", {
--    __adddf3,
--    __eqdf2,
--    __ledf2,
--    __ltdf2,
--    __muldf3,
--    __unorddf2,
--});
--
--define_panicking_intrinsics!("`i128` should not be used", {
--    __ashrti3,
--    __muloti4,
--    __multi3,
--});
--
--define_panicking_intrinsics!("`u128` should not be used", {
--    __ashlti3,
--    __lshrti3,
--    __udivmodti4,
--    __udivti3,
--    __umodti3,
--});
--
--#[cfg(target_arch = "arm")]
--define_panicking_intrinsics!("`f32` should not be used", {
--    __aeabi_fadd,
--    __aeabi_fmul,
--    __aeabi_fcmpeq,
--    __aeabi_fcmple,
--    __aeabi_fcmplt,
--    __aeabi_fcmpun,
--});
--
--#[cfg(target_arch = "arm")]
--define_panicking_intrinsics!("`f64` should not be used", {
--    __aeabi_dadd,
--    __aeabi_dmul,
--    __aeabi_dcmple,
--    __aeabi_dcmplt,
--    __aeabi_dcmpun,
--});
--
--#[cfg(target_arch = "arm")]
--define_panicking_intrinsics!("`u64` division/modulo should not be used", {
--    __aeabi_uldivmod,
--});
--
--#[cfg(target_arch = "powerpc")]
--define_panicking_intrinsics!("`u64` division/modulo should not be used", {
--    __udivdi3,
--    __umoddi3,
--});
--
--// NOTE: if you are adding a new intrinsic here, you should also add it to
--// `redirect-intrinsics` in `rust/Makefile`.
-diff --git a/rust/compiler_builtins.rs b/rust/core_builtins.rs
-similarity index 73%
-copy from rust/compiler_builtins.rs
-copy to rust/core_builtins.rs
-index fc6b54636dd5..4ca92e69a7f3 100644
---- a/rust/compiler_builtins.rs
-+++ b/rust/core_builtins.rs
-@@ -1,10 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--//! Our own `compiler_builtins`.
--//!
--//! Rust provides [`compiler_builtins`] as a port of LLVM's [`compiler-rt`].
--//! Since we do not need the vast majority of them, we avoid the dependency
--//! by providing this file.
-+//! Builtins that `core` needs.
- //!
- //! At the moment, some builtins are required that should not be. For instance,
- //! [`core`] has 128-bit integers functionality which we should not be compiling
-@@ -13,25 +9,25 @@
- //! runtime for simplicity to catch mistakes, instead of performing surgery
- //! on `core.o`.
- //!
--//! In any case, all these symbols are weakened to ensure we do not override
--//! those that may be provided by the rest of the kernel.
-+//! The stubs are here and not in `compiler_builtins`, because the compiler
-+//! would otherwise decide to convert calls to [`panic!`] into
-+//! `core::intrinsics::abort`, i.e. a trap that would print no message -- please
-+//! see https://github.com/rust-lang/rust/pull/122580 and
-+//! https://github.com/rust-lang/rust/issues/165399.
- //!
--//! [`compiler_builtins`]: https://github.com/rust-lang/compiler-builtins
--//! [`compiler-rt`]: https://compiler-rt.llvm.org/
-+//! The stubs are weakened in `rust/Makefile`. Otherwise, when `objtool` checks
-+//! `vmlinux.o` (e.g. with `CONFIG_X86_KERNEL_IBT`), it finds that the stubs do
-+//! not return and warns that they are not marked as noreturn. `objtool` does
-+//! not do this check for weak functions.
- 
--#![allow(internal_features)]
--#![feature(compiler_builtins)]
--#![compiler_builtins]
--#![no_builtins]
- #![no_std]
- 
- macro_rules! define_panicking_intrinsics(
-     ($reason: tt, { $($ident: ident, )* }) => {
-         $(
--            #[doc(hidden)]
-             #[export_name = concat!("__rust", stringify!($ident))]
--            pub extern "C" fn $ident() {
--                panic!($reason);
-+            extern "C" fn $ident() {
-+                panic!(concat!(stringify!($ident), " called: ", $reason));
+                 match self
+                     .freeze_wait
+-                    .wait_interruptible_timeout(&mut inner, jiffies)
++                    .wait_interruptible_timeout(&mut inner, timeout)
+                 {
+                     CondVarTimeoutResult::Signal { .. } => {
+                         inner.is_frozen = IsFrozen::No;
+                         return Err(ERESTARTSYS);
+                     }
+-                    CondVarTimeoutResult::Woken { jiffies: remaining } => {
+-                        jiffies = remaining;
++                    CondVarTimeoutResult::Woken { remainder } => {
++                        timeout = remainder;
+                     }
+                     CondVarTimeoutResult::Timeout => {
+-                        jiffies = 0;
++                        timeout = Delta::ZERO;
+                     }
+                 }
              }
-         )*
+diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
+index 69d58dfbad7b..4be2c3bf8802 100644
+--- a/rust/kernel/sync/condvar.rs
++++ b/rust/kernel/sync/condvar.rs
+@@ -12,7 +12,10 @@
+     task::{
+         MAX_SCHEDULE_TIMEOUT, TASK_FREEZABLE, TASK_INTERRUPTIBLE, TASK_NORMAL, TASK_UNINTERRUPTIBLE,
+     },
+-    time::Jiffies,
++    time::{
++        Delta,
++        Jiffy, //
++    },
+     types::Opaque,
+ };
+ use core::{marker::PhantomPinned, pin::Pin, ptr};
+@@ -182,19 +185,29 @@ pub fn wait_interruptible_freezable<T: ?Sized, B: Backend>(
+     /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
+     /// thread to sleep. It wakes up when notified by [`CondVar::notify_one`] or
+     /// [`CondVar::notify_all`], or when a timeout occurs, or when the thread receives a signal.
++    ///
++    /// A negative timeout is treated as zero.
+     #[must_use = "wait_interruptible_timeout returns if a signal is pending, so the caller must check the return value"]
+     pub fn wait_interruptible_timeout<T: ?Sized, B: Backend>(
+         &self,
+         guard: &mut Guard<'_, T, B>,
+-        jiffies: Jiffies,
++        timeout: Delta<Jiffy>,
+     ) -> CondVarTimeoutResult {
+-        let jiffies = jiffies.try_into().unwrap_or(MAX_SCHEDULE_TIMEOUT);
+-        let res = self.wait_internal(TASK_INTERRUPTIBLE, guard, jiffies);
++        let jiffies = timeout.as_jiffies();
++        let res = self.wait_internal(
++            TASK_INTERRUPTIBLE,
++            guard,
++            jiffies.clamp(0, MAX_SCHEDULE_TIMEOUT),
++        );
+ 
+-        match (res as Jiffies, crate::current!().signal_pending()) {
+-            (jiffies, true) => CondVarTimeoutResult::Signal { jiffies },
++        match (res, crate::current!().signal_pending()) {
++            (remainder, true) => CondVarTimeoutResult::Signal {
++                remainder: Delta::from_jiffies(remainder),
++            },
+             (0, false) => CondVarTimeoutResult::Timeout,
+-            (jiffies, false) => CondVarTimeoutResult::Woken { jiffies },
++            (remainder, false) => CondVarTimeoutResult::Woken {
++                remainder: Delta::from_jiffies(remainder),
++            },
+         }
      }
+ 
+@@ -248,11 +261,11 @@ pub enum CondVarTimeoutResult {
+     /// Somebody woke us up.
+     Woken {
+         /// Remaining sleep duration.
+-        jiffies: Jiffies,
++        remainder: Delta<Jiffy>,
+     },
+     /// A signal occurred.
+     Signal {
+         /// Remaining sleep duration.
+-        jiffies: Jiffies,
++        remainder: Delta<Jiffy>,
+     },
+ }
 
 base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
 -- 
