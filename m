@@ -1,47 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793810319;
-	b=e2QRtVsApf0V0IDHSdqxv7EMlMrRMWZAJCTiSW/+zE4cmQKaAje4/CbiwBoRytWMqpP9
-	 iWXVY1WFN3Do73Li3pMsqrdu6bbMR4XJEvcIx+/h0VSmHYczuSJiVmEMDSKBQ9ddHZJ29
-	 sGDIvToMClpdhiD7PfZqUI2Xnrh3UmDxk2BwryK1t55rMdc0fpgase46anKUXQPS/Di4H
-	 X+2k1t/SAcyT9np2CQWCgVN9ZiL73cGJWDjVYY9Ir1jGT4y5mM9dwZSaJ6Xu9FMexQNCc
-	 m9Q9AbSG1cD4RJW03EjQYE2I3NfIcedTlfo209ZYRZ5Je6qGlDqqXaJurOM0CmcMBOg==
+	t=1793813352;
+	b=fRVh0sH3QcYM2N3H1PQ6J7p81rIimK3nyzoUp716L1mzJMTEXK9hzgh7ZTlkjQam50Id
+	 vcPhcH1WYKdv1D6GTU/L35wNQl7NJr5YeKms/R3tiJ/RPhCgnBO6Jr+8IcKSzhbC6BjaK
+	 TzeTUm1HHq0t55VRCFeAJvRcMsxF/o9K088NyQdniOZ0Q+rieIKfX0STA2kNhiA8txxOm
+	 Q53AZvUSldd6KbT4fOTirOjJjY/IhHzqREyaC4HElgDzrWyJtsH0jfDwC7xHVT/7x99MT
+	 jQ8qWxYvuFWDeg7HlhhLf2pfVLdhCovO2Ki4AX00Y5BheVTt7brNw1LGZZ9cDb9DimA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793810319;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:To:
-	 Cc:References:Subject:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=N0muImAzdk2G4HZLLzIJnZcOiJybvTQLP1LgYzvtqc4=;
-	b=FpY7c7g6LQg6RDUdu0qmVZZ6ZL/+1Co4sBZLwLYDJa2key0wufN9BSJXpG64NLgsty4s
-	 D7USbwQDkuQIZxY6ULCoPjQTcCckzZNnasf6w9kboYSgVF1tZPB5fJSS9UBDYGYRadigg
-	 SZqAMy3M3oWB4zVfCrqtfS/WtbxOfqAaJDyFI4yBD2RXGqWQCViVqC48V8EPwBhQkBfVq
-	 rQ9tjL4AyatJUhWg7j4sMn51lAvR1XAJLzwEeR31fr/8KVKe8YxIOfj0skQn4jscoxxIT
-	 xQFyjuS35OCQ+MAnofAd2liGK5EPaPk4X7oxlpSzrD/ulHN4oFU8Fq7IR5yPqghfm+Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793813352;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:Cc:To:From:Subject:References:
+	 In-Reply-To;
+	bh=BBw8pv978i++9C5yzqWVC2xo/MJFHYabt1uQ3NtXX7M=;
+	b=v9fsyK0Uh/UGC6ZBqCUK4uoj0dqFzI2lYltl2vJ75xDR2bAG1njdpPpXNFUV0y1LjnEM
+	 1baIhNm7AuAFFPfXxJQngTU20DhSEfNrZ3YZVS8PmrYv6k8s+u1J4yEoF0QWLFSfA5FuU
+	 ku7Peox/OLLh4eHlrIXXe8kd90CHMhlJ5vaNHaN82axvyXowbkBoZv96DL2Sh6pqpwclw
+	 1NGqHzRihalgVgEgQ6H5dbRk+Edp5NaRVL2XNWYpMuwmzSgLdOBahGR6GPlem4GFWydh1
+	 KtrJWVozEDmQkSm1PPOed3A1j49vxFs1py61WbSES2/WRsdd9rOUc5oZd6cjmG05ZMQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wi6HJwyi;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HyEhxh0i;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A56E606D815;
-	Wed,  4 Nov 2026 16:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E4D606A332;
+	Wed,  4 Nov 2026 17:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wi6HJwyi
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF411F00A1A;
-	Wed,  4 Nov 2026 16:38:36 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HyEhxh0i
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 121B81F000C1;
+	Wed,  4 Nov 2026 17:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793810318;
-	bh=N0muImAzdk2G4HZLLzIJnZcOiJybvTQLP1LgYzvtqc4=;
-	h=Date:To:Cc:References:Subject:From:In-Reply-To;
-	b=Wi6HJwyiSGs0V9V3CzXYUgQnsulmkkv3mjnLpw18E11Ote71dKiP3yqSyqHE7knty
-	 docxpxdSqrRA51GkOHmfzo2oMiGh4i2N9jKJoHdjlzEkYGeVmEKEBF9Fm1ov/BWUrs
-	 rm+TJGu9BdkEl/T9JMgyUalAuRfwtjPhqtmvLyiUi8pTrw75PvzTIZ44tPL3LpKsrO
-	 +bHEZsWNn00ikrQ3BmEr+vrTOPv2e+IAwfvEsaW1wGex4rgI0Ir3LUrDXVF7scQ8ub
-	 QqVxfAhN5m9REAnpLOtxD+1QH97k47TuFCrPtwvVnnRXD+v5tt6HSCERgy9sBfdIJy
-	 OBz/wf47OMaGw==
-Message-ID: <87dfc1f8-6ef4-424c-a48d-62e935eeeb28@kernel.org>
-Date: Wed, 4 Nov 2026 16:38:34 +0000
+	s=k20260515; t=1793813351;
+	bh=BBw8pv978i++9C5yzqWVC2xo/MJFHYabt1uQ3NtXX7M=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To;
+	b=HyEhxh0iBGoIeyP/Fo7EH6JIMdoYK3imbV1V8/+yf5yonNlx5K99avg/gljSk2jWU
+	 bE1Kte9Xd/TDA2BEPNmyynaus9m2BgNVBtcyRkfpYEUHPsalnxwE7OkJLyWBPA0RgD
+	 5MAlwTBDgpIDcM8DvNaFpIYqsp1ZiILdZKYaLNYq9t7ztGOFZifG3RSeeZNd/bxxOJ
+	 NLNw0AubbzKxxUmHhZoyw4II6iUcK2+Wch4IjsicvLVe9cijkEV8UcCw7Ov0NhfbDi
+	 ZtRJefVRfhe2b9Fh4YJ+r0HT12ZFolbqs+WfSfvoIIm0R1xlavZLXXjezqzFD7k8ad
+	 3bwWgZGroJZhw==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -50,96 +48,126 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: linux@alanderk.com
-Cc: acme@kernel.org, alan.maguire@oracle.com, bpf@vger.kernel.org,
- dwarves@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20261010005227.976-1-linux@alanderk.com>
-Subject: Re: [PATCH dwarves v2 0/2] dwarf_loader: Fix --lang_exclude on merged
- CUs
-Content-Language: en-GB
-From: Alan Maguire <almagui@kernel.org>
-In-Reply-To: <20261010005227.976-1-linux@alanderk.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Wed, 04 Nov 2026 18:29:02 +0100
+Message-Id: <DMMLRD778LTH.89GHGWLB950B@kernel.org>
+Cc: <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <linux-pci@vger.kernel.org>, <alex@shazbot.org>, <jgg@nvidia.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <markus.probst@posteo.de>,
+ <jhubbard@nvidia.com>, <apopple@nvidia.com>, <joelagnelf@nvidia.com>,
+ <ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
+ <kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
+ <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
+ <boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
+ <work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
+ <kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <peter@colberg.org>
+To: "Simon Song" <xinmengs@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v5 5/9] rust: pci: drop driver data before remove
+ returns
+References: <20261030171230.196717-1-xinmengs@nvidia.com>
+ <20261030171230.196717-6-xinmengs@nvidia.com>
+In-Reply-To: <20261030171230.196717-6-xinmengs@nvidia.com>
 
-> From: Alan Derk <linux@alanderk.com>
-> To: Arnaldo Carvalho de Melo <acme@kernel.org>,
-> 	Alan Maguire <alan.maguire@oracle.com>
-> Cc: dwarves@vger.kernel.org,
-> 	bpf@vger.kernel.org,
-> 	rust-for-linux@vger.kernel.org
-> Subject: [PATCH dwarves v2 0/2] dwarf_loader: Fix --lang_exclude on merged CUs
-> Date: Sat, 10 Oct 2026 00:52:25 +0000
-> Message-ID: <20261010005227.976-1-linux@alanderk.com>
-> X-Mailer: git-send-email 2.55.0
-> Precedence: bulk
-> X-Mailing-List: dwarves@vger.kernel.org
-> List-Id: <dwarves.vger.kernel.org>
-> List-Subscribe: <mailto:dwarves+subscribe@vger.kernel.org>
-> List-Unsubscribe: <mailto:dwarves+unsubscribe@vger.kernel.org>
-> MIME-Version: 1.0
-> Content-Transfer-Encoding: 8bit
-> 
-> Two fixes for --lang_exclude when CUs are merged, as for LTO objects.
-> 
-> Patch 1 takes the merged CU's language from a CU that is kept, so that
-> excluding the language of the first CU no longer drops the whole
-> object. With LTO, this is what makes BTF generation fail for kernel
-> modules that mix Rust and C.
-> 
-> Patch 2 fixes a second bug from the same commit, which I found while
-> testing userspace LTO objects after sending v1. With clang LTO, a type
-> such as int is emitted once and shared through DW_FORM_ref_addr, so
-> skipping the excluded CUs left references into them dangling: pahole
-> crashed printing such members, and -J encoded them as void. Patch 2
-> loads the types that kept CUs use from the excluded CUs. Output without
-> --lang_exclude does not change, and neither does the BTF of the LTO
-> kernels I tested.
-> 
-> Patch 1 exposes this bug in one more link order. For a C++ object
-> linked before a C one, pahole used to drop the C types without any
-> error; with patch 1 alone it keeps them, and then crashes printing them,
-> or encodes them as void with -J. Please apply the two together.
-> 
-> As far as I know, patch 1 removes the last thing that keeps the kernel's
-> RUST option off when LTO and BTF are both on. Once these fixes are in a
-> release, I'd like to propose relaxing that dependency to something like:
-> 
->   depends on !DEBUG_INFO_BTF || (PAHOLE_HAS_LANG_EXCLUDE && (!LTO || PAHOLE_VERSION >= 133))
-> 
-> assuming they land in 1.33. The kernel tests in patch 1 ran with
-> "&& !LTO" dropped from that line, hence the Cc to rust-for-linux.
-> 
-> Changes in v2:
-> - Add patch 2.
-> - Patch 1 is unchanged; its note about the Kconfig follow-up moved here.
-> 
-> v1: https://lore.kernel.org/all/20261009201032.40105-1-linux@alanderk.com/
+On Fri Oct 30, 2026 at 6:12 PM CET, Simon Song wrote:
+> From: Zhi Wang <zhiw@nvidia.com>
+>
+> Drop PCI private data before the remove callback returns, so its
+> destructors run within PCI core's removal context.
+>
+> Call unbind while private data remains installed, then take and release
+> the data. Taking it clears drvdata, so post_unbind does not release it
+> again. All borrows must end before the data is removed.
 
-Thanks for doing this work! Sorry for the delay in getting to it, I'm looking
-at the patches now. 
+This should explain the reason this is needed:
 
-In terms of enabling kernel builds to support adding BTF data for Rust, that's a
-goal we're working towards too, but it turns out there are some complications.
-We discussed a bit of this in Linux Plumbers in the BPF track [1], but the
-main issue boils down to how bindgen-generated structures differ somewhat
-from the C-based types; enums aren't always faithfully represented for example.
-This has knock-on effects for BTF generation and we often end up with duplicate 
-types for key kernel data structures; the bindgen and C versions of "struct sock"
-for example. This in turn can confuse tooling which expects a canonical type
-for the critical kernel structures.
+VF drivers will store a vfio::pci::Registration, which calls
+vfio_pci_core_register_device() when created and
+vfio_pci_core_unregister_device() when destroyed.
 
-We've been working on a solution; essentially, the idea is to detect such cases
-and fix up the type graph in pahole using a new "rust_bindgen_replace" feature
-so that the final BTF does not have to carry such duplicates. It will only run for
-Rust CUs, and it is implemented in a work-in-progress series at [2]; the bindgen-related
-changes are in [3].
+Now, vfio_pci_core_unregister_device() expects to be called from PCI's bus
+remove() callback and hence can't be deferred beyond remove() (which also m=
+akes
+it incompatible with devres, i.e a devm_vfio_pci_core_register_device() hel=
+per
+wouldn't work either).
 
-The other commits in the series add BTF tags to allow tracers to use demangled names
-in function tracing descriptors, and add testing etc.
+> Suggested-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+> Signed-off-by: Simon Song <xinmengs@nvidia.com>
+> ---
+>  rust/kernel/device.rs | 4 ++--
+>  rust/kernel/pci.rs    | 6 ++++++
+>  2 files changed, 8 insertions(+), 2 deletions(-)
+>
+> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> index 2291d85b684..1f6bb58396e 100644
+> --- a/rust/kernel/device.rs
+> +++ b/rust/kernel/device.rs
+> @@ -243,8 +243,8 @@ impl<Ctx: InternalBoundContext> Device<Ctx> {
+>      ///
+>      /// # Safety
+>      ///
+> -    /// - Must only be called after a preceding call to [`Device::set_dr=
+vdata`] and before the
+> -    ///   device is fully unbound.
+> +    /// - The data stored by [`Device::set_drvdata`] must still be insta=
+lled and remain valid
+> +    ///   for the returned borrow.
 
-[1] https://lpc.events/event/20/contributions/2408/
-[2] https://github.com/alan-maguire/dwarves/tree/pahole-next-btf-rust
-[3] https://github.com/acmel/dwarves/commit/68954b9e0d1b4a191a6d7e3329875c2acc983c8c
+This is what the original comment should have expressed better regardless o=
+f
+this change. Can you please make this a separate commit?
+
+>      /// - The type `T` must match the type of the `ForeignOwnable` previ=
+ously stored by
+>      ///   [`Device::set_drvdata`].
+>      pub unsafe fn drvdata_borrow<T>(&self) -> Pin<&T> {
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index 9e1d02588af..8092f56ee2b 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -150,6 +150,12 @@ extern "C" fn remove_callback(pdev: *mut bindings::p=
+ci_dev) {
+>          let data =3D unsafe { pdev.as_ref().drvdata_borrow::<T::Data<'_>=
+>() };
+> =20
+>          T::unbind(pdev, data);
+> +
+> +        // SAFETY: The driver's unbind callback has returned, and no cal=
+lbacks retain a borrow.
+> +        let data =3D unsafe { pdev.as_ref().drvdata_obtain::<T::Data<'_>=
+>() };
+> +
+> +        // Drop private data before returning to PCI core, while its rem=
+oval context is valid.
+
+Please add a brief note similar to the above rationale, as I consider this =
+a
+workaround (or special case) for VFIO-PCI.
+
+In general, objects stored in the driver's bus device private data should *=
+not*
+make assumptions about implementation details of the underlying bus and
+therefore require to be dropped from the underlying bus's remove() callback=
+.
+
+Any point between after the driver's remove() callback and before
+devres_release_all() in device_unbind_cleanup() is perfectly sufficient.
+
+> +        drop(data);
+>      }
+>  }
+> =20
+> --=20
+> 2.43.7
+
