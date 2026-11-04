@@ -1,121 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793753874;
-	b=b9LUzGiooqar+plk1iJli3Q+6mVI0fe1itHYwDw/c/Xy0zP4oqVRNgKGqSHUp55LQs1S
-	 UMPQfoJGyqAQjcUu57nFZobbHEVqOTKRmi9k9fmNniPkxIatuccZCpg69DhR+F5tUdDza
-	 S1GF9aSRKmUgoKY3pZ6idSDDdgY91RHmFgzfI/VSN+Pj4QBNyRY7mSFtK7WCdtgpvpYwM
-	 tT43Dbz5kG0HOWkoOLCItIjIJJiPvCXSZEJyIjMR1ktuyqTVtBfA260/+a8V0e+G9qxnf
-	 9BIMHWORJ6qDdXtVnC6vejH0KZtSgMaltphy+RCXa5IsnfM/ffgthJUfvQny1vuGWig==
+	t=1793755131;
+	b=chCMXipRkAqm9ZGIVGL+4ReOQXtDtuNMHBmPPTlpVccMWiDZo8VtbEWKWE9ldygvuUoa
+	 kY8jNy5qy0bAxpiBxkqcymuSzCECAkrbTqPpy168uyh5tvh/41cABVZoAGhhhDs1EGGSo
+	 lpDaL4Bxec8gFknZ+2Iffd7CYFlkQaJK3enOGZYJ2YQrwbM8+dM0sTXhCvxLlg9a+6VW8
+	 ejRPe99a1G0FQLcAurmCMfCVZuHNLdqXGQcahAWecD1kpUzeVuhaJlhGOyjs8J1tlynHT
+	 ZVgk8MPOIJJoMRjEtFDIzeCr6UvwZ1CC8/FulFAynXrr3Pn3QQyfqKCmnTWq4bqstsw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793753874;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793755131;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=Sk8Hr0fhc3C8eQFrISEupQ4YS+zYJDt+3X6d4EBkWvk=;
-	b=Lh5/NHrjZQDJjAmfbyp+/dMs6CjQ+XVFqW+BNn/RfXQ9gPRvkLh4elPUQ2xLQJghQW85
-	 MqZxBxtGX7r0YiHKuTG89oEGyGSy1GGZ94cpJqC6v72pe2vmBgGcJymKoUrYTwCrI+JND
-	 f/FtLgXpyML6ILlKmhOoKVjDi6cGYJ1hf21ojq8zd1bOiBc6eSVH8cNz2Gkgo3FpawRgI
-	 950xCdK0OB8ttSbw66QXewJmnJeEgDJlhswqvOfWtQ9XCF9a4iJMOEehIqRQ5hqeROAFz
-	 S461KghLiI82ZAFIOOK4T025RBSAojVeIKqLoS0rqpZZYblTJDVOWL7etmV1k+TcEfg==
+	bh=Tofk4DAa89+ADIAKHIR2Vai/+L2kQBAdRyCdNLpk7aw=;
+	b=HYJKu5PHQ/I76RklsyYnBJA5YAutFVQNm6ftLwG+Pj0jo3VJ3TSrdiNNhNvVBAoUdUjl
+	 IVgFqDFMTDT7Jg+pxvBGAf3HS6uXsPqOuQdZTmWhhhtVthi0I4y+CEvr/FuONN0/SVvtI
+	 Df4+e+SyJZJKbifsPEDKxuHusGFD1h5m1oFlc7mcdRpLY63Z2uCb//vuZ7zP9mEdR7FAj
+	 TEE9GiYK+utnP/DGMY5fmKWAIu/kk08rVxEowa7YgmaJj0lVicE7ICSMReu3zqx5nZDxQ
+	 vZgmizE2s54k5/VAbPWRsf/p48+VNIhfw+VoeugnOitYfJYXAAnpONItqBxcZF1Ym5g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="Cbod9g/Y";
-	arc=none smtp.remote-ip=74.125.82.41
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=i3jOzUb8;
+	arc=none smtp.remote-ip=209.85.214.178
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95337606A326
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 00:57:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 95337606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDEB606A31B
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 01:18:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DEDEB606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Cbod9g/Y
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-1a2af4c8d00so496435c88.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 16:57:53 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=i3jOzUb8
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ea7f9c11e6so28595ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 17:18:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793753873; x=1794358673; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793755130; x=1794359930; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Sk8Hr0fhc3C8eQFrISEupQ4YS+zYJDt+3X6d4EBkWvk=;
-        b=Cbod9g/YU3+tOlTtTnbUSHpJBHl6gN8BoKQeRJP9pi5xeiIv1FPevko0jwJ+aGLuLy
-         9+Vq0qwtYZhy1ZPpENlk06KJavb305By1d6MkDFwSS94Kb6MIUB0aPCZyna27CAn7nKa
-         5qPYzapHjs6ljtS11Yg9JQyVgMkYRqEZjf5pCJfeYdjPZJHnqGxPSheIJ7o8Q6jKz4WX
-         A1WQiE5SigEMfFCImoYerpJq3aJaLTVBDKu+btRbLQAt6+T7SXBCUpxxa13F/V3FNOgp
-         CvccOATz2nUzmYNW+L7KhgaTkfkqgypeLVVw1GbDcJvVMaSGuL8YWhYn4Er/QeuFqmKG
-         q7bw==
+        bh=Tofk4DAa89+ADIAKHIR2Vai/+L2kQBAdRyCdNLpk7aw=;
+        b=i3jOzUb8ds4zFfDftO7lYb+6CfK6KPgDxXwk6C0I//DyWLHtEGU+9uze/n9FRRuoCa
+         83KfNuIU3ifdtd33KmgRN+j0U2eeGobnP5+3bVMIu83OAvrH1gOnUJz2nt24+6XkIfAe
+         dxYCxXrXI1nZFt8uvo1FEQEiZZ/LfbFOaJG4quxKoQbKp+F2u9Hsk2DdZ81hOh8He+VO
+         Iv+Ts1EL7D10ncd/x3DX2B1Um94xsmsYRpAQS4XPzwH5efqXwmLlejq7fMKHKCVwGsXg
+         MnLa+C5cUGvyBGXOmcn8XNlj3u1BZVVAzPYWslzXUQWKrtwkqUKikPGkvP4RgGCf23E/
+         Ovbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793753873; x=1794358673;
+        d=1e100.net; s=20260707; t=1793755130; x=1794359930;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Sk8Hr0fhc3C8eQFrISEupQ4YS+zYJDt+3X6d4EBkWvk=;
-        b=095KYnWWkI7q04/+jBXglizvYVpXMZhzNZvfYc49O2d+JbhXcpq6Wo3+hjKe0W2GhL
-         RfrCxvos9TELQkLisp9cWXy5eRrpVzj4c6zVp+XYTJlAb4SFrDrAKY3ikfpuEVg9NnCy
-         hPk+rZv+DC+CZIroYn6ontUTfX22pVI+DWPdW9yWkNx9xeDt6FhukJZ4fW30IoeoC81c
-         YWye1C1nALrowBpy9zJDsaOM/zpqY+3hWbXEN7oNj/B393LCyrHx54WXnL7IBCNss52C
-         6XBDMXUUJVFSH8LLMuYhd7tcDYrGg1HG8xsEA5Ehcyr9p/vH/0X5gt1lQpwy7FhSkCqp
-         4ECg==
-X-Forwarded-Encrypted: i=1; AKwUvByh9sbkt4c+rv/uZAPG5/xLWiI5noE7LSnlXx+h2pR+96o5K3ANpqg4u/fPZslcW/YgE40JYoV/5BWcRuuhAA==@vger.kernel.org
-X-Gm-Message-State: APuU4Z9jbSj0KzUx2CmIlE8yn89GAO0NXVeEqzmVUFsLpyW5VoLtbklM
-	gN6a09K1O2XZYKwlk0M9ue3Vs94oZEw5ZSh7iLlOF8//ujLf48Bp4KeE
-X-Gm-Gg: AYBFou2HZaWjghWgUvr+mg4+sppn7DnvfckLgovYdEERhYYSJUFsWkRXSxiZTXkQ/wc
-	iRTk2yPs7DgTud0vSZFkKhXB12hECHAji/WFVUbhVqgSkmPz+H4mVVug3TuYtixL5AL3jABHUgW
-	Uh4VYZYhIXeHszBwcrRd7RrHPVph44HJVYUA59tA0f6WRmZ1pPecML/yE1sOTPRYr2CubCyDhSp
-	QyHp5uo6yloWfZe/sLExRw/iktMMJRnOUgOBFZNmFA0AhLU3b9FC5+zZ1UcE/Byn1KH3q22L/+d
-	wP9AsbduKGiISWsDwEDrvA+S5/RfQYUDLMtfsakL5qlxgbgoLHGTr9aecFN3B3+pDfIMKZZqi5H
-	xAW88f9gmayRP9NSvslLqou1LNqhiG8TwL72l/kRHA112oZoTE+4l0pjZbOJf5sXPap7+Nf7SgN
-	jGsEsv6YQjLftOGeaU4JZpfG6D3E+uAaJNFvV6p/+cVhiHijUE3mIdBrrF97gIpAgaXkOegGZVq
-	+ICl5ASYZCw3YMy3oyjOArmcL9A9woH9gnlAwjV8SbDC2MkyerXgagyBM9siCXrWk0DPEhUO6eI
-	iXX920jRKP0KKuHTxTzp
-X-Received: by 2002:a05:7022:1117:b0:195:49ee:94c7 with SMTP id a92af1059eb24-1ac5a0b579emr19552410c88.8.1793753872638;
-        Tue, 03 Nov 2026 16:57:52 -0800 (PST)
-Received: from debian ([169.211.140.146])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245c2c2ddsm2546423c88.10.2026.11.03.16.57.46
+        bh=Tofk4DAa89+ADIAKHIR2Vai/+L2kQBAdRyCdNLpk7aw=;
+        b=tuyQddUFvHbyjfBNm2FQzKMsqZS/hsHhUdZEUVYQpem1cWi/TP0UiLbKi4iry2c91D
+         zARPa19iDHbqvZDU26ifq53hPmc6nUyR1kj6PW3C6d/QFUXv6x4HDZXP8ClvvDfJrFD1
+         9bKxkVsh331psRsoo24ypx6xPXy2pNpTo/TuFp8tMl6rTHNzuk802kCq6/MqO0RQdnk3
+         z9wXiCZLRRfcHli6t02s7zeg/lTNkGxnLstvyOYakrspsRj1Rh25s18xsKD9w/WqVOmb
+         RK6F/VmvTe7W/GdgmsMnZVJAmk4Bhh0JkrfyHFibB2va2NiW242ZwDxp3dyPK/CrqLIs
+         zIwA==
+X-Forwarded-Encrypted: i=1; AKwUvBwxkNhBrnhnJ3TwW+RUYflIdOvLxSJFubGz+KJHOhCbz4Gou9dwDAIyDnaly3KB/W2Ee9OoOqa40pOsDpTO9A==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9hKG9kIQ13uWPmxjmUlpOEcX6jbgFsAEjPeaSXwm12Y7oQaxJr
+	/Nctw4qcY+qATxXcAtdfmAT5i0Vveir5B+7zxGVzfanEFxw5Rmox6Wzon6cX+pk1j/tGaIBJc3P
+	kyrmtBNju2I8=
+X-Gm-Gg: AYBFou2i57if2K5BPkuW/7JF/hQz2ZThLop7z738diKey4/Sv9jivN6Fbz3XCbK6xj8
+	HWMD77CAS01VdOcV5xW1XmTgQ7jknfXPX25DYlhaq3K2zABS6wlMQuQVa8fdnLPKxn2fByQHPZW
+	RDQozQopehGzupwx5pP1t7SAog5nVhPuHshQghd2snzvTTY0ZwTMC4QPY8dqtUQtQXWdx7ZmMa7
+	GeYRJJ4Q5qQuyBEjevt/8EvDlaP+sgQS8uKQXeT7rUzA79zgwv7iApotX/AULFuX9zz3WDmDxQs
+	cZRlXRlZTn50xIFJq+3KF474aVkq3UaKFjd+V/fM2bnWoEFkh1nqDdQPwvYIblS7x50F78fSFua
+	oI7tL7bLI6BcPblhe+ldQ3iyt9ZuxhKT1UrM5XTXqfE3se/AiIucmYo9PXfeAwMbkthvacgmTgU
+	jeuSi9WQv/P0sP3YnFagQjxHUZEIeNQqSUsTguKahe9hJE6bWyO63r5z27KiWhcR9BITK/DHvrr
+	E0d72V1m51iQrsPjpbZKixbjFutaB69W2Wfw9A3SmZY+n2LtBuc36SrCqzWS8Kemb8OvkKXh2mF
+	avhYk+k8W9HtKYSK59xD4zzBszj7sBVAODQE9rChoX51djLtU81BZbdYFvFoXC3u1g3qjyXRvCE
+	=
+X-Received: by 2002:a17:903:3888:b0:2df:96ca:d7c7 with SMTP id d9443c01a7336-2ed07aee78fmr1533795ad.10.1793755129511;
+        Tue, 03 Nov 2026 17:18:49 -0800 (PST)
+Received: from google.com (210.109.125.34.bc.googleusercontent.com. [34.125.109.210])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b08759344dsm4468133a91.13.2026.11.03.17.18.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 16:57:52 -0800 (PST)
-Date: Tue, 3 Nov 2026 19:57:42 -0500
-From: Kwanghoon Son <asdfkwang@gmail.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+        Tue, 03 Nov 2026 17:18:48 -0800 (PST)
+Date: Wed, 4 Nov 2026 01:18:43 +0000
+From: Sami Tolvanen <samitolvanen@google.com>
+To: Giuliano Procida <gprocida@google.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
+	Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
 	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>,
-	Paul Walmsley <pjw@kernel.org>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Anup Patel <anup@brainfault.org>, Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	linux-riscv@lists.infradead.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH RFC 12/12] MAINTAINERS: Add Bouffalo Lab BL808 support
-Message-ID: <auqC9jOIQTyieQUJ@debian>
-References: <20261029-rust-bl808-console-v1-0-b736ee920078@gmail.com>
- <20261029-rust-bl808-console-v1-12-b736ee920078@gmail.com>
- <20261029-spyglass-evasion-772697094cb9@spud>
- <20261029-amuser-savior-6a6ab062f471@spud>
- <auSDJH9V31wmbrYv@debian>
- <20261030-slider-finished-360b10521e0b@spud>
- <auXQaY25XfYzxEb1@debian>
- <20261102-throng-botanical-b244058ecc37@spud>
+	linux-modules@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Aaron Tomlin <atomlin@atomlin.com>
+Subject: Re: [PATCH v4 0/2] clean up EXPORT_SYMBOL_RUST_GPL
+Message-ID: <20261104011843.GB1247794@google.com>
+References: <CAGvU0Hm04LXTywU0eL6KN4=SoOAC+LU3BKqENnLR-WV-sHsuNA@mail.gmail.com>
+ <20261103165833.418845-1-gprocida@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -127,23 +116,35 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261102-throng-botanical-b244058ecc37@spud>
+In-Reply-To: <20261103165833.418845-1-gprocida@google.com>
 
-> I'd rather not really. I shouldn't be the maintainer for platforms I do
-> not care about, but I will do it if you're unwilling to - in part
-> because I expect that the volume for the platform will be pretty low.
+Hi Giuliano,
+
+On Tue, Nov 03, 2026 at 04:58:31PM +0000, Giuliano Procida wrote:
+> Move EXPORT_SYMBOL_RUST_GPL definitions into linux/export.h and
+> prevent the emission of bogus type information for Rust symbols.
 > 
-> Please read through Documentation/process/maintainer-soc.rst to see what
-> the expectations for a platform maintainer are.
+> Addressing review comments, the first commit now ensures the moves do
+> not trigger warnings from scripts/misc-check about missing symbol
+> exports by extending regexes to match EXPORT_SYMBOL_RUST_GPL as well.
 > 
-> Cheers,
-> Conor.
+> Giuliano Procida (2):
+>   rust: move EXPORT_SYMBOL_RUST_GPL to include/linux/export.h
+>   rust: exports: emit ___EXPORT_SYMBOL without C declarations
+> 
+>  drivers/gpu/Makefile                      |  4 ++--
+>  drivers/gpu/nova-core/nova_core_exports.c |  5 ++---
+>  include/linux/export.h                    | 14 ++++++++++++++
+>  rust/exports.c                            | 12 +-----------
+>  scripts/misc-check                        |  4 ++--
+>  5 files changed, 21 insertions(+), 18 deletions(-)
 
-I'd like to take on BL808 platform maintenance. I'm new to the
-maintainer workflow, so I may need some guidance initially, but I'd like
-to give it a try.
+For the series:
 
-I'll update on v2.
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
 
-Best regards,
-kwang.
+As a side note, starting a new thread for each version would make it
+easier to navigate the patches in email clients and lore:
+https://docs.kernel.org/process/submitting-patches.html#explicit-in-reply-to-headers
+
+Sami
