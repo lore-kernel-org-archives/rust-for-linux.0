@@ -1,49 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793816533;
-	b=Vd5Cv3zXXzfCNSdEwKSqbrfjj+yr9kbG/FEsCgoPe178RuN2Vj5M2qglG9Yhw/sqPNCb
-	 elSFmKMMY1IjSscW08EtfmFN7TXldv9cMx/sK1Bm3soc3Zcl11ku37BoEWdShlkIcHwHe
-	 TIT02TFfVzEzCWr1HqP4KYVuzB6Fx2gft02tV5jnEU2cskDFMfE19ryNc0xi+CrPZf/K2
-	 +BWI63ugtRnIjmhyJMmZv1HPQCkxJNVx7CIJSPwYCR7+xuB+JnKbtUNxHLusubMISuXPh
-	 Yo3/KDuvT9MzJX4hIM6/HoRaAwexLazlCOvmVMTbHoUVhVC4Cc1xKK+XxYAnisPitnQ==
+	t=1793821983;
+	b=I5oy5EgC7CEj55mQkgghkk9LqXsFzl1+M6kY4w4+iCmkJJDaTkOeXspjkemPQf/fs8gx
+	 bvWw1RsyqOMDgN4wuGcMiNDREMtLFev9qeTZlkZi1aFNtddqq7ku3cDpu8+yHL/VWu2MG
+	 6MZdHhPIuoctVWVwokJscWzLjdqWCRUIDLYooCGBnM9u/4GOX63dHi3nBsdk/9q0jyxax
+	 7dpzzW4Maxrj1jzQtCE2Zincuxq14s04zp0g3lDmqopvaULPnSBOBSD4DdmHlpnH6EG+v
+	 PBEfjTR2HpqJXK7xhqrR7dBegUoAInhZq/tA6EWB6cwmpbm56gcDL9JI771Zt9bzgAA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793816533;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=Ae44f96zItRoMnEuDxqCncdEeGbSJAWzgR3XJgNUP70=;
-	b=46m2GwE2YtzGbwajKu8FMdTZ6tODjMhI8qhwYdSSPdBWfzbFZ8L9gGoAxjrNl/H805pD
-	 JAhDTfse08X/559MJsqZTdl4RMa085XuSfwbsiDzpciXxGDatwQybhF8B24XsaFKfxvVW
-	 U2KWyVwHajlAUOeCkpdU5CBa22VgMZZzhLuP3gg+GO/xtTqJtzG3XCkRMaq91ttHAy73a
-	 YTnhbL9WoQEMpOsZX8JaW8MGs6/zsGjIk8rVLiiok/6yrDjI8EaHidaDulU7mT2ZWZ8Q3
-	 KGt3SuCJhrDatxLA16uVT6x8G4tb+df0e05llILngj5e+UgSgXfOBji0ILq0wznJKng==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793821983;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=veFu+GeN/zVA2n2SaVCI85ywkvL139Q8TkIg1x4TZdo=;
+	b=zUbGm0miqYla0Vjy/lVRbZ+agyIoa/FOx/qR1Krw2u437dLqp5RuGlSFSH9Ct1sB6GIT
+	 SQnUteCbOBdcwPxbKyxIyRdvbwJEVCzqyncqZs0XdS3smmV6upl/hAbOj+12mMTauiV3J
+	 A+tIu31RzPsj1ICI2+JsscjGVInRsadsLp9whRMYd12Ew/dNj/o4cuNaUcsBGx1R4IMGu
+	 zW0mN+6TSGenzSaShUYwI3nLphrBNlpuuzgHeMoCwacEYHVBu8iMN6VOPE3VU+YEaBJRO
+	 /MIDJiVBrATijb3bH9FDmptYGzgSY1vwEuUyQwOqxTmso48EwDCyP/8N0GCFFaEMrwg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hs59Teb0;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ANJA3a98;
+	arc=none smtp.remote-ip=209.85.222.48
+Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFFB606D2E3;
-	Wed,  4 Nov 2026 18:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2F260D9EB7
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 19:53:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C2F260D9EB7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hs59Teb0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60F31F00919;
-	Wed,  4 Nov 2026 18:22:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793816532;
-	bh=Ae44f96zItRoMnEuDxqCncdEeGbSJAWzgR3XJgNUP70=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=hs59Teb0yhtPbZ/h74PFv9MW9QEiSmAVJZFS1FTYTU7wnnWhQ+xAbwgVbAYow8NOK
-	 kNm7m5LEEPXZwIL3/mFGDobzskJxK93M/N0b/q2Ca8BpaZt//spk3eeIvY9G++OZcw
-	 4rpVhepNM/4W5zzyt6cV96z1fU2SOzl5M4QgB3PJpff+AVM3eg5Xw1WjNf33AkG6Wv
-	 nv0dT4p3APoOknaWM0NYIgd5mwZPN4gfBuBv83NtoAIOe+pzo09qaH2QvYZh6he+yY
-	 CUfaQFr7NBy1yH99osmwcdRkn/gfT+i+2lUCsssJUpEWPGgVLdD010bnqXQANuhAI5
-	 agXgV8P4XmsUQ==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Wed, 04 Nov 2026 18:20:29 +0000
-Subject: [PATCH v5 11/11] kbuild: build rust crates in parallel with the
- rest of the build
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ANJA3a98
+Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-9906c85122cso373538241.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 04 Nov 2026 11:53:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793821981; x=1794426781; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=veFu+GeN/zVA2n2SaVCI85ywkvL139Q8TkIg1x4TZdo=;
+        b=ANJA3a98FFvvIOpxw+9fKDajX7EDD2IFRKvH9PU+9a1uY4sPHSSxrQo6Gb2VOB+q6K
+         Kkuup/Ar+oQar2+ucZvjAcMmZUaUYNVkQ0ouI10/NGnVLlAzJCDC1NlovCQiY8+xDL4A
+         8U6aybAiThMxApJAxERlQ2os7ZsctB0tjT4eR4ehvvNbZncPKM7cu2G5kC3PGyDVjf2A
+         9fCnF085z2qqlhcj17L1776oNFU884YV0+F1bDpYIqPccQNEmbId1ZnPdxl2RYBt3fMy
+         8rabLD5Z2wZQuLs07BRvCqsYJ1ogEMzYz4hv+c5y1wE5JRRHUyuV+jXF87+Lx4rEuzuJ
+         8rjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793821981; x=1794426781;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=veFu+GeN/zVA2n2SaVCI85ywkvL139Q8TkIg1x4TZdo=;
+        b=bHqgGpk255yIsiDZTFbkUtfZRUIaqq3lLGL9ieFmhtwCERuMr9W8XiFxy3uQcgz7oY
+         rwQbFJ7+6M8XtaU5nQw6up4BzLj4s7ylQmgOSvAWJY/Ly2f7MOU9LUvWDZvFa5Nlnpzl
+         AOS53bBOiawb2/BWrdNzjtY3jg6EKc5Aq2oZHGU6x9avvrTbfo/y5E5jJVkbKXSxNRz6
+         XRmJBLg0PR9xdWwb8rPt1VxOIAjnPq+yppO+gLMuSIvmfFW7/xEL94Ndv5WFDKv2HK09
+         +ZkQy3vRv0EoKyihSzGgnsGFMj/QvtabwZxjcsNrQ4fTycEZu/hgBjRvR0OI/54WKFpa
+         23UA==
+X-Forwarded-Encrypted: i=1; AKwUvBx7tKq3n3/11P7Xew8/5ikqrAY33t5XwH7Kd+zqt1WNkP87hEj66yioW39X68RCpRfggF5XMkbhyRy5pGIpzA==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/HbbRfErYhpA7jXwRVDZbEuO6DA6sS8Pr0P0OYy4xHwQL6ZREa
+	OCzqs4U4B6u4U5uGkzGmk80N82GlSBTHcxZLXCC2sQl3l6c1pvSHEhE=
+X-Gm-Gg: AYBFou3OoCHrFEw/NCyapZ8f9ruD9lqiVgPzxYBdfceNRu9FxjWABwUOzPNeaDbpSTI
+	Dkz6tyinNZtt+VBEjZeUDRngcOEdjeBixOB7/u+LxwuNVlUhip3cgUTVLwwAfE14zR4S+ZCCK45
+	+NDf6fO+C0CtS/UTEcDhzMFXC0+YhEPxugw5xHOnujjbLIEtTdlscrqngCdDqeG9HRQ3UHPu3lb
+	wnPkPtbmqV0h2k82YEX9Pazj3ajWlwQVPsCJu9GTHbgmZuEQ4sGqQ7FB+1ci2jTNhYJhVq8F0Qs
+	az9X/V7nwlwCYkYgNj0tPpYiTwi/SuW1CL9d/ON9ZV7THo8F6JBVxdSiD6DRGeYfC5/7TnDFUFc
+	mhQQWY8WpV7U6qD4FNkEJquBURbaTYDLEKhMWy0+zTrB4KDv9wqTwpdGzRB6SmaKq1FIAQQYZ8Q
+	cVAurYUOPjHhNnsdp0XRrKA0JhJ0xMjRchmjdzHW5xMjfmD+X7KbUgaYXxRiItfhlP8QamQtXnq
+	GyewCx5oWRPJKw4TxXnszlz9tEQZYehyIw8Wg4q9AGjD97xyB8MO6EEMA81deZG4++ZKD9CLshp
+	VJHSvCPE0yI/85PGISuJvpwuItcplXuQUrLbyWy44tZ6/1NCvt/8ZnINY9znP2U/W5owXUH5sSQ
+	a9fzx
+X-Received: by 2002:a05:6102:6449:b0:7cb:bc5e:7dad with SMTP id ada2fe7eead31-7d072baa450mr6439786137.10.1793821981337;
+        Wed, 04 Nov 2026 11:53:01 -0800 (PST)
+Received: from localhost.localdomain ([186.158.238.108])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d26fd3e101sm2387237137.3.2026.11.04.11.52.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 11:53:00 -0800 (PST)
+From: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
+To: Igor Korotin <igor.korotin@linux.dev>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Georgios Androutsopoulos <georgeandrout13@gmail.com>
+Cc: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v2 0/2] remove TryFrom<&Device> implementations for pci and platform
+Date: Wed,  4 Nov 2026 16:50:13 -0300
+Message-ID: <cover.1793818280.git.nico.antinori.7@gmail.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -53,175 +111,46 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261104-build-speedup-v5-11-0f6018be8dae@kernel.org>
-References: <20261104-build-speedup-v5-0-0f6018be8dae@kernel.org>
-In-Reply-To: <20261104-build-speedup-v5-0-0f6018be8dae@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>, 
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
- Nick Desaulniers <ndesaulniers@google.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- Geert Uytterhoeven <geert@linux-m68k.org>, 
- Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
- Aaron Tomlin <atomlin@atomlin.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: ljs@kernel.org, linux-kbuild@vger.kernel.org, 
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
- linux-m68k@lists.linux-m68k.org, linux-modules@vger.kernel.org, 
- rust-for-linux@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4608; i=ljs@kernel.org;
- h=from:subject:message-id; bh=FgSgFDAAcTPCFUAL+8odpu2fPm2OKUlCsBm/ENgnc8s=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJel+dt0LuyaXfbNOY9pR3zHT59b3wuq7N+5vIGXd416
- /y27p2zsqOUhUGMi0FWTJHl+Rfx/UEiYfM6L/i7wcxhZQIZwsDFKQAT0bnPyPDKR156gdy8xyn+
- XOs3/2qaNFnmS1Okr+/+sssq67LnHuxj+Kfd4V8/8eaSHOESDtVr3Llfb9WalTZuZey8J2rfyPJ
- Thg0A
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-When CONFIG_RUST is specified make prepare builds all of the rust
-components before descending into the tree.
+Hello,
 
-This means nothing can be done until all of these are compiled, resulting
-in a stall at the start of every clean CONFIG_RUST build.
+This patch series removes `TryFrom<&Device<Ctx>>` implementations for
+pci and platform's `Device` struct.
 
-This also implicitly slows down every rust-capable LLVM allmodconfig build
-as this enables the CONFIG_RUST option.
+I made this a series because both TryFrom implementations were
+introduced in a series:
+https://lore.kernel.org/all/20250321214826.140946-1-dakr@kernel.org/
 
-Fix this by allowing rust crates to be built alongside the C code.
+Changelog:
+v2:
+ - Replaced "Closes:" tags with "Link:" tag in both patches.
+ - Added mention to the soundness problem in the commit messages.
+ - Removed bindings::dev_is_platform C binding since it has no other
+   usages.
+ - Solved Sashiko from v1: "[Low] rust: pci: unused
+   rust_helper_dev_is_pci() left in rust/helpers/pci.c": Deleted the
+   binding. Platform was in the same situation as mentioned in the
+   previous item.
+Link to v1: https://lore.kernel.org/rust-for-linux/cover.1792417858.git.nico.antinori.7@gmail.com/T/#t
 
-Remove the rust build from the make prepare step, then establish a
-dependency between rust code located elsewhere in the tree upon rust
-components contained in rust/.
+Best regards,
+Nicolás
 
-Do this by establishing a top-level list of directories containing rust
-code, KBUILD_RUST_DIRS, upon which the dependency is expressed.
+Nicolás Antinori (2):
+  rust: pci: remove TryFrom<&Device> implementation for &pci::Device
+  rust: platform: remove TryFrom<&Device> implementation for
+    &platform::Device
 
-Finally, ensure that no rust code is located elsewhere and fail the build
-if any is found to ensure that nothing is missed in future.
+ rust/helpers/helpers.c  |  1 -
+ rust/helpers/pci.c      |  5 -----
+ rust/helpers/platform.c |  8 --------
+ rust/kernel/pci.rs      | 21 ---------------------
+ rust/kernel/platform.rs | 21 ---------------------
+ 5 files changed, 56 deletions(-)
+ delete mode 100644 rust/helpers/platform.c
 
-Care is taken to ensure the rust/ dependency is also established for any
-module being built to account for external rust modules which rely upon it,
-and that only one rust/ build will be performed at any one time.
-
-External rust modules builds are unaffected - make modules_prepare ...
-(where ... are other goals) will build rust/ first.
-
-The rustdoc and rusttest goals invoke rust/ directly rather than via
-Kbuild, so build rust/ first there too.
-
-Every Rust and C object was confirmed to be byte-for-byte identical after
-this change.
-
-Whole build, 128-thread Threadripper 9980X, best of N runs:
-
-                                         before   after     delta
-                                         -------------------------------
-  x86 defconfig+RUST, clean                36.5s    32.6s     -3.9s (-11%)
-  x86 allmodconfig, clean                 297.0s   278.3s    -18.7s (-6%)
-
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- Kbuild                 |  5 +++++
- Makefile               | 17 ++++++++++++++++-
- scripts/Makefile.build |  5 ++++-
- 3 files changed, 25 insertions(+), 2 deletions(-)
-
-diff --git a/Kbuild b/Kbuild
-index a6a0192dea08..9670556059dd 100644
---- a/Kbuild
-+++ b/Kbuild
-@@ -115,3 +115,8 @@ obj-$(CONFIG_NET)	+= net/
- obj-y			+= virt/
- obj-y			+= $(ARCH_DRIVERS)
- obj-$(CONFIG_DRM_HEADER_TEST)	+= include/
-+
-+# Rust code elsewhere in the tree depends upon rust/.
-+ifdef CONFIG_RUST
-+$(KBUILD_RUST_DIRS): | rust
-+endif
-diff --git a/Makefile b/Makefile
-index 7c254b8657a3..de4cc052af03 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1416,11 +1416,14 @@ prepare0: archprepare
- 	$(Q)$(MAKE) $(build)=. prepare
- 	$(Q)$(MAKE) $(build)=scripts/mod
- 
-+ifdef CONFIG_RUST
-+export KBUILD_RUST_DIRS := drivers lib mm samples
-+endif
-+
- # All the preparing..
- prepare: prepare0
- ifdef CONFIG_RUST
- 	+$(Q)$(CONFIG_SHELL) $(srctree)/scripts/rust_is_available.sh
--	$(Q)$(MAKE) $(build)=rust
- endif
- 
- PHONY += remove-stale-files
-@@ -1767,6 +1770,14 @@ modules: modules_prepare
- # Target to prepare building external modules
- modules_prepare: prepare
- 	$(Q)$(MAKE) $(build)=scripts scripts/module.lds
-+ifdef CONFIG_RUST
-+# Avoid two instances of rust/ being built at any one time.
-+ifneq ($(filter modules_prepare,$(MAKECMDGOALS)),)
-+ifeq ($(filter all vmlinux modules %Image% dtbs rustdoc rusttest,$(MAKECMDGOALS)),)
-+	$(Q)$(MAKE) $(build)=rust
-+endif
-+endif
-+endif
- 
- endif # CONFIG_MODULES
- 
-@@ -2035,13 +2046,17 @@ rustavailable:
- # Documentation target
- #
- # Using the singular to avoid running afoul of `no-dot-config-targets`.
-+#
-+# rust/ is built alongside the rest of the tree, so must be built first here.
- PHONY += rustdoc
- rustdoc: prepare
-+	$(Q)$(MAKE) $(build)=rust
- 	$(Q)$(MAKE) $(build)=rust $@
- 
- # Testing target
- PHONY += rusttest
- rusttest: prepare
-+	$(Q)$(MAKE) $(build)=rust
- 	$(Q)$(MAKE) $(build)=rust $@
- 
- # Formatting targets
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 7b652f169a8f..ec4e220d6831 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -381,8 +381,11 @@ quiet_cmd_rustc_o_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
- 		$(cmd_ld_single)) \
- 	$(cmd_objtool)
- 
-+rust-dir-ok = $(or $(KBUILD_EXTMOD),$(filter rust $(KBUILD_RUST_DIRS),$(firstword $(subst /, ,$@))))
-+
-+# Ensure that any rust code located elsewhere from rust/ is listed in KBUILD_RUST_DIRS.
- define rule_rustc_o_rs
--	$(call cmd_and_fixdep,rustc_o_rs)
-+	$(if $(rust-dir-ok),,$(error $@: Rust code in a directory not listed in KBUILD_RUST_DIRS, see the top Makefile))$(call cmd_and_fixdep,rustc_o_rs)
- 	$(call cmd,gen_objtooldep)
- endef
- 
-
--- 
-2.56.0
+--
+2.47.3
 
