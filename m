@@ -1,75 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793797426;
-	b=WSBuceJsECH6XbmWdALNYfQ4AoPctwtrGJluOadHHzN8sYZ+ZRkKfbL7xl7DICT5MAcC
-	 Cmrr6J+qlhnX7maS0upalatr2w4LTB5wdnu1wDl3bwXtZseMdHPJ9LpAuiESd9oZZFP3a
-	 CmrOMJxf3qz1CXoaRNDTlZgMY3q0XNUcmvwuftA2TyXUosh6KNfBOxcrSg7/p5ubP8vJn
-	 QhytMyMppbjOHj7aUOUOkJbLYjflpNXZSlvMg0VoDo/TT69zRGJgJ0/Fh8I9ezM+quoxx
-	 qpxBVxFQI6N5nm5JESuuStbjFqVWhKe1cTW0wNL2yQlRekXjJK7oVdWpHzkdcbexljg==
+	t=1793799843;
+	b=cYRkL7rDgF80Vt/3WaeYvG1umXTwJ37n5gSij2QfKn0Iw/UtQmDvbyIn0TIRfuQwCbOs
+	 Aoms6nIIHcc3CNVRRUk14176eZhdhimhi7g2FRvvOhyvOYP4I6Y4wPTTfCjHCm2DWnzEZ
+	 6NXOm4xGCCyz2WFyYL2/LXEPL58wAmYG2k0omWxkP4aNd0RKQVG8YpYROrxID7a8MQ1Lz
+	 A7ixMCi4D0AbNZosfnxWxZiuwqn8EOdvT88mpuDcNMBgDTdMSBa/sQvvHZJm0g5hhZz8/
+	 e1CktEcrwuZU+YvwgfyDV+krSOK5mL+4pVubagQC7wU7rOoswBUiZQtdOPPAMg3k3Mw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793797426;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=Rk9I/hs0FAD1JpZN3nz0IyElTxou9AIDzVZ41o0WZsY=;
-	b=ppyr4C3S+YoBgBvQDP36MN7zyIAtlPGcurZRIYsnQIDS4sP2F3/jR4grUzN56ApOnVpt
-	 XVbb/kTnQP3Qbv18xHnozygdkziuD4k8o7JE7EIWEaUMsMSG6pnUDITPk8jfKptsI+mIY
-	 DujiJa41JNWeqqbCJOgvaSy5L0HWgK2O9IgQrhBlT15UkkeYe0jkogfrMmj9ubxmy5R/i
-	 /RappuDmntLToZQjl4tT5c32Hw/d8xMXZ9XA6UvfVjyHLFDU4FM67TbXB4DBGpROlEJTO
-	 XmzdPwI4ZAnUMdWkjvPpnRm4ywHiyvyIxYNPGv2qYQfnZgL5aspPW5+oxi5zxxPBH6g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793799843;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=cUUslosnGpCPPQgi+adGQwIsKcX5he24sFJpO5UMCtw=;
+	b=R7z7joFQJjkTAJuKN68KVZnznt1Fn4f7Z6mAPSDMsa+nZ+xZBuhdXVLCvT4DiD1yrp5V
+	 NIAjmbvRkTULnBODPn/zk5LY2p0Cym/VCbZLyTzE0GW7IFw1AAAW5kz/U0icQoit1Ubre
+	 KHug/ALB+cM67E98IEGDP8YbsGTQtg9ldX3Cr3RarjzmK4VIOg87VjBIDdbCMOpgpVOHG
+	 z0ZmyZh655V2RCUygKgJlg4/DbzAsEdBE4Sh/tHebQtqixt+PrFnFEJTxQoXMogt1aOzC
+	 Yfy9S3M91CXX106r1ikQG/Zw6yMtzsKqN6m0NIrFu53vf5wSuk5FmB8sjckic9HDumA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SundMkPA;
-	arc=none smtp.remote-ip=209.85.221.71
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YaAxrkXm;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D01606A32C
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 13:03:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3D01606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04AC2606A328;
+	Wed,  4 Nov 2026 13:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SundMkPA
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4902ce85f72so574672f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 04 Nov 2026 05:03:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793797424; x=1794402224; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Rk9I/hs0FAD1JpZN3nz0IyElTxou9AIDzVZ41o0WZsY=;
-        b=SundMkPAP7nK88QqCodUo6cgiHfwucHJ2BB7s+84UW57L+S2JnswkeV3z5E+jnjjiS
-         uYJbWuy3crTVgS2v9uNU+xMFoBfOXCY/PZhRZVgDcBN8VIj1Y/vxJkjggQcE7XmYbZ2w
-         XgGNoFB2eJzlLFmjeXFS7rrjh4TEnrcWlNJ4k80kYfoIjNxkZ4HXbu9pcdq+dwcIwFlD
-         cG1iX7wjqaqYeca+ffIq1Mad6MkDVd8ccTWW4Zas4vB7KvscYTZY3Mv2oJiHb8uMo899
-         042BMZAOA12jBTu9X6bJR/ScE7SG6+gseXgxLO9FDy7so+xrDHuko5WnFP310QOIOHZz
-         o0sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793797424; x=1794402224;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Rk9I/hs0FAD1JpZN3nz0IyElTxou9AIDzVZ41o0WZsY=;
-        b=gAtDAxcgZV/2eibRhbHdX4z4NdMQnTA1ysfxEX2Xd//60jdAWKMd2sl03oVYoj7jA9
-         7JDB8tePl/HrEHpGvw0xNbKOLD2J5X0oYNhv2PUsDetO4+kRA3qNtQVlHl5EIVak3kq6
-         AJRUINS7/CZgpj6LXCcISgTATUYIahtPq/GklJuKLxMBjkTJEQBKW7fgob46x1d+mJYe
-         Y7UxDUa3hm2lTih14vUtZwKGym2dSNW6LA6QBYqU7C0Cj8KZlXNE/lk7CbtcMTPr1yp3
-         gzZOzVq4ijz85WEj/D7UQDi6+jJNmmM5CMXy5WrNIPLfa4S1zIZV2G9RCxtB30cfZS1e
-         fIMg==
-X-Forwarded-Encrypted: i=1; AKwUvBy3D01lGE7LDVx8LV/rGhbHgUiidsNv3H7+Oc5sltLW2sMGYO/h+TpVI7VpWuxrPzcek3XmZkf6WX5D4HUw8w==@vger.kernel.org
-X-Gm-Message-State: APuU4Z9ozBqMuv/ZSUYomG507yDVIhi+/99TkpheqGrPIreDthFzdeg1
-	tRRNNXXh1m98Y/3LorwxxNsxd05aTB4fkNC6ZWx39UkDk2Av5Rni17EHZWYz3Idd27WBuontt7X
-	+qD+7PlhikCQ1N2GrJA==
-X-Received: from wror10.prod.google.com ([2002:adf:f10a:0:b0:48a:eea0:bc47])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:29cf:b0:48e:6f76:de9c with SMTP id ffacd0b85a97d-48e6f76f453mr21544509f8f.28.1793797423627;
- Wed, 04 Nov 2026 05:03:43 -0800 (PST)
-Date: Wed,  4 Nov 2026 13:03:41 +0000
-In-Reply-To: <auixgbeSSfBWwVS9@tardis.local>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YaAxrkXm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E321F0093A;
+	Wed,  4 Nov 2026 13:43:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793799842;
+	bh=cUUslosnGpCPPQgi+adGQwIsKcX5he24sFJpO5UMCtw=;
+	h=From:Date:Subject:To:Cc;
+	b=YaAxrkXmIKYHexFCTw02jEA/dqZDC5GNoV4ikYpgyYbtbGyAFiGJ+XUsN8qjZPNbR
+	 odoG4Xg7dkVoMMYxtgMKn1Ujyx9MhFec+JkOlAw0ho+1sTFPjWOiPmmw0r4xyhx0ME
+	 /0ZtHeIuVCKYlg/IaVssyiNM/M4RSTyb99XF24IcANTz4nWR5fcCWAry1quhzYkyHC
+	 xJFrsgDD0wR5nUTQDP7iVvtAukskIgjEm8XB/OP6z5OIa6vzNbpGnQjnJnpLX8EZYF
+	 dL2r9QFnsq5nPJcc85fkBCyCllB6XKkdVLEiTnE2vWA6KPKScRWiLtMhi5/+36BjUm
+	 928CMHItTPI2Q==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Wed, 04 Nov 2026 14:43:19 +0100
+Subject: [PATCH v3] rust: impl_flags: add method to return underlying
+ integer
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -78,67 +52,112 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261102035934.711973-1-tomo@flapping.org> <auixgbeSSfBWwVS9@tardis.local>
-X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
-Message-ID: <20261104130342.261593-1-aliceryhl@google.com>
-Subject: Re: [PATCH v9] rust: sync: condvar: use Delta<Jiffy> for timeout and result
-From: Alice Ryhl <aliceryhl@google.com>
-To: Boqun Feng <boqun@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, FUJITA Tomonori <tomo@flapping.org>, arve@android.com, 
-	brauner@kernel.org, cmllamas@google.com, gary@garyguo.net, 
-	gregkh@linuxfoundation.org, ojeda@kernel.org, tkjos@android.com, 
-	a.hindborg@kernel.org, acourbot@nvidia.com, bjorn3_gh@protonmail.com, 
-	dakr@kernel.org, daniel.almeida@collabora.com, lossin@kernel.org, 
-	lyude@redhat.com, tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261104-impl-flags-inner-v3-1-2968b1303d8b@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAHY262oC/33NwQrCMAyA4VcZPVtps9k6T76HeOjWdAvObrRSl
+ LF3t9tFBJGc/kC+zCxiIIzsVMwsYKJIo89R7grW9sZ3yMnmZiBACZDA6T4N3A2mi5y8x8BbJWt
+ dNaAbeWT5bAro6LmRl2vunuJjDK/tQ5Lr9g+WJM+DgLatFVZanG8YPA77MXRs1RJ8BCUOPwTIg
+ rHSudJpY6H5EpZleQN2vZbT8wAAAA==
+X-Change-ID: 20260212-impl-flags-inner-c61974b27b18
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2658; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=K9QW0maz21yD9tB+JIt8DPORgeABVcgWs/zw+G7IAuE=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq6zZ452g3oLyBhxjvrkGXG+H+RLmPW9XIwvxhG
+ JFpMKQtH3aJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaus2eAAKCRD6UCkIqsW9
+ 0KM0EACfjAb9ceSqa+p2P85dipfEiNn3pPiSOWab4VDczDh8e2NXKyEvfcff1HSZ4O09OFbyEU+
+ 3WAADbv6vXKQ9n0lGJwLNbjV0ZVen4LD1ZsNyr24rLPgta81d2NsLJGy39OkGoFwCZZSekDgEcn
+ gmQ6YDO0YP+Gdap6cUg2lExH5RhLKXj0HBk/snHNIr8GREQyzwAky2tgZkPeqjR7ygRAuze61yk
+ t0LnhrutM4EzaJIyb5ZkUL1Qvl3ial5LB7v/0Dlzt8EOaQ5OA5sYV9FYw/LrkCeg7O0PycNVDFy
+ MBiYpuyaTUKzv5gp7ih08/0hRLFp2876NF9g0qVFKQ78i3PaXkEsfHIWWWryqIfTfdJzP1d29tj
+ UuxhCvbLYr2fhQB4onH66WZLv26KPpTMqfUzC98mPfuXTh3+IqWzu7e9VWOQ2WXle61Jp6JCIlA
+ Uhy6YSTcIa0p42eosqYMfv9z4iZupN6ALYtx6iHlIyhlfOR76FVfdpWKlnU7MqlDZB6A551mccr
+ /uWx25xWiD9NLFrLJGKygdzixtrVFJXaN8haLCm2VCFcR1qe9nyT8bv7X1Y0wIAAbnRPbzjIjPb
+ 3mfpjB5P9nl7ti5QesUdf6x7hWseuyeUV1cYFEPPAm2zOyUzhL2nqkEHx+OD4ECKjGFI55YNfMu
+ eHAt1TCk9qFuGfg==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Mon, Nov 02, 2026 at 07:51:29AM -0800, Boqun Feng wrote:
-> On Mon, Nov 02, 2026 at 12:59:34PM +0900, FUJITA Tomonori wrote:
-> > Update the only user, binder. It now converts the freeze timeout with
-> > Delta::to_jiffies_timeout() instead of msecs_to_jiffies(). Both round
-> > up, so a short timeout does not become zero. They differ only for a
-> > very long timeout. msecs_to_jiffies() returns MAX_JIFFY_OFFSET for
-> > 2^31 ms (about 24.9 days) or more, which means an infinite
-> > timeout. to_jiffies_timeout() has no such special case. It converts
-> > such a value to the matching number of jiffies, so the wait is long
-> > but finite.
-> > 
-> > Reviewed-by: Gary Guo <gary@garyguo.net>
-> > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> 
-> Thanks. Alice, any concern regarding the change in binder?
-> 
-> I have some naming suggestion, please see below:
-> 
-> > ---
-> >  drivers/android/binder/process.rs |  7 ++++---
-> >  rust/kernel/sync/condvar.rs       | 31 ++++++++++++++++++++++---------
-> >  2 files changed, 26 insertions(+), 12 deletions(-)
-> > 
-> > diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-> > index 1f4cb43f1de6..edde0ea35687 100644
-> > --- a/drivers/android/binder/process.rs
-> > +++ b/drivers/android/binder/process.rs
-> > @@ -1552,8 +1553,8 @@ pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
-> >          inner.is_frozen = IsFrozen::InProgress;
-> >  
-> >          if info.timeout_ms > 0 {
-> > -            let mut jiffies = kernel::time::msecs_to_jiffies(info.timeout_ms);
-> > -            while jiffies > 0 {
-> > +            let mut jiffies = Delta::from_millis(info.timeout_ms.into()).to_jiffies_timeout();
-> 
-> I would rename this variable to `timeout`, i.e.
-> 
-> 	let timeout = Delta::from_millis(info.timeout_ms.into()).to_jiffies_timeout();
-> 
-> Thoughts?
+Add a `bits` method to return a copy of the underlying integer used to
+represent the flags. This is useful when passing flag values to C APIs.
 
-No concerns from me; the binder change and your naming suggestions look
-good to me.
+The macro already generates a public `From<$flags> for $ty` conversion, so
+this does not expose anything that was not already reachable by users of
+the generated types.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+Changes in v3:
+- Make `bits()` unconditionally public and drop the inner-field visibility
+  specifier from v2. The bit pattern is already reachable through the
+  generated `From` implementation, so gating the accessor hid
+  nothing (Gary, Miguel).
+- Leave the bitmask struct declaration in the doctest unchanged and only
+  add a line exercising `bits()` (Miguel).
+- Rebase on v7.4-rc1.
+- Link to v2: https://msgid.link/20260605-impl-flags-inner-v2-1-ad1ff3f7ad2b@kernel.org
 
-Alice
+Changes in v2:
+- Rename the accessor from `into_inner` to `bits`, matching the
+  name used by the `bitflags` crate (Gary).
+- Tie the visibility of `bits` to the visibility of the inner
+  field of the bitmask struct, so callers must explicitly write
+  `pub` to expose the bit pattern outside the defining module (Gary).
+- Extend the macro's doctest to declare the inner field `pub`
+  and exercise the `bits` accessor.
+- Link to v1: https://msgid.link/20260212-impl-flags-inner-v1-1-1e2edc96e470@kernel.org
+---
+ rust/kernel/impl_flags.rs | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/rust/kernel/impl_flags.rs b/rust/kernel/impl_flags.rs
+index fdf44d5eea9c..6051487f6e28 100644
+--- a/rust/kernel/impl_flags.rs
++++ b/rust/kernel/impl_flags.rs
+@@ -68,6 +68,11 @@
+ /// let negated = !read_only;
+ /// assert!(negated.contains(Permission::Write));
+ /// assert!(!negated.contains(Permission::Read));
++///
++/// // Obtain the raw integer representation with `bits()`, which is
++/// // useful for passing the value to a C API.
++/// let raw: u32 = read_only.bits();
++/// assert_eq!(raw, Permission::Read as u32);
+ /// ```
+ #[macro_export]
+ macro_rules! impl_flags {
+@@ -270,6 +275,12 @@ pub fn contains_any(self, flags: $flags) -> bool {
+             pub fn contains_all(self, flags: $flags) -> bool {
+                 (self.0 & flags.0) == flags.0
+             }
++
++            /// Return a copy of the inner representation of the flags.
++            #[inline]
++            pub fn bits(self) -> $ty {
++                self.0
++            }
+         }
+     };
+ }
+
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20260212-impl-flags-inner-c61974b27b18
+
+Best regards,
+--  
+Andreas Hindborg <a.hindborg@kernel.org>
+
+
