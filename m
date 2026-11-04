@@ -1,48 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793816508;
-	b=BC4qZXaF1Ae1OdG2caRrELVrt094kyw0gwzKNMzlepYpqNbZmIz3AUOo0SpO8g2L56EK
-	 WXovU+J+9vt1fA5B1TkcndPYnFGkXBqDrH+6wuWY4BlUsQBe2KGTsTmpFro70jWAHPT9R
-	 pdXOdmuCULsqwplJx13r5U6vTXJ8ZL4g3sKGeVJ+Mg6w0cTf9o2RXC7jgkHKr5RxJDmN4
-	 XIyoxADXVrBMYE8PfUYTNLbR3ny7tmKlHgP0Ex5IAux/fwRYDb0WXsUTxXuFe6GQDKxI+
-	 Yet1FvCFUHmIy1eHJRf8iN3zaIgbGbAxA0mJushKwJWtRfzkDssg9TrM8jFhCJ0iJRg==
+	t=1793816524;
+	b=VQ8JpW0CY2qhaxNO7GpXYYVF3RAVGhlz/caiUSYkiaLLZvJudSJqqT+GE5epcM3SIUe7
+	 xAKCuXJrE+DrBlLIWQXqZnMxYlQA5LL9Wa60UurauOetY7J15qg/x8WAq7wxpXVsU+78q
+	 GMnNi1EQL4vYGPFcLw9FtEOTmLYQasg47o8H/+vvQ7MHhyAAE2WG+DOGupqtFn82XDJ1I
+	 w60Peab04FPR466mq3wtfBBJowIbt4hovLUJ/rOaNKIAv2vow7HYoWSxTbeP+k3FZDtVY
+	 5OebHeKtTC7OYcZTX9Mg5dIUkPk+i6bU+00KBpvmPL/BL8IOVuNfZ87dlxW0q9DWfOA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793816508;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793816524;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=stOXZBmrncauGpvrA6nVjxn6Aw9LpSoLoCXa4t8uTaw=;
-	b=ph89O3UH/1W1KqcjcKDU4gR08Er4xBHPIK09DTE2OqvKwkcvqAGQdeGkvuBBK+P5YG79
-	 dz63EKVZjNPZfrwlYy1iQ0l3lDaRc+kwb6yBBvZBbKH0cjT0/HfwEPHKWh8fj5ql6OVoC
-	 rFJVPLdQGrNQTega2xO6A6m9uCqdwWzEu7Z3Q12Zn845wYycHJBycMYzBAXwtaOhJQ9Xk
-	 WtqN5weF9z5BwgnEaQE34sUXQtHch8dfgVM1atsMAfR/0OrYmBqGoNkUhlv73eOfPwAD0
-	 41HsfVmTkOOet+1c0teOlQOiA15z4eizOUprsTtlLkVT/tgbM5aEbOqeGlCGXXiaTlw==
+	bh=VT57VP7WgX6dODi86xucfYo8nlOoB8EWvy9sdmMIM1Q=;
+	b=ZlnPQXcHDFqv+8TW228LAq8m4gUcFCpPcM1g+qagV7O/zQuIAr0V3/3lVgJwp2lBkgZo
+	 7Q6VFZ9L5xneTIqRQjwIj1eXkCDUKgu7Fj+HUzcn3caUBVARQMKxMwm1e9mKyZIeuoyQk
+	 aZxdsKiXEj760W1dRUEVxyfJgUikJHYRtlRnkHlH60zOG9vk07m443NRQPNhjwD3VxMpy
+	 q52yuzGUQqVY35gOzmbkXd25LBXOBDRq6r6QfgT3gWAWicbTlsnVhzorUbQ8wEwuM8Zbm
+	 rQc0mXnLBpbc+n7A8feTFOf8FEteD4aB6skJwHeRU//8nyVlofqC/kwqsJzwrNaXhZA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="KwPMNH/Y";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="mai22/eh";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D24606B3ED;
-	Wed,  4 Nov 2026 18:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8914B606D837;
+	Wed,  4 Nov 2026 18:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KwPMNH/Y
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 814731F0093A;
-	Wed,  4 Nov 2026 18:21:39 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mai22/eh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A3C61F000C1;
+	Wed,  4 Nov 2026 18:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793816507;
-	bh=stOXZBmrncauGpvrA6nVjxn6Aw9LpSoLoCXa4t8uTaw=;
+	s=k20260515; t=1793816524;
+	bh=VT57VP7WgX6dODi86xucfYo8nlOoB8EWvy9sdmMIM1Q=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=KwPMNH/YCbX6dlaHaTW7ZOsOjwgWIEroBxCuqTN2qNqqHj59JFgn2gVwUii7MCLGE
-	 RtBiudIE436NT0pzrKGAo2KrB6HWXPAWRxQK3g116H3Z+mYD7xS+ZaUldg/kE4t6vc
-	 1cD2XtdLad9pyZV98SsUxHnkereruq4rKAOE140c1vmIDxIm6ZjhD9pHsmXNoT98gU
-	 MTWz10djK1EoSQI/lIadKCrgpouTWnGF7Lf9336MzzSwWjpeL0q1r/eZux+ev2POVd
-	 US4C+B93U4BDNf/EY3uiJ9eT2scI1ld+QibfqabVDAuqlYHG0AR9DlR/ZamnBg0zrO
-	 2M/vgNBCUtLAw==
+	b=mai22/ehnYQUJcRGvan94k0/+b6zIHCBcC1h7Izfql+PLjJpBcZeNbw/U/Ej644Yw
+	 giX6ua6GsiCnQFaFWt4TjPOQ8hEcHJWV53JArvxhLCzs/3ICQQ/dX3lSkkmka76Gxw
+	 dJeHGdo1bsqlhPD/mSPHo0ujvpsEJKmun5AWjRl85gdGWoEJQF/Fw5N33mPJYbPxrZ
+	 5/2Fky4g2+meb1USCZVxM6Qb/YC/rFTOoE0052GM1s9HY1GbAeX7j+Sa0fmFEYhhyQ
+	 ou8zs04Lo62I0T9t3r2d6mIHkGf/me1R48r5vQpWRhoitrnuW2HBjfay74Nceg98Ou
+	 ps8WEleSqxrKg==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Wed, 04 Nov 2026 18:20:26 +0000
-Subject: [PATCH v5 08/11] objtool: size the instruction hash to the text
+Date: Wed, 04 Nov 2026 18:20:28 +0000
+Subject: [PATCH v5 10/11] rust: make exports.o depend on the headers
+ generated for it
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -54,7 +55,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261104-build-speedup-v5-8-0f6018be8dae@kernel.org>
+Message-Id: <20261104-build-speedup-v5-10-0f6018be8dae@kernel.org>
 References: <20261104-build-speedup-v5-0-0f6018be8dae@kernel.org>
 In-Reply-To: <20261104-build-speedup-v5-0-0f6018be8dae@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>, 
@@ -78,180 +79,49 @@ To: Linus Torvalds <torvalds@linux-foundation.org>,
 Cc: ljs@kernel.org, linux-kbuild@vger.kernel.org, 
  linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
  linux-m68k@lists.linux-m68k.org, linux-modules@vger.kernel.org, 
- rust-for-linux@vger.kernel.org
+ rust-for-linux@vger.kernel.org, Nicolas Schier <n.schier@fritz.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5716; i=ljs@kernel.org;
- h=from:subject:message-id; bh=FNv/4y6VniJMaG9FbFGVBtm/1IeGhKvCkr2rNpDvLk8=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJel+fysaqEHs++HMrIsW9VAANzj8pJIQGNZ+c2T0yYH
- fHA88e+jlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAExkvg0jw8rvW59tdkuPXzZv
- Ae+jcLl2E6uSBC53roo0CaOrupOv7Gf4w38286j2XDWP/4d7coRTE2PXLQ3su1fb5skVwLuumte
- LFQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1318; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=x/2bqNrY4S1OgFbAxfQ/C9WsSucYeef8VeGkwgt+MGg=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJel+dtetva+Hx/ZHFROs+ly3vPxhdm/hNrXsVz+Yvk/
+ kqNnSvYO0pZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCRSClGhnk/LqWUOs46nLdK
+ Z8aJAxf2vQ99el1lQqjsZIlpUsdiXmoyMvxxlQ4sfTtxec8kg9cW2bpqR3kPbQ9j2CPK8b3YxXb
+ +Ew4A
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 
-The instruction hash is a fixed 2^20 buckets, which for an x86-64
-allmodconfig vmlinux.o of ~16 million instructions leaves find_insn()
-walking chains of four or more entries.
+rust/exports.c includes the exports_*_generated.h listing the symbols of
+the core, bindings, kernel and helpers objects, but this is not expressed
+in its Makefile.
 
-Size it by the amount of text to be decoded instead, at one bucket per
-OFFSET_STRIDE window, as sec_offset_hash() keys on those and anything
-finer would sit empty.
+This worked previously because the headers are always-y targets, and make
+prepare built all of the rust crates first, which is an implicit
+dependency.
 
-This gives 2^20 buckets (8 MiB) for a defconfig vmlinux.o and 2^22 (32 MiB)
-for allmodconfig, so it is not an egregious use of memory.
+Fix this as it is a dependency of the subsequent commit.
 
-The output of objtool before and after this change was confirmed to be
-byte-for-byte identical for x86_64 defconfig and allmodconfig.
-
-On a 128-thread machine, objtool on the gcc allmodconfig vmlinux.o goes
-from 9.0s to 6.8s. A defconfig vmlinux.o already had 2^20 buckets and is
-unchanged.
-
-objtool on vmlinux.o is on the serial tail of every build that links
-vmlinux, no-op builds are unchanged.
-
-Whole build, 128-thread Threadripper 9980X, best of N runs:
-
-                                         before   after     delta
-                                         -------------------------------
-  x86 allmodconfig, touch mm/vma.c, gcc    28.0s    25.7s     -2.4s (-8%)
-  x86 allmodconfig, touch mm/vma.c, clang  26.2s    24.1s     -2.0s (-8%)
-
+Reviewed-by: Nicolas Schier <n.schier@fritz.com>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- tools/objtool/check.c                   | 58 +++++++++++++++++++++++++++++++--
- tools/objtool/include/objtool/objtool.h |  3 +-
- tools/objtool/objtool.c                 |  1 -
- 3 files changed, 58 insertions(+), 4 deletions(-)
+ rust/Makefile | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 931c5c412f15..97250aa36100 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -38,12 +38,22 @@ struct disas_context *objtool_disas_ctx;
+diff --git a/rust/Makefile b/rust/Makefile
+index 0ac9ab28cc2b..cee016cd8d32 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -728,6 +728,11 @@ endef
+ $(obj)/helpers/helpers.o: $(src)/helpers/helpers.c $(recordmcount_source) FORCE
+ 	+$(call if_changed_rule,rust_cc_library)
  
- size_t sym_name_max_len;
- 
-+static struct hlist_head *insn_hash_head(struct objtool_file *file,
-+					 struct section *sec, unsigned long offset)
-+{
-+	/* Determine instruction hash based on section index and offset. */
-+	const u32 sec_hash = sec_offset_hash(sec, offset);
-+	const u32 hash = hash_min(sec_hash, file->insn_hash_bits);
++# The exported symbol lists are generated from the crates' objects.
++$(obj)/exports.o: $(obj)/exports_core_generated.h \
++    $(obj)/exports_bindings_generated.h $(obj)/exports_kernel_generated.h \
++    $(if $(CONFIG_RUST_INLINE_HELPERS),,$(obj)/exports_helpers_generated.h)
 +
-+	return &file->insn_hash[hash];
-+}
-+
- struct instruction *find_insn(struct objtool_file *file,
- 			      struct section *sec, unsigned long offset)
- {
- 	struct instruction *insn;
- 
--	hash_for_each_possible(file->insn_hash, insn, hash, sec_offset_hash(sec, offset)) {
-+	hlist_for_each_entry(insn, insn_hash_head(file, sec, offset), hash) {
- 		if (insn->sec == sec && insn->offset == offset)
- 			return insn;
- 	}
-@@ -404,6 +414,44 @@ static void *cfi_hash_alloc(unsigned long size)
- static unsigned long nr_insns;
- static unsigned long nr_insns_visited;
- 
-+/*
-+ * sec_offset_hash() keys on OFFSET_STRIDE windows, so the instructions of a
-+ * window share a chain and buckets beyond one per window would sit empty.
-+ */
-+#define INSN_HASH_BYTES_PER_BUCKET	OFFSET_STRIDE
-+#define INSN_HASH_MIN_BITS		10
-+
-+static unsigned long total_text_size(struct objtool_file *file)
-+{
-+	unsigned long size = 0;
-+	struct section *sec;
-+
-+	for_each_sec(file->elf, sec)
-+		if (is_text_sec(sec))
-+			size += sec_size(sec);
-+
-+	return size;
-+}
-+
-+static int alloc_insn_hash(struct objtool_file *file, unsigned long text_size)
-+{
-+	const unsigned long nr_buckets = text_size / INSN_HASH_BYTES_PER_BUCKET;
-+	const int bits = ilog2(nr_buckets);
-+
-+	file->insn_hash_bits = max(INSN_HASH_MIN_BITS, bits);
-+	file->insn_hash = calloc(1UL << file->insn_hash_bits,
-+				 sizeof(*file->insn_hash));
-+	if (!file->insn_hash) {
-+		ERROR_GLIBC("calloc");
-+		return -1;
-+	}
-+
-+	if (opts.stats)
-+		printf("insn_hash_bits: %d\n", file->insn_hash_bits);
-+
-+	return 0;
-+}
-+
- /*
-  * Call the arch-specific instruction decoder for all the instructions and add
-  * them to the global instruction list.
-@@ -415,6 +463,9 @@ static int decode_instructions(struct objtool_file *file)
- 	unsigned long offset;
- 	struct instruction *insn;
- 
-+	if (alloc_insn_hash(file, total_text_size(file)))
-+		return -1;
-+
- 	for_each_sec(file->elf, sec) {
- 		struct instruction *insns = NULL;
- 		u8 prev_len = 0;
-@@ -475,7 +526,7 @@ static int decode_instructions(struct objtool_file *file)
- 			if (insn->type == INSN_BUG)
- 				insn->dead_end = true;
- 
--			hash_add(file->insn_hash, &insn->hash, sec_offset_hash(sec, insn->offset));
-+			hlist_add_head(&insn->hash, insn_hash_head(file, sec, insn->offset));
- 			nr_insns++;
- 		}
- 
-@@ -4803,6 +4854,9 @@ void free_insns(struct objtool_file *file)
- 
- 	for (chunk = chunks; chunk; chunk = chunk->next)
- 		free(chunk->addr);
-+
-+	free(file->insn_hash);
-+	file->insn_hash = NULL;
- }
- 
- const char *objtool_disas_insn(struct instruction *insn)
-diff --git a/tools/objtool/include/objtool/objtool.h b/tools/objtool/include/objtool/objtool.h
-index 6dc12a59ad00..79fe82b7397e 100644
---- a/tools/objtool/include/objtool/objtool.h
-+++ b/tools/objtool/include/objtool/objtool.h
-@@ -21,7 +21,8 @@ struct pv_state {
- 
- struct objtool_file {
- 	struct elf *elf;
--	DECLARE_HASHTABLE(insn_hash, 20);
-+	struct hlist_head *insn_hash;
-+	int insn_hash_bits;
- 	struct list_head retpoline_call_list;
- 	struct list_head return_thunk_list;
- 	struct list_head static_call_list;
-diff --git a/tools/objtool/objtool.c b/tools/objtool/objtool.c
-index a4e139dee7e9..71e048f8582a 100644
---- a/tools/objtool/objtool.c
-+++ b/tools/objtool/objtool.c
-@@ -29,7 +29,6 @@ struct objtool_file *objtool_open_read(const char *filename)
- 	if (!file.elf)
- 		return NULL;
- 
--	hash_init(file.insn_hash);
- 	INIT_LIST_HEAD(&file.retpoline_call_list);
- 	INIT_LIST_HEAD(&file.return_thunk_list);
- 	INIT_LIST_HEAD(&file.static_call_list);
+ # Disable symbol versioning for exports.o to avoid conflicts with the actual
+ # symbol versions generated from Rust objects.
+ $(obj)/exports.o: private skip_gendwarfksyms = 1
 
 -- 
 2.56.0
