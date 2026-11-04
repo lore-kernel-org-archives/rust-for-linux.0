@@ -1,45 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793813352;
-	b=fRVh0sH3QcYM2N3H1PQ6J7p81rIimK3nyzoUp716L1mzJMTEXK9hzgh7ZTlkjQam50Id
-	 vcPhcH1WYKdv1D6GTU/L35wNQl7NJr5YeKms/R3tiJ/RPhCgnBO6Jr+8IcKSzhbC6BjaK
-	 TzeTUm1HHq0t55VRCFeAJvRcMsxF/o9K088NyQdniOZ0Q+rieIKfX0STA2kNhiA8txxOm
-	 Q53AZvUSldd6KbT4fOTirOjJjY/IhHzqREyaC4HElgDzrWyJtsH0jfDwC7xHVT/7x99MT
-	 jQ8qWxYvuFWDeg7HlhhLf2pfVLdhCovO2Ki4AX00Y5BheVTt7brNw1LGZZ9cDb9DimA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793813352;
-	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:Cc:To:From:Subject:References:
-	 In-Reply-To;
-	bh=BBw8pv978i++9C5yzqWVC2xo/MJFHYabt1uQ3NtXX7M=;
-	b=v9fsyK0Uh/UGC6ZBqCUK4uoj0dqFzI2lYltl2vJ75xDR2bAG1njdpPpXNFUV0y1LjnEM
-	 1baIhNm7AuAFFPfXxJQngTU20DhSEfNrZ3YZVS8PmrYv6k8s+u1J4yEoF0QWLFSfA5FuU
-	 ku7Peox/OLLh4eHlrIXXe8kd90CHMhlJ5vaNHaN82axvyXowbkBoZv96DL2Sh6pqpwclw
-	 1NGqHzRihalgVgEgQ6H5dbRk+Edp5NaRVL2XNWYpMuwmzSgLdOBahGR6GPlem4GFWydh1
-	 KtrJWVozEDmQkSm1PPOed3A1j49vxFs1py61WbSES2/WRsdd9rOUc5oZd6cjmG05ZMQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HyEhxh0i;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.50
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793813462;
+	b=hv5wOk3h2x94ZA0JQh1kJ+bCI3M9BY/M7kCr/vbxGoZIBD0v7TRS7iGnKIiK+UshVpYE
+	 OMfkQf4ueGTY6nlTFj2s2j3pqzqAk2DFFBGmPo2staHMr/ajGXVkIIaSqiwALUk5qfYem
+	 pXA+63wY+eHGLrxqvgfA1Zxp/dRI54tGeKNQNDEjSIe85Zgi/jYSl5qw42pU1LdMkei+O
+	 mNqNwp27IO7d+128dUNCTkmdZ/y9G+2OqwwA8B6g9FZm+w4cTE+be8O14vOgI/Y/6B7u2
+	 FSKL4PlWRU7UFIeAx7fjK1IwVKPBjdxKR+zX0SfTFVB1cDb3V1GNkwMMivF6v51RSaA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793813462;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=d0JWFx/AOlKmAc7WmBRut5k7GGfduDlpwNaPIVIYohw=;
+	b=XMmZqFQJAsKa5aB+IFUeVq0/iB9nW5dTMuaMuy3npxuhZJVvUJgVWmCtLnHXhRg7BKod
+	 JLQ94dS1rWSUD7+OdiS2i3zshdmsKNkU5rPKj/ikaTfFRK5bEMgBo9ptt4/wLwdWKeuM+
+	 WqE6OOG6cqIQbiS6cnNkSYzpD0Uzxu3UrTVMeRIScINGsbYKoMzI94tdFDLZvHiKVxUCy
+	 Nlfq3HDGxS71bPhV3VgU2GLqPtjB6/WuEdMujrQt0SWe5s+Tc3vWeiTgx3nN0CCc1ccJG
+	 h9xW1USnKgaaEvqp1rb5e+QAtYuiBtRnab32riK1drYnZqOUDtNZZ62fPLzBxyGQgmQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nGrvBJUg;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.50
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E4D606A332;
-	Wed,  4 Nov 2026 17:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32CD6606ECEC
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 17:31:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 32CD6606ECEC
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HyEhxh0i
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 121B81F000C1;
-	Wed,  4 Nov 2026 17:29:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793813351;
-	bh=BBw8pv978i++9C5yzqWVC2xo/MJFHYabt1uQ3NtXX7M=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To;
-	b=HyEhxh0iBGoIeyP/Fo7EH6JIMdoYK3imbV1V8/+yf5yonNlx5K99avg/gljSk2jWU
-	 bE1Kte9Xd/TDA2BEPNmyynaus9m2BgNVBtcyRkfpYEUHPsalnxwE7OkJLyWBPA0RgD
-	 5MAlwTBDgpIDcM8DvNaFpIYqsp1ZiILdZKYaLNYq9t7ztGOFZifG3RSeeZNd/bxxOJ
-	 NLNw0AubbzKxxUmHhZoyw4II6iUcK2+Wch4IjsicvLVe9cijkEV8UcCw7Ov0NhfbDi
-	 ZtRJefVRfhe2b9Fh4YJ+r0HT12ZFolbqs+WfSfvoIIm0R1xlavZLXXjezqzFD7k8ad
-	 3bwWgZGroJZhw==
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nGrvBJUg
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3ac6008c914so123165a91.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 04 Nov 2026 09:31:02 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793813462; cv=none;
+        d=google.com; s=arc-20260327;
+        b=T1WR+8viXWrWdhM21rKdhWFkqSZqmm7hM54CLaOi2+AQtJnUWpe7BASWjTDOcez2Wf
+         GfsUEsnnZTdRMfHBbrCK84cljdSEv4AVqxxECcD6yKlQaKVUMEhvsOlTYQy/wclQ3gNB
+         I/xfQTouziRD+v3G0JAYE7qzpj1wtEU13jaPQ8ttralG75V5+3Uc5UI9y5U7Vw8eecFH
+         mZ7UHcYfOJnmSIzMHt9PY51hVAiuNluLtSRifrTX2hwT1tkM7/+PSvn31vH8yaSK0l8C
+         b8LRZ4HvP8rQi7KeUuoU16Tw30dSTWf/bjDpdMC0mHlr2Nbc/boJN1cXSBhYxnRqFALt
+         us7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=d0JWFx/AOlKmAc7WmBRut5k7GGfduDlpwNaPIVIYohw=;
+        fh=aMyAXKwftkkkXTip9c8Ar+Da+3m5BY0Orzi5/rs2JmU=;
+        b=ZdmIE3PAFS3EEyR0O0sal5resk5UA6dZIfMuU+AvG8yMXIGHcag70AnGNA48jkFNRz
+         n5/fsmsIbMWycorpuz9NyKf+++6bG88x2idk0/K1WUQbhJ5wt3Fmh77NqtJpVXMT5SaI
+         RqcVVXf98pEOgKsoc04AI6fjNSQZqV8mEAgBZ10L+7lFb0Z0II/3dcmB7S7lfzrY4itD
+         DGWZ4j2/sGUzh0ClDpHlHdbmGcLzmzHpQi+dvLiVstXKrM/I6DOTIAlyKkqNItl+j5ww
+         vETlC3wvv0ilYks6aopquXcIyPr6EJ5ZwLUwzffAlNi7M7yfrfYUKnsWxvTduHbM/pyS
+         Ftcg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793813462; x=1794418262; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=d0JWFx/AOlKmAc7WmBRut5k7GGfduDlpwNaPIVIYohw=;
+        b=nGrvBJUgq4ctzEJjfgjp2y7hQxCC7F4VRZXURKrRhITluXLFxylPhr30FeFLtCt2Nt
+         RoKtwoveAeXodiBp7KcHosS/DihS9X9jHOl3bNSDGEHvK674FYS0bHDUaTFlXrb/dMmo
+         V8LA+3pzGduY8YYF5BxKwOwxU4qlrQE1yPsmL+veaZBJqnsi2AW/yxot4aAtpa84fBls
+         JG/dNauZabJZLzmq6Yw8RDu+bg80tGDjpGoJ3Uxt/R46C37ShSUuZaWIw0sgGvkuS0h+
+         mBx8Bodj0CKHcyvb0aCmrhNp+E8peSRwlULtNYYdNaxm9nEIA5fhgrMCnpiRX9rC4GrT
+         FWTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793813462; x=1794418262;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=d0JWFx/AOlKmAc7WmBRut5k7GGfduDlpwNaPIVIYohw=;
+        b=2oc07+Vc4hUU//dnhzGbJFd6Fk5qVoScsFNHMJU0AgBmbyB9yZlxyZ/KLqO7GAxQPH
+         Djq3UpKjjMmW5WOE5W05fxxqGDuMM+f49KBGv4IVBugARlCVkW8bxcF02Ad9uAsga8cQ
+         AILCQcwwz1DFTmoSBc07l4G5+f9CMuo0+ZvB8pOkF+mjPchZyJ+7s4gO11rU4e+u0MN5
+         sL0KJbK1K89Qs8pWNbWv7N0Q0weV5v4Va3gwUP+EbxtgqZ1GL6xS5o9PqoDHR/VCZdKv
+         +f+tBVzBuQ78yvhT9pePNe3xYkpvOjVjbtsPTMm4dfhyOX1Fhr2MdViqY23natEa+edn
+         02uw==
+X-Forwarded-Encrypted: i=1; AKwUvBxvfvf7Fgaesy7K042UzWfqZpsF/vomKSzx2VbDwZo3B/SQf601+WwOGeJ9nZe+RcfIGAQOo9Td4lF/J0DTYQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8vq3tD/rNL+qk9e7y7sekhqsmwsmIewCaR7dZldLUU5Qu9SSub
+	sGXHHmzS3tnNal7+Ukgcb2YEpSYG+mXHAUbkXjtWrQ0LCSOUBWP49eZyQau+BqW5gKAoz4DSjY1
+	X1i4OSMEkJnHwFfy1VkkumR8RL7XO/14=
+X-Gm-Gg: AYBFou0m7IvAwom2cJikyJEXqDonqeRhlYq9sbU4KudR73q0Y5+jwrOx1Nidgypt2R8
+	FBAh0Ofy8X+jIohfQv6slyJ2aaN/Tjyo0F+7HqOnmtKc6fnsNJ21mABiH8DzidJsEDrwCHV4113
+	AnrEsCDx0kd7H3iLUCvaYlmr96X8XytoOV/FUCt+O9cqUTOMoLfO6E51Kc7p0ksPQ+rgIEDpqCn
+	rR+fhJvsyjZhoezt5YZEOSic2RbH+8xEheER+ELdEZbvRd+5vosyo9bI9fDm4HY6nDGBPifVDZs
+	ZgDF6I/Qa8/SwRc69YNjeCvazhYWcSkmWghMLOdYcnpFQawe5RbbkCAeRiKErheA1jOa0e1x0R0
+	QAG7LbDHTzKBrKnw/QhIECIe1e9nzEHP6qhHtELxRitdCZVrdkp2Qmy+vI+gUPqrOlnn3uS5URN
+	NM91tS9mIpgXByaIVkUONnvOArn2MfS79sYXhvdpjQMS5wid7uJ4q6IQsz+VitDqehrl/u6y1Lb
+	BevyJoRXGSSYm6h7HTA2GGEI5H2Wm/sJjA6
+X-Received: by 2002:a17:90b:2f4f:b0:3a0:c162:51af with SMTP id
+ 98e67ed59e1d1-3ae89291df0mr23588219a91.0.1793813461550; Wed, 04 Nov 2026
+ 09:31:01 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -48,126 +105,35 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20261009224626.1331914-1-tomo@flapping.org> <CANiq72nxjrWpBjwzgdWncKECKwzj6zfjS3XC=da62xr8wiSxEQ@mail.gmail.com>
+ <DMM6OMQRS6UY.17O4X89AIPCS7@garyguo.net>
+In-Reply-To: <DMM6OMQRS6UY.17O4X89AIPCS7@garyguo.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 4 Nov 2026 18:30:47 +0100
+X-Gm-Features: AclHuK-e_NAcxmqGWxjhKKJ5IXJuAhCiIkn6UTy3XlIBHYVhontjPaKdgTduDxg
+Message-ID: <CANiq72=pScnN38ZanswzJsMgPgNf7u+K9RMdh1vZLvq9mWFwsA@mail.gmail.com>
+Subject: Re: [PATCH v4] rust: compiler_builtins: Fix silent trap in prohibited intrinsics
+To: Gary Guo <gary@garyguo.net>
+Cc: FUJITA Tomonori <tomo@flapping.org>, ojeda@kernel.org, a.hindborg@kernel.org, 
+	acourbot@nvidia.com, aliceryhl@google.com, bjorn3_gh@protonmail.com, 
+	boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com, 
+	lossin@kernel.org, tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
+	rust-for-linux@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 04 Nov 2026 18:29:02 +0100
-Message-Id: <DMMLRD778LTH.89GHGWLB950B@kernel.org>
-Cc: <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <linux-pci@vger.kernel.org>, <alex@shazbot.org>, <jgg@nvidia.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <markus.probst@posteo.de>,
- <jhubbard@nvidia.com>, <apopple@nvidia.com>, <joelagnelf@nvidia.com>,
- <ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
- <kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
- <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
- <boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
- <work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
- <kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
- <peter@colberg.org>
-To: "Simon Song" <xinmengs@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v5 5/9] rust: pci: drop driver data before remove
- returns
-References: <20261030171230.196717-1-xinmengs@nvidia.com>
- <20261030171230.196717-6-xinmengs@nvidia.com>
-In-Reply-To: <20261030171230.196717-6-xinmengs@nvidia.com>
 
-On Fri Oct 30, 2026 at 6:12 PM CET, Simon Song wrote:
-> From: Zhi Wang <zhiw@nvidia.com>
+On Wed, Nov 4, 2026 at 6:40=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
 >
-> Drop PCI private data before the remove callback returns, so its
-> destructors run within PCI core's removal context.
+> It took me a while to understand what "it" means here, I assume you mean
 >
-> Call unbind while private data remains installed, then take and release
-> the data. Taking it clears drvdata, so post_unbind does not release it
-> again. All borrows must end before the data is removed.
-
-This should explain the reason this is needed:
-
-VF drivers will store a vfio::pci::Registration, which calls
-vfio_pci_core_register_device() when created and
-vfio_pci_core_unregister_device() when destroyed.
-
-Now, vfio_pci_core_unregister_device() expects to be called from PCI's bus
-remove() callback and hence can't be deferred beyond remove() (which also m=
-akes
-it incompatible with devres, i.e a devm_vfio_pci_core_register_device() hel=
-per
-wouldn't work either).
-
-> Suggested-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
-> Signed-off-by: Simon Song <xinmengs@nvidia.com>
-> ---
->  rust/kernel/device.rs | 4 ++--
->  rust/kernel/pci.rs    | 6 ++++++
->  2 files changed, 8 insertions(+), 2 deletions(-)
+>     $(obj)/compiler_builtins.o: private rustc_objcopy =3D -w -W '__*'
 >
-> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> index 2291d85b684..1f6bb58396e 100644
-> --- a/rust/kernel/device.rs
-> +++ b/rust/kernel/device.rs
-> @@ -243,8 +243,8 @@ impl<Ctx: InternalBoundContext> Device<Ctx> {
->      ///
->      /// # Safety
->      ///
-> -    /// - Must only be called after a preceding call to [`Device::set_dr=
-vdata`] and before the
-> -    ///   device is fully unbound.
-> +    /// - The data stored by [`Device::set_drvdata`] must still be insta=
-lled and remain valid
-> +    ///   for the returned borrow.
+> I don't think that's needed anymore. I probably just didn't think of remo=
+ving
+> that line when making the change.
 
-This is what the original comment should have expressed better regardless o=
-f
-this change. Can you please make this a separate commit?
+Yeah, I was referring to that one -- sorry, I could have been clearer.
 
->      /// - The type `T` must match the type of the `ForeignOwnable` previ=
-ously stored by
->      ///   [`Device::set_drvdata`].
->      pub unsafe fn drvdata_borrow<T>(&self) -> Pin<&T> {
-> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-> index 9e1d02588af..8092f56ee2b 100644
-> --- a/rust/kernel/pci.rs
-> +++ b/rust/kernel/pci.rs
-> @@ -150,6 +150,12 @@ extern "C" fn remove_callback(pdev: *mut bindings::p=
-ci_dev) {
->          let data =3D unsafe { pdev.as_ref().drvdata_borrow::<T::Data<'_>=
->() };
-> =20
->          T::unbind(pdev, data);
-> +
-> +        // SAFETY: The driver's unbind callback has returned, and no cal=
-lbacks retain a borrow.
-> +        let data =3D unsafe { pdev.as_ref().drvdata_obtain::<T::Data<'_>=
->() };
-> +
-> +        // Drop private data before returning to PCI core, while its rem=
-oval context is valid.
-
-Please add a brief note similar to the above rationale, as I consider this =
-a
-workaround (or special case) for VFIO-PCI.
-
-In general, objects stored in the driver's bus device private data should *=
-not*
-make assumptions about implementation details of the underlying bus and
-therefore require to be dropped from the underlying bus's remove() callback=
-.
-
-Any point between after the driver's remove() callback and before
-devres_release_all() in device_unbind_cleanup() is perfectly sufficient.
-
-> +        drop(data);
->      }
->  }
-> =20
-> --=20
-> 2.43.7
-
+Cheers,
+Miguel
