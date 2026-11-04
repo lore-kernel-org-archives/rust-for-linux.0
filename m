@@ -1,128 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.152
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793776715;
-	b=UFg+jUPYBdgKT4uTJ8FxO1M6DXpRzq/whSBYrBlQEtBsWDp17dC53tGkDazFgSQb5Hnr
-	 zuUUMCXFQ4ov1VRcmpI+CVIlL8PwwcR+CDzj4kdJiCzcjono+bbW2iADhvuB6zwQkdcJP
-	 GgYTQufO3g1GG5fbukQp053fBG7xDpkH0yYlx2niPGG7KBhDb+lXeZ34sQquUuFkKbdyh
-	 DnRZPdna4h1qYk2sEAuGfJxm7jWGil5mQ+p+Z9XdvHVfkBqJzLEHGbfTlo34xTgmlynbd
-	 uRkHy/UVgrgFqG4HfZQOE51pJzGjqvn86m7sdFPd1wmqBOfarGyHg6fQSgOCqiDTnOw==
+	t=1793778772;
+	b=eYR45INLvV1KZCAtAuNqSkXLkizynrnMpXdsd6Nzyg6h7NhmCntkr5YRpAbDmrfrkY+g
+	 TMgt522ucGcUBAIljCPUXlUU2TF2d1eVwk930UqNGAppJuedvaVpeVxVaMopFEoQ9uUPJ
+	 Y53DWZSwCLW7jv1ckAdC22e9r9f3RqH9kLHR1XDaW19LXncktod90KmpC1ikq6mHA5e2/
+	 ZZ2/FqoE7uXi7zCokI0uNHLIgbdli/FbRtLsCrIheR7WJvVorNjRvI5/WO69Ihv9lHStB
+	 bbIAsODgB/3pB9JIUweHMXbyvqjjRpFfdwCRWpX5DPiXIp7XGfDnNrNS1Q+ZlQxkZtg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793776715;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding;
-	bh=38+0M1hHMr995Gt0aoapcSXnYcouam3Qlvab25dJNSA=;
-	b=ldl90jW9iw5+smU0BpRnkJC+Xp21sCv47b16JCLqSAEFWcc4ydxjyqcjG+p/4d8u0tUs
-	 hmR7k3gK/15d+de/NswIKCtrnbHMr1G0QpB61EfSlWEmyxKdVvpdzwSvcBgxR0Om9ERQz
-	 Cc5CwJ/6LBgq8YS251BmziFJTkX3IQMBpl4VZlgla2YkTO/bi909LhIOlkGhav6RzReV8
-	 nOI3PzOQzdqaCgT3riLXfXaJ1kVr3ntH3ZVHEj8Uhn+Rln1ATNyOmE85Cu0miEPqfbkVV
-	 9Dm1MWRUz6d8hwWIbmpOojfKarHoelTmyXrcAUAheJ5dS8eeIZKPa6qRdvq59POLQaw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793778772;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
+	bh=RkebxhepJ78TZB3fnHTnhlAKTz7Sll4zIjTAt/wCAtw=;
+	b=3db4nhKhgFwJwupmMmUtffYFMzbRAEiQvYuOmsvu5bk0Z6ElJHyEnjkL/mcIUfC9DkrP
+	 CDY5kPASOfSl9cIIFXmUsDlCCJEC5ycdTyvfiZjxa2GwfAmT0v0titzvlQyLNn7GKCz6T
+	 tSUw9vEKwY5O0nwRhOq8KjSo7Qm9wDaCk2PMA/xVPg4kddpzoxr5FJPYjWStoQwRZC3Nk
+	 MnkhO/3+QRFAUQMEtRRV1OJCoHCbocty/g0gLbO7LAjNBN38XSlXeZSoj9Y1UHZ0wWuSU
+	 6OiKnbfSpIjhTTBllNCDk4a64JYpcX/jY3UOIY6ifdZ1I8eB1PrZEbUDCz6oci/AI6A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=flapping.org;
-	spf=pass smtp.mailfrom=flapping.org;
-	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=miMNnGFO;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=3k2rHvRb;
-	arc=none smtp.remote-ip=103.168.172.152
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="b/YzGea5";
+	arc=none smtp.remote-ip=209.85.221.43
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48712606A31B
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 07:18:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48712606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190B5606A328
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 07:52:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 190B5606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=miMNnGFO;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=3k2rHvRb
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 78AA01400138
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 02:18:34 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Wed, 04 Nov 2026 02:18:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1793776714;
-	 x=1793863114; bh=38+0M1hHMr995Gt0aoapcSXnYcouam3Qlvab25dJNSA=; b=
-	miMNnGFOHvPO0A+1NzjcopqUHlqXxhPL4f6NV7rm94PVwQ2/oIy+7mKDOULD0dbG
-	Wt/gByWxXD8RVOe6Twdy0035ubi91TOhpCj+QrGa60Y0cCMPi62xFjIaRBSmxx2X
-	hIgP1nPYf/sfKD3NjPtq01rSLx2yyXItkdR6B/j/SXW7KIqrGU3X+NmYulYrH1LI
-	MqoD17Vn171rHLwVOlBsAs9r3AVXbRrEFaMCUhBnmVgCPz27Ec3fpYnnblr1FffZ
-	m0VYj3EarIa8ELAW9C/LUtm9aktEdaz0mZv3nDrAirxjLkilpIMrPViOhOikQovW
-	vLy55t+nKPDOXG9b5J0Q3g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793776714; x=
-	1793863114; bh=38+0M1hHMr995Gt0aoapcSXnYcouam3Qlvab25dJNSA=; b=3
-	k2rHvRbF+/fD+fnwsQ3m71vPnDBNwfcUhYPvslOUDUH1viB27zry1anohx8RUiS6
-	W07IC0BP+goVmdymzBOfWZ3R84+znppBlFW32RsD5lxQQzAhwIU8I6l0KB5SRS5K
-	cr/hXOj2kUZ9NH80c1EL6+BO9sgT00TFAmeo++xfRNsallDOODNZA/uJQXGKM+LN
-	US8eMQmdr49H45hNsZkitQCYiJFahHP5nIPzL0qFZ20g2KH90vL+8Nc3X29mpTjV
-	mmf94nXuLKVoNJAUEOVpyWfW5/2IqPzmYdreqZqkuTKByn2LaMDVJk3E8+hGnqxT
-	nskSo4cks7caAiGytdlfg==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793776714; d=flapping.org;
-	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
-	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm1:rsa-sha256:IiFtMk1nSYTGXZlBa+TapHoIH5ezSNaUhAypgD7ZNWq8IQa
-	npzx82rbBSHLldr8YkAZfxpVxenhx3ymoG7YA15nCI28nkJ7fpShzzV23uL5j/iX
-	bSecSnDRF51ZSwk0NF3679EkVb8gIHpFAydqVC6ahCMApZY732aPXabqCpI3hYeA
-	JrexwM8xd+BO0lY5hTbMF8E7PT6VjN8gwqbIkkyntFK54FzJy0MPbATR4pfHYap3
-	Fsjgb43zKYqPp/iQI8KdNyng0SlFzE5Ol7mkgU2CHbVBaARF/13qnsPs3henr7qX
-	UkwBDuisNcZQum28OnU6zqDROpxD7qWfIx5M6hg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:vuWZ7Eh8JZ5yfWHXaPws4U99VXZGLRB49uTcygt83mQ=:QWPOBnQY3n2dTrBIMuf/rEqMV/jwuFTbbkIKcsZE/bw=;
-X-ME-Sender: <xms:Stzqan_5EsdkXMmqzYXTivv_FS_cDSWKoMYjyo4yFYuZB5klMHCfVw>
-    <xme:StzqaiOT1tFI0vNE1ae2xJsZf9YoVHcsf4WD7ExmoQJ9imMS3Pw90SWw0VQVcubmm
-    vmadb9o6K9YQuI3VqL8B8LznrtfaOLCP2TgJlBFiRUyfw0iySw4VHc>
-X-ME-Received: <xmr:Stzqar0zzpSLmDZ3txUp_Jt8GORD-pOlIGBuQhfBvGcg5U1kE8e3b3ENGoak1pRuuZooFJDZas5Chv1hFlhlmhjy>
-X-ME-Proxy-Cause: dmFkZTGcO86lJ7UQYlZM8KNdBHjtzrJ/vw3waeGDbtc17T/IbW9n9jCa7w4rVhbadRYti1
-    71gqZKf8auUcKWmg+Y9Jw2PWhspV5HlW5QFWD7Tz0eywXRwBQoFq0+F+qLf10zaRq+UcnR
-    YCqqQyAsJOPOCQ2RJntkho+Erqvv5bRJZZKGZeKpoz9KZsPVQyPfCEpifTnClxHgVZIK29
-    vEZ9fbRXVYEg/1aW5gHZolvvIyF0bbCH9dBghRPXzDBeIgHHjGMW65VAS8y51I7iaszBxF
-    mo71z2Gmv/HuINjnFXrwWnLeDQ99igGHRR6+2SkSpfqXCXLQiKTWsc4i3EQAnGIK1icWLc
-    wH2/WP29hhq86yX1yfLOWNPG7JPLjXa+O1mj/oBwIuceKHywzb77QNkRLLMuCUBP1KQjOe
-    zL1OKxa/19qD425ONc023AM8022fZb8Mx+cPG7FNhnz7MP0BMQOqBSpM1HUmOhWVRfpU1j
-    p1+PeUZj3Jl/WdL/vZNULFzNIW2k4zw+Pi9CrrDVGZco9yj2A9sYOj87Cyau8bl5ciXKE7
-    DqUt4UKmWpDNJ6CO73NhFQgVvZ9YHmhdGP607wvLcHGpvJil38cxT8Y1aw0QCJ43p5nljH
-    223KQk7pPf8F3mSYc3UY5PHQdC2rHRzKqd1emJhf+X4QNUlv1oH+W1sju8mQ
-X-ME-Proxy: <xmx:Stzqajch6gdxu0NnFEhpGD-Ldr1XLEybizMHB6WgpA4kJHFdp8M0mw>
-    <xmx:StzqakbMOtnIHUfSb_ep4eaJopyl5sVeCvOB9ije68Rzv6PibcdjlQ>
-    <xmx:StzqagVcUJKY0qETDFt8mL61t1G0nbCXd_r2ZDe7cUmSkdimbeeoaA>
-    <xmx:StzqavSxLIhCCbN0WrsOYwWZJ8DUtHwLW78p1yD4QaniLSEYf3qaRA>
-    <xmx:Stzqal_IU-DMj7L0enCmgsguvMKa2dVDUkAKfUp9yOCug31v38_vhg8b>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 4 Nov 2026 02:18:30 -0500 (EST)
-Date: Wed, 04 Nov 2026 16:18:27 +0900 (JST)
-Message-Id: <20261104.161827.1314980875007049737.tomo@flapping.org>
-To: gary@garyguo.net
-Cc: tomo@flapping.org, miguel.ojeda.sandonis@gmail.com, ojeda@kernel.org,
- a.hindborg@kernel.org, acourbot@nvidia.com, aliceryhl@google.com,
- bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
- daniel.almeida@collabora.com, lossin@kernel.org, tamird@kernel.org,
- tmgross@umich.edu, work@onurozkan.dev, rust-for-linux@vger.kernel.org,
- fujita.tomonori@gmail.com
-Subject: Re: [PATCH v4] rust: compiler_builtins: Fix silent trap in
- prohibited intrinsics
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <DMM6QD2BUR9V.37KO0N2MXG64L@garyguo.net>
-References: <20261009224626.1331914-1-tomo@flapping.org>
-	<CANiq72nxjrWpBjwzgdWncKECKwzj6zfjS3XC=da62xr8wiSxEQ@mail.gmail.com>
-	<20261104.075702.612319673416199209.tomo@flapping.org>
-	<DMM6QD2BUR9V.37KO0N2MXG64L@garyguo.net>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=b/YzGea5
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-48df4f540ebso169584f8f.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 23:52:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793778770; x=1794383570; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=RkebxhepJ78TZB3fnHTnhlAKTz7Sll4zIjTAt/wCAtw=;
+        b=b/YzGea5le2NLiLV9IA4m5eyzDb06iVw5LaO56+9lpfwmtHxUE9VaN2rvT1nZ7oBOT
+         3IKmI9pboXsoyQz+huvqZCKrY7Es403vo6U+Rj5+Al5/QJQIlq1am6P40GciachO7cJ5
+         QZK3khQmpJPEf3om+GQdexR3aIRby/C2V1ZhvBgS5Fvflo38l8Adb8hMAsDhtaVpxJ3O
+         NCRZ7KBNnX3SH3rX+Ii5eQVIAeiUAAGH9Nidq4DYUreQ0c1Q30puugtCkp77B16E3UBV
+         TvyNg6IPibiv12Hrwa9DZkHLErg8c0NT/XThUT2E47dH3G9/whqIHAu1YPCmdaEZSASD
+         RQYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793778770; x=1794383570;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=RkebxhepJ78TZB3fnHTnhlAKTz7Sll4zIjTAt/wCAtw=;
+        b=OBaUKxinMQ6TxlWFW/HGbze0jKMWl/tN3Lr8YffodIo2NSsPSn4xl8JSGG1jiLLXpl
+         m181LEEx9cKOI8uWFurJ+aUcn3hFFl+N3XGmtNBbxFoj1rYEhXqQ/o37EudQ5MF+7AHk
+         Ul0gLjqTpjJPSvf0z7TCXh02yybyCWV6Fh7AGgzIcTyNng6BoO/14kHAJZ3+q1u4Z8cM
+         hk0GHatwi8O/0c03BZQZUW+g4wTWFZXPi91cGWtMMdMwN/lsGRTDw6o+lrkgpA/ATu0F
+         FzsL4qJjO3YVglj4KJQj8mJXc0DONsCMrHeEAcnsvSVzlRr4k49T8rDR+Cfj+B20TBHH
+         dhgg==
+X-Forwarded-Encrypted: i=1; AKwUvBy4eo6V9u+5Flryrwl/UeG5jO3d4oFrmNGbkVZGlgs1RogTU3SSnXTmid4S6KByuCQhJuN7a4J48tgs8lElNw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/hgVKajkNen341kgrXXHH/++2M46EJh9zZ9r6wV6JPajxb3CV5
+	hoeczpRm9lci0GqyWvvharHsh4sdxeBy9kCiuROnLXM3BWlOqQwC2tA0
+X-Gm-Gg: AYBFou0pAnIORxhVRXa9PbrLD3F+//b1lVlJmfUThgvl3WXFEIIVz+0Pl577fQ5KlVg
+	Wrc3ZLhbmqOeambrvbGGkd8zy+6cVOaL+Fap+ca1jvJogjJ49qD75qD4kf4/0B4uPK385l1yHYU
+	4a/kBbdqfDKkmJCvQbb+Ur8DG4ye5PxMp+5WLEivlnBHkUQn2Q+4rjkT8ARf30SR0bC+PXKjjQk
+	DsalNXHsOgI4RHDKLySAtLdesBNnrXgiQ2EkCsBPuL3wZlBt3QYlD+ifMfxGal/13M0WrSCib/W
+	34LsVNZyzSEKDQ/xx9sRMmclXzOIbIKNAm+TFSwSFx6/O71DlOxCuhV9/1MHgFzFMUJrHRl9V9l
+	N9zT8TifI/Ax78iGR430eJJdQQwDpWbp6Wp64uDvQL/87oAQAxgDwwh/M6Y5OP1ZUYEX3Od6TjO
+	m/Y8lAglrSobajfWBiBm/aXGTHyYocJQ67hloVfWq6xAybv8UQE26fVV3U7pfWmFUJLwB7GM/Za
+	6UGEG8k4do+NHHs9Av7lRiTD/Rf6V57CGfkEeEh7Z7Sbvuob5kxO6FgrkDDLkENxBmY/lul472E
+	4p1cEDYzt8QnXxFld7QG/1p/GCbrU/rmpaRZ9Aujccu5o8gjDhBEmIZV5LhgLX0ANmG2umGSliC
+	bJ7fFd0EH1QhbVJY4tQt82K4wjC0LsUG1J0nWzVueyyGIZLJyiCM=
+X-Received: by 2002:a05:6000:40dc:b0:48d:fbf4:895e with SMTP id ffacd0b85a97d-48e6e30721fmr34220157f8f.11.1793778770275;
+        Tue, 03 Nov 2026 23:52:50 -0800 (PST)
+Received: from localhost.localdomain (80-108-121-211.cable.dynamic.surfer.at. [80.108.121.211])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48feda207d8sm2200785f8f.52.2026.11.03.23.52.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 23:52:49 -0800 (PST)
+From: Christian Gmeiner <christian.gmeiner@gmail.com>
+Subject: [PATCH v2 0/3] drm/panthor: Report fault information to userspace
+Date: Wed, 04 Nov 2026 08:52:38 +0100
+Message-Id: <20261104-panthor-fault-info-v2-v2-0-673b31f3840c@igalia.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -131,39 +91,76 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MSwqAMAwA0atI1gb6EUWvIi6KJhqQVlotgnh3i
+ 8u3mHkgURRKMFQPRMqSJPgCU1cwb86vhLIUg1Gm1Uo3eDh/biEiu2s/UTwHzAatVa7nrtO8WCj
+ tEYnl/r/j9L4fPFXOTGcAAAA=
+X-Change-ID: 20261014-panthor-fault-info-v2-330a9f771fd3
+To: Boris Brezillon <boris.brezillon@collabora.com>, 
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Alice Ryhl <aliceryhl@google.com>
+Cc: Lukas Zapolskas <lukas.zapolskas@arm.com>, 
+ Paul Toadere <paul.toadere@arm.com>, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Christian Gmeiner <cgmeiner@igalia.com>
+X-Mailer: b4 0.14.3
 
-On Wed, 04 Nov 2026 13:42:27 +0800
-"Gary Guo" <gary@garyguo.net> wrote:
+The Panthor CSF firmware and hardware report extra information when a
+fault happens. Two kinds of faults matter here:
+* faults raised at the address space level. These are fatal for every
+  group bound to that VM.
+* fatal faults raised on one of the queues of a group. They stop
+  further submissions on that group.
 
->>> By the way, since this is here (in `kernel`), do we need then the
->>> original one in `compiler_builtins`?
->>
->> No. With this patch, compiler_builtins.rs is empty, so I will drop it.
-> 
-> compiler_builtins as a crate must exist, so you cannot just drop it.
+This series exposes that information to userspace, so the
+VK_KHR_device_fault extension can be implemented on top of it.
 
-Sorry, by "it" I meant the `-w -W '__*'` line for compiler_builtins.o,
-not the crate. The crate stays as an empty crate.
+VM faults are reported through VM_GET_STATE. The VM keeps the raw
+AS_FAULTSTATUS and AS_FAULTADDRESS of its last fault. Queue fatal
+errors are reported through GROUP_GET_STATE. Each queue keeps its raw
+CS_FATAL and CS_FATAL_INFO, and the ioctl returns them in an array
+indexed by queue. The kernel does not decode the values, userspace
+does. Nothing is allocated in the fault paths.
 
->>> And now, here, in `kernel`, we don't seem to need it either for the
->>> original reason, except for the `objtool`, but also for yet another
->>> reason: if they weren't weak, they would be exported
->>> (`EXPORT_SYMBOL_RUST_GPL`). Which again points to the fact that we
->>> should probably clarify all this with a good comment or that we should
->>> do this sort of thing in another way, e.g. in a separate, small crate.
->>
->> Right. The new crate is not in exports.c, so the stubs are not
->> exported. Then the weakening is needed only for objtool. I tried the
->> new crate. Without the weakening, I got an objtool warning with
->> CONFIG_X86_KERNEL_IBT=y:
->>
->>   vmlinux.o: warning: objtool: _RNvNtNtCshy5ABSPeoCG_4core3fmt3num8exp_u128+0x381: __rust__udivti3() missing __noreturn in .c/.h or NORETURN() in noreturns.h
-> 
-> I think that can be fixed by adding out-of-band annotation for these functions
-> in objtool? That sounds more preferrable then weakening the symbol.
+Changes in v2:
+- Report VM faults through VM_GET_STATE instead of copying them into
+  every group bound to the VM.
+- Pass the raw register values to userspace instead of decoded fields.
+- Keep one fatal slot per queue. A queue stops at its first fatal
+  error, so no allocation is needed.
+- Store the uAPI structs directly in the kernel objects.
+- Dropped the recoverable CS_FAULT reporting for now.
+- Bump the driver version to 1.10 in a separate patch.
+- Rebased on drm-misc-next. The queue fatal info is protected by
+  events_lock now that fatal events are processed under it.
 
-Josh's objtool series adds an annotation for these stubs. v5 keeps the
-weakening.
+Link to v1: https://lore.kernel.org/r/20251215115457.2137485-1-lukas.zapolskas@arm.com
+
+Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
+---
+Christian Gmeiner (3):
+      drm/panthor: Report the last VM fault through VM_GET_STATE
+      drm/panthor: Report the CS fatal errors through GROUP_GET_STATE
+      drm/panthor: Bump the driver version to 1.10
+
+ drivers/gpu/drm/panthor/panthor_drv.c   | 26 +++++++++++++++--
+ drivers/gpu/drm/panthor/panthor_mmu.c   | 33 +++++++++++++++++++--
+ drivers/gpu/drm/panthor/panthor_mmu.h   |  2 ++
+ drivers/gpu/drm/panthor/panthor_sched.c | 32 +++++++++++++++++++-
+ drivers/gpu/drm/panthor/panthor_sched.h |  5 +++-
+ include/uapi/drm/panthor_drm.h          | 52 +++++++++++++++++++++++++++++++++
+ 6 files changed, 143 insertions(+), 7 deletions(-)
+---
+base-commit: 6f7098738fff3ec7393f924343188cb8e6ebc5d2
+change-id: 20261014-panthor-fault-info-v2-330a9f771fd3
+
+Best regards,
+-- 
+Christian Gmeiner <cgmeiner@igalia.com>
+
