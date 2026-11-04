@@ -1,61 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793786881;
-	b=tAHaKOGnAZTzXkH+C9jaTR90uqQa2yK6VM5+LpXu2ZV+qryXn0nMJxCx/OlaA4UL817e
-	 tifjsWwyF+YcEH7vJSl1zA3AzKsxdjacz7LgUA83klhCvIgI8b3Uyfvjq+p8F1043C3dk
-	 +krBQMr4Qng0Ojsvz+kl2ALyQnf6x5bhb8Djl2LLv1GvcAzUY3kLzZCV1dwyZiDsjhl7r
-	 UiTmXAM7wkyb1cIUnMQv7Y/NwIFRzHHrdzthtz5qJmFJTh7ltp7s/45tcGf1OaPmR2ODl
-	 HyX3mExKLog4vp8AZyVx35fyrh6x8hOf2iQic1ItSTuQhIQu73v8eHettDFRMj5ivug==
+	t=1793797426;
+	b=WSBuceJsECH6XbmWdALNYfQ4AoPctwtrGJluOadHHzN8sYZ+ZRkKfbL7xl7DICT5MAcC
+	 Cmrr6J+qlhnX7maS0upalatr2w4LTB5wdnu1wDl3bwXtZseMdHPJ9LpAuiESd9oZZFP3a
+	 CmrOMJxf3qz1CXoaRNDTlZgMY3q0XNUcmvwuftA2TyXUosh6KNfBOxcrSg7/p5ubP8vJn
+	 QhytMyMppbjOHj7aUOUOkJbLYjflpNXZSlvMg0VoDo/TT69zRGJgJ0/Fh8I9ezM+quoxx
+	 qpxBVxFQI6N5nm5JESuuStbjFqVWhKe1cTW0wNL2yQlRekXjJK7oVdWpHzkdcbexljg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793786881;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
-	 Date:Message-ID:MIME-Version:Content-Type;
-	bh=C9DMJq3tsJ77ZIPXzbDKxng8P9QsY+nOHhg6+nnSuz0=;
-	b=UcQ+zcXGn+7dXC+FxRZmNjZpGNpxKkTJ1Hpraspbfyuqv1dSo/Yvgpu7LqKUFJy77d7X
-	 +CNMxzQ3hEGBM4cBid2feK82IVi8hD2fbx3Ggat0feEp2tZIf81oLbyT8MJ5LWIrhNGvz
-	 +g8XTL0JV70RIDIDwIuEvA9S3dwgzDH8Nvc9c8tjOhBJd7RT2RiPnWMdyPS5SV1g+54Sj
-	 +nNoOJ0RUUPuYTvPpISyylXJ6frmOdqjLBbmEqSQNmztzGLcySPCm1Mt/6wfb4QSOdgIC
-	 YHq9jPOCUPevjMORnqfvgqNzKG0Ot2Nd3RKdU+/s7TMvqsln4LVZh3Gdj/Z9cV0X9tw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793797426;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=Rk9I/hs0FAD1JpZN3nz0IyElTxou9AIDzVZ41o0WZsY=;
+	b=ppyr4C3S+YoBgBvQDP36MN7zyIAtlPGcurZRIYsnQIDS4sP2F3/jR4grUzN56ApOnVpt
+	 XVbb/kTnQP3Qbv18xHnozygdkziuD4k8o7JE7EIWEaUMsMSG6pnUDITPk8jfKptsI+mIY
+	 DujiJa41JNWeqqbCJOgvaSy5L0HWgK2O9IgQrhBlT15UkkeYe0jkogfrMmj9ubxmy5R/i
+	 /RappuDmntLToZQjl4tT5c32Hw/d8xMXZ9XA6UvfVjyHLFDU4FM67TbXB4DBGpROlEJTO
+	 XmzdPwI4ZAnUMdWkjvPpnRm4ywHiyvyIxYNPGv2qYQfnZgL5aspPW5+oxi5zxxPBH6g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ch6WkKbV;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SundMkPA;
+	arc=none smtp.remote-ip=209.85.221.71
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BD7606D811;
-	Wed,  4 Nov 2026 10:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D01606A32C
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 13:03:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3D01606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ch6WkKbV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452481F00A21;
-	Wed,  4 Nov 2026 10:07:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793786880;
-	bh=C9DMJq3tsJ77ZIPXzbDKxng8P9QsY+nOHhg6+nnSuz0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Ch6WkKbVRCCjH3ShQvSYF9kq1AyXkGgzzBJhWpSynSDAt0WzAOtPZ+JyfE/P9pOQt
-	 4CBEHb+XoJuBWTqbNty/MnRgELnX/reEIcm+QIWVDARVtr/2Zd1uUxnOYjyHC+r4fK
-	 zR2epze+PrxECMysHt755SvHJBggj2PP0QKtyoi4UzMeY//EDQXKlS4q4cxx5NJQNq
-	 c74otbUlopf+BaoRorPFSk/tAmmtUA/wI+1MoAbPcyLhYYNZ2gnNIFAffthrngET8I
-	 Fjy1yg7zj4Ds960pFwm+oQMAXFV4o0H/AefRoN6evgVzTF7gFKRKlD44+pu980UbAA
-	 wHtuhvSpMvDTQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: FUJITA Tomonori <tomo@flapping.org>
-Cc: fujita.tomonori@gmail.com, frederic@kernel.org, lyude@redhat.com,
- tglx@kernel.org, anna-maria@linutronix.de, jstultz@google.com,
- sboyd@kernel.org, ojeda@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org, boqun@kernel.org,
- daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com,
- work@onurozkan.dev, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: time: implement `Display` for `Delta`
-In-Reply-To: <20261104.180854.547774168466136920.tomo@flapping.org>
-References: <20261103-time-delta-display-v2-1-b01b1fe9ff9f@kernel.org>
- <I_BPRv0XwpoRCf2AG4Ot12JnHyqvdM9lb_wF0sZMixc0UIoaBb-aeNWYuff1oe4_X1m5SpCTcZp9woOg-dt9Eg==@protonmail.internalid>
- <20261104.180854.547774168466136920.tomo@flapping.org>
-Date: Wed, 04 Nov 2026 11:07:42 +0100
-Message-ID: <8733tgnc41.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SundMkPA
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4902ce85f72so574672f8f.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 04 Nov 2026 05:03:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793797424; x=1794402224; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Rk9I/hs0FAD1JpZN3nz0IyElTxou9AIDzVZ41o0WZsY=;
+        b=SundMkPAP7nK88QqCodUo6cgiHfwucHJ2BB7s+84UW57L+S2JnswkeV3z5E+jnjjiS
+         uYJbWuy3crTVgS2v9uNU+xMFoBfOXCY/PZhRZVgDcBN8VIj1Y/vxJkjggQcE7XmYbZ2w
+         XgGNoFB2eJzlLFmjeXFS7rrjh4TEnrcWlNJ4k80kYfoIjNxkZ4HXbu9pcdq+dwcIwFlD
+         cG1iX7wjqaqYeca+ffIq1Mad6MkDVd8ccTWW4Zas4vB7KvscYTZY3Mv2oJiHb8uMo899
+         042BMZAOA12jBTu9X6bJR/ScE7SG6+gseXgxLO9FDy7so+xrDHuko5WnFP310QOIOHZz
+         o0sA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793797424; x=1794402224;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Rk9I/hs0FAD1JpZN3nz0IyElTxou9AIDzVZ41o0WZsY=;
+        b=gAtDAxcgZV/2eibRhbHdX4z4NdMQnTA1ysfxEX2Xd//60jdAWKMd2sl03oVYoj7jA9
+         7JDB8tePl/HrEHpGvw0xNbKOLD2J5X0oYNhv2PUsDetO4+kRA3qNtQVlHl5EIVak3kq6
+         AJRUINS7/CZgpj6LXCcISgTATUYIahtPq/GklJuKLxMBjkTJEQBKW7fgob46x1d+mJYe
+         Y7UxDUa3hm2lTih14vUtZwKGym2dSNW6LA6QBYqU7C0Cj8KZlXNE/lk7CbtcMTPr1yp3
+         gzZOzVq4ijz85WEj/D7UQDi6+jJNmmM5CMXy5WrNIPLfa4S1zIZV2G9RCxtB30cfZS1e
+         fIMg==
+X-Forwarded-Encrypted: i=1; AKwUvBy3D01lGE7LDVx8LV/rGhbHgUiidsNv3H7+Oc5sltLW2sMGYO/h+TpVI7VpWuxrPzcek3XmZkf6WX5D4HUw8w==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9ozBqMuv/ZSUYomG507yDVIhi+/99TkpheqGrPIreDthFzdeg1
+	tRRNNXXh1m98Y/3LorwxxNsxd05aTB4fkNC6ZWx39UkDk2Av5Rni17EHZWYz3Idd27WBuontt7X
+	+qD+7PlhikCQ1N2GrJA==
+X-Received: from wror10.prod.google.com ([2002:adf:f10a:0:b0:48a:eea0:bc47])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:29cf:b0:48e:6f76:de9c with SMTP id ffacd0b85a97d-48e6f76f453mr21544509f8f.28.1793797423627;
+ Wed, 04 Nov 2026 05:03:43 -0800 (PST)
+Date: Wed,  4 Nov 2026 13:03:41 +0000
+In-Reply-To: <auixgbeSSfBWwVS9@tardis.local>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -64,46 +78,67 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20261102035934.711973-1-tomo@flapping.org> <auixgbeSSfBWwVS9@tardis.local>
+X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
+Message-ID: <20261104130342.261593-1-aliceryhl@google.com>
+Subject: Re: [PATCH v9] rust: sync: condvar: use Delta<Jiffy> for timeout and result
+From: Alice Ryhl <aliceryhl@google.com>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, FUJITA Tomonori <tomo@flapping.org>, arve@android.com, 
+	brauner@kernel.org, cmllamas@google.com, gary@garyguo.net, 
+	gregkh@linuxfoundation.org, ojeda@kernel.org, tkjos@android.com, 
+	a.hindborg@kernel.org, acourbot@nvidia.com, bjorn3_gh@protonmail.com, 
+	dakr@kernel.org, daniel.almeida@collabora.com, lossin@kernel.org, 
+	lyude@redhat.com, tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-"FUJITA Tomonori" <tomo@flapping.org> writes:
+On Mon, Nov 02, 2026 at 07:51:29AM -0800, Boqun Feng wrote:
+> On Mon, Nov 02, 2026 at 12:59:34PM +0900, FUJITA Tomonori wrote:
+> > Update the only user, binder. It now converts the freeze timeout with
+> > Delta::to_jiffies_timeout() instead of msecs_to_jiffies(). Both round
+> > up, so a short timeout does not become zero. They differ only for a
+> > very long timeout. msecs_to_jiffies() returns MAX_JIFFY_OFFSET for
+> > 2^31 ms (about 24.9 days) or more, which means an infinite
+> > timeout. to_jiffies_timeout() has no such special case. It converts
+> > such a value to the matching number of jiffies, so the wait is long
+> > but finite.
+> > 
+> > Reviewed-by: Gary Guo <gary@garyguo.net>
+> > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> 
+> Thanks. Alice, any concern regarding the change in binder?
+> 
+> I have some naming suggestion, please see below:
+> 
+> > ---
+> >  drivers/android/binder/process.rs |  7 ++++---
+> >  rust/kernel/sync/condvar.rs       | 31 ++++++++++++++++++++++---------
+> >  2 files changed, 26 insertions(+), 12 deletions(-)
+> > 
+> > diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+> > index 1f4cb43f1de6..edde0ea35687 100644
+> > --- a/drivers/android/binder/process.rs
+> > +++ b/drivers/android/binder/process.rs
+> > @@ -1552,8 +1553,8 @@ pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
+> >          inner.is_frozen = IsFrozen::InProgress;
+> >  
+> >          if info.timeout_ms > 0 {
+> > -            let mut jiffies = kernel::time::msecs_to_jiffies(info.timeout_ms);
+> > -            while jiffies > 0 {
+> > +            let mut jiffies = Delta::from_millis(info.timeout_ms.into()).to_jiffies_timeout();
+> 
+> I would rename this variable to `timeout`, i.e.
+> 
+> 	let timeout = Delta::from_millis(info.timeout_ms.into()).to_jiffies_timeout();
+> 
+> Thoughts?
 
-> On Tue, 03 Nov 2026 16:23:40 +0100
-> Andreas Hindborg <a.hindborg@kernel.org> wrote:
->
->> Implement the `Display` trait for `Delta` so that it can be displayed by a
->> formatter.
->
-> [...]
->
->> - Drop the `rnull` user, which will call `Delta::as_nanos` instead (Gary).
->
-> Now that the rnull user has been dropped, I wonder if we need this
-> now.
->
-> If we want a readable format with a unit, Debug might be a better fit.
-> core::time::Duration implements only Debug, not Display, and its Debug
-> output includes the unit (e.g. 1.5s). Debug output is not expected to
-> be stable, so we could change the format later. Users that need a
-> fixed format can use as_nanos(), like rnull does.
->
-> What do you think?
+No concerns from me; the binder change and your naming suggestions look
+good to me.
 
-I think consensus on v1 was that a `Display` implementation would be
-good to have even though no user, which is why I decided to send this
-again.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-I do think it is nice to have, but maybe we should consider doing some
-kind of intelligent selection of the unit with rounding?
-
-We can also change it to be a `Debug` implementation. I was not aware
-about the stability requirement. But I guess that is mostly a user space
-thing? In the kernel we can change stuff as we see fit, as long as we do
-not interfere with the uapi.
-
-
-Best regards,
-Andreas Hindborg
-
-
+Alice
