@@ -1,95 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.45
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.171
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793759598;
-	b=JnPYOcXTGHS3esz/VYwwRB2sGZswsLQBJoqBVAS2opEQXg4A8sWAF+hECqeNm+GGZbZn
-	 eI18JDr+aPHRtRLZQjQ4Dpgf83gJDtcSiEJJ8219kw+BDcx3mnGJiJ7h0/i/f4FDZMJq0
-	 /40jCbdiIbwJpLQJEG0IvYTbshk/rSbHZWpWW6+bfYPPeIJqMGspus2/RwbqeRvWQQ3gH
-	 OfEwp5gwHs2KRKlUIq90CK0CmomAQ1qsYTavDhmihBajFA+85eyOMiaKk40Y7n0YGXWCa
-	 oycSWQ249WK+M6Hh2963joTrfQBeW6NNS7VMEXHcpX8nqG7ToU8RflC8i7zIPJHCR1g==
+	t=1793764146;
+	b=mU/AASNOnL0CrKgseNIHCjyElLNcbnCpyYcHSjjksoUOdT/6o1pdfHF4ZRonUvZgyHal
+	 Bjzj3OALAEzLiDx8IRVNZARv/x/Jd4OmZCBT1hQ82BWP40de94UUK/FDKioiqaFSm+c6Q
+	 sQb2h9EuM7wfPgrsE153elwPiaYJ5JYmeFbbThreBd41+6Cb/V9kyTA+XamadrdyVLEXH
+	 Rg0lM73U5LFSSQYf3KXdQMBt0MNFQKqItXgyFTWhrt5xZ3z66fPTlQUsJg7HsBtPsMY1U
+	 0seievbglXEUO1PDt8O69rzHk4EScpDL9CvATZrOm7F2J8RrA3eHRjjFW29My198teA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793759598;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=1e3NrLfHApm0cgNFDZjFzD/FZWRYyHJAgLwMAdhWnZ4=;
-	b=gIWaHXtLjCUtLKxas2+p3wk6eR82DT6+P4PNMwa9AEBH+AwQL58G0XzxmS5XHaUAFYCQ
-	 aIxWFQRsE/a1yZv75M5MCUPltUFmb2vQTP+dEYodUMnGHmIGMxfmXoN6n1TWEQxJQ7M/n
-	 SO2TC75DSI24P6vHYx7TOhiW9Pbvty3dFbs/2chE9DZWA5JqZdEPGuAwd4rK5riQYqskO
-	 ES69Yj/bxIxDjyrJMcXbJqgenV+flk2eV42frwnux514HIMVLApRI3u1vGHqqqGw6hSSL
-	 jwlXexxkQ3MgKcs7rtdnKiUMTZr00R3M8Y/vwvYCfBNdKIIiHebbqzRgMu5CQTIeoWg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793764146;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=cKWjRS9Xq/l8hl3060rXc9wXNrOk8HsfCBzOk8+AuV4=;
+	b=PBO79G1O4nNelHZ+RMnjpPS8DOJ2fV5/UJPp7ZYFqP98BX+JG+yr7usC1Nc5NQqXaDcH
+	 JwoNnzEE6f7/MpIC6Z531QNo+we08VpkCrlGOzP/ayEkZYa0RLd6PDaqj6kr85dOQMvUw
+	 RkRkgPo7z+afd+W5kUiH3tVF5Wa6eaAFGL944CDUrneEfPXdLM38Z9Prwz3Jy4S8ta2fd
+	 xUiidhVFdXZ7PpDNwte3wc4EU34MAbKGAh4UeaMmCSHUe0xN4x2y55o9UST70TQYwf9vO
+	 14D5yFBScUk35R8ApYeIYXCB4BFq4OBF0yT9IM6v5l5uhP1SwEdoT0xRJtiLCLDKAfg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=rvd2li8q;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.45
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012045.outbound.protection.outlook.com [52.101.48.45])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="Zff7lCr/";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.171
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4A7606A329
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 02:33:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EB4A7606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF74606A329
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 03:49:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2AF74606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=rvd2li8q
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t6MgyyndC1+Rt5kCoMx0Ov+syY9sbPTttfJMSjxD3CsJ6vowL5GUddguUFWVaSm8nsk2OKdaXP0+1qDYYi1XVU1CL/hMfmiySO6mQYrXyou/QTZuocorv12uDX79eZ5dGCAqaRbZG0WnvfQCNEAn2CuF9bogcS8v3FV1ztDgKnWtV5Tiy8FQ7XmiqV77kf2n0IFHTIMmNVFnHd/OfaIVDaTTbSYwEPjYDego7034qOdA3UU/7Y9XIK1qx3ntoKDRaNPGf2D4TrzWUQItvHL6xODPWLQpjDX+DMp3Bd53vM276wchrD+D3mHX6xgFqeSrU9j7kKNpwuS3eaNCe3Hq3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1e3NrLfHApm0cgNFDZjFzD/FZWRYyHJAgLwMAdhWnZ4=;
- b=BkLdyQNJHKCE17vj1+2sy0n5h3MzhawPqOH4lnSDMFXZbpvbH1cL/1rN9Mlww+tNfDQ9BFzUArzBqU+EMLKSzsK6n+EAvKSNS4WQP8QAlq0JCiK8NjAEm6NL4muLwPh2zVICrKQlnTOVOdWK75G5mPx0jSLyNEwzS2zYd5rKp5znBp42x07LsPVWeMXWS/9ECXCOk4qOJ8qbP3iJZEBwz8pInov8pX/4ZB4vRQ9UQwcXKuNsyj1flB9mNboVVjxt9z3rPLFMTUfB83nB6RoBOxHZFcg802DPwp0kB06+VqWUarckiZMSC21NnH5FmHrUAIpaehmsQuzCLzpC7pyCAA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1e3NrLfHApm0cgNFDZjFzD/FZWRYyHJAgLwMAdhWnZ4=;
- b=rvd2li8qQ97aWc5hoDqE30ehtvEQfuQNQC8SZDEhKc6tRw7AeOdjqyLz/2PyNdWSayUFpKKOoGF8RtvKS66IVoCungO1MwE6AKp5XTjRow4PRBwoiHQ8FvA86i4/xyIrjo/Izn9phWrbxbhpingmjSMz35znB3IYh9C6tYSA2WnsXooiqwOb4rGxjEmqkPC1HOmFTzZrsaaultZpvQWc2FeSYqyEtC1aRAK17Sp8EH/LHjJSYntYkhDDlBSwoi2o+giGfu/Bm4xm9UIw93iZQXMKPPQ6rlgMNu6GWTdbIP5QU5UxGDBKyR+yFrj4QXUMVYuMaV7bXiKgBfAgeqhzsA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA1PR12MB5614.namprd12.prod.outlook.com (2603:10b6:806:228::7)
- by DS8PR12MB540605.namprd12.prod.outlook.com (2603:10b6:8:447::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Wed, 4 Nov 2026
- 02:33:15 +0000
-Received: from SA1PR12MB5614.namprd12.prod.outlook.com
- ([fe80::1a0c:e9e8:f3a5:d9d6]) by SA1PR12MB5614.namprd12.prod.outlook.com
- ([fe80::1a0c:e9e8:f3a5:d9d6%6]) with mapi id 15.21.0569.011; Wed, 4 Nov 2026
- 02:33:15 +0000
-Message-ID: <c361f7c9-188f-4d9d-b5eb-d46c23109433@nvidia.com>
-Date: Tue, 3 Nov 2026 18:33:14 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: drm-rust-next needs a commit from rust-fixes
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: "nova-gpu@lists.linux.dev" <nova-gpu@lists.linux.dev>,
- Alexandre Courbot <acourbot@nvidia.com>,
- "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-References: <211cc191-828d-4494-92c4-168906a0ede7@nvidia.com>
- <DMLZOJTIQ2N6.1WNIKHGVV3U7T@kernel.org>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <DMLZOJTIQ2N6.1WNIKHGVV3U7T@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY1P220CA0007.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59d::13) To SA1PR12MB5614.namprd12.prod.outlook.com
- (2603:10b6:806:228::7)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Zff7lCr/
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-533202fe429so155031cf.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 19:49:05 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793764145; cv=none;
+        d=google.com; s=arc-20260327;
+        b=MBraYf7xE6TyOs+BPLHl+qpMg6q4XVCFXXT7N+L2MQNPDWdVhsZUdKj9/lP8MATO9K
+         eV09zfMf5lmeflv0UKcmfkcIBjhhV+iDZKULs9VWo6jGae1HEB+L601Nv9tLHSBoloWi
+         3yLIiWtnprzj76a1ZF3lFcFMNaPbXGble9eXVD8TEbmbL490YJt+yXSgG1ixgY4F5c4t
+         24SfJTIX5KPJtnji7B/Kl6slm8KQ3Ox5mRJQcuo5X36r7MFv9OA2PEplr3P0mkJU+JDH
+         yqJhZyY11bpEbX0IGVsci301duyALJDtrZO7s3aqRou37ddoB3f0Vha8ceDt/7Wq3PJn
+         dPbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cKWjRS9Xq/l8hl3060rXc9wXNrOk8HsfCBzOk8+AuV4=;
+        fh=hohJDbfStfgiC35KCDMx2wJZ4K/ety/NE8xkE/+/B+Y=;
+        b=DnwE7Gp1C1Ukpk8j066Ja7WE41jrj0QYrQai5L2cb5bmkVRsO61dPHF3JcaONF5SbX
+         Lzb8n0hTDHle5IMpaMrdX/y4Kyj4PapeoVI+A2Ufb58LVTwvQXK2xONW+/3PUTsqB8Lo
+         gyDYIHrGIX0W7f0Ay7UaBRzlOGrpElqwTKYNSS+czijINohoNlCfnw5LdTgZCItOsEGR
+         aSIJeEsqkxqYq76FgWdtB/3b41EcpYYaoQ+uTDTH/JbD3DWVlnIANNpD4o8PWhcFA6Jc
+         vHZFTrFkYRPgXIAS9Y+tPkOCTw+g+hiIJ5QgzJIXwlOBYzYyjlHmE22tF5Hbml2OGJmm
+         e7ug==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793764145; x=1794368945; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cKWjRS9Xq/l8hl3060rXc9wXNrOk8HsfCBzOk8+AuV4=;
+        b=Zff7lCr/RYzDOMb26mR07xi/YgRsLCknrcp7xuB7uYbEei3iXUJHgJAMS5sDc9s/p3
+         e5VGpX9uTqFK3Wdv5gDPAQxvyroQYQfHwlWZlPA58bsPYLpTlyfBcRF4WalCLlkbFevK
+         VSjvYCAMvny47vCLyYeWEr0vylVwhyEkDw0z5B8YPPpXD1zmHK9kWfoVCm+6uPTiWp4W
+         2jN/qeIPx4hx78uKvP0NOTWfQepDmHq1Pln6bOhyt7nqhnVPCkbcsmrYHjX93TUtWnIh
+         RcY3+kfHuG2RPAAWQ7dhhfhgP6QZ4/o2h/vMA3mI4hrEvYdwmBXODg8YOv8Ybn8qgR37
+         8TSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793764145; x=1794368945;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cKWjRS9Xq/l8hl3060rXc9wXNrOk8HsfCBzOk8+AuV4=;
+        b=iFi+wDLBptW7iy26mPNlL5uekPvA99urOta/Pi31C5XvN7FdyJRmD8GacHYswtMG7h
+         UFSE2v0sXgzKMU46cGLV1h0Lrz8K310pI3mYxDya5lrYj4z2ctjmLytmLwbUb+6ooQrC
+         J/8HAsEj7+/e2CsX0ArH1OI8B8aP78T351eHF6fLjkp80g6ocChyAHSgT8rwRwcIFTL7
+         vp7bRNzXytdkqp3YJ8dF2eY1Y1EuGyyNZfMV+8SozqoGl48R4RCqP1pqZzjOyJ9lyYwC
+         vP+uUSqOxdInxskdz7sPYoVLgBHp8FQ4P4PcPbMm1p049PwMugK4c8LK9PFP8GG9HD21
+         Qs+w==
+X-Forwarded-Encrypted: i=1; AKwUvBzQymfkH/yXnxK9qTlrUrG1KL6t12FoS5Z6U4vQpJsOyPPavvBXFukbDoppbp07F65o/uQCDJ6xNr+5jp8ufg==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+weZ0QdTZrj95Q79rDqng0CK88HeufOhCUsPmRDnxiy3WtJeVd
+	MFIsehmJechajRSs0MHSWy+q5vJ8A43rjbbPtEfarTEryfx58u1HB0NsgAGHb28Tj8tqTleKUTA
+	TRX2CWF68GM9wn1dKjAavuXoBrJnI+2X2Txpe+miq
+X-Gm-Gg: AYBFou2Z22ais7bicM0HreOF+jbOl3dqarh7FsuZBt4A8J7O8cHiXYT+yYA2NFKztmL
+	rVcmgLPJQW0/0lQI14ZVM/8RirtLK7uCaLWinHuOk7b/h5lQPl5Buo8OfYA4Ha9jETRQk5dumaM
+	BIF17zIUiVGE4yqdzODK40mNfHiHjNYBgRJ0vpq3XMvkD/kpyevwRZG9/XxbUOCbE/270s9lI2Y
+	2/Rw9ebLts6jS2/E0tQElaITW7u5uE9ObZEgmYrt29y4wYwS/UMUlBzYcRZ1SLYYs3WxsacIbuy
+	sikAFv55mjAsnJ33FxRPlzgok17PdrOuFbkRHTcL1VYeEbSJSDAmgyOr3TdVOP20AUmkeUaOIVy
+	Jb0katkRkHNIjlMlnlnoKaRMUiqZ14m72eoqGyg==
+X-Received: by 2002:a05:622a:2298:b0:546:92f2:7830 with SMTP id
+ d75a77b69052e-54b61e27b15mr3087041cf.6.1793764144251; Tue, 03 Nov 2026
+ 19:49:04 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -99,81 +104,173 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB5614:EE_|DS8PR12MB540605:EE_
-X-MS-Office365-Filtering-Correlation-Id: fe5c8225-c698-464b-6c2b-08df3a1bfaa7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|23010399003|1800799024|261028144727099003|261026140227099003|261022105027099003|261022075727099003|56012099006|11063799006|4143699003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	fbxYcylRbOaVTNKJcIBHdCsqyJfOgUK5oW/uBWOKgKMRfVoLDaIObFP7AkSbGlkiFGJogz9uSpGFcyBT+AU7VQjX4yfPNg8eb3vASCVOaMcLvOGsbsSSdQouSsTfhXSDDy7fvMrw81qUyV2Aev3A8gvxk7iyzswlUMqmPS/uJPFsnBmcBVlJjHIhDLuRPxmft8x4OFjbb+JhNH22x2drDDG3SvrDethiGedQYphUblMvXd1ppULRJZq8LnbytG6aOOf8Bpc+gaCgC8NUpbUxCofEdK0v5vZZQX+FHzldwu4icwVt3z6DdNl20v2xNShkLPtpixaGJEE1EXy+le4xFYk0ZMMz/DayZH1Cn4wT75Q6sOYesiygC/Si4Pt3viWk9C7N8mDv6hbJvs+7EkaVYwxjy/lO5wZ0KUTx0a0N9L8kzIPTx3WuWtVIBsTDuGEAZlC2ilRwWnJ7hWx8tL5JjDdYLmic3hEwfoh3Qkji4cDi0Mr76rVSvJzVSNP9GjOX8fJ1AN4al3lPQ4mlPc+5/sn6WJcflOxEKOjb5TbHead//1lQy6Nz5HK8gnyVSg0tJjEdsfj38gA4gKlTNt0WLD2dMtGghYCgZlVVh5tZW6BsxLOc4cjguV8BcU3xVlwyh3E+Z7wzw5b+LMA/ntCAjngNT05+SZxxnK0Rt1hSmQM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB5614.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(261028144727099003)(261026140227099003)(261022105027099003)(261022075727099003)(56012099006)(11063799006)(4143699003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QjVLT3NNSmFPK2tWZDVaRGhVZGJNMVdEOWgxMFdXQXdJRXByMWRZa2lZYmVO?=
- =?utf-8?B?RE5ROGxxdFArVzFNQkVzOWc0VVdNbWRHYmV4K1dwSTRTTEQzVEpabUFsRThG?=
- =?utf-8?B?R2tUWnl2WkoxSkNqVkZTM01WVlhZckg1dTd4Q0ZMZlpudE9FRVFNZWRkazYx?=
- =?utf-8?B?dHZaL3JrMjJ1WGZQdXFWNHVTOUR6RFA2aFRlRkxUNlR6Tzd5L3M2cUVISitt?=
- =?utf-8?B?Y3dGUHF3UjdDOU1aNkJTcFlSSXBhSGNBdlY4eis5bDNlclJrZnBtZVNuU1Ex?=
- =?utf-8?B?REliVis2UWJiRUc4bnRrUXRqOUx0eFBrOTdoUVJqNC93NWZwYXBrejQ5VDhs?=
- =?utf-8?B?YlN5aS9ReWR4endmMnpocWE4NnpVNUVZWE1BYzNPT1FmVk9wV1VjMEtILy9q?=
- =?utf-8?B?c0Q1SS9VTk1iUmhpV1lsNldiWFBIUWY1N2tGRUxFb3p5UFVFU1BJUVNPbVcy?=
- =?utf-8?B?aHVscVBzdkpMSE1aL04vMkphK25nU1Z2NGEzTVJSRWVlRHVxU0xxaE9BOTRG?=
- =?utf-8?B?VkpXZ2lFWWoydllhaXlCNlYxSCs1S0ZJWmZBdEZnOTBaSEo5Sy9zanpnZk5L?=
- =?utf-8?B?SVgxQTN0SWtUUmo4UU9jUGVCUkJEcXkxczl3YkZMOWswdno5bkdZd05BbUFI?=
- =?utf-8?B?b1NpQ0VHcW1mVUUxd3J2RGRxTmFpRjJob1Y4YXpOZEpTY2pRY3BtSm85eWxw?=
- =?utf-8?B?OXd5NjFyWGRjY3NXK0NNeCtUQnMxOGJPb2FJUHFzeDJLYUl3YlA5eVFtbzlJ?=
- =?utf-8?B?VHFlNlBNTG13L1ZQOGxNcXFkc3llZnZGK0dNMW9iNUw0MmVqYzFzMVRSa1pt?=
- =?utf-8?B?V1R6ZXJmWkRTczh2ZGdaZDl1OEV0ckdzN050L3RMZmgyUlZxd3NvMS9jZDhS?=
- =?utf-8?B?V2E5dDR2cmN1bUNTWTJIbFRjM1FqTmdoc0hCUmJwRVR5T0VTVE4yN3FhdmVM?=
- =?utf-8?B?MnVjTnpoSkdpV20zUGhYZDdZNVp0NG9oU2MrclJWU2haWVVENEVyWkpwUFA1?=
- =?utf-8?B?WEdjOHM0U2xHZm92TzRBbnFod0dYN2FvNE15KzZkMFpJSUR3SnUxdmlMQk9R?=
- =?utf-8?B?QmhldHJvSGZndE9NRzRDM3RXbkZRTG50bEhMK2RIUUhzbGZYSk8xREZTa0gr?=
- =?utf-8?B?ZFN3dTczYTVKNFIrN3daTEkzbzNVeTA5UFAyeGdreXZnT0FaYm9pVG9yTzFs?=
- =?utf-8?B?Q3Z0RXphaFZlVTN1N0orNnRlYjI3YzFyWXpkaFBwTzNkK3NEayt0MEU2TnNX?=
- =?utf-8?B?SVN6ME1JOGFwRStWYU9hTkNwZ3hNbktpcFhSdXNqSkFPa21FVktWU2hpVnV1?=
- =?utf-8?B?NXJ6Q1pWL204a1haaGErSzVvNmt1Y2JxeGpDa080WFg0c29sZ0tPcVpiZmRD?=
- =?utf-8?B?a3ROTDdzTHc5U1didVpHUnQ3NWo5NkFKbEFjUEJ6ekt2VlkrU0pFZ044bG96?=
- =?utf-8?B?dzcyMktMSEtjakd2aEptM3I3WDY3OVNtNFIwZDNMYU93V0M5dThOck5VQUdV?=
- =?utf-8?B?WkErd2JhUEwxTEs0ZlRFWm1VWXhDSjROc3dhZi9MeXdETUVYSjRxaVBlNGty?=
- =?utf-8?B?TFdxT0l6TGc0WmtCNmFTWmFkY1RmK0RvNHRxY3FBQTAralNsZVJubEoxQmFZ?=
- =?utf-8?B?UTNBdGJQVURQYjhrUlRXdHFaTWdSdlkreEFXRmU0c1BzckJsUG9yNXhFcXgr?=
- =?utf-8?B?L3NreldHRUFrUllFa3pEY2d5RFZSbnVBOGlQME5NT2ZQa09MaWErWnllNXlz?=
- =?utf-8?B?cU5YNnEwYjRNRGFxdGRBWTh0Tk1qTHhkdk40UWZzVnZlY09TYyt2a0h2bUJz?=
- =?utf-8?B?Yk95OTFrWmJrRVhmdVdMSmdOQ2J5V2hiTGJsaHJYUTZ5ejdYY3FjVUEvL3ZS?=
- =?utf-8?B?V2piV1ZDT09DYWNiQitsV0t5L0xzUlJ3ZjdUM0syRVR0ZXRnSHBCMEVyNmwz?=
- =?utf-8?B?enR1M2prbmg1MXBXa1NLZ0MrQWV6MjlFU2g3WWJlVFYrV3JTS2ZnNDRsNjht?=
- =?utf-8?B?L1BsQ0FuaVdMSnU0SjE3TlIrdlVTbFliSy9XSnZwSDdKTjRKVUVZWUs1VGh4?=
- =?utf-8?B?R0l2dTZLVTRUQUJSNm1OdC9ia3BJNDVZT0ZSak4zaC9HVlkvZVoyaC9nb05V?=
- =?utf-8?B?YXJFenJSZEgrTHhadVZhbkFkdmkweU91MnNYVlBVV1NpYlBNQXpHbzR3WERv?=
- =?utf-8?B?ZTN2UklGVTJkVFc1dWRuenBwVTR0ME9TVEcxTnlPSCs5VmZJT1JZWWFXeGJ1?=
- =?utf-8?B?eFQvN2JsMlpkd1ZkbUpkUjVIN29jaGMvekkybEFPSmxPeVJUTUxsZ2FlRUdD?=
- =?utf-8?B?aTBxYW5ENGdsdWlqTFg2b0pKVXFURG1wbEdLZVNJWGFiVytiN2ZOQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe5c8225-c698-464b-6c2b-08df3a1bfaa7
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB5614.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 02:33:15.5670
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7oOIc4ZuVGf5F3JDpQkF2azCBIq3n9NZTiHBLQusYoo6ZHTu9obKjfvBLYp8TXQ0q9CNFN6ZChin36bFAVMzpw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS8PR12MB540605
+References: <20261030202710.3863806-1-irogers@google.com> <20261030202710.3863806-4-irogers@google.com>
+ <25216bda-7e36-4bad-ba7c-1984dbb9dfda@kernel.org>
+In-Reply-To: <25216bda-7e36-4bad-ba7c-1984dbb9dfda@kernel.org>
+From: Ian Rogers <irogers@google.com>
+Date: Tue, 3 Nov 2026 19:48:52 -0800
+X-Gm-Features: AclHuK8jUTP0fZRLAUdhb4V7KjnS7XAslg-dpWxyxMmrVUFMhhemkzjXApXA5fA
+Message-ID: <CAP-5=fXKeqy75_1p9TgrqOgw_Eh8h=U5FB40PQbZhwxczV-CrQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 3/3] bpftool: Prefer zlib-rs over zlib when available
+To: Quentin Monnet <qmo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	linux-perf-users@vger.kernel.org, bpf@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/3/26 4:10 PM, Danilo Krummrich wrote:
-> On Wed Nov 4, 2026 at 12:25 AM CET, John Hubbard wrote:
->> We still need the fix [1] for this problem applied to drm-rust-next,
->> as of today's (Nov 3, 2026) branch, anyway:
-> 
-> We can't apply a duplicate of that commit to drm-rust-next, but I will backmerge
-> -rc2 (which should contain the fix) once it is tagged.
+On Mon, Nov 2, 2026 at 8:20=E2=80=AFAM Quentin Monnet <qmo@kernel.org> wrot=
+e:
+>
+> Hi Ian, thanks for the v2,
+>
+>
+> 2026-10-30 13:27 UTC-0700 ~ Ian Rogers <irogers@google.com>
+> > Add zlib-rs and zlib to FEATURE_TESTS and FEATURE_DISPLAY in
+> > tools/bpf/bpftool/Makefile and use feature_rust_lib to configure
+> > ZLIB_CFLAGS and ZLIB_LIBS when zlib-rs is detected (unless disabled wit=
+h
+> > NO_ZLIB_RS=3D1), falling back to -lz.
+> >
+> > Decompression of kernel configuration (/proc/config.gz) and compressed
+> > ELF/BTF sections (via libbpf, libelf, and libbfd) processes data that
+>
+>
+> Is there any mechanism in place that prevents libbpf, libelf, and libbfd
+> to link to different versions of zlib (zlib vs zlib-rs, I mean)? I
+> imagine you could have bpftool linking against zlib-rs, but the libs
+> installed on the system linking against zlib? Also I think the static
+> build with the LLVM disassembler [0] passes -lz -lzstd in LIBS and I'm
+> not sure how it would combine with the change, I need to take a closer lo=
+ok.
 
-Sounds good, and that's only a few days away too.
+Thanks for raising both of these!
 
-thanks,
--- 
-John Hubbard
+1. On preventing libbpf, libelf, and libbfd from using different zlib
+   implementations: in libelf.so, libdw.so, and libbfd.so, the zlib symbol
+   references (inflate, inflateInit_, inflateReset, inflateEnd, etc.) are
+   unversioned. If we link libz_rs.a with:
 
+     -Wl,--whole-archive $(LIBZ_RS_OUTPUT)libz_rs.a
+-Wl,--no-whole-archive -Wl,--export-dynamic
+
+   in Makefile.rust (perf already passes -export-dynamic via python-config,
+   so adding --whole-archive is actually important for perf too so it
+   exports the full zlib ABI rather than only the objects referenced at
+   static link time), then ELF symbol interposition binds all zlib calls
+   from libelf.so and libbfd.so directly to zlib-rs in the executable:
+
+     $ LD_BIND_NOW=3D1 LD_DEBUG=3Dbindings ./bpftool version 2>&1 | grep in=
+flate
+     binding file /lib/x86_64-linux-gnu/libelf.so.1 [0] to ./bpftool
+[0]: normal symbol `inflate'
+     binding file /lib/x86_64-linux-gnu/libelf.so.1 [0] to ./bpftool
+[0]: normal symbol `inflateEnd'
+     binding file /lib/x86_64-linux-gnu/libelf.so.1 [0] to ./bpftool
+[0]: normal symbol `inflateInit_'
+     binding file /lib/x86_64-linux-gnu/libelf.so.1 [0] to ./bpftool
+[0]: normal symbol `inflateReset'
+
+   That ensures libbpf, libelf, and libbfd all use the same zlib-rs
+   implementation at runtime, and means all compressed ELF/BTF/debug
+   section decompression in libelf and libbfd also gets the memory-safety
+   and performance benefits of zlib-rs even when linking against distro
+   shared libraries.
+
+2. On the static build with LLVM disassembler: `llvm-config --system-libs`
+   emits `-lz`. Since `LIBS` in bpftool (and `EXTLIBS` in perf) already
+   includes `$(ZLIB_LIBS)`, we should wrap `--system-libs` with
+   `$(filter-out -lz,$(shell $(LLVM_CONFIG) --system-libs ...))` so static
+   LLVM builds don't pull in `-lz` alongside `$(ZLIB_LIBS)`.
+
+> > benefits from a memory-safe implementation. Preferring zlib-rs over C
+> > zlib provides memory safety and improved decompression performance whil=
+e
+> > keeping bpftool aligned with tools/perf (including sharing libz_rs.a
+> > when building bootstrap bpftool for perf BPF skeletons).
+> >
+> > Signed-off-by: Ian Rogers <irogers@google.com>
+>
+> Recalling our discussion from v1:
+>
+> >> Hi Ian, bpftool doesn't make an intensive use of zlib (mostly, it's a
+> >> requirement from other dependencies; we may also use it to unzip the
+> >> kernel config on the host if necessary for probing BPF features on the
+> >> system, but only on some distributions). So I'm struggling to understa=
+nd
+> >> the motivation for your proposal, what do we gain by switching to
+> >> zlib-rs when available? I understand this implementation is in Rust, b=
+ut
+> >> I'm not sure the added complexity and feature probing in the build
+> >> system is worth it.
+> >
+> > Hi Quentin,
+> >
+> > At my workplace, we are transitioning from zlib to zlib-rs for both
+> > security and performance reasons. I'd like to keep upstream tools
+> > aligned but they don't have to be, it just seems nice. I agree zlib is
+> > of a lower priority to users than, say, zstd. For attackers, like with
+> > brotli, it is probably an area of interest. Knowing the implementation
+> > is memory safe is at least something in favor of zlib-rs. I sent this
+> > series out as an RFC because I obviously have no way to mandate what
+> > upstream should or shouldn't be doing. There are things that can make
+> > life a little nicer and easier, and this patch series, for me, is one
+> > of them.
+> I understand you're transitioning to zlib-rs, but the current patch is
+> not a full transition, in the sense that it doesn't replace zlib with
+> zlib-rs but allows any of the two options; and I don't see support for
+> the standard zlib being removed from bpftool anytime soon, which means
+> that in practice, we've got to maintain compatibility with the two
+> versions going forward. Others may want to chime in, but I'm still not
+> convinced this is worth the burden.
+
+Because zlib-rs (via libz-rs-sys) implements the exact C zlib ABI and
+headers, there is no C code difference to maintain between the two=E2=80=94=
+only
+the Makefile selection of ZLIB_CFLAGS and ZLIB_LIBS via feature_rust_lib.
+With the symbol interposition above, bpftool (and perf) get memory-safe
+zlib decompression across libbpf, libelf, libbfd, and libLLVM whenever
+zlib-rs is installed at build time, while still building everywhere else
+with C zlib.
+
+> You also mention zstd, do you plan to add support for a zstd alternative
+> as well in perf and bpftool in the future?
+
+No current plans for zstd. Unlike zlib-rs (where libz-rs-sys provides a
+complete, drop-in C ABI for both compression and decompression and is
+already packaged in Debian/Ubuntu/Fedora), I don't think there is an
+equivalent drop-in Rust replacement for the full libzstd C ABI yet
+(ruzstd is currently focused on decoding, and the zstd crate wraps C
+libzstd).
+
+> (By the way, if you allow me a short digression, you had a patch related
+> to the zstd probing for perf and bpftool [0] and I don't see in the
+> tree, do you know if it was ever merged?)
+
+Thanks for the reminder! That series wasn't merged yet=E2=80=94both you (on
+patch 3/4) and Peter Zijlstra (on patch 4/4) gave Acked-by on v2, and I
+think it fell through the cracks waiting to be picked up into
+perf-tools-next. I'll send out a rebased v3 with your and Peter's Acks
+collected.
+
+Thanks,
+Ian
+
+> Best regards,
+> Quentin
+>
+>
+> [0]
+> https://github.com/libbpf/bpftool/blob/main/.github/workflows/static-buil=
+d.yaml
+> [1] https://lore.kernel.org/all/20260909204122.1993010-4-irogers@google.c=
+om/
