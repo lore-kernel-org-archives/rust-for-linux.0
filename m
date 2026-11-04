@@ -1,101 +1,128 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793772535;
-	b=2+a1RTFsy2WTcgYZc8FGsEg3tkVNIx8Z7Ru61i6QHcEl3te9Hj/WGFI313B1Es91gHJi
-	 w8m8Fq6qq8DC7YAJ2Q2GZuX7YB8pEmEpJLS2WSfTk+7JBfgFzanqYIcgaWNTFfj8k/KX3
-	 FaHc44SSkzVgW90SPzgjBub1xWSvXdRrgkpONpnoeY9ko0JLdaHklhkdnDPDIsaKtrw1Y
-	 ha0SmESlJuVMMYLElN8aSt+h9uxJJ9xQho04Dfo5+hq3QwSe5okn63bHJNu27fybVQrLX
-	 N+SPvUDpiYUPWJAPI8cR5E/e6m6yIEP11UK7DpNJQmiZ2kPINVnPvcfe10+gCeN7T6A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793772535;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=JA5vMLT9szW5mLfY0eUYovR/EI3W6f4OqW0QDEaEjO0=;
-	b=LUR+o7G/BZM632ZCJ04l+/STRrfmTbXzq9Se8dEjWM50Si+Cm0BQD6K6qJitGo0olRpy
-	 zroZsI37d2ZCs+Zitm3kDHNQZypTW3infZU1xvmYF75yKFSKRm5aNXFBgq+exFu5mh0A/
-	 5/bKoIpU0NbV9bPrHe3QA4H0FL+B/fb6/7rFKyJjG8Pe0f6mSEJw8aksiGNTxjGytOcne
-	 ePMyMszVeqtoq/2SSzsdFVUGny6fBbqytFtw8qy3vlnMebR8TfWgsHNV9sX+gD6/hi4ql
-	 MN1AzJZmdp10OZIYs6e1qJ8dK8QDNTqpJQXzPDbvxNw5WXaD1O7vIMWZYtTVhGq3DVQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jLmgJ8sw;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.152
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793776715;
+	b=UFg+jUPYBdgKT4uTJ8FxO1M6DXpRzq/whSBYrBlQEtBsWDp17dC53tGkDazFgSQb5Hnr
+	 zuUUMCXFQ4ov1VRcmpI+CVIlL8PwwcR+CDzj4kdJiCzcjono+bbW2iADhvuB6zwQkdcJP
+	 GgYTQufO3g1GG5fbukQp053fBG7xDpkH0yYlx2niPGG7KBhDb+lXeZ34sQquUuFkKbdyh
+	 DnRZPdna4h1qYk2sEAuGfJxm7jWGil5mQ+p+Z9XdvHVfkBqJzLEHGbfTlo34xTgmlynbd
+	 uRkHy/UVgrgFqG4HfZQOE51pJzGjqvn86m7sdFPd1wmqBOfarGyHg6fQSgOCqiDTnOw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793776715;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type:Content-Transfer-Encoding;
+	bh=38+0M1hHMr995Gt0aoapcSXnYcouam3Qlvab25dJNSA=;
+	b=ldl90jW9iw5+smU0BpRnkJC+Xp21sCv47b16JCLqSAEFWcc4ydxjyqcjG+p/4d8u0tUs
+	 hmR7k3gK/15d+de/NswIKCtrnbHMr1G0QpB61EfSlWEmyxKdVvpdzwSvcBgxR0Om9ERQz
+	 Cc5CwJ/6LBgq8YS251BmziFJTkX3IQMBpl4VZlgla2YkTO/bi909LhIOlkGhav6RzReV8
+	 nOI3PzOQzdqaCgT3riLXfXaJ1kVr3ntH3ZVHEj8Uhn+Rln1ATNyOmE85Cu0miEPqfbkVV
+	 9Dm1MWRUz6d8hwWIbmpOojfKarHoelTmyXrcAUAheJ5dS8eeIZKPa6qRdvq59POLQaw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=flapping.org;
+	spf=pass smtp.mailfrom=flapping.org;
+	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=miMNnGFO;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=3k2rHvRb;
+	arc=none smtp.remote-ip=103.168.172.152
+Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6CA606A31B
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 06:08:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B6CA606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48712606A31B
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 07:18:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48712606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jLmgJ8sw
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6b47c1a3c74so329577a12.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 22:08:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793772533; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JpjObOKogv1DSS3/p8xR3eGYIYylZKOc8JwJxWkT1DmFE73wtxWU+AXCGJ/+VHhHwr
-         0DPk53MZRoNKWwSxzq5dsiKHemMnDUsYIhw8M8zg4ud2F6/MoArhOhBWRiSfe8FXQ1uw
-         RScfKpqWbvtQnvbdfovB1gskk4kEqWC/L2FWEGesQmYWR50z5hl2oQp45DeKyAqWydDq
-         Edgq4Knv8Keu1AQ0+gC8COE0uRZHUwPe/IrDQCsGOxpy3D3pVqZ0037Ek8UDSXpIPeeC
-         l6L9C03qHFlFBwBOpS6MxKNBDAXqHYoreHqjF6bMskkTN196LE9oLCcfPBXS4cekmoYS
-         GMSg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=JA5vMLT9szW5mLfY0eUYovR/EI3W6f4OqW0QDEaEjO0=;
-        fh=CSAesJ80TImkg8bRlrloeg7MuYwjufpIFyQRHGmHffo=;
-        b=sRDeUIWM9IvB8VaNvsabvop4VOCmK7O+X1H0+ekajmoI7I9wcgi9MJRaUhsuhYpWQp
-         G97W4Tw4uOAy13E91wpY862osANasTZJ7PLFCnKqaNvg1X5JQwyXOM+VvJNra4825YUG
-         IIjd3Yg7p4EdsFm/flcsaMoAAO/DE1mOGJWtcT5SwliNg5d8f7KoUY6JRut9hxdBLgZW
-         0TUd07uUj8vC1RmF2mzubvPJv+ib5xQlRzQgVH/Lss0l3NwuJxMmDNxMySxKOJVcPSGc
-         tsfqJuEr641YD8wl/rdc8j6dZxPgy+6WWsoSPMIOaP7EEqNVbyNipSNd2BCaog8EAWdO
-         8gsg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793772533; x=1794377333; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=JA5vMLT9szW5mLfY0eUYovR/EI3W6f4OqW0QDEaEjO0=;
-        b=jLmgJ8swYkdf0IbRypo70hgc+XnzvV95AGf9zO24fj6Q0uAZt8QCX41OrrIl7c6A2Z
-         noHBrpPEAOSTyghP0T/2Kjbj/BmvQoLjlltBRDKVoVhgdNNSlF+VhqVgl1nJUDF5og4P
-         aiJb0wB1a5mhTv2aa/gMtoBpbaOf/F/X73AFZlMRhjPlu2T1SzzxTCoI+yy2ULhbYENe
-         jo+/FZgh22tcl7RgXsGlsKiwDNuS09GVzknyMkzhxAdWeUtJ/q9ALzF7K1AKSTEppjmZ
-         c9gGmrx2HDo2yxaHW1ULR6pUgL1y2x14xx0JoexDA604AurzkrJbR6d4r+Gb2yD7ASyP
-         tDLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793772533; x=1794377333;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JA5vMLT9szW5mLfY0eUYovR/EI3W6f4OqW0QDEaEjO0=;
-        b=CoKHOchTJ10G1ZhgCtCnh4NYCULIS/mTR7gyblCYCnvFdreZLJPfUzdXb+csOEUJZa
-         Xo4ENOK5dIxRClpNcbr3rduJnscqnmIU1piy4EWcMaKuLX1VllxEx+xw23Rdxbj2kO9h
-         6NjVFcHL+EIrXpTgTV9W959uCDc8cn1j7NtIklTu5RClCAXu4ZXr3yNlD5/IvBBzNBw2
-         p/L5qEVIgg2MuOTn+Weq5dzTdsC4e5k172usMjfHBGpbYIM5PA2fG9OpZE22f4yVnSDP
-         WXgrnbSK3/A6ZK6HqvCa7QJkcmYzBQILYXP43LVWMjZSJg5kDdFHV9FkwLAJ1TNQE+c6
-         RhYg==
-X-Forwarded-Encrypted: i=1; AKwUvBzeXv1Mi8hdPxeG6bEF8Ouosia6PiQ71HZeu1w+y96qriwKHU6F6N354ykNHMHCe52HUijM8N3VH6OcqeDPfg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8kk5YTxkwuE0V7rgR4GQHQpbhunTCpyogjS7kBBPobT6EU1kPY
-	ZS+0EeOsmv5ZwOq1GeFTn96+L3E1pc8m6qtyZZidjE+X3xaa7n9h3/ip9VCTFhAiBYjfcQ18l5Q
-	omDjuzplsktN9w7wNV68+TGrfoUe3RvM=
-X-Gm-Gg: AYBFou2N8DJn+sQSG6OubKuBm6m0aJSP6/jjVqyPm7FmHHd/tUcQDuNWFGaiJb+UJrc
-	+fKCwuVwGF57jcPqdytBJ1D3H2MJdu0YJV94ui3Sr1G3BllMCux59lrXDBEOdjzpT8RyXTG2yg5
-	j1RAze+U/pFWVHwplx+uH8e3uSzfLJpHHKRc8YKkqV9j8Eht7Ft9L/sx7vnCL1J53ZwdenuW/2H
-	Z6wRP/SNvHB1hhwNBLvTtKoPMnOTG1KOz1zyLMi+Z+bki8tlgcm8nSbupIU777/fVXR45a6ehDv
-	uKs8E/YZ+wmazmyAs2QD3Nyt1MeNRhqUDhbVwM5yswkcIuGg03TQwFyTuDh/5OrES0DFaYYI0+C
-	DnrbmJXYO1b6GoJLlAmMyUDX4SCnuyJTq2/OktOvhn5pu9Va/WTixj8LtOitSsJPPPRfw68dXmd
-	ttmRm0BGo4IUf1UA==
-X-Received: by 2002:aa7:c259:0:b0:6b4:2638:8ef7 with SMTP id
- 4fb4d7f45d1cf-6b4d468226emr8448814a12.23.1793772533397; Tue, 03 Nov 2026
- 22:08:53 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=miMNnGFO;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=3k2rHvRb
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 78AA01400138
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 02:18:34 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Wed, 04 Nov 2026 02:18:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1793776714;
+	 x=1793863114; bh=38+0M1hHMr995Gt0aoapcSXnYcouam3Qlvab25dJNSA=; b=
+	miMNnGFOHvPO0A+1NzjcopqUHlqXxhPL4f6NV7rm94PVwQ2/oIy+7mKDOULD0dbG
+	Wt/gByWxXD8RVOe6Twdy0035ubi91TOhpCj+QrGa60Y0cCMPi62xFjIaRBSmxx2X
+	hIgP1nPYf/sfKD3NjPtq01rSLx2yyXItkdR6B/j/SXW7KIqrGU3X+NmYulYrH1LI
+	MqoD17Vn171rHLwVOlBsAs9r3AVXbRrEFaMCUhBnmVgCPz27Ec3fpYnnblr1FffZ
+	m0VYj3EarIa8ELAW9C/LUtm9aktEdaz0mZv3nDrAirxjLkilpIMrPViOhOikQovW
+	vLy55t+nKPDOXG9b5J0Q3g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793776714; x=
+	1793863114; bh=38+0M1hHMr995Gt0aoapcSXnYcouam3Qlvab25dJNSA=; b=3
+	k2rHvRbF+/fD+fnwsQ3m71vPnDBNwfcUhYPvslOUDUH1viB27zry1anohx8RUiS6
+	W07IC0BP+goVmdymzBOfWZ3R84+znppBlFW32RsD5lxQQzAhwIU8I6l0KB5SRS5K
+	cr/hXOj2kUZ9NH80c1EL6+BO9sgT00TFAmeo++xfRNsallDOODNZA/uJQXGKM+LN
+	US8eMQmdr49H45hNsZkitQCYiJFahHP5nIPzL0qFZ20g2KH90vL+8Nc3X29mpTjV
+	mmf94nXuLKVoNJAUEOVpyWfW5/2IqPzmYdreqZqkuTKByn2LaMDVJk3E8+hGnqxT
+	nskSo4cks7caAiGytdlfg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=sign d=flapping.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793776714; d=flapping.org;
+	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
+	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
+	s=fm1:rsa-sha256:IiFtMk1nSYTGXZlBa+TapHoIH5ezSNaUhAypgD7ZNWq8IQa
+	npzx82rbBSHLldr8YkAZfxpVxenhx3ymoG7YA15nCI28nkJ7fpShzzV23uL5j/iX
+	bSecSnDRF51ZSwk0NF3679EkVb8gIHpFAydqVC6ahCMApZY732aPXabqCpI3hYeA
+	JrexwM8xd+BO0lY5hTbMF8E7PT6VjN8gwqbIkkyntFK54FzJy0MPbATR4pfHYap3
+	Fsjgb43zKYqPp/iQI8KdNyng0SlFzE5Ol7mkgU2CHbVBaARF/13qnsPs3henr7qX
+	UkwBDuisNcZQum28OnU6zqDROpxD7qWfIx5M6hg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:vuWZ7Eh8JZ5yfWHXaPws4U99VXZGLRB49uTcygt83mQ=:QWPOBnQY3n2dTrBIMuf/rEqMV/jwuFTbbkIKcsZE/bw=;
+X-ME-Sender: <xms:Stzqan_5EsdkXMmqzYXTivv_FS_cDSWKoMYjyo4yFYuZB5klMHCfVw>
+    <xme:StzqaiOT1tFI0vNE1ae2xJsZf9YoVHcsf4WD7ExmoQJ9imMS3Pw90SWw0VQVcubmm
+    vmadb9o6K9YQuI3VqL8B8LznrtfaOLCP2TgJlBFiRUyfw0iySw4VHc>
+X-ME-Received: <xmr:Stzqar0zzpSLmDZ3txUp_Jt8GORD-pOlIGBuQhfBvGcg5U1kE8e3b3ENGoak1pRuuZooFJDZas5Chv1hFlhlmhjy>
+X-ME-Proxy-Cause: dmFkZTGcO86lJ7UQYlZM8KNdBHjtzrJ/vw3waeGDbtc17T/IbW9n9jCa7w4rVhbadRYti1
+    71gqZKf8auUcKWmg+Y9Jw2PWhspV5HlW5QFWD7Tz0eywXRwBQoFq0+F+qLf10zaRq+UcnR
+    YCqqQyAsJOPOCQ2RJntkho+Erqvv5bRJZZKGZeKpoz9KZsPVQyPfCEpifTnClxHgVZIK29
+    vEZ9fbRXVYEg/1aW5gHZolvvIyF0bbCH9dBghRPXzDBeIgHHjGMW65VAS8y51I7iaszBxF
+    mo71z2Gmv/HuINjnFXrwWnLeDQ99igGHRR6+2SkSpfqXCXLQiKTWsc4i3EQAnGIK1icWLc
+    wH2/WP29hhq86yX1yfLOWNPG7JPLjXa+O1mj/oBwIuceKHywzb77QNkRLLMuCUBP1KQjOe
+    zL1OKxa/19qD425ONc023AM8022fZb8Mx+cPG7FNhnz7MP0BMQOqBSpM1HUmOhWVRfpU1j
+    p1+PeUZj3Jl/WdL/vZNULFzNIW2k4zw+Pi9CrrDVGZco9yj2A9sYOj87Cyau8bl5ciXKE7
+    DqUt4UKmWpDNJ6CO73NhFQgVvZ9YHmhdGP607wvLcHGpvJil38cxT8Y1aw0QCJ43p5nljH
+    223KQk7pPf8F3mSYc3UY5PHQdC2rHRzKqd1emJhf+X4QNUlv1oH+W1sju8mQ
+X-ME-Proxy: <xmx:Stzqajch6gdxu0NnFEhpGD-Ldr1XLEybizMHB6WgpA4kJHFdp8M0mw>
+    <xmx:StzqakbMOtnIHUfSb_ep4eaJopyl5sVeCvOB9ije68Rzv6PibcdjlQ>
+    <xmx:StzqagVcUJKY0qETDFt8mL61t1G0nbCXd_r2ZDe7cUmSkdimbeeoaA>
+    <xmx:StzqavSxLIhCCbN0WrsOYwWZJ8DUtHwLW78p1yD4QaniLSEYf3qaRA>
+    <xmx:Stzqal_IU-DMj7L0enCmgsguvMKa2dVDUkAKfUp9yOCug31v38_vhg8b>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 4 Nov 2026 02:18:30 -0500 (EST)
+Date: Wed, 04 Nov 2026 16:18:27 +0900 (JST)
+Message-Id: <20261104.161827.1314980875007049737.tomo@flapping.org>
+To: gary@garyguo.net
+Cc: tomo@flapping.org, miguel.ojeda.sandonis@gmail.com, ojeda@kernel.org,
+ a.hindborg@kernel.org, acourbot@nvidia.com, aliceryhl@google.com,
+ bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
+ daniel.almeida@collabora.com, lossin@kernel.org, tamird@kernel.org,
+ tmgross@umich.edu, work@onurozkan.dev, rust-for-linux@vger.kernel.org,
+ fujita.tomonori@gmail.com
+Subject: Re: [PATCH v4] rust: compiler_builtins: Fix silent trap in
+ prohibited intrinsics
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <DMM6QD2BUR9V.37KO0N2MXG64L@garyguo.net>
+References: <20261009224626.1331914-1-tomo@flapping.org>
+	<CANiq72nxjrWpBjwzgdWncKECKwzj6zfjS3XC=da62xr8wiSxEQ@mail.gmail.com>
+	<20261104.075702.612319673416199209.tomo@flapping.org>
+	<DMM6QD2BUR9V.37KO0N2MXG64L@garyguo.net>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -104,90 +131,39 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20260928011123.450800-1-alistair.francis@wdc.com>
- <20260928011123.450800-11-alistair.francis@wdc.com> <DM4NT7TFX4X9.1GFI128LI5ZQ4@nvidia.com>
- <CAKmqyKNEup=x+bwmPD_8x0s4ssPkqFnQtSGqJ_82z9oDP=A6cA@mail.gmail.com>
- <DM58HRC3DHSS.1YC0E53ZXANT4@nvidia.com> <CAKmqyKPwirjmeBQvXgheY8Lh-M-RRq5pdbv=5mB4duhw9aCbGA@mail.gmail.com>
- <CANiq72n=eqh6W+iNWPdM+rrc+HujtZVRtVg=JB03OMS8rc5hiQ@mail.gmail.com> <DMHAUFW5V16R.20XEO2QDXIGGG@nvidia.com>
-In-Reply-To: <DMHAUFW5V16R.20XEO2QDXIGGG@nvidia.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 4 Nov 2026 16:08:26 +1000
-X-Gm-Features: AclHuK8yY3BZ4pKP3zSAvQ1_8YS2crIm1mKvYKw4mutZUrcwZsReUT8BFmZzmzw
-Message-ID: <CAKmqyKOLSAFZNNhLH7hTVuTRs0Mb17jsbrjsesDWaN7CoN5dNQ@mail.gmail.com>
-Subject: Re: [PATCH v4 10/22] lib: rspdm: Initial commit of Rust SPDM
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, lukas@wunner.de, linux-cxl@vger.kernel.org, 
-	akpm@linux-foundation.org, Jonathan.Cameron@huawei.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	jic23@kernel.org, bhelgaas@google.com, alistair@alistair23.me, 
-	djbw@kernel.org, linux-pci@vger.kernel.org, wilfred.mallawa@wdc.com, 
-	gregkh@linuxfoundation.org, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	benno.lossin@proton.me, boqun.feng@gmail.com, bjorn3_gh@protonmail.com, 
-	tmgross@umich.edu, gary@garyguo.net, ojeda@kernel.org, 
-	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 29, 2026 at 9:52=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.=
-com> wrote:
->
-> On Tue Oct 27, 2026 at 10:19 PM JST, Miguel Ojeda wrote:
-> > On Tue, Oct 27, 2026 at 5:19=E2=80=AFAM Alistair Francis <alistair23@gm=
-ail.com> wrote:
-> >>
-> >> That was kind of the goal with `SpdmState`. The issue is all of the
-> >> drivers calling this (PCIe, NVMe, SATA and SCSI) are C drivers and
-> >> won't be Rust for the foreseeable future. So there aren't any Rust
-> >> users.
-> >>
-> >> I have improved things a lot with v5, let me know if you still want a
-> >> Rust API. It just feels a bit silly to add one that will probably
-> >> never be used.
-> >
-> > I mean, it is true that we don't want dead code, but in general we
-> > would also want more Rust callers in the future -- so I guess it
-> > depends on that "probably" you mention, i.e. how likely it is. So
-> > could you please elaborate? i.e. why is it that you don't expect
-> > future Rust callers? Would the NVMe Rust driver want to use this
-> > eventually if merged? (Cc'ing Andreas)
+On Wed, 04 Nov 2026 13:42:27 +0800
+"Gary Guo" <gary@garyguo.net> wrote:
 
-You guys might have a better understanding them me.
+>>> By the way, since this is here (in `kernel`), do we need then the
+>>> original one in `compiler_builtins`?
+>>
+>> No. With this patch, compiler_builtins.rs is empty, so I will drop it.
+> 
+> compiler_builtins as a crate must exist, so you cannot just drop it.
 
-For SPDM to work over a transport that transport needs a DMTF spec. So
-right now SPDM will only work over PCIe, MCTP, NVMe/SCSI/ATA or TCP.
+Sorry, by "it" I meant the `-w -W '__*'` line for compiler_builtins.o,
+not the crate. The crate stays as an empty crate.
 
-From my (limited) understanding of the kernel's MCTP subsystem, SPDM
-isn't going to happen in the kernel. I don't think there is a need for
-TCP support either.
+>>> And now, here, in `kernel`, we don't seem to need it either for the
+>>> original reason, except for the `objtool`, but also for yet another
+>>> reason: if they weren't weak, they would be exported
+>>> (`EXPORT_SYMBOL_RUST_GPL`). Which again points to the fact that we
+>>> should probably clarify all this with a good comment or that we should
+>>> do this sort of thing in another way, e.g. in a separate, small crate.
+>>
+>> Right. The new crate is not in exports.c, so the stubs are not
+>> exported. Then the weakening is needed only for objtool. I tried the
+>> new crate. Without the weakening, I got an objtool warning with
+>> CONFIG_X86_KERNEL_IBT=y:
+>>
+>>   vmlinux.o: warning: objtool: _RNvNtNtCshy5ABSPeoCG_4core3fmt3num8exp_u128+0x381: __rust__udivti3() missing __noreturn in .c/.h or NORETURN() in noreturns.h
+> 
+> I think that can be fixed by adding out-of-band annotation for these functions
+> in objtool? That sounds more preferrable then weakening the symbol.
 
-So that just leaves us with PCIe and the storage bindings. Both PCIe
-and the storage transports have old well established C support in the
-kernel. So those would need a Rust implementation to use the Rust API
-for SPDM.
-
-The NVMe Rust driver could use this! But that would have to be
-accepted upstream first. From my outside view I thought that was still
-a ways off.
-
->
-> Yeah the "probably never be used" part sounds a bit strong to me, unless
-> there is a reason I missed for why no Rust driver would ever want to use
-> SPDM.
-
-The "probably never be used" comes from having a Rust
-re-implementation of PCIe or a storage driver.
-
->
-> Regardless of that, I think it still makes sense to have a layered API
-> design where the (necessarily unsafe) C API builds on top of a safe Rust
-> API that enforces the invariants and other rules you want to uphold.
-> That makes the invariants that C callers need to uphold manually clear,
-> and avoids having C-isms in the Rust code (like we had with the crypto
-> APIs calls in v4). Not to mention my favorite: it makes things easier to
-> review. :)
-
-Ok, I'll add a Rust API then
-
-Alistair
+Josh's objtool series adds an annotation for these stubs. v5 keeps the
+weakening.
