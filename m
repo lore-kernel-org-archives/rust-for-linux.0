@@ -1,100 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.95.75
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793764146;
-	b=mU/AASNOnL0CrKgseNIHCjyElLNcbnCpyYcHSjjksoUOdT/6o1pdfHF4ZRonUvZgyHal
-	 Bjzj3OALAEzLiDx8IRVNZARv/x/Jd4OmZCBT1hQ82BWP40de94UUK/FDKioiqaFSm+c6Q
-	 sQb2h9EuM7wfPgrsE153elwPiaYJ5JYmeFbbThreBd41+6Cb/V9kyTA+XamadrdyVLEXH
-	 Rg0lM73U5LFSSQYf3KXdQMBt0MNFQKqItXgyFTWhrt5xZ3z66fPTlQUsJg7HsBtPsMY1U
-	 0seievbglXEUO1PDt8O69rzHk4EScpDL9CvATZrOm7F2J8RrA3eHRjjFW29My198teA==
+	t=1793770829;
+	b=3+QiNm1+M1Z68BJA/JyUWoF30XCU24Q51qSWOuKp2Bt+6luJPnvgUUpS/1uIFJvHnnQl
+	 WglYYMzXGyyEhG7pgQF2lnngm6ei8ga7Dl30MoAcc8HmQDbWFStV465Mmgu7cLRUwFC+V
+	 BXCq7843g5bUkf8hck+RmO4tVDoq8AaFEl5+vindHyzwySUXiJ/uB5jyQMaF9lcjfk02Q
+	 ROlG0M1uL0oX946WxduCWYLRnmtI2jbSTmj7HamYCjKJTaZotByEhECyV6zuU3xDaKbF8
+	 Vu/skRos9WS4oo2QKDd0P/cYb9X8rT/0lhNvt1KmRLQuIQsgWoPXKJgDwOyRi9NAtrw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793764146;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=cKWjRS9Xq/l8hl3060rXc9wXNrOk8HsfCBzOk8+AuV4=;
-	b=PBO79G1O4nNelHZ+RMnjpPS8DOJ2fV5/UJPp7ZYFqP98BX+JG+yr7usC1Nc5NQqXaDcH
-	 JwoNnzEE6f7/MpIC6Z531QNo+we08VpkCrlGOzP/ayEkZYa0RLd6PDaqj6kr85dOQMvUw
-	 RkRkgPo7z+afd+W5kUiH3tVF5Wa6eaAFGL944CDUrneEfPXdLM38Z9Prwz3Jy4S8ta2fd
-	 xUiidhVFdXZ7PpDNwte3wc4EU34MAbKGAh4UeaMmCSHUe0xN4x2y55o9UST70TQYwf9vO
-	 14D5yFBScUk35R8ApYeIYXCB4BFq4OBF0yT9IM6v5l5uhP1SwEdoT0xRJtiLCLDKAfg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793770829;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Subject:From:
+	 To:Cc:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=SNBnXxj9iUXIAk8FOW+hQF/yy44iqt9zb7n0OKXzyic=;
+	b=D++2ekBH3GBbNMUs8u8ZKo1QPnG5EsblPAq1KsofgbdKHBN7jUOktnJGlBgHJXX9UmJn
+	 esl+ceLKRzkSqvwtJgup3GRA6Wb6g7xAQMcHhwmCTUYmVK6G2efOLyXhAYWDLLfUwNRUX
+	 c21A4dz6FR1BUWlIfT7rh1ovDXLt2nG9Q/6q8HxQ31RZNTdooWQitn7GCn2sP1EJU5rtn
+	 UQ8jvxdmk83PhSga3cS/+1QYBMwglaBF6lq6xwU7qaxriPcDvcN1LTrBIhXZa2ZoUcdK/
+	 YDRywZxRv7zy4D6iyD5W5Aep/2s6TLOEYeiwvv0GRR+ENxNVTnDT1FqWP7ozFLLlcDg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="Zff7lCr/";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.171
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=garyguo.net;
+	spf=pass smtp.mailfrom=garyguo.net;
+	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=Ro8ur+qA;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.95.75
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021075.outbound.protection.outlook.com [52.101.95.75])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF74606A329
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 03:49:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2AF74606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F41D606A31B
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 05:40:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F41D606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Zff7lCr/
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-533202fe429so155031cf.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 19:49:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793764145; cv=none;
-        d=google.com; s=arc-20260327;
-        b=MBraYf7xE6TyOs+BPLHl+qpMg6q4XVCFXXT7N+L2MQNPDWdVhsZUdKj9/lP8MATO9K
-         eV09zfMf5lmeflv0UKcmfkcIBjhhV+iDZKULs9VWo6jGae1HEB+L601Nv9tLHSBoloWi
-         3yLIiWtnprzj76a1ZF3lFcFMNaPbXGble9eXVD8TEbmbL490YJt+yXSgG1ixgY4F5c4t
-         24SfJTIX5KPJtnji7B/Kl6slm8KQ3Ox5mRJQcuo5X36r7MFv9OA2PEplr3P0mkJU+JDH
-         yqJhZyY11bpEbX0IGVsci301duyALJDtrZO7s3aqRou37ddoB3f0Vha8ceDt/7Wq3PJn
-         dPbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cKWjRS9Xq/l8hl3060rXc9wXNrOk8HsfCBzOk8+AuV4=;
-        fh=hohJDbfStfgiC35KCDMx2wJZ4K/ety/NE8xkE/+/B+Y=;
-        b=DnwE7Gp1C1Ukpk8j066Ja7WE41jrj0QYrQai5L2cb5bmkVRsO61dPHF3JcaONF5SbX
-         Lzb8n0hTDHle5IMpaMrdX/y4Kyj4PapeoVI+A2Ufb58LVTwvQXK2xONW+/3PUTsqB8Lo
-         gyDYIHrGIX0W7f0Ay7UaBRzlOGrpElqwTKYNSS+czijINohoNlCfnw5LdTgZCItOsEGR
-         aSIJeEsqkxqYq76FgWdtB/3b41EcpYYaoQ+uTDTH/JbD3DWVlnIANNpD4o8PWhcFA6Jc
-         vHZFTrFkYRPgXIAS9Y+tPkOCTw+g+hiIJ5QgzJIXwlOBYzYyjlHmE22tF5Hbml2OGJmm
-         e7ug==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793764145; x=1794368945; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cKWjRS9Xq/l8hl3060rXc9wXNrOk8HsfCBzOk8+AuV4=;
-        b=Zff7lCr/RYzDOMb26mR07xi/YgRsLCknrcp7xuB7uYbEei3iXUJHgJAMS5sDc9s/p3
-         e5VGpX9uTqFK3Wdv5gDPAQxvyroQYQfHwlWZlPA58bsPYLpTlyfBcRF4WalCLlkbFevK
-         VSjvYCAMvny47vCLyYeWEr0vylVwhyEkDw0z5B8YPPpXD1zmHK9kWfoVCm+6uPTiWp4W
-         2jN/qeIPx4hx78uKvP0NOTWfQepDmHq1Pln6bOhyt7nqhnVPCkbcsmrYHjX93TUtWnIh
-         RcY3+kfHuG2RPAAWQ7dhhfhgP6QZ4/o2h/vMA3mI4hrEvYdwmBXODg8YOv8Ybn8qgR37
-         8TSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793764145; x=1794368945;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cKWjRS9Xq/l8hl3060rXc9wXNrOk8HsfCBzOk8+AuV4=;
-        b=iFi+wDLBptW7iy26mPNlL5uekPvA99urOta/Pi31C5XvN7FdyJRmD8GacHYswtMG7h
-         UFSE2v0sXgzKMU46cGLV1h0Lrz8K310pI3mYxDya5lrYj4z2ctjmLytmLwbUb+6ooQrC
-         J/8HAsEj7+/e2CsX0ArH1OI8B8aP78T351eHF6fLjkp80g6ocChyAHSgT8rwRwcIFTL7
-         vp7bRNzXytdkqp3YJ8dF2eY1Y1EuGyyNZfMV+8SozqoGl48R4RCqP1pqZzjOyJ9lyYwC
-         vP+uUSqOxdInxskdz7sPYoVLgBHp8FQ4P4PcPbMm1p049PwMugK4c8LK9PFP8GG9HD21
-         Qs+w==
-X-Forwarded-Encrypted: i=1; AKwUvBzQymfkH/yXnxK9qTlrUrG1KL6t12FoS5Z6U4vQpJsOyPPavvBXFukbDoppbp07F65o/uQCDJ6xNr+5jp8ufg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+weZ0QdTZrj95Q79rDqng0CK88HeufOhCUsPmRDnxiy3WtJeVd
-	MFIsehmJechajRSs0MHSWy+q5vJ8A43rjbbPtEfarTEryfx58u1HB0NsgAGHb28Tj8tqTleKUTA
-	TRX2CWF68GM9wn1dKjAavuXoBrJnI+2X2Txpe+miq
-X-Gm-Gg: AYBFou2Z22ais7bicM0HreOF+jbOl3dqarh7FsuZBt4A8J7O8cHiXYT+yYA2NFKztmL
-	rVcmgLPJQW0/0lQI14ZVM/8RirtLK7uCaLWinHuOk7b/h5lQPl5Buo8OfYA4Ha9jETRQk5dumaM
-	BIF17zIUiVGE4yqdzODK40mNfHiHjNYBgRJ0vpq3XMvkD/kpyevwRZG9/XxbUOCbE/270s9lI2Y
-	2/Rw9ebLts6jS2/E0tQElaITW7u5uE9ObZEgmYrt29y4wYwS/UMUlBzYcRZ1SLYYs3WxsacIbuy
-	sikAFv55mjAsnJ33FxRPlzgok17PdrOuFbkRHTcL1VYeEbSJSDAmgyOr3TdVOP20AUmkeUaOIVy
-	Jb0katkRkHNIjlMlnlnoKaRMUiqZ14m72eoqGyg==
-X-Received: by 2002:a05:622a:2298:b0:546:92f2:7830 with SMTP id
- d75a77b69052e-54b61e27b15mr3087041cf.6.1793764144251; Tue, 03 Nov 2026
- 19:49:04 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=Ro8ur+qA
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ff63S7l0lJks5DmhOxs5cNPO+6glis4iHlmJVh5xO3yzRBRHZftd6KBCVQ28yEd5O4elhSCpOqglP/wHhXFpdYffdo4nLiVK31AGzhwvdOPfpfB7V/QSojArDGD5W/B+USrLWSRZvOZYVA2gvr9d4KopSM7vg92Wl9l6af2WCxMFRwZJiIvCl37FJuiDfFG+QXKpUsswgHoeI7q2GEzZe9jlXXrosxKY5GC1ZhW5HfuLfw6YXfLTRlL7LwUrb+iGlv38+OqvYh0xVzLCh8xrmEdlUl2vs8c/G21iQBXxmlFdzxXl3oVa+M8Nq6HKa84Jv9gH8dX6bIFxkwWezMHHcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SNBnXxj9iUXIAk8FOW+hQF/yy44iqt9zb7n0OKXzyic=;
+ b=BLbQshUuGNMZ5P8KGiod3c+JgGTvHT4rKHqMeOjO5a3qUkt1iuvHWfLGmgGEB2Q3tK3QC63MkvJ5/hS+BRI+Wa2iN6P5uYXv4MGiNpTwTUEPnHOaFv0+Uw9mcMyszw9ZIPs3Ozhh9kRINKeF08r6Qhmc2pSm6DJFo81PWn8mKE0Yv2Lta5Yj2zIu20R8eKztRRf+W5ZEMg9LBk2pMg+yp5YD9aG/uiQLoWvAx5fgfzSSq/E8DPvEAI7Ikec9m9rzaA8nT/sRgLulvovyq6mbufNIj3unME2/ljWYk27IbJbmkbIghguH64KKsDQ/aqLlDD3ZKiuBvlhMaUdfMBYepA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SNBnXxj9iUXIAk8FOW+hQF/yy44iqt9zb7n0OKXzyic=;
+ b=Ro8ur+qAu9DdD0wkJFBdrMfgj/5U+sOY8leYuiGy1zUdmu6BN7qbfpSRpXe0/jZ1bDf4H8WEOXmxYritFHyM41wEv4B7+ugs7Cs+oZOh0e8WQrzmnaDH13p9o3ddDgyBj1UdgVL9rK+E3k6enykSbxgY4kxXdDUSKDzQ4+qgou4=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
+ by CWLP265MB2692.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:a7::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Wed, 4 Nov
+ 2026 05:40:25 +0000
+Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0592.009; Wed, 4 Nov 2026
+ 05:40:25 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Nov 2026 13:40:11 +0800
+Message-Id: <DMM6OMQRS6UY.17O4X89AIPCS7@garyguo.net>
+Subject: Re: [PATCH v4] rust: compiler_builtins: Fix silent trap in
+ prohibited intrinsics
+From: "Gary Guo" <gary@garyguo.net>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "FUJITA Tomonori"
+ <tomo@flapping.org>, <gary@garyguo.net>
+Cc: <ojeda@kernel.org>, <a.hindborg@kernel.org>, <acourbot@nvidia.com>,
+ <aliceryhl@google.com>, <bjorn3_gh@protonmail.com>, <boqun@kernel.org>,
+ <dakr@kernel.org>, <daniel.almeida@collabora.com>, <lossin@kernel.org>,
+ <tamird@kernel.org>, <tmgross@umich.edu>, <work@onurozkan.dev>,
+ <rust-for-linux@vger.kernel.org>, "FUJITA Tomonori"
+ <fujita.tomonori@gmail.com>
+X-Mailer: aerc 0.22.0
+References: <20261009224626.1331914-1-tomo@flapping.org>
+ <CANiq72nxjrWpBjwzgdWncKECKwzj6zfjS3XC=da62xr8wiSxEQ@mail.gmail.com>
+In-Reply-To: <CANiq72nxjrWpBjwzgdWncKECKwzj6zfjS3XC=da62xr8wiSxEQ@mail.gmail.com>
+X-ClientProxiedBy: SG2PR02CA0134.apcprd02.prod.outlook.com
+ (2603:1096:4:188::14) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:400:1cb::9)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -104,173 +103,103 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261030202710.3863806-1-irogers@google.com> <20261030202710.3863806-4-irogers@google.com>
- <25216bda-7e36-4bad-ba7c-1984dbb9dfda@kernel.org>
-In-Reply-To: <25216bda-7e36-4bad-ba7c-1984dbb9dfda@kernel.org>
-From: Ian Rogers <irogers@google.com>
-Date: Tue, 3 Nov 2026 19:48:52 -0800
-X-Gm-Features: AclHuK8jUTP0fZRLAUdhb4V7KjnS7XAslg-dpWxyxMmrVUFMhhemkzjXApXA5fA
-Message-ID: <CAP-5=fXKeqy75_1p9TgrqOgw_Eh8h=U5FB40PQbZhwxczV-CrQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 3/3] bpftool: Prefer zlib-rs over zlib when available
-To: Quentin Monnet <qmo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
-	Adrian Hunter <adrian.hunter@intel.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	linux-perf-users@vger.kernel.org, bpf@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|CWLP265MB2692:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6b21da8b-b7f0-4f39-d9b7-08df3a361feb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|10070799003|1800799024|10067099003|22082099003|18002099003|56012099006|4143699003|261026121527099003;
+X-Microsoft-Antispam-Message-Info:
+	tJSA+YFJ3llrsUgihlSIfw7V1svRnhXT1idEm3ervSWmpiLgWQnrGktetZWlujIOfafMrJI7sO6p3w6oLyw/3GqVCwl7FOZEKQ73UNEeEzNSUUUs56hlr01QtWGzgp+lHwW3bHPwkkP8eI33w6AK8TIHruADH43Y6qy+DscxKVLOHMu/mF6Oj6zMoU7fNhuz51iz19Af6iNXsiP4yjOoP8RtJjOptz/P40M1RNRYPwk8erBfJ6ouivZro2xwe+MZez42900K+avaZ/88WBg5WiHxVJzgGz2Mc4yCTjtlhOK8AibVTy3KaEmeV7/C62KbWucGMHAAm2f3pnFXdXoke1WYXx2zI0G93jIOn80PpTItP6CMmWm6ixwFPoqm7JiRXIhI2w5vmSHIudTG/yAZ+9V1aiDpMF6hwa5vh2yByawLwNkTQOhNtI0O5N7EJY+ogf7kUkQiJG1EgKlaH0ipYIEgq9llLKZMrd49Lhi3CZoYNDdtbostiJd4I8AKWE41RB9kbPZa0YGyx49V19ahQorpTjnPUWT5v37oajPOMoDJ2ClQK5sBpo0epvVi+Aeqa41JxcMZ55yqlwogj2QvD+bgpiQF36adUL/xynYR3oxlY3+VwqRa8jhzHSMoARTqc+7Nu4JUrCtgL8C4qNC/kFAJK9zSkWITj74ZzJBtWXo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(10070799003)(1800799024)(10067099003)(22082099003)(18002099003)(56012099006)(4143699003)(261026121527099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TFZlbVdpSW5SbzAwS2kwUnl5OEZrVWRoR0pvcFRSbis5MFptSXdENTJtTnlm?=
+ =?utf-8?B?UkR0bGhjWG1EaURQejVwa2cyZ2VHUU0wQ0xSMGFkd25weTBiaUNOVUZwWHpY?=
+ =?utf-8?B?QmU2YnF5cDZvYVNka2VucUZkdjU2UjF0OFByTlhUNTJWNEFvTmNVTmFPQ0NU?=
+ =?utf-8?B?Y083R1Z2dktLY3VXbmEyYVN3MCtqNzdzbkZWREFiM1ZVSVdFWkRFVktmbWVV?=
+ =?utf-8?B?VkdtTjEvbHhVSkhKa0d1bERZdTdnZHdhSm43QTcvOW1QWkpVQjYzQ0pxVXJN?=
+ =?utf-8?B?dTM4V1VXekEyOTBMTzl1RTgrbUtsdjNiMW11NVErSndRV0FYVDJHb3pacEpy?=
+ =?utf-8?B?YjgxQ3QxVjJFREZoQkgvRGFlTllpTzZVV2tEVit5RzNsbUZ0V2d3SmdvbHRl?=
+ =?utf-8?B?WVV0blVFbUdncVdRZVdlcTFhNU1KeVlVLzNVd0REUzg2cytGVGoxOEN5ZmVG?=
+ =?utf-8?B?bHdZMDFnVXc1clR4eE9NUWxqdkFFMXF5cUlKZnB3NjRtdEdqdGgvUXNrd0Jn?=
+ =?utf-8?B?Q3p6NXo1TVVNeHd5UjVQVHpaZWcxUDEvZmFEVUdoZFVHQVZ4RU81SXZtV0hv?=
+ =?utf-8?B?UEE3VlQ2cjduWENuSDc3RGQ1V2tteU1HaTRYT2Jlek1wQnQ4Zm1lWS9FeDJT?=
+ =?utf-8?B?Nm41Skd1a1hBczNaUk16SDh3Ti96SzJHRXB2eHlnNDZOamx1UmtrTyt4ZUly?=
+ =?utf-8?B?TU5WUHd6VGwySFpKK2FnMGpvZzk5dHRCNldWblZBM1RkdjBaUkJ1cEt1VjRC?=
+ =?utf-8?B?OTM0azFUbW4yNjJRVk9NQkdLRkxvWGRZWWdMRDVRcmhtQTJRZ2NQZ1VqSHdL?=
+ =?utf-8?B?TUxmcDgzMENDaGVNZ2pENTFhWkRHbGRIRmhLZGRUL1JCZ3U0KzdGTjhYcnZ2?=
+ =?utf-8?B?RlQxaTdZWDRaZVU3S1VyN0V4RGpNU05Oa3d1eUhqYW9WbE96UUYzVVZWRjdW?=
+ =?utf-8?B?cURYaHNxRWxxT0xYUldNeXlOVDdHelZXeEZWVzloaWxreWJkTTVYa0JDYkZF?=
+ =?utf-8?B?bkM2dkg4R2MrSzlEK3Nnd3VYZ050TXFicjV0T0VlN0NZWk54SjBxbnZTVkRS?=
+ =?utf-8?B?bDFud1Z2MFhRUHhVeW5BN2FUZHdISkZjQ0JLZFFwYXdBY3J0UWFPYW1uL0E5?=
+ =?utf-8?B?azhibWtwTm1SMnE3UWpBNzVDYUJZLzR4L1MxbHpPZnYrVXpvNEJUeTdRVjli?=
+ =?utf-8?B?RUF3VmhoQkNXNHFOUWJVdW9RdFNLUUw3alJMcUdnYXY3VkF3YktDdnhqa0xX?=
+ =?utf-8?B?b2IxT3NiYklYU2JkK0JBb3J2Rm5COUcwM0dQeUVYWXE1WG8yOXdVR0hoaC9W?=
+ =?utf-8?B?YjNhK0F6c3dxUXhGa3ZPTk0wS1gzVkZUc0VWQmF5aVp3dTA5MmtacFdVc2ZD?=
+ =?utf-8?B?Rzg0UXJnNWJ4dzR4MUttMjdpTytYdDF1eDk2WlBhaXVnemg2SVNwelBXSFJX?=
+ =?utf-8?B?MGZrSzgxMW9jVE9oRm5Mam9QVFBqM3JsUHpuNUdsd21nWGJoWTFKbjVCeGNI?=
+ =?utf-8?B?Uzhpa2FJSkFpWFRIOThDOUQxUjVjeUdOU1RoV0x3YlBmcW1sNGlDL05UcWJH?=
+ =?utf-8?B?TC9pQXRESmpTVlVaSkYzM2w3T283UkhOMHJqWnVJaWdIcjBzQ2w5K1pUY2Q4?=
+ =?utf-8?B?TUJJUEV6V013TC9Jd1dNWVJWL2VjdWFsU1pnVFg5U3B2RGhGdTUvRHh2YlBv?=
+ =?utf-8?B?K0Z6TUN0SE1sM2owY3JqakN4YW5RZUdYdnF0cTY2SmZ6cEJOWU4wR3RGb0ZO?=
+ =?utf-8?B?UGhkSXZrWlIwT25yRFJtWXd6S3ZQb0FjZThjb0RuNEdxbWJETkJJTXEvZHlH?=
+ =?utf-8?B?bGkwdXV6eTdBR0F3U29uNk5yam9GaitSK041NG40RVZWWjJEK3hlS1Jxa1Fj?=
+ =?utf-8?B?TXFDblQ3MUY3WVUwRTZoZUNKS2hFbzJRUzh1YUpVZ3d2aHhKZWtqNWVIanpy?=
+ =?utf-8?B?VHZWZE44dUhGZm14Y0xxZ0djeDNrQ0F2azdIQ1VUSGxqWjBTb2cxaWFGQmhp?=
+ =?utf-8?B?YjYxS2VHQnMvc1NPYmZPZk16WDRzamZ0ZGRLRXdFRUtVVDZwWUI4czVFemhE?=
+ =?utf-8?B?dUpFS24wb2U5YUFUUFhkOXV4RDVXN0huNXZjNm9GbXZnNkV3Mjc3TXYvQnIv?=
+ =?utf-8?B?bFAremFaUlcvR1BvQ3RoSGU0NExzbkZITlowdG1WRkM5OGhtTm03ZVJNQTZm?=
+ =?utf-8?B?QStYeEdaQ0hua01QT1BOS1F6aDE0eGhOQ0ZIZW4zTU54S0l2NU1hTzNSRjI4?=
+ =?utf-8?B?WmhTVmlBQ3FMcTJpZUtFeVlCYllYSkpqT1J3Qi9ndGtCYUlKcFhQV1dVWDFT?=
+ =?utf-8?B?Uk9vMzRZR2MxeTVUekV4SnlSVWI1Skd5dXA4WEd5ajd6QlNhbVB1Q0VFWTYr?=
+ =?utf-8?Q?IMppyS2TJ+TN9yMya/VHG3M+wzF1+//VUjruS?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6b21da8b-b7f0-4f39-d9b7-08df3a361feb
+X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 05:40:24.9621
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: A8m4LDZG+wxUDLqm6UMko1Qc9AMHVHy2maunWqvXD1MqiDMveXTGB6p0yQausMlVVNqW9LAR0RvdwdUKvq1THQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB2692
 
-On Mon, Nov 2, 2026 at 8:20=E2=80=AFAM Quentin Monnet <qmo@kernel.org> wrot=
-e:
+On Tue Nov 3, 2026 at 6:54 PM CST, Miguel Ojeda wrote:
+> On Sat, Oct 10, 2026 at 12:46=E2=80=AFAM FUJITA Tomonori <tomo@flapping.o=
+rg> wrote:
+>>
+>> +$(obj)/kernel.o: private rustc_objcopy =3D -w -W '__rust__*'
 >
-> Hi Ian, thanks for the v2,
+> Hmm... I am a bit worried about doing this here, in `kernel`, because
+> it is a big crate with many other things around. The pattern shouldn't
+> match something else, though.
 >
+> By the way, since this is here (in `kernel`), do we need then the
+> original one in `compiler_builtins`?
 >
-> 2026-10-30 13:27 UTC-0700 ~ Ian Rogers <irogers@google.com>
-> > Add zlib-rs and zlib to FEATURE_TESTS and FEATURE_DISPLAY in
-> > tools/bpf/bpftool/Makefile and use feature_rust_lib to configure
-> > ZLIB_CFLAGS and ZLIB_LIBS when zlib-rs is detected (unless disabled wit=
-h
-> > NO_ZLIB_RS=3D1), falling back to -lz.
-> >
-> > Decompression of kernel configuration (/proc/config.gz) and compressed
-> > ELF/BTF sections (via libbpf, libelf, and libbfd) processes data that
+> Actually, taking a look at that, I don't think we needed it (for the
+> original reason, at least) after commit
 >
+>   cb7d9defdafb ("rust: compiler_builtins: make stubs non-global")
 >
-> Is there any mechanism in place that prevents libbpf, libelf, and libbfd
-> to link to different versions of zlib (zlib vs zlib-rs, I mean)? I
-> imagine you could have bpftool linking against zlib-rs, but the libs
-> installed on the system linking against zlib? Also I think the static
-> build with the LLVM disassembler [0] passes -lz -lzstd in LIBS and I'm
-> not sure how it would combine with the change, I need to take a closer lo=
-ok.
+> Gary: did you keep it for another reason? I asked an LLM, and
+> apparently the only reason it can think of is about an unrelated
+> side-effect: `objtool` assumes weak symbols return, so if we were to
+> remove it, we would get warnings in IBT/LTO builds because then it can
+> see how `core` uses them doesn't make sense if they are `noreturn`.
 
-Thanks for raising both of these!
+It took me a while to understand what "it" means here, I assume you mean
 
-1. On preventing libbpf, libelf, and libbfd from using different zlib
-   implementations: in libelf.so, libdw.so, and libbfd.so, the zlib symbol
-   references (inflate, inflateInit_, inflateReset, inflateEnd, etc.) are
-   unversioned. If we link libz_rs.a with:
+    $(obj)/compiler_builtins.o: private rustc_objcopy =3D -w -W '__*'
 
-     -Wl,--whole-archive $(LIBZ_RS_OUTPUT)libz_rs.a
--Wl,--no-whole-archive -Wl,--export-dynamic
+I don't think that's needed anymore. I probably just didn't think of removi=
+ng
+that line when making the change.
 
-   in Makefile.rust (perf already passes -export-dynamic via python-config,
-   so adding --whole-archive is actually important for perf too so it
-   exports the full zlib ABI rather than only the objects referenced at
-   static link time), then ELF symbol interposition binds all zlib calls
-   from libelf.so and libbfd.so directly to zlib-rs in the executable:
+Best,
+Gary
 
-     $ LD_BIND_NOW=3D1 LD_DEBUG=3Dbindings ./bpftool version 2>&1 | grep in=
-flate
-     binding file /lib/x86_64-linux-gnu/libelf.so.1 [0] to ./bpftool
-[0]: normal symbol `inflate'
-     binding file /lib/x86_64-linux-gnu/libelf.so.1 [0] to ./bpftool
-[0]: normal symbol `inflateEnd'
-     binding file /lib/x86_64-linux-gnu/libelf.so.1 [0] to ./bpftool
-[0]: normal symbol `inflateInit_'
-     binding file /lib/x86_64-linux-gnu/libelf.so.1 [0] to ./bpftool
-[0]: normal symbol `inflateReset'
-
-   That ensures libbpf, libelf, and libbfd all use the same zlib-rs
-   implementation at runtime, and means all compressed ELF/BTF/debug
-   section decompression in libelf and libbfd also gets the memory-safety
-   and performance benefits of zlib-rs even when linking against distro
-   shared libraries.
-
-2. On the static build with LLVM disassembler: `llvm-config --system-libs`
-   emits `-lz`. Since `LIBS` in bpftool (and `EXTLIBS` in perf) already
-   includes `$(ZLIB_LIBS)`, we should wrap `--system-libs` with
-   `$(filter-out -lz,$(shell $(LLVM_CONFIG) --system-libs ...))` so static
-   LLVM builds don't pull in `-lz` alongside `$(ZLIB_LIBS)`.
-
-> > benefits from a memory-safe implementation. Preferring zlib-rs over C
-> > zlib provides memory safety and improved decompression performance whil=
-e
-> > keeping bpftool aligned with tools/perf (including sharing libz_rs.a
-> > when building bootstrap bpftool for perf BPF skeletons).
-> >
-> > Signed-off-by: Ian Rogers <irogers@google.com>
->
-> Recalling our discussion from v1:
->
-> >> Hi Ian, bpftool doesn't make an intensive use of zlib (mostly, it's a
-> >> requirement from other dependencies; we may also use it to unzip the
-> >> kernel config on the host if necessary for probing BPF features on the
-> >> system, but only on some distributions). So I'm struggling to understa=
-nd
-> >> the motivation for your proposal, what do we gain by switching to
-> >> zlib-rs when available? I understand this implementation is in Rust, b=
-ut
-> >> I'm not sure the added complexity and feature probing in the build
-> >> system is worth it.
-> >
-> > Hi Quentin,
-> >
-> > At my workplace, we are transitioning from zlib to zlib-rs for both
-> > security and performance reasons. I'd like to keep upstream tools
-> > aligned but they don't have to be, it just seems nice. I agree zlib is
-> > of a lower priority to users than, say, zstd. For attackers, like with
-> > brotli, it is probably an area of interest. Knowing the implementation
-> > is memory safe is at least something in favor of zlib-rs. I sent this
-> > series out as an RFC because I obviously have no way to mandate what
-> > upstream should or shouldn't be doing. There are things that can make
-> > life a little nicer and easier, and this patch series, for me, is one
-> > of them.
-> I understand you're transitioning to zlib-rs, but the current patch is
-> not a full transition, in the sense that it doesn't replace zlib with
-> zlib-rs but allows any of the two options; and I don't see support for
-> the standard zlib being removed from bpftool anytime soon, which means
-> that in practice, we've got to maintain compatibility with the two
-> versions going forward. Others may want to chime in, but I'm still not
-> convinced this is worth the burden.
-
-Because zlib-rs (via libz-rs-sys) implements the exact C zlib ABI and
-headers, there is no C code difference to maintain between the two=E2=80=94=
-only
-the Makefile selection of ZLIB_CFLAGS and ZLIB_LIBS via feature_rust_lib.
-With the symbol interposition above, bpftool (and perf) get memory-safe
-zlib decompression across libbpf, libelf, libbfd, and libLLVM whenever
-zlib-rs is installed at build time, while still building everywhere else
-with C zlib.
-
-> You also mention zstd, do you plan to add support for a zstd alternative
-> as well in perf and bpftool in the future?
-
-No current plans for zstd. Unlike zlib-rs (where libz-rs-sys provides a
-complete, drop-in C ABI for both compression and decompression and is
-already packaged in Debian/Ubuntu/Fedora), I don't think there is an
-equivalent drop-in Rust replacement for the full libzstd C ABI yet
-(ruzstd is currently focused on decoding, and the zstd crate wraps C
-libzstd).
-
-> (By the way, if you allow me a short digression, you had a patch related
-> to the zstd probing for perf and bpftool [0] and I don't see in the
-> tree, do you know if it was ever merged?)
-
-Thanks for the reminder! That series wasn't merged yet=E2=80=94both you (on
-patch 3/4) and Peter Zijlstra (on patch 4/4) gave Acked-by on v2, and I
-think it fell through the cracks waiting to be picked up into
-perf-tools-next. I'll send out a rebased v3 with your and Peter's Acks
-collected.
-
-Thanks,
-Ian
-
-> Best regards,
-> Quentin
->
->
-> [0]
-> https://github.com/libbpf/bpftool/blob/main/.github/workflows/static-buil=
-d.yaml
-> [1] https://lore.kernel.org/all/20260909204122.1993010-4-irogers@google.c=
-om/
