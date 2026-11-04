@@ -1,88 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793778772;
-	b=eYR45INLvV1KZCAtAuNqSkXLkizynrnMpXdsd6Nzyg6h7NhmCntkr5YRpAbDmrfrkY+g
-	 TMgt522ucGcUBAIljCPUXlUU2TF2d1eVwk930UqNGAppJuedvaVpeVxVaMopFEoQ9uUPJ
-	 Y53DWZSwCLW7jv1ckAdC22e9r9f3RqH9kLHR1XDaW19LXncktod90KmpC1ikq6mHA5e2/
-	 ZZ2/FqoE7uXi7zCokI0uNHLIgbdli/FbRtLsCrIheR7WJvVorNjRvI5/WO69Ihv9lHStB
-	 bbIAsODgB/3pB9JIUweHMXbyvqjjRpFfdwCRWpX5DPiXIp7XGfDnNrNS1Q+ZlQxkZtg==
+	t=1793778774;
+	b=XHIKIMcJH4zKpjqcG8DseqzCjZw3/MwJnXWN2JUaSIPwiva75d2uDRb+2L54oxUhIufu
+	 yBqA7EC9HRuN6OOY4PALLuPZTrNXAazaOwEPfi0yRxcClVBwVc7a9j+a7LqoA8hwEOhmB
+	 HIwYxq1b9qHerlLWwgVdAlHOaEI/WcwjUppi2zCp7ETdncsTjeOiroeknkiG9QOsxQRLv
+	 cExk1/uFJolE76TKf2sPA/S/VvqrpJrAlEeZXdeZv8jiREebwl3CrVV5BWcd/m97ySgqG
+	 bUvFtTvp3LvAcYRYJzkEwCKJ6aQCzNniCtE+tzdYVQCjNSR+tF2qUGX9qQYMJwlGTZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793778772;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793778774;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
-	bh=RkebxhepJ78TZB3fnHTnhlAKTz7Sll4zIjTAt/wCAtw=;
-	b=3db4nhKhgFwJwupmMmUtffYFMzbRAEiQvYuOmsvu5bk0Z6ElJHyEnjkL/mcIUfC9DkrP
-	 CDY5kPASOfSl9cIIFXmUsDlCCJEC5ycdTyvfiZjxa2GwfAmT0v0titzvlQyLNn7GKCz6T
-	 tSUw9vEKwY5O0nwRhOq8KjSo7Qm9wDaCk2PMA/xVPg4kddpzoxr5FJPYjWStoQwRZC3Nk
-	 MnkhO/3+QRFAUQMEtRRV1OJCoHCbocty/g0gLbO7LAjNBN38XSlXeZSoj9Y1UHZ0wWuSU
-	 6OiKnbfSpIjhTTBllNCDk4a64JYpcX/jY3UOIY6ifdZ1I8eB1PrZEbUDCz6oci/AI6A==
+	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
+	bh=H9pWRYIuDAbASTBKlOVzXYu6I+EvAShszd61Y2x+bnQ=;
+	b=waeUpV1j99Ro0Tj8WAufWvWASYbCRDiKVNufteEsnP5WsFqNCdZbn0vps4aRkkQHk83Q
+	 eyHX3p0m9NsYFlG/lYmbUk4LU9zF3ongUtGU27Ti5xl3WexV6vFFo1D5MftECFgzck19R
+	 /vyahmqmKL75EBcXlBMfCYYuWQ/JhNRn/ddmZHTlphVbdeEu+gZOIMgozTIG+CyFu2DZW
+	 hFRHn5XEnT8wqpUfiocatLB7TEv1fMxBCh+MmHRZmZds06wCGi223j0O1+SehQo/nPqQP
+	 voxWGGxwpNAEP8ZZFDdMpGpnuk83mI5YkeOUqfmh5XHX6ur6FVPifVTg9u9Ksg9+/Eg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="b/YzGea5";
-	arc=none smtp.remote-ip=209.85.221.43
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=c6bim7w0;
+	arc=none smtp.remote-ip=209.85.128.49
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190B5606A328
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 07:52:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 190B5606A328
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE2B606A33B
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 07:52:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9EE2B606A33B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=b/YzGea5
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-48df4f540ebso169584f8f.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 23:52:51 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=c6bim7w0
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a210470b49so2112925e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Nov 2026 23:52:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793778770; x=1794383570; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=RkebxhepJ78TZB3fnHTnhlAKTz7Sll4zIjTAt/wCAtw=;
-        b=b/YzGea5le2NLiLV9IA4m5eyzDb06iVw5LaO56+9lpfwmtHxUE9VaN2rvT1nZ7oBOT
-         3IKmI9pboXsoyQz+huvqZCKrY7Es403vo6U+Rj5+Al5/QJQIlq1am6P40GciachO7cJ5
-         QZK3khQmpJPEf3om+GQdexR3aIRby/C2V1ZhvBgS5Fvflo38l8Adb8hMAsDhtaVpxJ3O
-         NCRZ7KBNnX3SH3rX+Ii5eQVIAeiUAAGH9Nidq4DYUreQ0c1Q30puugtCkp77B16E3UBV
-         TvyNg6IPibiv12Hrwa9DZkHLErg8c0NT/XThUT2E47dH3G9/whqIHAu1YPCmdaEZSASD
-         RQYw==
+        d=gmail.com; s=20260707; t=1793778772; x=1794383572; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=H9pWRYIuDAbASTBKlOVzXYu6I+EvAShszd61Y2x+bnQ=;
+        b=c6bim7w0MrecT/LTcZm4w7jH7t/rwOkixrL1BiRKyJMhLwAYd7ZFN0kbrRlqJqfYPI
+         E+YxJzYB+0z+WkP4HiS5/Xvi+EMEFh1anzYGV3xdzuvD7ra5v94/ui12ulPOIiTRun8y
+         dkBpnd71XfEAaCTK+i+rOrzvWETF9ILaNUgG+PUp8CSoK6PRwX6njCk5MIDkm+osWhTH
+         GcTgJg/HbecZaU8H+BlTvOi3exS4hnEbrNKPWocBCY7Aqp8ye5W3lzEEbJgNYfVMn9MI
+         twQfJXqGqTiCxzQN0omOwIgoPfMmkGavZIzd9L40Hu75+gBSmbp/awWHroyCkUAvnM6u
+         xm+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793778770; x=1794383570;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=RkebxhepJ78TZB3fnHTnhlAKTz7Sll4zIjTAt/wCAtw=;
-        b=OBaUKxinMQ6TxlWFW/HGbze0jKMWl/tN3Lr8YffodIo2NSsPSn4xl8JSGG1jiLLXpl
-         m181LEEx9cKOI8uWFurJ+aUcn3hFFl+N3XGmtNBbxFoj1rYEhXqQ/o37EudQ5MF+7AHk
-         Ul0gLjqTpjJPSvf0z7TCXh02yybyCWV6Fh7AGgzIcTyNng6BoO/14kHAJZ3+q1u4Z8cM
-         hk0GHatwi8O/0c03BZQZUW+g4wTWFZXPi91cGWtMMdMwN/lsGRTDw6o+lrkgpA/ATu0F
-         FzsL4qJjO3YVglj4KJQj8mJXc0DONsCMrHeEAcnsvSVzlRr4k49T8rDR+Cfj+B20TBHH
-         dhgg==
-X-Forwarded-Encrypted: i=1; AKwUvBy4eo6V9u+5Flryrwl/UeG5jO3d4oFrmNGbkVZGlgs1RogTU3SSnXTmid4S6KByuCQhJuN7a4J48tgs8lElNw==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/hgVKajkNen341kgrXXHH/++2M46EJh9zZ9r6wV6JPajxb3CV5
-	hoeczpRm9lci0GqyWvvharHsh4sdxeBy9kCiuROnLXM3BWlOqQwC2tA0
-X-Gm-Gg: AYBFou0pAnIORxhVRXa9PbrLD3F+//b1lVlJmfUThgvl3WXFEIIVz+0Pl577fQ5KlVg
-	Wrc3ZLhbmqOeambrvbGGkd8zy+6cVOaL+Fap+ca1jvJogjJ49qD75qD4kf4/0B4uPK385l1yHYU
-	4a/kBbdqfDKkmJCvQbb+Ur8DG4ye5PxMp+5WLEivlnBHkUQn2Q+4rjkT8ARf30SR0bC+PXKjjQk
-	DsalNXHsOgI4RHDKLySAtLdesBNnrXgiQ2EkCsBPuL3wZlBt3QYlD+ifMfxGal/13M0WrSCib/W
-	34LsVNZyzSEKDQ/xx9sRMmclXzOIbIKNAm+TFSwSFx6/O71DlOxCuhV9/1MHgFzFMUJrHRl9V9l
-	N9zT8TifI/Ax78iGR430eJJdQQwDpWbp6Wp64uDvQL/87oAQAxgDwwh/M6Y5OP1ZUYEX3Od6TjO
-	m/Y8lAglrSobajfWBiBm/aXGTHyYocJQ67hloVfWq6xAybv8UQE26fVV3U7pfWmFUJLwB7GM/Za
-	6UGEG8k4do+NHHs9Av7lRiTD/Rf6V57CGfkEeEh7Z7Sbvuob5kxO6FgrkDDLkENxBmY/lul472E
-	4p1cEDYzt8QnXxFld7QG/1p/GCbrU/rmpaRZ9Aujccu5o8gjDhBEmIZV5LhgLX0ANmG2umGSliC
-	bJ7fFd0EH1QhbVJY4tQt82K4wjC0LsUG1J0nWzVueyyGIZLJyiCM=
-X-Received: by 2002:a05:6000:40dc:b0:48d:fbf4:895e with SMTP id ffacd0b85a97d-48e6e30721fmr34220157f8f.11.1793778770275;
-        Tue, 03 Nov 2026 23:52:50 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793778772; x=1794383572;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=H9pWRYIuDAbASTBKlOVzXYu6I+EvAShszd61Y2x+bnQ=;
+        b=uNtvBfHizPLnymcdGu3W1PcEE5EsXfvgHfU18LrSszTM7SVN+f1l/UEofgXu3S9PgW
+         OY8Y1uzCeWFDnFKvUxQYuVQZ4WG0e175UZqbGpWliskg8eNqM9Nz+SkdSdkGIi1m/3Jd
+         bkT1TjXqeBo0hM3luRc5MLNNqVhhENtmEjx2jV4HQc7jFY/EBIQcfz+vEPiPPmcZ5sg1
+         6B77aHdmN/X3ob8kyQ4w1f+OSNdvYrIIV1e16LHiQNFmKzf3HmV77p5NnLQQU0AUUQGg
+         cgQip2b/VSGmdXv0P1qk2FI+hYoIhLDdXollODiSjWQjZ9F4uaq1W10CpIKN7ossuitw
+         tZ/g==
+X-Forwarded-Encrypted: i=1; AKwUvBxDpKHqrGNTpiTXCraetrrmB0mbMWYobFbq6N11UKZRhAIxOQBOE/KyOX56+C2GC3ajEuFAbfCGR80Wcw4j3A==@vger.kernel.org
+X-Gm-Message-State: APuU4Z865PU2g89ZJrcrypfVdMVH5swrW5mX5V2lHbJ/XeThXGaPTRnQ
+	DmvVfMNpy0xweCTNNZeZTq/jwzW8rWuDYE/QMDWNSWlraDLzTXbWksJT
+X-Gm-Gg: AYBFou2Xroy3vPxfs5tLi3bJyi3vAc3Xi3zVD0hV7KMr9Dt2iVyERDva/LTDdBrxutb
+	mRNG6FpKvdYI1QxCp0LxXGgjufg2i1OrZ5H1kN7hHdpVHskx6u/I3Ju64CpAB1V7q0vOz6cp22W
+	L0Z5d+Leac/MV/LLlp1wfSKJrTqTsZTyVzWq6duZ147b5rnA0y6xNa+yboC/LNOKN71Wjctt5KP
+	xHdHHgDTkArNdVKOuy3imfSvSu82NwQIq88nRIaM5brxY+/p/9O6kWhUuRvmenkloGFuK2CZjmt
+	TX7OT+sbAD5MUAerKlRzMqo2HW6FJM5rBpkRe3aCpNIfw5F7YsrPJfYlmindMWpFWWJbIKbbZro
+	6CGI1a/5xbpQFSBPJpQcrk55VwQSV1L98NHcWSerjU0EIRrE4wYKgRHXAefAKKNJ1IzgAM9us6q
+	Qu49WWMH3a6vVSuPe8E4/q6kv3a/w+F/9du4eoS30pu3p8HgSPYYNnAeZhhI+yNABU7MQFNKJPx
+	MmKs+cX4woaxDAGwvf898gv/q1QYwqv/aOg+IKxKYRQIi3xP2g/x8XthXzKVHiUZkS8xHzyXyrE
+	jurD9Jn1hNlzLCa0dNgk+QJ0r14KAhcdL0rB+paulEQ3cpAp5XpFWciJTofRYhoIQA5SO3D3X7m
+	Wk6Ug0E3LJ2Jrz0jFCbtDuSADk/Dum0klSo3NcOu8qHfZtgLHHLLh
+X-Received: by 2002:a05:600c:3554:b0:4a1:e7ce:107b with SMTP id 5b1f17b1804b1-4ac150b20eamr371311155e9.2.1793778771764;
+        Tue, 03 Nov 2026 23:52:51 -0800 (PST)
 Received: from localhost.localdomain (80-108-121-211.cable.dynamic.surfer.at. [80.108.121.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48feda207d8sm2200785f8f.52.2026.11.03.23.52.48
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48feda207d8sm2200785f8f.52.2026.11.03.23.52.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 23:52:49 -0800 (PST)
+        Tue, 03 Nov 2026 23:52:51 -0800 (PST)
 From: Christian Gmeiner <christian.gmeiner@gmail.com>
-Subject: [PATCH v2 0/3] drm/panthor: Report fault information to userspace
-Date: Wed, 04 Nov 2026 08:52:38 +0100
-Message-Id: <20261104-panthor-fault-info-v2-v2-0-673b31f3840c@igalia.com>
+Date: Wed, 04 Nov 2026 08:52:39 +0100
+Subject: [PATCH v2 1/3] drm/panthor: Report the last VM fault through
+ VM_GET_STATE
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -94,10 +95,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MSwqAMAwA0atI1gb6EUWvIi6KJhqQVlotgnh3i
- 8u3mHkgURRKMFQPRMqSJPgCU1cwb86vhLIUg1Gm1Uo3eDh/biEiu2s/UTwHzAatVa7nrtO8WCj
- tEYnl/r/j9L4fPFXOTGcAAAA=
-X-Change-ID: 20261014-panthor-fault-info-v2-330a9f771fd3
+Message-Id: <20261104-panthor-fault-info-v2-v2-1-673b31f3840c@igalia.com>
+References: <20261104-panthor-fault-info-v2-v2-0-673b31f3840c@igalia.com>
+In-Reply-To: <20261104-panthor-fault-info-v2-v2-0-673b31f3840c@igalia.com>
 To: Boris Brezillon <boris.brezillon@collabora.com>, 
  Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>, 
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -111,56 +111,172 @@ Cc: Lukas Zapolskas <lukas.zapolskas@arm.com>,
  Christian Gmeiner <cgmeiner@igalia.com>
 X-Mailer: b4 0.14.3
 
-The Panthor CSF firmware and hardware report extra information when a
-fault happens. Two kinds of faults matter here:
-* faults raised at the address space level. These are fatal for every
-  group bound to that VM.
-* fatal faults raised on one of the queues of a group. They stop
-  further submissions on that group.
+From: Christian Gmeiner <cgmeiner@igalia.com>
 
-This series exposes that information to userspace, so the
-VK_KHR_device_fault extension can be implemented on top of it.
+Keep the raw AS_FAULTSTATUS and AS_FAULTADDRESS of the last fault in
+the VM and return them through VM_GET_STATE. Userspace decodes the
+values. No memory is allocated in the fault path.
 
-VM faults are reported through VM_GET_STATE. The VM keeps the raw
-AS_FAULTSTATUS and AS_FAULTADDRESS of its last fault. Queue fatal
-errors are reported through GROUP_GET_STATE. Each queue keeps its raw
-CS_FATAL and CS_FATAL_INFO, and the ioctl returns them in an array
-indexed by queue. The kernel does not decode the values, userspace
-does. Nothing is allocated in the fault paths.
+The MMU irq handler records the fault under the AS slots lock. The
+ioctl reads it under the same lock. The VM stores the fault as a
+struct drm_panthor_vm_fault, which is the uAPI struct, so the ioctl
+can copy it with one assignment.
 
-Changes in v2:
-- Report VM faults through VM_GET_STATE instead of copying them into
-  every group bound to the VM.
-- Pass the raw register values to userspace instead of decoded fields.
-- Keep one fatal slot per queue. A queue stops at its first fatal
-  error, so no allocation is needed.
-- Store the uAPI structs directly in the kernel objects.
-- Dropped the recoverable CS_FAULT reporting for now.
-- Bump the driver version to 1.10 in a separate patch.
-- Rebased on drm-misc-next. The queue fatal info is protected by
-  events_lock now that fatal events are processed under it.
+The unhandled_fault flag is cleared when the VM is re-activated. The
+stored fault is not. So userspace can still query it after the group
+that hit the fault was killed.
 
-Link to v1: https://lore.kernel.org/r/20251215115457.2137485-1-lukas.zapolskas@arm.com
+Old userspace that passes the shorter struct still works, the DRM core
+zero-fills the missing tail.
 
+Link: https://lore.kernel.org/r/20251215115457.2137485-4-lukas.zapolskas@arm.com
 Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
 ---
-Christian Gmeiner (3):
-      drm/panthor: Report the last VM fault through VM_GET_STATE
-      drm/panthor: Report the CS fatal errors through GROUP_GET_STATE
-      drm/panthor: Bump the driver version to 1.10
+ drivers/gpu/drm/panthor/panthor_drv.c |  2 ++
+ drivers/gpu/drm/panthor/panthor_mmu.c | 33 +++++++++++++++++++++++++++++++--
+ drivers/gpu/drm/panthor/panthor_mmu.h |  2 ++
+ include/uapi/drm/panthor_drm.h        | 22 ++++++++++++++++++++++
+ 4 files changed, 57 insertions(+), 2 deletions(-)
 
- drivers/gpu/drm/panthor/panthor_drv.c   | 26 +++++++++++++++--
- drivers/gpu/drm/panthor/panthor_mmu.c   | 33 +++++++++++++++++++--
- drivers/gpu/drm/panthor/panthor_mmu.h   |  2 ++
- drivers/gpu/drm/panthor/panthor_sched.c | 32 +++++++++++++++++++-
- drivers/gpu/drm/panthor/panthor_sched.h |  5 +++-
- include/uapi/drm/panthor_drm.h          | 52 +++++++++++++++++++++++++++++++++
- 6 files changed, 143 insertions(+), 7 deletions(-)
----
-base-commit: 6f7098738fff3ec7393f924343188cb8e6ebc5d2
-change-id: 20261014-panthor-fault-info-v2-330a9f771fd3
+diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
+index dc8d0191aef4..7572cd7d6423 100644
+--- a/drivers/gpu/drm/panthor/panthor_drv.c
++++ b/drivers/gpu/drm/panthor/panthor_drv.c
+@@ -1471,6 +1471,8 @@ static int panthor_ioctl_vm_get_state(struct drm_device *ddev, void *data,
+ 	else
+ 		args->state = DRM_PANTHOR_VM_STATE_USABLE;
+ 
++	panthor_vm_get_fault(vm, &args->fault);
++
+ 	panthor_vm_put(vm);
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
+index d1c29eec46f2..6fc5f3d381c1 100644
+--- a/drivers/gpu/drm/panthor/panthor_mmu.c
++++ b/drivers/gpu/drm/panthor/panthor_mmu.c
+@@ -389,6 +389,15 @@ struct panthor_vm {
+ 	 */
+ 	bool unhandled_fault;
+ 
++	/**
++	 * @fault: Last fault on this VM.
++	 *
++	 * A new fault overwrites the previous one. Unlike @unhandled_fault,
++	 * this is not cleared when the VM is re-activated. Protected by
++	 * panthor_mmu::as::slots_lock.
++	 */
++	struct drm_panthor_vm_fault fault;
++
+ 	/** @locked_region: Information about the currently locked region currently. */
+ 	struct {
+ 		/** @locked_region.start: Start of the locked region. */
+@@ -662,6 +671,19 @@ bool panthor_vm_has_unhandled_faults(struct panthor_vm *vm)
+ 	return vm->unhandled_fault;
+ }
+ 
++/**
++ * panthor_vm_get_fault() - Get the last fault of a VM
++ * @vm: VM to query.
++ * @fault: Returns the last fault, with a zero status if no fault happened.
++ */
++void panthor_vm_get_fault(struct panthor_vm *vm, struct drm_panthor_vm_fault *fault)
++{
++	struct panthor_device *ptdev = vm->ptdev;
++
++	guard(mutex)(&ptdev->mmu->as.slots_lock);
++	*fault = vm->fault;
++}
++
+ /**
+  * panthor_vm_is_unusable() - Check if the VM is still usable
+  * @vm: VM to check.
+@@ -1855,6 +1877,7 @@ static void panthor_mmu_irq_handler(struct panthor_irq *pirq, u32 status)
+ 	while (status) {
+ 		u32 as = ffs(status | (status >> 16)) - 1;
+ 		u32 mask = MMU_INT_AS_FAULT(as);
++		struct panthor_vm *vm;
+ 		u64 addr;
+ 		u32 fault_status;
+ 		u32 exception_type;
+@@ -1895,8 +1918,14 @@ static void panthor_mmu_irq_handler(struct panthor_irq *pirq, u32 status)
+ 		 */
+ 		gpu_write(mmu->irq.iomem, INT_CLEAR, mask);
+ 
+-		if (ptdev->mmu->as.slots[as].vm)
+-			ptdev->mmu->as.slots[as].vm->unhandled_fault = true;
++		vm = mmu->as.slots[as].vm;
++		if (vm) {
++			vm->unhandled_fault = true;
++			vm->fault = (struct drm_panthor_vm_fault){
++				.status = fault_status,
++				.address = addr,
++			};
++		}
+ 
+ 		/* Disable the MMU to kill jobs on this AS. */
+ 		panthor_mmu_as_disable(ptdev, as);
+diff --git a/drivers/gpu/drm/panthor/panthor_mmu.h b/drivers/gpu/drm/panthor/panthor_mmu.h
+index abc36e7204be..74f9f5d98c94 100644
+--- a/drivers/gpu/drm/panthor/panthor_mmu.h
++++ b/drivers/gpu/drm/panthor/panthor_mmu.h
+@@ -11,6 +11,7 @@
+ struct drm_exec;
+ struct drm_sched_job;
+ struct drm_memory_stats;
++struct drm_panthor_vm_fault;
+ struct panthor_gem_object;
+ struct panthor_heap_pool;
+ struct panthor_vm;
+@@ -74,6 +75,7 @@ struct panthor_vm *panthor_vm_pool_get_vm(struct panthor_vm_pool *pool, u32 hand
+ 
+ bool panthor_vm_has_unhandled_faults(struct panthor_vm *vm);
+ bool panthor_vm_is_unusable(struct panthor_vm *vm);
++void panthor_vm_get_fault(struct panthor_vm *vm, struct drm_panthor_vm_fault *fault);
+ 
+ /*
+  * PANTHOR_VM_KERNEL_AUTO_VA: Use this magic address when you want the GEM
+diff --git a/include/uapi/drm/panthor_drm.h b/include/uapi/drm/panthor_drm.h
+index a2ff0f4ec691..85e197d7a528 100644
+--- a/include/uapi/drm/panthor_drm.h
++++ b/include/uapi/drm/panthor_drm.h
+@@ -743,6 +743,20 @@ enum drm_panthor_vm_state {
+ 	DRM_PANTHOR_VM_STATE_UNUSABLE,
+ };
+ 
++/**
++ * struct drm_panthor_vm_fault - Fault information of a VM.
++ */
++struct drm_panthor_vm_fault {
++	/** @status: Raw AS_FAULTSTATUS value, zero if no fault happened. */
++	__u32 status;
++
++	/** @pad: Will be zero on return. */
++	__u32 pad;
++
++	/** @address: Raw AS_FAULTADDRESS value, valid if @status is non-zero. */
++	__u64 address;
++};
++
+ /**
+  * struct drm_panthor_vm_get_state - Get VM state.
+  */
+@@ -756,6 +770,14 @@ struct drm_panthor_vm_get_state {
+ 	 * Must be one of the enum drm_panthor_vm_state values.
+ 	 */
+ 	__u32 state;
++
++	/**
++	 * @fault: Last fault on this VM.
++	 *
++	 * A new fault overwrites the previous one. It is not cleared when the
++	 * VM is re-activated or after a GPU reset.
++	 */
++	struct drm_panthor_vm_fault fault;
+ };
+ 
+ /**
 
-Best regards,
 -- 
-Christian Gmeiner <cgmeiner@igalia.com>
+2.56.0
 
