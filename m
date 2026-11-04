@@ -1,17 +1,17 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.95.75
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.195.129
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793770829;
-	b=3+QiNm1+M1Z68BJA/JyUWoF30XCU24Q51qSWOuKp2Bt+6luJPnvgUUpS/1uIFJvHnnQl
-	 WglYYMzXGyyEhG7pgQF2lnngm6ei8ga7Dl30MoAcc8HmQDbWFStV465Mmgu7cLRUwFC+V
-	 BXCq7843g5bUkf8hck+RmO4tVDoq8AaFEl5+vindHyzwySUXiJ/uB5jyQMaF9lcjfk02Q
-	 ROlG0M1uL0oX946WxduCWYLRnmtI2jbSTmj7HamYCjKJTaZotByEhECyV6zuU3xDaKbF8
-	 Vu/skRos9WS4oo2QKDd0P/cYb9X8rT/0lhNvt1KmRLQuIQsgWoPXKJgDwOyRi9NAtrw==
+	t=1793770965;
+	b=NisTzcIsdEYzElbM8Oox74vqt9JewTtnNAKGgZ6MyeqWdLT94/voVXA7VS5nAW/VHZPA
+	 APOvyAAIKvdILTDL/8++fiqG/8m5BxHt2QEx7NjG6pwE0KK8Z0PPqnLkkv18Zb0tqAAle
+	 x5MKnS4OUTocFda5qXmMnCsCuGMaNWySegLxUYVMXU3d2ZRuNQfA1wY07Roc2fGahidtA
+	 bdWRHdVGJmp7SFvyBBETmvX6C94xnY2q5qiic3H5h1HFnLnX45yI0sRIhu5kQ1zuXB+3x
+	 q10/ZY0f674kB27apcVMufpLJVzVrjbeyzxWt8YTViFR1YwNlJl4rpeL7llrYq1E7Xw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793770829;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793770965;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Subject:From:
-	 To:Cc:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
+	 From:To:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
 	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
 	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
 	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
@@ -24,76 +24,75 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=SNBnXxj9iUXIAk8FOW+hQF/yy44iqt9zb7n0OKXzyic=;
-	b=D++2ekBH3GBbNMUs8u8ZKo1QPnG5EsblPAq1KsofgbdKHBN7jUOktnJGlBgHJXX9UmJn
-	 esl+ceLKRzkSqvwtJgup3GRA6Wb6g7xAQMcHhwmCTUYmVK6G2efOLyXhAYWDLLfUwNRUX
-	 c21A4dz6FR1BUWlIfT7rh1ovDXLt2nG9Q/6q8HxQ31RZNTdooWQitn7GCn2sP1EJU5rtn
-	 UQ8jvxdmk83PhSga3cS/+1QYBMwglaBF6lq6xwU7qaxriPcDvcN1LTrBIhXZa2ZoUcdK/
-	 YDRywZxRv7zy4D6iyD5W5Aep/2s6TLOEYeiwvv0GRR+ENxNVTnDT1FqWP7ozFLLlcDg==
+	bh=EtOxh92NSSincPhXFuP8cm+u3A+aFpwCKJ+SGInFouY=;
+	b=mjnBAwL0YqiwHpJG7uC7G/tOPGIKqlx1S6pndgrFkAumtGJZ0BHJyNXusl5kcihfcbxP
+	 mgNAESEZUGei6XWBj23Mg/UYq+c5jrtUtx2hL6wZoSuTrZuB7Ixy+S43GMd02AskCJ4cB
+	 Xv8JUGAQjcW5yWaVP79sGcvfM60s7OFKw40i/gVZVyyXdXjC2tv/bukKFrPveZKD1JJF5
+	 dJN1X1T++aWi99luD+Zg1xJIScJa0c5WcYZ8xwWsE31FAkhg6NZjhWxR47xSLrzOFlsjj
+	 BVuj2hOaAI1J4zwd0B2ENZk31X/tB7z0mo2DLHIJB2JO3uWnkvmOWJpyG3Y71JFnLZg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=garyguo.net;
 	spf=pass smtp.mailfrom=garyguo.net;
-	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=Ro8ur+qA;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.95.75
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021075.outbound.protection.outlook.com [52.101.95.75])
+	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=DGF+twVu;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.195.129
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020129.outbound.protection.outlook.com [52.101.195.129])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F41D606A31B
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 05:40:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F41D606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DAF606A31B
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 05:42:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 96DAF606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=Ro8ur+qA
+	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=DGF+twVu
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ff63S7l0lJks5DmhOxs5cNPO+6glis4iHlmJVh5xO3yzRBRHZftd6KBCVQ28yEd5O4elhSCpOqglP/wHhXFpdYffdo4nLiVK31AGzhwvdOPfpfB7V/QSojArDGD5W/B+USrLWSRZvOZYVA2gvr9d4KopSM7vg92Wl9l6af2WCxMFRwZJiIvCl37FJuiDfFG+QXKpUsswgHoeI7q2GEzZe9jlXXrosxKY5GC1ZhW5HfuLfw6YXfLTRlL7LwUrb+iGlv38+OqvYh0xVzLCh8xrmEdlUl2vs8c/G21iQBXxmlFdzxXl3oVa+M8Nq6HKa84Jv9gH8dX6bIFxkwWezMHHcw==
+ b=RwZTkVbBG3Y3vHqFmkO6UpxxUYh96ZNK47wP+woYgNbCaZCx/uVq8X/8A8ufZyYV9Mb1YL12sX0xk2sbG9keZzcKIg4gSZmtLxTsbn+aLMe3QeAWfVhj0RPvCRs3Q3s9uruy3C20vByILMOeL4nthvcGqChz4TMbYem7o6yEKn3ZLhRxgolGl/coJ1wXaSbqcP5zaoekaRUrM2BqwxejRu/YT4YbGZTpa4WO0m+KHlW90GJhOMR3QNmFcdWwJ+5Lw/DwDXdEQ7okzgnce0F7nq9oTeGq8CfBhsBmFvO3vgudd14YafqxV0mu5BwMq91juPv+7rsl0AlLW+DBj0hTCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SNBnXxj9iUXIAk8FOW+hQF/yy44iqt9zb7n0OKXzyic=;
- b=BLbQshUuGNMZ5P8KGiod3c+JgGTvHT4rKHqMeOjO5a3qUkt1iuvHWfLGmgGEB2Q3tK3QC63MkvJ5/hS+BRI+Wa2iN6P5uYXv4MGiNpTwTUEPnHOaFv0+Uw9mcMyszw9ZIPs3Ozhh9kRINKeF08r6Qhmc2pSm6DJFo81PWn8mKE0Yv2Lta5Yj2zIu20R8eKztRRf+W5ZEMg9LBk2pMg+yp5YD9aG/uiQLoWvAx5fgfzSSq/E8DPvEAI7Ikec9m9rzaA8nT/sRgLulvovyq6mbufNIj3unME2/ljWYk27IbJbmkbIghguH64KKsDQ/aqLlDD3ZKiuBvlhMaUdfMBYepA==
+ bh=EtOxh92NSSincPhXFuP8cm+u3A+aFpwCKJ+SGInFouY=;
+ b=KQsMLQBOzKTJo69X7gskll3bO+76s3IEuD4n84vr+xET/4JNS8RSmjgfYU7iYq2orRPU7lRw8pg0y83soxr1uwsVgQ7eywoGxHhv9sFmXvI25FcRQJGOdHcPJxlKQgdr1q/8tWw4j5fPzcIGaEEh7bt45pHdHAjhb0Y7b+MKbmoIXQHznogxmFwMscM+nWYCthxVtOm+zOA4jvQACWJOVGU7Gylb3jMy2Gr5jTMifYGLsGD2X3GCzjE2h7Eb+ZWMDDCciAPNYJWCBIX7e891he8pPIQDtSxAKVZVjlESOIVWNuJF/k0CPngQt0xitYzzVeiHCbNy0rHpBZZMRbF57A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SNBnXxj9iUXIAk8FOW+hQF/yy44iqt9zb7n0OKXzyic=;
- b=Ro8ur+qAu9DdD0wkJFBdrMfgj/5U+sOY8leYuiGy1zUdmu6BN7qbfpSRpXe0/jZ1bDf4H8WEOXmxYritFHyM41wEv4B7+ugs7Cs+oZOh0e8WQrzmnaDH13p9o3ddDgyBj1UdgVL9rK+E3k6enykSbxgY4kxXdDUSKDzQ4+qgou4=
+ bh=EtOxh92NSSincPhXFuP8cm+u3A+aFpwCKJ+SGInFouY=;
+ b=DGF+twVuzBHKWEOnYo4gHrhy8t023mQlXPIf1mVOmomoFpPnef8IPmjb1McXK9vlcRZtFox+kQ37rZkqaDeFNqfnK3iHtwDhhD9FWBnI7X38P/Wz876ZNk0nh+n77wgsyirgA6z/PbicKuZ2Q2hhkeSWUSs+OsuZPWKPED8LGqQ=
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
  by CWLP265MB2692.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:a7::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Wed, 4 Nov
- 2026 05:40:25 +0000
+ 2026 05:42:42 +0000
 Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
  ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
  ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0592.009; Wed, 4 Nov 2026
- 05:40:25 +0000
+ 05:42:42 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 04 Nov 2026 13:40:11 +0800
-Message-Id: <DMM6OMQRS6UY.17O4X89AIPCS7@garyguo.net>
+Date: Wed, 04 Nov 2026 13:42:27 +0800
+Message-Id: <DMM6QD2BUR9V.37KO0N2MXG64L@garyguo.net>
+Cc: <gary@garyguo.net>, <ojeda@kernel.org>, <a.hindborg@kernel.org>,
+ <acourbot@nvidia.com>, <aliceryhl@google.com>, <bjorn3_gh@protonmail.com>,
+ <boqun@kernel.org>, <dakr@kernel.org>, <daniel.almeida@collabora.com>,
+ <lossin@kernel.org>, <tamird@kernel.org>, <tmgross@umich.edu>,
+ <work@onurozkan.dev>, <rust-for-linux@vger.kernel.org>,
+ <fujita.tomonori@gmail.com>
 Subject: Re: [PATCH v4] rust: compiler_builtins: Fix silent trap in
  prohibited intrinsics
 From: "Gary Guo" <gary@garyguo.net>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "FUJITA Tomonori"
- <tomo@flapping.org>, <gary@garyguo.net>
-Cc: <ojeda@kernel.org>, <a.hindborg@kernel.org>, <acourbot@nvidia.com>,
- <aliceryhl@google.com>, <bjorn3_gh@protonmail.com>, <boqun@kernel.org>,
- <dakr@kernel.org>, <daniel.almeida@collabora.com>, <lossin@kernel.org>,
- <tamird@kernel.org>, <tmgross@umich.edu>, <work@onurozkan.dev>,
- <rust-for-linux@vger.kernel.org>, "FUJITA Tomonori"
- <fujita.tomonori@gmail.com>
+To: "FUJITA Tomonori" <tomo@flapping.org>, <miguel.ojeda.sandonis@gmail.com>
 X-Mailer: aerc 0.22.0
 References: <20261009224626.1331914-1-tomo@flapping.org>
  <CANiq72nxjrWpBjwzgdWncKECKwzj6zfjS3XC=da62xr8wiSxEQ@mail.gmail.com>
-In-Reply-To: <CANiq72nxjrWpBjwzgdWncKECKwzj6zfjS3XC=da62xr8wiSxEQ@mail.gmail.com>
-X-ClientProxiedBy: SG2PR02CA0134.apcprd02.prod.outlook.com
- (2603:1096:4:188::14) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:1cb::9)
+ <20261104.075702.612319673416199209.tomo@flapping.org>
+In-Reply-To: <20261104.075702.612319673416199209.tomo@flapping.org>
+X-ClientProxiedBy: SG2P153CA0019.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c7::6)
+ To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -105,100 +104,119 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|CWLP265MB2692:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6b21da8b-b7f0-4f39-d9b7-08df3a361feb
+X-MS-Office365-Filtering-Correlation-Id: dbe42345-0451-4562-7b94-08df3a3671d6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|10070799003|1800799024|10067099003|22082099003|18002099003|56012099006|4143699003|261026121527099003;
+	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|10070799003|1800799024|6133799003|10067099003|22082099003|18002099003|56012099006|4143699003|261022105027099003|261102123227099003|261102130727099003|261028144727099003|261026121527099003|261026140227099003|261021121427099003|261009223027099003;
 X-Microsoft-Antispam-Message-Info:
-	tJSA+YFJ3llrsUgihlSIfw7V1svRnhXT1idEm3ervSWmpiLgWQnrGktetZWlujIOfafMrJI7sO6p3w6oLyw/3GqVCwl7FOZEKQ73UNEeEzNSUUUs56hlr01QtWGzgp+lHwW3bHPwkkP8eI33w6AK8TIHruADH43Y6qy+DscxKVLOHMu/mF6Oj6zMoU7fNhuz51iz19Af6iNXsiP4yjOoP8RtJjOptz/P40M1RNRYPwk8erBfJ6ouivZro2xwe+MZez42900K+avaZ/88WBg5WiHxVJzgGz2Mc4yCTjtlhOK8AibVTy3KaEmeV7/C62KbWucGMHAAm2f3pnFXdXoke1WYXx2zI0G93jIOn80PpTItP6CMmWm6ixwFPoqm7JiRXIhI2w5vmSHIudTG/yAZ+9V1aiDpMF6hwa5vh2yByawLwNkTQOhNtI0O5N7EJY+ogf7kUkQiJG1EgKlaH0ipYIEgq9llLKZMrd49Lhi3CZoYNDdtbostiJd4I8AKWE41RB9kbPZa0YGyx49V19ahQorpTjnPUWT5v37oajPOMoDJ2ClQK5sBpo0epvVi+Aeqa41JxcMZ55yqlwogj2QvD+bgpiQF36adUL/xynYR3oxlY3+VwqRa8jhzHSMoARTqc+7Nu4JUrCtgL8C4qNC/kFAJK9zSkWITj74ZzJBtWXo=
+	X2qbdTLtPOnJXAEFsebUOdlaHRUCko70IgPkb/jtdb/KV/yyrxFcBtDF52nhbh10bEQKp+KVcWow70V5RmxLLIgSyTI0DcqvZ/6rUj4h3cyumh2/xXETNl310y1o5SyPA4ul70jxvozka9bYrhK9sNoBCumJTjOTXwynSovOC+XVALhnWGts93pRFV3QrhMP+sHffgfj8ymHjT8ZrlTc/Er+4Qsilf9YONJT5SzzWS03/ULPu/CBsZZTdwIwEd33j8RUEUumWJ7YIKsjItoZwQ05pl2dGqO7NlYbMNkJMhHke4E3gc3ZZ6FWC5pasZ8DHm3FuDBOU8Kx3uL2uII+wICITPk0tf2Qz9Faq7ayhShdECpk3yXnIzwS9cNFteQz4nwuHlqpT7ENVjzloQZJgtcy0YF5tY7p0ez1k9/S/mXgNZ1Sl1Rg79WQ5HQHYMk0cKXZyZhMx/QaBMTDyF+S3zF8OPkP2MhtBrEJx94GaYv+8LJlWuWd3YvgLqj4BqUUjQta8ZY3pQIyQMUOgI4Xo6x9wq5WEpsRQbxQmGvpAECfKdldLKMX8DonbiE6o0GOPZGtOl6WH7R2ElafvmxqKwvcMd6EuEdURfbSdjVgdDXcU5rPXIXDbyd2UF8RxuSz6DUEqRN7BYDtUKqXssZ7BZ4s4MkZbq7+3PQjlCHBRBQ=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(10070799003)(1800799024)(10067099003)(22082099003)(18002099003)(56012099006)(4143699003)(261026121527099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(10070799003)(1800799024)(6133799003)(10067099003)(22082099003)(18002099003)(56012099006)(4143699003)(261022105027099003)(261102123227099003)(261102130727099003)(261028144727099003)(261026121527099003)(261026140227099003)(261021121427099003)(261009223027099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TFZlbVdpSW5SbzAwS2kwUnl5OEZrVWRoR0pvcFRSbis5MFptSXdENTJtTnlm?=
- =?utf-8?B?UkR0bGhjWG1EaURQejVwa2cyZ2VHUU0wQ0xSMGFkd25weTBiaUNOVUZwWHpY?=
- =?utf-8?B?QmU2YnF5cDZvYVNka2VucUZkdjU2UjF0OFByTlhUNTJWNEFvTmNVTmFPQ0NU?=
- =?utf-8?B?Y083R1Z2dktLY3VXbmEyYVN3MCtqNzdzbkZWREFiM1ZVSVdFWkRFVktmbWVV?=
- =?utf-8?B?VkdtTjEvbHhVSkhKa0d1bERZdTdnZHdhSm43QTcvOW1QWkpVQjYzQ0pxVXJN?=
- =?utf-8?B?dTM4V1VXekEyOTBMTzl1RTgrbUtsdjNiMW11NVErSndRV0FYVDJHb3pacEpy?=
- =?utf-8?B?YjgxQ3QxVjJFREZoQkgvRGFlTllpTzZVV2tEVit5RzNsbUZ0V2d3SmdvbHRl?=
- =?utf-8?B?WVV0blVFbUdncVdRZVdlcTFhNU1KeVlVLzNVd0REUzg2cytGVGoxOEN5ZmVG?=
- =?utf-8?B?bHdZMDFnVXc1clR4eE9NUWxqdkFFMXF5cUlKZnB3NjRtdEdqdGgvUXNrd0Jn?=
- =?utf-8?B?Q3p6NXo1TVVNeHd5UjVQVHpaZWcxUDEvZmFEVUdoZFVHQVZ4RU81SXZtV0hv?=
- =?utf-8?B?UEE3VlQ2cjduWENuSDc3RGQ1V2tteU1HaTRYT2Jlek1wQnQ4Zm1lWS9FeDJT?=
- =?utf-8?B?Nm41Skd1a1hBczNaUk16SDh3Ti96SzJHRXB2eHlnNDZOamx1UmtrTyt4ZUly?=
- =?utf-8?B?TU5WUHd6VGwySFpKK2FnMGpvZzk5dHRCNldWblZBM1RkdjBaUkJ1cEt1VjRC?=
- =?utf-8?B?OTM0azFUbW4yNjJRVk9NQkdLRkxvWGRZWWdMRDVRcmhtQTJRZ2NQZ1VqSHdL?=
- =?utf-8?B?TUxmcDgzMENDaGVNZ2pENTFhWkRHbGRIRmhLZGRUL1JCZ3U0KzdGTjhYcnZ2?=
- =?utf-8?B?RlQxaTdZWDRaZVU3S1VyN0V4RGpNU05Oa3d1eUhqYW9WbE96UUYzVVZWRjdW?=
- =?utf-8?B?cURYaHNxRWxxT0xYUldNeXlOVDdHelZXeEZWVzloaWxreWJkTTVYa0JDYkZF?=
- =?utf-8?B?bkM2dkg4R2MrSzlEK3Nnd3VYZ050TXFicjV0T0VlN0NZWk54SjBxbnZTVkRS?=
- =?utf-8?B?bDFud1Z2MFhRUHhVeW5BN2FUZHdISkZjQ0JLZFFwYXdBY3J0UWFPYW1uL0E5?=
- =?utf-8?B?azhibWtwTm1SMnE3UWpBNzVDYUJZLzR4L1MxbHpPZnYrVXpvNEJUeTdRVjli?=
- =?utf-8?B?RUF3VmhoQkNXNHFOUWJVdW9RdFNLUUw3alJMcUdnYXY3VkF3YktDdnhqa0xX?=
- =?utf-8?B?b2IxT3NiYklYU2JkK0JBb3J2Rm5COUcwM0dQeUVYWXE1WG8yOXdVR0hoaC9W?=
- =?utf-8?B?YjNhK0F6c3dxUXhGa3ZPTk0wS1gzVkZUc0VWQmF5aVp3dTA5MmtacFdVc2ZD?=
- =?utf-8?B?Rzg0UXJnNWJ4dzR4MUttMjdpTytYdDF1eDk2WlBhaXVnemg2SVNwelBXSFJX?=
- =?utf-8?B?MGZrSzgxMW9jVE9oRm5Mam9QVFBqM3JsUHpuNUdsd21nWGJoWTFKbjVCeGNI?=
- =?utf-8?B?Uzhpa2FJSkFpWFRIOThDOUQxUjVjeUdOU1RoV0x3YlBmcW1sNGlDL05UcWJH?=
- =?utf-8?B?TC9pQXRESmpTVlVaSkYzM2w3T283UkhOMHJqWnVJaWdIcjBzQ2w5K1pUY2Q4?=
- =?utf-8?B?TUJJUEV6V013TC9Jd1dNWVJWL2VjdWFsU1pnVFg5U3B2RGhGdTUvRHh2YlBv?=
- =?utf-8?B?K0Z6TUN0SE1sM2owY3JqakN4YW5RZUdYdnF0cTY2SmZ6cEJOWU4wR3RGb0ZO?=
- =?utf-8?B?UGhkSXZrWlIwT25yRFJtWXd6S3ZQb0FjZThjb0RuNEdxbWJETkJJTXEvZHlH?=
- =?utf-8?B?bGkwdXV6eTdBR0F3U29uNk5yam9GaitSK041NG40RVZWWjJEK3hlS1Jxa1Fj?=
- =?utf-8?B?TXFDblQ3MUY3WVUwRTZoZUNKS2hFbzJRUzh1YUpVZ3d2aHhKZWtqNWVIanpy?=
- =?utf-8?B?VHZWZE44dUhGZm14Y0xxZ0djeDNrQ0F2azdIQ1VUSGxqWjBTb2cxaWFGQmhp?=
- =?utf-8?B?YjYxS2VHQnMvc1NPYmZPZk16WDRzamZ0ZGRLRXdFRUtVVDZwWUI4czVFemhE?=
- =?utf-8?B?dUpFS24wb2U5YUFUUFhkOXV4RDVXN0huNXZjNm9GbXZnNkV3Mjc3TXYvQnIv?=
- =?utf-8?B?bFAremFaUlcvR1BvQ3RoSGU0NExzbkZITlowdG1WRkM5OGhtTm03ZVJNQTZm?=
- =?utf-8?B?QStYeEdaQ0hua01QT1BOS1F6aDE0eGhOQ0ZIZW4zTU54S0l2NU1hTzNSRjI4?=
- =?utf-8?B?WmhTVmlBQ3FMcTJpZUtFeVlCYllYSkpqT1J3Qi9ndGtCYUlKcFhQV1dVWDFT?=
- =?utf-8?B?Uk9vMzRZR2MxeTVUekV4SnlSVWI1Skd5dXA4WEd5ajd6QlNhbVB1Q0VFWTYr?=
- =?utf-8?Q?IMppyS2TJ+TN9yMya/VHG3M+wzF1+//VUjruS?=
+	=?utf-8?B?QTFUMVVhV1c1VVpvbE5keWxVN2s3U2tSVUZpTDJnaC9rS3Q2Q0gwcThkQ1ZB?=
+ =?utf-8?B?L1cwQVNWc3EvWUpzYUs2WXRzUHNnczd5d1c4SHZmYXQvd01vVDdsQUx1TjN6?=
+ =?utf-8?B?OWx0SnlYL2lyVDEwL1VXZFBwK2Vpa25DUjcvYlRFa2xkYnE4UFdNV0l5dm84?=
+ =?utf-8?B?M1pBeGlYUVJ3MWxxeTEwSzhaSkczTzNBNVc0V21lSTYydnRPaU1lblVuWkRR?=
+ =?utf-8?B?VlJjMlkzcW5ydzJJK0xTL1daUjVGcFl6YWgxQ3Y0bTVkalcxdE1tRldlalJW?=
+ =?utf-8?B?VEYxa1dPSG03blJwZndoN0daQ0xIQXYvQ1VyRHFsTk1QK0ZoeE45Y2VZVFlE?=
+ =?utf-8?B?eHFEd2lkL2JNZTdWN1hmSEwrM1RuQVFCdzcxK3R4VlhLd3hVckwvMkFtU2xm?=
+ =?utf-8?B?N1JnTlZxbHVLREowWDZSSlJKNkJHMXlSeFlBYlRua2FIWVprd3ZwZXhRbmVZ?=
+ =?utf-8?B?Z2M1blJvVXFGM1dIZ0UxQVg0bDdJSVdQR1VUL3NlV1Z4RlF1MmtFMFJtcWpC?=
+ =?utf-8?B?WEY3WHBzNTZsZ05lK0h0T3M0TUFwcVVzTDBua0dHdkNMc2dzenFKWUxaOWFJ?=
+ =?utf-8?B?WFhkQWNHZDhHYjBBZ2FFVzlLSnloVnMvcXVHcFVpdlRweWsvTGFrZDMzVnE4?=
+ =?utf-8?B?dUUrNVQyUlJWKzBtU3k0TG50cEg0RnZrbTkxeVhxazIwNjErZktHZkRlc3RB?=
+ =?utf-8?B?NVgycEM1RzQyTXFSS1oybG5OTmlHZldmS2RLZ2N2MWdsMFdPS2hiNTZKOWhQ?=
+ =?utf-8?B?UFZRMGV6R0kyZ1R1SlJYTGltaGZpRzZjZUhVMk0wUkQ1NFZJbmh2VTNQMHVq?=
+ =?utf-8?B?SEh5ZE9ld2w1ZXFmUjFuWStBbUVRR0Q2WDZzREMvc1B5djdXOHZuOEtmY3Fn?=
+ =?utf-8?B?QTZQZFZDYkZ5bmc1U3J4WnI4cXNEV2I1OGFkdHdycWFKY0lKdU1CRkhta1g0?=
+ =?utf-8?B?cHdwbGl0TC8yOFlscTE0M0dvU1hZdzYrcXVwajdoSTBJY1JIdHN0dlFRZFd5?=
+ =?utf-8?B?dWxQb0VjdWdvYjVwR3U4aDNEZXNTTnI5K0NYYVI1YzlXdjBsYUd4VkRJZU4y?=
+ =?utf-8?B?V3hMK0Q1Sk96cWdNemNqS2ZQQ1J1RXRjZDkyS0tZRmNNaDNxNm1wWG9PRzJE?=
+ =?utf-8?B?MUJQNkZSTHBzTSsxRjlwcDhMVFU2VDBQcEQ4QTk3WndHOUhvMVFKdXJqaW8z?=
+ =?utf-8?B?WEdWSDJUMW9zamVVVUJXajM4a2JMU1FXcE5ISDdzaHVEUUZqaytVMEE5b3Fm?=
+ =?utf-8?B?S05WNmRNZ0NMVkwrVVJvSkZCSzBmWEMxWXhpaHFFWVNhbURIVWltZXZEbU1p?=
+ =?utf-8?B?dTZyMDQ2RXA2OER2NkdDQk1abXhBUXo2WDRiYVBBcGJaZ1pESHpaUVJWd1RS?=
+ =?utf-8?B?RXlCUEdFNS91cjlPamNLWm5wNlFkWU9jdVNlejd4K1JSN3BWUUIyMmtpbGR1?=
+ =?utf-8?B?aUFvRTlFMnR5TU9sT0tBdG55c2N6cFczZHdhd2UvNE5rWTgxL3phZ2p3aWtM?=
+ =?utf-8?B?TTJXTEtaclFLcWt6QnpuMUduU3Z2WjNoTEF0Q2VsRy9tQkpQNm42Rk90N2wy?=
+ =?utf-8?B?bjE3NWpFSTRJSmVQOVNzcEY3dXNNRmwrV0pDUndKZ0p4R0x0S21SRzlDQkMv?=
+ =?utf-8?B?TWRUdlBVOEh1QVJqNmF0VlhHWGJla2dPTjhiOHhOSTVWWXpQZnh4K2d2UW14?=
+ =?utf-8?B?WVZZK0ZwdEVTUTQwRzFGL0g1cFlnRnU1bXJUaEp0SDlVTTdjNUZBWEVHNjBQ?=
+ =?utf-8?B?NTVNbXNEYWFnNU5tdjBtbHpEMTJkT0twazhpb2V3M1djSVFtdVpXaFZONU8r?=
+ =?utf-8?B?Ni9OeG12bUQ2NXdrRnpHSzRJTDZpZWJ2Z3IvdjkxU0pVOGlpODdkaUJiTzll?=
+ =?utf-8?B?cFR5UUtZUjJpcmVlVzl3a2pDMTRwVU92eUtFVndKOGxmWmYzalNNblRseVdp?=
+ =?utf-8?B?eDhCQnUwVFp3VzQxYUFlR0VTN0VXUk0rblRGVmduZmR0NjgrNEpnSlFIV1dp?=
+ =?utf-8?B?YTNtMjhHWC9EeGRsN2pSRENaSnh0MUI4bjBydXVFRzNDWXhFSFdqSmg1N2lV?=
+ =?utf-8?B?V253VkVubkcvNFJIclczQUE1TFprb1owbURmTjRLOFVoYzlwa0Q3cnJlZGVl?=
+ =?utf-8?B?ZENiZVc0b09BWXlYaERzWGxOK0dDaVJSYjN5ak9rRUNrVWwrUUlwLzlnOTAz?=
+ =?utf-8?B?aldDQnFNS00zZEszbUsvS0ozQ3pzMzQyWU9BRGQ3Sk10ZnJ6Vno1WWpyMWdn?=
+ =?utf-8?B?bHNQRFBXckk0N0N5aVV1aGZLK1RqeHFZNkNwL0kvdG51RjZQYTU0anprbmFn?=
+ =?utf-8?B?Zk8rcStvTDgxdUFQWnl5emtnWHlORGpEWHFjQXh3MElFem9pUGNUbVlvaFRo?=
+ =?utf-8?Q?I5SZw9inVYPyszXeHcpzHSGEfgGtsgRwYGanG?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6b21da8b-b7f0-4f39-d9b7-08df3a361feb
+X-MS-Exchange-CrossTenant-Network-Message-Id: dbe42345-0451-4562-7b94-08df3a3671d6
 X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 05:40:24.9621
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 05:42:42.3250
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: A8m4LDZG+wxUDLqm6UMko1Qc9AMHVHy2maunWqvXD1MqiDMveXTGB6p0yQausMlVVNqW9LAR0RvdwdUKvq1THQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: iHE4gNoMBr7tzo942ofCdqO/rLyPgM+lbt1FHXF+oa4PRW9b2qaaWPs5NO91xKi629SfowmtP03J9o2kRh8+gw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB2692
 
-On Tue Nov 3, 2026 at 6:54 PM CST, Miguel Ojeda wrote:
-> On Sat, Oct 10, 2026 at 12:46=E2=80=AFAM FUJITA Tomonori <tomo@flapping.o=
-rg> wrote:
->>
->> +$(obj)/kernel.o: private rustc_objcopy =3D -w -W '__rust__*'
+On Wed Nov 4, 2026 at 6:57 AM CST, FUJITA Tomonori wrote:
+> On Tue, 3 Nov 2026 11:54:26 +0100
+> Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Hmm... I am a bit worried about doing this here, in `kernel`, because
-> it is a big crate with many other things around. The pattern shouldn't
-> match something else, though.
+>> On Sat, Oct 10, 2026 at 12:46 AM FUJITA Tomonori <tomo@flapping.org> wro=
+te:
+>>>
+>>> +$(obj)/kernel.o: private rustc_objcopy =3D -w -W '__rust__*'
+>>=20
+>> Hmm... I am a bit worried about doing this here, in `kernel`, because
+>> it is a big crate with many other things around. The pattern shouldn't
+>> match something else, though.
 >
-> By the way, since this is here (in `kernel`), do we need then the
-> original one in `compiler_builtins`?
+> Agreed. In v5, I will move the stubs to a separate, small crate, as
+> you suggested below.
 >
-> Actually, taking a look at that, I don't think we needed it (for the
-> original reason, at least) after commit
+>> By the way, since this is here (in `kernel`), do we need then the
+>> original one in `compiler_builtins`?
 >
->   cb7d9defdafb ("rust: compiler_builtins: make stubs non-global")
->
-> Gary: did you keep it for another reason? I asked an LLM, and
-> apparently the only reason it can think of is about an unrelated
-> side-effect: `objtool` assumes weak symbols return, so if we were to
-> remove it, we would get warnings in IBT/LTO builds because then it can
-> see how `core` uses them doesn't make sense if they are `noreturn`.
+> No. With this patch, compiler_builtins.rs is empty, so I will drop it.
 
-It took me a while to understand what "it" means here, I assume you mean
+compiler_builtins as a crate must exist, so you cannot just drop it.
 
-    $(obj)/compiler_builtins.o: private rustc_objcopy =3D -w -W '__*'
+>
+>> Actually, taking a look at that, I don't think we needed it (for the
+>> original reason, at least) after commit
+>>=20
+>>   cb7d9defdafb ("rust: compiler_builtins: make stubs non-global")
+>
+> Right, the stubs have the __rust prefix, so that reason is gone.
+>
+>> And now, here, in `kernel`, we don't seem to need it either for the
+>> original reason, except for the `objtool`, but also for yet another
+>> reason: if they weren't weak, they would be exported
+>> (`EXPORT_SYMBOL_RUST_GPL`). Which again points to the fact that we
+>> should probably clarify all this with a good comment or that we should
+>> do this sort of thing in another way, e.g. in a separate, small crate.
+>
+> Right. The new crate is not in exports.c, so the stubs are not
+> exported. Then the weakening is needed only for objtool. I tried the
+> new crate. Without the weakening, I got an objtool warning with
+> CONFIG_X86_KERNEL_IBT=3Dy:
+>
+>   vmlinux.o: warning: objtool: _RNvNtNtCshy5ABSPeoCG_4core3fmt3num8exp_u1=
+28+0x381: __rust__udivti3() missing __noreturn in .c/.h or NORETURN() in no=
+returns.h
 
-I don't think that's needed anymore. I probably just didn't think of removi=
-ng
-that line when making the change.
+I think that can be fixed by adding out-of-band annotation for these functi=
+ons
+in objtool? That sounds more preferrable then weakening the symbol.
 
 Best,
 Gary
