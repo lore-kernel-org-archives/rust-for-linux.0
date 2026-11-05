@@ -1,58 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793897254;
-	b=GT4ymnKLq06UHkFINEffaLqjHRhCskF4Ump0/s1zIwJ5NunGrvgfhq5Uy8AS8u/qXkOm
-	 JKfeZlYHkZiRry1PLwaZmEO1Eb1MPJx2vOD/17pxLCyaocddHoJrGolhJrTMcSo6bOGDG
-	 +JXZKqCO0dvW7HmsBPNINqK1oqTOeSmfyW53/awE9uqHFoELSSRnR0v4O6+DlUVaQxAyf
-	 Mg2w0D3GMSTLgTj7LU/XiIvdkSBmO6pZv4atJJnV+VqXou8rhDzOOMwSdRHuDnOg2km1B
-	 ltIDHzg2ouaOiZ2Qn0NPjWLJq+jihpe7fciOaPGwb1V1LST83zx8yiVG9tvcrinoCeg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793897254;
-	h=Received:DKIM-Signature:Content-Type:Date:Message-Id:Subject:Cc:To:
-	 From:Mime-Version:Content-Transfer-Encoding:References:In-Reply-To;
-	bh=n/Nb1M7Wjdn2Q02uzRfmomGG9EAmUu41HnSfsPMt16I=;
-	b=pEx03+ih9EPNSiFF7qTb0oHQ9562+Tysfg87ugsUf/3WbqhtKxNJGkOAtaA5f1XN1m4v
-	 BSf7Hkm4PsuCtALRWbpzbY7gzgsvWuWEN5TItziOvzNF4ma7dm86f5zcHNS0SzB3a1V48
-	 57wqLwvOwGcmuEytI37PZolJ3Hgojj1ofqFrBXjAN2znJm7y664VpSGF0vPVoei0gSTsK
-	 IjLj4ZTYy7eNpI9v9s4dtuOql4ldnk7DbaBmZ2JRppm+q94uaW8xQ97C/DZV/2TxvFjQW
-	 JeJHou8iPkD6pKsCLdGj64Ra194DZk+RaEkQMie04jeQh0RnZ8ply96/v8MCucvmlPg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SU3JsF83;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.41
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793897348;
+	b=cm4nBEkBWSyG39jj56Q9lduVjM1Xbx1+C+h1IDmaoPFmhNfYtcnBDbcwqoZfauK/eMpB
+	 mjDR/fpPy7M5/SeS/6Ot343yYyvVQtFE8BQIhAarhCfBz5fV0RY3/vXcbtmEqNrZJezw/
+	 6kADgdUS4X7LUrwyvfSc6ajzSMMIqh68JZdqq5uqz2lEK7uoxFxAMa/2whb3Zys++SRu2
+	 UXxoGKmlOyUxRLcH6dxsOA5qQvkkU7OtMAQd8RtfOaYuXwOpa2dmy7QCjhyALJTevJAhP
+	 9lnW1IBcrT6yk+vdgfLhcBiHataBmGS/LReVIAvsO5b5bZjmoEOEjvmxouW/KCjHwCg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793897348;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=IofCeiQ6JCwrlt7o+A0pBeIgYyuiwZInCjl1yfHCeTU=;
+	b=G9ifjsuioj5UcH8VxxmNsoF3ZhdLyulzmxTj7U+SY1OL12zzTj1BtCLQaF4IqCxF936h
+	 5YCGy1My0z9l6K8XJhI1fYgR6Ns4IVaZq2J8e92KLAuU9HbG+smb0hby1ePvXtVay+yIU
+	 hAvHngDpZzpT+VCGnm7o4lkPCzTR/SnhT9cwa5r6sfXg/iryR5n48J6lft+qWqXtshebB
+	 9G4Lc2M/u0Ivs29xK0vwg8bndP2UnWwNkY8Y5u4rRhSCkU9rIwsDQTNKCx/ObekSt5JqH
+	 kIzNX9vtYS+DR2y+4eY1/EPFhEJElWPxKJ6OGIKCjjdyciBcOiyTL4gLjIgAvPzR6HQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=alanderk.com;
+	spf=pass smtp.mailfrom=alanderk.com;
+	dkim=pass header.d=alanderk.com header.i=@alanderk.com header.a=rsa-sha256 header.s=googol header.b=qSOwI09+;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.41
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641C8606A328;
-	Thu,  5 Nov 2026 16:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0BD606A328
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Nov 2026 16:49:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D0BD606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alanderk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alanderk.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SU3JsF83
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E41131F00919;
-	Thu,  5 Nov 2026 16:47:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793897253;
-	bh=n/Nb1M7Wjdn2Q02uzRfmomGG9EAmUu41HnSfsPMt16I=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=SU3JsF83cgmIhwrMxQ6tEcVQ6WV4woH2W3aj2MUWqRbbxiR5u0PDL7m8tHqsTiqt5
-	 hAGdO7XSqPo9Z/bb6SVshj2QEVEDtzmbh7AVqbyebuJgmCMvTdA64o7+BbGd10ONtM
-	 qTChhUNvMinDSF+6AEpADZnvyYBAqvm39w032qLFSwkME1iKH0sBSbQ0HHWTi/zW2u
-	 NNzEbYwMa+IeWDo0JelbGhogd1sWPd13yWQds47eCm9UJMxkLh+MprGvAtzF+X4WNI
-	 d1kxYp+yumkvNNuMpUX5xbZ5CfUZ22XiQv2GJKhWNE7faTBHCqLiz+HqrZ2vBG1H9C
-	 sjvfILnRUr29g==
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 05 Nov 2026 17:47:28 +0100
-Message-Id: <DMNFI31C8X12.3L2J0GKKNJN81@kernel.org>
-Subject: Re: [PATCH v5 1/3] rust: add runtime PM support
-Cc: <ojeda@kernel.org>, <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
- <aliceryhl@google.com>, <boqun@kernel.org>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <daniel.almeida@collabora.com>,
- <boris.brezillon@collabora.com>, <work@onurozkan.dev>,
- <samitolvanen@google.com>, <acourbot@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <driver-core@lists.linux.dev>,
- <linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>
-To: "Beata Michalska" <beata.michalska@arm.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=alanderk.com header.i=@alanderk.com header.a=rsa-sha256 header.s=googol header.b=qSOwI09+
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-490f38e9688so829469f8f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Nov 2026 08:49:07 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793897346; cv=none;
+        d=google.com; s=arc-20260327;
+        b=He7izuDrdQfPGOYaoIitdhYvfIKvWaYNB/1y9JST8shf/oyJEtAPB2C/AjsDAflPDv
+         Jc5I/HqwGY/9lIuAl9/IWQcWqiHU0C4o12OJ8QhcFtiZqioQEaLEXxKdkvXXiQW0P5Vf
+         kO+RBiLVYmYr8n1GO6fFTQlmhZcW8sOcJgATvkOfuTPfdN2B0hPgM0XNrmgJO2/u3CAb
+         7nKBD51hOJKk6CGDhdVml5l6dVP3QdjUr5iD9iDHlJ8eX0f5jkEhE2MqgaGUswT+LiV5
+         +y/NQRO/hnRwuX8F+iZET6u8UnPoYMKzRZi3uWmnKkSAHKt0ycEbNwTrFXHPlmVl/+96
+         PTgA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=IofCeiQ6JCwrlt7o+A0pBeIgYyuiwZInCjl1yfHCeTU=;
+        fh=Noczy9bAgJwwkMCwRx8adrDH9mVIkDm6TAN59MD0hU4=;
+        b=YUlJiSypk+f8sXMTQfIJb0g11n4UIKgTBl4Fa7cqU5ruOoaxxgl++3DnnG1QdBUORT
+         Oewjt49OOOS+Fww2bfziKBi88Dp24PRPgO/k1KRzO8KQodZLxvUisJ0xsfJcY+kFlgfo
+         QYAxbWJK38mRUjphtFdFG4wdS/R45OlDsUPtNAIQi5NTQQOxpnZX5eU6FX1mBOAxUY1y
+         Ep9cwHxY4aM+WlquK9/jpsQPH8uJixHRXmnndMuGy90CvcPfjTz5t1yjbKHtrSQTYBZJ
+         CrHq9PoLDGjMpwEAPQGSTGwyukej/jF5hOLI9Q2A40OUFDl0FCLmXtMrwdl/KcyqzplH
+         0tkg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=alanderk.com; s=googol; t=1793897346; x=1794502146; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IofCeiQ6JCwrlt7o+A0pBeIgYyuiwZInCjl1yfHCeTU=;
+        b=qSOwI09+JE7d7rKoZkTU3eUrTNzAE9STFkM9DkSP5Ze3kh3+lGIldrds9BDVDerlYw
+         pp//qNE7JkxJL9n7SS97rNb+FPrL+U++gh0zccNBXcjvS0ZIgjvaT0ub4l2dWeyo+RWZ
+         Cqv1YScQhGQYy0+XyJcz2v7G0Zkt2vrkzNBiCVOyBg2nsT/fVxGjNEyZFPYcuPic8MAY
+         FQ8EAZlWN935gPO0mt5Mcp7TvdPRi+uJgXfyH2E1b7WcwlhUh9x6ZOWSwrghwqktlIUJ
+         /4/1d/HG1aNeX9bfvGugyY8VJ6bAAwVbhSD7dZ+72aWlA7HmPb1BZjCm0DCbrrPRMO7l
+         t2iQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793897346; x=1794502146;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=IofCeiQ6JCwrlt7o+A0pBeIgYyuiwZInCjl1yfHCeTU=;
+        b=OcJC8Fc0qpKURy0AEmoH4S59a7GstO3EtsJ6UHLcK9wcePGTPiY39/3GefJluS7KRQ
+         x13N18+qvVr/npnx5XF6B8y5mHDckA3HuDW86e79sV5VKL83eHmyHjJkP9UeSgDxMSsq
+         jOKjMKMDYxKBZcJkROqR8yhNXmy8SJJevgupXqJFLxjICbLqScoUM4ulpL1q10NhoySr
+         a7XLec5vPS+K6iOnFEY2yV9YyGlh9k06JDCCKWo+5/IJgB18P9PAmdFVrgpQeAIYM4rQ
+         CwcEycQqJylXd2jeXstHvQFSWBQwDoZm489Oo+/udHK52AKRsbIh169Flq1OFXlAbq17
+         DLsQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxUH/JvJETLTZK8yNToDHhld5xunEfWH0jXYX8DmUKenIHeGxav6O0D2C3vIlvdNDfqoivM8cj7hrwPP9gDoQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/wvtGmxnW6+piGuAJ9pNqUyVE8QZUdXt1XKxCvM+pgtvdUnO91
+	1QeCjBJoUOZBEBLAdEkUc1YqfKEmNyuuzwyhw4+WKvRColfdpc67hzL+C3aZoDO49cSY2pCP2J4
+	pHK7BRlFb/REq290mbtPJfNBtfOxjNfAvOO9MxFSxLA==
+X-Gm-Gg: AYBFou2faZ6ZSJnXCMmoWdhqIlRLL6izwlq6Q79G93DuxfN+z4jwd1roQudEoZX1ZUL
+	eKsFDo5mqxFW8fs8R6lRpj1OBwtDAWvv874M3Pfa8yGiIhM5c/bZ8NVVxYcafb8WMflmk0fpYCM
+	gED+Oo9tGo20DI6TgLU3/wo0ojyhxT7xqMrO0NyIX6r2kS/C1KhjxhNALxnR6BBDfFqnWMRn7df
+	oC3HiRWNHdZ5bCzq80kz0VDgBt7axhwfO52KExv8dZcGoiUXY+IJzQNCUNLceYm8Xc20+HuK+zY
+	NfwI25NdVbGyQaQBKhTCW3bFsFaJxM85IO+k53ALrP99cWrqBqLyb/x+hIQ5wbL/kesCxRuBDyQ
+	fjD2GN6GOpOi/0l2uAei0SOYMLBUdUu+l59pSB3JgvQuuy/sL
+X-Received: by 2002:a05:6000:4a1c:b0:490:1395:9b00 with SMTP id
+ ffacd0b85a97d-4911906d26fmr6264775f8f.10.1793897346089; Thu, 05 Nov 2026
+ 08:49:06 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -61,372 +102,58 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-References: <20261026120523.526942-1-beata.michalska@arm.com>
- <20261026120523.526942-2-beata.michalska@arm.com>
-In-Reply-To: <20261026120523.526942-2-beata.michalska@arm.com>
+MIME-Version: 1.0
+References: <20261010005227.976-1-linux@alanderk.com> <87dfc1f8-6ef4-424c-a48d-62e935eeeb28@kernel.org>
+In-Reply-To: <87dfc1f8-6ef4-424c-a48d-62e935eeeb28@kernel.org>
+From: Alan Derk <linux@alanderk.com>
+Date: Thu, 5 Nov 2026 07:48:54 -0900
+X-Gm-Features: AclHuK8vKOu24Bc8kFqanAhzIarNQKxJATur1LwcU5SeZGjflO0j-bEqaeTReYM
+Message-ID: <CAPLSpGbV5RTSuMZPX=UgzniPtoT7jup7pCGw_Rt2tqiejKXmng@mail.gmail.com>
+Subject: Re: [PATCH dwarves v2 0/2] dwarf_loader: Fix --lang_exclude on merged CUs
+To: Alan Maguire <almagui@kernel.org>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>, Alan Maguire <alan.maguire@oracle.com>, bpf@vger.kernel.org, 
+	dwarves@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon Oct 26, 2026 at 1:05 PM CET, Beata Michalska wrote:
->  drivers/base/base.h             |    4 +
->  rust/bindings/bindings_helper.h |    1 +
->  rust/helpers/helpers.c          |    1 +
->  rust/helpers/pm_runtime.c       |   89 +++
->  rust/kernel/lib.rs              |    1 +
->  rust/kernel/pm.rs               | 1106 +++++++++++++++++++++++++++++++
+On Wed, Nov 4, 2026 at 7:38 AM Alan Maguire wrote:
+> Thanks for doing this work! Sorry for the delay in getting to it, I'm
+> looking at the patches now.
 
-I think this fits better under rust/kernel/device/pm.rs. This would also av=
-oid
-naming like DevPMOps, which can then just be device::PMOps.
+Of course. Please take your time on the review. And thanks for the
+background on the Rust BTF work.
 
-We should also add the file to POWER MANAGEMENT CORE in MAINTAINERS.
+> We've been working on a solution; essentially, the idea is to detect
+> such cases and fix up the type graph in pahole using a new
+> "rust_bindgen_replace" feature so that the final BTF does not have to
+> carry such duplicates. It will only run for Rust CUs, [...]
 
-> diff --git a/drivers/base/base.h b/drivers/base/base.h
-> index a5b7abc10ff0..e79108bc754a 100644
-> --- a/drivers/base/base.h
-> +++ b/drivers/base/base.h
-> @@ -103,6 +103,7 @@ struct driver_private {
->   *			   dev_err_probe() for later retrieval via debugfs
->   * @device: pointer back to the struct device that this structure is
->   *	    associated with.
-> + * @rust_private: private data used exclusively by the Rust driver core
->   * @dead: This device is currently either in the process of or has been
->   *	  removed from the system. Any asynchronous events scheduled for this
->   *	  device should exit without taking any action.
-> @@ -119,6 +120,9 @@ struct device_private {
->  	const struct device_driver *async_driver;
->  	char *deferred_probe_reason;
->  	struct device *device;
-> +#ifdef CONFIG_RUST
-> +	void *rust_private;
+Patches 1-2 are general --lang_exclude fixes (both reproducers are
+C++/C). The Kconfig follow-up keeps --lang_exclude=rust, so it is a
+stopgap: Rust stays out of BTF, as it does without LTO, until
+rust_bindgen_replace brings Rust types in. I realize it may not be
+worth it, though it would -- if I understand correctly -- unblock RUST with
+LTO and BTF in the meantime.
 
-Let's call this pointer pm_registration_data_rust. Or even just add
+To check how this series of patches fits with your branch, I applied it on
+top of pahole-next-btf-rust (b5e46f8; it applies cleanly) and tried both on
+the 7.2.9 kernels I tested the series on (x86_64 ThinLTO, full LTO
+and distributed ThinLTO, arm64 ThinLTO) and a non-LTO x86_64 build,
+booting each in qemu and loading rust_minimal, rust_print and
+kobject-example:
 
-	struct {
-		void *pm_registration_data;
-	} rust;
-=09
-> +use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop};
+- With kbuild's flags (--lang_exclude=rust), the branch alone fails to
+  build the Rust sample modules on the LTO kernels, as patch 1
+  describes. With the series on top, all five kernels build, boot and
+  load the three modules with BTF.
+- With rust_bindgen_replace and nothing excluded, the series changes
+  nothing: vmlinux and module BTF are byte-identical with and without
+  it.
 
-NIT: Formatting.
+One thing I noticed along the way, since it's the merged-CU language
+that patch 1 deals with: under LTO the merged CU has one language,
+taken from its first CU (a C or asm file for vmlinux), so
+cu__is_rust() is false and rust_bindgen_replace doesn't run on
+vmlinux. Without LTO it replaced 564 types as expected.
 
-> +impl From<Mode> for core::ffi::c_int {
-> +    #[inline]
-> +    fn from(mode: Mode) -> core::ffi::c_int {
-> +        mode.0 as core::ffi::c_int
-> +    }
-> +}
-
-You can just use c_int, as it comes from the prelude. Also note that the pr=
-elude
-takes it from ::ffi, rather than ::core.
-
-> +    /// Explicitly release the scope
-> +    /// This should be used in favor of regular drop
-> +    /// when error handling is required.
-
-NIT:
-
-	// Explicitly release the scope.
-	//
-	// This should be used in favor of regular drop when error handling is
-	// required.
-
-> +    pub fn release(self) -> Result {
-> +        self.release_inner();
-> +        core::mem::forget(self);
-> +        Ok(())
-> +    }
-> +}
-> +
-> +impl<'a> Drop for RetainScope<'a> {
-> +    fn drop(&mut self) {
-> +        self.release_inner();
-> +    }
-> +}
-> +
-> +/// Runtime PM helpers - wrappers around C runtime PM interface.
-> +/// All methods require a reference to a bound device.
-
-I'd rather say a few words about what those helpers are. The fact they requ=
-ire a
-&Device<Bound> is rather obvious from the signature; if at all I'd rather
-mention why that is.
-
-> +struct Request;
-> +
-> +impl Request {
-> +    #[inline]
-> +    fn active(dev: &device::Device<device::Bound>) -> bool {
-> +        // SAFETY: `dev.as_raw()` must provide a valid pointer to
-> +        // `struct device` for the duration of the call.
-
-This reads like a requirement, but it rather is the justifiation for this
-requirement coming from pm_runtime_active().
-
-> +        // The `Device<Bound>` reference provides that guarantee.
-
-Plus that we are in a scope where the device is guaranteed that the device
-remains bound to the driver, which is a requirement as well.
-
-> +/// Common runtime PM callback entry point
-> +///
-> +/// The generated extern "C" callbacks call into this helper with the ra=
-w
-> +/// `struct device *` provided by the PM core. It rebuilds the Rust devi=
-ce
-> +/// reference, retrieves the device's PM registration data and performs
-> +/// handoff to corresponding driver callback.
-> +#[cfg(CONFIG_PM)]
-> +fn runtime_pm_callback<T, F>(dev: *mut bindings::device, cb: F) -> Resul=
-t
-
-This function has to be unsafe, given that it takes a raw pointer.
-
-> +where
-> +    T: PMOps,
-> +    F: FnOnce(
-> +        &<T as PMOps>::DeviceType,
-> +        <T as PMOps>::RuntimePayloadType,
-> +    ) -> PMCallbackResult<<T as PMOps>::RuntimePayloadType>,
-> +{
-> +    let dev: &device::Device<device::Bound>  =3D
-> +             // SAFETY: `dev` is provided by the PM core and remains
-> +             // valid for the duration of the callback.
-> +            unsafe { device::Device::from_raw(dev) };
-
-Please prefer Device::from_raw() plus Device::as_bound().
-
-> +
-> +    // SAFETY: `dev` is provided by the PM core and remains
-> +    // valid for the duration of the callback.
-> +    let ptr =3D unsafe { (*(*dev.as_raw()).p).rust_private };
-> +
-> +    if ptr.is_null() {
-> +        return Err(ENODEV);
-> +    }
-
-How can we ever reach this?
-
-> +/// Typed reference to a driver's runtime PM ops.
-> +///
-> +/// Instances of this type are generated from static [`DevPMOps`]
-> +/// and are used by bus registration code to install the matching
-> +/// C `dev_pm_ops` pointer into the driver object.
-> +/// The `A` parameter identifies the bus adapter that is allowed
-> +/// to install the table.
-> +pub struct DevPMOpsRef<'a, A> {
-> +    #[cfg_attr(not(CONFIG_PM), allow(unused))]
-> +    ops: &'a bindings::dev_pm_ops,
-> +    _p: PhantomData<fn() -> *const A>,
-> +}
-
-I'd probably rename this to pm::AdapterOpsRef<'a, A> and add a type alias:
-
-	pub type OpsRef<T> =3D AdapterOpsRef<'static, <T as PMOps>::Adapter>;
-
-so it looks cleaner in drivers:
-
-	 const DEV_PM_OPS: Option<device::pm::OpsRef<Self>> =3D Some(TYR_PM_OPS.pm=
-_ops());
-
-(I'd probably also rename DevPMOps to device::pm::Ops, as I think that read=
-s
-cleaner.)
-
-> +/// Runtime PM callbacks implemented by a driver.
-> +///
-> +/// Defines the [`PMOps`] trait and its corresponding [`bindings::dev_pm=
-_ops`].
-> +///
-> +/// The Adapter associated type identifies the bus adapter that installs
-> +/// the generated PM ops.
-> +/// Implementations should normally be enabled through a
-> +/// bus-specific constructor for [`DevPMOps`], which constrains
-> +/// [`Self::DeviceType`] to the correct bound device type for that bus.
-> +///
-> +/// Each C callback recovers the Rust bus device from the raw
-> +/// `struct device *`, borrows the registered runtime PM payload, and de=
-legates
-> +/// to the matching [`PMOps`] trait method.
-
-This kind of implementation detail doesn't belong in this doc-comment.
-
-> +#[vtable]
-> +pub trait PMOps: Sized {
-> +    /// The bus adapter that installs the generated PM ops.
-> +    type Adapter: driver::DriverLayout + 'static;
-> +
-> +    /// Type of the bound bus device passed to runtime PM callbacks.
-> +    type DeviceType: AsBusDevice<device::Bound>;
-> +
-> +    /// Type of the payload moved through runtime PM transitions.
-> +    type RuntimePayloadType: Send + 'static;
-
-I got back to this type after writing the below, because at first I thought=
- this
-is purely the data type that is cycled through suspend() and resume().
-
-However, reading further this is currently the Registration's private data.=
- This
-won't work. The Registration's private data must not require 'static as we =
-need
-device resources in this data.
-
-So, there should be at least two separate types:
-
-  (1) The private data of pm::Registration.
-
-  (2) An object that is created and returned by suspend() and passed by val=
-ue to
-      resume(), so it can store e.g. reverse guard types (see below).
-
-This should also get us rid of the PMPayload magic.
-
-> +
-> +    /// Runtime resume callback.
-
-It would be good to expand this doc-comment explaining the semantics of
-RuntimePayloadType.
-
-> +    fn runtime_resume<'a>(
-> +        _dev: &'a Self::DeviceType,
-> +        _payload: Self::RuntimePayloadType,
-> +    ) -> PMCallbackResult<Self::RuntimePayloadType> {
-> +        build_error!(VTABLE_DEFAULT_ERROR)
-> +    }
-> +
-> +    /// Runtime suspend callback.
-> +    fn runtime_suspend<'a>(
-> +        _dev: &'a Self::DeviceType,
-> +        _payload: Self::RuntimePayloadType,
-> +    ) -> PMCallbackResult<Self::RuntimePayloadType> {
-> +        build_error!(VTABLE_DEFAULT_ERROR)
-> +    }
-
-I think for Tyr it so far is sufficient to have a single RuntimePayloadType=
- that
-keeps cycling through the callbacks, but there will be use-cases where the =
-types
-differ.
-
-For instance, for a PCI driver you will have DeviceDisableGuard stored in
-suspend() and then you'll want to drop it in resume() so the device gets en=
-abled
-again.
-
-We should also avoid requiring 'static, as reverse guards will borrow the
-regular guard, e.g. pci::DeviceDisableGuard will borrow from
-pci::DeviceEnableGuard.
-
-For runtime_resume() I think of something like:
-
-	fn runtime_resume<'a>(
-	    dev: &Self::DeviceType,
-	    suspended: Self::SuspendData<'a>,
-	) -> Result<(), (Self::SuspendData<'a>, Error)>;
-
-
-> +/// Runtime PM context tied to a device.
-> +pub struct PMContext<'a, T: PMOps> {
-> +    // Preferably, PMContext could be shared via borrowed reference over
-> +    // a pm Registration's lifetime but that bears complications on its =
-own
-> +    // when the context needs to be shared across different Registration=
- types.
-> +    inner: Arc<PMContextInner<'a, T>>,
-
-Since we now have self-referencial pin-init, can we please avoid this Arc?
-
-> +impl<'a, T: PMOps> Registration<'a, T> {
-> +    /// Creates a runtime PM registration for `dev`.
-> +    ///
-> +    /// The provided profiles and configuration are stored in the associ=
-ated
-> +    /// [`PMContext`]. The `payload` is stored as a Registration data
-> +    /// and is used to service PM transitions.
-> +    ///
-> +    /// The device must use the callback represented by `ops`, generated
-> +    /// for the same bus adapter and driver pair `(D, T)`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The returned [`Registration`] object cannot be mem::forgotten,
-> +    /// or it's [`Drop`] implementation cannot be skipped in any way.
-> +    ///
-> +    pub unsafe fn new(
-> +        dev: &'a device::Device<device::Core<'_>>,
-> +        ops: &'static DevPMOps<T>,
-> +        profiles: Option<KVec<PMProfile>>,
-> +        configs: Option<KVec<PMConfig>>,
-> +        payload: T::RuntimePayloadType,
-
-This should be impl PinInit<T::PMRegistrationData<'a>, E> + 'a.
-
-> +    ) -> Result<Self> {
-
-This should be impl PinInit<Self, Error> + 'a.
-
-> +        // SAFETY: For the duration of this call, `dev` is a valid `Devi=
-ce<Core>`,
-> +        // and so is its raw `struct device` pointer.
-> +        unsafe {
-
-Please use separate unsafe blocks per unsafe operation.
-
-> +            let drv =3D (*dev.as_raw()).driver;
-> +            if drv.is_null() || (*drv).pm !=3D ops.as_raw() {
-
-drv.is_null() can't happen as we require Device<Core>.
-
-> +                return Err(EINVAL);
-> +            }
-> +        }
-> +
-> +        let payload =3D KBox::new(
-> +            RegistrationData::<T> {
-> +                data: PMPayload {
-> +                    in_flight: AtomicFlag::new(false),
-> +                    inner: UnsafeCell::new(ManuallyDrop::new(payload)),
-> +                },
-> +                _marker: PhantomData,
-> +            },
-> +            GFP_KERNEL,
-> +        )?;
-> +
-> +        let inner_ctx =3D Arc::new(
-> +            PMContextInner {
-> +                dev,
-> +                state: Atomic::new(PMContextState::Disabled),
-> +                profiles: profiles.unwrap_or_default(),
-> +                configs: configs.unwrap_or_default(),
-> +                _marker: PhantomData,
-> +            },
-> +            GFP_KERNEL,
-> +        )?;
-> +
-> +        // SAFETY: For the duration of this call, `dev` is a valid `Devi=
-ce<Core>`,
-> +        // and so is its raw `struct device` pointer.
-> +        // The payload allocation is converted into a foreign pointer
-> +        // and owned by this `Registration` until `Drop` clears
-> +        // `rust_private` and reconstructs the `KBox`.
-> +        unsafe {
-
-Same as above.
-
-> +            let ptr =3D (*(*dev.as_raw()).p).rust_private;
-
-This is accessed a couple of time, let's add a helper for this.
-
-> +            if !ptr.is_null() {
-> +                return Err(EBUSY);
-> +            }
-> +            (*(*dev.as_raw()).p).rust_private =3D payload.into_foreign()=
-;
-> +        }
-> +
-> +        Ok(Self {
-> +            ctx: PMContext { inner: inner_ctx },
-> +        })
-> +    }
+Cheers,
+Alan
