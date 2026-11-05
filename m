@@ -1,127 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793840993;
-	b=GeTdEfX+I+Kq4jlrbazLV1zKpYUOVOEHMjHj+W3U01KQ/4cloOjvgrDU1la8ssvBSdR8
-	 nTZRewdU5o+NLf6ksr65/HfwN7grT8PFpenz0OUwO5qwf5aX+yjstNs0qJlvI8aQWVrPt
-	 1/C6HnSdZYHPBdF17FK6WXgPwPd4PhSHOETqWiDemppxJ8bxQ8d6L5373rmzBS7/YevdQ
-	 My2jypATTyFEOeQ4ZAGSpSGFquGeU6S7XMHFpssdJYrKkHTrsFRMfUfJAyPNPt2RoMNX6
-	 EMITv1wVJuYEfYpWCVP/IKP1UJOxWkbxC7qo/H/DyP3MX0zmS5+n7KB5gjc7RrEOEwg==
+	t=1793842540;
+	b=HHXQTQYG3uSg5lDnzbdo3n+3FYwENLfqFreono29E/SLHi5hM0U1wWWkqZDakS1FhN5b
+	 T63Z+CV0evEQDvNAI3Mw7MbTwTyCoO94QmT3YptAcZfwqV2A/bZ942U9ExLgp39f7Nw3i
+	 S3yRXu3qLswSf2WNNLD7OI0mxIPqaLsvx3t2ta5grBuclTnLvOFbd2m4a2GSKm9WD1o1e
+	 481fVQ4QutlvUh8ldwa8C9AHB1UAS3qJ1w5WR5ETBr2VGornzX8wmJSkp456TK4skNVkj
+	 yra/eO4IcyKupTeRrAwsELY4EWVKP+0e2chPqM4nklX0f8hZZOyfSinyW0iBQ5uPRxA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793840993;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding;
-	bh=O1Cm8loHDCpj4P5ciX2hNK4rLsWUTu7xFi5Jun3HCMU=;
-	b=mjTQmFTj4B/Hnt/JJtwoSaQpN8UcUfu6qCqwGjIBpRQ3krzQaqaJ0FfRxhJae+V2eZyA
-	 F3pN6b+OEG66tArnyiJjN4QLO8sGUTiQ9nqF7JJ4YhNAkh6p1xoI5mCvTfyAER7jlkU7T
-	 xHOWPYUuYUUVQSJmfLYL79rFCN9aRXofJQ/y1mqxOCyVKqUc+mDD85KdUHn6+e9eDbgGk
-	 nWIJHZ/drCDQLSEHKI5sIASuj75PjTOFOF5YGHJKK0HMUfFA0peodeP+Lma6X7EQCoOzz
-	 Ltamy7MXnA+gxBS3Smmo76eIrp5He9wjiZVD2uPsHiQqJSbXVKWCqDwnHAhNUimGz0Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793842540;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:From:Subject:Cc:To:References:
+	 In-Reply-To;
+	bh=KttBQIY3CoR0oa+wCZDATiCKgDh41PjVmh/fyWWpT0g=;
+	b=KQv9f7f7z/ElPIeX8AoDMqf6uGLF3xiTH6K8nXTzvo7Z6s36/gfJdLWF9r07RVQ7BStv
+	 K3CPCQrDS+3kel/xDedE7zB33R/N+FryOrJpuf5rbvOW0QWpOGnGzjF2e5SYc/kkSN6Uk
+	 IDcJlV7PBpp1UEwp4Mk9T5LOIzXRK96Qyn7M3AYdJDo8KzynkUoKg9alCGNr3kFswkvBo
+	 oda0Xtr2Li0Y4T5HA57aKmKrgSYuOkSX9/2jcg9jyruTNKEI7hdkbVkLMrEA0pvxeruDN
+	 kCNj3RleF7j4IM6I2ue4cNXab24wZsDCoJp5vgIh8IcQSLuBqQlwbWQlwHItnr2TGGQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=flapping.org;
-	spf=pass smtp.mailfrom=flapping.org;
-	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=JljlgxBY;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=YwbgqOnB;
-	arc=none smtp.remote-ip=103.168.172.157
-Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="AWgQ/GVF";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8C3606A326
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Nov 2026 01:09:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0D8C3606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D56606A31B;
+	Thu,  5 Nov 2026 01:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=JljlgxBY;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=YwbgqOnB
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 3E4511400165
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Nov 2026 20:09:52 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Wed, 04 Nov 2026 20:09:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1793840991;
-	 x=1793927391; bh=O1Cm8loHDCpj4P5ciX2hNK4rLsWUTu7xFi5Jun3HCMU=; b=
-	JljlgxBYK3TD4y8UzDmOQH0GlWixGSUmkOToX/SxDVRRGNubK70eCEGkcfCSeRcs
-	/ESAgYsKOLQ9wkA9jmImMQFssmx3SV2S+cxcwgn9vBDvoiQ4kSuE6rPYEHxvOW53
-	wu2bVmMjS8t1kN6+usou+3ufaCCaLcy2/k1tEn57HLR63YP/2ZzyxL+F9beDk5h0
-	+qgQT/xyhqqsfnsGStyEWW9YBB4Z2n0IJCk6ZEulhC+JM5LgxFjXiwip5oKenVC/
-	k9lfCoPVwInPseuOMvm5M4lLuCEV/y9NW8Kq+ofQgsKuS9z4VrCxDAsudFolgMkj
-	WCIHCbIf90jMc//Few9tvQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793840991; x=
-	1793927391; bh=O1Cm8loHDCpj4P5ciX2hNK4rLsWUTu7xFi5Jun3HCMU=; b=Y
-	wbgqOnBzV8g/E7enblipTXKbp2tQyHPWKQ8aSNjewIwABYKYLWDaMpnVTrC4k4da
-	e/9ldh4PjxWgXOMe+4a08tPEtiQXICO9vEGS9bT9/8tntViBBMUVVLBxzH4d8q2S
-	OF0Ln4po75M6M9/mAQrfJ2iIbhObQEx6JrkC7CKPuU6thGHGjql8fYXoPsBkzq4K
-	SUMhrlWbLKxQfyxqornvaYSgnHY5Zp7UtW1qrwvxsKcCxkxlWmsGlDbjMFPJsisS
-	qai1U84qaMO1/M12oqFLIueS+bW9feNR7kvn+rK32yX3JEUIBe/8MX8cslLV7x1s
-	5QNTZvWUoRPw9JYTl7hRw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793840991; d=flapping.org;
-	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
-	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm1:rsa-sha256:qvoB8JWcEjotMcXW0ORweYH4lCAryjoWVXgpHW5i70vZL+I
-	E1X40UBThAn+qJYRCk1Md71IZvz1vSPnDWfZ+0n3pZ8o9IUjIkTqrD6n3kkC1TkA
-	Hf6ngsjSpokuWKD7eVTtpPyz6PylcpZvlyQYY0ZE/SZ1otVyybfJY9VYtnC2XqB0
-	xpdv5wumUvZn155OypO4iL2c7RI48iaZMNqIb2alixuItABmRKJiFx7ysoGXIkh6
-	rZeuOMWGOaQxFI/5qd3noxbEMeOyDv2tbFBS5oSlvNGvY5BVn12p5NVYGT5tFWoy
-	BEZn6vaE3JsgIZ29qLfTyK5tUatrNwSfidMrDRg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:ZzBY6074gGCHcj4UrGYdGaaGYSNSYpMCkgTzbReb3cw=:h1eQ3O/me2QmpJomDgtAar8tCa8N0hzu147I+Uc2G/U=;
-X-ME-Sender: <xms:XtfrarFKFd1jRiUx-soDjw2JKn0yAL6PtySVsp3qfqewm2TKwzNmpQ>
-    <xme:Xtframu9yu9XvOi1_nQsVxABaC7cCs5v-Oxk7KVHg2Ls-WR4pBUUCxyRqpyebIf-o
-    xYxwrojUgww5MS9TD0R-xsiPuLa3-1ABv0ZN1cv000Yr5TRXWAyVRjU>
-X-ME-Received: <xmr:XtfrapKBkCPorlrNIdPysTYtxq34-DiQpjxfaWjdKpHDI-jWioyKGYLrlt-LaIJhCFZH95HMS3MELbr7Ss79sZvh>
-X-ME-Proxy-Cause: dmFkZTFTKgnzJb/olmzZafRDBCmiyrowTRveuM6WggarpAkf9WumN8MLQIQT8bI7YZQod7
-    FEWwT/HUj9aEIwdnBxAwH0gfg+rdBQo1BlcB0TBRL92kvDyhijk1FAA/QwDUF0sUyeo3qe
-    9RyZG+D6Ky3V1I8QcSecZMlPmNXJWNssWF65n39943ZHKwFeohZGmvIFbwbk9bQYn6i9YA
-    eTu+tSZkwOWML0AQ3uVF4EoZSR8azsoCqBUQkOz5M71uolQCx8rfoV6MAYCox/TkmwhOPI
-    pNY/NURLmg4tWMhMhMclkzav5/Y+L33Q27WM7YTOMVFyAkNVNZO3E1PpwVo1Oie4QQ32g8
-    QjoAll4h3yni8ayd+8K/BVDzkpCuXi7TODJ71OkaDz2E1AuRT6oSiKxWtNihbMIEtTq/JP
-    RHcZTIACIbibD3bx4vq+0SRaGLvF5XbinxEJVV+52jEaHeYHaOcUuihstjrlmdRmp/Ai+Q
-    chrmiziMytLKguVNSRq7tXWI8EfFrHomikdl/eICrM2neEdZ6/3w1zD5CmufUKO+VX1yVx
-    OqDZNANLe74NOgsRD+HSK0K2gvOnCg0wFZ5Wpe3bT+C29PLWvDvvLusoq1B5+dh+vn8il6
-    BtjWSshGA0nG4XSzyzQkv5/1hoozD8Lmxp7j3fEtksLyt8Fj2x3nOj0X+u2Q
-X-ME-Proxy: <xmx:XtfrasPt48ensFcMxPIecwSkgA8u25rGjffqM5mmgpCqURsADOrNDQ>
-    <xmx:XtfrapaPNzfzJ-cTCnGJc42h9uy2gaHJC703e2DjNtRUnIhdzyCFNA>
-    <xmx:Xtfragyb_6nc3EHi6m_iDgqUkadp70o2BnclXyHHQUGNMIgdUY4b0Q>
-    <xmx:XtfratHZ69xMsRlMJPbmXm1MOYeckA_reu42XV0S8mV1g66bmGNAXw>
-    <xmx:X9fraljK74PAPProyi7syw3PX4pP6BTec2M3bKc1ceDv_n21Lhh_uDdV>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 4 Nov 2026 20:09:46 -0500 (EST)
-Date: Thu, 05 Nov 2026 10:09:42 +0900 (JST)
-Message-Id: <20261105.100942.1905172064477226868.tomo@flapping.org>
-To: johannes@sipsolutions.net
-Cc: tomo@flapping.org, richard@nod.at, anton.ivanov@cambridgegreys.com,
- ojeda@kernel.org, a.hindborg@kernel.org, acourbot@nvidia.com,
- aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun@kernel.org,
- dakr@kernel.org, daniel.almeida@collabora.com, david@davidgow.net,
- gary@garyguo.net, linux-um@lists.infradead.org, lossin@kernel.org,
- tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
- rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Subject: Re: [PATCH v1] rust: arch/um: Fix loading Rust modules
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <0730c9d467af3897a547860d036a5591cb40905b.camel@sipsolutions.net>
-References: <20261004121230.373216-1-tomo@flapping.org>
-	<20261103.180207.1243555897796693771.tomo@flapping.org>
-	<0730c9d467af3897a547860d036a5591cb40905b.camel@sipsolutions.net>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AWgQ/GVF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241DA1F00919;
+	Thu,  5 Nov 2026 01:35:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793842540;
+	bh=KttBQIY3CoR0oa+wCZDATiCKgDh41PjVmh/fyWWpT0g=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To;
+	b=AWgQ/GVF2EPfjjBRjUQl2TwhcDoTOHFhv4OThVqNUfe1HHJvlheooMr1GzMztQ1C8
+	 bdDigN/E6YS0yyDelrJfaAIPa0JM11JKsCj8P4uSdsuxbHNF1qTouqAxgvw+zkM537
+	 QgN/gxgocgD/u5ZKcmMrLh74pqTjPNGVyBCnsQ0njBfmVN7OfPe7ZVU0Gz5FRlAA1M
+	 j3VMkH18Qu2YN5aWhNsHX4MBDUcZvl4D8c5OZ9Wfczmt2I7kKzud6TJLW4NxnmLipM
+	 LmmSf0MPFpE9Ql48nCc4qVKSW2FQchsBokmjMO7ac2tdXGudifv5z+Bx4kyM44HXuY
+	 hMeQ0Yhhy/GJw==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -131,34 +49,42 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 05 Nov 2026 02:35:29 +0100
+Message-Id: <DMMW3TIIN8OI.3MZC03PWC1MRK@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v5 9/9] samples: rust: add Rust SR-IOV PF and VF driver
+ samples
+Cc: <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <linux-pci@vger.kernel.org>, <alex@shazbot.org>, <jgg@nvidia.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <markus.probst@posteo.de>,
+ <jhubbard@nvidia.com>, <apopple@nvidia.com>, <joelagnelf@nvidia.com>,
+ <ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
+ <kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
+ <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
+ <boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
+ <work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
+ <kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <peter@colberg.org>
+To: "Simon Song" <xinmengs@nvidia.com>
+References: <20261030171230.196717-1-xinmengs@nvidia.com>
+ <20261030171230.196717-10-xinmengs@nvidia.com>
+In-Reply-To: <20261030171230.196717-10-xinmengs@nvidia.com>
 
-On Tue, 03 Nov 2026 10:39:11 +0100
-Johannes Berg <johannes@sipsolutions.net> wrote:
+On Fri Oct 30, 2026 at 6:12 PM CET, Simon Song wrote:
+> +# Follow the nova-core/nova-drm cross-crate rules in drivers/gpu/Makefil=
+e.
+> +# Export Rust symbols from the PF only if the VF actually references the=
+m.
 
-> On Tue, 2026-11-03 at 18:02 +0900, FUJITA Tomonori wrote:
-
-[...]
-
->> Gentle ping. The patch still applies cleanly on top of v7.4-rc1. If
->> it looks fine, could you take it through the UML tree?
-> 
-> I guess I figured with the "rust:" prefix it'd go through their tree,
-> but either way during the merge window and all I wasn't really paying
-> attention to UML.
-> 
-> I'll pick it up now.
-
-Thanks!
-
-As the commit message says, Rust modules still fail to load with a
-larger mem=, because Rust code uses the small code model. Zigit Zo
-posted a fix for this in 2024 [1]. It is the same change as the one I
-would send:
-
-	KBUILD_RUSTFLAGS += -Ccode-model=large
-
-It was not merged. Was it because the patch has no Signed-off-by?
-
-[1] https://lore.kernel.org/rust-for-linux/54FC087D02C52990+20240903130606.292935-3-zig@iorw.io/
+This seems overkill, please make it two separate files, but a single kernel
+module. We can always make them separate kernel modules once we have the ne=
+w
+build system.
