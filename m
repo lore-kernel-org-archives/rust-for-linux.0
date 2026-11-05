@@ -1,100 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.66
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793883752;
-	b=OL+m+WOT2JD8h9g6IeVZbp/riTJfYTYldHpxOCHPpYQMtgZ2jd9jfjRZz2lGRq+ju/eC
-	 fq2sesEUZ6zDJ+W0xWe8iNGDmI1j+rjgbD/QLcaXA5m9vUOwZYhLWIx1zeigLp18rpfWf
-	 byAPAWDG6KP7MExo+vzqReGmzanKve43vK5ehAFSgGgx92UClksTzIgA1xf89LHmO1Dur
-	 ESrJwJ2nFmx59ghtuNfFefKXdEiuR6AT3o7p1fT2q6jrMBhLuRwQYEmz754AR64qdv7Um
-	 AbEWxKjoPcpSqR+uDcSC3rbpzrxP6VxO0ukoG4R8vlIGwu+xUJaDwXn8KueP5EBnH8A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793883752;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Subject:From:
-	 To:Cc:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:
-	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=TH0uSBQWdseFCnyVaBzZTq+OYGSEYlF7k8dVcukjt2U=;
-	b=yPFrEo6HxsLP11wC0WALRT2/tapLV0GZM+lAnrwiX/8MbPGQCZqqJ+rGpwuPuPTSGcke
-	 4xivteXdvxussblvnWwZOFuRZ8QrKwYPWc7MjUzCwKqDlbgyaIP44dvaBNerORngmltRR
-	 UrlEr+KzvehQCHgpj7sFg2FWAnhx2M1Ehb9mZ18sGFbT5MqtheE2Yl52nGyQp4e7H5Ozj
-	 0He/gteK6PVEtLBmcsR4k3t3/QHoS/om0CoLGsuDGzDYoOwNXk2813xfz1CyuEUY+3mWG
-	 ZCJegFmsfeJXDIcxUULG2w09/S7qMy9WDotJ80nmNfANIlCyRKAFquuUDfIPkRyPDOg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=IDJvXcSj;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.66
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012066.outbound.protection.outlook.com [40.107.209.66])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.174
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793886402;
+	b=ct+ivHsK5EmoGhUfjYOIr83/3KR3TuKybm6ch6Yz9YldmtuPDyyUL1I3nhglfxjZ4+Gk
+	 cf1Cgdb9T58mmBNPDp1QQS+WeJJzxE5iS3wZIFleMghJzS4h9/A5a4qpGPOFJviFWUJ/m
+	 KhkHAt6DtgAeiSK5uHBwgQA1nal9Es4Iif5XpWHnRFuQWHUtpRBpfPOmUtlme88lx4A/D
+	 8hr3InzWs760JLUsepY10BqOpxDiI0EUqL5wktZxQwTuiqGb4BoSyT0XetUsu9Ys7Lc6/
+	 dl7I5l9O7XGITuJ5KEVeObCgS8kKs8VO4ZCB+UqcScGdETyC/Xcs/aKQN+GE4wVp1mg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793886402;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 To:Cc:Subject:From:X-Mailer:References:In-Reply-To;
+	bh=/vPSGzrcpdRS3fICM7ap8IknGi3mQqqFBaTOgviuKOc=;
+	b=Gx8Yht6Hanr31xY1shMVo+pGbUEiMqQl8+5lPFq+utZtMWNX9KNKRWIhWYpBEPuscs2U
+	 w8iktCAowO4bJCCEwNqh0Qcrik+n1HcTL/Aj97PtaRYfDfFQDXXpcENtaTmJ3Zg/jyPJf
+	 riPxCu/8sv8vbe/Scg+yX85y9Tt/7z/w168NUlEWKL5lafiE2rNy9yjZSXlyc7UdFXnAW
+	 rZFM1zD57ldJz4dpivf9hjDYVaDfz5NKGRfXZJ3pCUnqBuG8+g3FudsBm3uCzSl/9J8eK
+	 4dSC8LxKy8Es50kKLEFa1X3MXzJr40C1rF2y0GTm1btpyQvjBFS5rl2sAmHczMbeH+Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IH+RVuwx;
+	arc=none smtp.remote-ip=209.85.214.174
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80921606A330;
-	Thu,  5 Nov 2026 13:02:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 80921606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDC6606A32D
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Nov 2026 13:46:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CCDC6606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=IDJvXcSj
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R1xic2mdM/Jp8S69C50V6JWhJ+REl8xnxfCz1oYL+4Pxu8Rid4UFBMtFd7rF0Ccf5b21JrYNg8Xl0yG6qjWZCPyLJIbK0YUUJ5vTJRhJX99wgTDAKhVIISQgcSS6sOJMfy7JtjGLM5ZoMFZA6IdAA5AcnP7Lq3qnPSU9AW50PSabE2lknvjB1O5mGCPd8d+ebdRo8UwgJHMdoMk3Zgd2j/X8QN/KEG1KMxn7c1VgSjyvRZXSIuSY5NqQZ+ldkMaO80Nd1DlyoDgIphDhJNcSB+69FKE4BPIlQkCAvwrRZmVnr+AhT+cC1erOa58NXzpwpaScGbnVtJYc4GlLsg/UJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TH0uSBQWdseFCnyVaBzZTq+OYGSEYlF7k8dVcukjt2U=;
- b=NHJ0BX1+A8UyHaL6Yo2FeMrXG2gQrTWrvLnZBLeV1n95lbQG1W6NjD5+BqNTuaThJsGMBfX66KJ5P8kn2esnQXb7vrJniEWXU3oJyySg1f0mS9azQr+3U2WLI8IDVgzfPv8fNA7YtbeL6XYNFJnbzKCipjrnm89FeK9P5OuKQ9RytzQce7RtTQtHEtg3SAPJ26mvr29w/1ZUAKHJs1pQwaU+XQU3QgoHKINeLFtZQ3RaaaAKeOExUvDKXaQBhV4aLBge58lw0h8vpM77sVSF1gpvaXPKJi02V+QwJJ2TAvRoAJGxgdrjsBNul9QWeP3gYG/otrgavX1wroRqrI1tqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TH0uSBQWdseFCnyVaBzZTq+OYGSEYlF7k8dVcukjt2U=;
- b=IDJvXcSjuP3DsbAFZWo1TrJsP/F4gQp94E4ScBNCRSAHTwlWflWPbiCWosFaXzthquJb2QPVlIHlrVja5V2q2j/C05U9HMzU/nG84VGRU+AaGL7sNT++TZ4/ceuoFa73QSjCTZ6E7rS4Zg7mvAPeDXmJrahJU2SlTaac11FVePQfSlWc4brCkFkCaDxsbtxytC0DWzKWq0bMt/9Cja9JD0wRn9hHYG5XWtywbj0iBeSkSN109VkPC+I/eSwyt+aC/ncEDo3J/yJQ/unT+ZfTI740QyV/gNGdENoYukwRTnJpbB+kFbIxBxHQOsT6vxoHrUNAA15fBrHAcHtd5DSHtw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
- CH3PR12MB8935.namprd12.prod.outlook.com (2603:10b6:610:169::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
- 2026 13:02:26 +0000
-Received: from DS0PR12MB6413.namprd12.prod.outlook.com
- ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
- ([fe80::e82a:6673:4142:37fa%5]) with mapi id 15.21.0592.009; Thu, 5 Nov 2026
- 13:02:26 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 05 Nov 2026 22:02:22 +0900
-Message-Id: <DMNAPQDYRCER.M9C71ZUDF2FD@nvidia.com>
-Subject: Re: [PATCH 7/7] gpu: nova-core: falcon: check the per-block DMA
- offsets for overflow
-From: "Eliot Courtney" <ecourtney@nvidia.com>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
- <nova-gpu@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
-References: <20261103-r000-fw-v1-0-e3d38fc130e3@nvidia.com>
- <20261103-r000-fw-v1-7-e3d38fc130e3@nvidia.com>
-In-Reply-To: <20261103-r000-fw-v1-7-e3d38fc130e3@nvidia.com>
-X-ClientProxiedBy: TYWP286CA0023.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:262::10) To DS0PR12MB6413.namprd12.prod.outlook.com
- (2603:10b6:8:ce::10)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IH+RVuwx
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2e977109392so11364855ad.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Nov 2026 05:46:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793886401; x=1794491201; darn=vger.kernel.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=/vPSGzrcpdRS3fICM7ap8IknGi3mQqqFBaTOgviuKOc=;
+        b=IH+RVuwxIGYS+ptSubw3zVuKvxCYD5OLNL1eP0s4El01U4kCzmI0TYmQmuDZAe4xMM
+         f2d35D08HOFyL+mRi6TnLDpLiuXbPGwdZ++KWgxANFGtdG+EinywYtq5FhY66LVupRUX
+         Y6gL44mwhnIgJ+5T9cV8DQc3YFppkRcKIiAglBePWlab+gM9AUYg5ewyu4sQ4DFHidcK
+         EQLpsRq64uaKaDg8jJ88xiFX74Q3oxcxrIst5wUI3JDf+rbXxnicXd5dEr9pIzLaTFPJ
+         xt/TjL6jB3JmrH4BXyGqEDZewz1nAjoh/JTHKSWdyOeGBcYH1zKV+ojfP4pQ7Hjhjt+p
+         AdrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793886401; x=1794491201;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/vPSGzrcpdRS3fICM7ap8IknGi3mQqqFBaTOgviuKOc=;
+        b=1MxiP0efiAW/UqBo0wWk9YlUwlku7akKBvuyXfYzeMJtr/xSZLlg48mvTvr54ESOSU
+         x671u/S5d7VTpfu5LZORl+En3yrGEglgxDcqBlilqMAtVof0KbnXW9vvJB0FYCLLsrXB
+         GVa3TbL/+Kfh6EBm+pqv1RdSwOgmxRTPXaXs8qdeArBJ0UspTS/Mp5W3Sz4XqggUISJ1
+         dubGgEbiuvl5n/n6lwnlRh4K7mgnN3UhZ1/ChPz+RsX8e+jWAq0qt5GZONZb8sSSZlFb
+         uxe1MM31pRxUSDzNttQecXJIBVlj/hJb3gGCXBYZQ8+hyvbtaJNyRNVJO0DGFpsqsQNk
+         wcQQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy4wphDm5a19BJ49J4iQO26+nLWAcONvInxCyhzfuMaEYJ1O3xQCyMbmObzR0ojqTA9SXQ1zKnMBnJ7MWCwhQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8Fl/GdrmVNRiOJlYp+fMYEe5UmqVSQqftoUb9qVrqDzv1tdFl+
+	AciaU3IjQVrcCbHGvjv2QrDKKOqViH42Vmu3NsigYKrSgrsI2VsP83U=
+X-Gm-Gg: AYBFou2j911Q4ihmmeQp9/1FA0upy6ye9LKWyNgeeFHJ5BM7Uno62NWEAv/mtiHVGgI
+	eu2TJpXOx2EHhKCiBMBKzVRlcMcSjNtox+qgftP9HHP4XjZz3kz4g86QmRSqp8JdNoJDtiyUTr1
+	i0snxkuFWnjxVh/eViJo+7C79flcfpUbJY11iaB5kIR0ONoxkPW7NHZngk5WtZBYD45ZgegF/Cx
+	IJJuMQIqyjn244Pac3wlLTgKuXObABjiay6xTxngPRjA1nV0DwOnxjOZg5ghh8kDJgtXHWQ21bG
+	TS5fi7vxW/PXvCD/9x7W3CJAtbGUZpft0fusriAIkMGxpuoJr5SvvOMHTQtsCe0xFG2xPS6DYBz
+	6aN1YAlWvzKM3aESaXtutfNLML5im/QLly9iLa47k6q5wfwqBGmwb/7R9N2m2jWGznWxMeEBXRk
+	sUB4fr6GoDyTJUOs7qBOcvEMWNPitCr5hCbYVXoSwTnqKPBPh+ZZg8E2uRlpM9WMFh0Y6ee4Q7L
+	P/ZdLVi0MjrNGBa/+G4DRh2Y2v7tg/HlKisXafkkJVeLKE35xnkj4LgQkyXodti+1jlHohPdRuX
+	+ZPlYoIbdqX2f7p7y3RiyP93r3GQWqrFR0iuXkmpz51yMQ/MJHxA1oAXeef8QLad
+X-Received: by 2002:a17:903:3c27:b0:2e9:670f:d080 with SMTP id d9443c01a7336-2eb36450a4fmr182650275ad.32.1793886401061;
+        Thu, 05 Nov 2026 05:46:41 -0800 (PST)
+Received: from localhost ([186.158.238.108])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed091cf87fsm17710175ad.67.2026.11.05.05.46.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Nov 2026 05:46:40 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -103,89 +87,119 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|CH3PR12MB8935:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5dd797b3-6192-46f9-c697-08df3b3d0a2f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|10070799003|1800799024|366016|10067099003|18002099003|22082099003|56012099006|4143699003|11063799006|261026140227099003|261028144727099003|261022105027099003|261021135927099003|261026121527099003;
-X-Microsoft-Antispam-Message-Info:
-	DvfcIYdRKgvJiIdizCd3fqRUGy+T9rOPhUOuDmIeBUlDKCu7i61pkTjWNLDH4aUBhalZoMEAE/jXNDErJPmMqxcICV7or0ikgT0sE3rTpgXMWbFBGGB6n830/lHO7lI5GZgF2xPHn2jFu7xik2f/2mMvAQfmIdioG4t09/BIwFyOKEG3LgJPQsRRw+oDvCKgR49YadRAYXs/S06gcX+wWKTjsHzbsISqyrUhBFSq88qCk84GeE4aIyAe4zq656+Mn7QcmXgbyCGbWfT1TQRUkgFvPKW91Xjb/FVoqqCVqgmHURWzymenv/4CXmukfbztXJhonQHCECtu672ZLRXCE2wPsKKO5yrR2WmcwndPDAaXiMKAibowtApn7lEp/f7iV505d9wWkkwtKnKKe6A5+Z2/fVPKshgrI6f0UfSoFpdmc/AeyF6DE0dC2LsyWl5GbWcQ54rNAOeB1TEo8Q/dLflOciMYkFRAPf4AxYhkePs7arAI8N6UKYjK8bssWngfWxNqfEsLsZx3bnrcCljdNSU/VdHYUrEA4EQP2mPi5w69981ualNPJHhCDDp7K/nLTvSxDNqbkCe1n6CRYfyV8TxVqrE8a+fbCWc9iMvIK6pifupttmJ1QIRXgmysJynvfFPcTRtx2AD+z3eR74DVSDjyzyCahKivYPD8+2sK8Ag=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(10070799003)(1800799024)(366016)(10067099003)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006)(261026140227099003)(261028144727099003)(261022105027099003)(261021135927099003)(261026121527099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cEhXcWcrMjJyTGJIeXF3dWdrbG16WEFzeG5taFluOSswbkIwVWp4TDZhMCtk?=
- =?utf-8?B?VTVTajhGNFdZV1Babkx5YkZKOWk2T1FXME1qUEZubFNIbHZZOC9MTTdwdllO?=
- =?utf-8?B?RitkTStMbi9OSEhFN0RyM2hKSVJCSWRHR2kwTitqdTVMeFpkNG0rcllPR1dv?=
- =?utf-8?B?aWxFdUZ2eUwvZjl6WFVDU0U0QlhlcHFOZDhjY0xTSkpmZGcvZ3Y0T1BuUjdF?=
- =?utf-8?B?WkM2QXlJSWRtR2g1SE5wbFNCU2VCWlBSVEdFbnh1bVRhQjY4WEhpaFI3dWRX?=
- =?utf-8?B?OUtaNkROMkVocDRkWHg0aE5aQzdmNnhCcFpvSXJ5clp3Znk0OGZ3YW5ZaHdU?=
- =?utf-8?B?T1RPQmZ3dUZEQlZiaE45aGhRNEtobytmUTdMQkNyV2xTNEc2MXZuY1NSWHpM?=
- =?utf-8?B?RE11RDJ2WFhjZDJyRHFWd0JuZ1RVRTZtd1FvNko2MWZCd1lWOE54cElMbDZ0?=
- =?utf-8?B?dGxPZVIxVUJEYzRiTzY3UEJlU0VEWURBUHByQVUyNlcvb3dWUXE4RmtTL2M4?=
- =?utf-8?B?Nkh0WVhBZitON0FqQlhDYTdPWmR4bTVMdTZSMWtLTVhyMXlyKzRGTG14aitq?=
- =?utf-8?B?TVBIMVd0Y1BZTWJMcThiUVVWMUlZUjlRWXg3NzY3YXlnZVFOMHY3dFNVbWNw?=
- =?utf-8?B?RHRReXh6anA1M2EvNkJTTDNlNzA1TkhzRWtKRUFNcmV4Qm1mSjNSZWZVd2Nu?=
- =?utf-8?B?NzB5eFZEMEhMQ0ZRMjlVSmJtRFFVY2JveWpDaVY1YjJZWVI3cmd6Y01lS0F3?=
- =?utf-8?B?d0Yzc2dtSVI2ZmJWNmtZK3NBWDM5UURERitab05xcnZPN0xhUUQ5dUNscTRO?=
- =?utf-8?B?OVcybnY4NmdOU3EwWFFKTjVja2JBdjhIZ05pZUhNYjJXNWgybjJod253RGE5?=
- =?utf-8?B?TnQrYzJtQ0tVVDkvMisvTC9TTElRbVNyelRLNlI5VWUzMStUZVpsbVBqbTYx?=
- =?utf-8?B?RTN1bUNuanpmd2JtRUJuWHBMN1N4VmdhbFlhSFpwbjNIenhyK2ZMTWRhcWN5?=
- =?utf-8?B?U1RQZHUyM0F2RUVqcXdlQXByMVBYWURnRmhVcmhaUTEzcDgyc2FQU0NzV3lJ?=
- =?utf-8?B?eHR1bXN3VUdUZmlCejJRTnJoRHNvam5TamVsL0d4TzI3V3lvS0pVNnIyN3Fv?=
- =?utf-8?B?LzVYbitpMGdXeDdtVjliRWpJTHRwR3VhSnEvbEhVeHhLQTgyUVFKcWZOWTlG?=
- =?utf-8?B?TmQrTC9WUWh0aWROQmdtVmFqa0hHUUk3V285Y2YyeFcyT2FpbmJJMWpPUWNU?=
- =?utf-8?B?R3p2dktlYXpTSWZKMmkyOVdHZHdnVlBjZGM4bW9Ia0d0cFU2N1Zlcldobjl3?=
- =?utf-8?B?SHM2NEY1NDJyUGo3d0poZ2V2MFAwMXhCNTltSml2KzRCRGc1MXM1ZEVqbk4y?=
- =?utf-8?B?c01UbnlmOWh2aEd3ZWhaL0tBTWJrVWRJcDdZVWVYenNtK3JPMTQ0UG9HeTFP?=
- =?utf-8?B?N3lxL2NlTGRyb040V3JuQkxhVFNnZW1XZHJFbnJubW5KZFRtdzBocTVHSjI4?=
- =?utf-8?B?T09EeGtxbHljaWR2Wk90NTlqMXJ1T2VpdFdqYjNoZzN0NlVRUTMrZ0pRZ2lu?=
- =?utf-8?B?by9LY1preTNVQkxEN3BXdHZ3bTlNQXZHMmRQQlFlanNldU9oVTRpVlJDNVJx?=
- =?utf-8?B?YSs0VktOZWVmWU40M0pYd1U0alVLdHQweXR2ZFdCazZiVDJ1RW1BZjVFcGJP?=
- =?utf-8?B?MncrbDBoRG50WlFrczZzRGN1Y213VmxQUXZlSXMvUGtvUDR4enQ3UVA2d2x4?=
- =?utf-8?B?dGt5WTlyYnVicElIQ2VrekhSUXB2YzZrZjNQdFpScUNaaG01M1U4ZWtMTHA1?=
- =?utf-8?B?a2t3Z0NJK0FickQxUHJmcy92a2ZMVzlFUjZqbWhzUlZud0xzR1I4OVJlZS8y?=
- =?utf-8?B?YmgyaUxpUHVVai9OUzdDQi9mUG1MdFcwWm9HTzBTbStGZUxaTDBPWmlYM0xI?=
- =?utf-8?B?ZVoydzBJU2Jxekl4bzdTNUVQaTVETklSL1hZSGQ1V0FaeitLTUIzZC9jUDNL?=
- =?utf-8?B?NGNBalQ5WU5ncmV4YTZZZXZZT3hRMmxETWRyd0pkQ3RjZTlnaVdWSkwvSk80?=
- =?utf-8?B?MUxvZkdUTmRxa253TndhUGhMbmFoSFB2eHVHOWR4dUJadGRVYkliSUhxT012?=
- =?utf-8?B?bW1YQUNJL09rMFZoWThpbW5Wa2JHL2xxM3lwU3VrRGRlWHdlUlRGMFFYS0w0?=
- =?utf-8?B?bkdTYjNSc0hkR1RuSVUxd0xBTXBleVRBMWZ5UFByQzVRdmZjL01kaFk4KzR3?=
- =?utf-8?B?VUVwdVNXTllQeStVTVZDV01aSGNLZFF6R1FMczdhY09yOXdrRDJoTklBNUc3?=
- =?utf-8?B?OWF5M0U5bFl6d1FIVU4zbm1uWkt1aHFHdENvY0FJUlMvVEprRm9kRUhsZnlD?=
- =?utf-8?Q?J5TKrXnB047B4sgomKkDh43DEzMWAqtuSWu8tgLj8L+Qq?=
-X-MS-Exchange-AntiSpam-MessageData-1: TjPX8XY5NGcpSw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5dd797b3-6192-46f9-c697-08df3b3d0a2f
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 13:02:26.1063
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OYV25fQV6xIkJ+mjqTL2iyDDXGa9IPnqK4xuIDr/oU3DVpcbYnexHqVQcuZ+He5X8q06ij03bozA9Tge3KeAMw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8935
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 05 Nov 2026 10:46:34 -0300
+Message-Id: <DMNBNKKPHI0H.EZQ7YA2CSMEA@gmail.com>
+To: "David Gow" <david@davidgow.net>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Benno Lossin" <lossin@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ "Brendan Higgins" <brendan.higgins@linux.dev>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Danilo Krummrich" <dakr@kernel.org>, "Gary
+ Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Andreas Hindborg"
+ <a.hindborg@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Burak Emir" <burak.emir@gmail.com>, "Rae Moar"
+ <raemoar63@gmail.com>, "Tamir Duberstein" <tamird@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Yury Norov" <yury.norov@gmail.com>,
+ <kunit-dev@googlegroups.com>, <linux-kernel@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2 0/3] rust: kunit: support #[should_panic] and same
+ test name with different #[cfg(...)]
+From: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
+X-Mailer: aerc 0.20.0
+References: <20261029-rust_kunit_v6_send-v2-0-5ce551efc48e@gmail.com>
+ <35284b5b-bf0c-4585-ad3e-a76bae4be7df@davidgow.net>
+In-Reply-To: <35284b5b-bf0c-4585-ad3e-a76bae4be7df@davidgow.net>
 
-On Tue Nov 3, 2026 at 7:22 PM JST, Alexandre Courbot wrote:
-> From: John Hubbard <jhubbard@nvidia.com>
+On Tue Nov 3, 2026 at 11:45 AM -03, David Gow wrote:
+> Thanks very much, Nicol=C3=A1s.
 >
-> Each block of a falcon DMA transfer is addressed by the start offset of
-> the transfer plus the block's position. The two additions were plain, so
-> a source or destination offset near the top of the 32-bit range would
-> have wrapped or panicked rather than failing the transfer.
+> I've had a closer look at the new version of this, and have a few=20
+> comments. Ultimately, I think a mix of this version and the original RFC=
+=20
+> is probably best, and in particular, using a panic_handler instead of=20
+> modifying kunit_try_catch, and removing the special-case assert!()=20
+> handling would be ideal.
 >
-> Add the two with checked arithmetic and fail the transfer with EOVERFLOW
-> when a sum does not fit.
+> Le 30/10/2026 =C3=A0 00:59, Nicol=C3=A1s Antinori via B4 Relay a =C3=A9cr=
+it=C2=A0:
+>> This patch series intends to implement two features for KUnit tests
+>> written in Rust. The work is based on a TODO comment made in the
+>> `bitmap.rs` module [1].
+>>=20
+>> Changelog:
+>>=20
+>> v2:
+>> - Added more tests in `rust/kernel/kunit.rs` testing Sashiko findings
+>>    and changes.
+>> - Solved Sashiko: "[Low] kunit: spurious "try faulted" error logs for
+>>    successful #[should_panic] tests": Solved by adding
+>>    `rust_should_panic` in `kunit_try_catch` C struct to check if the tes=
+t
+>>    is expected to panic and act accordingly. Dismissed what I first talk=
+ed
+>>    about in [3].
 >
-> Assisted-by: LLM
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-> [acourbot: split out of the DMA helper patch of v3.]
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
+> I think if we only handle Rust panics, this should go away, right?
 
-Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
+Yes, it should. Since we won't `BUG()` anymore in case a test should
+panic, the test thread won't exit with `-EINTR`. Because of this we
+won't need to shield the feature behind a Kconfig symbol either, since
+we won't have error logs in successful tests.
 
+Here's the raw output from the panic handler version:
+
+KTAP version 1
+1..1
+    KTAP version 1
+    # Subtest: rust_kernel_kunit
+    # speed: normal
+    1..1
+    # rust_test_kunit_panic_in_kunit_test.speed: normal
+    ok 1 rust_test_kunit_panic_in_kunit_test
+ok 1 rust_kernel_kunit
+
+for test:
+
+#[test]
+#[should_panic]
+fn rust_test_kunit_panic_in_kunit_test() {
+    panic!("This test should panic and pass");
+}
+
+>> - Now the tests that have an inactive #[cfg(..)] do not appear un the
+>>    KUnit execution summary as ignored, they just do not run.
+>> Link to v1: https://lore.kernel.org/all/20260930-rust_kunit_v4-v1-0-e3b0=
+d45311dd@gmail.com/
+>>=20
+>> - RFC patch: https://lore.kernel.org/rust-for-linux/cover.1789500084.git=
+.nico.antinori.7@gmail.com/
+>>=20
+>> 1. Supporting `#[should_panic]` [2]:
+>>=20
+>> KUnit tests in Rust follow the user-space syntax, but at the moment
+>> `#[should_panic]` is not supported. The first patch of this series adds
+>> support for the attribute (only in its basic form, `#[should_panic =3D
+>> "message"]` is not supported yet).
+>>=20
+>> The way it is supported is by adding a new boolean property called
+>> `rust_should_panic` to `kunit_attributes` struct in kunit/test.h and in
+>> `kunit_attributes` in kunit/try-catch.h and check for the
+>> `try_catch->try_result` code and the named flag to detect if there was a
+>> panic in `kunit_try_catch_run` function.
+>
+> I think rust_should_panic as an attribute is good, but it should just be=
+=20
+> checked from a panic_handler. If it supports more than just rust panics,=
+=20
+> it probably shouldn't be called *rust_*should_panic (and again, should=20
+> probably be based on the warning suppression instead).
+
+If we consider failed `assert!` from outside a #[test] function panics,
+then I'll leave it like this, otherwise I am thinking of
+`rust_should_fail`.
+
+Thank you!
+Nicol=C3=A1s
