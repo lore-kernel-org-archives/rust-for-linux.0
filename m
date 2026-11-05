@@ -1,48 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793893401;
-	b=vfF/YlZBbSMfyWV75wXaCb1QRhaoJaVRsJTif3sKOBbsbM6lqFzG7gi0j9pkxC5f7MK5
-	 7UPMWcU3lXSkS7IG11WOoPl15VuTmiGsIAixLywjjFDWNWX7nSRGOSlURwYbODy8jIARE
-	 1d8ny7NYtLLKQMHr10e1Xwg9Ap6mE79kNn5GngJ2lEarUEqH4Bie8i+KRrI3kGrrziQ7X
-	 yvl+yI/ngb/Mv32XgtVMcSqk8ompNrDnbYe09P0FeZ1cRmN3w++ZP46BEWmiTppjFOJ+h
-	 hBKq+XtwZ4DEUMAvx6ckcRVPoVvgYEd982nBVa+wmmbvM212HiY9N3/nKfFwrl7GElA==
+	t=1793895865;
+	b=j6r3fOTE+CJ84Y7489aUqcEChTmuCttX16tBh/2aG5D+wp+ANg9O9kQ4bMf0CVHslcvF
+	 kpc9sCtWsPXNWvcUJC3DT9JP8qq7GXUSq0WCB5Z2gwwFqnpdwOjcxhdRtwHy/nD6b6+vJ
+	 eAoWVeKtUHP0XX6nGhTgq9MMqOOJJtT/FJWqFeKc0Jy1RqcmcNSxkoylui7MrsZMIn/Lw
+	 wnI7FECdo7289FGPLftEjF0VuBeuKt4y/yBXTOCcxaVrOmsOrjfD5idaEEHKyztZgmBy6
+	 VtM4luGu1TK3sEbpL/Tb0T7xrtHZmHjaZbB5B8R+LlbcGy/36oNDw4t9xSgnCikMd6g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793893401;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=ZZ30tj2pRrX2TSx9hx+y3zY66lWWQvzA4rqP8T/5bwo=;
-	b=vJRrsIaKIWxDpkDRex9cFI+dLnXDuqcc8PYXUeuTx+j7uk0elrobRn6vyVP6vitnVztJ
-	 OSLTU4tzyfs5k7yTd+P/qMb7+FjWdYEHV0fsKbnJKfWnp7dFTme+pXlfacWT5wfQBqddp
-	 jRTJQSUUYEQxFcHjUjZi+kzl76z59wQSHvJx+awjV3gfOKn7We8TEMz1Fp18vUEkMWq32
-	 sDLUG1+dV6lpZKZaShzwRkU4CuiwM11C5CTh/dQfbTSd8oq51sl99mZNNAgliem3qzpk+
-	 hamo2OLXGMIu2G5dsvdcWb6ui7ANq/zOwsM2xqg55Zee2Bg7jXmC5ua8gc7utX6AI+g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793895865;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:X-Forwarded-Encrypted:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=5prWUgliJcOAr4R1nMCKAcSyRg6dSeYd31zgPiidQv4=;
+	b=ZOZ0H5f8D/uSeQKiTfdS7QtrZpPE7RGaOF67tBA9cR+KDJIPI3ia/Iq3hYE+CIRAFqy+
+	 eXdT9LYMite4f7RV04JOKTiKb0xHofC0IYKhtSLWAFj4DR6ZzBxUSwTguEju2kFEOxx2W
+	 LysvCAwEfmcOEk8QH/4rWX3X7/pzKXb7mykO3eYd0/SG/ZBSMNw4ttJkrmbhdE3fyQA4p
+	 hjFLpT7rfjXXLfThrxPEkBWpSO8y9AJDPX+8zPfLYep0L4sBHTCuyn+rcGs07W3XUcCBJ
+	 K5o5Al3JO88h6e4KWnbJOf+NshVxTEruiJ0LgXO5qawZJxG8rHczeaWFabWlspNi0Kw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=emol58vL;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=chromium.org;
+	spf=pass smtp.mailfrom=chromium.org;
+	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=EUkbRWrf;
+	arc=none smtp.remote-ip=209.85.208.42
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2B8606D830;
-	Thu,  5 Nov 2026 15:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23AAE606A326
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Nov 2026 16:24:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23AAE606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=emol58vL
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 718F21F000C1;
-	Thu,  5 Nov 2026 15:43:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793893400;
-	bh=ZZ30tj2pRrX2TSx9hx+y3zY66lWWQvzA4rqP8T/5bwo=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=emol58vLxmuU05NVTBa+dw/u7YLWB3lUJnnwNeMsIC9DjbmhlYrNMp9faLAdwecS6
-	 2FK61Wc2T0l+Fyi/AAoBGWVzNDHau/78khAym1VqrFdkeY1BSrZtlXeS4okprKzeQc
-	 n7Tl6bafE7Ex6sZOa1eZtJvrg2qylLnfQbmdqCUGeA2sIrd8QFc3bmLDZAYI8/2eDk
-	 pRukuRgjh52ViQle+A0H1qps5vpJkhNaWfEh6n7kDoEZ2dvoiY5AtvGf7VnJ13pNGD
-	 eSw3Zx+THe/ON+cyRQ3U40w6byd2gZfgSziBl0hcHGw/XurYk9Swh9BxNcFyayxH1R
-	 87STp64t5qhjg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Thu, 05 Nov 2026 16:42:44 +0100
-Subject: [PATCH v3 1/2] rust: impl_flags: add conversion functions
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=EUkbRWrf
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6b5669a5100so2494152a12.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Nov 2026 08:24:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1793895862; x=1794500662; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5prWUgliJcOAr4R1nMCKAcSyRg6dSeYd31zgPiidQv4=;
+        b=EUkbRWrfpe/iVp7dxMSezAHNB4yWj1s88YkbNbWMwE+ZAthxJlImnMWoEqwcFfm1PI
+         nhaivXKcHXh4sxBJt0rDCNJVHyidhohJtp/hcCA6oJfmuzgY1nNXn7C4nMKxIMNLDoLB
+         OQEV46KUlHC7SGLaPgE/TkgPzTSCysaAF8r+M=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793895862; x=1794500662;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5prWUgliJcOAr4R1nMCKAcSyRg6dSeYd31zgPiidQv4=;
+        b=al9BIVH8kDqF4IYKOtl81lwsBc+EUgTuPBeDUvjeqd2K5tSpvjSVQHo2VQ/pe7X3lM
+         OGGV6NeGw6es1xxUAE+Sje4pP+iEVmxttmcEzhAMHzsQf2IJK3oEpQ9Yr3SCdppLl1cv
+         TVaaog79Sp4o7ZBXhoz1J601hzHZ7F0PV6Pw+tQk5ZGoi750DYwlYpPIFSZ5zf/uLpXC
+         oUmtuHi0GevgMjThUe2kBxIe0WrzJtL7Hl0m7BTwSCiy9q5SsC2rGCfZ5QX5Wir2WBiZ
+         Or2N9Mz6/TsJY5plcCCKZMzm3OTvrtN++BkO6Kpuw0diW/0dtdZbga41lPWjKeLb8GRx
+         Z9rg==
+X-Forwarded-Encrypted: i=1; AKwUvBzEBeyWeZYH5XqNZvV+gtma9Tce2HdX10FDp8g0sy0MpmseLS5IL8fzw+cg+UU5h+aYP1+MnXvAuW5GQTfvzg==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+1+z7wHOZPf93Fs6pHB13dRx+yFwknz8n8dUCSXFmZAs9DIuC9
+	3Ctvh4cJhrLV3PlHz262g08jrVMIlt9HG+v2BA1vk9Y/81aKIMNAHFEAS3a0XneQt7BIpwa4Dv7
+	ygN44m8gI
+X-Gm-Gg: AYBFou3DwMsaYzpqLA7+DAdGczm3HEFrSwEiqb5DlmmplajGEUoWSwfdqc5aLG6NM91
+	IqFCtnrR5v43/ehQfOdUcZ7/cU7GJS/m1JcefOocQjEycmSOkvfHuCertOGs8hibiCCPVDUpbiy
+	xsT9/bDuy4hiNERy2v5e6FIlQ2wTGzKeBPt5lIYxApBVaYKPiXy1GrDg32H5ceZOppQR09D+jed
+	RxWto/1ElG8zgTorn5rC6YavyFQ+zQ+M2ZzvE+lucNj8qXIfSxLG2MvMGm58wSqKP0VPUY3pebB
+	vLr5pvS2sljlQuTSq/HrRoIQr3L5J0gL5Pz2mhuvo2w9YyiETv1DKOHIiKQMwHgQlsU9MoGU104
+	+bdHVZcjzfqbBBrsyhD9MjpEdS02bfOnKu0O1I4XrjKw9UfAjiVMd6+/dgEf/qygV9DGNdN3QZN
+	0X4JZdIyLI4DHAP5YZ3cVjVi24uEEa63HfbQ6FSHMybdaTUPyx7Rdw7bIQCa/SUqRZrCQYUPTiD
+	ZXR0n0fa2dwGq9HmJj8OGCzfsP11YASmKitL73awga72xTpVkg3kEupmSVTRAcFFuY0fNgJ16pk
+	gF5ADOgMwsYaK3aOtQ5UOINjZhn+kPOpOf3tPpNBZXVaYJ8tdYvHBC8nniktaY+FGhw=
+X-Received: by 2002:a05:6402:434c:b0:6b5:9133:309f with SMTP id 4fb4d7f45d1cf-6b5913336camr541355a12.2.1793895862446;
+        Thu, 05 Nov 2026 08:24:22 -0800 (PST)
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com. [209.85.128.51])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b55abd5569sm2009267a12.5.2026.11.05.08.24.18
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Nov 2026 08:24:20 -0800 (PST)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a20a37703bso16005375e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Nov 2026 08:24:18 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBzueZMQ+mi3SdTVk5gj/634cPELS6pc+9bmTLuvhI5Lb77rMFuWBx9lJbMHHmYxqPq4Hq9KQaG1WqfNfCLYtw==@vger.kernel.org
+X-Received: by 2002:a05:600d:a:b0:4ac:aae6:6400 with SMTP id
+ 5b1f17b1804b1-4acaae665a6mr332973265e9.13.1793895857514; Thu, 05 Nov 2026
+ 08:24:17 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -52,134 +94,107 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261105-impl-flags-additions-v3-1-5b17c01c2b15@kernel.org>
-References: <20261105-impl-flags-additions-v3-0-5b17c01c2b15@kernel.org>
-In-Reply-To: <20261105-impl-flags-additions-v3-0-5b17c01c2b15@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3204; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=9iyGL5fNcH/TV1QXaAh95ETqf6dnZuNL8Wwvg0cVRW4=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq7KP/yZD3vXgqIFKq7I/KVPAln5q+4fSmNg7gS
- XyXBeV+1vSJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCauyj/wAKCRD6UCkIqsW9
- 0JPoD/99yyIMZ6YfoJx4PjrnuIdp3MXQY/wqWsADpniOGclfkw/Id5NakOn6s5HF3UVh4TLKlnH
- 0NfF70PR46pVfbZu+I6xL6MJWYqFNhX0svjtY6Ck65UuV5WNy8Bq3510kbhxj4L6bQKQ9OW+N1t
- 1sEeuMnkXPbu3EQCkJrSCACv0aQeEoXzwub1lS0nmB7tEwzO2vrsT13mSeZbyFE763UiU1w+KMn
- z/v2tg1dqcd2TRb8ETmtVjCckzwASGLZKwFFcZatzllc9aOhwndklDe0ajDgJLxVVGn3f9Ha4sd
- DWrKO+GhBu/CGXDko2VTN+kysmsw+31u5LgwuxQ1nYHM4kdsaZ5mgV4wUnRxygkmzB8qqUKRNnb
- 9nJva9eHeDo4T/gK/1Zev6sFNM4+iRWSFM2lkfvNlAW9spV9c7aYBE+PJ0mD7VGkf/9uo8hCZ/y
- WxnvFyWlNagowx2If/+fQ+4MMaHRpSDRdsbQdRLQFMVNYcZ+hEorgyax8Onch5Df2P4f5pSuOrH
- HLjcMUy0kINXBvbCd9Lqow91QcYat7+DijI/lFXMB6xg8RHfdEK+CaRTFmxtBDMFGEPBazYjLQK
- HIuikOkGHtHvUBgkR0eTANFO/uVz2ugkfcg+SPJ7kFjyJoAHVfNXqpvRWTH5tHabpO3NzUWCpJO
- DgfPuwBhIzIAZ4Q==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+References: <20261104174554.1.I8556199ea4f1335169ce16e97309aa63ae2e2310@changeid>
+ <20261105052401.GA862715@ax162>
+In-Reply-To: <20261105052401.GA862715@ax162>
+From: Doug Anderson <dianders@chromium.org>
+Date: Thu, 5 Nov 2026 08:24:03 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=Vx4gHvF0TegRBwZetTNjP5AsjbBK9+sjNA43OpL1Wjiw@mail.gmail.com>
+X-Gm-Features: AclHuK8NKe2Ice8G3ieACvjOY5cRy1bgQZ2ikhne4c6q9f8t2mnwrvferc3g3-I
+Message-ID: <CAD=FV=Vx4gHvF0TegRBwZetTNjP5AsjbBK9+sjNA43OpL1Wjiw@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: AutoFDO: Enable -salvage-stale-profile
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, 
+	Rong Xu <xur@google.com>, Han Shen <shenhan@google.com>, Nicolas Schier <nsc@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Han Wang <nesthanwang@google.com>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+	Bill Wendling <morbo@google.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Boqun Feng <boqun@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	Justin Stitt <justinstitt@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Tamir Duberstein <tamird@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add two conversion functions to the `impl_flags!` macro:
+Hi Nathan,
 
- - A `From<_>` implementation to convert from the flag value enum to
-   underlying type.
+On Wed, Nov 4, 2026 at 9:24=E2=80=AFPM Nathan Chancellor <nathan@kernel.org=
+> wrote:
+>
+> On Wed, Nov 04, 2026 at 05:45:55PM -0800, Douglas Anderson wrote:
+> > From: Han Wang <nesthanwang@google.com>
+> >
+> > AutoFDO profiles are commonly collected on one kernel revision and
+> > reused across subsequent commits or stable merges before a fresh
+> > profile is generated. While AutoFDO uses function-relative line
+> > numbers to tolerate edits above a function, adding or removing lines
+> > inside a function (or an inlined helper) shifts all subsequent
+> > relative line offsets within that function. Without stale profile
+> > salvaging, shifted callsites fail to match their nested inlinee
+> > profiles in SampleProfileLoader (dropping profile-guided inlining for
+> > those callees) and basic block sample counts are misattributed to the
+> > wrong instructions, degrading branch probability estimation and
+> > machine function splitting.
+> >
+> > Enable LLVM stale profile salvaging (-salvage-stale-profile, supported
+> > since LLVM 17) for C, Rust, and ThinLTO builds when
+> > CLANG_AUTOFDO_PROFILE is specified. This instructs SampleProfileMatcher
+> > to use lexical callsite anchors within functions to fuzzy-match and
+> > remap shifted line offsets when querying the profile.
+> >
+> > While -salvage-stale-profile is not enabled by default in LLVM due to
+> > the minor compile-time/memory cost of sequence-matching callsite
+> > anchors (which is unnecessary when profiles are freshly generated on
+> > the exact commit being built) and the heuristic nature of fuzzy
+> > matching on heavily rewritten functions, enabling it makes sense for
+> > the kernel: hardware PMU profiles are rarely regenerated on every
+> > commit, and anchoring on callsite names is strictly more resilient
+> > than blind line-offset lookup when functions are edited.
+> >
+> > As a side benefit, remapping shifted line offsets also avoids feeding
+> > mismatched weights from stale profiles into MIRProfileLoader's flow
+> > inference solver (applyFlowInference), working around a compiler bug
+> > [1] where a small intra-function line shift (such as in
+> > __vm_normal_page() in mm/memory.c) can cause applyFlowInference to
+> > spend 30+ minutes compiling unmap_page_range().
+> >
+> > Link: https://github.com/ClangBuiltLinux/linux/issues/2188 [1]
+> > Signed-off-by: Han Wang <nesthanwang@google.com>
+> > Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> > ---
+> > Much of the commit-message justification here is AI-generated. Sorry!
+> > :( Folks who know better, feel free to call bullshit.
+>
+> The justification does not seem wrong to me on initial read but it
+> definitely feels like the first and third paragraphs could be reduced in
+> verbosity since this can basically be summarized by "AutoFDO profiles
+> are often reused, which can be problematic without profile salvaging
+> enabled, which is designed for this exact situation".
 
- - A `TryFrom<_>` implementation to convert from the underlying
-   representation to flag container type.
+Happy to reword or happy for upstream maintainers to reword themselves
+when landing. If you want a v2 sent with shorter wording, let me know.
 
-Drop the hand-written `TryFrom<u32> for VmMapFlags` in tyr, which now
-conflicts with the implementation generated by `impl_flags!`. The two are
-equivalent.
-
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
- drivers/gpu/drm/tyr/vm.rs | 13 -------------
- rust/kernel/impl_flags.rs | 31 +++++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
-index 1dd11b2b1253..0d6e841a31ed 100644
---- a/drivers/gpu/drm/tyr/vm.rs
-+++ b/drivers/gpu/drm/tyr/vm.rs
-@@ -141,19 +141,6 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-     }
- }
- 
--impl TryFrom<u32> for VmMapFlags {
--    type Error = Error;
--
--    fn try_from(value: u32) -> Result<Self, Self::Error> {
--        let valid = VmFlag::Readonly as u32 | VmFlag::Noexec as u32 | VmFlag::Uncached as u32;
--
--        if value & !valid != 0 {
--            return Err(EINVAL);
--        }
--        Ok(Self(value))
--    }
--}
--
- /// Arguments for a virtual memory map operation.
- struct VmMapArgs<'drm> {
-     /// Access permissions and caching behavior for the mapping.
-diff --git a/rust/kernel/impl_flags.rs b/rust/kernel/impl_flags.rs
-index 6051487f6e28..052759b8038d 100644
---- a/rust/kernel/impl_flags.rs
-+++ b/rust/kernel/impl_flags.rs
-@@ -73,6 +73,17 @@
- /// // useful for passing the value to a C API.
- /// let raw: u32 = read_only.bits();
- /// assert_eq!(raw, Permission::Read as u32);
-+///
-+/// // Convert a single flag value to its underlying integer representation.
-+/// let raw_read: u32 = Permission::Read.into();
-+/// assert_eq!(raw_read, Permission::Read as u32);
-+///
-+/// // Construct a `Permissions` value from a raw integer. `TryFrom` rejects
-+/// // integers whose set bits do not all correspond to declared flags.
-+/// let parsed = Permissions::try_from(raw_read | Permission::Write as u32).unwrap();
-+/// assert!(parsed.contains(Permission::Read));
-+/// assert!(parsed.contains(Permission::Write));
-+/// assert!(Permissions::try_from(1 << 7).is_err());
- /// ```
- #[macro_export]
- macro_rules! impl_flags {
-@@ -115,6 +126,26 @@ fn from(value: $flags) -> Self {
-             }
-         }
- 
-+        impl ::core::convert::From<$flag> for $ty {
-+            #[inline]
-+            fn from(value: $flag) -> Self {
-+                value as Self
-+            }
-+        }
-+
-+        impl ::core::convert::TryFrom<$ty> for $flags {
-+            type Error = ::kernel::error::Error;
-+
-+            #[inline]
-+            fn try_from(value: $ty) -> Result<Self, Self::Error> {
-+                if value & !Self::all_bits() != 0 {
-+                    return Err(::kernel::error::code::EINVAL);
-+                }
-+
-+                Ok(Self(value))
-+            }
-+        }
-+
-         impl ::core::ops::BitOr for $flags {
-             type Output = Self;
-             #[inline]
-
--- 
-2.54.0
+FWIW, I actually asked the AI to add some of this text. Specifically,
+I felt it was important to explain why LLVM would not make this the
+default behavior but why it was still the correct behavior for the
+kernel. ;-)
 
 
+> > Honestly, this patch came about because of AI analysis compiles taking
+> > 30 minutes to run (see the clang bug [1]). It seems to work around the
+> > problem. Obviously, we should fix the compiler. That being said, upon
+> > further analysis it seemed like adding this flag was beneficial
+> > anyway, so I'm posting it upstream. If folks disagree, we can simply
+> > drop this patch.
+>
+> I would definitely like to see that issue triaged but like you say, it
+> probably does not need to done before this is merged since it has
+> reasonable justification on its own. I would love to get thoughts from
+> other folks though.
+
+Sounds good. Thanks for looking. Let's see what others say. :-)
+
+-Doug
