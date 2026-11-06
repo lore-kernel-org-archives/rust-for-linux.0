@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793974198;
-	b=yN37X7ihqJn65O+Fj8ODsB5jb+3gMzTO6NLxMUNzDoWlG/23MMf1e6KqYpCEnnNo6Mwl
-	 AfbuHbGaFnnDn6xdBmnhTW4N70nI+0pRXjDEnH6DRNpFmTHSuP1XJbm7XKrj+attSIYyA
-	 0j84RshiY/aOgWCL5UMhNTwYETjY+Kd0xcdpIIUlMQIkxK6bDGAnDkX50LamnzW2MEYeL
-	 H0q/Xi+D0jm3NToJXR1jUfatAqx3FNcNjllgMPeILJhCgtbXR4wMUFgDrcKr4VfM070CV
-	 5FZYx8KYpTD12fyQAyGfRLdepkegThJpb4McrRnjScOVNctRf3k7eiKC34IbiWrBJ+w==
+	t=1793974210;
+	b=4qIMtzcC9pKldxJ1K13sqD/wEWdWJun5Hcr7nDb+WO3hYTBHQpfVGTWL8X9DiYBHp4Dy
+	 J+BKEVMbQi4e+HDkPr6uyd9MEjlebTvMcsArN3wjcfUSY6td1x5YuJqNLqzsil0gGaJ9k
+	 oZwoR8b4kohVLR47Nfcdhkl0oecP0WrQ0xfCEBnTCGm8aVEdMD4raO6FUAE4Lfc8dKxEI
+	 wqFqwJHi2bNwWy11Quach15qop49qoFw9U2CJabcKQnjcx5plOiwFRavs64JC2zoe+Qzz
+	 qdwmwSkA1KMTY2t4s6dslHWPLGiWw+KQFY+Q4/rmhWu3/Gfaaxh2itcg1L5S6EfM0WA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793974198;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793974210;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=OyR+AgrLeRdx5lhIJBwIotjmx2B5B/rhxsMU+NAW1V0=;
-	b=X9ZDiYwvtjvLC73Mn9z5kTJbl9l7jfDV2KGMkx/+QZIHFdRkulqR/vWWx9UuFsQWicNN
-	 1bBiRmMqhb+4OmAQZEW6uv+CtsdKN7Jv3tBq5lSdiE8pmRTlL+oWQyFWesfD6qvdSNahU
-	 8Am/yS+4fHdD/zWkVkbMnWjpUbcvKeCCazKX918uiCHKtyOl3reLCk7VcKI0+GSLScjye
-	 oQUtFX6HzidmJ3h7fYq7xm+okIaCnd5nFlY8asVsy4t+h5qOJ8mRZQHCTs26VxvYehmyi
-	 GLcyrRfcdYlq2bP+O4mVfCJG0RGcGY7J9zYol6a8v0UNiEsPxmvixthJtZAMqFwv6qg==
+	bh=7qoeOCwcbAlvTBPcx9yQQNBwlzgqLb6BVjDnL4j1bZo=;
+	b=VVcNbbmpzaoeT1wQHAk9NVhridqQSQeGrZHhH5HAi+1vUBKwJ8MddYaxkdPgVhXsB8Xf
+	 o27Z/H6YnEHdZTIawfArJpBHagM2YguWfEWEohCQ8kacDln5oUUtfCgQsjYJoSPq48ukp
+	 6uUj5SMtTtJBq7XNdeIqnGJv+urt6EX4VORP5Zq+be9x9MtXPWFQivHER9neVsEHQiu11
+	 aCRVUypjtBZXJ526Ps7DCTvD8MJcFdOUVPFRTDKxkHfrGlqwbKD6EgDBMaap3Cyz2kSBC
+	 YNAkjdsr/sxbASoNNYmQpS7dV8QvYPGfvHwXbsI0UgyUYgnSRwImtWw/2k9Ngal1s1g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="BvA/SEWQ";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FIJ9MBZz;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133AC606D810;
-	Fri,  6 Nov 2026 14:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B81F606A332;
+	Fri,  6 Nov 2026 14:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BvA/SEWQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875B81F008A4;
-	Fri,  6 Nov 2026 14:09:52 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FIJ9MBZz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B29A1F008A6;
+	Fri,  6 Nov 2026 14:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793974197;
-	bh=OyR+AgrLeRdx5lhIJBwIotjmx2B5B/rhxsMU+NAW1V0=;
+	s=k20260515; t=1793974209;
+	bh=7qoeOCwcbAlvTBPcx9yQQNBwlzgqLb6BVjDnL4j1bZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BvA/SEWQI6nVWCKu0n7KCXoQYrGBHNdhUOkje0O+iyXtc8tsGWzxClVrYLSIRYcfI
-	 YnxfHCYeY7HRUXg8vqNXeLPpxtMx9oZvO+TRWpTgFAuK2uSzLhmhF9SVFfu2zhpnzh
-	 kENXdL6Issfd/VX9Ir0PlDQX6Opw5GJ6FphiP4Szfj7wAQ1KwChowdptetmBM8FLay
-	 v9VhxGECJ+QqAOr2JATnawNFUL4JK7PTJatgi1N8cLYuRddgi7o6SnsHwi9v1YKHDy
-	 mlBbHJEt5tmImqskn5WiCloeu4idpQe8Mb7/nrFaroy+lcm3NrHRqA/b5OQlm7D/ES
-	 96uz/VusSSg3Q==
+	b=FIJ9MBZz8tgAkGuuOjwDJzH8xt1FNx7U6yxuD14Az4zgMnWlMATxtWeAzKBbnxPry
+	 5/WKCqgzHzzj6tXdzujJa+gRuE/HehR5EPD7EQdkxH7nUCtGCaNfclJUX6bnfsG/Na
+	 uXo7vE7yd1pl8gCjlEnt0Ghe8mNVqwUd/tEruZ2G9e0YOVKtvk24xKQOx6pWQ4jtk2
+	 Hv527qXg3xPAQZEmHU0QHObEF+2/7VRmukLeBpZDocfUw21A4jSjWUlvIgwrk7bsI2
+	 xrE/Rs9NTVU7VQ3egxi4c+8lfBx/VQYyOFjLnpxNgm/WDKewFEumlKdizEg2Fpas4L
+	 oDKmQxqUG89mA==
 From: Philipp Stanner <phasta@kernel.org>
 To: Sumit Semwal <sumit.semwal@linaro.org>,
 	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
@@ -64,9 +64,9 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-media@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH 6/8] rust: DmaFence: Pass result in callbacks
-Date: Fri,  6 Nov 2026 15:07:51 +0100
-Message-ID: <20261106140752.520386-8-phasta@kernel.org>
+Subject: [PATCH 8/8] MAINTAINERS: Add drm::JobQueue to drm_sched's entry
+Date: Fri,  6 Nov 2026 15:07:53 +0100
+Message-ID: <20261106140752.520386-10-phasta@kernel.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261106140752.520386-2-phasta@kernel.org>
 References: <20261106140752.520386-2-phasta@kernel.org>
@@ -81,83 +81,28 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A FenceCallbackRegistration invokes the on_signal() trait functions
-specified by the user. These callbacks always get executed, even if the
-fence was signaled with an error. The user must then be able to react
-accordingly.
-
-Since the fence->error must only be set before a fence signals, and must
-not change after it signaled, we better acquire it with the lock.
-
-Change the on_signal() trait function so that the implementor always
-receives the fence's actual state.
+The DRM subsystem now provides drm::JobQueue, a Rust dependency manager
+and load balancer for GPUs with firmware scheduling. Since it resides in
+the same problem space as drm_sched, it is reasonable to maintain it
+through a common entry.
 
 Signed-off-by: Philipp Stanner <phasta@kernel.org>
 ---
- rust/kernel/dma_buf/dma_fence.rs | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/rust/kernel/dma_buf/dma_fence.rs b/rust/kernel/dma_buf/dma_fence.rs
-index b0c0e32462ae..f7f9887b8502 100644
---- a/rust/kernel/dma_buf/dma_fence.rs
-+++ b/rust/kernel/dma_buf/dma_fence.rs
-@@ -293,9 +293,12 @@ fn from(e: AllocError) -> Self {
- /// }
- ///
- /// impl FenceCallback for MyCallback {
--///     fn on_signal(&mut self) {
--///         pr_info!("Fence signaled!\n");
--///         // Handle fence completion
-+///     fn on_signal(&mut self, status: Result) {
-+///         if status.is_ok() {
-+///             pr_info!("Fence signaled!\n");
-+///         } else {
-+///             pr_err!("Fence signaled with an error!\n");
-+///         }
- ///     }
- /// }
- /// ```
-@@ -310,7 +313,7 @@ pub trait FenceCallback: Send {
-     /// An implementation likely wants to inform itself (e.g., through a work item)
-     /// within this callback that the associated [`FenceCallbackRegistration`]
-     /// can now be dropped.
--    fn on_signal(&mut self);
-+    fn on_signal(&mut self, status: Result);
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 19818be10616..5cb896c4e0eb 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9267,6 +9267,7 @@ T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
+ F:	drivers/gpu/drm/scheduler/
+ F:	include/drm/gpu_scheduler.h
+ F:	include/drm/spsc_queue.h
++F:	rust/kernel/drm/job_queue.rs
  
- /// A callback registration on a fence.
-@@ -397,11 +400,15 @@ pub unsafe fn new<'a>(
-         // embedded into a `FenceCallbackRegistration`.
-         let reg: *mut Self = unsafe { container_of!(ptr, Self, callback_foreign) };
- 
-+        // SAFETY: `reg` was created validly above. The fence is guaranteed to be
-+        // signaled since this here is a fence callback.
-+        let fence_result = unsafe { (*reg).fence.__status() };
-+
-         // SAFETY: `reg` is a valid `Self` pointer.
-         //
-         // The backend ensures synchronisation so whoever holds the registration object cannot drop
-         // it while this code is running. See `FenceCallbackRegistration::drop`.
--        unsafe { (*reg).callback.on_signal() };
-+        unsafe { (*reg).callback.on_signal(fence_result) };
-     }
- 
-     /// Returns a reference to the fence this callback is registered on.
-@@ -680,8 +687,12 @@ struct DriverFenceData<'a, T: Send + Sync + FenceContextOps> {
- /// struct CallbackData { }
- ///
- /// impl FenceCallback for CallbackData {
--///     fn on_signal(&mut self) {
--///         pr_info!("DmaFence callback executed.\n");
-+///     fn on_signal(&mut self, status: Result) {
-+///         if status.is_ok() {
-+///             pr_info!("DmaFence callback executed.\n");
-+///         } else {
-+///             pr_err!("DmaFence callback executed, but fence has an error.\n");
-+///         }
- ///     }
- /// }
- ///
+ DRM GPUVM
+ M:	Danilo Krummrich <dakr@kernel.org>
 -- 
 2.56.0
 
