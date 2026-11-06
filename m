@@ -1,95 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793999453;
-	b=vNAj1q+HB5gD1Bjgs0MDQuqjjBgb4jtLHI5itmohLOW0ey3saESzydlCd+kEI/+zNPtw
-	 rkR6LUseSshertVqDy+tz43g0S1NrC5d6gHmBcF+/01c3kjQLoIA51IxUcT4xwScknNeE
-	 f2ggnqrqC5yhG8lhPx0qChoNdwcwckcz9BulExiKZ6R2fUF6bLOUXFjU3Juk8kUzn5X/m
-	 4x3jy3zuH8Z/nWgxM1Qlp4vR9hNFXd/s3a0cofoIQgZb2vryYXrAjy+1+AKByuUBAWeHk
-	 jWNUUOWQ5QEspj3fOi4hkR3exL1vOnUCaO9Ne7901HpiF7plOACpIpoy+pKdtuiHoXA==
+	t=1794001413;
+	b=1VCD1xFbf1s+KR9XIfVwIaWf9xIsgGNeywqybfDBZXz7bhrYk9BXLIjPyR6X7jh9WTia
+	 35P662yjCT+eOaCKHjj24fyDCoZBSmmCP9/iNuWfW9P+ECucs0AxUeeGHmZCt0luJM/KM
+	 GOfqmf46K+t6vFx60DiRr0sf3aya4RbPdspchFlFgHXd7tOTRGhE/t0yY6H7+gPAb7IPx
+	 TjXcxpOR4G5i1vgQBanslGSMvDEW/HseFfKz6ATo8RgqgydQ9bObG/lx2Wyggu+k1Y9qG
+	 GAtwT2dks8rH2nA+vYVCwCil2R0dxcC+AXmXl0ePmhO39/3QukEuTNjiS4RbLFjq1YA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793999453;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794001413;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=IzadzAnaJyn7LGsFypixbPwBvLAaokgc3WejqRL4bjM=;
-	b=B7flkchDQZH2vRCbKGBAolHkFwk4Rf/oLTwPhGTyrRkhhKmuIK+x3TUpen4IUK/7ubnK
-	 WsUfsY5G7SgoiCtpCduoLixHLK4wdwlt+qPym6OhpTDHFIGQZl5ALodHTL0dSyV8Q93HL
-	 eeT80gUCNjaSYmVLOxnAkoClyDXx3cfhZ0D0YpwRAqVjDE7ffX6Nw2LSXVdgDNFmp3vP2
-	 4b3Gt3KfZklDHHSRhY04A8f9NxMW+u30bisCB0DkHFxgcj+NlQljBXZq6M6ZDQrtxhQ+U
-	 ecB2luVyRdeWYRU0yO1Icd/xSOjzDL+nePSzpUPe5XMyFDKKcT1dEnRx/lhZkHQxrSA==
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=ULFZ+Lz5JFNxqhOdlYorxY6TtGyrAFixmkP/y0AuJlI=;
+	b=CKC47HUMWhFhFKz0dr5NM7o2b4hfIKqk9okj0o2ESD0Gy9X9BlRzY5bK6q9JNks8BhYs
+	 ehU1SZ70O7M+wRszob25PZpbRvKnkv+hL4HX+IiITbY/YFPPTaA4L822Apy49KNwWMWHU
+	 IvG2Ou2pnsUrY/bZASVuNDeHTvx0RkLRKYikOmoR0PHwwySpdl0N6XhYEf0/46Hbw/+gz
+	 z9kEsIuX9pTucx3bixlL7H8mqm6T76f8d/bxp+1KlIK+PJF5pbQkhBwq9Tl1ZC2pxZEJE
+	 /aqxo9lSviUcw/tg9I7KpozS7vMq9V8juXiATqZY7P09b8H8GaMieOMTR4hQFoZ9V1w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HziJNB6L;
-	arc=none smtp.remote-ip=209.85.221.47
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iGrY5ycN;
+	arc=none smtp.remote-ip=209.85.221.42
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF07D606A329
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Nov 2026 21:10:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BF07D606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7451B606A329
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Nov 2026 21:43:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7451B606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HziJNB6L
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-490c1d337d8so744209f8f.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 06 Nov 2026 13:10:51 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iGrY5ycN
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-490d59c3edaso56368f8f.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 06 Nov 2026 13:43:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793999450; x=1794604250; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IzadzAnaJyn7LGsFypixbPwBvLAaokgc3WejqRL4bjM=;
-        b=HziJNB6Luz1rxoRoEnifLEUAraNdoEbleBBofVmmVTadMmSzFENVVrQiwfp55AoP1c
-         gvoTJbWik+Of8bmuu4UfbkVONhV8Sfbr5nDn2UncTrBogFwHg/nrMYDZv0jGjsC9WcEQ
-         XR9Ot0+4DzJ3wp523dDOQJMYzfJvq+fq6R6lYMqvUufJRaRW4QRxG8XjTuh1wHyHbfig
-         0f2ZAuA3SQBipqX9VkduRo68PlqEvO+/6WoW0Csax0Wrjqlgltm7lz3DZFHLBTI2lCu2
-         WSLFaWYSfLXXJtYks6Ir+jDzDA3SQP8Pi4ORaumltbTw/6EY/gig5S+F11t4Q3YFEjzg
-         HyUQ==
+        d=gmail.com; s=20260707; t=1794001412; x=1794606212; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ULFZ+Lz5JFNxqhOdlYorxY6TtGyrAFixmkP/y0AuJlI=;
+        b=iGrY5ycN0BualMftXCT/JlkQ3Y+E1QacH7fowGjADHRbF7guYSi+S7CvtTVrhQxCMI
+         E16U1pmmaz5yzonEqVxUJ6I28G3vPuDXsGKlD1hkBirfUTWxT246HPDevqLd6HtwF+Bl
+         YYmUZtb2636+/EziBwCQwqBr5Cds5v0b/msQBKoH5OEG9QCuc7Hiw6dJKD4UaryU48Ld
+         595N+dJiJq8qo75u5GfEJVyDdM5cb4+HXIvru9TuT5AdblD1Nr3DtAMkgMDX0kkr802y
+         8NMh57kJ8fBv/AXOWVJA3r2pPfZeLJmCZt92QT5VCjcSuvOwUvim1FijrRMJ0n+j4YuT
+         udLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793999450; x=1794604250;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IzadzAnaJyn7LGsFypixbPwBvLAaokgc3WejqRL4bjM=;
-        b=TBRxYT2ek+CO4Z/xTPY7PWJqwUFo+onmmpu3ceGzL47fr+vUBsOKvrbBxf1p5QW/X8
-         6J1zM/dTct/rkEb82fTTLy4+vYKtZ7zTlpiEubRmSdVPiTyyWZxXheiakHR1dT8kOSAv
-         PRCUZJXNvoq1nbHlVOgvZVg80RxR6PcLDK+Xg3Ny6GOZ+ZxZSi488qX1z3ZXIy63meYD
-         K0Fv4COmyZpr7Dki6ikG+n/SYyR+MBx3Uhjjs8rwsHrI1BVJ679D74X7aEOUUGq+nnZ3
-         hJMegQ7QOrh2Gq3ZALThZzdwhqgmg9yZDN9vOxcpH/9ynfyiuiQoaGKGklYo0BQfqYzr
-         IV7A==
-X-Gm-Message-State: APuU4Z8xYT83NnUGPUozsZnmiyX57SlkpNhDsJoVxHmuDUMLYbgB31hP
-	9m3/i+9PuewKR8STnWHxylcrXTlmRyx9tVMeqRv4L+oJKLm4LAiL+QC7imR6g11AwKh49cjF
-X-Gm-Gg: AYBFou3jLj7S9QU+6YbDSuUe9GVAlQacWaQEuv5qQ1Hee+7zowDEIJldt2k37nHi7YA
-	o2ayrt9MjlrfS61MB31/uqDuecepUV6QLFKSgU87taaQN1G7CSUDIe3XDvNMnBBuTPCCtiR8wtv
-	C9xBClKNsS63wcQCziep81IhNgPL7v+iYttymMnIQIEs32D0r6T3KS3jqPKr1iyZNC/r/6zvbfR
-	NkhwhXRbVI+efUZCwnj1Y/s/+ZRMW8JUrn3KU6EWkaEPXN/PmExaT6zY7khGbaroZ8D/i3G8m6b
-	7H2E0JybKEhpyplUWXgqVNq6YYO3474eAhEanraugMNpyc+4ykcz8QiGBJVer043lUHxqfjxnxe
-	0hI4TSkkvknW1VBz/UP2OEhuObgP4mO1Ic0shwEevpSkX3MjLvSVLs28f0zE4TZ9PjBt9qfZzc6
-	VoAVi4U63EkdCo+NmwJHUWc3+wS5+Wq2ZpZZ4f4aR/Iz6WhmL2eMLGFMub/pTu7AIWRnAxgSABG
-	DG68G3f12gGA0HUHWqlbuphdVLrCDvoarWkAdVn/3Te8s9tl36KEtwTd6jcsaO52yMEZmy+QeS+
-	x5s6bYtKsf5PE/XHdTNEuosvnQHTCObzEpKccYPTNamx8bhx/ZDtCt3kuoPqUVmjYlfgYR2Fizb
-	jQ47pzUdi37x9nrtvScBjVu1XtiAeUpdOgxEj1YbiGCBDHbb/
-X-Received: by 2002:a05:600c:529a:b0:4a1:d675:b031 with SMTP id 5b1f17b1804b1-4b6ddee3235mr59210145e9.6.1793999449891;
-        Fri, 06 Nov 2026 13:10:49 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794001412; x=1794606212;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ULFZ+Lz5JFNxqhOdlYorxY6TtGyrAFixmkP/y0AuJlI=;
+        b=tknFThboh4pBytz5BBOZ4bFR8FCfZ6g7Xjiy9YHHmDeVjMuLSwzlFdGH19a+CeOk8d
+         iTKL+0zxkS+W3aDxRdursmdkfCYAScfxgiTiwdI/cswnFVpHfr+a/q2zhafNQjx1E7o2
+         8R720FS04rfs4RX4FFyujeOUBfm1TYomIRrl6H53hCDt3r19RCXW05leKYDUiWwp56pm
+         kMxDl5P4kVLLc3w+bK18S9na7By0doeY8IpCMZQ+Dy++fXQe733a0IorcpTzF7ZOPF88
+         71uLn+x/JRTfebvvnbMdC+cGDNiSOw7vk/+VfPIg1IFsRdgWNJYEUzjqCxmRWENO1mV5
+         eWCA==
+X-Gm-Message-State: APuU4Z9Fz6qbbXYl83atNe5fFE/CdfsZNRYWrwHzfU6IQq37SsT97HkZ
+	L6xz5zRdECUreeMwRLK9CKq/1T0IOIFHZ5NC4MhOR+uUProJac96ZIIEzI9jmoP80Or9dARQ
+X-Gm-Gg: AYBFou2So9PM1/CnWw5wUFjSYsNYTj4ywNpVE9l51wsjdFpd/Flylkyzl7GVJC7rMhF
+	AMvhW2EMAGyBV4YnBg0pNxXlmcDgRAfQDT58Rd3bg+qF/1GuqHKX0XgvV+zla6l5ZJ24X/XvMnl
+	5Qnq15GHr69eKMCFNXdMFO47KeegZ7GAPVvPTca0fF6XpzFmWBQ2eVi5QF0gTZ7NcpNEB9sScyp
+	aLvBURz0DtyG4KHz4C4hQUGu9YRK5/0xXLhoRM3efRvWNzUArMjnARkXnhdpwhgGOlsrMitqtIh
+	Ov0MmgXRY/Q5KLcow4tWGpW5eoPtAwRIRuuPNm36vq208rfLoDbYXKH5ENOydqo4tVBdHrBAK1U
+	mkEAM3OuUcxe2RDLShm4885AOAiDPBrvmOWmK9EZKegWLjZpOXtT8iP+IRFBO8CBzOc/Rxul7gq
+	OsnqobD9Ip++r4OYTYc8DzJGAqcrddph0QbHGTwi6mQsC0/5yYjbt+GUhzPA2ifeGxYAzN0TZUW
+	9U1cZvKF0ZFYNN8IFl+9WpwwImdxE50HDm7XWbn+gk6vn56s6hNmoXjozwDrwkixxu7PzGk38Ke
+	0cCAh7EsL1tXkTQx15Rl9voldAtnnk9/OLWWdABatTbGJ+YE1ATNgS6V08YIUYA1lnn2kiK8H7b
+	vve2kpL7X20Bp2wBQDON0coEoa4GGJDPeMcHv7QbmDNcqtPF1
+X-Received: by 2002:a05:6000:2c0e:b0:491:e477:6820 with SMTP id ffacd0b85a97d-49421bdacebmr415904f8f.20.1794001411624;
+        Fri, 06 Nov 2026 13:43:31 -0800 (PST)
 Received: from DESKTOP-KHFMJSR ([194.9.62.193])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b7e3283b50sm8049295e9.10.2026.11.06.13.10.48
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-492d7cc6187sm5799505f8f.46.2026.11.06.13.43.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 13:10:49 -0800 (PST)
+        Fri, 06 Nov 2026 13:43:31 -0800 (PST)
 From: clicedvly768 <harepro29@gmail.com>
 To: ojeda@kernel.org,
 	dmitry.torokhov@gmail.com
 Cc: rust-for-linux@vger.kernel.org,
 	linux-input@vger.kernel.org,
 	clicedvly768 <harepro29@gmail.com>
-Subject: [PATCH v3 2/2] rust: serio: add serio bus abstractions and port Gravis Stinger driver
-Date: Sat,  7 Nov 2026 02:10:34 +0500
-Message-ID: <20261106211034.401918-3-harepro29@gmail.com>
+Subject: [PATCH v4 0/2] rust: input: add input/serio abstractions and port Gravis Stinger driver
+Date: Sat,  7 Nov 2026 02:43:20 +0500
+Message-ID: <20261106214322.421869-1-harepro29@gmail.com>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261106211034.401918-1-harepro29@gmail.com>
-References: <20261106211034.401918-1-harepro29@gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -101,658 +97,72 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add safe Rust abstractions for the serio (Serial I/O) bus subsystem and
-port the legacy Gravis Stinger serial gamepad driver to safe Rust.
+This patch series introduces safe Rust abstractions for Linux input
+devices (struct input_dev) and the serio (Serial I/O) bus subsystem,
+along with a port of the legacy Gravis Stinger serial gamepad driver
+to safe Rust.
 
-This introduces:
-- `DeviceId`: a transparent wrapper around `struct serio_device_id`
-  implementing `RawDeviceId` for type-safe matching tables.
-- `IdTable` and `serio_device_table!` macro: guarantees a zero sentinel
-  termination entry at compile time and creates modpost device aliases.
-- `Device`: a serio port device instance implementing `AsBusDevice`,
-  `impl_device_context_deref!`, and `as_device()` for integration
-  with kernel device abstractions.
-- Port lifecycle & interrupt race protection: `T::init` initializes
-  driver state and registers driver data BEFORE `serio_open()` opens the
-  hardware port, guaranteeing that incoming interrupts never encounter
-  uninitialized state or NULL drvdata. Devices are published in `T::start`.
-- `IrqReturn` mapping: properly maps `kernel::irq::IrqReturn` variants
-  to C `irqreturn_t` enum values.
-- `Driver` trait: safe interface for serio drivers (`init`, `start`,
-  `interrupt`, `disconnect`).
-- `Registration<T>`: safe RAII registration adapter that stores
-  `Opaque<bindings::serio_driver>` inside `Pin<KBox<...>>` and calls
-  `__serio_register_driver` with the caller's `&'static ThisModule`
-  to correctly track module ownership.
-- `stinger_rust`: port of the Gravis Stinger serial gamepad driver in
-  safe Rust (`drivers/input/joystick/stinger_rust.rs`), containing zero
-  unsafe blocks, preserving the userspace device name ("Gravis Stinger")
-  for udev/EVIOCGNAME, dynamically formatting phys paths ("%s/input0"),
-  and compiling as the standard `stinger.ko` module name.
-- Non-regression Kconfig: adds `CONFIG_JOYSTICK_STINGER_RUST` guarded on
-  `RUST && SERIO=y && INPUT=y` while retaining the original C driver
-  (`stinger.c`) to maintain hardware support on non-Rust configurations
-  and architectures without HAVE_RUST.
-- Gated module entry `#[cfg(CONFIG_SERIO = "y")]` and helper guards
-  `#if IS_REACHABLE(CONFIG_SERIO)` to avoid undefined symbols when serio
-  is disabled or modular.
+Changes in v4:
+  - Makefile: restored analog.o and db9.o in joystick Makefile
+    that were inadvertently removed during previous revisions.
+  - serio: eliminated concurrent borrow_mut() and aliasing data races
+    between connect_callback() and interrupt_callback() by initializing
+    and registering the input device prior to serio_open(), removing
+    the problematic start() hook.
+  - serio: mapped interrupt return codes via bindings::irqreturn_t(..)
+    without referencing missing bindings constants.
+  - serio & stinger: formatted all module imports in strict vertical
+    style with trailing // comments.
+  - serio: annotated Registration::drop() and Driver::disconnect() with
+    #[inline].
 
-Signed-off-by: clicedvly768 <harepro29@gmail.com>
----
+Changes in v3:
+  - input: added AllocatedDevice::set_phys_from_parent() to dynamically
+    format the physical device path ("%s/input0") in an owned kernel
+    heap buffer.
+  - input: managed parent device reference counts in set_parent(), drop(),
+    and register() using get_device()/put_device() to avoid dangling
+    pointers and reference leaks.
+  - input: eliminated manual cleanup duplication in register() by checking
+    to_result() before mem::forget(self).
+  - input: implemented Send and Sync for AllocatedDevice, added #[inline]
+    on small methods, and formatted imports vertically.
+  - serio: integrated serio::Device with kernel device abstractions via
+    AsBusDevice, impl_device_context_deref!, and as_device().
+  - stinger: restored userspace-visible device name ("Gravis Stinger")
+    and dynamic phys path, preserving udev and EVIOCGNAME compatibility.
+  - stinger: maintained module name "stinger.ko" using Kbuild object
+    aliasing under CONFIG_JOYSTICK_STINGER_RUST.
+
+Changes in v2:
+  - Combined serio subsystem abstractions and Gravis Stinger driver
+    port into a single patch (2/2).
+  - Retained original C driver (stinger.c) under CONFIG_JOYSTICK_STINGER
+    and introduced CONFIG_JOYSTICK_STINGER_RUST to avoid regressions on
+    architectures and configurations without Rust support.
+  - Ensured IS_REACHABLE() guards for C helpers and #[cfg(CONFIG_* = "y")]
+    for rust/kernel modules to prevent unresolved symbols.
+
+clicedvly768 (2):
+  rust: input: add input device abstractions
+  rust: serio: add serio bus abstractions and port Gravis Stinger driver
+
  drivers/input/joystick/Kconfig         |  14 ++
- drivers/input/joystick/Makefile        |   5 +-
- drivers/input/joystick/stinger_rust.rs | 179 +++++++++++++++
- rust/bindings/bindings_helper.h        |   1 +
- rust/helpers/helpers.c                 |   1 +
+ drivers/input/joystick/Makefile        |   3 +
+ drivers/input/joystick/stinger_rust.rs | 184 +++++++++++++++
+ rust/bindings/bindings_helper.h        |   2 +
+ rust/helpers/helpers.c                 |   2 +
+ rust/helpers/input.c                   |  22 ++
  rust/helpers/serio.c                   |  17 ++
- rust/kernel/lib.rs                     |   2 +
- rust/kernel/serio.rs                   | 301 +++++++++++++++++++++++++
- 8 files changed, 518 insertions(+), 2 deletions(-)
+ rust/kernel/input.rs                   | 253 ++++++++++++++++++++
+ rust/kernel/lib.rs                     |   4 +
+ rust/kernel/serio.rs                   | 306 +++++++++++++++++++++++++
+ 10 files changed, 807 insertions(+)
  create mode 100644 drivers/input/joystick/stinger_rust.rs
+ create mode 100644 rust/helpers/input.c
  create mode 100644 rust/helpers/serio.c
+ create mode 100644 rust/kernel/input.rs
  create mode 100644 rust/kernel/serio.rs
 
-diff --git a/drivers/input/joystick/Kconfig b/drivers/input/joystick/Kconfig
-index 7755e5b454d2..89cc1dd9d865 100644
---- a/drivers/input/joystick/Kconfig
-+++ b/drivers/input/joystick/Kconfig
-@@ -197,6 +197,20 @@ config JOYSTICK_STINGER
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called stinger.
- 
-+config JOYSTICK_STINGER_RUST
-+	bool "Safe Rust implementation of Gravis Stinger gamepad driver"
-+	depends on JOYSTICK_STINGER
-+	depends on RUST && SERIO = y && INPUT = y
-+	default y
-+	help
-+	  Say Y here to use the safe Rust rewrite of the Gravis Stinger
-+	  gamepad driver instead of the legacy C implementation.
-+
-+	  The Rust driver provides memory safety guarantees while preserving
-+	  full hardware protocol compatibility.
-+
-+	  If unsure, say Y.
-+
- config JOYSTICK_TWIDJOY
- 	tristate "Twiddler as a joystick"
- 	select SERIO
-diff --git a/drivers/input/joystick/Makefile b/drivers/input/joystick/Makefile
-index 9976f596a920..31e23236ff91 100644
---- a/drivers/input/joystick/Makefile
-+++ b/drivers/input/joystick/Makefile
-@@ -10,9 +10,7 @@ obj-$(CONFIG_JOYSTICK_ADC)		+= adc-joystick.o
- obj-$(CONFIG_JOYSTICK_ADI)		+= adi.o
- obj-$(CONFIG_JOYSTICK_AMIGA)		+= amijoy.o
- obj-$(CONFIG_JOYSTICK_AS5011)		+= as5011.o
--obj-$(CONFIG_JOYSTICK_ANALOG)		+= analog.o
- obj-$(CONFIG_JOYSTICK_COBRA)		+= cobra.o
--obj-$(CONFIG_JOYSTICK_DB9)		+= db9.o
- obj-$(CONFIG_JOYSTICK_FSIA6B)		+= fsia6b.o
- obj-$(CONFIG_JOYSTICK_GAMECON)		+= gamecon.o
- obj-$(CONFIG_JOYSTICK_GF2K)		+= gf2k.o
-@@ -33,6 +31,9 @@ obj-$(CONFIG_JOYSTICK_SENSEHAT)	+= sensehat-joystick.o
- obj-$(CONFIG_JOYSTICK_SIDEWINDER)	+= sidewinder.o
- obj-$(CONFIG_JOYSTICK_SPACEBALL)	+= spaceball.o
- obj-$(CONFIG_JOYSTICK_SPACEORB)		+= spaceorb.o
-+ifdef CONFIG_JOYSTICK_STINGER_RUST
-+stinger-objs				:= stinger_rust.o
-+endif
- obj-$(CONFIG_JOYSTICK_STINGER)		+= stinger.o
- obj-$(CONFIG_JOYSTICK_TMDC)		+= tmdc.o
- obj-$(CONFIG_JOYSTICK_TURBOGRAFX)	+= turbografx.o
-diff --git a/drivers/input/joystick/stinger_rust.rs b/drivers/input/joystick/stinger_rust.rs
-new file mode 100644
-index 000000000000..4771375aed1f
---- /dev/null
-+++ b/drivers/input/joystick/stinger_rust.rs
-@@ -0,0 +1,179 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+//! Gravis Stinger gamepad driver written in safe Rust.
-+//!
-+//! Rust port of legacy C driver `drivers/input/joystick/stinger.c`.
-+//!
-+//! Authors:
-+//! - Original C driver: Vojtech Pavlik <vojtech@ucw.cz>, Mark Fletcher
-+//! - Rust port: Rust for Linux Contributors
-+
-+use kernel::{
-+    bindings, device,
-+    input::{bus, event_type, AllocatedDevice, RegisteredDevice},
-+    prelude::*,
-+    serio,
-+    types::ForeignOwnable,
-+};
-+
-+const DRIVER_NAME: &CStr = c"stinger";
-+const DRIVER_DESC: &CStr = c"Gravis Stinger";
-+const DRIVER_SERIO_DESC: &CStr = c"Gravis Stinger gamepad driver";
-+
-+const STINGER_MAX_LENGTH: usize = 8;
-+
-+kernel::serio_device_table!(
-+    STINGER_IDS,
-+    [serio::DeviceId::new(
-+        bindings::SERIO_RS232 as u8,
-+        bindings::SERIO_ANY as u8,
-+        bindings::SERIO_ANY as u8,
-+        bindings::SERIO_STINGER as u8,
-+    )]
-+);
-+
-+/// Per-device state for an attached Gravis Stinger gamepad.
-+struct Stinger {
-+    alloc: Option<AllocatedDevice>,
-+    input: Option<RegisteredDevice>,
-+    idx: usize,
-+    data: [u8; STINGER_MAX_LENGTH],
-+}
-+
-+impl Stinger {
-+    /// Decodes incoming 4-byte packets from the Gravis Stinger and reports input events.
-+    fn process_packet(&self) {
-+        let Some(input) = self.input.as_ref() else {
-+            return;
-+        };
-+
-+        if self.idx == 0 {
-+            return;
-+        }
-+
-+        let d0 = i32::from(self.data[0]);
-+        let d1 = i32::from(self.data[1]);
-+        let d2 = i32::from(self.data[2]);
-+        let d3 = i32::from(self.data[3]);
-+
-+        // Report button states (active high bits in packet)
-+        input.report_key(bindings::BTN_A, ((d0 & 0x20) >> 5) != 0);
-+        input.report_key(bindings::BTN_B, ((d0 & 0x10) >> 4) != 0);
-+        input.report_key(bindings::BTN_C, ((d0 & 0x08) >> 3) != 0);
-+        input.report_key(bindings::BTN_X, ((d0 & 0x04) >> 2) != 0);
-+        input.report_key(bindings::BTN_Y, ((d3 & 0x20) >> 5) != 0);
-+        input.report_key(bindings::BTN_Z, ((d3 & 0x10) >> 4) != 0);
-+        input.report_key(bindings::BTN_TL, ((d3 & 0x08) >> 3) != 0);
-+        input.report_key(bindings::BTN_TR, ((d3 & 0x04) >> 2) != 0);
-+        input.report_key(bindings::BTN_SELECT, ((d3 & 0x02) >> 1) != 0);
-+        input.report_key(bindings::BTN_START, (d3 & 0x01) != 0);
-+
-+        // Report 2-axis position: coordinates in range -64..64
-+        input.report_abs(bindings::ABS_X, (d1 & 0x3f) - ((d0 & 0x01) << 6));
-+        input.report_abs(bindings::ABS_Y, ((d0 & 0x02) << 5) - (d2 & 0x3f));
-+
-+        input.sync();
-+    }
-+}
-+
-+/// The safe serio driver implementation.
-+struct StingerDriver;
-+
-+impl serio::Driver for StingerDriver {
-+    type Data = KBox<Stinger>;
-+
-+    const ID_TABLE: serio::IdTable = &STINGER_IDS;
-+
-+    fn init(dev: &serio::Device<device::Bound>) -> Result<Self::Data> {
-+        let mut input_alloc = AllocatedDevice::new()?;
-+
-+        input_alloc.set_name(DRIVER_DESC);
-+        input_alloc.set_id(bus::RS232, bindings::SERIO_STINGER as u16, 0x0001, 0x0100);
-+        input_alloc.set_parent(dev.as_device());
-+        input_alloc.set_phys_from_parent(dev.phys())?;
-+
-+        // Configure supported buttons
-+        for btn in [
-+            bindings::BTN_A,
-+            bindings::BTN_B,
-+            bindings::BTN_C,
-+            bindings::BTN_X,
-+            bindings::BTN_Y,
-+            bindings::BTN_Z,
-+            bindings::BTN_TL,
-+            bindings::BTN_TR,
-+            bindings::BTN_START,
-+            bindings::BTN_SELECT,
-+        ] {
-+            input_alloc.set_capability(event_type::KEY, btn);
-+        }
-+
-+        // Configure 2-axis joystick with flat margin of 4
-+        input_alloc.set_capability(event_type::ABS, bindings::ABS_X);
-+        input_alloc.set_capability(event_type::ABS, bindings::ABS_Y);
-+        input_alloc.set_abs_params(bindings::ABS_X, -64, 64, 0, 4)?;
-+        input_alloc.set_abs_params(bindings::ABS_Y, -64, 64, 0, 4)?;
-+
-+        let stinger = KBox::new(
-+            Stinger {
-+                alloc: Some(input_alloc),
-+                input: None,
-+                idx: 0,
-+                data: [0; STINGER_MAX_LENGTH],
-+            },
-+            GFP_KERNEL,
-+        )?;
-+
-+        Ok(stinger)
-+    }
-+
-+    fn start(stinger: &mut <Self::Data as ForeignOwnable>::BorrowedMut<'_>) -> Result {
-+        if let Some(alloc) = stinger.alloc.take() {
-+            stinger.input = Some(alloc.register()?);
-+        }
-+        Ok(())
-+    }
-+
-+    fn interrupt(
-+        stinger: &mut <Self::Data as ForeignOwnable>::BorrowedMut<'_>,
-+        data: u8,
-+        _flags: u32,
-+    ) -> serio::IrqReturn {
-+        if stinger.idx < STINGER_MAX_LENGTH {
-+            stinger.data[stinger.idx] = data;
-+            stinger.idx += 1;
-+        }
-+
-+        if stinger.idx == 4 {
-+            stinger.process_packet();
-+            stinger.idx = 0;
-+        }
-+
-+        serio::IrqReturn::Handled
-+    }
-+
-+    fn disconnect(_data: Self::Data) {
-+        // Automatically drops `stinger`, unregistering and freeing the input device.
-+    }
-+}
-+
-+module! {
-+    type: StingerModule,
-+    name: "stinger",
-+    authors: ["Rust for Linux Contributors"],
-+    description: "Gravis Stinger gamepad driver in safe Rust",
-+    license: "GPL",
-+}
-+
-+struct StingerModule {
-+    _reg: serio::Registration<StingerDriver>,
-+}
-+
-+impl kernel::Module for StingerModule {
-+    fn init(module: &'static ThisModule) -> Result<Self> {
-+        let reg =
-+            serio::Registration::<StingerDriver>::new(DRIVER_NAME, DRIVER_SERIO_DESC, module)?;
-+        pr_info!("Gravis Stinger safe Rust driver initialized\n");
-+        Ok(Self { _reg: reg })
-+    }
-+}
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 4b09d3980e10..0e44af5d770c 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -89,6 +89,7 @@
- #include <linux/sched.h>
- #include <linux/security.h>
- #include <linux/serdev.h>
-+#include <linux/serio.h>
- #include <linux/slab.h>
- #include <linux/sys_soc.h>
- #include <linux/task_work.h>
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 77cec85ad153..61cf3f77e85a 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -96,6 +96,7 @@
- #include "scatterlist.c"
- #include "security.c"
- #include "serdev.c"
-+#include "serio.c"
- #include "signal.c"
- #include "slab.c"
- #include "spinlock.c"
-diff --git a/rust/helpers/serio.c b/rust/helpers/serio.c
-new file mode 100644
-index 000000000000..849d0d48ac62
---- /dev/null
-+++ b/rust/helpers/serio.c
-@@ -0,0 +1,17 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/serio.h>
-+
-+#if IS_REACHABLE(CONFIG_SERIO)
-+
-+__rust_helper void *rust_helper_serio_get_drvdata(struct serio *serio)
-+{
-+	return serio_get_drvdata(serio);
-+}
-+
-+__rust_helper void rust_helper_serio_set_drvdata(struct serio *serio, void *data)
-+{
-+	serio_set_drvdata(serio, data);
-+}
-+
-+#endif /* IS_REACHABLE(CONFIG_SERIO) */
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index ff5c978758d0..711b7ef06b57 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -134,6 +134,8 @@
- pub mod seq_file;
- #[cfg(CONFIG_RUST_SERIAL_DEV_BUS_ABSTRACTIONS)]
- pub mod serdev;
-+#[cfg(CONFIG_SERIO = "y")]
-+pub mod serio;
- pub mod sizes;
- #[cfg(CONFIG_SOC_BUS)]
- pub mod soc;
-diff --git a/rust/kernel/serio.rs b/rust/kernel/serio.rs
-new file mode 100644
-index 000000000000..bd3fae462bb5
---- /dev/null
-+++ b/rust/kernel/serio.rs
-@@ -0,0 +1,301 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Serio (Serial I/O) bus abstractions for safe Rust drivers.
-+//!
-+//! Provides a safe Rust interface for serio devices and drivers in the Linux kernel,
-+//! supporting input devices such as serial gamepads (e.g. Gravis Stinger), mice, and keyboards.
-+
-+use crate::{
-+    bindings, device,
-+    device_id::{IdTable as GenericIdTable, RawDeviceId},
-+    error::{to_result, Result},
-+    ffi::{c_int, c_uchar, c_uint},
-+    prelude::*,
-+    types::{ForeignOwnable, Opaque},
-+    ThisModule,
-+};
-+use core::{marker::PhantomData, pin::Pin};
-+
-+pub use crate::irq::IrqReturn;
-+
-+/// Identifies supported serio hardware devices for auto-probing and matching.
-+#[repr(transparent)]
-+#[derive(Copy, Clone)]
-+pub struct DeviceId(bindings::serio_device_id);
-+
-+impl DeviceId {
-+    /// Creates a new serio device identifier.
-+    #[inline]
-+    pub const fn new(type_: u8, extra: u8, id: u8, proto: u8) -> Self {
-+        Self(bindings::serio_device_id {
-+            type_,
-+            extra,
-+            id,
-+            proto,
-+        })
-+    }
-+}
-+
-+// SAFETY: `DeviceId` is a `#[repr(transparent)]` wrapper around `bindings::serio_device_id`.
-+unsafe impl RawDeviceId for DeviceId {
-+    type RawType = bindings::serio_device_id;
-+}
-+
-+/// Type alias for serio device ID tables.
-+pub type IdTable = &'static dyn GenericIdTable<DeviceId, ()>;
-+
-+/// Creates a serio device table with a zero sentinel for module autoloading and matching.
-+#[macro_export]
-+macro_rules! serio_device_table {
-+    ($table_name:ident, [$($id:expr),* $(,)?]) => {
-+        $crate::module_device_table!(
-+            "serio",
-+            $crate::serio::DeviceId,
-+            $table_name,
-+            @none,
-+            [$($id),*]
-+        );
-+    };
-+}
-+
-+/// A serio port device instance passed to driver callbacks.
-+#[repr(transparent)]
-+pub struct Device<Ctx: device::DeviceContext = device::Normal>(
-+    Opaque<bindings::serio>,
-+    PhantomData<Ctx>,
-+);
-+
-+impl<Ctx: device::DeviceContext> Device<Ctx> {
-+    /// Returns the raw pointer to the underlying `struct serio`.
-+    #[inline]
-+    pub fn as_raw(&self) -> *mut bindings::serio {
-+        self.0.get()
-+    }
-+
-+    /// Reads the physical device path into a buffer.
-+    #[inline]
-+    pub fn phys(&self) -> &[u8; 32] {
-+        // SAFETY: `self.as_raw()` points to a valid `struct serio`.
-+        unsafe { &(*self.as_raw()).phys }
-+    }
-+
-+    /// Returns a reference to the base [`device::Device`].
-+    #[inline]
-+    pub fn as_device(&self) -> &device::Device {
-+        // SAFETY: `self.as_raw()` points to a valid `struct serio`.
-+        unsafe {
-+            let dev = core::ptr::addr_of_mut!((*self.as_raw()).dev);
-+            device::Device::from_raw(dev)
-+        }
-+    }
-+}
-+
-+// SAFETY: `serio::Device` is a transparent wrapper of `struct serio`.
-+// The offset is guaranteed to point to a valid device field inside `serio::Device`.
-+unsafe impl<Ctx: device::DeviceContext> device::AsBusDevice<Ctx> for Device<Ctx> {
-+    const OFFSET: usize = core::mem::offset_of!(bindings::serio, dev);
-+}
-+
-+kernel::impl_device_context_deref!(unsafe { Device });
-+
-+impl<Ctx: device::DeviceContext> AsRef<device::Device<Ctx>> for Device<Ctx> {
-+    #[inline]
-+    fn as_ref(&self) -> &device::Device<Ctx> {
-+        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
-+        // `struct serio`.
-+        let dev = unsafe { core::ptr::addr_of_mut!((*self.as_raw()).dev) };
-+
-+        // SAFETY: `dev` points to a valid `struct device`.
-+        unsafe { device::Device::from_raw(dev) }
-+    }
-+}
-+
-+/// Trait implemented by serio device drivers.
-+pub trait Driver: Send + Sync + Sized {
-+    /// Context data stored per connected device instance.
-+    type Data: ForeignOwnable + Send + Sync;
-+
-+    /// Device ID match table.
-+    const ID_TABLE: IdTable;
-+
-+    /// Initializes driver data before the port is opened.
-+    fn init(dev: &Device<device::Bound>) -> Result<Self::Data>;
-+
-+    /// Called after `serio_open` succeeds. Drivers register input devices here.
-+    fn start(_data: &mut <Self::Data as ForeignOwnable>::BorrowedMut<'_>) -> Result {
-+        Ok(())
-+    }
-+
-+    /// Called in interrupt context when a new byte arrives from the serio port.
-+    fn interrupt(
-+        data: &mut <Self::Data as ForeignOwnable>::BorrowedMut<'_>,
-+        byte: u8,
-+        flags: u32,
-+    ) -> IrqReturn;
-+
-+    /// Called when the device is disconnected.
-+    fn disconnect(_data: Self::Data) {}
-+}
-+
-+/// Driver adapter that bridges the safe Rust [`Driver`] trait to the C serio bus subsystem.
-+pub struct Registration<T: Driver> {
-+    drv: Pin<KBox<Opaque<bindings::serio_driver>>>,
-+    _p: PhantomData<T>,
-+}
-+
-+impl<T: Driver> Registration<T> {
-+    /// Registers a serio driver with the kernel.
-+    pub fn new(
-+        name: &'static CStr,
-+        description: &'static CStr,
-+        module: &'static ThisModule,
-+    ) -> Result<Self> {
-+        let drv = bindings::serio_driver {
-+            description: description.as_char_ptr(),
-+            id_table: T::ID_TABLE.as_ptr(),
-+            manual_bind: false,
-+            write_wakeup: None,
-+            interrupt: Some(Self::interrupt_callback),
-+            connect: Some(Self::connect_callback),
-+            reconnect: None,
-+            fast_reconnect: None,
-+            disconnect: Some(Self::disconnect_callback),
-+            cleanup: None,
-+            driver: bindings::device_driver {
-+                name: name.as_char_ptr(),
-+                ..Default::default()
-+            },
-+        };
-+
-+        let drv_box = KBox::into_pin(KBox::new(Opaque::new(drv), GFP_KERNEL)?);
-+
-+        // SAFETY: `drv_box` is pinned on the kernel heap at a permanent address.
-+        // `module` and `name` are valid static references.
-+        let ret = unsafe {
-+            bindings::__serio_register_driver(drv_box.get(), module.as_ptr(), name.as_char_ptr())
-+        };
-+        to_result(ret)?;
-+
-+        Ok(Self {
-+            drv: drv_box,
-+            _p: PhantomData,
-+        })
-+    }
-+
-+    /// # Safety
-+    ///
-+    /// Must only be invoked by the serio subsystem when a matching port is probed.
-+    /// `serio` and `drv` must be valid non-null pointers provided by the kernel.
-+    unsafe extern "C" fn connect_callback(
-+        serio: *mut bindings::serio,
-+        drv: *mut bindings::serio_driver,
-+    ) -> c_int {
-+        if serio.is_null() {
-+            return crate::error::code::EINVAL.to_errno();
-+        }
-+
-+        // SAFETY: `serio` is valid. `Device<Bound>` is repr(transparent).
-+        let dev = unsafe { &*(serio.cast::<Device<device::Bound>>()) };
-+
-+        // 1. Initialize driver data before port is opened.
-+        let data = match T::init(dev) {
-+            Ok(d) => d,
-+            Err(e) => return e.to_errno(),
-+        };
-+
-+        let raw_data = data.into_foreign();
-+
-+        // 2. Set drvdata BEFORE opening port so interrupts never encounter NULL.
-+        // SAFETY: `serio` is valid; store driver data pointer.
-+        unsafe {
-+            bindings::serio_set_drvdata(serio, raw_data.cast());
-+        }
-+
-+        // 3. Open serio port.
-+        // SAFETY: `serio` and `drv` are valid non-null pointers provided by the kernel.
-+        let ret = unsafe { bindings::serio_open(serio, drv) };
-+        if ret != 0 {
-+            // SAFETY: Clean up drvdata if open failed.
-+            unsafe {
-+                bindings::serio_set_drvdata(serio, core::ptr::null_mut());
-+                let data = <T::Data as ForeignOwnable>::from_foreign(raw_data);
-+                T::disconnect(data);
-+            }
-+            return ret;
-+        }
-+
-+        // 4. Start driver and publish devices now that port is open and interrupts are active.
-+        // SAFETY: `raw_data` was created via `into_foreign()` above and remains valid.
-+        let mut borrowed = unsafe { <T::Data as ForeignOwnable>::borrow_mut(raw_data) };
-+        if let Err(e) = T::start(&mut borrowed) {
-+            // SAFETY: Close port and clean up on start failure.
-+            unsafe {
-+                bindings::serio_close(serio);
-+                bindings::serio_set_drvdata(serio, core::ptr::null_mut());
-+                let data = <T::Data as ForeignOwnable>::from_foreign(raw_data);
-+                T::disconnect(data);
-+            }
-+            return e.to_errno();
-+        }
-+
-+        0
-+    }
-+
-+    /// # Safety
-+    ///
-+    /// Must only be invoked by the serio subsystem during an interrupt on a connected port.
-+    /// `serio` must be a valid pointer.
-+    unsafe extern "C" fn interrupt_callback(
-+        serio: *mut bindings::serio,
-+        data: c_uchar,
-+        flags: c_uint,
-+    ) -> bindings::irqreturn_t {
-+        // SAFETY: `serio` is valid.
-+        let raw = unsafe { bindings::serio_get_drvdata(serio) };
-+        if raw.is_null() {
-+            return bindings::irqreturn::IRQ_NONE;
-+        }
-+
-+        // SAFETY: `raw` was created via `into_foreign()` in `connect_callback`.
-+        let mut borrowed = unsafe { <T::Data as ForeignOwnable>::borrow_mut(raw) };
-+        let ret = T::interrupt(&mut borrowed, data, flags);
-+        match ret {
-+            IrqReturn::None => bindings::irqreturn::IRQ_NONE,
-+            IrqReturn::Handled => bindings::irqreturn::IRQ_HANDLED,
-+        }
-+    }
-+
-+    /// # Safety
-+    ///
-+    /// Must only be invoked by the serio subsystem when disconnecting a port.
-+    /// `serio` must be a valid pointer.
-+    unsafe extern "C" fn disconnect_callback(serio: *mut bindings::serio) {
-+        // SAFETY: `serio` is valid.
-+        let raw = unsafe { bindings::serio_get_drvdata(serio) };
-+        if raw.is_null() {
-+            return;
-+        }
-+
-+        // SAFETY: Close port, clear drvdata, and pass owned data back to disconnect.
-+        unsafe {
-+            bindings::serio_close(serio);
-+            bindings::serio_set_drvdata(serio, core::ptr::null_mut());
-+            let data = <T::Data as ForeignOwnable>::from_foreign(raw);
-+            T::disconnect(data);
-+        }
-+    }
-+}
-+
-+impl<T: Driver> Drop for Registration<T> {
-+    fn drop(&mut self) {
-+        // SAFETY: Unregister driver with kernel. `self.drv` is valid and registered.
-+        unsafe {
-+            bindings::serio_unregister_driver(self.drv.get());
-+        }
-+    }
-+}
-+
-+// SAFETY: `Registration` can be safely sent to another thread.
-+unsafe impl<T: Driver> Send for Registration<T> {}
-+// SAFETY: `Registration` can be safely shared across threads.
-+unsafe impl<T: Driver> Sync for Registration<T> {}
 -- 
 2.56.0
-
