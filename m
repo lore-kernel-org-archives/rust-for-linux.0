@@ -1,100 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.34
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793945680;
-	b=wZAaBRuGnSuxrpd/IHXACUE54zXUhA/a3wJ3xIDj5B+zOHbYHEu7HNTHHb4a7EC2TXRC
-	 Mswgzn8X3V5u6H7mnuaU5MyjaPJSyEh8RfNYanZUCpMgN8ZL98nRwrpE0fH3st0tmZ807
-	 qugV8nvrGMGqiI1PIPwNUzdsCFKayJxhA9KDvYrbWLuOw5oK/UDIRAIi9cnpkvcvj0wKD
-	 CCRUiSwzJtBXeEIZqFO63AoUwxxqvCnDeghKiTsiSA5fONrIrenZ8uhlhi1702izDLU88
-	 hLyOBXXcnOv2Lo0L9VySpY3PE3kARCycHM1iTs+KZEiElEDbM29qOc3lIOQfRRptaEw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793945680;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
-	 From:To:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
-	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:
-	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=3Q1duo3QjofSTerlEHZho2qC2y1WsA0WLpsLxRU0Fuk=;
-	b=tBCv+kk8g/WU0WvIxGxZX7ElOHZdQx3QuQqRTyjD2o/qAP2tyNxYZZfNbbp86z5at/GW
-	 3SOPkU53rQi7HhA7I+kVzwNOhDHl/entrkSF5XZjQgbfX30MP9bzdPsGpjfpFEt63QNaD
-	 aniaAR9eS0UHzznQWtM/XiBfLasdZA2/xOHxJDsyU5lE9aU+FyDRTlRin3FLsYT+Mtknn
-	 +7YNrxbywyC9qcBCtNuMl6/KmYLxBGvc0T7hMMV/2j7wboE00zRIpriKRC7i1/Zk4hCri
-	 J9Mgh/oCVbCBpIIdprArzjsMOBo8I5r0xoAiEA4pZ+fH6otp49YlaHEsqO7/qpyKnPA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b="WN/ohylU";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.34
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013034.outbound.protection.outlook.com [40.93.196.34])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793947097;
+	b=eivGGVucpyoxOU2/CVXW+FI86ccgBu9IYXl+r7YZB5aVafzYuDFAF6QJqsefpmSxdmuL
+	 +ySAq/ZAkRjT8an9oki4X8a5Dt3CYoYY8WYSe5w8nq7Gp5ypuvJbWp+oQN1dHclQrYiZr
+	 ACwwn9S6Ozz5CLMYXnrz6vaiBKVks1zWzeTo4yRT4+kDz8acG5k/Kw/UEVA7VzuMj/tA9
+	 /HZXSFifF2uq4ByaZcAYuXBtoUvqL1A/bYRIwqAU+88dm3mYO+0vNix/tmyoWO9lyGVkz
+	 3OtaURRxbORRVjueao8sTr/bm1nRBYBFiOvf02GuGWqTatM5lla7DYEPolRiSw6a6/Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793947097;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=auDL6BxnNx+HL2/4x68s/FCfB/+B4c4qzcBd9+5zRJw=;
+	b=HyooUFXrAbWqGmDnKOswO3eVRToCLXSwnbs6XzWKMOpB8tQeB/F0rMG23tYL5X/aA2X4
+	 6RMlRqSBwnA7WO4mcUaxhtfFJOPEgXDO8/QL5i51PEWK/JuvwBhK86Rf3QENOyE9VpaCS
+	 S74luet6ZFAAaPrkv8ldBTaZS3wiCViY4tQlCQ1eyFVZ3zyb1e03swzCpdJhSQZ7J0M4g
+	 3MbEyEEQjUdbdwp63qNws+R4AOILdbQa9O2RqHIiXUDWqopNZwoWg55SJu6Q16C96dgy8
+	 C1jx6SoEVb5LhW6a/J79PHZ2IWyTAHjMh39debzZWk/EybR6UOcqv9IWjLWPaJS/n5w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HhPRY6xq;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20B2606A329;
-	Fri,  6 Nov 2026 06:14:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C20B2606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BA2606A326;
+	Fri,  6 Nov 2026 06:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=WN/ohylU
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r+pCYWpzmgl5CNVVSaUKbstl+/GzRB3bfDitLoDq4pq30Y266KDMs3qL1ZyUKRGMWMxZV6TPMpA65NRdLgn5nujuTlo7axNMA7TWL0uGK2Y5G51LwyFpyJoFJXZvEsLU7rW1w2u5xX1gMrMpDVcT/HlPte5bcf8CFuAHF0z0X2chZLFQf/0yeMNgDyZFo7gcshiGlt130Es9zinNtoKPzJeTZHoebfIdK6495uqqWdkSNev/RWRmff9sf30PkD9PyR3qaKvhUNVEMGKZpnuUyW8RIZHVwCq3kgM6LNLv6VehuRU75gkpUyRWy89M3FvO3nstEqy708ZLtRCOeAziZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3Q1duo3QjofSTerlEHZho2qC2y1WsA0WLpsLxRU0Fuk=;
- b=HjP3G6ik7mr2dxAwSDiE2ROlQXCxu7INGXlD94p4RhQOhKGwxNVR++0biZ/sgEMM8AzIlzqMNdp12tv7uHz9udhselDh/LwXpLriRu4DgZBll31OgieCqJPiiAjrwfpZZoMaI0a/xKIy3SDWFUfwMxwYcziJoWtwfYDVuv1VBsE76EpNtYlT62kvzmnMlbNl8o/4Vf1VBQB7Ys/i2BAtg64d5iyJ6CWpQNKLIr7BiSTGVPHAWT8aDlaxLO5CJ/NeoI+FfEZwX9tb7F3xlRHaz+7vcqKv+pChEGBomFBvtTxwJ34F7QBqBxi1CoYSgKxLapxWYGXfSu1WEdIrOkzUxQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3Q1duo3QjofSTerlEHZho2qC2y1WsA0WLpsLxRU0Fuk=;
- b=WN/ohylUsMpBu0kikXloBnUZ13wKnwUwyc6wBVp3ryM/T2pkezVabn1lJDC8ootDE3T6FAuNxmQW6FrpHFVCfg50GYWbcjEQspBaS29de/fGAG/0boZr0R9hKQAz5G0L8wkbcGdByF3UnZJvJ51aY8lHGr3yQan/0XlhDknWY1Ke8AEPAkvE2IWK/lORBdEc99l0ic7mTlXGSqZWjAV89uVxkMLcGJkrzp9eVxzeF6LRReHU4wnCkeX67blWWfX9Kj+ro7WHz58LKDs5bIqYBYsXMOQCKePqYvYXoH1yBadxwPxkOZTxQbTYob0HeCUZA25u27/QstMEyFFMfIJPhw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
- CH3PR12MB8404.namprd12.prod.outlook.com (2603:10b6:610:12d::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Fri, 6 Nov
- 2026 06:14:35 +0000
-Received: from DS0PR12MB6413.namprd12.prod.outlook.com
- ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
- ([fe80::e82a:6673:4142:37fa%5]) with mapi id 15.21.0592.010; Fri, 6 Nov 2026
- 06:14:34 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Nov 2026 15:14:31 +0900
-Message-Id: <DMNWO08EFJD8.D2G9X082FUKN@nvidia.com>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
- <nova-gpu@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 6/7] gpu: nova-core: falcon: allow DMA transfers to read
- from a framebuffer address
-From: "Eliot Courtney" <ecourtney@nvidia.com>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>
-X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
-References: <20261103-r000-fw-v1-0-e3d38fc130e3@nvidia.com>
- <20261103-r000-fw-v1-6-e3d38fc130e3@nvidia.com>
-In-Reply-To: <20261103-r000-fw-v1-6-e3d38fc130e3@nvidia.com>
-X-ClientProxiedBy: TYCP301CA0082.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:7b::20) To DS0PR12MB6413.namprd12.prod.outlook.com
- (2603:10b6:8:ce::10)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HhPRY6xq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9861F00900;
+	Fri,  6 Nov 2026 06:38:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793947097;
+	bh=auDL6BxnNx+HL2/4x68s/FCfB/+B4c4qzcBd9+5zRJw=;
+	h=From:To:Cc:Subject:Date;
+	b=HhPRY6xqX0Gx4r8lq41eZxeI97FVqOtjHqeA+PGxFZwz3WmHc7IxjYYdAemenXIxy
+	 ww6KC+YweQnNskOm6mgOZCH7PKxjLBd4jOgSbuWoqxNopNEbgNqxW3atw2xhnLQegS
+	 KTzPgeaMiTROG8HAb9eC//ochB+2fBJlTTvfehpjs5plSTHyGOiieYXfc4XD7j97Gx
+	 OUfKsTS1NEtfZAki8whCkEYFkJbXS56HjCjbqdbmR5Qp/OTvYJy9X37kgAGNDed/Vx
+	 4P1W25wBkkV9AG3Zdn147nhed2cx6e6xozBAEGUM0i+VQzDMb7cy6T+AiLbjdxFZoJ
+	 AbyTfyA+r1X9g==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Burak Emir <burak.emir@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: stable@vger.kernel.org,
+	Yury Norov <yury.norov@gmail.com>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH 6.18.y] rust: bitmap: fix intra-doc link
+Date: Fri,  6 Nov 2026 07:37:45 +0100
+Message-ID: <20261106063745.87864-1-ojeda@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -104,116 +71,44 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|CH3PR12MB8404:EE_
-X-MS-Office365-Filtering-Correlation-Id: 670c55e5-de5c-4328-1af3-08df3bcd3a78
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|10070799003|1800799024|366016|11063799006|4143699003|56012099006|261022115727099003|261022075727099003|261021121427099003|261009223027099003|261102123227099003|10067099003|18002099003|22082099003|6133799003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	MGl+vdL1vbtpL/ERwyIqvZauDMzkWEHB47DmYMKpf7lGAodtGAFDiQiIGEg6Et7hMi1obZnJFK98YZP8OVDmQxUG2Wzahhrm59h5ZQHr1FGN+ILpxjBUt/SsDh8klD9fkPYsoR+PPiGX30YCSZSZ0pMBDbk67mU3cNhQmKSSs6IrNyoV2/h+9ZhbrsMR2gGtdyufUKJ66nXfePxV2AatRHhJ35CCPi6rnZcqt6Ze+kEUhBcaeO/zgKHdnAatgQN1jdR4fbaW1mXWfLYOo9Vzo8blZai7Q5GRDkS+ra8YoUJCz+GLN6lM2j+1WFyGTwib8zucERlU1mrkOcFX2ERrFnU/1y7pCPdUipNvjasdR/nS19sl1/u/Fp5TaOUe+w0wUD/tfMFI/JNWz6Q2JKsMfubiCkl40Nr3oz8MBWJRLwTuQ4YP5KT6P1yPYRWkyMs0wDTJGCYLHkWYIXMw4dgvl75wGHVRdHnvEyOT6LEtX3v9m2uMQ7nQhvQPDoZNN4nOBDLa1T4JlZrMsVCq2xhVR2E6462RJYYUI3KBzhIMwTx0wodRQNSLYuBsZGc9WdCX8KjT9u1VA8mgSb0RfSX9AsnUY2Q09Oy3wzPRnQofZSMjF6Na2ks4DsFXR4bi5m6mCYdG8cEVdEbR6vYhuYVhRsTh4JSDRhurf/UwS6XjCT0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(10070799003)(1800799024)(366016)(11063799006)(4143699003)(56012099006)(261022115727099003)(261022075727099003)(261021121427099003)(261009223027099003)(261102123227099003)(10067099003)(18002099003)(22082099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZVhwSkE2ZzFlSkhUMHp0TG5mOXJSUXZIbkZtUEtqeFJEQjlpbzNMQUdrallk?=
- =?utf-8?B?YVhyL3pIYXl0ZFVDaUk5VFpzalF4MS9QSXQ2REg1My9aMTlqTDlwaXhBY0RJ?=
- =?utf-8?B?MnN2WFRsazVTa0RpajVqVlBWWWc1NHV0ODF0aW8zWGhjbjcxZkM0dGtVWnZ1?=
- =?utf-8?B?cjZhWWlkUzJ1MENxM2lsa3ZrTG51N2JwRVhCV2ZJclkwalRXZDNlT00rL0hR?=
- =?utf-8?B?WHpGRE9YWXBoaFp2N05XMkQ4clJheDlXY1pvY3ZIWFdWZjBXRWNDc1pXRWp6?=
- =?utf-8?B?YkVPRkpyRE5tNHNTTXNEZmE1ZWl2K0FnMWpjbjRaQzY1TUNFOWovL1dheTBp?=
- =?utf-8?B?T01qTmxoaXVkQW13OWVMSytCd01zQ3hrbVdpS1BKRnBCcjBEdVNwTlRlZmxm?=
- =?utf-8?B?bmd4SCtrSHV4WXpHRzBKa0dNbDFxYmhUdmkrZXZyZEM5RFRyU3FqK3pMSHZy?=
- =?utf-8?B?eTZha0RLSjJCQ25jS0Fhb1l1ZFErTGhVUFhHWWs3NGtvNGhueElwbDBWVDBC?=
- =?utf-8?B?bXp2NHF5L2hKRXUvR3JmbXlvRGlJOGs1QmNMcUlPdEEwYW1jb3gwd2xRRWQz?=
- =?utf-8?B?VWFOZ3UzU3MvUGZpSU9vTmRzKzh2UktWYTR6NXEzdmdEdW1taFVQd3BlL2Nu?=
- =?utf-8?B?M0N5YU5pTXJJM0RkMHJUeTBzaUp3eVBBUTVyV201OUdJSytBcnBOODJqR3ZG?=
- =?utf-8?B?a1pNYnA2T1lDMEpZMElmeTdlVjNKbWRzOEZZdisyeHUyYjNtVFN1SGZqTUlj?=
- =?utf-8?B?KzFJOFlMZGdtNnVKekMvOG8veVNJM2I5N0xIL0NDaFNKOHBJcGZkeWZCYzlH?=
- =?utf-8?B?cnRSRnJTMDRMNmlGZnVGU0g0TUo1d3FEcG5pTklHOStiNXpYd1JoWjVCVFk1?=
- =?utf-8?B?Q1FmaW04ZEU1OHdkNlltQWNpdnVTMEJLZXk1cUNVZDA0VXFvUXRzamlETldG?=
- =?utf-8?B?SW9Odi9xTS83eisvZG9NUlhSV3lnMG5VRXVmdGlibGxncSthb2VPRjZSUDJw?=
- =?utf-8?B?UzNLZU9BUkRhbTdzbUNOMnB5THJTenY1N3dOeG92S1BUYVhnRWs5YTVNaXg3?=
- =?utf-8?B?YTFYVG9yTU1SNjNzNnBxMkQ3RVp5RVJGR3JIUEUvbngzRUNzU1BydExReHdV?=
- =?utf-8?B?ZW5GcndZeGZzTFhGM2lRQmpJcHE2cnRYVnBOTjU3ZDZrNWtBdXoyeGdlbVZH?=
- =?utf-8?B?VWZQMUNUWDR5YnZ3ZmNzUGtuUEZlUmtVenVLV2I4M3pBeEdaYTJFZ21jL29z?=
- =?utf-8?B?MjZBRVVFTGhEQkR5eVQvZ0tqL3JtV0FzYlVmdnB2K0ZXRGVaSWRka004ZlVz?=
- =?utf-8?B?YVJyK2NDT3NxTjVxT0RBV3NDOXZhOUJqM050alQ0MktndlIyZmg1WFFyT3Q1?=
- =?utf-8?B?aklEdVRjR1kzcEFzc0J1QVYva0s3b1E5V1dWUjV1NFZKbk9JUzQ4RVRpUitR?=
- =?utf-8?B?MU1sSjhuT0syQVZMalpDT0JGQ1RGUFRuS1Ria1FsaUU5UG9SNE5pcnA3Si9y?=
- =?utf-8?B?U1JvSFZTRUNtVlYxaFRBdGJUN0RaRzkyYkdzdVFtRm1VVlBaam9GQmp6bDV3?=
- =?utf-8?B?YnNNbytBOU5NVEwwMm1wWTdMVll5VXZoeGh3YTdqd3EyeEQvaU5aWUZ2dXZI?=
- =?utf-8?B?N0tTR29SZndkNEJDY25YSFI2cHB6cU15SHlvVTNSWVQvVjhCVWZhRzBpb2Zw?=
- =?utf-8?B?S2pNbmhVMFZkRm5mMFd0amptVWthcGpSdXFQM3ljSDEyYlpiem5aZElGS1Q1?=
- =?utf-8?B?cE5PNEpXSTBFcFpQa0Iwc0t5Yy9mY0VwVk9EYnlwbDZzaGR6MG5WSVZ0Yk9J?=
- =?utf-8?B?Y2k4cndkNW9MaytXUlpTR1NncXcxb0luSzJoTDFCc2RheWJMODRZajVIRU9r?=
- =?utf-8?B?dXBJUGFpQkczTFBBTW8vQ2NubUt3WGUxakVndlc2MjZvak5TRmhZa0lUZW9D?=
- =?utf-8?B?OUhUMjhYbDk5Z3JwemVic2JWY1hYYWN6aE1KZWJ5WmV1M1d3cEZzQWtacWhm?=
- =?utf-8?B?VENGRm9VcHo1N1gwSzgvRlY1RTlhRTNZSU1GNW9PdnVvYmo1RXNYY2UrK2Rj?=
- =?utf-8?B?N0poTTZkNWdIUyttUEo2dEkrU2pWRGxVTXBOb1NMS3dEMC9TY0FGZkNUaTNv?=
- =?utf-8?B?SjZWajZUaWV3Z3U1VmFKL21vMGZzOE9YbFZhVkNCaEdicDRkSHJIOHBPQ0pi?=
- =?utf-8?B?c2NSOVJsM09KNlBBaTArR1lDcnFWRTVjS1dOWjc1cS9zQklzTUZmZmdHUzg0?=
- =?utf-8?B?SWhvTVZNSFJySnJ4QkRtbWlXZ0VORHU4RE5KbUoyYlZrd21DUEJpTjRCSWFM?=
- =?utf-8?B?b3BRNnRhMDYvZlVtM1ZtWXhXUDBNUlpoS25PMFlpQ0R3NU1uanhTSTJRbVVs?=
- =?utf-8?Q?SmRqprjiZk2oidH1pp9R/YOMncrsen2UdDbi84J5wFT1x?=
-X-MS-Exchange-AntiSpam-MessageData-1: vsqRurWzS53OPQ==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 670c55e5-de5c-4328-1af3-08df3bcd3a78
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 06:14:34.7951
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: scQ75px1EOvGXveWE+Y52fecd4ZBPolJLvjMAMQO014drLnMm2SXwt/dydyqUJhAx6hLA5Mlu7T32LzKY9Ib3w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8404
+Content-Transfer-Encoding: 8bit
 
-On Tue Nov 3, 2026 at 7:22 PM JST, Alexandre Courbot wrote:
-> The r000 boot protocol has a load-and-execute event in which GSP-RM asks
-> the driver to load a Heavy-Secured binary from framebuffer memory into
-> the GSP falcon's memory by DMA in order to run it.
->
-> Nova-core's falcon DMA loading method currently only supports loading
-> from a DMA object that the driver had allocated, so there is no way to
-> copy an image from framebuffer memory that an event supplied.
->
-> Address this by making the source of a falcon DMA transfer an enum,
-> which can be either a DMA object, or a GPU framebuffer address.
->
-> The framebuffer address source has no user yet, but will be used by the
-> r000 boot protocol.
->
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
+`BitmapVec::MAX_LEN` does not exist in 6.18.y, so `rustdoc` warns:
 
-[...]
+    warning: unresolved link to `BitmapVec::MAX_LEN`
+      --> rust/kernel/bitmap.rs:24:25
+       |
+    24 | /// This also matches [`BitmapVec::MAX_LEN`].
+       |                         ^^^^^^^^^^^^^^^^^^ the struct `BitmapVec` has no field or associated item named `MAX_LEN`
+       |
+       = note: `#[warn(rustdoc::broken_intra_doc_links)]` on by default
 
-> @@ -626,9 +649,13 @@ fn dma_load<F: FalconFirmware<Target =3D E> + Falcon=
-DmaLoadable>(&self, fw: &F) ->
->                      .with_mem_type(FalconFbifMemType::Physical)
->              });
-> =20
+Thus link to `BitmapVec::new()` instead.
 
-Suggest moving the NV_PFALCON_FBIF_TRANSCFG write into dma_wr because
-once we make the source configurable (i.e. allowing vram as a source)
-it's now possible to call dma_wr with a bogus NV_PFALCON_FBIF_TRANSCFG
-setup with the wrong FalconFbifTarget (but that's determinable from
-`FalconDmaSource`).
+Fixes: 37f45fe068e0 ("rust: bitmap: restrict bitmap length to at most i32::MAX")
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+Another option (cleaner but a bigger change) is to cherry-pick:
 
-> -        self.dma_wr(&dma_obj, FalconMem::ImemSecure, fw.imem_sec_load_pa=
-rams())?;
->          self.dma_wr(
-> -            &dma_obj,
-> +            FalconDmaSource::Sysmem(&dma_obj),
-> +            FalconMem::ImemSecure,
-> +            fw.imem_sec_load_params(),
-> +        )?;
-> +        self.dma_wr(
-> +            FalconDmaSource::Sysmem(&dma_obj),
->              FalconMem::Dmem { tag: false },
->              fw.dmem_load_params(),
->          )?;
+  f5535d78e126 ("rust: bitmap: add MAX_LEN and MAX_INLINE_LEN constants")
 
+ rust/kernel/bitmap.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
+index c2634561b023..badc3eb5282b 100644
+--- a/rust/kernel/bitmap.rs
++++ b/rust/kernel/bitmap.rs
+@@ -21,7 +21,7 @@
+ /// Must reference a `[c_ulong]` long enough to fit `data.len()` bits.
+ /// Must not be longer than [`i32::MAX`] bits, so offsets and lengths used with
+ /// [`Bitmap`] functions fit in the `int` and `unsigned int` arguments of the C bitmap API.
+-/// This also matches [`BitmapVec::MAX_LEN`].
++/// This also matches the maximum length accepted by [`BitmapVec::new`].
+ #[cfg_attr(CONFIG_64BIT, repr(align(8)))]
+ #[cfg_attr(not(CONFIG_64BIT), repr(align(4)))]
+ pub struct Bitmap {
+
+base-commit: a7c80de5ffd00886e3e6b7469611536b0d481cda
+--
+2.56.0
