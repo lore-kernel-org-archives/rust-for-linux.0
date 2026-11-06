@@ -1,75 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.72
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793961949;
-	b=MutS0bb83w3uWz59ELpkwSnv8O7Ikr46VrqGSwIcsALSD9F7Hmm8o8wN/RJ59qwJwZZC
-	 yMEX0D6UK1Z8shZLGnBr4q+Te/NUus6ym+9aF0WvUAkNU1m6W3HKdLi5Pm5BeHnihgkJX
-	 VQwniw2/MBiXbdkdg79CUC2EsEllLiOAofUAxpoDhp66Vx9pwt50QG8oDcWVQssAndnbV
-	 EwnxNA9mZXCRq3tVBqBqotB8BP85+Sw8Ha8blJc8OJmz/vh7RD2Xp6q6rQKS1KUByqppu
-	 sf8pQUJ52HV6PlA5guaQ7yDoCeVbs9HGlJXJ1tXzq37HkbYhklaB2bQA9WLZDJJeYhw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793961949;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=rGdvxnA0iFsROgXGKz2Xx6QFRzdA7CWUAIqJ0/cbrs8=;
-	b=YzkTHN+ZwA7iukGPANNa+4JGMMYN+cVEQxikLmek6w0KV//g1eYvxa04TMpeSjy55nZI
-	 m9HV148rXUtfy2t2s6IkW/VBAbktT5uQTQiOgvd/w1SKF2PZGBSogenv2V8q7iEvYXS7e
-	 cs9bc0nBf0LiiGDqHgKXSeRXvgCEv40Oxo+dRdEza2u2bHM6kRouzRCIkblI9zD0zZCNA
-	 uHbRC3e5W/iKZZUS81Sr/pWxk2XxAyuc7xCvu/0BuziA0Lp9CzR3ilanI0s7yObOJYARF
-	 r/GP+MsMeytNdIC7eRU64rZze4GhjAwFws5s7VXahkHxUidPj+vbkosOemv/B7deW4A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PjaQxyg8;
-	arc=none smtp.remote-ip=209.85.208.72
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.75.128
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793962062;
+	b=19zEpduIEAsq0SalR04MYYvXnanW1VFEjuxXMQ9U1KkKKha21dBRSKkPVlk5S/pGiNr/
+	 I1rg+g98uqe2dPw2c5S8OZqB7QTIdVUJb+4pFNllzutFWvE3IBrF91nUMaQRa0HWZAH8F
+	 +1oOdOeeogI0vt+DLybD7NgTxVrZuIhJnwfa3gm+qFU6HkHat3Y/0ZtjPNgWrUNj5mq6s
+	 JulUfW3Wj9iBc+z3UYxaWKNxP4o4r+IEdQoySiBN+I331ZmD5beBQeEBGsjXnaXH5nemT
+	 LhG/Z4opW9GEkMI6T2VCcmfviqJYe6L2sQyCKMvtp5MpLlrzmJCndG3z1aE2CiUPf4w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793962062;
+	h=DMARC-Filter:Received:Received:X-MS-Exchange-Authentication-Results:
+	 Received-SPF:Received:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:Content-Type:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=pGHjZZb01s//+FHZsg85wITdJCCurRihxWUJSHBj4ag=;
+	b=wFVlllv+lIrgIPAg2AFbtg0NZCGSsa24ErumpmZmeKFP33R1sI3WIP+EuSJ9GYGzyIqB
+	 d+0h77Yrv2vkv/L1QDNrdCWh2BLXFucEv/c1vm4Y+DFdzYLYRIUthCTKZK3bKcprmVTYc
+	 DxKeYkfVHKFUqrmkil2iEZqjEVLZx/D0M2FuKh31BL9W2jqwa0+BhbiaKlqLf2Lf66VJZ
+	 49jyU3in76DcklgqQeVxmWDqqvsvU6+q4RlGZiXzgW3h2L3EOUYxUO7bkte/oFcnfgKKg
+	 IB10eEFPU01q4m7PVZb3eNDgS3GcrKT7dUWxZ9IJq0l1XHsFFceU4netr7qjoAfbmng==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=cixtech.com;
+	spf=pass smtp.mailfrom=cixtech.com;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.75.128
+Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazon11022128.outbound.protection.outlook.com [40.107.75.128])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A774606A32E
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Nov 2026 10:45:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A774606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PjaQxyg8
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6b3f6d9827eso520075a12.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 06 Nov 2026 02:45:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793961947; x=1794566747; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rGdvxnA0iFsROgXGKz2Xx6QFRzdA7CWUAIqJ0/cbrs8=;
-        b=PjaQxyg8hJI56eL6sgdX1VPw8JniIaFdSqGvBImoWdJt1WDpTVxm9y5bTh+IvBnynU
-         VsCFsiSR1S2QmtZNZdLY6RytOurChJJdIzm9wf5qkcS3nQdAwdu3f1i0onDhytvKK3vY
-         Y3s/4sfYxe2fHWAhcnm9EuSDaPwvJjfoas85YWn/pS5qcODIk6WOiwaLnBCcF93ZbqOm
-         1hZkli7HLsS+F0MjeG8b0m26JQcdJKKcCAgX9Ag66C/fO0Lv6fUWIj37jcNlP3z/yncV
-         ts643gPRQRaWTJEf4ObzatVxQO492Ry6pZAziXoGe3aJajkS3tCr7KgK6RfU/9hnBMOu
-         j52w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793961947; x=1794566747;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rGdvxnA0iFsROgXGKz2Xx6QFRzdA7CWUAIqJ0/cbrs8=;
-        b=cTN69kleCpDMyn6cTj5/h1f+zumBggwHtdBfh6NWVhFFPL+qyaiJA7R/+gto/q/deg
-         hCPqNdEyNEoNkwXQeCxd95E2NX7hTbqEzzSB3m2CfROEvVCmQ8HqX/rgLo8PAQ/5LaJP
-         Iw2UTdkQqACq9uUveb7JBoaixmKTL/cw+lFPIpocmu/MqnGyTjRejoyAaQ3Hwn6kwZGf
-         hkKf+O/t5GZfk5JU2ByX+WvcUZBGAqcSRuxdaJX/wFfBF92I70EOOmxV+oRymqDacq1r
-         wBnrA73t+3WLwXoGh115l/jVZ9ZgktLH59vKFUxW1/w3a0zJGfegSYeY5ZxFNN5XbXXb
-         Lt4A==
-X-Forwarded-Encrypted: i=1; AKwUvByAYNO90nNpbJOfdCgfeCen5ABJJKUvAo5s5T3YipVIaevjylAPpj5afdQtXgxOdoCALmFzsIsRxUW1g2fvsw==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+TeP+KONPNa+RCtKwVUz5Z3Tphj3Jk7dvXwCOmlktGKoh4lvbx
-	Wt4A0HWtKnHg4UvQqsbtQ+wmp11i0MuZp7yoHUglyYfWmkywdSLPQGBmVQbKUsA8cjNlHanUKbH
-	EshDr0eZR4Tv3TSpceA==
-X-Received: from edr23.prod.google.com ([2002:a05:6402:44d7:b0:6b4:363a:88ea])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:1ecd:b0:6b4:21f6:ff48 with SMTP id 4fb4d7f45d1cf-6b597524b81mr1549991a12.3.1793961947235;
- Fri, 06 Nov 2026 02:45:47 -0800 (PST)
-Date: Fri,  6 Nov 2026 10:45:46 +0000
-In-Reply-To: <20261106073528.93371-1-ojeda@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58618606D817;
+	Fri,  6 Nov 2026 10:47:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58618606D817
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cixtech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cixtech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Sg7WxZAVIG1ZL+P2VnC39JWNz1lBPbXmy0fpNG2rGmTu73TRz9+FWeMf6WgiaiI2JtMVBfUSAE4bkqHaZTBR5/7tAHJKbUCVDofYbAfkQ7oC4ENKBVUMGn+2JnERLabOts78LjB3B0iofUtfYLZnFBH+Uwbzkvb1MJRsFjSZX++uvHgTTZ3UGLhNrSglQnA6cNZuwA8uBtkA0bRRdXlVUhpnPxvx1flwRUY5gHo+JBFPnawOn0hTf+Zx8lUqb2d262v0qwBvFGfjRFhzZg5fQv9tOj/uS6wx+EzxVfRBd1rXzYQ0xZa0rIeY3nhiyC5lU3rvkwRwyDmqdQ2UWlpamA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pGHjZZb01s//+FHZsg85wITdJCCurRihxWUJSHBj4ag=;
+ b=LnQJjSg57qwNBZU2E11tRDfJelnGxDwa6LR8vrUWIDfEGXJkUd+AaoHhklK3dR/uFOhhk/2zhADFTXERjFDaycqpaIRcQuL5PNSupqDE4EzCABJhnWR45kl6L96rQ7ZX6wNIwuxNq2N+PNGacHReXaa5aLfNjEaY6bdOQn0+QINGiJqWbmk69ZgcN/VEqBHAmsSit9OxOxwEn2nS4SyYdEdvj1K2bGbdZDdLcH03BjGUeON+i3qGDmZnvcwuaTs5DaIxjLOLml7TKtjQ1P46CDKhlTFGyLJao1EtugeM0yFFJxRt2F8U5duRL1LwL1vG/2AlrjX3P+nC/Q5SecjoTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 222.71.101.198) smtp.rcpttodomain=arm.com smtp.mailfrom=cixtech.com;
+ dmarc=bestguesspass action=none header.from=cixtech.com; dkim=none (message
+ not signed); arc=none (0)
+Received: from SI2PR06CA0016.apcprd06.prod.outlook.com (2603:1096:4:186::22)
+ by SEZPR06MB8951.apcprd06.prod.outlook.com (2603:1096:101:33b::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.4; Fri, 6 Nov 2026
+ 10:47:38 +0000
+Received: from SG1PEPF000082E7.apcprd02.prod.outlook.com
+ (2603:1096:4:186:cafe::27) by SI2PR06CA0016.outlook.office365.com
+ (2603:1096:4:186::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.10 via Frontend Transport; Fri, 6
+ Nov 2026 10:47:37 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 222.71.101.198) smtp.mailfrom=cixtech.com; dkim=none (message not signed)
+ header.d=none;dmarc=bestguesspass action=none header.from=cixtech.com;
+Received-SPF: Pass (protection.outlook.com: domain of cixtech.com designates
+ 222.71.101.198 as permitted sender) receiver=protection.outlook.com;
+ client-ip=222.71.101.198; helo=smtprelay.cixcomputing.com; pr=C
+Received: from smtprelay.cixcomputing.com (222.71.101.198) by
+ SG1PEPF000082E7.mail.protection.outlook.com (10.167.240.7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.615.4 via Frontend Transport; Fri, 6 Nov 2026 10:47:37 +0000
+Received: from cix (unknown [172.16.64.42])
+	by smtprelay.cixcomputing.com (Postfix) with ESMTPSA id C6C3D4102E6C;
+	Fri,  6 Nov 2026 18:47:35 +0800 (CST)
+From: Cunyuan Liu <cunyuan.liu@cixtech.com>
+To: boris.brezillon@collabora.com,
+	steven.price@arm.com,
+	liviu.dudau@arm.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	gary.yang@cixtech.com,
+	fugang.duan@cixtech.com
+Cc: daniel.almeida@collabora.com,
+	aliceryhl@google.com,
+	p.zabel@pengutronix.de,
+	dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	cix-kernel-upstream@cixtech.com,
+	robin.wang@cixtech.com,
+	cunyuan.liu@cixtech.com
+Subject: [PATCH 3/3] arm64: dts: cix: Add GPU support for Sky1 Orion O6
+Date: Fri,  6 Nov 2026 18:47:35 +0800
+Message-ID: <20261106104735.1651267-4-cunyuan.liu@cixtech.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261106104735.1651267-1-cunyuan.liu@cixtech.com>
+References: <20261106104735.1651267-1-cunyuan.liu@cixtech.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -78,68 +112,89 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261106073528.93371-1-ojeda@kernel.org>
-X-Mailer: git-send-email 2.56.0.506.g506a7eabc5-goog
-Message-ID: <20261106104546.2297584-1-aliceryhl@google.com>
-Subject: Re: [PATCH] kbuild: rust: support stabilized flag `-Cprofile-sample-use`
- for Rust >= 1.100
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Rong Xu <xur@google.com>, Han Shen <shenhan@google.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, linux-kbuild@vger.kernel.org, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SG1PEPF000082E7:EE_|SEZPR06MB8951:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: a30b3b41-6682-4983-4254-08df3bf35f4e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|23010399003|1800799024|376014|7416014|261009223027099003|261028144727099003|261026121527099003|261102123227099003|261022105027099003|56012099006|261026140227099003|261021121427099003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	OZLxn711cP+GHtaMSQtN/X5uZFd0561llgSbtTD/dlJM4bma6/4iipnvRRGu8iREw9kxJ1xXZLdxGPmQ9R/1eb0kq7TFgWrvjzX7BWR58T1nMjh7x/LWd1rLPl/WOFpi9z+4BeQLWcEuCx9H01fn3iYqXD6XyVsaH2RN5RzlAHM5XZ2mH07UJTju+kDqb9jzFJCbN+MaYv7UsiYlUGm9wXTS4rxn6HO6bvjPbH7D6km3YBNq8H+tzMS0JtvRvjAmUxROpoe+N61kDOo9GkQEkvxruElX1OhxVeAzfx7HbsNqZw7MgBuw3gzL9uqF4/ERBExGOB3sdr4+SXltDnuuETr1g2qZmSGNXzpW5Xrs5+RTw2jnti6tXxUsQxyirxXLfYC8hWJEziYHxf9oqCHGw4iLVVzZaM36LH12j2q80WI4mXFRH6tDkrX83uUvNKBKSVHwUvDoep1ZQK7JbgGPmOUAeVBS3wpmXZqNFuPqPO2Aq4CPCsZLO71Ucm0To/qJD3iJhmTqCrKS64X5qLUAMiFG4orKGs7cxtswIWuGVIvPnmIXYr8yC0RSMsw1Tj8Jni7KzWl0cS1bUne0coGB1i1jnStRIu0IOWMuv2YfEDnZAUqPZRD4eXXyu8mxTikumHzY0LmtY0zMs3OrY1L20Zop5eUQp8dFsASnJdnYs7jqMx+o2fllgj7AuljbVZZEi0wuPN8ZAtwQPfAID8NMlQ==
+X-Forefront-Antispam-Report:
+	CIP:222.71.101.198;CTRY:CN;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:smtprelay.cixcomputing.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(23010399003)(1800799024)(376014)(7416014)(261009223027099003)(261028144727099003)(261026121527099003)(261102123227099003)(261022105027099003)(56012099006)(261026140227099003)(261021121427099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	Xq18TsqlHWzOsPf+mvWxPwSYrjSQauy1CCxHEA86e03tXoyHIxZ37KXhvbAJvIrKmLm4E3PuYmPiS8V47NaPvC/g0+v0V8160ndkQy2zpmNzKNePZTBMQXJt9HjPRlo+EqNwmkFdnzSo9xKeTLhQbIsSY0snZIxmnsRMYWx3u4Ntfls9Fk8Rc4Wi36UMLQaCjA6yCyQqYnKOcXH77eXHM9IXE3Bue65kQ18No011wdWxgX14UREildiCz5Sns5zcsmEJvMHRqooh7ugt9hrWJXc0ckMWcFrubQ8nDHA5aG1onNjf/Wf51LVVHkeVuuW7EJaYz2ICodVRFJjbET1s4kffUzDGG6Isb+yiV+SNLpgS2yxnC4Mbv/hj1wr6ycaarqTWotGh1p//OaOUFF+JDEWGnJqZDip99a1qTy+HQbEusHxKcdKNciS5ejMQ27D0
+X-OriginatorOrg: cixtech.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 10:47:37.0260
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a30b3b41-6682-4983-4254-08df3bf35f4e
+X-MS-Exchange-CrossTenant-Id: 0409f77a-e53d-4d23-943e-ccade7cb4811
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0409f77a-e53d-4d23-943e-ccade7cb4811;Ip=[222.71.101.198];Helo=[smtprelay.cixcomputing.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SG1PEPF000082E7.apcprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR06MB8951
 
-On Fri, Nov 06, 2026 at 08:35:28AM +0100, Miguel Ojeda wrote:
-> Starting with Rust 1.100.0 (expected 2026-11-12), the
-> `-Zprofile-sample-use` flag has been stabilized as
-> `-Cprofile-sample-use` and the former is not available anymore [1].
-> 
-> Without this change, when building with `CLANG_AUTOFDO_PROFILE` set, one
-> gets in the latest betas and nightlies:
-> 
->     error: unknown unstable option: `profile-sample-use`
-> 
-> Thus pass the right name.
-> 
-> Cc: stable@vger.kernel.org # Needed in 7.3.y.
-> Link: https://github.com/rust-lang/rust/pull/155942 [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
-> I can take it via `rust-fixes` to get it in for the release, but please
-> let me know if you prefer to do something else. Thanks!
-> 
->  scripts/Makefile.autofdo | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/scripts/Makefile.autofdo b/scripts/Makefile.autofdo
-> index 57a3aba6ffc2..32c18df237f1 100644
-> --- a/scripts/Makefile.autofdo
-> +++ b/scripts/Makefile.autofdo
-> @@ -13,7 +13,7 @@ endif
->  ifdef CLANG_AUTOFDO_PROFILE
->    CFLAGS_AUTOFDO_CLANG += -fprofile-sample-use=$(CLANG_AUTOFDO_PROFILE) -ffunction-sections
->    CFLAGS_AUTOFDO_CLANG += -fsplit-machine-functions
-> -  RUSTFLAGS_AUTOFDO_CLANG += -Zprofile-sample-use=$(CLANG_AUTOFDO_PROFILE) -Zfunction-sections=y
-> +  RUSTFLAGS_AUTOFDO_CLANG += $(if $(call rustc-min-version,110000),-Cprofile-sample-use,-Zprofile-sample-use)=$(CLANG_AUTOFDO_PROFILE) -Zfunction-sections=y
->    RUSTFLAGS_AUTOFDO_CLANG += -Cllvm-args=-split-machine-functions
->  endif
+Add the Sky1 Mali GPU node with its registers, interrupts, clocks,
+external reset and GPU power domain.
 
-Could we check for `-Cprofile-sample-use` directly using `rustc-option`
-instead of checking the rustc version (e.g. testing
-`-Cprofile-sample-use=/dev/null` or using `$(call rustc-option,...)`)?
-That way toolchains that cherry-pick the stabilization (or older 1.100
-nightlies from before the flag was stabilized) are also handled
-properly.
+Keep the node disabled in the SoC file and enable it on Orion O6.
 
-Either way:
+Signed-off-by: Cunyuan Liu <cunyuan.liu@cixtech.com>
+---
+ arch/arm64/boot/dts/cix/sky1-orion-o6.dts |  4 ++++
+ arch/arm64/boot/dts/cix/sky1.dtsi         | 16 ++++++++++++++++
+ 2 files changed, 20 insertions(+)
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+diff --git a/arch/arm64/boot/dts/cix/sky1-orion-o6.dts b/arch/arm64/boot/dts/cix/sky1-orion-o6.dts
+index e39c87774c12..853c9c6f202c 100644
+--- a/arch/arm64/boot/dts/cix/sky1-orion-o6.dts
++++ b/arch/arm64/boot/dts/cix/sky1-orion-o6.dts
+@@ -52,6 +52,10 @@ &fch_gpio3 {
+ 	status = "okay";
+ };
+ 
++&gpu {
++	status = "okay";
++};
++
+ &iomuxc {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_hog>;
+diff --git a/arch/arm64/boot/dts/cix/sky1.dtsi b/arch/arm64/boot/dts/cix/sky1.dtsi
+index 0a820f45feb9..d5d347964ad7 100644
+--- a/arch/arm64/boot/dts/cix/sky1.dtsi
++++ b/arch/arm64/boot/dts/cix/sky1.dtsi
+@@ -762,6 +762,22 @@ ppi_partition1: interrupt-partition-1 {
+ 			};
+ 		};
+ 
++		gpu: gpu@15010000 {
++			compatible = "cix,sky1-mali", "arm,mali-valhall-csf";
++			reg = <0x0 0x15010000 0x0 0x480000>;
++			interrupts = <GIC_SPI 237 IRQ_TYPE_LEVEL_HIGH 0>,
++				     <GIC_SPI 238 IRQ_TYPE_LEVEL_HIGH 0>,
++				     <GIC_SPI 239 IRQ_TYPE_LEVEL_HIGH 0>;
++			interrupt-names = "job", "mmu", "gpu";
++			clocks = <&scmi_clk CLK_TREE_GPU_CLK_CORE>,
++				 <&scmi_clk CLK_TREE_GPU_CLK_STACKS>;
++			clock-names = "core", "stacks";
++			resets = <&s5_syscon SKY1_GPU_RESET_N>;
++			power-domains = <&smc_devpd SKY1_PD_GPU>;
++
++			status = "disabled";
++		};
++
+ 		s5_syscon: syscon@16000000 {
+ 			compatible = "cix,sky1-s5-system-control", "syscon";
+ 			reg = <0x0 0x16000000 0x0 0x1000>;
+-- 
+2.53.0
 
-Alice
