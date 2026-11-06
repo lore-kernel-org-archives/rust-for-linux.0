@@ -1,13 +1,13 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.196.141
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793983539;
-	b=WkBntvcwp0Rw+M3LatND50yRXDffVxeHYbzmnX7WFQH5aL3J3OxNWxKIQk2yD5R+lm0L
-	 n2Zzg1nR5L9ILWFIhxPzfsrPk/Kc5E6U2kS6hBsLvMz2lMINy0k5CnMi5lWG6HiukkAkP
-	 lV2gF7bfEw6IbPT9QHuMP5X+cWl7gBAidhMp/ajhHk290T2cmgJkAGThD/vdv61cJIaHh
-	 MqaffzRzGL9uMQEfIhbbrgQr+KFfZTSw9LkDeau5TI1HuwzJLXIFXZhohwksaD0Cbrk1R
-	 lVosfpL1A5OQJwZx5+ZTli8tnMYKmSqcPwLySn7ztKEsas3gl2hYHRZWURELOI7y/Cg==
+	t=1793983541;
+	b=AiRjxfFCNvgeKp2TVtVFQmOel+6wpyH/fh073LU2unvkpsKhZDQscaVDnz2kTXvFWAJC
+	 MUiFhKFqsZ8eZcGoiRjNtUKN9zzwt9Kwg0P6K5j5Lc9Ev9tY0GxDCdZqYaZFEOlrhElLC
+	 PaNyike79FUNqWNp3ckYOnBT7sDlHXXYj6XZTBHb1rnCrVL8ObsmDrPltylsK5O3P6Pb1
+	 vn+I1B2laOwOX98jp2zH/WU3M4B8qLlzT7ReFfeF5cJgYTT1jR5AIiaOliq9hYiFvpTG6
+	 PUym/IvW7bq5CEAmMWWjLUcYNRJCJ1UGIREAEAmLlJCzpiO4SSuCeEC6SYxYRmibmZA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793983539;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793983541;
 	h=DMARC-Filter:Received:Received:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:Content-Transfer-Encoding:
 	 Content-Type:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
@@ -24,12 +24,12 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=dnfYV+tw4lEIomCrh4siMJclwcG6EGRxw7VMOc0OVwQ=;
-	b=FeLTmtpnlUXZzPR1JBLMaZJNBliDsFoeOh30CkaiVjy9+DsH4UHQaEuEbJPwrnxF4+Te
-	 aTMeMZDTi3LwgFEkBDr2NZtRQnVRuVsx8NHlCslGHXdNpAu3yYdCwRHJpLHKV/MhGG/hQ
-	 0nd6UpwH5FyvR6W1JzaRAW2koMupQ1909UjF4o7bQ+dTlrmGWIg4cySyOkoYQCvYuamHm
-	 UWpHZPPazyS5ZEiOS6mWhwD3qCnfoSfE1kAfzzIlgV68aFokaAVa3uT+Gj37zv21L/rbv
-	 4cjohWciG42BmUEe8uoV9MDdZEFdUiA06q37l1kqqVzA8M9tQ6BMpJUlksacFrbIi1g==
+	bh=KO8hVHOg9q6lIBg4rQ32Kg5HWBxJeGKIG8BQZ5IBLmE=;
+	b=D6RAlasVmeKDyWs2q/MAxhAQasm5mRl+CpGy1zd8E8tfUqnhMfxMxkvvW9tMz09DD7rG
+	 +JxCZ2vCjUk0wbG6xqusaNxM3vW5wcTU+vBuFVEKPnxtvSr2JJXGQMMskOrSG+WXmlswy
+	 nYEobnYFIl9q+bClJcIhNPsPZvPj4y15It98yKGIyG4GG+IFX1HAwgrw2F6hI4ZeiZNHV
+	 OWrs6J4HcNdue+zP58NlxOt3Looft9Mn63KeG95zhS/1XfYssOuCzVhXRmQRvscgkl6ab
+	 JM5upB/JcwJMUzPcyZdk4J92nR8e8iBDChRJ553zTHVACpP5/DwHhbf0gnW6Z0e/qyQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=none header.from=atomlin.com;
 	spf=pass smtp.mailfrom=atomlin.com;
@@ -38,17 +38,17 @@ Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon110
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E38606A337;
-	Fri,  6 Nov 2026 16:45:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C5E38606A337
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BED606A32C;
+	Fri,  6 Nov 2026 16:45:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A0BED606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atomlin.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Cs9p+gNgeJyecMaNZBp9wXkxsILiUK8FykdbvuJr51rOOj7O6eW3hEYMkd4anokyOfH9ICCB3WCz/S5bGR4jSYboUDmDwzZuJv7qxNHrKHA1/CxhdVRGA7+XGPd8XTIEh1RVni7tMYV/lvEre1yiXwcHvgCUwVvepyQrhrPrDAkJM118Szp971Z7CSiBx1a/QbcytZdmXBn9f4q5qaKdmdd1CxHpQSn5F+8v1AZJlt+enFwLWNPlgtycd33YIluku3xBxa/y+QrrPu//rerII6sSjCsYHCzOhrkTpeczX4KxxPhN6XsfU4SY3VFfZwpTKW4lT0vV2hJyY9x5gZqj3w==
+ b=yBlClP18mgBq0hWQIvWEe2Lody+BXvRnWUo59UE7cuFEbVK6ENpwUGBRpMW8riVas1mH4n7T6FnPsYw2u9RPgYiD2Rgp36oXLhbLoZxyt3EST6oN1muY4NYpwGUyjDPXq4YfPDExyxQw+ESo9l3/rnbZftFt38v03TLhFvo/KZRGeys4W1jX70Ljd4ABsMlkKRDUYu/8qtTq2atuPYiQeFomcK217KkvVY1mVQPhszkf7D49cMKoMB4AfNiQdcd2+NdysgDF1k37C+7/nI/xfdwGIYRCqricGp2XsznTpNLtWYRlP3o126c48jZy7c55JehI074sXVaU/WYCP8gmug==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
- bh=dnfYV+tw4lEIomCrh4siMJclwcG6EGRxw7VMOc0OVwQ=;
- b=nnCNJLkcW1ryYwFFm/FGFybR+ChaVzbJutaCN8tB+XIv2/v2njwqp8jqHQLE8XV9ddQqHKdTIEeHCHyYLg4/Puc+OmtoAGQs8IlL9GaDjUdC8ZH0pWyviokDgU6hjV39FIpWX9t/B2Z9zMwe0cFbYwZEuVuJm86hZkctKE6t8kuSmP+kTzcQBjE3ZTGgPEvMDpzmZgoeE9TtrpoYki3zncK4ijpVSfI+XzDEYL4x22txDkdC4o/9l3MdtYy81B1EbcdaZBdP2YtddZb4QaMsCeyI0kQMsUZHcFFGzH8XVj1rInMIGXioqzxS49i09K13mqtFX5znuvra27NAKHQyeA==
+ bh=KO8hVHOg9q6lIBg4rQ32Kg5HWBxJeGKIG8BQZ5IBLmE=;
+ b=ElSAErt9UHJNMnnl8HqxLy29xAywB4RwQSq1S/JlsDxnny0zQTBmPN10GZu7qAOc4OTUKi6TMPno84dHHB4rjtVLTFvmoDhDJe4WRAB+gX3XbLTHFc3roWXIZtWH52s5OL0BC2yM4lJWCWfTn0zk1tQHeDSiaXyJsX4YGnNbfnEDI8twAkLWHemToC2W2SVIKQx48rlhBf32Lzf4Q66ZCZLdFz5bjYbjAr6nrETiUiggjqT+x/SujeLGiASc9fRcgLId5xS+kw3eVFjCaNrfyVJHiZgV9ohI025R4CTCEMZLLY33KgyjkuAFHK8SxK+mdApQyxBEh9ZmkYpTF77+EA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=atomlin.com; dmarc=pass action=none header.from=atomlin.com;
  dkim=pass header.d=atomlin.com; arc=none
@@ -58,11 +58,11 @@ Received: from LO2P123MB4190.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:163::8)
  by LO0P123MB6202.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:1ff::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.11; Fri, 6 Nov
- 2026 16:45:33 +0000
+ 2026 16:45:37 +0000
 Received: from LO2P123MB4190.GBRP123.PROD.OUTLOOK.COM
  ([fe80::f71f:a9f:c4de:687a]) by LO2P123MB4190.GBRP123.PROD.OUTLOOK.COM
  ([fe80::f71f:a9f:c4de:687a%5]) with mapi id 15.21.0592.010; Fri, 6 Nov 2026
- 16:45:33 +0000
+ 16:45:37 +0000
 From: Aaron Tomlin <atomlin@atomlin.com>
 To: jpoimboe@kernel.org,
 	arnd@arndb.de,
@@ -87,16 +87,16 @@ Cc: akpm@linux-foundation.org,
 	linux-modules@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v14 2/3] module: Extend module_blacklist parameter to built-in modules
-Date: Fri,  6 Nov 2026 11:45:20 -0500
-Message-ID: <20261106164521.116168-3-atomlin@atomlin.com>
+Subject: [PATCH v14 3/3] module: Rename module_blacklist to module_denylist
+Date: Fri,  6 Nov 2026 11:45:21 -0500
+Message-ID: <20261106164521.116168-4-atomlin@atomlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261106164521.116168-1-atomlin@atomlin.com>
 References: <20261106164521.116168-1-atomlin@atomlin.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BLAPR03CA0091.namprd03.prod.outlook.com
- (2603:10b6:208:32a::6) To LO2P123MB4190.GBRP123.PROD.OUTLOOK.COM
+X-ClientProxiedBy: MN2PR22CA0027.namprd22.prod.outlook.com
+ (2603:10b6:208:238::32) To LO2P123MB4190.GBRP123.PROD.OUTLOOK.COM
  (2603:10a6:600:163::8)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -109,435 +109,172 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LO2P123MB4190:EE_|LO0P123MB6202:EE_
-X-MS-Office365-Filtering-Correlation-Id: a09165c2-b2f2-43d1-cfe0-08df3c256011
+X-MS-Office365-Filtering-Correlation-Id: d0055060-45e5-4155-a5eb-08df3c256226
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|1800799024|366016|376014|261009221227099003|261102124527099003|261102123227099003|261009223027099003|261021121427099003|261021123027099003|261021130227099003|261022113327099003|261022075727099003|261022105027099003|261022115727099003|261026140227099003|261026121527099003|261028144727099003|5023799004|56012099006|3023799007|10067099003|6133799003|18002099003|22082099003;
+	BCL:0;ARA:13230040|23010399003|7416014|1800799024|366016|376014|261009221227099003|261102123227099003|261009223027099003|261021121427099003|261021123027099003|261022075727099003|261022105027099003|261026140227099003|261026121527099003|261028144727099003|5023799004|56012099006|3023799007|10067099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	IT4NvQv8+DFHYCb6cVLW+5cH4y7VmbRA4CgM2arei/Fr2887LG9y6hXiLL26W2PX7Zr84AUtaEMKfp4PkLTcLD75H5tyzV/A9Ka3v78Ei+AikL1YojDTpbyFygTpqKKZL/kg9KEk+H/osyfq5SqBhgRS5IfT106hQ9npXO2E1PRht37Ej+0msLK7p6AZTDibHfE1CmRKVLJS1SJO8OL45ULYfyUtmsyCsc1u4w8JxbZspXNfGmLrIwmR7h0nxjvtrjeLTJWMclibkZ2of1KtKNbwkIglf5z1cwC768STPbbwpFO4K7NneiPH7fiNLnNdJqAnUw7Q9uL2Z+/KhFUSdWDWVQR03u9cIPCGziTg/XE9rUkniznlASh2Jtr34fMVZxT/JOpSDBGP2OvYsXSu/r4hxZLJ48KlTDwhCh/uheYGuPA7304uWP29dsuqQj2MovIKeC4Z3uJ47sk53PvqRMelaEL8IKNXPClQ/JMXqfj+aaULCIg34GoJNXlHc6hQB2YkMXb6rfUlsWF24SBe5lyRoGk357LPh0ElMogZGOW7iPkKaAl2mPPzOjTxcszY3a/2Gdlf3wpxOMr2yimzqSTFi1VtSHm2o7HGQoD+YN5ugktnbkc0ZplNN8w3/kgefHnLdiS8MwznehLHGRP5BR7l1TUA7Hbr7FDUhXjrM6g=
+	w9wvAv7sL3vA/f3gLYOYY5AZbfCC7MOGdoYP43ohI9KqQRfin2zjiatwyrjgolYlXTWfP0NADJ4bYfl81NAM63XQUUbtaIBJQBPWfEdzmsCYEwhfJ3s0/m0x/1WFpmKfOiqwg1DQvY1ES/uPMWIq8DLoapTj95qUjsgNeuhXlpSRdLJ6zENuNXJVQ2ry+jBVlxgWm/QQ2Nr5FUvw/HN7KvHa5hl9V5T7TauiF+xOyQykUVaREMUHOsbV1CyQVjPnlTn8qyHBomMLJYYRFk+M6ubeg4oO3V4lDyXfi+rq9aIudy1X9/Qinz2JFF3xsYSH2vGFxxJ4WWWhtcdW4POUcg1cP75MQ6i+8EvMdXK72/0NI+MItkiCNerai5q8POxktIebvdgeAXNXWtBhFGm3dzi0Za5yldmESBkLyBliMMXhKIfQNMSi2WwW7k/fw7+rHy/5QMI6ePtOp+aXf76M8ku2jJitO4iaGyD9Hc4et+GeBPKx+o8tzupsdIlXU37TbcUptYpMvCAHNR+Fb1UHJk+l42Hf0tszNmznhK7lcA+hZ+WxXCI36KL+jYo/5SAcmOloJru1KN1j49ul+3Qu5m/BzLJznExohG4Kr38bVttR9ZmnJ3QitrOzLdvPB+JwiJaQgjijRnjfVrZEnxqbo9g1W/RlKSC0TnxjTsJ0w4g=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P123MB4190.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(1800799024)(366016)(376014)(261009221227099003)(261102124527099003)(261102123227099003)(261009223027099003)(261021121427099003)(261021123027099003)(261021130227099003)(261022113327099003)(261022075727099003)(261022105027099003)(261022115727099003)(261026140227099003)(261026121527099003)(261028144727099003)(5023799004)(56012099006)(3023799007)(10067099003)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P123MB4190.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(1800799024)(366016)(376014)(261009221227099003)(261102123227099003)(261009223027099003)(261021121427099003)(261021123027099003)(261022075727099003)(261022105027099003)(261026140227099003)(261026121527099003)(261028144727099003)(5023799004)(56012099006)(3023799007)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8gJYUIPKmY1913R7CvbDz7U2J8p3ugadue96AsEdcEEfa+BBYJP4g8rufbwp?=
- =?us-ascii?Q?lubEWM/RqHjp6eYnIV2zNER4jF3lj0s+kdGJMBkzovLmm0ZvA7+YSwpgPuyp?=
- =?us-ascii?Q?YMobTFRRJhI8TNCyrlcXmqan+IYU/45+0d5mLkBxqp2LlBuBq9kkeBbLPXSl?=
- =?us-ascii?Q?zlB2KrPy0GbH00H9Tsmo2H6BJo4/LLKgWuRWf1CzLhcs1POqmdF0FC6J7d6h?=
- =?us-ascii?Q?jdaJ90dc5syp/L37tsBuLioTRt8y9A4RXhyAzoOZ3R1GEle3vL5pn1VESO/q?=
- =?us-ascii?Q?H+Fe++QYHJUFTOL8UhiQATmev00KEc5lI+JkchW3EAmHtjXYZobOUQ2fMVb4?=
- =?us-ascii?Q?U4L3Ox0mCN1/TwkI0zxlCXjgBBEvknJriMOJwz+aQ7IEc+HrnBI0ljZrFwUd?=
- =?us-ascii?Q?1b9V38PetSmmO4/cFrG6KAu9vtYxvLlhWoRQiRrQ4oWg/xyyUeeXo5ElQvD6?=
- =?us-ascii?Q?XXqzhGiWgFNPJrvo3/jomNNvJaVdqOYsHOCMEKzsWrSl/BjZPQA1UibNrjrE?=
- =?us-ascii?Q?Z+1JuNj0Dx4JZLZzj8IzfE9yRYxBS9GU2OLPe3BmI3VB971TJDh9grK78Txh?=
- =?us-ascii?Q?TW7jKrsBvrWuoJj+/ywWHGR5fzxneiStPgOzzm7BsUcCVop1QYjkOXWwN+Y6?=
- =?us-ascii?Q?lPmVk1+lHdPNCwDBUIgn5dBd7RdwAF3pmh32Cei2iFLmFSlqdtXLEtxf8bwD?=
- =?us-ascii?Q?dQwOjeBSGdiBlAH2jjRi6Hfi54/k68lkZf9geb74KccUOqKVWwTCv1Qh6jYV?=
- =?us-ascii?Q?d6JpVVs472jWU5VXr4Kxf4iX5axTDCW1Q4I28ORBa6Chrs6C9+LuuSr2fMBR?=
- =?us-ascii?Q?8JQI/rwCzJeecC7zktoBMAcaG/eLn5lWJ0fnvFQqpMZ6N8YRpEbaDh84vSyQ?=
- =?us-ascii?Q?cXlJMuUuULIpits5pKPX2hmTBoS4ekm+Z52DVXyrss9qZHgU4MSgL5SfQMLh?=
- =?us-ascii?Q?xXG0aitZMNYpf5b2dj4B3x6oW558wYgFjGJOpOjcl2D1UYcMo6Tky6WVully?=
- =?us-ascii?Q?L/WjMXRYYB+8PV6U96LW5VIpekPweonYv8nern/bsDTWCc0EgpjpjgDziVQU?=
- =?us-ascii?Q?qzxen1hD+djPuxOeqpQyEK1nxIeyo4dVq42ztAIRdGgJ/YVRkPhY7UIj5ydd?=
- =?us-ascii?Q?PD4ZGj8YCFXJpx6ME4jbkhGAkkuwXEmPVByrvVLRk3KyE6rac3ifCNmyRCKv?=
- =?us-ascii?Q?z7zIc1nT8RHeXmQzGpKHMuvhyClGmOyMsAHIVj9I0PMpoHiAkgjpn6OQ2TOD?=
- =?us-ascii?Q?2KNJnwGkoPfZUWGByLtVwvIXMgs3ukeZRN9lYIyT1CGG1gyNds6aWeirt8ts?=
- =?us-ascii?Q?PvoKgj5eKeNvjOVnMuVuRMi/xRDVvMkqxUEXVrNk9d2zVZuGKbj67+NxhS/+?=
- =?us-ascii?Q?vmwZe3ZKcrU0EOdRD+IwjlhYOEu7yuo+ANMRgI1v+G+NjzYC0ACav9xwuF1i?=
- =?us-ascii?Q?LN5O/75HbCrkp8kyY3Y8PqSaU3zXkRDVX5ESyYcyETOCM+j766fZwx08+BMh?=
- =?us-ascii?Q?nl0fVZZRQXICaU8xOoBMBKBAW15RMIXmMCadzzFn8YwQi9TOoI3wdbENYaCQ?=
- =?us-ascii?Q?rA+7MtgosuWo+kr93Zr4llyX9wj5ocS7J2v8tdnNFD8+JjstldHGwTTvkqiM?=
- =?us-ascii?Q?eNFeEaJiS4cFuqfPkBfiPnbgvi194rufyTaO2iJjWqWMoUFnfsYlSB306xLi?=
- =?us-ascii?Q?t5yPyzdlZuPd4jkmH1xpse3ufWUpugYIVZ7sXkFyItR6/pddJYNpjGZK/pAN?=
- =?us-ascii?Q?+t8nifOdIg=3D=3D?=
+	=?us-ascii?Q?Jw+IwjaEs+UfdPVH26kqyDjYMRUtG3aEzC53AhqiODKpp6VSptLuXUpEgqwi?=
+ =?us-ascii?Q?shWXdWgkbvrAD9VvwnGz7nlCp2717593xwlox7hsYef4aAxZC0RjuvftmD6i?=
+ =?us-ascii?Q?64yF1dxTu1SckPrUckhYZQTLqCZluFEJsuVxn0UJxajQJQGbd8IAB+2oBahf?=
+ =?us-ascii?Q?vyo6Tiwknj8S7SIjQtaK8GwKykPM2EuC0yw9PHElFncaoNC4/Z3q2xApyhw1?=
+ =?us-ascii?Q?XOcSc9tvLqLSc4mKoU7GJO7ZNFSIlntWsHke8shm4qaTlllZljrBoVzAoYqk?=
+ =?us-ascii?Q?upv4AYZA44108pR8w3ubCirRQADzvnMXlTinQ18OoUIq2Xg1B5mJxh69ljoC?=
+ =?us-ascii?Q?Uww97sEiB6jXP4XJJlzJoU2qYQ9/JxBFcGwWByvNRuani3S64gP/6PlD8CJ6?=
+ =?us-ascii?Q?u8urSypGmXiXURsQjJ/AiE5dCpH7IjQXceCVtysvUJpaHG164IhdHmJv4XEm?=
+ =?us-ascii?Q?04PG9wHxLRj6K3J7sR1szu/Shf0Suc9b2IFcr+p3G5qWN7Qqkjy7Obr4FTVM?=
+ =?us-ascii?Q?h1kne95M8UHtoXPciKnwbKbVNxAGeW3UT1Bi5O/LBn71qVfurvXHQXPrmv2f?=
+ =?us-ascii?Q?Uaw/JYJ7YsoyA1ylLMDh5nInfRSJ45mr/XtSttu0K6CFVI4Vk2K9aq451zaK?=
+ =?us-ascii?Q?VzqM89dWrRAhkOk2wLtyebGuLOg19vJrjyrUeA3Wqkzv4tEkV0qKsS6DDLni?=
+ =?us-ascii?Q?nZuQtuuISp4kK0Cd8nKAPLOk3POVen72uu7ScsIv7+UonHsqUH2UXomxFprP?=
+ =?us-ascii?Q?Hf/dRthDEmyJkF10dLp0I06xO1JBZ7599Nr2Raz+RbK5u3ZGlGnyu/C+xtkB?=
+ =?us-ascii?Q?bHDedxoXgxbVB7av79Bm7P/wTMKkdKpDvDiI4Lq/+EnTaleCrg75trIsnEUZ?=
+ =?us-ascii?Q?nn32ccdpQXsr5z4ystt3ii2L56GoRY/W8sexFdgO3ptTkkjvTviOLKcNYP4B?=
+ =?us-ascii?Q?pCxxE9D6LDDkFIdNzcZ5U3wtxZ/2RbEjV1b5ov+fcGI+0IC15mts1etM0Q0R?=
+ =?us-ascii?Q?X9+krjjPJX/YHU6mdqYsrOmVOUC+vdIxgXhNE6GJZXXAbA38Qdyc/ycQBeM2?=
+ =?us-ascii?Q?MAEejK0XumvHp8QwYigugsv/NV/T+qraCrubtPgnkemw05HPH+A4RAqYYurB?=
+ =?us-ascii?Q?0gYbmtx5JR/VG3aoy6N3hnBkC/3y0YV7IHquhvUfjkfy+D8+mJVla/r9ML8T?=
+ =?us-ascii?Q?j5qqbB3wH6HWk4di9PPucae8cv6eGs8o+9hbj/f8J0hlHOJ0kTZR5eojg25+?=
+ =?us-ascii?Q?GZnVSljVD7XwUVRsT6Xh4GCN7TsL/YNRGgC8ri1zn+vUsbJmqBJuOiyLmOj/?=
+ =?us-ascii?Q?pYgGwtbb8Djt4nFBm8m6DzvIA9xU9K1RqGdB539dRxP+1MEN31KRFRDel/rB?=
+ =?us-ascii?Q?prycVHFPndU96UBh8Z33EAW/LGMHl2dYkRlkUzyHwnZ8pnv17UhTIrY7dt2M?=
+ =?us-ascii?Q?6NVSfMQL52QajH+VAyQA4bjSBMivUHClAc/uHdLpYIR3x0Nar9JRedrmdZXd?=
+ =?us-ascii?Q?4kYWxH/CpC4zkEXWLXM6aBwMPquUnNuyn5PXTqMuRa7GTvBqgjh6w9/qZLwL?=
+ =?us-ascii?Q?wpaul5qg1jrtP5TeMKXiwuKe5INdFtdUmBIwgakdnh0ll510BTwhv/aIDN38?=
+ =?us-ascii?Q?GiEQpMRjNTCaiVMVmvGeKfA71LP6KyJZfGEzwogrIPB9Onb3zjyyqPpJeKYt?=
+ =?us-ascii?Q?TKZfuLItbBnwA/s4SxB1jPaZ3R/QyZ11nx6q71H3kRIauK0gL7gfNh59GCQU?=
+ =?us-ascii?Q?pB6pFNioIg=3D=3D?=
 X-OriginatorOrg: atomlin.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a09165c2-b2f2-43d1-cfe0-08df3c256011
+X-MS-Exchange-CrossTenant-Network-Message-Id: d0055060-45e5-4155-a5eb-08df3c256226
 X-MS-Exchange-CrossTenant-AuthSource: LO2P123MB4190.GBRP123.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 16:45:33.4613
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 16:45:36.9448
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: e6a32402-7d7b-4830-9a2b-76945bbbcb57
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bFOPjh/9bIAmJ4CGA0h+mzQlRLTo1dC/TNFWWvKXCJhRhrHXkHkk3DeJt/7b9U+aGdOgdHNkuW+AS6rLb0BSzQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: MdglgPEkOk3WHTdJ9oteyfEVREMNNJjf/VQh2AZsAk4A89y90PVPRsX5z7PYoHILxyyC1fdcEHo4e36jX8sV0A==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P123MB6202
 
-Currently, the "module_blacklist=" command-line parameter only applies
-to loadable modules. If a module is built-in, the parameter is silently
-ignored. This patch extends the blacklisting functionality to built-in
-modules by intercepting their initialisation routines during early boot.
+To preserve the existing user-space ABI, "module_blacklist=" is kept
+as a legacy alias pointing to the same module_denylist variable.
 
-To achieve this, we introduce a new ".initcall.modnames" memory section.
-For each built-in module, we use a standard C structure (i.e., struct
-initcall_modname) to map its initcall function pointer to its associated
-KBUILD_MODNAME string. This mapping is restricted only to files
-implementing built-in modules via module_init() to avoid mapping core
-kernel subsystems and save memory.
-
-Under CONFIG_HAVE_ARCH_PREL32_RELOCATIONS=y and CONFIG_LTO_CLANG=y,
-__modname_<fn>.initcall_fn references the __initstub__kmod_* wrapper
-symbol, whose name embeds __COUNTER__ and __LINE__. Exclude __modname_
-symbols in tools/objtool/klp-diff.c:is_initcall_sym() alongside
-__initcall__ and __initstub__ so that __COUNTER__ or __LINE__ shifts in
-a patched translation unit do not cause "objtool klp diff" to reject
-__modname_<fn> as changed data.
-
-During boot, built-in initcalls are executed sequentially via
-do_initcall_level() and do_pre_smp_initcalls(). We introduce a new
-wrapper function, do_one_initcall_builtin(), to cross-reference the
-initcall function pointer against the ".initcall.modnames" table. If
-a match is found and the module is present in the blacklist, the
-initcall is skipped.
-
-To make the blacklist functional on monolithic kernels, the command-line
-parameter parsing and the module_is_blacklisted() lookup function are
-decoupled from the loadable module subsystem and moved to init/main.c.
-This enables "module_blacklist=" to intercept built-in modules even on
-kernels built with CONFIG_MODULES=n.
+This patch addresses the documentation by marking "module_blacklist="
+as deprecated in admin-guide/kernel-parameters.txt, and documents
+the new "module_denylist=" parameter. All internal symbols, such as
+module_is_blacklisted(), have been renamed to use "denylist" and all
+log messages now use "denylisted".
 
 Signed-off-by: Aaron Tomlin <atomlin@atomlin.com>
 ---
- .../admin-guide/kernel-parameters.txt         |  5 +-
- include/asm-generic/vmlinux.lds.h             |  4 +-
- include/linux/init.h                          | 25 ++++++++-
- include/linux/module.h                        |  4 +-
- init/main.c                                   | 54 ++++++++++++++++++-
- kernel/module/main.c                          | 22 +-------
- rust/bindings/bindings_helper.h               |  1 +
- rust/kernel/module.rs                         | 18 +++++++
- rust/macros/module.rs                         | 23 ++++++++
- tools/objtool/klp-diff.c                      |  3 +-
- 10 files changed, 130 insertions(+), 29 deletions(-)
+ .../admin-guide/kernel-parameters.txt         |  6 +++++-
+ include/linux/module.h                        |  2 +-
+ init/main.c                                   | 19 ++++++++++---------
+ kernel/module/main.c                          |  4 ++--
+ 4 files changed, 18 insertions(+), 13 deletions(-)
 
 diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 0b3c140babd9..6cdee2dc4193 100644
+index 6cdee2dc4193..441d50c9be13 100644
 --- a/Documentation/admin-guide/kernel-parameters.txt
 +++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -4226,8 +4226,9 @@ Kernel parameters
+@@ -4226,7 +4226,11 @@ Kernel parameters
  			Note that if CONFIG_MODULE_SIG_FORCE is set, that
  			is always true, so this option does nothing.
  
--	module_blacklist=  [KNL] Do not load a comma-separated list of
--			modules.  Useful for debugging problem modules.
-+	module_blacklist=  [KNL] Do not load or initialize a comma-separated
-+			list of loadable or built-in modules.  Useful for
-+			debugging problem modules.
- 
- 	mousedev.tap_time=
- 			[MOUSE] Maximum time between finger touching and
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index 3eb732942d69..96559b67293f 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -765,7 +765,9 @@
- 	EARLYCON_TABLE()						\
- 	LSM_TABLE()							\
- 	EARLY_LSM_TABLE()						\
--	KUNIT_INIT_TABLE()
-+	KUNIT_INIT_TABLE()						\
-+	. = ALIGN(8);							\
-+	BOUNDED_SECTION_BY(.initcall.modnames, _initcall_modnames)
- 
- #define INIT_TEXT							\
- 	*(.init.text .init.text.*)					\
-diff --git a/include/linux/init.h b/include/linux/init.h
-index 6326c61e2332..08cb8a294375 100644
---- a/include/linux/init.h
-+++ b/include/linux/init.h
-@@ -109,6 +109,11 @@
- typedef int (*initcall_t)(void);
- typedef void (*exitcall_t)(void);
- 
-+struct initcall_modname {
-+	initcall_t initcall_fn;
-+	const char *modname;
-+};
+-	module_blacklist=  [KNL] Do not load or initialize a comma-separated
++	module_blacklist=  [KNL] (deprecated)
++			This parameter has been renamed to module_denylist=.
++			Please use module_denylist= instead.
 +
- #ifdef CONFIG_HAVE_ARCH_PREL32_RELOCATIONS
- typedef int initcall_entry_t;
++	module_denylist=  [KNL] Do not load or initialize a comma-separated
+ 			list of loadable or built-in modules.  Useful for
+ 			debugging problem modules.
  
-@@ -252,6 +257,7 @@ extern struct module __this_module;
- #endif
- 
- #ifdef CONFIG_HAVE_ARCH_PREL32_RELOCATIONS
-+#define __initcall_fn_ptr(fn, __iid, id)	__initcall_stub(fn, __iid, id)
- #define ____define_initcall(fn, __stub, __name, __sec)		\
- 	__define_initcall_stub(__stub, fn)			\
- 	asm(".section	\"" __sec "\", \"a\"		\n"	\
-@@ -260,6 +266,7 @@ extern struct module __this_module;
- 	    ".previous					\n");	\
- 	static_assert(__same_type(initcall_t, &fn));
- #else
-+#define __initcall_fn_ptr(fn, __iid, id)	fn
- #define ____define_initcall(fn, __unused, __name, __sec)	\
- 	static initcall_t __name __used 			\
- 		__attribute__((__section__(__sec))) = fn;
-@@ -271,7 +278,23 @@ extern struct module __this_module;
- 		__initcall_name(initcall, __iid, id),		\
- 		__initcall_section(__sec, __iid))
- 
--#define ___define_initcall(fn, id, __sec)			\
-+#define ____define_initcall_modname(fn, id, __sec, __iid)		\
-+	__unique_initcall(fn, id, __sec, __iid)				\
-+	static const char __initstr_##fn[] __used __aligned(1)		\
-+		__section(".init.rodata") = KBUILD_MODNAME;		\
-+	static const struct initcall_modname __modname_##fn __used	\
-+		__section(".initcall.modnames")				\
-+		__aligned(__alignof__(struct initcall_modname)) = {	\
-+			.initcall_fn = __initcall_fn_ptr(fn, __iid, id),\
-+			.modname = __initstr_##fn			\
-+		};
-+
-+#define __define_initcall_modname(fn, id)				\
-+	____define_initcall_modname(fn, id, .initcall##id, __initcall_id(fn))
-+
-+#define __builtin_module_initcall(fn)	__define_initcall_modname(fn, 6)
-+
-+#define ___define_initcall(fn, id, __sec)				\
- 	__unique_initcall(fn, id, __sec, __initcall_id(fn))
- 
- #define __define_initcall(fn, id) ___define_initcall(fn, id, .initcall##id)
 diff --git a/include/linux/module.h b/include/linux/module.h
-index 76f4f3596477..98196204fe27 100644
+index 98196204fe27..0fa43723429f 100644
 --- a/include/linux/module.h
 +++ b/include/linux/module.h
-@@ -86,7 +86,7 @@ extern void cleanup_module(void);
-  * builtin) or at module insertion time (if a module).  There can only
-  * be one per module.
-  */
--#define module_init(x)	__initcall(x);
-+#define module_init(x)	__builtin_module_initcall(x);
- 
- /**
-  * module_exit() - driver exit entry point
-@@ -892,6 +892,8 @@ static inline void add_taint_module(struct module *mod, unsigned flag,
+@@ -892,7 +892,7 @@ static inline void add_taint_module(struct module *mod, unsigned flag,
  }
  #endif /* CONFIG_MODULES */
  
-+bool module_is_blacklisted(const char *module_name);
-+
+-bool module_is_blacklisted(const char *module_name);
++bool module_is_denylisted(const char *module_name);
+ 
  #ifdef CONFIG_SYSFS
  extern struct kset *module_kset;
- extern const struct kobj_type module_ktype;
 diff --git a/init/main.c b/init/main.c
-index 7b0c8c34e6a9..1302fa71a733 100644
+index 1302fa71a733..70b5642da3d8 100644
 --- a/init/main.c
 +++ b/init/main.c
-@@ -1406,6 +1406,56 @@ static inline void do_trace_initcall_level(const char *level)
- }
- #endif /* !TRACEPOINTS_ENABLED */
- 
-+extern struct initcall_modname __start_initcall_modnames[];
-+extern struct initcall_modname __stop_initcall_modnames[];
-+
-+/* module_blacklist is a comma-separated list of module names */
-+static char *module_blacklist;
-+bool __init_or_module module_is_blacklisted(const char *module_name)
-+{
-+	const char *p;
-+	size_t len;
-+
-+	if (!module_blacklist)
-+		return false;
-+
-+	for (p = module_blacklist; *p; p += len) {
-+		len = strcspn(p, ",");
-+		if (strlen(module_name) == len && parameqn(module_name, p, len))
-+			return true;
-+		if (p[len] == ',')
-+			len++;
-+	}
-+	return false;
-+}
-+core_param(module_blacklist, module_blacklist, charp, 0400);
-+
-+static const char *__init get_builtin_modname(initcall_t fn)
-+{
-+	struct initcall_modname *p;
-+
-+	for (p = __start_initcall_modnames; p < __stop_initcall_modnames; p++) {
-+		if (p->initcall_fn == fn)
-+			return p->modname;
-+	}
-+	return NULL;
-+}
-+
-+static void __init do_one_initcall_builtin(initcall_t fn)
-+{
-+	const char *modname;
-+
-+	if (module_blacklist) {
-+		modname = get_builtin_modname(fn);
-+		if (modname && module_is_blacklisted(modname)) {
-+			pr_info("Skipping initcall for blacklisted built-in module %s\n",
-+				modname);
-+			return;
-+		}
-+	}
-+	do_one_initcall(fn);
-+}
-+
- int __init_or_module do_one_initcall(initcall_t fn)
- {
- 	int count = preempt_count();
-@@ -1478,7 +1528,7 @@ static void __init do_initcall_level(int level, char *command_line)
- 
- 	do_trace_initcall_level(initcall_level_names[level]);
- 	for (fn = initcall_levels[level]; fn < initcall_levels[level+1]; fn++)
--		do_one_initcall(initcall_from_entry(fn));
-+		do_one_initcall_builtin(initcall_from_entry(fn));
- }
- 
- static void __init do_initcalls(void)
-@@ -1523,7 +1573,7 @@ static void __init do_pre_smp_initcalls(void)
- 
- 	do_trace_initcall_level("early");
- 	for (fn = __initcall_start; fn < __initcall0_start; fn++)
--		do_one_initcall(initcall_from_entry(fn));
-+		do_one_initcall_builtin(initcall_from_entry(fn));
- }
- 
- static int run_init_process(const char *init_filename)
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index 6b1604018cc9..1787c8784aa3 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -2946,26 +2946,6 @@ int __weak module_frob_arch_sections(Elf_Ehdr *hdr,
- 	return 0;
- }
+@@ -1409,17 +1409,17 @@ static inline void do_trace_initcall_level(const char *level)
+ extern struct initcall_modname __start_initcall_modnames[];
+ extern struct initcall_modname __stop_initcall_modnames[];
  
 -/* module_blacklist is a comma-separated list of module names */
 -static char *module_blacklist;
--static bool blacklisted(const char *module_name)
--{
--	const char *p;
--	size_t len;
--
--	if (!module_blacklist)
--		return false;
--
--	for (p = module_blacklist; *p; p += len) {
--		len = strcspn(p, ",");
--		if (strlen(module_name) == len && parameqn(module_name, p, len))
--			return true;
--		if (p[len] == ',')
--			len++;
--	}
--	return false;
--}
--core_param(module_blacklist, module_blacklist, charp, 0400);
- 
- static struct module *layout_and_allocate(struct load_info *info, int flags)
+-bool __init_or_module module_is_blacklisted(const char *module_name)
++/* module_denylist is a comma-separated list of module names */
++static char *module_denylist;
++bool __init_or_module module_is_denylisted(const char *module_name)
  {
-@@ -3421,7 +3401,7 @@ static int early_mod_check(struct load_info *info, int flags)
+ 	const char *p;
+ 	size_t len;
+ 
+-	if (!module_blacklist)
++	if (!module_denylist)
+ 		return false;
+ 
+-	for (p = module_blacklist; *p; p += len) {
++	for (p = module_denylist; *p; p += len) {
+ 		len = strcspn(p, ",");
+ 		if (strlen(module_name) == len && parameqn(module_name, p, len))
+ 			return true;
+@@ -1428,7 +1428,8 @@ bool __init_or_module module_is_blacklisted(const char *module_name)
+ 	}
+ 	return false;
+ }
+-core_param(module_blacklist, module_blacklist, charp, 0400);
++core_param(module_denylist, module_denylist, charp, 0400);
++core_param(module_blacklist, module_denylist, charp, 0400);
+ 
+ static const char *__init get_builtin_modname(initcall_t fn)
+ {
+@@ -1445,10 +1446,10 @@ static void __init do_one_initcall_builtin(initcall_t fn)
+ {
+ 	const char *modname;
+ 
+-	if (module_blacklist) {
++	if (module_denylist) {
+ 		modname = get_builtin_modname(fn);
+-		if (modname && module_is_blacklisted(modname)) {
+-			pr_info("Skipping initcall for blacklisted built-in module %s\n",
++		if (modname && module_is_denylisted(modname)) {
++			pr_info("Skipping initcall for denylisted built-in module %s\n",
+ 				modname);
+ 			return;
+ 		}
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index 1787c8784aa3..f52af42f5337 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -3401,8 +3401,8 @@ static int early_mod_check(struct load_info *info, int flags)
  	 * Now that we know we have the correct module name, check
  	 * if it's blacklisted.
  	 */
--	if (blacklisted(info->name)) {
-+	if (module_is_blacklisted(info->name)) {
- 		pr_err("Module %s is blacklisted\n", info->name);
+-	if (module_is_blacklisted(info->name)) {
+-		pr_err("Module %s is blacklisted\n", info->name);
++	if (module_is_denylisted(info->name)) {
++		pr_err("Module %s is denylisted\n", info->name);
  		return -EPERM;
  	}
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 3791af0aadc7..d86872912eee 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -64,6 +64,7 @@
- #include <linux/fwctl.h>
- #include <linux/fs.h>
- #include <linux/i2c.h>
-+#include <linux/init.h>
- #include <linux/interrupt.h>
- #include <linux/io-pgtable.h>
- #include <linux/ioport.h>
-diff --git a/rust/kernel/module.rs b/rust/kernel/module.rs
-index d71370598447..3f0545c4d7dc 100644
---- a/rust/kernel/module.rs
-+++ b/rust/kernel/module.rs
-@@ -78,3 +78,21 @@ pub const fn as_ptr(&self) -> *mut crate::bindings::module {
-         self.0
-     }
- }
-+
-+/// Newtype to make `bindings::initcall_modname` [`Sync`].
-+#[repr(transparent)]
-+#[doc(hidden)]
-+pub struct InitcallModname(crate::bindings::initcall_modname);
-+
-+impl InitcallModname {
-+    /// Creates a new [`InitcallModname`] wrapper for `.initcall.modnames`.
-+    #[doc(hidden)]
-+    #[inline]
-+    pub const fn new(val: crate::bindings::initcall_modname) -> Self {
-+        Self(val)
-+    }
-+}
-+
-+// SAFETY: `.initcall.modnames` entries are immutable metadata only read by the
-+// C initcall runner during early boot.
-+unsafe impl Sync for InitcallModname {}
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 0a7b9e24c960..df1d0eb89c16 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -480,6 +480,8 @@ pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
-     let ident_init = format_ident!("__{ident}_init");
-     let ident_exit = format_ident!("__{ident}_exit");
-     let ident_initcall = format_ident!("__{ident}_initcall");
-+    let ident_modname = format_ident!("__{ident}_modname");
-+    let ident_modname_str = format_ident!("__{ident}_modname_str");
-     let initcall_section = ".initcall6.init";
  
-     let global_asm = format!(
-@@ -491,6 +493,9 @@ pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
-     );
- 
-     let name_cstr = CString::new(name.value()).expect("name contains NUL-terminator");
-+    let name_bytes = name_cstr.to_bytes_with_nul();
-+    let name_len = name_bytes.len();
-+    let name_byte_literal = Literal::byte_string(name_bytes);
- 
-     Ok(quote! {
-         /// The module name.
-@@ -591,6 +596,24 @@ pub extern "C" fn cleanup_module() {
-                 #[cfg(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS)]
-                 ::core::arch::global_asm!(#global_asm);
- 
-+                #[cfg(not(MODULE))]
-+                #[allow(non_upper_case_globals)]
-+                #[used(compiler)]
-+                #[link_section = ".init.rodata"]
-+                static #ident_modname_str: [u8; #name_len] = *#name_byte_literal;
-+
-+                #[cfg(not(MODULE))]
-+                #[allow(non_upper_case_globals)]
-+                #[used(compiler)]
-+                #[link_section = ".initcall.modnames"]
-+                static #ident_modname: ::kernel::module::InitcallModname =
-+                    ::kernel::module::InitcallModname::new(
-+                        ::kernel::bindings::initcall_modname {
-+                            initcall_fn: Some(#ident_init),
-+                            modname: #ident_modname_str.as_ptr().cast(),
-+                        },
-+                    );
-+
-                 #[cfg(not(MODULE))]
-                 #[no_mangle]
-                 pub extern "C" fn #ident_init() -> ::kernel::ffi::c_int {
-diff --git a/tools/objtool/klp-diff.c b/tools/objtool/klp-diff.c
-index 34da55e45609..bcea6c524d53 100644
---- a/tools/objtool/klp-diff.c
-+++ b/tools/objtool/klp-diff.c
-@@ -420,7 +420,8 @@ static bool is_abs_sym(struct symbol *sym)
- static bool is_initcall_sym(struct symbol *sym)
- {
- 	return strstarts(sym->name, "__initcall__") ||
--	       strstarts(sym->name, "__initstub__");
-+	       strstarts(sym->name, "__initstub__") ||
-+	       strstarts(sym->name, "__modname_");
- }
- 
- /*
 -- 
 2.55.0
 
