@@ -1,82 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793988021;
-	b=zazTN1mSQdbsCXEPnASK/T+ldWbZv6YlY4jQdSWTAiHI7wqEQUVP6YdXya/PWpUDgHF6
-	 DSWDMJlmyDprlCeysM4r87Cl06AAiS0L+NTTiVLpqrug+jQc2rpavJBBYc3dD0SpnaeKK
-	 z+/ZZ8SQAH8rkYf/c8YmDEcEkxdyjF0/j9y71ZXwK/xsEyXQXJYU6/xDgzIsRBPkCbkKx
-	 vXNZ09YJD85awl3RINK2c/fk1R9h8qyVBAXTtHAE2UZNhMre37jIvs78A4E0E+M5N42FQ
-	 M61qGR1hr9ogkqY2YhRpJo35ch33JCzK3r2a155iRg8UR18X5UsYQYbBR65J1o5KpgA==
+	t=1793992644;
+	b=jOXOViZNx/Ca9tJ658qVHGb/By+iYDmK48tCpHe4hY5h798O6sJKD1xxp6/baVhLJbJW
+	 ZbKmuoF0T7D1O9rUjx9VDL0qesYKejxKu8eqZPCMkt7Mu5YvqJ0e1bnHy55aYs9lIiSx0
+	 aUinG2yzZE60OX5mL+Xwzs3Eu3EeHET1EjfcYHGJ4T3zqAmEoPlmWoiOXzvc87mFVUiJb
+	 lA5jttTSsp57kJ6Qt5ilLsPh12KSIaiYHVqZkVN0KuzZwMIomnyPlJZS+y13wyWNpZ4op
+	 GlHW2OPwbYabKO8dbWlgOkzNTAp9yIBh0W/8KRBC/TT9ljP/WfpSEstuPvugtubZklA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793988021;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=NTao78Z0+nwqj/kr7PCUlsM5HEtatNcwotA0Fg/NlJo=;
-	b=fDE78xBQ2NeEm5xB0yaan6f4serBXWi9z66YInqBH6fZhNcMh2sIPmhyZDIlI54/6tto
-	 1by5MKVKYzaZ2TMnNTuZ0Do0oY7ldPoDkhpgrOsTENutR+U2XpuQYl/5v8hWin6dC/MLE
-	 QZwIPFfFRDRuScXmgU3mGsbSPCfP8X7ldU8yD1vDJO0oNIbjvvt4HdUFwsM9TDNqY8Swk
-	 Uwt3OkQK+2tSfO/und2nEeL1fEIRID1/DmXlIbQxQHETGkcyV4dhcR+GIOjRFtZH/lD04
-	 1LEEku0BOaTZ1qa3ywwEWeCDQCp0stRCGkn/4rBn5FUfTDuJUbey6YU2L89m2JtrlUA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793992644;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=opDReGPxNbgoF/lkah1ZnN+d9K7uBHUX04tEROSAFWU=;
+	b=ngYjh0vfXT1tcT3M2VoVQQIrZRQcsp9yDYSicLpWcN/MEBHKl8a97VMVia/q7X6Z4TiM
+	 JOvhmOmLfmV7q6H4WAAWxl5YLSDfjZV8nRxqIldgvwebVRv7Z3F3bL+bAZePSvYHbSYck
+	 DHF+Oj3LTa/zRGgaSlBi7Q9X1WGe8vVLc5SeMb/hAhvu6oH+1BpsuTHpOEapW/+79MpEn
+	 /2OAwVwWdndUPpFYUul2cpUrHBjAJmkBE6Kk6zTYP/yuffbXcgh2yI40LXOHdZDWJdRnN
+	 8sEjFT2+CrojLeEWMmr1ERrmLJyXfZddlGUW3FbclbX4ZFZZNsdIVzRcI/gJyv4Qk/w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lq8VGHnD;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tdVeEylp;
+	arc=none smtp.remote-ip=209.85.221.46
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350FA606A326;
-	Fri,  6 Nov 2026 18:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7839B606A32C
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Nov 2026 19:17:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7839B606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lq8VGHnD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF5C1F0089F;
-	Fri,  6 Nov 2026 18:00:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793988021;
-	bh=NTao78Z0+nwqj/kr7PCUlsM5HEtatNcwotA0Fg/NlJo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lq8VGHnDYxh0RRUt2wtXp3vpG7zskXderJXd5WAPx+PZjb9pq436aB5jl1whO6R4e
-	 KFwXxz5+yrxzUgQQTbl7+wP0w4mDIhdU/P7fXXPSWnx1cShilwI2/qHUYBZrv9b4Vj
-	 l4j2L185Tx8JYxT+IsyPCBRJxjffUjkqya3bXhUzm12VwMh52nHwvbzYYkoFmC4zXj
-	 SFi7AmpMG2kCDrWa7PRmud4TxEftH+to/F3hNLJU0lclgvivUbSvrQf/ZQzvGS36ge
-	 ftW23GLEJf01Du5La+RogmFJQj3I2OxT0nrjegv/3mJkBLg/XEa8w1nlrWcAt9ctby
-	 BEdU1Y8+LXDag==
-Date: Fri, 6 Nov 2026 18:00:13 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Kwanghoon Son <asdfkwang@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>,
-	Paul Walmsley <pjw@kernel.org>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Anup Patel <anup@brainfault.org>, Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	linux-riscv@lists.infradead.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH RFC 12/12] MAINTAINERS: Add Bouffalo Lab BL808 support
-Message-ID: <20261106-dislike-despise-91106ac848dd@spud>
-References: <20261029-rust-bl808-console-v1-0-b736ee920078@gmail.com>
- <20261029-rust-bl808-console-v1-12-b736ee920078@gmail.com>
- <20261029-spyglass-evasion-772697094cb9@spud>
- <20261029-amuser-savior-6a6ab062f471@spud>
- <auSDJH9V31wmbrYv@debian>
- <20261030-slider-finished-360b10521e0b@spud>
- <auXQaY25XfYzxEb1@debian>
- <20261102-throng-botanical-b244058ecc37@spud>
- <auqC9jOIQTyieQUJ@debian>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tdVeEylp
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48dee593f18so884498f8f.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 06 Nov 2026 11:17:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793992643; x=1794597443; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=opDReGPxNbgoF/lkah1ZnN+d9K7uBHUX04tEROSAFWU=;
+        b=tdVeEylp8uQr+1+RxLJqR/HNFIhsvs2m/OS0BpuoKxs88Ok/8jNteIWXjNJZ+DtJVk
+         wgczD9qos2kCArVBOQ6Xi7cFLgkluITLkhLAKhXH6Vmlm7Xviwb5RxAQZfFUrbkwIp4M
+         bH5G1LQS3NG9IW6vH7oz82IZmiECoykEIDyNBymJR3akGqPYQB9RW78Ry/MQ16+aNJ3O
+         BEDKUOHAeKo3UoHn0bFindc7ThTTDWe/R3U3SNf/QiXj3HdTnfcH/LrKZZfrZ0OwcCxR
+         4oQkvpq/lSzwKFjaio1CzXon8KFsCCw5pirhkC+R0fDujSqr4obOUpa4yiur5aqMjxv2
+         J1NA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793992643; x=1794597443;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=opDReGPxNbgoF/lkah1ZnN+d9K7uBHUX04tEROSAFWU=;
+        b=R0JTI9ch6MhrjuGSbx63PJeuoxCMgM0jPMXhjQeaeV3pdzeXpLYBF7cfwUfc9h6SC0
+         DsJ78OF0OwD5P2QF/3HWHNwPfGFM2BCGdHjQYOJVog0EVIc94q5UlVxK59zF2flsIdT5
+         UoU2E4KeEY+zj73+UP5j3NIU4yOkKvIF3pcNTu+vBaFSzypgpWRTYGiIeDys4C4ghiLl
+         4TdcSyQLxsDtJYdAX2OPn3Mey2nJYcDXhYuQdyLlKjsBSO9H3fhVjcc8Grn5d40dAdbc
+         /c1+ZYpwBb+xECKhMJ5EiKrp+329YTvVV+t0jvgiihV7u/+Ore7Mg/LmgU20j9+ta23a
+         pzOw==
+X-Gm-Message-State: APuU4Z8OC/wpexqlvwmvkJJ9G3TQm9XqdDy8aJxMqn63V3Q3W43JQa9E
+	57k3ZOuSc08bd6TS22pLsESuiT5icspySpRaDsx3Wv/TyadpcoJyxDQJ
+X-Gm-Gg: AYBFou0U6ATtJz/0nB+APrDBP06baatPQZyHJYaWZUsCJfzSb9CHHeHzbYrp05eee4w
+	rOs1f5e1w14eh1da48rgabPNJS5JzCBXiECCFGPEZ4kVrLhl579UvS/dVlSGqd2RUZ4bWtTcwHD
+	iZ7SLPANPrTB0wn5qxUvxSiewBoofPza2cocQSvC/CRu+I7zOcxsb2LJvA0Dk4SWN5HwS4TktPn
+	DWW8UHg0zy5gtbdn890s51Q4FTW4GMpWUPt4VkCWhUou5KN6bl0IujHW2pFmSiiMBBJ62hLZZjU
+	CUolFsdBpx2GXYr5av3c4Pi8rjTTYIHzgJ+7SJmt74XPzeTcWZXX8YTmkgAWOhgwPmS6wo5KzXK
+	0q25wbGJnSktIh08fSYgb3qpY4rROUnipLGCOq/aYuxcguk57WxOm0tY2QMgb3gsZKpoS3UQpcr
+	s1cmWi30j+Pnfl6Y33Ogzf1+JMU7iM0rerkxqu0IVqLvC66FnVcQVztznO6xjI8nvs2gz2EEsx+
+	nwTTEdqb+hnqx3XCh1HdNafpqh/E+ENiJ2XkuKhuSFQ2oBqKERlBkcz7HXREauzLYjGgJYEjp4v
+	f9S146BCGnt12QHajek3TGCLjjFxo+kiZoDt5PWyTXFi6FKHERi4NGol5qhP9tj3PSyI3bLyemp
+	I9FMACIOhUf+QCWuiVMrkNKQwwwVP2aq1wyhkhnKBl+OaZjg0
+X-Received: by 2002:a05:6000:4818:b0:48e:3bc4:a367 with SMTP id ffacd0b85a97d-4940d559deamr170530f8f.33.1793992642527;
+        Fri, 06 Nov 2026 11:17:22 -0800 (PST)
+Received: from DESKTOP-KHFMJSR ([194.9.62.193])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-492d7cc6187sm5224380f8f.46.2026.11.06.11.17.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 11:17:21 -0800 (PST)
+From: clicedvly768 <harepro29@gmail.com>
+To: ojeda@kernel.org,
+	dmitry.torokhov@gmail.com
+Cc: rust-for-linux@vger.kernel.org,
+	linux-input@vger.kernel.org,
+	clicedvly768 <harepro29@gmail.com>
+Subject: [PATCH 0/3] rust: input: add input/serio abstractions and port Gravis Stinger driver
+Date: Sat,  7 Nov 2026 00:17:11 +0500
+Message-ID: <20261106191714.334055-1-harepro29@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -86,47 +95,62 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nAZw+Rabccy81wd0"
-Content-Disposition: inline
-In-Reply-To: <auqC9jOIQTyieQUJ@debian>
+Content-Transfer-Encoding: 8bit
 
---nAZw+Rabccy81wd0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This series introduces safe Rust abstractions for the Linux input and
+serio (Serial I/O) subsystems and demonstrates their real-world usage
+by porting the legacy Gravis Stinger serial gamepad driver from C to
+safe Rust.
 
-On Tue, Nov 03, 2026 at 07:57:42PM -0500, Kwanghoon Son wrote:
-> > I'd rather not really. I shouldn't be the maintainer for platforms I do
-> > not care about, but I will do it if you're unwilling to - in part
-> > because I expect that the volume for the platform will be pretty low.
-> >=20
-> > Please read through Documentation/process/maintainer-soc.rst to see what
-> > the expectations for a platform maintainer are.
-> >=20
-> > Cheers,
-> > Conor.
->=20
-> I'd like to take on BL808 platform maintenance. I'm new to the
-> maintainer workflow, so I may need some guidance initially, but I'd like
-> to give it a try.
->=20
-> I'll update on v2.
+Motivation and Design:
+- In the Rust for Linux (RfL) philosophy, device drivers should not rely
+  on raw FFI and unsafe blocks. Instead, the kernel crate provides safe,
+  idiomatic Rust abstractions.
+- The Gravis Stinger gamepad is an ideal candidate for demonstrating safe
+  Rust driver development in the input subsystem: it uses a well-defined
+  4-byte serial protocol at 9600 baud, 10 buttons, and 2 analog axes.
+- The ported driver (`drivers/input/joystick/stinger.rs`) contains ZERO
+  unsafe blocks, using RAII types (`AllocatedDevice`, `RegisteredDevice`,
+  `serio::Registration`) for memory safety and device lifetime management.
 
-Cool. One thing that I noticed, and felt it was a bit odd actually is
-that the uarts are fed directly from the crystal oscillator. Jisheng had
-that in his original series though so I assume that's actually how the
-hardware works?
+Testing:
+- Built with Clang/LLVM and rustc 1.99.1.
+- Passes all strict kernel Rust checks: `make rustfmtcheck`,
+  `make rustdoc`,
+  and `make CLIPPY=1` with zero warnings.
+- Tested end-to-end in a custom QEMU virtual test environment with serial
+  port loopback (`serport` line discipline `N_MOUSE` and `SERIO_STINGER`).
+- Verified event reporting (`EV_KEY`, `EV_ABS`, `EV_SYN`) via `evtest`
+  and an automated Python protocol test suite across all 10 buttons and
+  both axes (-64..64).
 
---nAZw+Rabccy81wd0
-Content-Type: application/pgp-signature; name=signature.asc
+Structure of the series:
+1. Patch 1: Add input device abstractions (`kernel::input`).
+2. Patch 2: Add serio bus abstractions (`kernel::serio`).
+3. Patch 3: Port `drivers/input/joystick/stinger.c` to `stinger.rs`.
 
------BEGIN PGP SIGNATURE-----
+clicedvly768 (3):
+  rust: input: add input device abstractions
+  rust: serio: add serio bus abstractions
+  input: joystick: stinger: port Gravis Stinger driver to safe Rust
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCau4VrAAKCRB4tDGHoIJi
-0hBwAP0Y6pVSxYDxvE94R7FNDUSClc7MlbdimpLzv2QjqTnZPQD+N2+2p4DXHqcg
-uBvIe5LDtWCUnTdIerEB6cv9Ct+QRwU=
-=Yrrl
------END PGP SIGNATURE-----
+ drivers/input/joystick/Kconfig    |   1 +
+ drivers/input/joystick/stinger.c  | 191 -------------------------
+ drivers/input/joystick/stinger.rs | 174 +++++++++++++++++++++++
+ rust/bindings/bindings_helper.h   |   2 +
+ rust/helpers/helpers.c            |   2 +
+ rust/helpers/input.c              |  18 +++
+ rust/helpers/serio.c              |  23 +++
+ rust/kernel/input.rs              | 174 +++++++++++++++++++++++
+ rust/kernel/lib.rs                |   2 +
+ rust/kernel/serio.rs              | 223 ++++++++++++++++++++++++++++++
+ 10 files changed, 619 insertions(+), 191 deletions(-)
+ delete mode 100644 drivers/input/joystick/stinger.c
+ create mode 100644 drivers/input/joystick/stinger.rs
+ create mode 100644 rust/helpers/input.c
+ create mode 100644 rust/helpers/serio.c
+ create mode 100644 rust/kernel/input.rs
+ create mode 100644 rust/kernel/serio.rs
 
---nAZw+Rabccy81wd0--
+-- 
+2.56.0
