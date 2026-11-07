@@ -1,79 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794057830;
-	b=cTEZ+3fyOXCWYmGTA5rzPEjCdm1BDvnR4Z9viQeDL2eSiJ6otN7Y7JGLfCoFV6XQ6sl/
-	 4hfG2ckLquPU80WhktapVudn9N0Qorjr3H6TtvMsEW3QvQCsHsfXbgdnwgp1fjBC3nNdw
-	 lomPk26bzD/fpRn5ZBupNKE/XPw0auXVVVNlfX4UjLuS28MZj4DLCyfU27N/2+hD5Pvyg
-	 2Y6OoUz/XZrMfhPLY1PU3r4RaQhou5DX7wkiEYNpRuFW8CAnyY/lNQE5cD2+wyrp3cgjP
-	 fhRKqnq+mB2DkQ8IMD4rDGrmYC9Ltx7/LaxAUquP96MmZD5gV6ptWrFuLlIFi/c7C5A==
+	t=1794058009;
+	b=0n7XQpgm/ToKrq4iVFTn3ygbtPNCqnbQpcpHk6bgiWmmv9SO38niQT8Qaj3wcWc0EHUn
+	 NEoiSbcD4s/ZcF/d2BeXpKAP091apc0HX2I8g2+YHO3ZsuMF8apsPkOQixJCMT9olgZly
+	 DLonIOOJtypU8A298Ko4Fe8WsFHDZg9Lmuwzn1mb5qnhl8R2My7HCHKAZLdp+RgyFY4qM
+	 NbCBc/TF8PmyZbxBTfcOj4OWc5aoif0qd43JDJEcVDTu34+3tULovPvpg6Zu4ik2FEgQG
+	 4SpxR4EJRWml/XHaI3QPFuT7OmUjTgG4qLJptO7mkogEv7E+eoT7My6BSLTWfMWqYOw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794057830;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 Mail-Followup-To:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=xjaYRwlA45zF6IjvB1O9To0Zltgb6ki7AR1cQ6X3meI=;
-	b=a66fVj5HSYYgVxdIRMdR8xSbN3cwzJbEMxXv92yoQS3xUx609lI8GSMKG2YFHA9vp7Tf
-	 YiPSTAC/o0sRWZi/18gdw9HFe6tCEbH7bM1HIy1p+sX/0pJuE3bBsofRJV7Fxeg+Nf15I
-	 zXPi4ptrggAQ83Aiy9RkcNBbxDYcwWHhQODcz2NSlgUT8w4eH3FjjybTBvu2D/LIM9MtS
-	 1tWdgpZJoIYxTL+gpFFgU+t6L+YLbB45gk5bF5AI13vGiJxbBhssGsmFaQFD8BUPf5nq4
-	 LckdBWivZgGNLjgbOEpAIi8VMKqcVeM4a2nUQHn2qNyoa5/U97Ii9lvxwnP6C+kjXzQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794058009;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:To:From:Subject:Cc:References:
+	 In-Reply-To;
+	bh=3wI4dPV7vPZzei5+Z1Xw/Btg7c79MJDYSpJrFjLcrW4=;
+	b=d7X2TwrVpvEHjIeA6VAkSrpPgWPi1OHUmQZg/lxrM2TE0FDiSQg3EVmFQ7qyT036RTrc
+	 dGNL93VE7pnEmJPkKci8WutqTZwrAVheGXjMYPe7Z91IEQSsXZqRoU1xYbQxIs54GXBP2
+	 Us4FVB/lh9S7yr5okXMZGlWUS/kO31UO/XyisTrB5MDvFR8gpaPVWhkE+Fb57E7sf5d4G
+	 3sUQMJpY4OjNzJ8LnYjWPbEx9nCN6MrD/BPS3Z+Dr+HNBi9+UCjsqK+b271QN2Z/oMnlv
+	 EG7pFj/PTxk4E79fardmk8iv5LVCNe8m2JY+OO9un9W5OgZ9eq2nvioTarKubKzKQCw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WfAjOFef;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iVkJsnuT;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 9746F606A32E;
-	Sat,  7 Nov 2026 13:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC61606A326;
+	Sat,  7 Nov 2026 13:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WfAjOFef
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id C04D31F008A3;
-	Sat,  7 Nov 2026 13:23:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iVkJsnuT
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C706D1F0089F;
+	Sat,  7 Nov 2026 13:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794057830;
-	bh=xjaYRwlA45zF6IjvB1O9To0Zltgb6ki7AR1cQ6X3meI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WfAjOFefUlhSO8r9R9sE6a2vf44gPkYHjUmhPxakvQKrX8avCEWcF4Mmeo27B2zMR
-	 WtfIiVzwnxiJAQty7O0OdGBjeofCWfT08I92qtONQnhfb8MHpUHjjcI0wwAdlVYYrM
-	 b6JDJbAG4MwevbUPFWS+ptsb38GSoIAnMvtXen2j3ldi4PJq3+cP/5BUYih4UoQVbT
-	 1pAXV0/bseRfrLmBhYcIeMVLGg5TsaDoTa6bkW+cw1+IKqVlwBSKX6T57Cyo7zmtT4
-	 kvUVPsfto0pSEpPVfV2IwKBOuEBJkqUcgujHnAFOFeNjQeK+gx1KBspulnWWqDgPTT
-	 rbpdNuBuHayFA==
-Date: Sat, 7 Nov 2026 14:21:12 +0100
-From: Nicolas Schier <nsc@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Rong Xu <xur@google.com>, Han Shen <shenhan@google.com>,
-	Nathan Chancellor <nathan@kernel.org>, linux-kbuild@vger.kernel.org,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] kbuild: rust: support stabilized flag
- `-Cprofile-sample-use` for Rust >= 1.100
-Message-ID: <au8lyM5upSIKcEdr@levanger>
-Mail-Followup-To: Miguel Ojeda <ojeda@kernel.org>, Rong Xu <xur@google.com>,
-	Han Shen <shenhan@google.com>,
-	Nathan Chancellor <nathan@kernel.org>, linux-kbuild@vger.kernel.org,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
-References: <20261106073528.93371-1-ojeda@kernel.org>
+	s=k20260515; t=1794058008;
+	bh=3wI4dPV7vPZzei5+Z1Xw/Btg7c79MJDYSpJrFjLcrW4=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To;
+	b=iVkJsnuTbj9D0h5tUL2AUlGhtNba5B0o8VmSwmMIPC4rAR4oqYL0lK7VcFF/Cve+s
+	 PNtApozniAR7eKqZH/w5AaC1XGtPAiF55QQxeYBf2Viub8dZkBHh8TqBi91CsjIFsm
+	 GjhVqnkHwoOtDDZyJGdlwV3xEsPv4dOzt6+IFWCNf+x+CpLKVqd21wG80pTCsPu5ZF
+	 17/+liaZUypikekJSXe+l4uKKch0aAIxwp/WvM4cOgTNNdNxnmfWl/z6B7n2muEtBI
+	 XWFbp2fTxFvksM9rdQCCPLBbry6boAtfAxqnMKCOsRhzfbiYmStAxxXriuv4nxV+uj
+	 cxMsQoCBNY/ZA==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -82,34 +48,62 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261106073528.93371-1-ojeda@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 07 Nov 2026 14:26:42 +0100
+Message-Id: <DMP0HGBVA3Q9.T8UP93DA34UK@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2 7/7] rust: drm: make Driver::File
+ lifetime-parameterized
+Cc: <acourbot@nvidia.com>, <daniel.almeida@collabora.com>,
+ <ojeda@kernel.org>, <boqun@kernel.org>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <tamird@kernel.org>, <work@onurozkan.dev>,
+ <brauner@kernel.org>, <lyude@redhat.com>, <j@jananu.net>,
+ <alvin.sun@linux.dev>, <deborah.brouwer@collabora.com>,
+ <laura.nao@collabora.com>, <beata.michalska@arm.com>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20261107021427.2105374-1-dakr@kernel.org>
+ <20261107021427.2105374-8-dakr@kernel.org> <au7eV0D_44ipe3mw@google.com>
+In-Reply-To: <au7eV0D_44ipe3mw@google.com>
 
-On Fri, Nov 06, 2026 at 08:35:28AM +0100, Miguel Ojeda wrote:
-> Starting with Rust 1.100.0 (expected 2026-11-12), the
-> `-Zprofile-sample-use` flag has been stabilized as
-> `-Cprofile-sample-use` and the former is not available anymore [1].
-> 
-> Without this change, when building with `CLANG_AUTOFDO_PROFILE` set, one
-> gets in the latest betas and nightlies:
-> 
->     error: unknown unstable option: `profile-sample-use`
-> 
-> Thus pass the right name.
-> 
-> Cc: stable@vger.kernel.org # Needed in 7.3.y.
-> Link: https://github.com/rust-lang/rust/pull/155942 [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
-> I can take it via `rust-fixes` to get it in for the release, but please
-> let me know if you prefer to do something else. Thanks!
+On Sat Nov 7, 2026 at 9:16 AM CET, Alice Ryhl wrote:
+> On Sat, Nov 07, 2026 at 03:03:25AM +0100, Danilo Krummrich wrote:
+>> +        // Run driver destructors without `filelist_mutex`. Take each l=
+ink before dropping its
+>> +        // allocation to avoid recursively dropping the entire chain.
+>> +        while let Some(mut data) =3D files {
+>> +            files =3D data.as_mut().project().next.take();
+>> +            drop(data);
+>> +            drm.open_count.fetch_sub(1, Release);
+>> +        }
+>
+> Instead of transferring all the files to another linked list, how about
+> taking them off the file list one-by-one? If you release the mutex in
+> between dropping each file, then we still avoid deadlocks if the file
+> private data destructor takes the lock.
 
-'rust-fixes' sounds good, thanks!
+I did consider this, and technically it would (currently) work with
+list_del_init(), but I did not like it because it would be a very subtle ch=
+ange
+in semantics from the perspective of the C code. (I.e. for C drivers the li=
+st
+entry would remain intact after this callback, whereas for Rust drivers it =
+would
+be removed.)
 
-Acked-by: Nicolas Schier <nsc@kernel.org>
+Actually, I did hesitate to move drop() out of the filelist_mutex protected=
+ path
+at all because I don't think there's a way this could actually ever produce=
+ a
+lock inversion, but the "move to a separate list" approach was pretty simpl=
+e and
+very few code so I thought it's worth ruling it out anyway.
 
-
--- 
-Nicolas
+(In any case, I'll soon start working on the C code to implement a common
+lifecycle scheme.  Once we have that, the Rust code becomes even more strai=
+ght
+foward.)
