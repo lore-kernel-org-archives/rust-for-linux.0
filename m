@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794018019;
-	b=t5HHpIaRW6iZaJuctQGkzCCPQ7GJdmpmZZTxTDh5BiXK2jlg0vQvksWBVqDMcxXROlkR
-	 LBbglQCi3TXjNhaezu8wjle65WYS7gC/YSpubcHumXqIrtxmLC5G+OD8JY2QDOXrldUZ0
-	 +uodki5AYiHk6RAInqoBnkYGm76260a3XxdKGHesAu5lMeEJ/7ZoIi2q6yj55q9+4MtLh
-	 4TlI81J5DH+SuJq1hIeL3k3/tn7uYgT/XwFER1sWdLBbtkweA8fcZ25WltOBNc1nkGGXT
-	 L+5sI6vIq3BTwYkPQeBC+hQS7sllIspfmCOpVWdmJ3SRHzvj58fqkjxryValFxB6Lag==
+	t=1794018029;
+	b=gVkpShadBmjG3Pb7SM5ihQgCqjwr856oaZN2Hkw8lnzL4bu0ZNYo5QXVxKmaxVmTxkiP
+	 ALGsdaCgNnbXYP3jlOSBNBN0ZD0hqEscGIXKRfHhbnKMyaU+NXjpOM8lDzkZlT8amM5rK
+	 f8lIX4dhmTVEzNpUIqqsS03s7AH7da0MTi62kNNNw2A/HKw/LTwdopE2aNrpjJn9Y1M+w
+	 p6jJrEVTKMepeSrTu4vprXI661YxuNFjWsfgJsYo56Nsge4dldc7L4M9YN8Z+qUAhHKFa
+	 HjL3u9W5KewMkefyFf8ULs12XlEMnbKE3Z4JH4V3/CcgEKei67CKwN3rGekdaDh83AQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794018019;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794018029;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=tDRNTiewiQVhH6ezSiY3pHSvP82vVUEEInKr2hmCowE=;
-	b=nl9dsWdXL8ue50fdW/H0VZ5+n5Egjy3T8TkFicexuFX87e9Z4phkexdTKCHVfAPWUBPl
-	 2WTrzKEgzP6V+ufVuA86n6VqHHEdZoTyH9VijC+S4xmd576n3okmUcreEl48KEvPyi8iA
-	 sE1AnSb8eu7q902GpFvUh113FPWR1tJsKVA1cRawZBGMjgDE5/uS8mFX1L29bcTgI3kqh
-	 3mAEOdbLqncT92k8dK+Tbr5ofg48877mCttwXoRzt59W0AZ008ViY++SHrlo9YnOvD2Dz
-	 vdiKPXiTvvsjq2uftMRrr2TaOBsvEwVthb6VZJ9Z3kpJLKaTh8bjIGY4efDc2fFoFUA==
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=GQNExV2IBW/VIXiP+QKPq05xQXuih8H7xGZygNB42ds=;
+	b=RVf9ExtUVFV4JRnTiMjyRKeUi5ezzwagiqO6CJ+qBwdNlW13cXuwcnrgqKt2UbItUyn0
+	 ZS2M7y01qwUXCEP6IuUhxysuQHet23m3lLbl7TXvAxa5EvpjHuoNQhejzOh0Om8GcFU02
+	 gZzJmaxDeaOXtVx6G0sxtL3YWnxxoIGHlURJZUMV8efA+v45FqT3K/zc/nLRFJIBChXiq
+	 aLNe96B+nn2BvmTPjVLzuv5vUEb6OhJIC5TCfAb1C0iXqnPCiJAz6pZ+Z11rcj7fF8Ct6
+	 4DBSX9O67KgE6FvEhPApiPttVxnYwZDruUxxpohNjQFEVrmGEzRe3FN5EWNcy0qnspg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XWXDJEhk;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VZG1LcMF;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3EC606A32C;
-	Sat,  7 Nov 2026 02:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93100606A326;
+	Sat,  7 Nov 2026 02:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XWXDJEhk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43361F008A3;
-	Sat,  7 Nov 2026 02:20:13 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VZG1LcMF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4DD1F008A3;
+	Sat,  7 Nov 2026 02:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794018018;
-	bh=tDRNTiewiQVhH6ezSiY3pHSvP82vVUEEInKr2hmCowE=;
-	h=From:To:Cc:Subject:Date;
-	b=XWXDJEhkayTcFSfsWAOQO1bHTomnmHjj4GJkCY7F2b62tyhGf6BbZiGL/++/xD/84
-	 aW+zpwW7i8FfZTu+YjQBuyhVA/l4vcdw+bHebUCGHb5x/8Pp2OnwiEE7Uo7BRa6Hav
-	 96jLqJqLbhNLCzEprO4/peVywMp3tyv/luRRADLM5JoI26LiLQZsHUInXk+RYLsgwu
-	 QvietdolKetbODGE7/6yjjqgcakS5fCkv0yHWrzQK0bXgERrRZQGiRjF5UYaIKv5LY
-	 YrSI3Y+/6b7aTfoazJZetHP7tOXdusLLQoR8qbguQ9Q0EZ83oKM0d/mgW3Qks+Q5cs
-	 WN+yqbP0PooXg==
+	s=k20260515; t=1794018029;
+	bh=GQNExV2IBW/VIXiP+QKPq05xQXuih8H7xGZygNB42ds=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=VZG1LcMFLK+j+r6SEp67HSNoHe81odWNIkDi9DME3e9tBooSE5IWxcPaslSi8HqUH
+	 C84gS9G+hliw3eWpKdf25eor+MavBp1HQsBs38+02DpLYRyIDiszJSRMJcS5sFB+oq
+	 7frnYU+TUngxm6yrZeRftEYxlfd17zIKUH2fO1U5EeEn3xQ6YddOC4s/6ruoddjOz/
+	 QcDCSJczb1iUmHrKi95X1Pn3Kd4s4KkkXJO2V1hUkG4jHskRhrOGJTatlFUtNTpTMH
+	 iJv2SfkEsVXTSMr9TcfVoYEOLslAzIafhFltAhfZ2O4oAaSsvTmr014KeFh+Dp3ii+
+	 m8M39LkGSGnnA==
 From: Danilo Krummrich <dakr@kernel.org>
 To: dakr@kernel.org,
 	aliceryhl@google.com,
@@ -64,10 +64,12 @@ Cc: nova-gpu@lists.linux.dev,
 	dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/7] lifetime-parameterized DRM File private data
-Date: Sat,  7 Nov 2026 03:03:18 +0100
-Message-ID: <20261107021427.2105374-1-dakr@kernel.org>
+Subject: [PATCH v2 2/7] rust: drm: gem: gate open/close callbacks with RegistrationGuard
+Date: Sat,  7 Nov 2026 03:03:20 +0100
+Message-ID: <20261107021427.2105374-3-dakr@kernel.org>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261107021427.2105374-1-dakr@kernel.org>
+References: <20261107021427.2105374-1-dakr@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -79,63 +81,57 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-DRM file private data is currently 'static, preventing drivers from
-borrowing registration-scoped resources in their per-file state. This
-series makes Driver::File lifetime-parameterized, so file data can borrow
-from RegistrationData.
+Wrap the GEM object open and close callbacks with a RegistrationGuard
+(drm_dev_enter / drm_dev_exit) to ensure the driver callbacks only run
+while the parent bus device is bound.
 
-File data is guaranteed to be dropped before registration data, either
-when the file is closed normally or when the device is unregistered,
-whichever comes first. To enforce this during unbind, Registration::drop()
-revokes all open file data and waits for its destruction before dropping
-registration data.
+If the device has been unbound, open returns -ENODEV and close silently
+returns. This prevents driver code from accessing device resources after
+unbind and is a prerequisite for making drm::Driver::File
+lifetime-parameterized, since GEM callbacks receive a &drm::File that
+could otherwise be used to access invalidated file private data.
 
-fops.open is wrapped in a RegistrationGuard (drm_dev_enter/exit) so that
-after drm_dev_unplug() all successfully opened files are accounted for.
-GEM open/close callbacks are similarly gated to prevent access to stale
-file data after unbind.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ rust/kernel/drm/gem/mod.rs | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-The series is based on drm-rust-next with [1] applied; a branch with the
-patches is available in [2].
-
-[1] https://lore.kernel.org/all/20261105005951.756157-1-dakr@kernel.org/
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=drm/file
-
-Changes in v2:
-- Replace ForLt with Driver::File<'a>; use inner_with() for file-data access
-  and allow returning borrowed fields.
-- Use Opaque<bindings::drm_file> during teardown.
-- Drop file data outside filelist_mutex; also clean up file data on
-  registration failure.
-- Reject cross-device GEM handles.
-- Clarify safety documentation and add inline annotations.
-
-Danilo Krummrich (7):
-  rust: drm: rename Ioctl device context to Userspace
-  rust: drm: gem: gate open/close callbacks with RegistrationGuard
-  rust: drm: move file_operations from gem to device
-  rust: fs: add iminor() helper
-  rust: drm: wrap fops open with RegistrationGuard
-  rust: drm: return impl PinInit from DriverFile::open()
-  rust: drm: make Driver::File lifetime-parameterized
-
- drivers/gpu/drm/nova/driver.rs |   2 +-
- drivers/gpu/drm/nova/file.rs   |  16 +--
- drivers/gpu/drm/nova/gem.rs    |   8 +-
- drivers/gpu/drm/tyr/driver.rs  |   2 +-
- drivers/gpu/drm/tyr/file.rs    |  13 ++-
- rust/helpers/fs.c              |   5 +
- rust/kernel/drm/device.rs      | 141 ++++++++++++++++++++++----
- rust/kernel/drm/driver.rs      | 113 +++++++++++++++++++--
- rust/kernel/drm/file.rs        | 179 ++++++++++++++++++++++++---------
- rust/kernel/drm/gem/mod.rs     |  80 +++++++++------
- rust/kernel/drm/gem/shmem.rs   |  11 +-
- rust/kernel/drm/ioctl.rs       |  18 ++--
- rust/kernel/drm/mod.rs         |   2 +-
- 13 files changed, 454 insertions(+), 136 deletions(-)
-
-
-base-commit: cef0cd809e564cca9ac824a369c995ab7e0d16f3
+diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+index 85657a39e146..94355081edab 100644
+--- a/rust/kernel/drm/gem/mod.rs
++++ b/rust/kernel/drm/gem/mod.rs
+@@ -128,6 +128,14 @@ extern "C" fn open_callback<T: DriverObject>(
+     raw_obj: *mut bindings::drm_gem_object,
+     raw_file: *mut bindings::drm_file,
+ ) -> core::ffi::c_int {
++    // SAFETY: `raw_obj` is a valid pointer to a `struct drm_gem_object` with a valid `dev`.
++    let dev: &drm::Device<T::Driver, drm::Userspace> =
++        unsafe { drm::Device::from_raw((*raw_obj).dev) };
++
++    let Some(_guard) = dev.registration_guard() else {
++        return ENODEV.to_errno();
++    };
++
+     // SAFETY: `open_callback` is only ever called with a valid pointer to a `struct drm_file`.
+     let file = unsafe { DriverFile::<T>::from_raw(raw_file) };
+ 
+@@ -148,6 +156,14 @@ extern "C" fn close_callback<T: DriverObject>(
+     raw_obj: *mut bindings::drm_gem_object,
+     raw_file: *mut bindings::drm_file,
+ ) {
++    // SAFETY: `raw_obj` is a valid pointer to a `struct drm_gem_object` with a valid `dev`.
++    let dev: &drm::Device<T::Driver, drm::Userspace> =
++        unsafe { drm::Device::from_raw((*raw_obj).dev) };
++
++    let Some(_guard) = dev.registration_guard() else {
++        return;
++    };
++
+     // SAFETY: `open_callback` is only ever called with a valid pointer to a `struct drm_file`.
+     let file = unsafe { DriverFile::<T>::from_raw(raw_file) };
+ 
 -- 
 2.56.0
 
