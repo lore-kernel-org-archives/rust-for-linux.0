@@ -1,45 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794056736;
-	b=bBDW3/xlaUHDMyd3Y+Kj8781dMMYfqXbhsDdep9P9mJ1rljpjeRUoP6h4aWBgduxB5MO
-	 8PRp4iuFzq2SKLI8oR+V9c+pCCJ0koc/SkPjlnqlShkaQS9Mtp7jhJiHkzlwupWMcM1c4
-	 jB+aWk/QfBT7EXzvOyfC9xY4SnHF+5KXgSkJi8goYbUhPoTABlwffgq4cPk7iSa+OJXPE
-	 zQdLudYxMeTcvm39z+BL3bTqShyJyJ80oGR11Okn5pdAonrZ4XIlephvqMcdMTuZZ5K0H
-	 77FsJGgX25pX51QeQwhMMvqzVmbCMt7x5m71P8vMWfrJxOjlFiCoHyWjE87oehDwgTw==
+	t=1794057830;
+	b=cTEZ+3fyOXCWYmGTA5rzPEjCdm1BDvnR4Z9viQeDL2eSiJ6otN7Y7JGLfCoFV6XQ6sl/
+	 4hfG2ckLquPU80WhktapVudn9N0Qorjr3H6TtvMsEW3QvQCsHsfXbgdnwgp1fjBC3nNdw
+	 lomPk26bzD/fpRn5ZBupNKE/XPw0auXVVVNlfX4UjLuS28MZj4DLCyfU27N/2+hD5Pvyg
+	 2Y6OoUz/XZrMfhPLY1PU3r4RaQhou5DX7wkiEYNpRuFW8CAnyY/lNQE5cD2+wyrp3cgjP
+	 fhRKqnq+mB2DkQ8IMD4rDGrmYC9Ltx7/LaxAUquP96MmZD5gV6ptWrFuLlIFi/c7C5A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794056736;
-	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
-	 In-Reply-To;
-	bh=rYqeNBed//aUso9h3NDMo/epkX/7HrNV/QjT/z9k1Ss=;
-	b=X7ZJReb8B8WdXERZFNItO4t1bvoFSlQ5m2gZwzzPJBtZFlm37fblvta3p25lOogPSFrv
-	 YdwF+M1ocau/mvsLN709jutfCHOmrAOgNy6hexmfIoLVw5aNve2nq1hS/iSnbfSr+WRFl
-	 C0u7KciqtS/45cfqnnM2UUZDz9w43lo+jAWKUeBUyEtzMfWhbT3TO3j9gnbNRPMXpv8el
-	 iPL3nokQML0A7PZDISVMczAG4N2Wo6uEo3NvqpQV6dmmraqGEejLpuBC9JEzkxfnRIrQt
-	 v7I2pBlhgB6/rPk3qjvB4GmhQKXpigu7cQwrAVADtXp7A2QXqCsbOyAI5icjNtLv7Wg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794057830;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 Mail-Followup-To:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=xjaYRwlA45zF6IjvB1O9To0Zltgb6ki7AR1cQ6X3meI=;
+	b=a66fVj5HSYYgVxdIRMdR8xSbN3cwzJbEMxXv92yoQS3xUx609lI8GSMKG2YFHA9vp7Tf
+	 YiPSTAC/o0sRWZi/18gdw9HFe6tCEbH7bM1HIy1p+sX/0pJuE3bBsofRJV7Fxeg+Nf15I
+	 zXPi4ptrggAQ83Aiy9RkcNBbxDYcwWHhQODcz2NSlgUT8w4eH3FjjybTBvu2D/LIM9MtS
+	 1tWdgpZJoIYxTL+gpFFgU+t6L+YLbB45gk5bF5AI13vGiJxbBhssGsmFaQFD8BUPf5nq4
+	 LckdBWivZgGNLjgbOEpAIi8VMKqcVeM4a2nUQHn2qNyoa5/U97Ii9lvxwnP6C+kjXzQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A0r9MZRe;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WfAjOFef;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F99C606A32C;
-	Sat,  7 Nov 2026 13:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 9746F606A32E;
+	Sat,  7 Nov 2026 13:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A0r9MZRe
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590FA1F008A4;
-	Sat,  7 Nov 2026 13:05:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WfAjOFef
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id C04D31F008A3;
+	Sat,  7 Nov 2026 13:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794056736;
-	bh=rYqeNBed//aUso9h3NDMo/epkX/7HrNV/QjT/z9k1Ss=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=A0r9MZRetEvVa+dMthvCVtFMvOuaaemVTDV8WVlfmyS1qyaA12o8pEKgN7au/jvNG
-	 orLAQ45eruZbQYwsin0gOwd6HbWhYoiUW1bcVWa6M0OMFKzXNC9yaPBu3w/f7WFik3
-	 ttlIcZmRfuXXImfpncKXFwccRZ+MpgjUsDympNa+hWye0I6jLEhDe/BpGMgulY9vmh
-	 TI+vwg6X1Yl50+8YMxAEFX6KnvkDVfIewoEyQW4bSjDvMlN+FaFIAjR8iSo8PD3UzB
-	 nePVNAL4Cz+ImI3FZe1Vee4hZzNxdGs/Z8tKQcPT/iGEI6qpBRlXyinWVCm52lgPpH
-	 mBZaTP4/rWqbg==
+	s=k20260515; t=1794057830;
+	bh=xjaYRwlA45zF6IjvB1O9To0Zltgb6ki7AR1cQ6X3meI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WfAjOFefUlhSO8r9R9sE6a2vf44gPkYHjUmhPxakvQKrX8avCEWcF4Mmeo27B2zMR
+	 WtfIiVzwnxiJAQty7O0OdGBjeofCWfT08I92qtONQnhfb8MHpUHjjcI0wwAdlVYYrM
+	 b6JDJbAG4MwevbUPFWS+ptsb38GSoIAnMvtXen2j3ldi4PJq3+cP/5BUYih4UoQVbT
+	 1pAXV0/bseRfrLmBhYcIeMVLGg5TsaDoTa6bkW+cw1+IKqVlwBSKX6T57Cyo7zmtT4
+	 kvUVPsfto0pSEpPVfV2IwKBOuEBJkqUcgujHnAFOFeNjQeK+gx1KBspulnWWqDgPTT
+	 rbpdNuBuHayFA==
+Date: Sat, 7 Nov 2026 14:21:12 +0100
+From: Nicolas Schier <nsc@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Rong Xu <xur@google.com>, Han Shen <shenhan@google.com>,
+	Nathan Chancellor <nathan@kernel.org>, linux-kbuild@vger.kernel.org,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] kbuild: rust: support stabilized flag
+ `-Cprofile-sample-use` for Rust >= 1.100
+Message-ID: <au8lyM5upSIKcEdr@levanger>
+Mail-Followup-To: Miguel Ojeda <ojeda@kernel.org>, Rong Xu <xur@google.com>,
+	Han Shen <shenhan@google.com>,
+	Nathan Chancellor <nathan@kernel.org>, linux-kbuild@vger.kernel.org,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+References: <20261106073528.93371-1-ojeda@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -48,35 +82,34 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 07 Nov 2026 14:05:31 +0100
-Message-Id: <DMP018P7T755.1IJWOWDYOLB2B@kernel.org>
-Subject: Re: [PATCH v2 06/12] rust: io: register: implement Copy and Clone
- for RegisterArrayLoc
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "John Hubbard" <jhubbard@nvidia.com>,
- "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
- <nova-gpu@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20261107-r000-fw-v2-0-fb37cc5b20cd@nvidia.com>
- <20261107-r000-fw-v2-6-fb37cc5b20cd@nvidia.com>
-In-Reply-To: <20261107-r000-fw-v2-6-fb37cc5b20cd@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261106073528.93371-1-ojeda@kernel.org>
 
-On Sat Nov 7, 2026 at 10:48 AM CET, Alexandre Courbot wrote:
-> Register array locations are small values that are cheap to copy, but
-> obtaining one can fail. Making them implement `Copy` lets the same
-> location be checked once and used for several accesses.
->
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: Daniel Almeida <daniel.almeida@collabora.com>
-> Cc: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+On Fri, Nov 06, 2026 at 08:35:28AM +0100, Miguel Ojeda wrote:
+> Starting with Rust 1.100.0 (expected 2026-11-12), the
+> `-Zprofile-sample-use` flag has been stabilized as
+> `-Cprofile-sample-use` and the former is not available anymore [1].
+> 
+> Without this change, when building with `CLANG_AUTOFDO_PROFILE` set, one
+> gets in the latest betas and nightlies:
+> 
+>     error: unknown unstable option: `profile-sample-use`
+> 
+> Thus pass the right name.
+> 
+> Cc: stable@vger.kernel.org # Needed in 7.3.y.
+> Link: https://github.com/rust-lang/rust/pull/155942 [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+> I can take it via `rust-fixes` to get it in for the release, but please
+> let me know if you prefer to do something else. Thanks!
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
+'rust-fixes' sounds good, thanks!
+
+Acked-by: Nicolas Schier <nsc@kernel.org>
+
+
+-- 
+Nicolas
