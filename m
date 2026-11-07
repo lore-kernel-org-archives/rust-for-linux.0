@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794018024;
-	b=mC0JU/hu3Mnp/gyJqalLevPyZn0crvXfL16AveZVBMaEA6YtIXN3JXdAPioFeXc7jQbK
-	 fIpOVvAMdjIipj3RLEuVX3sAXyFswTFol7DGZeh+sFR/UL0LAPQsDGK7WuhUu38a2vQlj
-	 958acGeQ0E8P7ZbZFO/jOTB7KJYvyhxoD6A5annbp4twBia/vNp4IbJrDTsScFXBoGNWe
-	 M9sJ+BX6lRX5Y3/iVt+PvJE0amPjzZ87LSEkP8Ij29UmFc+zbLSieJ4TOPi69TuiHDWTF
-	 9vP8oNK+7yM2j2JsmZ6ky4C5wqLMjFB4yTLNOe+TleXJzuBb5wJoy139oOIT/lb1IeA==
+	t=1794018035;
+	b=YQ+FA8Q0halPYyID3gHcQ2z+HfcedBeXIz4W9Y2iCRE+18h/3fWy9n3X748/8VM0HlU/
+	 n7x6LaoN8279EikDBefEWsbHdLRxXDovdm3D7ZS/V4xEOzp2zO4Y0zUNMRSO334Yf0C01
+	 lhaDtRXsie3E+UvXNsLh2CIiqDL/9gjR30zZRuIROcCKMUGF7+FgK3Xxv5/pxn0el+g3f
+	 lYvVX51ToAZk3te0/otWk97G1SSm72H1i6wP+29e3MAQlC6sBAPjsg4PXWIWzoVtcoYAD
+	 6GEzxVbSzksyJJZeGMlGP6bvyEcE7hAF12/8s7+2iZRll2Fqw43v68kEc9PtDa/fISg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794018024;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794018035;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=TrIuf20+j9/0/4lJxbML9gAP91hF1KjANdxECGNgYyI=;
-	b=cI90Vn4Kg31/cZemKwuf6GUDgq8b7NMgwtd9YBwzw5FB16StcIGDNQsv7I6CNXIE6bDj
-	 GYWGC4q0BkWN0BLPcp7qqvl0NZEMRsBMgVhQUI7uOuAqjHgETgggbyjb8GMrXPzyTYxXC
-	 BswYOG5N+M4p+BRXPtebFb/1B0OFcGMw030yMZoAkj48PDwAu1ZmXuGPvLwp/mj3teuBA
-	 RUQPHwk53zv8KYgdBVpK7XaXDWLm6dTMJANqTarKAYEzSkY9381WdtM1iHCvxYP43G/vv
-	 HqnLw7RNtCCLRYBBbfumXW6vtkW87dOjjA8az6GtNPktXol3hv6ycpnb9qA1aIdk2UA==
+	bh=eqYdLZKOeztfuJHWzQOoytct6WOwi61ZtheTgCfAdyE=;
+	b=05UJb/IPGGO5BKzU9ZVnZV0+9pYZI4r//hVAeJXsLHFUsFlXWWVgVLYHTtNnvjAi5GpM
+	 OIYErk2IqVARm0SxfX9AIQ1DsD3H7sp97cQD938ZfsmeXkK9mjNlPsoa7SwuHIIL3rd7S
+	 bWLTq3HWaNTbfZDHGbiyGF1qn1/eSU3c/kMbUgWtNpBngQCOg3RgeJ2hjTYShY91q+vQl
+	 +hIsh+S9KY5DAgBx6lGnw896lMdHF3X+73pf0c62GdvANGsdRnBCObtWXqnTSftLLOapj
+	 gNTpGu+qCNahEry/UAUX4iNIOshWjS0+mADpc/LRXFb8NbFQFxE5YRFXuhL1chAvb1A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LoZP5Rov;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cn44YoVr;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA81606A334;
-	Sat,  7 Nov 2026 02:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A6B606A32E;
+	Sat,  7 Nov 2026 02:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LoZP5Rov
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18BE61F008A1;
-	Sat,  7 Nov 2026 02:20:18 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cn44YoVr
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28531F0089F;
+	Sat,  7 Nov 2026 02:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794018024;
-	bh=TrIuf20+j9/0/4lJxbML9gAP91hF1KjANdxECGNgYyI=;
+	s=k20260515; t=1794018034;
+	bh=eqYdLZKOeztfuJHWzQOoytct6WOwi61ZtheTgCfAdyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LoZP5Rov2QCisbYKDrvofjl6ahbPCNBGxGk0Vvezasl3hiKXDPcp40QHUsVPaBd6I
-	 aX/IYAejn9fU6Rmuy2oft1k7/28+fIVnO9zGGQQka3/L/F3P8h1dK0gOc8zAC4FwaA
-	 gmRxppWz7zdDvub+/hfclcRzEN3MCb5Z6DME7c8JOKL3dhLEkS6KIZkd7UG9mF0SOq
-	 h0BdWUCvLHnLnsk3sIo3sR0qa6me0MnQXGvSiCUdFg/a2IYH7yHy7U9ZOO1aDE3YoL
-	 azQnOnLo0DyEYyYFn021w1m4byU3HiEY2uPxz79zWDc5vNxIz6Bq4iWYrAwaF0qLbV
-	 GLUpRM3gxcR/Q==
+	b=cn44YoVrUzJUGx61lu47DqUq6M1Sc2JzO9dZ57QLbr0D4+x2fTsRqbgIuFsLA+rqR
+	 SWbVlfTW4lq8WsAr1bHClI0dPPCmvVLnLcH6VoAwJ9ZvclaoWuvFbtgir/MqEH/6TI
+	 DcKJV1VXAeiMHGSEeiTXzGY6eXE8yv5dVKATEecWJZvcPU9wLupTqy1yv8W3X4XX/D
+	 1PLbDdAkQa+LquobyDMPVNeJOkPnk3+8nGT2aO7eB8p750w++2z5f50sDqwQtjtXeG
+	 5J2Ty25QaOmaV0z11BRnXgH6fUyXh/czOHaS4vOu4ycnYzkQ29m26Pd2EGirDrLC/F
+	 XiUjJRYWhj1lg==
 From: Danilo Krummrich <dakr@kernel.org>
 To: dakr@kernel.org,
 	aliceryhl@google.com,
@@ -64,9 +64,9 @@ Cc: nova-gpu@lists.linux.dev,
 	dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/7] rust: drm: rename Ioctl device context to Userspace
-Date: Sat,  7 Nov 2026 03:03:19 +0100
-Message-ID: <20261107021427.2105374-2-dakr@kernel.org>
+Subject: [PATCH v2 3/7] rust: drm: move file_operations from gem to device
+Date: Sat,  7 Nov 2026 03:03:21 +0100
+Message-ID: <20261107021427.2105374-4-dakr@kernel.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261107021427.2105374-1-dakr@kernel.org>
 References: <20261107021427.2105374-1-dakr@kernel.org>
@@ -81,145 +81,83 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The Ioctl DeviceContext typestate represents a device that has been
-registered with userspace at some point. This context is not specific to
-ioctl dispatch; it applies equally to GEM handle callbacks, mmap,
-fdinfo, and any other operation triggered by userspace on a registered
-device.
-
-Rename it to Userspace to accurately reflect its semantics.
+Move the file_operations definition from drm::gem::create_fops() into
+UnregisteredDevice in drm::device. This is the file_operations of the
+DRM minor device, set through the drm_driver struct. It is not specific
+to GEM.
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 ---
- rust/kernel/drm/device.rs | 21 ++++++++++++---------
- rust/kernel/drm/ioctl.rs  | 12 ++++++------
- rust/kernel/drm/mod.rs    |  2 +-
- 3 files changed, 19 insertions(+), 16 deletions(-)
+ rust/kernel/drm/device.rs  | 23 ++++++++++++++++++++---
+ rust/kernel/drm/gem/mod.rs | 20 --------------------
+ 2 files changed, 20 insertions(+), 23 deletions(-)
 
 diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-index 6b88ade28e24..dd1c83fef323 100644
+index dd1c83fef323..3340fa0dc46b 100644
 --- a/rust/kernel/drm/device.rs
 +++ b/rust/kernel/drm/device.rs
-@@ -79,12 +79,12 @@ macro_rules! drm_legacy_fields {
- ///
- /// - [`Normal`]: The general-purpose, reference-counted context. A [`Device`] in this context may
- ///   or may not be registered with userspace.
--/// - [`Ioctl`]: The device has been registered with userspace at some point; used in ioctl
--///   dispatch context.
-+/// - [`Userspace`]: The device has been registered with userspace at some point; used in
-+///   callbacks triggered by userspace operations.
- /// - [`Registered`]: The device is currently registered with userspace and the parent bus device
- ///   is bound.
- ///
--/// Both `Device<T, Ioctl>` and `Device<T, Registered>` dereference to `Device<T>` ([`Normal`]),
-+/// Both `Device<T, Userspace>` and `Device<T, Registered>` dereference to `Device<T>` ([`Normal`]),
- /// so any method available on a [`Normal`] device is also available in the other contexts.
- pub trait DeviceContext: Sealed + Send + Sync + 'static {}
+@@ -195,11 +195,28 @@ const fn compute_features() -> u32 {
+         driver_features: Self::compute_features(),
+         ioctls: T::IOCTLS.as_ptr(),
+         num_ioctls: T::IOCTLS.len() as i32,
+-        fops: &Self::GEM_FOPS,
++        fops: &Self::FOPS,
+     };
  
-@@ -120,14 +120,17 @@ impl DeviceContext for Registered {}
- /// unregistering or already unregistered. `drm_dev_enter()` can guard against this, ensuring the
- /// device remains registered for the duration of the critical section.
- ///
-+/// This context is used for all callbacks triggered by userspace operations: ioctls, GEM handle
-+/// management, mmap, fdinfo, etc.
-+///
- /// # Invariants
- ///
- /// A [`Device`] in this context has been registered with userspace via `drm_dev_register()` at
- /// some point.
--pub struct Ioctl;
-+pub struct Userspace;
+-    const GEM_FOPS: bindings::file_operations =
+-        drm::gem::create_fops(crate::module::this_module::<T::OwnerModule>().as_ptr());
++    const FOPS: bindings::file_operations = {
++        let mut fops: bindings::file_operations = pin_init::zeroed();
++
++        fops.owner = crate::module::this_module::<T::OwnerModule>().as_ptr();
++        fops.open = Some(bindings::drm_open);
++        fops.release = Some(bindings::drm_release);
++        fops.unlocked_ioctl = Some(bindings::drm_ioctl);
++        #[cfg(CONFIG_COMPAT)]
++        {
++            fops.compat_ioctl = Some(bindings::drm_compat_ioctl);
++        }
++        fops.poll = Some(bindings::drm_poll);
++        fops.read = Some(bindings::drm_read);
++        fops.llseek = Some(bindings::noop_llseek);
++        fops.mmap = Some(bindings::drm_gem_mmap);
++        fops.fop_flags = bindings::FOP_UNSIGNED_OFFSET;
++
++        fops
++    };
  
--impl Sealed for Ioctl {}
--impl DeviceContext for Ioctl {}
-+impl Sealed for Userspace {}
-+impl DeviceContext for Userspace {}
- 
- /// A [`Device`] which is known at compile-time to be unregistered with userspace.
- ///
-@@ -344,7 +347,7 @@ pub(crate) unsafe fn assume_ctx<NewCtx: DeviceContext>(&self) -> &Device<T, NewC
-     }
- }
- 
--impl<T: drm::Driver> Device<T, Ioctl> {
-+impl<T: drm::Driver> Device<T, Userspace> {
-     /// Guard against the parent bus device being unbound.
+     /// Create a new `UnregisteredDevice` for a `drm::Driver`.
      ///
-     /// Returns a [`RegistrationGuard`] if the device has not been unplugged, [`None`] otherwise.
-@@ -467,12 +470,12 @@ fn deref(&self) -> &Self::Target {
-     }
+diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+index 94355081edab..260f36817f96 100644
+--- a/rust/kernel/drm/gem/mod.rs
++++ b/rust/kernel/drm/gem/mod.rs
+@@ -388,23 +388,3 @@ impl<T: DriverObject, Ctx: DeviceContext> AllocImpl for Object<T, Ctx> {
+         dumb_map_offset: None,
+     };
  }
- 
--impl<T: drm::Driver> Deref for Device<T, Ioctl> {
-+impl<T: drm::Driver> Deref for Device<T, Userspace> {
-     type Target = Device<T>;
- 
-     #[inline]
-     fn deref(&self) -> &Self::Target {
--        // SAFETY: The caller holds a `Device<T, Ioctl>`, which guarantees all invariants
-+        // SAFETY: The caller holds a `Device<T, Userspace>`, which guarantees all invariants
-         // of the weaker `Normal` context.
-         unsafe { self.assume_ctx() }
-     }
-diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
-index 64af9eacc306..9934b23c36eb 100644
---- a/rust/kernel/drm/ioctl.rs
-+++ b/rust/kernel/drm/ioctl.rs
-@@ -71,14 +71,14 @@ pub mod internal {
-     pub use bindings::drm_file;
-     pub use bindings::drm_ioctl_desc;
- 
--    /// Cast an [`Ioctl`] DRM device pointer to [`Registered`], preserving the driver type
-+    /// Cast a [`Userspace`] DRM device pointer to [`Registered`], preserving the driver type
-     /// parameter `T`.
-     ///
-     /// Used by [`declare_drm_ioctls!`] to anchor type inference.
-     #[doc(hidden)]
-     #[inline]
-     pub const fn __dev_ctx_cast<T: crate::drm::Driver>(
--        ptr: *const crate::drm::Device<T, crate::drm::Ioctl>,
-+        ptr: *const crate::drm::Device<T, crate::drm::Userspace>,
-     ) -> *const crate::drm::Device<T, crate::drm::Registered> {
-         ptr.cast()
-     }
-@@ -144,14 +144,14 @@ macro_rules! declare_drm_ioctls {
-                             // - The DRM device must have been registered when we're called through
-                             //   an IOCTL.
-                             //
--                            // INVARIANT: The `Ioctl` context requires that the device has been
--                            // registered via `drm_dev_register()` at some point; the DRM core
--                            // guarantees this for ioctl dispatch callbacks.
-+                            // INVARIANT: The `Userspace` context requires that the device has
-+                            // been registered via `drm_dev_register()` at some point; the DRM
-+                            // core guarantees this for ioctl dispatch callbacks.
-                             //
-                             // FIXME: Currently there is nothing enforcing that the types of the
-                             // dev/file match the current driver these ioctls are being declared
-                             // for, and it's not clear how to enforce this within the type system.
--                            let dev: &$crate::drm::device::Device<_, $crate::drm::Ioctl> =
-+                            let dev: &$crate::drm::device::Device<_, $crate::drm::Userspace> =
-                                 $crate::drm::device::Device::from_raw(raw_dev);
- 
-                             // Type-inference anchor: the closure is never called but ties `dev`'s
-diff --git a/rust/kernel/drm/mod.rs b/rust/kernel/drm/mod.rs
-index fd6ed35bc35a..7fcf2465a82e 100644
---- a/rust/kernel/drm/mod.rs
-+++ b/rust/kernel/drm/mod.rs
-@@ -11,11 +11,11 @@
- 
- pub use self::device::Device;
- pub use self::device::DeviceContext;
--pub use self::device::Ioctl;
- pub use self::device::Normal;
- pub use self::device::Registered;
- pub use self::device::RegistrationGuard;
- pub use self::device::UnregisteredDevice;
-+pub use self::device::Userspace;
- pub use self::driver::Driver;
- pub use self::driver::DriverInfo;
- pub use self::driver::Registration;
+-
+-pub(super) const fn create_fops(owner: *mut bindings::module) -> bindings::file_operations {
+-    let mut fops: bindings::file_operations = pin_init::zeroed();
+-
+-    fops.owner = owner;
+-    fops.open = Some(bindings::drm_open);
+-    fops.release = Some(bindings::drm_release);
+-    fops.unlocked_ioctl = Some(bindings::drm_ioctl);
+-    #[cfg(CONFIG_COMPAT)]
+-    {
+-        fops.compat_ioctl = Some(bindings::drm_compat_ioctl);
+-    }
+-    fops.poll = Some(bindings::drm_poll);
+-    fops.read = Some(bindings::drm_read);
+-    fops.llseek = Some(bindings::noop_llseek);
+-    fops.mmap = Some(bindings::drm_gem_mmap);
+-    fops.fop_flags = bindings::FOP_UNSIGNED_OFFSET;
+-
+-    fops
+-}
 -- 
 2.56.0
 
