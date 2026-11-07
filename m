@@ -1,73 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=34.202.193.197
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794059808;
-	b=rvs9xqhUeo8vLnV/06Mj9LoIP4vRRmRsBz9K4NEYLQgsJ/Ey3rcKrbII1zdzmI4vFUJi
-	 pyOGaJs3m/vqYwNXBSbWBCfXpjzg4xztmsIlukm0mgJq3FSF1Kp3uaFDpl6JHQUcSy450
-	 xULUoK2Ht0N39xH6O2Rj75OvAZ6iy69zbvl7Xw/VDaRH7PuvVc6O9eT8qKI7Fv3hIOCrh
-	 Hdx+RTXqiCKDHK4OjpVreglA29/yCWRicB+QWIqk1vx/tGqsJO0pkBMY8kMJb/A3U00O7
-	 j3p2RQ7cytyrJIzInoAZtkOGSzawpL2eAww2tfg7MpLoaJ7Lu4hTu0oORwWEMtZnwzw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794059808;
-	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:Feedback-ID:
-	 X-Pm-Original-To:Received:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=6TDIa4WBe03aqlzFy9TN8awAuksm28T92BfNeJQsqFs=;
-	b=X/GUsEO3NyAxPpp6I0xgJar0rJHNDqxEQ99OdyVLlAdnbjFYqg04wyr/vEMT99/JAF7S
-	 E1ncVHArwyd5XTZ+Y6Yzzv5r4b7ZzBWvskETlMS90ueP9jTwYt6lNXowQtI5NGjJQw3+g
-	 LS9ZKUudBdehSEo585+pVndtmNfD9d3NyOc/IOm7SWRcoZu4mjcibkkyoyg+sZrDG08un
-	 pem8Nr9cxPJ6fr2/7Jf5Ho2YbuiUx3pE8sS4x9hGrdEMg9C0KtIWLZBIue/dRkU6RJPE3
-	 unQQ1dmSMOm7F99L40hMqaHY4ZgB+cuHnfxFx5wTFGg2fn24L+rpm+e8JiNHShMlnIw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=younes.io;
-	spf=pass smtp.mailfrom=younes.io;
-	dkim=pass header.d=younes.io header.i=@younes.io header.a=rsa-sha256 header.s=purelymail3 header.b=oSVOeTmc;
-	dkim=pass header.d=purelymail.com header.i=@purelymail.com header.a=rsa-sha256 header.s=purelymail3 header.b="mGhbr0/r";
-	arc=none smtp.remote-ip=34.202.193.197
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.177
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794060150;
+	b=LNhBplfdigcGldtnWUcZqllC60gaLoR/d8qbCuCrtAKzTL2S68biimF2ohsOQjZHWt3i
+	 M/9/BhLkEAAaUlQhIPns+GT4xvIz6bsYgVO7uoBoks3EgXiYa+95wzPZyKLzdBN4EwtGI
+	 B74QTI8NkwlDy3Tc3F7xlqLrGtS5ufIWc4C+PIV3FYdZr81HtTjrBcBK30d9YoQcnc1ns
+	 q7ipzisMUD8hdcwPAnEoNioqWzdZElV/cInQMy2BFjcv+SrTyd89Puc3hApeGu1zXqCb4
+	 23uNlOnu1GuTS58aus7JsTDV4i4vskHlZMUnVydzjmTWCaydvwaeuZsVkYQxHt1EquQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794060150;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=UBWRI6sRCnfwJdsXfR8+DTAMw8Nima0Z6iOYhkxws+E=;
+	b=y0QiMP8SZ58HOA7akRpCmyEIK7bJUSGQ4bMhWvRPBxnmu+ID7ajGuWA67TsDp3cRAGOO
+	 xKeUlt7YN5lcQv/obpMGiJAU2IgujzfKPOm+AIjICEEvQ93ENgyiI4vPdr672KclwVcNo
+	 s5KRxniGJ4KUJhOpt6zvA8vkl2dsA4R4/Lyd0LkH7i9taMtBlyYyaf5zaxRrgz2NrH9Zf
+	 419avK6tWS7gwo+3TwFOf/cPcTQPK5ZHnsn5F8jbtbOTpYNKlJaHd4SADKcTumi7MAwjk
+	 9LtXTAt6f7AwayDqy8uGyTuFSpHYdXBKix7MLJz2llfLfUCSRXVjXi07XKe6Y4erQ6w==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=N3VbZ2J2;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.177
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE76606A326
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Nov 2026 13:56:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7EE76606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=younes.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=younes.io
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB58C606A32C
+	for <rust-for-linux@vger.kernel.org>; Sat,  7 Nov 2026 14:02:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB58C606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=younes.io header.i=@younes.io header.a=rsa-sha256 header.s=purelymail3 header.b=oSVOeTmc;
-	dkim=pass (2048-bit key, unprotected) header.d=purelymail.com header.i=@purelymail.com header.a=rsa-sha256 header.s=purelymail3 header.b=mGhbr0/r
-DKIM-Signature: a=rsa-sha256; b=oSVOeTmcxLLUBomE4OrFL/BBmxJdRciQ+RsuktVDWk3vlhuRgZoWvhhB4stg/BHIev1M9AgQSz6yk052hjxuIWUctFdf8YfTN3q2yjUoKNgbPcum8NGvVZqHC+fICJijAmNi/53PaWE8YiiximjVdfrCXCd4Ure5g+8cZncGG/f4AIn5c6WG+8HhMPOhEuvbcNR3Tc94EjvrvzMeY/vvrbwT9ClCGsW+DGv3Oo0Qw5lnN9euLkoaoRymFq34YjfEoHuv7dvFrisZRoGlKkkrF07WNrsg5uSYslncazQaoIQOGnJZJShDlguL0jhlHuezqMBCIk0pd8goyIyCJL/Kxw==; s=purelymail3; d=younes.io; v=1; bh=Fc6IXWLwH5VrIIY4TpPhp1GmAfGDN5J90ztlIHB9e0c=; h=Received:From:To:Subject:Date;
-DKIM-Signature: a=rsa-sha256; b=mGhbr0/r7rErQIyfbQs8b8HFkifVWABVgEVIcYD7l8kfYuVa4UeErsSmyEzvm3LVD3ZzHYbk5Dp7vkE600JNYsFlue5uWgkwQkYgyEP1pMVAJtnIFEx4eWsvu7JGLOm8sCOv9wHPn0lZlpKOxjm51Wh+d3YiTiB8ZQupyj9lC2C4WWxoco59dbEN9yTYN1ebYAnuXTKxPims2vdSqGUwMUB0ztlo33r7WHlwgKf9R71rU4Gsa7vJgbDcihud2Mve2kOceA1VDfrdkvYYijI7aWkrBsxFBA9P/QeGBLuaSnOpXhVOjzRwPExPCtfXL8I7KJn6P9t2TZTOZ3ChmIp3xQ==; s=purelymail3; d=purelymail.com; v=1; bh=Fc6IXWLwH5VrIIY4TpPhp1GmAfGDN5J90ztlIHB9e0c=; h=Feedback-ID:Received:From:To:Subject:Date;
-Feedback-ID: 1578161:62319:null:purelymail
-X-Pm-Original-To: rust-for-linux@vger.kernel.org
-Authentication-Results: purelymail.com; auth=pass
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 1341206260;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Sat, 07 Nov 2026 13:55:39 +0000 (UTC)
-From: Younes Akhouayri <git@younes.io>
-To: Philipp Stanner <phasta@kernel.org>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Matthew Brost <matthew.brost@intel.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Tvrtko Ursulin <tursulin@ursulin.net>,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 7/8] rust: drm: Add JobQueue
-Date: Sat, 7 Nov 2026 13:55:38 +0000
-Message-ID: <kw-1794059738.215694434-299782-0@younes.io>
-In-Reply-To: <20261106140752.520386-9-phasta@kernel.org>
-References: <20261106140752.520386-2-phasta@kernel.org>
- <20261106140752.520386-9-phasta@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=N3VbZ2J2
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-36dbde64409so2140010eec.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 07 Nov 2026 06:02:29 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794060149; cv=none;
+        d=google.com; s=arc-20260327;
+        b=dbPxwlDiQmj4wgj4ogHxZCkh14F1daCLfq8/QGLJAM7XFpMSR+trN05VPJYswshET4
+         YbxJfTZvvkBi5Fw//+7reSfiNJ0v763fBFDa1pDXK5oRPy7i7Rb3YC+voQk7X+Mtx7Qt
+         1IazyFFBu1612i7yxbqZANT3HmxZDltQYEx9Q4jvk+mDoUf+qjdC8qgNyZsK2BtWZ3g+
+         oT1yJBnSuKIyHPHGgtwK9U6p3IWm0alt8IBa0KahWQy1pIxcbyihxR0rliFcH7SgmUp5
+         Cf53hZyOCrNyRyBHjft5tVHYVdC66o8XNqJf1mYKIEv8//AY4ubOkgPLtAduVAczCOaC
+         qvFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=UBWRI6sRCnfwJdsXfR8+DTAMw8Nima0Z6iOYhkxws+E=;
+        fh=v8vltI0QMUAEF9T6Mlg6QmgvjQpMnxcbc/P4/yods80=;
+        b=PVYFEJgRyfWDTwITlwHWtxgMSFZzR1PThbdz0jpGRcuYM//CF6SiqGWutx/18730Bm
+         xORpFBCFCuvskFltVfYKEVZibzxUHylKMAzgC9a9+HXj72bX2RxbZobgXpUzMABbjl42
+         9/d4pwv9sYKNLTUcEdTyB7bv9tHRimF6n+PTxZG7iLeq9HF5lhR+larrAlapPqiWpz0u
+         hp+jFhc1JO21HP9SNvByYylUD9H3FB19zOSaJUUpWUkRz+JQuB/0MhOMg0r8YQC9rRp5
+         eDP2n+EEt4L6JI4Ir1wuJRGQ1ifK/5SKaGl0fS0S5wob1P1SFJye6ruTZmTrMLLfO7vx
+         WPSA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794060149; x=1794664949; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=UBWRI6sRCnfwJdsXfR8+DTAMw8Nima0Z6iOYhkxws+E=;
+        b=N3VbZ2J2KMaS5xTWGi7UY2L8BS/0hUs7gKgP3i7BjaacqxlFvZ4iVWi7MJGE1Apq20
+         UQv27C2+rc1oEiXL1uReY2CycGLbqBBli+9YWx5aBVrqBDu/vff9CzpsCMo0lkZsuAYp
+         mwiZS6J7ZCbc2N6A7RDA/Vq9c6KbUfsiHXHCGCxuEF/BQEAvlWGLGQTm0DYb3xWVzlKz
+         2LM7uRZ8TZZxYDGqBvmnlL6+ptEWv1IAvW+Tw9NP6iqKj+SrbgY5pifF70xx3e6Hr+uw
+         6f6zCgQD2CLwD3Z8/MtWPfDKg9IuF258vGx9tBzVzzaKeSFoE56/JT6SNoHIYU4/FtpS
+         9dDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794060149; x=1794664949;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UBWRI6sRCnfwJdsXfR8+DTAMw8Nima0Z6iOYhkxws+E=;
+        b=GTqMWKhEqoUbGCOMFtoI8COyLVVEuc4P4kbk71HSKFjyuZCQZtXLzh2YKGWf0lVXgE
+         lyh1S8A4tiLC9DjCl/1gdCTOf+oIGLEyf4vbqvZYei/4FN49tzIzZhggEp1WgznbSgmR
+         s0mM07PJLeAcBE+JV27DKc2ZjSFpc7qypOZAY/ONkgwjWC4LRtjMO9SiWOZPn0OJI2Uz
+         b/uzk1KogDyyPBUXj9sndlRctOdyks4WkLpW0AhpVAHkI3txBh/z1Pu6omfV8LHBfj4D
+         DQasFGiAEottJwpc9w76m17fjSPAkifBy3arP2+Imlwic6cX0UEeKEa7o4DW7E9WOQIN
+         O8YA==
+X-Forwarded-Encrypted: i=1; AL+hErE9Dt6lws1ZYAJzYxhAqkDYDuNTeJ37cQbuDAMqhzbGtmBaizXtsa8NbsXiWnDG5pWvkRO/QGAm4zz2qPEQwQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z82r9bb+AAz4WpjiP7kl9qGb0vLjC5F8e0qb5ft+uR2Hu3hzRd1
+	ZeG4xeHGjAcqtmYXCpWygv5NWjdFIKxeZ0O3wwpmArVms6xLausPUHG8zbYd/F2kBCI9lkHRZd4
+	IWUTYp4lopdn6kP5Nk5zhsTltt+6EgFk=
+X-Gm-Gg: AYBFou0X+ASKaeOlQTY7K/p0oTaAWPviQn6sL0FM4sGJr6pYbhj3CSjgxJEqSpW2kLM
+	/TS8gl8v1T5P95c9fV/7MWNboWc75lYsddMFYVkwV9LxmMZ1cYq6wN6hYbmYOqrY+s7pekaftyx
+	p9i4wxUHHZitbLwHc55+ZtlXav/MVBlGM1i7ey4jK3fgMlFsVV6s67OKan+KMq5JvJeGkniOf0+
+	Y/6iMSCNpXBTixvyq6gcULvFiQAQ9u4roKKGqnfXSoDblKfmrA67A74I8zRfKDhtuZO1cX9DHlM
+	tou5my7xozhS9lV/KCCxhZ0+v1ljM7HSwFxrZb6a/tVF7jSPiQcp3majjTACJyKyNsWivY9WamI
+	AK3h0FhtFtAA1Hr0WIRbFoJoOSVBjqwdIknpqDlqpCRZn2USHLPQ7H92x3GwYynupTFJRZObLjE
+	I0jyWnyNTSxtSMZzbdcYQFkXu1todmQvQ07eqz4Ri393vlwepPlQXGNYskB30tH8rI55S6WKo=
+X-Received: by 2002:a05:693c:68c3:b0:358:8f02:e0ca with SMTP id
+ 5a478bee46e88-36f754414a0mr8478739eec.9.1794060148890; Sat, 07 Nov 2026
+ 06:02:28 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -77,52 +105,66 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20261019-chid-v10-0-67de9180b4ed@nvidia.com> <20261019-chid-v10-2-67de9180b4ed@nvidia.com>
+ <DMOZVVGB0O5E.1XLZHZVLFYBAJ@nvidia.com>
+In-Reply-To: <DMOZVVGB0O5E.1XLZHZVLFYBAJ@nvidia.com>
+From: Burak Emir <burak.emir@gmail.com>
+Date: Sat, 7 Nov 2026 15:02:12 +0100
+X-Gm-Features: AclHuK-j_BUOtjpwGmqXWoxYJLK8ze9j6ufmkDg9fB821Uo8UGX-BRotwpA_pnA
+Message-ID: <CABwQupO1Tp2EM=iNq24_9_krZ+6vhvXxQ2TxJ7LUC30oSXJ66g@mail.gmail.com>
+Subject: Re: [PATCH v10 2/3] rust: id_pool: do not round capacity up to BitmapVec::MAX_INLINE_LEN
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Eliot Courtney <ecourtney@nvidia.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, John Hubbard <jhubbard@nvidia.com>, 
+	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 6 Nov 2026 15:07:52 +0100, Philipp Stanner wrote:
-> +
-> +            drop(jq); // Release lock.
-> +            T::run_job(work.fctx, runnable_job);
-> +            jq = work.inner.lock(); // Retake lock.
-> +
-> +            // run_job() above needs to be called without lock protection. Thus,
-> +            // it is possible that the driver instructed completion right before
-> +            // we could re-take the lock.
-> +            if jq.last_completed >= seqno {
-> +                *jq.as_mut().project().capacity += u64::from(job.cost);
-> +                fence.signal(Ok(()));
-> +
-> +                // Drop here directly if possible. Otherwise, let the DropWorker
-> +                // take care of it.
-> +                if core::mem::needs_drop::<T::JobDataType>() {
-> +                    jq.drop_list.push_back(job);
-> +                }
-> +            } else {
-> +                jq.running_jobs.push_back(job);
-> +            }
+On Sat, Nov 7, 2026 at 1:58=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.c=
+om> wrote:
+>
+> On Mon Oct 19, 2026 at 1:29 PM JST, Eliot Courtney wrote:
+> > Current code in IdPool::with_capacity rounds the capacity up to
+> > BitmapVec::MAX_INLINE_LEN, but BitmapVec::new works fine with values
+> > smaller than this and still uses an inline representation. Remove this
+> > behaviour.
+> >
+> > This allows specifying a real capacity of 0, which was not previously
+> > possible. This breaks `grow_request` in this case, so change it to grow
+> > to at least `BitmapVec::MAX_INLINE_LEN`, mirroring the capacity floor i=
+n
+> > `shrink_request`.
+> >
+> > Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+> > ---
+> >  rust/kernel/id_pool.rs | 38 ++++++++++++++++++++++++++++++++------
+> >  1 file changed, 32 insertions(+), 6 deletions(-)
+>
+> Alice, Burak, Yury: I would like to get this series out of its current
+> limbo. AFAICT, Alice and Burak are ok with the current design [1][2],
+> and Yury's request to change stop using a zero-sized pool in the example
+> has been fulfilled by this patch [3].
+>
+> This series would need to go through drm-rust-next as we have
+> dependencies on it for the 4.5 cycle. May I ask for an ack on this patch
+> to push it through drm-rust-next?
 
-When the IRQ wins the race, `complete_jobs_up_to_seqno()` kicks the DropWorker before the job lands on `drop_list`, and this branch pushes it there without kicking again. Am I reading it right that the job then sits on `drop_list` until the next completion or until the queue drops? If so, is that acceptable, or does this path need a `check_start_drop_worker()` too?
+Reviewed-by: Burak Emir <burak.emir@gmail.com>
 
+For me, yes, it is good.
 
-> +        self.with_inner(|inner| {
-> +            let mut inner = inner.lock();
-> +            let drop_list = core::mem::take(&mut inner.drop_list);
-> +            let waiting_jobs = core::mem::take(&mut inner.waiting_jobs);
-> +            let mut running_jobs = core::mem::take(&mut inner.running_jobs);
-> +
-> +            while let Some(job) = running_jobs.pop_front() {
-> +                let fence = job.fence.as_ref().expect("fence not present");
-> +                fence.signal(Err(self.err));
-> +            }
-> +
-> +            drop(inner);
-> +            drop(drop_list);
-> +            drop(waiting_jobs);
-> +            drop(running_jobs);
-> +        })
+In particular, the thing that Sashiko finds the panic of using 0 size
+with find_unused_id and CONFIG_RUST_BITMAP_HARDENED=3Dy was explicitly
+discussed before and is intended behavior.
 
-In the `while let Some(job) = running_jobs.pop_front()` loop, `job` goes out of scope at the end of each iteration, while `inner` is still locked. If `JobDataType` has a `Drop` impl, that ends up in `DriverFence::drop` -> `synchronize_rcu()`; so is sleeping there with the irq spinlock held intended, or should those jobs be collected and dropped after `drop(inner)` like `drop_list` and `waiting_jobs` are?
-
-Regards,
-Younes
+cheers,
+Burak
