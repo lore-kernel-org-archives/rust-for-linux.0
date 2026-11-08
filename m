@@ -1,68 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794150695;
-	b=Dye8HXm4JFXwcoRJP0ug6AThcVhlWFvOzhbKNURZ9cmV/jCFUGUTjUxCVVlt89EarLVQ
-	 BSnVIuT0N16afVRUK43Bry2vBiR09iM/mJQCD9a1BFnXjor+ViuJ7eV8KRprE7UBNL2SZ
-	 2AfRTeTlLtQ0H/jTgweCHCrmYxCfJllUPZDkhgqC09xOeLTcG0g52PZa1hx18RZONz/d0
-	 TSw8ZrFebBzcmoIq/abS3+fTbO/b9E01+QNeBnPFhDPs1C+xUQ8WC3kTjBENBmOAQds0J
-	 W5SLrt+7jP1Pc4LdwuSnGTwxNJ/fw6GrbQDRFu0VLGQVbHeA6utDlARKb4x1UFW3Uig==
+	t=1794155778;
+	b=bkVggFMOCAObkZE8AGuHVtOvd6iEqUNuhU6gm4U0TXXOLXuwqnP6S+WOGN6fLnfsDPds
+	 xiiBeUJ9nr2DMIHyvkXTXLRBCuuuN/B+5/mX8726s6tOrq9bppboyMLywC77PIA6+CLhh
+	 0udR13GBF+TLlSxLFDH5FxbgsW3bg6K/HZkQf1NfTvx8FfkIHDdj8AAN6R5zngXhiHV+9
+	 SdOs1srgSpT7PABCicZ5VzXyJqB4zVSNvvYDd67bUlJYsIHFwMNc8mi6epEMGFzj9lyPP
+	 ubXrETbqf0aljitBTi+Ep/2Lyd28qDi/KlLLae008GyBRu8VeuSkIKKXJrpcD0GFqEw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794150695;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:MIME-Version:X-Received:Date:
-	 In-Reply-To:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=i5PPzRt+yxwpbv/xozk5+L1M/Zvyd7L2ZCDx2pqWy3g=;
-	b=1NjqsaU6oU24RzB1zXCNtoEyIQC4Kw/+JP6WR+UcDpPHcx/b/+COeZPLFXbUaYeBA6Su
-	 JgrZ7SS3Gg+m5UlJUXxXN/19iVizjAvc5qfwMtFRgmaazA3Ep5uneI7bH7mIy5j07dX/0
-	 PFBF2Gor5Fe2Yq0wdK8zR0cSU5prQwtnjDrmbNvdQ5CD4IgKLioGY2szG2jFinU+KK5N6
-	 q0ya0flhbfb4QwRc/GWgzHdv7xd7BAwpzvPulAojzaq2fAw99ZAXyIttyu6djpt5ipzcE
-	 vyqotrs9j1NH14d8Bcgxs7KiJcR56ZeDLdHpHHNJVfB1fLxS6k6AImoH0JNW8h07XXQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794155778;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=yB7UQp3PMsWCYdqrryq4xgyn2qyEFFfma2wfNMpg+LY=;
+	b=e0lsUQmQEztaO1UOuo0Rn8yGk5zqjbj+X2W4h2J6yyNavRN+C1Egl6xMk9Q7jt89YErn
+	 OucBFgAmA3IwH4WeogCz2YcQqm+ZEcwFdS70BnAXK5kyOsQAJYa2E3WYedzljjSDOTR6g
+	 4aiwxq/2lwY4uZRoftxXIk6JJvLa/nj5W6eS4Nwb3H2Zco0cF542rldXGUQo4Ovkwtj9h
+	 VYvrZKi5ei7SKlsSJ0dFUvLKXqwlvoanUFHRy58MErmh3mrYu6i8xWjrNSefOhsRnQIqJ
+	 D/RlZg41e86WmmLdXfH+JsJfsNiJYEkW/1H78cAQqtQ0525M+3ykdKlw+FyJjmk2sMg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--chriswiseman.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=VgEv6dDP;
-	arc=none smtp.remote-ip=74.125.82.199
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KQOJ+8aW;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845DB606A321
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Nov 2026 15:11:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 845DB606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chriswiseman.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6EF606A31C;
+	Sun,  8 Nov 2026 16:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=VgEv6dDP
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-36d69ab3c2bso193484eec.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 08 Nov 2026 07:11:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794150694; x=1794755494; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:in-reply-to
-         :date:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=i5PPzRt+yxwpbv/xozk5+L1M/Zvyd7L2ZCDx2pqWy3g=;
-        b=VgEv6dDPvu0Z5b+IMKhS7/k/c2BLJe1AgyQEMMUsgamTt5OUW/nH/nRYHB4v56RYpy
-         7OfTZNlokFlvYSQcqWbwzraNYY1K4Xf6q3nKoMe9mM42yzYOJ1kbzWtb1ujKOlr7Kad5
-         lRFjXyIt9zWu9CoM9pFX4o+OCwbb4StF6Z2z9iOBlmj6A3HfaxWHc2o6OyhATw9x7SYK
-         o38rBOSjqDHyOPubLR2fW9EQ9RnBldP06Wqm4PupDGRbNdndX54LvLJbTAc9cg61YouM
-         CRbxeha+Z5zIHwdOPxfBhjvUf476zOAfll4sagKS55gMwQOW9rEAdWoNmMDZwQRkNckO
-         TYCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794150694; x=1794755494;
-        h=content-type:cc:to:from:subject:message-id:references:in-reply-to
-         :date:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=i5PPzRt+yxwpbv/xozk5+L1M/Zvyd7L2ZCDx2pqWy3g=;
-        b=fJE4hlOnMKUfXA7zo5E/2lQEr9gP3Ja8OhTTZOWCOam/jspUX5y3OIL2K+SPWQihiN
-         UPeJhQJFSMd1b3ksRgcfsT/xDyGaPumNjp9U+ApZz783Ujx8UniwHyrpGdCI52IWXdj8
-         sjPOpuW4q/9cStsAN4IrIui+NOWWgqKwB30L1CFG1uEcHBgZnO5ViTmilgnzxhiov/qU
-         L5daSGY4zbpeJdtBcSik72p6eRjhaV54gZazWzxJAVDIzFDb3WXaczBH+m6bSUlidQeY
-         QWPC4Mvxt4puwb9T+auN9gu8UZ/YVCMFVMxiFLpYi87+O/8rxmnnmrwaapCgMfsuJzTB
-         d7XA==
-X-Forwarded-Encrypted: i=1; AL+hErG3CqnBLxl59rI+OhS9auS1YpBZcym5Y8h9Kp6Ob5XHcxlozFv2NSxGqtWdfja9DmcOkvTrKRHtZ5YatoUmxg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/H1vO7MiP38qHqyYSicO1GCoEKQOCd24ww8xd0HqXIWVD/xi/v
-	fD0AY7X58R/WC+Ge4U7fU0z7q42n3Cqf53uFvhPdTEgg0fhyVExZORmXqlc5aZnTebUHrtzm2t+
-	k+AMZ99SXw/rCl4ckOWV53l63+Gcy7w==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KQOJ+8aW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C9641F0089F;
+	Sun,  8 Nov 2026 16:36:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794155777;
+	bh=yB7UQp3PMsWCYdqrryq4xgyn2qyEFFfma2wfNMpg+LY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=KQOJ+8aW5YX4tYfz3y9HYN2JIIQQF9NV/zVmmd4oW+hifMSX9d05cz8vRN3B8gcAD
+	 aOIZVfyHNREOBjEkUiNRK0e48rKJUM96iyX5qBTtOrsOhscTHE75imGWx6VbW6ZWWE
+	 XkFn58H2iN682xU+MF/vli9y1h58ucvsJgOqgH1wQBlVHRDtsmL1yD4FdTG8OTPUxG
+	 FRG9Q9L8wMxYKVNCzbP10SOIE2To6IMfBYdLhtbDVT0PZmWinFsx7OYda0hBwE83Jb
+	 ZtnHHfznStNuumSQCIll95MJZbwGIGNHs9BFA2XXyjKdO5fbQik3Bq/1PtGS6yW3Qz
+	 bQZjUeBAjm51A==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: a.hindborg@kernel.org,
+	axboe@kernel.dk,
+	patches@lists.linux.dev,
+	pgovind2@uci.edu,
+	stable@vger.kernel.org,
+	ytan089@ucr.edu,
+	Boqun Feng <boqun@kernel.org>,
+	linux-block@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 6.12 0630/1536] rust: block: fix `Send` bound for `GenDisk`
+Date: Sun,  8 Nov 2026 17:36:08 +0100
+Message-ID: <20261108163608.122524-1-ojeda@kernel.org>
+In-Reply-To: <20261107135015.226523646@linuxfoundation.org>
+References: <20261107135015.226523646@linuxfoundation.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -72,227 +64,65 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Received: from dyay2.prod.google.com ([2002:a05:693c:62c2:b0:368:83bc:cb15])
- (user=chriswiseman job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:693c:8845:b0:372:390e:1499 with SMTP id 5a478bee46e88-37256de84b0mr3157313eec.21.1794150693165;
- Sun, 08 Nov 2026 07:11:33 -0800 (PST)
-Date: Sun, 08 Nov 2026 15:11:32 GMT
-In-Reply-To: <18e61a85b0d13e9c.3137322e32332e3235332e313736.9c152.0000sendgmr@google.com>
-References: <18e61a85b0d13e9c.3137322e32332e3235332e313736.9c152.0000sendgmr@google.com>
-Message-ID: <18e61a8cb2ff887c.3137322e32332e3235332e313736.9d011.0000sendgmr@google.com>
-Subject: [PATCH 2/2] rust_binder: account for deferred work size in Thread::read()
-From: Chris Wiseman <chriswiseman@google.com>
-To: Alice Ryhl <aliceryhl@google.com>, Carlos Llamas <cmllamas@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Chris Wiseman <chriswiseman@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-When a looper thread replies with TF_DEFER_COMPLETE, its 4-byte
-BR_TRANSACTION_COMPLETE work item is queued via push_work_deferred() in
-inner.work_list without setting inner.process_work_list. On the next
-blocking BINDER_WRITE_READ ioctl, inner.should_use_process_work_queue()
-returns true and Thread::read() checks only whether the remaining output
-buffer can fit a single transaction (4-byte command code plus
-size_of::<uapi::binder_transaction_data_secctx>()).
+On Sat, 07 Nov 2026 08:44:06 -0500 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> 6.12-stable review patch.  If anyone has any objections, please let me know.
+>
+> ------------------
+>
+> From: Andreas Hindborg <a.hindborg@kernel.org>
+>
+> commit e502b667ee70a7fa2a578e7722672ecd4fe0eb81 upstream.
+>
+> The `Send` implementation for `GenDisk<T>` was conditioned on `T: Send`.
+> This constrains the wrong type. `T` is the `Operations` implementation,
+> which is typically a zero-sized marker type that carries no data, so `T:
+> Send` says nothing about whether the data a `GenDisk` actually owns can be
+> moved to another thread.
+>
+> A `GenDisk<T>` owns the queue data `T::QueueData` (stored as the
+> `gendisk`'s `queuedata` and dropped when the `GenDisk` is dropped) and an
+> `Arc<TagSet<T>>`. These are the values transferred when a `GenDisk` is sent
+> across a thread boundary, so the `Send` bound must constrain exactly them.
+> Bound `T::QueueData: Send` and `Arc<TagSet<T>>: Send` instead.
+>
+> Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
+> Cc: stable@vger.kernel.org
+> Reported-by: Priya Bala Govindasamy <pgovind2@uci.edu>, Dylan Zueck <dzueck@uci.edu>, Yuan Tan <ytan089@ucr.edu>
+> Closes: https://lore.kernel.org/all/cover.1780633578.git.ytan089@ucr.edu
+> Signed-off-by: Yuan Tan <ytan089@ucr.edu>
+> Link: https://msgid.link/20260709100100.604252-1-yuantan098@gmail.com
+> [ Andreas: Fix tags to make checkpatch happy. Change summary line. ]
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Link: https://patch.msgid.link/20260929-rust-block-for-v7-4-rc1-b4-v1-4-642a4c1aebd7@kernel.org
+> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-If userspace provides a read buffer with 76 bytes remaining after the
-initial 4-byte BR_NOOP placeholder (read_size = 80), Thread::read()
-calls Self::get_work(), sleeps in Process.ready_threads, and receives an
-incoming synchronous transaction queued behind the deferred
-BR_TRANSACTION_COMPLETE in inner.work_list. Iteration 1 of the loop
-writes the 4-byte BR_TRANSACTION_COMPLETE, reducing writer.len() to 72
-bytes, and iteration 2 exits the loop without delivering the incoming
-transaction, leaving it stranded in the thread-local work_list.
+This one breaks most Rust builds:
 
-Add a size(&self) -> usize method to DeliverToRead returning the maximum
-number of bytes that do_work() may write to the user read buffer, and
-sum the sizes of all deferred items in inner.work_list when
-use_proc_queue is true. Include deferred_size on the right-hand side of
-the while condition in Thread::read() so the thread does not wait for
-global events when the output buffer lacks room for both its deferred
-work items and an incoming transaction, and subtract work.size() as each
-item is popped so subsequent loop iterations do not double-count items
-already written to writer.
+    error[E0220]: associated type `QueueData` not found for `T`
+       --> rust/kernel/block/mq/gen_disk.rs:198:8
+        |
+    198 |     T::QueueData: Send,
+        |        ^^^^^^^^^ associated type `QueueData` not found
 
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Fixes: 8eb05e8e47f1 ("rust_binder: add TF_DEFER_COMPLETE flag for avoiding userspace roundtrip")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chris Wiseman <chriswiseman@google.com>
----
- drivers/android/binder/freeze.rs           |  4 +++
- drivers/android/binder/node.rs             |  8 +++++
- drivers/android/binder/node/wrapper.rs     |  4 +++
- drivers/android/binder/rust_binder_main.rs |  8 +++++
- drivers/android/binder/thread.rs           | 34 ++++++++++++++++------
- drivers/android/binder/transaction.rs      |  4 +++
- 6 files changed, 53 insertions(+), 9 deletions(-)
+because there is no `QueueData` in 6.12.y. We would also need commit
+06dad60393f2 ("rust: block: implement `Send` and `Sync` for `TagSet`")
+for the other bound anyway.
 
-diff --git a/drivers/android/binder/freeze.rs b/drivers/android/binder/freeze.rs
-index 69e058e6d818..5103bfac781f 100644
---- a/drivers/android/binder/freeze.rs
-+++ b/drivers/android/binder/freeze.rs
-@@ -152,6 +152,10 @@ fn should_sync_wakeup(&self) -> bool {
-         false
-     }
- 
-+    fn size(&self) -> usize {
-+        size_of::<u32>() + size_of::<BinderFrozenStateInfo>()
-+    }
-+
-     #[inline(never)]
-     fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result {
-         seq_print!(m, "{}has frozen binder\n", prefix);
-diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
-index efdafc202e27..4f4c892cba58 100644
---- a/drivers/android/binder/node.rs
-+++ b/drivers/android/binder/node.rs
-@@ -754,6 +754,10 @@ fn should_sync_wakeup(&self) -> bool {
-         false
-     }
- 
-+    fn size(&self) -> usize {
-+        2 * (size_of::<u32>() + 2 * size_of::<u64>())
-+    }
-+
-     #[inline(never)]
-     fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result {
-         seq_print!(
-@@ -1149,6 +1153,10 @@ fn should_sync_wakeup(&self) -> bool {
-         false
-     }
- 
-+    fn size(&self) -> usize {
-+        size_of::<u32>() + size_of::<u64>()
-+    }
-+
-     #[inline(never)]
-     fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result {
-         let inner = self.inner.lock();
-diff --git a/drivers/android/binder/node/wrapper.rs b/drivers/android/binder/node/wrapper.rs
-index edfbccf6e6da..37826349eafb 100644
---- a/drivers/android/binder/node/wrapper.rs
-+++ b/drivers/android/binder/node/wrapper.rs
-@@ -93,6 +93,10 @@ fn should_sync_wakeup(&self) -> bool {
-         false
-     }
- 
-+    fn size(&self) -> usize {
-+        2 * (size_of::<u32>() + 2 * size_of::<u64>())
-+    }
-+
-     #[inline(never)]
-     fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result {
-         seq_print!(
-diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
-index 56c786475237..361f3a987235 100644
---- a/drivers/android/binder/rust_binder_main.rs
-+++ b/drivers/android/binder/rust_binder_main.rs
-@@ -163,6 +163,10 @@ fn do_work(
-     /// Generally only set to true for non-oneway transactions.
-     fn should_sync_wakeup(&self) -> bool;
- 
-+    /// Returns the maximum size in bytes that [`DeliverToRead::do_work`] may write to the read
-+    /// buffer.
-+    fn size(&self) -> usize;
-+
-     fn debug_print(&self, m: &SeqFile, prefix: &str, transaction_prefix: &str) -> Result;
- }
- 
-@@ -279,6 +283,10 @@ fn should_sync_wakeup(&self) -> bool {
-         false
-     }
- 
-+    fn size(&self) -> usize {
-+        size_of::<u32>()
-+    }
-+
-     fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result {
-         seq_print!(m, "{}", prefix);
-         if self.skip.load(Relaxed) {
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 3ca5c95695e4..af7a340adcb3 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -1599,13 +1599,20 @@ fn read(self: &Arc<Self>, req: &mut BinderWriteRead, wait: bool) -> Result {
-             UserSlice::new(UserPtr::from_addr(read_start as usize), read_len as usize).writer(),
-             self,
-         );
--        let (in_pool, has_transaction, thread_todo, use_proc_queue) = {
-+        let (in_pool, has_transaction, thread_todo, use_proc_queue, mut deferred_size) = {
-             let inner = self.inner.lock();
-+            let use_proc_queue = inner.should_use_process_work_queue();
-+            let deferred_size = if use_proc_queue {
-+                inner.work_list.iter().map(|w| w.size()).sum()
-+            } else {
-+                0
-+            };
-             (
-                 inner.is_looper(),
-                 inner.current_transaction.is_some(),
-                 !inner.work_list.is_empty(),
--                inner.should_use_process_work_queue(),
-+                use_proc_queue,
-+                deferred_size,
-             )
-         };
- 
-@@ -1630,15 +1637,20 @@ fn read(self: &Arc<Self>, req: &mut BinderWriteRead, wait: bool) -> Result {
- 
-         // Loop doing work while there is room in the buffer.
-         let initial_len = writer.len();
--        while writer.len() >= size_of::<uapi::binder_transaction_data_secctx>() + 4 {
-+        while writer.len() >= size_of::<uapi::binder_transaction_data_secctx>() + 4 + deferred_size
-+        {
-             match getter(self, wait && initial_len == writer.len()) {
--                Ok(Some(work)) => match work.into_arc().do_work(self, &mut writer) {
--                    Ok(true) => {}
--                    Ok(false) => break,
--                    Err(err) => {
--                        return Err(err);
-+                Ok(Some(work)) => {
-+                    let work = work.into_arc();
-+                    deferred_size = deferred_size.saturating_sub(work.size());
-+                    match work.do_work(self, &mut writer) {
-+                        Ok(true) => {}
-+                        Ok(false) => break,
-+                        Err(err) => {
-+                            return Err(err);
-+                        }
-                     }
--                },
-+                }
-                 Ok(None) => {
-                     break;
-                 }
-@@ -1798,6 +1810,10 @@ fn should_sync_wakeup(&self) -> bool {
-         false
-     }
- 
-+    fn size(&self) -> usize {
-+        size_of::<u32>()
-+    }
-+
-     fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result {
-         seq_print!(
-             m,
-diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
-index 48ac942bb75a..6909d7a8a219 100644
---- a/drivers/android/binder/transaction.rs
-+++ b/drivers/android/binder/transaction.rs
-@@ -762,6 +762,10 @@ fn should_sync_wakeup(&self) -> bool {
-         !self.flags.is_oneway()
-     }
- 
-+    fn size(&self) -> usize {
-+        size_of::<u32>() + size_of::<BinderTransactionDataSecctx>()
-+    }
-+
-     fn debug_print(&self, m: &SeqFile, _prefix: &str, tprefix: &str) -> Result {
-         self.debug_print_inner(m, tprefix);
-         Ok(())
--- 
-2.56.0.317.g454f8302e1-goog
+I would suggest dropping the patch for the moment.
 
+Andreas: could you please take a look and see how you would like to
+resolve it, if at all?
+
+Thanks!
+
+Cc: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>
+Cc: linux-block@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org
+
+Cheers,
+Miguel
