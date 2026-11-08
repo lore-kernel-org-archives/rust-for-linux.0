@@ -1,91 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.45
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794149592;
-	b=r3faLwUFVP6/XEcozh4h16u1uCsbcGD2Y7LfRQYK6luFJ9EX5wKpdH5EzcCLIgTnM4qF
-	 BaeAyNMPsBffjc/7znVf9WPSSswI2loO7SntOqQOka0xjqWYZKVBS2LYg6Fr1ybzL96Ao
-	 4w/cMbW5mdw+2CkE2+psPmCJer2OrUFSt8Xd0b45n8yZ28XpNgm3PbSFIN6s2gEBxSrBi
-	 KBPgIaNcoXnTX/pX55u9rbxfIjHmQX9QyfaNtbaF2S6CqHNA5YHqevU1aHmW73OmgjSVb
-	 DaZ8P+fHlpEe9OSyzoSItE5fJqMz1rlalxlVp31BS3GiobN6pe550md26C75IP0nEOA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794149592;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:In-Reply-To:
-	 References:Subject:Message-Id:Date:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:
-	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=HVPo+mGIS7mH/bnZvo/OAGeT0ZxCgQuqGHKCTnQqv6I=;
-	b=ku91FlETUjKGH68j2vOtYwI3K0i88OHGNfzZlwbenPHiypvy+ZWEdcafIhdLoQh4IWVA
-	 vlgqIVGmcyCKx4HfUtyhxdvmC2Kp4k1Ha4jPVaUF/s7rmsVLwY8VvCR3iQa11GWlcxgFv
-	 A5tn1LkvMNfFR0Fovf0VK0ZcWQTRT9Ax6rzB6+WrkD7EikcDfO5ppzxRkp5tHiRGypjaG
-	 GvcBstcdIq9DErcSzVZ8XBNAkdwqD6Qv86H7ek5ouXsm1AFmJmKHNcUfY5HakpfMOSZj+
-	 eWsOIYDQdtazdc3uYpuv8I4TLMGCKb45JXGByBM+SQ9Tv1RiktUMLpJIdXl1fZBRLpg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pA1hx3+Y;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.45
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012045.outbound.protection.outlook.com [40.93.195.45])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.200
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794150665;
+	b=3OZLOfwzmwKwpwE0iJh9cv8cZKDZPQAOiNZKGLLBC1ekzr9Z6x94n0yhhlrofJHtAQl1
+	 lHK0RuzxnQzvh2N5Ik3O05EnQpwi0KI/kHUh+pYA8q5qnoSakjkv5cW2rwx6OytORIu2w
+	 JVNONYsN21gUH2i8tM/UpRRYoiYrA+u1ItFP/sAaingzoKYrY+FplTTy0c+oIQYFiNpt5
+	 ge1F8x5u14PBctTV4BijI5TZ3wn3lx3Hh6MX+Q3p7IuVjTGUtrE5aJjteRGXgi+1WShHd
+	 OcFC+TTVNbcnU8f5Q/kC5wxriTobsjoagyFW/0CSHHCLgWcUi9bVBsDJ9bvM/bNlZKw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794150665;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:MIME-Version:X-Received:Date:
+	 Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=buB+SNDrFBHZ1hWkragxqZalboFLs7Xvh8M5Rtl1Ros=;
+	b=jUlLy672Wr/0Sf4DzKYlB9VoTAXpmlNRLB7qTKjB6BRMJ0TRETcyoZE6VJlgyClhcNtu
+	 qS7BSdI60cxy6I40b6ol4N1fjEq9/lTodjLkhOeuDAhsiS5OJBwYbeYtKmBVI82UVOHHU
+	 6Zl8HM+KqCnNm8HNuZmqs7wt0C18qpib8sjZ/QNmRpnVKE3YWVH+DjgoHF+xMCdrixoJc
+	 1riPvymYp9etru0Re/KiM0ZbP/SsTYx5nIqSPtsdxQVA6FWCHuEv1C3biF9a2MqVlU2Cb
+	 D7wAdmcYsQ3fo6gowgbQoXPO+30uFMB0CabaaPqBqve2FfL057kZv+hplqsZOdA2+dQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--chriswiseman.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ivEusNDn;
+	arc=none smtp.remote-ip=74.125.82.200
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053A7606A31C;
-	Sun,  8 Nov 2026 14:53:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 053A7606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CC0606A321
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Nov 2026 15:11:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 77CC0606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chriswiseman.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pA1hx3+Y
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NVXW60CcCgNngyyt5dWrDVaWV5FJox3lYyqm/3snz5R+Z6f04jTKHS4KSjRQz/eSljsrpECpUawFNd2oPrzxxM1x+Bp41nX+1tvfXxidAHXg5nGCEMMw7vhEOsFu7UgSF4xtXUAVlyVX07gm+eEPNnMfphuea9aExUlEe6ZpT9cAiLqLvtf3DNVNCjZid2ax6steEVfye9YOL5FPtVrzFXPGJ1nvZZ1zPqTVE5Fg5F2m4EkymRfJ5Gq0e4oAy1cu7tDuLkzHrW7StTKKLgL6SDI61geeckePWLNVKRMISGGHqLxYaksktnqbtLmpFqzQsz+sE6eoQ0QBnjMwTeObpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HVPo+mGIS7mH/bnZvo/OAGeT0ZxCgQuqGHKCTnQqv6I=;
- b=foqj0oqOV7JNcW897VzQmdCHfSvEuwqtiudE2c8j+M9I6TKkyoZfxAtF9HcFTHGF9xqqL4P/+kGzcbHE8ijLX3Pp83GvnkLBxrQdriRDsclw8bSCIo53gcFRk2ecmvc0WjDbrY7rSb2kpEbMWlO0FVY3TVhEE1YjMdceAUiVfyKZ5RzkRqtA3h2mNQcXIu1UJd+5tpoh4W3g4gKPCus3Or28D4dAiSJLdV4UHgj77aD4CisUQCtKEdS8u7eIzLWdYUtvrRIoSUqhMxuXXCxLc90m0ypm/kg+h6m8R0UbZQMgw1WI/QmT8Xcfw41tMpTBkjOM4/xTN/sCNJ8q8aRgsg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HVPo+mGIS7mH/bnZvo/OAGeT0ZxCgQuqGHKCTnQqv6I=;
- b=pA1hx3+YlckvSBevHY5U+SNYUIxu3ZB6p1th01EeemVunYYm+QylyBk+QvJuPh13ohTwzRbvoP3LJkkhsxvKt5pfnrxkUjRwph9j3k9r+F8o6WeIDh/vMLgTJTbVKQDgZOi0uVOuGlqkrXDLK09Tk5eXLNiWyfTxOrw4+6MGkQJKXJLIN4qxIUWd2y1C1WE6B0Wzc1q5UgjEUUqRNXD9hPKbcDi3u916wpMM8Y/bUCVZMsrYa6RtlMQsVyqmRFdHhhJ9IbUH6yNXvJU4mEzW35yR9cBYDk4MbCgiYLn2lpdBtDFAQToL3yCcIV0dsIKWZxv3+e1gia/+FxtWOpdfFg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by CY5PR12MB6573.namprd12.prod.outlook.com (2603:10b6:930:43::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Sun, 8 Nov
- 2026 14:53:07 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0592.007; Sun, 8 Nov 2026
- 14:53:07 +0000
-From: Alexandre Courbot <acourbot@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, Alexandre Courbot <acourbot@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev, rust-for-linux@vger.kernel.org
-In-Reply-To: <20261106-r000_rebase_on_cmdq-rpc-v2-0-e481ea2168ef@nvidia.com>
-References: <20261106-r000_rebase_on_cmdq-rpc-v2-0-e481ea2168ef@nvidia.com>
-Subject: Re: [PATCH v2 0/6] gpu: nova-core: gsp: add support for GMC messages
-Message-Id: <179414910663.2253398.15766979861497649573.b4-ty@b4>
-Date: Sun, 08 Nov 2026 23:45:06 +0900
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TY4PR01CA0084.jpnprd01.prod.outlook.com
- (2603:1096:405:36c::11) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ivEusNDn
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-36a3451ea93so213253eec.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 08 Nov 2026 07:11:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794150663; x=1794755463; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:date:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=buB+SNDrFBHZ1hWkragxqZalboFLs7Xvh8M5Rtl1Ros=;
+        b=ivEusNDnrfqIuIdRaP8LtJxm21MMlK9JerEehVrvr2l+LMByoIthz3CTqnPVSKmHst
+         P3I7EqnddEk+6FptXbBY6n9wempFctfTmhts5vhpLJyMO4qsa0OuKKvJgn3jX/f2bBsg
+         uKoFB/hM+1U+qgdz2YOGHUGk0ztkMnoNCwzZNb5dDQTZoy8+MHiGHuCJ3xkdV1PueFHE
+         NtWltJihFbVu4Fpu+c1UN+uAdmpwkB3iNet2K8IYk0N93Jo1WDwIXXQRlWzh9eBDDJ2U
+         S91e1jFVV3PXSb2v8tpsbgH5Gha0DCByTapHQxre5goBohybPpKMAWHRVL7Fx3ktLZNq
+         7YBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794150663; x=1794755463;
+        h=content-type:cc:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=buB+SNDrFBHZ1hWkragxqZalboFLs7Xvh8M5Rtl1Ros=;
+        b=iblGW4cj4yI372IQ2iWgKzeNrrkazu1wzksNGaeCJBCmq5boAauB7FMptsfC8J+3gc
+         aV1CODmMw3WicRNAFSvsz75QaDK8DXbyR/fJ2beoWkMSrvOgoGjc4LmJxxbC+uachKOk
+         21CG8DA+zUolU6gTw1k+052iEoIwguQ99ge2T0AT7396fkoeqiy/0fOupRkVzHbhTOfh
+         ykinKjHBt3bgkymW0ssvGQb/aLGxL+a7sEAP7v070FHG97X3PhxcjguPOmcp7p2PI9N7
+         G9gtsbKb0eBGcVKOQ3fIoCATkG/g98jac9yD9toagwX8s5cnqKMqWfACGUhZZhWdJDav
+         haMw==
+X-Forwarded-Encrypted: i=1; AL+hErH2ONwXQk7cePveOi9wilJUN7bRfVAFzfaqSxdmH8Sx9GeCkNKIG2J2VNf7CIzv4QP9liYkGK5Ej5CS7KB01Q==@vger.kernel.org
+X-Gm-Message-State: APuU4Z96zBmohv5kM204TNa0SGGoSLjm+07u6QRN1alsGrgNMJvs9V0K
+	n+m3s4+61OkeJCazxDhPYNYJvhIN04Uj6dn0odbKAuXcgngQcFzlwvMuyMVxkSfk2TpuldfH/XK
+	jXGT5Q1UgKhRKNTvaI9jaOsCrtQuazQ==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -95,96 +71,82 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|CY5PR12MB6573:EE_
-X-MS-Office365-Filtering-Correlation-Id: 497f24ff-12af-42ee-f0cc-08df3da7ffa1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|23010399003|366016|10070799003|22082099003|18002099003|10067099003|3023799007|56012099006|11063799006|261028144727099003|261026121527099003|261022105027099003|261026140227099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info:
-	l63ad1ZXkPw5+SnzlEXU2w6DmCJ7pUGk2VcGKFYXRR/pT81ch4yONQki8heL23xGITY5LsNj/lztD8U8LTP1aLc3D9Ao4CTDrYfqba/XDhBd3tXmarcBLdJHXNArjNE5A6t5Nsq79SHqImzs4YCNUzl2nOHm/a1JPiO+xsLD/ee7IoiiIwYmZbBzSTPAtXAPdKFvXsyA7LBxOeVvzjmjIYKmS6dRkC7E4zSdI9+b69HiF+DZ9HIk/nw5Z3apDK80IkU20+6wXvvcs8F46jsZKVVM0Z8i8RJkCpfxT5zKOE8lIZ6f3JEUT+DaDlf8qBeNPrTxtFZeeHIVhzJoBzx3hzHFI6U3BoWfZZYYmE70+2suN8kX+Mzj6eBywRPBgV858Si9//6IAChCzfw2JWbnCI08yOp3a3IdtyuizcsHT3uaBVSuh6ubKaBxxrc+ImLVgz2UpGZEKTRj4FyC2APyHPXiw+vTsNVyMpVWiT9V7L9LSEUE7joLs0sDmjfydAG7yMLdtkm+YD20TvY2GDqn4636A2Lf6iXRndIpKnBvf7fAJkC0wa3FbthYK/sy5JEhynb/alhEVqJxEvoRHx6QahSZU87c1f++qdo0YEKbWQux0sMfAZJg6e/9g9sI/DhI7UeP9LdxDaXB0dbrMq42rrYPek9t7DE2unGqVHHIXRE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(10070799003)(22082099003)(18002099003)(10067099003)(3023799007)(56012099006)(11063799006)(261028144727099003)(261026121527099003)(261022105027099003)(261026140227099003)(261009223027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QTJCcThKZWdOMk03ZDRIMWpGb2c1YTFYdTkwR0x3ZlFkcGxmOElta1dvciti?=
- =?utf-8?B?L3prbndJUkNqN1g2RTA0YTNrdzZicmhzRmlNZTJRVzFHcEZMbngzS1Z0alJK?=
- =?utf-8?B?ZzRZaWMzbEV2SEZhQjN4RFBJR1RhUi9NN3dZSVVkdEdHWW9VSTBIcEFNbWps?=
- =?utf-8?B?VzlMTTYrWDhla2Fzclpvakpna1VlY2JFNWFweitmcENIamQ3THI0WkRhMS9m?=
- =?utf-8?B?VTNuTXBnL25ENE5ua1NzZVhPb09FUFZndm0zT2xETENhRW1WNDhtZmZhcWQ5?=
- =?utf-8?B?eGZJMFNrTVoyckRoWjBWdE1uSHdLK3VkZUhJdzEveEpJNDRvb2Uwam9oQU5Q?=
- =?utf-8?B?RjZqSTg4RE5nMWdBTjlOSjJkQm9YYjVlQUdiMVBEZUtVdm1vSnp2c2Y3UE1m?=
- =?utf-8?B?b3lHR1BYK1FwaG05eGd2QkduUUdJR3Excll6UkcybkE4NmJEWWRON1ZNS25p?=
- =?utf-8?B?MmU2cjA1N3l5YVc0d1BSeUJnNEQvZVFHU2ZDSDhoVG1kbWd0YVdtczFUd0Jt?=
- =?utf-8?B?V2JJS1YyTkZVd3MxUzIyWUZkM21za2h4ZWhRZHY4ZzlualF0eWRBbWJURUo2?=
- =?utf-8?B?Nmg0Y3IvbFFTdnBTTEkzbWZJN0hTVG9OcVRpYlV4YmZNeDhnQkZzNFFWblp0?=
- =?utf-8?B?Y211S0dQblpoZzVHTTlpUnMzMCtLRnZUOFJjbHgzK0MvaHp2M0p4ZlJzK2c4?=
- =?utf-8?B?clNvT2d4cUduK1FiUDF1MkRQSlNWRk1odGhSNHp0UlpXSVVJMFdIZnRKbDBt?=
- =?utf-8?B?dUdFZno1YjZWYS9kSmtsQm5OT3JQYVd2YUFnSVl0dFFuSDN6RmkxckNLVzBn?=
- =?utf-8?B?QXRXSWZNNDdOWEYwRmV6Z3V4c3YvbmJyV1RjSnQ5Qi9ackxkMHZoNXNZN2dY?=
- =?utf-8?B?NUE0c3o4R0JXUUhTUHo0WXArUzRTVEpFN213dnRxREtzV3pYdkxQZ2FTL2hq?=
- =?utf-8?B?WjJzUXJnTkFpd1RsNENvMnVPVXZhc1ZsbXkrUHhRK1FTZjBQSXZ4Qkg3ZnVF?=
- =?utf-8?B?MUtnanJOd2IyQ0hzeHpxQWxpUHd1M1NTVU9CYjhvZUwxMUZlWDNicnhLL3pD?=
- =?utf-8?B?WHlJZTVvU2ZOUlJoeVdEaGF2cFlyZnBhcDAyUCtYaEhMVzhIaWlGV3g2MGJq?=
- =?utf-8?B?RktObUYvNWtwY0RCRFlodFZ2d2NGOFYvaWpadTE1dDJNK2RJWXo4eC9aZ21k?=
- =?utf-8?B?Nlk5K0x5NGtjQW9oSG5vQjFoOHJTYnZ2V3NnaUtCRWVqZmNXL3VQQTg3SU1t?=
- =?utf-8?B?NUJ3UGdlcjRzQ2lIZVZHcmx3czJJTDJPTlVVSDJRaWR6Um5Ca1JaRXlGbS9h?=
- =?utf-8?B?WlNHMUZyamNWTlArcUpIcGNLaFFpRFRJVktDeDhRVWNqVnVjSVVXNWg4aHBO?=
- =?utf-8?B?a1dLV1R4ZFBISXhMS1NZRVRxcmhpOW12YktyVjdMYnk1UU9rOTNUZUIxWUds?=
- =?utf-8?B?UzNNZTYxYTV4T2FHY2FSR2l0UFBrQlQwdU9jejFzL2oxZXZUc2p6NVhBVStn?=
- =?utf-8?B?SGE1RU1vbTRlYm1Zb1VQMVVoVEdyNjJRY3FIS0w3dUt0Z3JUZnB2bmRVaTZn?=
- =?utf-8?B?SzRsQUVtN2liZXBEU21tc0ZWSThaNXVma09BaVBuNXhlcnduQmRYYTdTYUY5?=
- =?utf-8?B?dUs3Uno0WVBvZ2Jpby9yRFRuQjJRZ281MExvemJ3QjNaNXN3N0c4eG1xQllP?=
- =?utf-8?B?NEhHN0FKaTRXTXI0cENmcVFEM0VRRE1jL3R3TGUrN0J4dVZJWGZiTzIrbWhv?=
- =?utf-8?B?cWVFUTcwMEhXcmtaL21sV3FQSklUcUxPYUFzZUd2RGppRUMrRFFRcE53SE00?=
- =?utf-8?B?anBTdGsxdTQvQlZQY3VKTVJQNUo2d2RJVjBXTzJNQ1RnQlh1QkluMHptWTZa?=
- =?utf-8?B?YUlXTVJCaXFNeU5ycjRORy9qUmV1SEw3RTJCTVA2OXM3aEN3SkQ1dVhpejFj?=
- =?utf-8?B?WjJVWlVUQngzVTgwYWR1Nkllb3ZzVnBXMS8yWEpmYlI4YmRyU0I1emhXR1dt?=
- =?utf-8?B?MGZJV1JXa3k2bkpJVTQ3UnhqSkhwejhNVldOaHV0bG55bmlEanhDNzV6M3JC?=
- =?utf-8?B?RW16TlFOSmFXelhQbkpab3ZRMS9xcVB1c2JkY3pVUW5uN3JQUjdGcDZLVzJs?=
- =?utf-8?B?bkdHTkVKclFNbXlQZmJ5YWhsQm9GV0U1ZlpVTk9xdEIxaW9hWHg5aVJvbXJr?=
- =?utf-8?B?bXZmck5vS0duSENxeHFuejhqQUVQeTV4bkZjeTRmYjllSjhuS01saEErN0lP?=
- =?utf-8?B?c1pMWXRpNkw3bTIwQ0dyT2R2VmRodkNjbExCL1JQVFBnVzNZQzNORFJTOVNi?=
- =?utf-8?B?NnMyWW53MGpTN2d3TEdXMWhXNkZ4QWltS2t1VGEwUmc3NDdjUjNVUEEvMHdK?=
- =?utf-8?Q?6LRcM/+75F+jwfwjgKE5wcXShb/LYX9ns6uEHsnFYee1m?=
-X-MS-Exchange-AntiSpam-MessageData-1: zyMuv8638+MQKw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 497f24ff-12af-42ee-f0cc-08df3da7ffa1
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2026 14:53:06.9890
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oQ5Ee9dNJ+q8YGfsMHSSfSep8bNLRStLb52EB5GjCtf9OkUr7cX8tymG8SdgJA2Zdue5NtrOk3CmkkN5Xyq8BA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6573
+X-Received: from dybpg4.prod.google.com ([2002:a05:7301:4144:b0:36c:a067:eca4])
+ (user=chriswiseman job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7301:730a:b0:36a:31b2:8643 with SMTP id 5a478bee46e88-37258c2886bmr2826202eec.38.1794150663059;
+ Sun, 08 Nov 2026 07:11:03 -0800 (PST)
+Date: Sun, 08 Nov 2026 15:11:01 GMT
+Message-ID: <18e61a85b0d13e9c.3137322e32332e3235332e313736.9c152.0000sendgmr@google.com>
+Subject: [PATCH 1/2] rust_binder: reject sync transaction with pending sync work
+From: Chris Wiseman <chriswiseman@google.com>
+To: Alice Ryhl <aliceryhl@google.com>, Carlos Llamas <cmllamas@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Chris Wiseman <chriswiseman@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 06 Nov 2026 16:06:08 +0900, Alexandre Courbot wrote:
-> This series contains patches 9 to 12 from John's r000 series v3 [1],
-> that add support for the GMC GSP message protocol. This code is rebased
-> on and adapted to the latest `drm-rust-next`, which clearly separates
-> the transport and message layers of the GSP command queue code. As a
-> result, this extracted series should be both smaller and easier to
-> review.
-> 
-> [...]
+When a thread replies to a transaction with TF_DEFER_COMPLETE, its
+BR_TRANSACTION_COMPLETE work item stays in inner.work_list while the
+next blocking read waits in Process.ready_threads. A new incoming
+synchronous transaction can then be queued behind that deferred
+completion in inner.work_list. If the thread's read buffer only has
+room for the deferred completion, the ioctl returns to userspace with
+inner.current_transaction cleared while the incoming synchronous
+transaction remains queued in inner.work_list.
 
-Applied to drm-rust-next, thanks!
+If that thread sends an outgoing synchronous BC_TRANSACTION before
+draining its work queue, Thread::transaction_inner sets
+inner.current_transaction to Some(t_out), and the read phase of the
+same BINDER_WRITE_READ ioctl pops the pending incoming transaction and
+overwrites inner.current_transaction with Some(t_in). This orphans
+t_out from the sender's transaction stack so
+Thread::unwind_transaction_stack aborts on exit, leaving a permanent
+Arc<Thread> <-> DArc<Transaction> reference cycle that pins both
+Arc<Process> instances and their mapped ShrinkablePageRange pages
+after the processes exit.
 
-[1/6] gpu: nova-core: gsp: fw: add the r000 bindings for the GMC API header
-      commit: 7c45e83dd0a896d54711cdfbac7b0223b811d642
-[2/6] gpu: nova-core: gsp: add the GMC API header
-      commit: 3753cd56472264bc3d5cedc6d09ff1550d3398a0
-[3/6] gpu: nova-core: gsp: cmdq: add the GMC send path
-      commit: dadb7e169fd032441ac9689a1544ae6f1d4f425c
-[4/6] gpu: nova-core: gsp: cmdq: move message trimming into its own function
-[acourbot: use `get` instead of `split_at_checked`. (Eliot)]
-[acourbot: use - operator instead of `saturating_sub`. (Eliot)]
-      commit: 6dfb99fb9d84b77f89ec2c9af14fac9138663f27
-[5/6] gpu: nova-core: gsp: cmdq: do not use ENOMSG to skip messages
-      commit: 693df5cf22d0fcc8b8cb431b0b40a91f62df83f6
-[6/6] gpu: nova-core: gsp: cmdq: add the GMC receive path
-[acourbot: add TODO item to replace `u32` return value with `NvStatus`.]
-      commit: 7ecd9ee29f7bfbe9a293952fbc83c3f8bd7205dd
+Resolve the TODO in Thread::transaction_inner by rejecting outgoing
+synchronous transactions with EINVAL when inner.work_list contains any
+item where DeliverToRead::should_sync_wakeup() is true. Checking
+should_sync_wakeup() matches C Binder's BINDER_WORK_TRANSACTION check
+and ignores Node or NodeWrapper BR_INCREFS/BR_ACQUIRE items pushed
+onto inner.work_list when Transaction::new translates flat binder
+objects.
+
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Fixes: 8eb05e8e47f1 ("rust_binder: add TF_DEFER_COMPLETE flag for avoiding userspace roundtrip")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chris Wiseman <chriswiseman@google.com>
+---
+ drivers/android/binder/thread.rs | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index f5965e838a96..3ca5c95695e4 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -1393,8 +1393,6 @@ fn transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResu
+         info.to_pid = node_ref.node.owner.task.pid();
+         info.to_node_debug_id = node_ref.node.debug_id;
+         security::binder_transaction(&self.process.cred, &node_ref.node.owner.cred)?;
+-        // TODO: We need to ensure that there isn't a pending transaction in the work queue. How
+-        // could this happen?
+         let top = self.top_of_transaction_stack()?;
+         let list_completion = DTRWrap::arc_try_new(DeliverCode::new(
+             BR_TRANSACTION_COMPLETE,
+@@ -1407,7 +1405,9 @@ fn transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResu
+         // it with the new transaction.
+         {
+             let mut inner = self.inner.lock();
+-            if !transaction.is_stacked_on(&inner.current_transaction) {
++            if inner.work_list.iter().any(|w| w.should_sync_wakeup())
++                || !transaction.is_stacked_on(&inner.current_transaction)
++            {
+                 binder_debug!(UserError, "got new transaction with bad transaction stack");
+                 return Err(EINVAL.into());
+             }
+-- 
+2.56.0.317.g454f8302e1-goog
+
