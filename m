@@ -1,64 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794111432;
-	b=jh+pCL375RHLVtHiexF58q9gP44AWYJtDkTW618Kz5QZ8WD5hKFNQwBrBdLHUUa6XPSr
-	 Pi/zN52h8K8mNJfq5gmRo1klNqh4ETa85CNnHQvWq3e3Leav0RKlCPZlZRjV2Pb9aJOk4
-	 npq/rLvNnp6LLdpooc1DQxqXCk2L4Ds/eECGLW29vG/KD6YQNUMurj9xxZ81mmOgLgwbj
-	 9HvVTK1nTCcqEdUQXPa98NoWWzHkYslYvcLnC1/dyTGcgPWU7Wp6rX/7n8GGVpJPU64qV
-	 ai0iyx8WNfD/9ld/IcD6RelbTz8vMr/fy4Igoy3XQ8cIKytpLvQo+h2XWp1EA5OLPxg==
+	t=1794141478;
+	b=t8YME26hIA2wIMwf1XY/ach2C1LUC5lkMoooD0wmo8SrDKZigfUNH1TCyyN7wOFp7e7B
+	 yg/b5cFvVOH9zA5PKogVzKfaw2yCKeK87kxoGdp7WZTdabC3hgZjWpr4UosEMXeG8jIm9
+	 LGM/HBJ0nXwwxV7MgAkYzRHqQYNBdddc56ZKcRMKMXwXG/KVLjn9cTO5HCJLEZykAX8AQ
+	 4B21j61OJ+uda4t9QuFzYKe2lclL0Owo0ofjM+e0w1hvs++Cmqg8+1RvXiKc+mX2tyjGl
+	 a1yu7JLY+OSo8gDnmjkHnyqjRpWOOxvR1DBOuC/8HDEu4t5hn0FV2nyiHbe8HNuHB9Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794111432;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=xf350kiWMiK9O1wpWwY7HDmzSJXiIhOkt3WgyUFMN9I=;
-	b=vrkwNK01cpnPoYe9WZwFTbVWdeCzTa+X8NxKztaXnm4Wcq7+DMhYb/awc647lS3hvcIu
-	 5E+Jg7VVgs+2G2dFrlN0M+2Gqehj/PrKsCwyKETNOhNAuClaemIXtKXLlR9U5gJyh19Oj
-	 3lqo2+64Gyzu0Rv7UCQlwUdRmDr8OOmENAZOvNTEayDJFNY6/ug/S7MvGNb/Y6J6mf+fN
-	 zgk7cClulY2X5xORJFOnHpOim65ic3mxBKn98dUyKcru7qoB5Zx7a9k/RIpQt6OSAXelv
-	 NeTQ7PtOVh3jFjyjaiecoGP41JYbNzitt6zDH8lvNdV9DXhEEaiuIQayvpsZU13GEVQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794141478;
+	h=Received:DKIM-Signature:Content-Type:Date:Message-Id:Cc:To:From:
+	 Subject:Mime-Version:Content-Transfer-Encoding:X-Mailer:X-TUID;
+	bh=LPWZeKvMF5glukvyoics8CK0yautXj7LLLbv0OwV4ug=;
+	b=lmZLiSuuwfNJhrkoTfH9vUvGf5pLL3ELejpXWJibC/VowGmk3ceAMBSuea9x+5G3T91r
+	 aU3cVX67WiDLLAo6piMjcgOsEwcbemEmzLnswnoEiK/+m+h1npGHh2F9oq2rXPJ7wIHIS
+	 Jzesm8RHQ5pgn8DX99FbZHYgh6XTFOCND1XxO/IQYDUNTFVDdzeRy8+qk8Pyw5YXb2D22
+	 kUclVw0zIw4BT/s0TYx/XYLmshy8kNnfp/YSC6+SxVS4WnYz6q7nWeqW73MQnXE/qvH0i
+	 yk8lWORbYcgFBDDnW+V/T/Ztw5l5CTWSBVh2Ra5KwGdhlw1ycwCwfq9akg9xL89/d9Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XGf2buBt;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N+U7Uq8w;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51450606A31A;
-	Sun,  8 Nov 2026 04:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D53606A320;
+	Sun,  8 Nov 2026 12:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XGf2buBt
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D801F0089F;
-	Sun,  8 Nov 2026 04:17:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N+U7Uq8w
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E30F1F0089F;
+	Sun,  8 Nov 2026 12:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794111431;
-	bh=xf350kiWMiK9O1wpWwY7HDmzSJXiIhOkt3WgyUFMN9I=;
-	h=From:To:Cc:Subject:Date;
-	b=XGf2buBttgHpApnHi9gEu2vVFkCf2HG5ErPIlQkrxG+hEKR/UeEqTACO99Wiaki3R
-	 Fv5SDN39lhCL/TPH3UT4rnszLlWzRhZG4m3Im0TpqWxQBlTXW4IPf7+QZHvlFc+jPa
-	 4m/hJ7UpHAtWL6BsMKfmjppwEiS7wixkTfr9pcLf5tc9VxEVRCLDp4rJd4KM01QwcM
-	 75eV585mORwleIBRJgPdXI5lyMw1FKJuKpn0qrWw3Mel1p1LOdcnn2G5QFp1SPrjRL
-	 XsMv97LfUnVKkPmw7arAtk/tkI+BvzWt5EudT4OWdsZSPK55FcwqVhHreNGRYTY/ei
-	 h4u7ZaGdTEI4g==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust fixes for 7.4 (2nd)
-Date: Sun,  8 Nov 2026 05:16:59 +0100
-Message-ID: <20261108041659.97199-1-ojeda@kernel.org>
+	s=k20260515; t=1794141478;
+	bh=LPWZeKvMF5glukvyoics8CK0yautXj7LLLbv0OwV4ug=;
+	h=Date:Cc:To:From:Subject;
+	b=N+U7Uq8wqn4Uu+pD0bIwk20e2FkpEbAoDEtC77FtenFQ7Z9KnL2wMGGwKx1i/ogig
+	 Q3MkpsGHvtfkw27NpbyBCZ6Kna9gu3GfTYW2EgyB/7zYp+mQberQ9PrrRDZNtLRu3G
+	 gn9uXPIO2IbqdkyuKoQJg9fzZMgl6xWIofG6nP4hk/UncAe6ZAmsvWzUN48L01STcV
+	 lnqvcuyRvCptkAbJkMzKFy87jtkkIBrC/B13RpmdBw0+alOzUikjf7WKw82p7JejT1
+	 +XrIefeLrQO49lMW77ma78nKWurp6V5NWjG0TvGY+bJ6n4IVoeGK+eXpqbrSDGC4vi
+	 xvC7hhq4dEJrg==
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 08 Nov 2026 13:37:45 +0100
+Message-Id: <DMPU2INZSMAU.3H6O1U564A48B@kernel.org>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Johan Hovold" <johan@kernel.org>, "Saravana Kannan"
+ <saravanak@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>,
+ <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Linus Torvalds" <torvalds@linux-foundation.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: [GIT PULL] Driver core fixes for 7.4-rc2
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -67,60 +58,54 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
+X-TUID: hFHoBW9FpV45
 
 Hi Linus,
 
-Please pull these fixes for Rust.
+Please pull these driver-core fixes.
 
-They have been in linux-next for almost a week.
+Thanks,
+Danilo
 
-No conflicts expected.
-
-(One of them is just a warning that one only sees with `CLIPPY=1`, but
-so far we have kept the builds warning-clean even with Clippy, and so
-I am still including this kind in my -fixes PRs. But I know you are
-trying to keep -fixes to actual issues, so if this is too much, we
-could also say that Clippy is out of scope for -fixes.)
-
-Thanks!
-
-Cheers,
-Miguel
-
-The following changes since commit 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4:
+The following changes since commit 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4=
+:
 
   Linux 7.4-rc1 (2026-11-01 13:26:31 -0800)
 
 are available in the Git repository at:
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.4-2
+  git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git=
+ tags/driver-core-7.4-rc2
 
-for you to fetch changes up to 57d916a3eb765ee0577d269bb2ac1bdf3a7a7f40:
+for you to fetch changes up to a42ae51fe3c36cef82dc687ea594ca232a785fd4:
 
-  rust: bindings: derive Zeroable for bindgen's opaque array wrappers (2026-11-02 03:06:57 +0100)
-
-----------------------------------------------------------------
-Rust fixes for v7.4 (2nd)
-
-Toolchain and infrastructure:
-
- - Fix build error with bindgen 0.73 in certain configs such as
-   allmodconfig by deriving 'Zeroable' for opaque array wrappers.
-
-'kernel' crate:
-
- - 'cpufreq' module: clean 'undocumented_unsafe_blocks' Clippy warning
-   for Rust <= 1.86.
+  MAINTAINERS: update auxiliary bus entry (2026-11-02 16:42:24 +0100)
 
 ----------------------------------------------------------------
-Miguel Ojeda (1):
-      rust: cpufreq: fix `undocumented_unsafe_blocks` in `PolicyCpu::from_cpu()`
+Driver core fixes for v7.4-rc2
 
-Sasha Levin (1):
-      rust: bindings: derive Zeroable for bindgen's opaque array wrappers
+- Fix an unused-function warning in the Rust I/O code that breaks builds
+  with CONFIG_PCI disabled and CONFIG_WERROR enabled
 
- rust/Makefile          | 9 ++++++++-
- rust/kernel/cpufreq.rs | 4 ++--
- 2 files changed, 10 insertions(+), 3 deletions(-)
+- Fix kernfs sparse warnings on SMP Alpha when inheriting a parent
+  node's group ID
+
+- Add Johan Hovold as an auxiliary bus maintainer
+
+----------------------------------------------------------------
+Eliot Courtney (1):
+      rust: io: fix unused Flags::from_raw warning without CONFIG_PCI
+
+Johan Hovold (1):
+      MAINTAINERS: update auxiliary bus entry
+
+Shakeel Butt (1):
+      kernfs: avoid READ_ONCE() on a kgid_t in kernfs_new_node()
+
+ MAINTAINERS                | 1 +
+ fs/kernfs/dir.c            | 2 +-
+ rust/kernel/io/resource.rs | 2 +-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
