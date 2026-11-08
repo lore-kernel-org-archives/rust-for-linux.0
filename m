@@ -1,60 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794155778;
-	b=bkVggFMOCAObkZE8AGuHVtOvd6iEqUNuhU6gm4U0TXXOLXuwqnP6S+WOGN6fLnfsDPds
-	 xiiBeUJ9nr2DMIHyvkXTXLRBCuuuN/B+5/mX8726s6tOrq9bppboyMLywC77PIA6+CLhh
-	 0udR13GBF+TLlSxLFDH5FxbgsW3bg6K/HZkQf1NfTvx8FfkIHDdj8AAN6R5zngXhiHV+9
-	 SdOs1srgSpT7PABCicZ5VzXyJqB4zVSNvvYDd67bUlJYsIHFwMNc8mi6epEMGFzj9lyPP
-	 ubXrETbqf0aljitBTi+Ep/2Lyd28qDi/KlLLae008GyBRu8VeuSkIKKXJrpcD0GFqEw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794155778;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=yB7UQp3PMsWCYdqrryq4xgyn2qyEFFfma2wfNMpg+LY=;
-	b=e0lsUQmQEztaO1UOuo0Rn8yGk5zqjbj+X2W4h2J6yyNavRN+C1Egl6xMk9Q7jt89YErn
-	 OucBFgAmA3IwH4WeogCz2YcQqm+ZEcwFdS70BnAXK5kyOsQAJYa2E3WYedzljjSDOTR6g
-	 4aiwxq/2lwY4uZRoftxXIk6JJvLa/nj5W6eS4Nwb3H2Zco0cF542rldXGUQo4Ovkwtj9h
-	 VYvrZKi5ei7SKlsSJ0dFUvLKXqwlvoanUFHRy58MErmh3mrYu6i8xWjrNSefOhsRnQIqJ
-	 D/RlZg41e86WmmLdXfH+JsJfsNiJYEkW/1H78cAQqtQ0525M+3ykdKlw+FyJjmk2sMg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KQOJ+8aW;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.177
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794165255;
+	b=u2TuupSILVOQylceui4YVgoXGDPs129QwKpWu9Sj9V9zIPf5/anuYcpfyE0SbBNDW9+P
+	 dRq8EIQWMSULBh1JYqijFhc17Iwip78J3d5zE6H0x80HLU0MJ22xhknIJ+jeg7ooC8QTn
+	 v9QH4AsoeeCtjvGJ0rHyqHdR5KWkzM0BkIyRYJHMrDcVKYaMqX3JBawkdi0BgHf5f1Hx+
+	 xgPbi6iDXHeQIKFuXf+JPu1fA6zo5pAgnIr7u68edNmlycZcj/z9fKxxVmYaKRCptofYg
+	 yHfbZRkmLK6u4MM2cDAJLXhQUbZ+cJGpaifL6u+9KJck74Y/YiKmLWcZLPQ5HE48ZWg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794165255;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=Aigj0AbyH3j86dbZXjOqGutzBLlzhmdni5njhtK+RHk=;
+	b=L7J2y4yhYCl/WUp3W3iZ0j+i4Lsn5ln5ir3wm8o+FRmtFxUV/KCa0u3gN7ISFXdFXUh9
+	 6zR+k3qXOuiQ+WdJSpkuctTusRIpmQPSDsuQRxwwMNeX37Pf+B3bsGw0IjW28nHIn1H+T
+	 JfOU+acBgOAEej7FZOLTD3f8KpYnJEkdgVJfF4X15qO5z1LmP10ifMYFy+EueH2875Ag5
+	 yjYCDS1krcHUMxjvfRDW8LBA7nnFEJEp/nN3sk/6KKKxFjpTMXmd3guTdlAB+37DZyRP7
+	 d20BwULChDpXLIzcLwxRu9SZXG44AtTYRdKYVCpAwAJoUahDuSA49EyQx7pzNoLqBhw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rllbRpEg;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.177
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6EF606A31C;
-	Sun,  8 Nov 2026 16:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325E4606A31C
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Nov 2026 19:14:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 325E4606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KQOJ+8aW
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C9641F0089F;
-	Sun,  8 Nov 2026 16:36:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794155777;
-	bh=yB7UQp3PMsWCYdqrryq4xgyn2qyEFFfma2wfNMpg+LY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KQOJ+8aW5YX4tYfz3y9HYN2JIIQQF9NV/zVmmd4oW+hifMSX9d05cz8vRN3B8gcAD
-	 aOIZVfyHNREOBjEkUiNRK0e48rKJUM96iyX5qBTtOrsOhscTHE75imGWx6VbW6ZWWE
-	 XkFn58H2iN682xU+MF/vli9y1h58ucvsJgOqgH1wQBlVHRDtsmL1yD4FdTG8OTPUxG
-	 FRG9Q9L8wMxYKVNCzbP10SOIE2To6IMfBYdLhtbDVT0PZmWinFsx7OYda0hBwE83Jb
-	 ZtnHHfznStNuumSQCIll95MJZbwGIGNHs9BFA2XXyjKdO5fbQik3Bq/1PtGS6yW3Qz
-	 bQZjUeBAjm51A==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: a.hindborg@kernel.org,
-	axboe@kernel.dk,
-	patches@lists.linux.dev,
-	pgovind2@uci.edu,
-	stable@vger.kernel.org,
-	ytan089@ucr.edu,
-	Boqun Feng <boqun@kernel.org>,
-	linux-block@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 6.12 0630/1536] rust: block: fix `Send` bound for `GenDisk`
-Date: Sun,  8 Nov 2026 17:36:08 +0100
-Message-ID: <20261108163608.122524-1-ojeda@kernel.org>
-In-Reply-To: <20261107135015.226523646@linuxfoundation.org>
-References: <20261107135015.226523646@linuxfoundation.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rllbRpEg
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-33fb4680717so574049eec.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 08 Nov 2026 11:14:15 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794165254; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lRUvQgem8WVHkpXTgxfjTOIsmm8vgDKtRJYdLkAJhi4jtV88iGxqJ+grzhnBaFZneP
+         nsbGmgY0+nSQvuAzqvlwi5Hybldqo+4eyUDdVytqmLAmDfvWU3ot3x4BvuCvNm/Pj7GF
+         i3U7NKsJzPmjcAkKxTDDyTlMir6lzjIxXR3Se5w2ZirUbjnbsdch62Dj43RQJYhatfWP
+         fc4LYY5IWa4EoqEuMlDaLdbRfZ8Krp/P0lC8aU5R5JRgYpbQ+SUoqzjPAYAs+TeDvxd4
+         xYjZb/PV/e+NMXmoWtfhIHi03vcu1HuDD9SyKT0H3sOF033F5ycnv3AJJsQBOyW2UvYj
+         CVkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Aigj0AbyH3j86dbZXjOqGutzBLlzhmdni5njhtK+RHk=;
+        fh=Bw8b5hKjAmS9efyT7BXzU6YCzV0mT0JA49DnWB7aNGg=;
+        b=WVirweH5kySh66uuD1xP8JjPThXeRCElzUwfVPWk39tm3PyZf7kWqR/M7ssfscVliV
+         reGVOiipRxpa14HK8xB1P4uVBxkZk6Rmh1B2nBjaSPGmkEYZv3C0dPShrd4Hy2uQ1vy5
+         iyMtSNjF1MaRefcRScfc7u1ZTFsu+PThQJcZ4ovhcCs+hpTy4xFFtLj+dVw5I9tLMeSt
+         Ie/4I0QY4+vHPCixC575UH+xuMW7YTVBphORlNapWPCGgs9uC31MWL3zGazq3IZ736O9
+         ywH55h74GUG/UTVA63F+xcfj+cNKdUj+Rb44lDEIBBtnjCdFs/GxsgjWgfQ2LNCuuWwM
+         QPCQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794165254; x=1794770054; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Aigj0AbyH3j86dbZXjOqGutzBLlzhmdni5njhtK+RHk=;
+        b=rllbRpEgiw5AIuoQnqAOapTJtURQPajg1YXAwpRhZlWjt7K+ZzeDGOMzFSAzbSqle8
+         RZSht2rfco69yYb8DEwj2en5KGT41k/56aT8gFqQnYZbnRoU0I4+FoIQPMMpYyMQr1tR
+         uhD/S0OsBEBHi1wcCfsbCoe2fmWPlMGpvlttpmmuONqFrunvkEbxIVNU548gxCpkJp/H
+         Cp3e/CrOl9QoehwxzPoS8HzOv1MqoWlgKxSSr1+7axyaM2JhbW82FxzdcAhYpfeuaWsq
+         Fr2lWuGq1Mqt6zthCm79fbucEi+tySKeWtrJ+OpVVr7ZEFfBUNeHjQm/YgJYmfsTksLV
+         2cOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794165254; x=1794770054;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Aigj0AbyH3j86dbZXjOqGutzBLlzhmdni5njhtK+RHk=;
+        b=18eiM3fkbNIB9yEYzAA+QhSJ08hLZ9aMeCCqaZTOKPjSWalCLrLHGTe/tQdU9/Kkk7
+         9MiVrIFYmaWA/W4jKJYx2xPiNbr2zj0qbiDeq0OWtdFnahSHg8HivPZhJmxAFI+MtUm3
+         WLUQpQhxeQHpaoOpXf6NLQ48mtjGJpzxPgtzBn6qFJID8kmHJrQBguCZLV+JIXMfY/As
+         poKYWB6ZZVu3EYIxdHOCYmCnh1IjyX1jcTs+PDBU5td87FFwCl9vn3ZmDWYm8LlN27XS
+         rXrg/f6kqHlA6ox8a8/+feR1G7J5pZNg9DwlWHg1wtTbS5kUfFltU/n+TpnH1pX93ek3
+         cShA==
+X-Forwarded-Encrypted: i=1; AL+hErHo1yckLIfbwQXSxcBwnHFI5Bf2Q2Q/UivO51r+UImNjdiqUw+jKJiHH+ZLxq533UUpUitEhRs6K38U7HC+YQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/DRyA3XlQ3355DrnrNlC8lAzyDoVqqibbREuXynMP1wcs16nwQ
+	xCKgZcif6MHlgMpm6xGuRPuJB1q4CoF5EENf8DwYbuBGhy3p2sIOnt14TSWnkeK+31hhnRy0Cct
+	pQZ69fGq8PhtRb2YFk41kDlAEBH1eN6c=
+X-Gm-Gg: AYBFou3jb4AoWME6v2DCnAuZWMzZ6fUFtXjxn/PxNYZH6ZHwxXDuiWCvdTwh20FM+gK
+	T39f9o2LByQesSWunJy5q0sSamBQUPhNpIGNdawxd5fHQYMN55HKJt2/aUaJOf9CNksyarJmusI
+	H2HO9kHMcr+YDtxRrd/m2xBG9A0cbnmOVHwIhyU52kZBRfrxgLAr7fv6HEHgeHZU6lb9RMYV3EJ
+	BI8TvIGRJnLeodwZnALR5X2YliQAcmj7K4aEHkTnlivxhSCqF/7/jEX49Hb6lkxCYLAujOEezVN
+	rMoXUwzVFQ5fmlvHVl7RY3zrhXJukUbJN4Az2we3A2FlYqzfOF/KfnnhFg/AZLaGdeyhU3oMmaX
+	AsTKTZHZVye7sf5l4V/3U1QM5uUA/fnFK+68tJuoeKwUHADwW8SKaM/aRl/JAwY5hQAy+v8aCvY
+	BlzoGsgNp4bBS8AbuM+fLFKFKFW0ljz9ZP+i0AojxCpzAQ/1/pWCmb/b9TU09+/iWH157a3t2Sr
+	OUKL60=
+X-Received: by 2002:a05:7301:7004:b0:372:eab:d700 with SMTP id
+ 5a478bee46e88-37252e3a967mr4833895eec.1.1794165254303; Sun, 08 Nov 2026
+ 11:14:14 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -64,65 +106,44 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261029-rust_kunit_v6_send-v2-0-5ce551efc48e@gmail.com> <20261029-rust_kunit_v6_send-v2-3-5ce551efc48e@gmail.com>
+In-Reply-To: <20261029-rust_kunit_v6_send-v2-3-5ce551efc48e@gmail.com>
+From: Burak Emir <burak.emir@gmail.com>
+Date: Sun, 8 Nov 2026 20:14:02 +0100
+X-Gm-Features: AclHuK8Zqm3SYvO-6lPeY5_gCtAhcGYV6kboEDJv7680m_CzRJR-fiUMmy4_9do
+Message-ID: <CABwQupNhiTRmbA+1Ps96tAe_vrUehAR=ZqmPustz8M4k47X6vA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] rust: bitmap: kunit: uncomment owned_bitmap_out_of_bounds
+ panic case
+To: nico.antinori.7@gmail.com
+Cc: Alice Ryhl <aliceryhl@google.com>, Benno Lossin <lossin@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
+	David Gow <david@davidgow.net>, Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Rae Moar <raemoar63@gmail.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Yury Norov <yury.norov@gmail.com>, kunit-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, 07 Nov 2026 08:44:06 -0500 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+On Thu, Oct 29, 2026 at 5:59=E2=80=AFPM Nicol=C3=A1s Antinori via B4 Relay
+<devnull+nico.antinori.7.gmail.com@kernel.org> wrote:
 >
-> 6.12-stable review patch.  If anyone has any objections, please let me know.
+> From: Nicol=C3=A1s Antinori <nico.antinori.7@gmail.com>
 >
-> ------------------
+> Rust KUnit tests now support `#[should_panic]` attribute. Uncomment the
+> test so it can be run when CONFIG_RUST_BITMAP_HARDENED=3Dy.
 >
-> From: Andreas Hindborg <a.hindborg@kernel.org>
->
-> commit e502b667ee70a7fa2a578e7722672ecd4fe0eb81 upstream.
->
-> The `Send` implementation for `GenDisk<T>` was conditioned on `T: Send`.
-> This constrains the wrong type. `T` is the `Operations` implementation,
-> which is typically a zero-sized marker type that carries no data, so `T:
-> Send` says nothing about whether the data a `GenDisk` actually owns can be
-> moved to another thread.
->
-> A `GenDisk<T>` owns the queue data `T::QueueData` (stored as the
-> `gendisk`'s `queuedata` and dropped when the `GenDisk` is dropped) and an
-> `Arc<TagSet<T>>`. These are the values transferred when a `GenDisk` is sent
-> across a thread boundary, so the `Send` bound must constrain exactly them.
-> Bound `T::QueueData: Send` and `Arc<TagSet<T>>: Send` instead.
->
-> Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
-> Cc: stable@vger.kernel.org
-> Reported-by: Priya Bala Govindasamy <pgovind2@uci.edu>, Dylan Zueck <dzueck@uci.edu>, Yuan Tan <ytan089@ucr.edu>
-> Closes: https://lore.kernel.org/all/cover.1780633578.git.ytan089@ucr.edu
-> Signed-off-by: Yuan Tan <ytan089@ucr.edu>
-> Link: https://msgid.link/20260709100100.604252-1-yuantan098@gmail.com
-> [ Andreas: Fix tags to make checkpatch happy. Change summary line. ]
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Link: https://patch.msgid.link/20260929-rust-block-for-v7-4-rc1-b4-v1-4-642a4c1aebd7@kernel.org
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Nicol=C3=A1s Antinori <nico.antinori.7@gmail.com>
+Reviewed-by: Burak Emir <burak.emir@gmail.com>
 
-This one breaks most Rust builds:
+Thank you for implementing this TODO, Nicolas!
+Testing panic behavior is useful, not just for ensuring that it meets
+the specification but also ensuring that changes preserve the
+behavior.
 
-    error[E0220]: associated type `QueueData` not found for `T`
-       --> rust/kernel/block/mq/gen_disk.rs:198:8
-        |
-    198 |     T::QueueData: Send,
-        |        ^^^^^^^^^ associated type `QueueData` not found
-
-because there is no `QueueData` in 6.12.y. We would also need commit
-06dad60393f2 ("rust: block: implement `Send` and `Sync` for `TagSet`")
-for the other bound anyway.
-
-I would suggest dropping the patch for the moment.
-
-Andreas: could you please take a look and see how you would like to
-resolve it, if at all?
-
-Thanks!
-
-Cc: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>
-Cc: linux-block@vger.kernel.org
-Cc: rust-for-linux@vger.kernel.org
-
-Cheers,
-Miguel
+cheers,
+Burak
