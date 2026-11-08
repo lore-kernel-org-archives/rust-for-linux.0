@@ -1,123 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794104879;
-	b=q/JV8VJ8oRqVsI313sdhEumov54Gtg33ltXa59Q+FkAg6jGOkoMJ7+h8LVuNTNZXT2Mr
-	 hRGZH7zFVZDN55q3rGDdKfWXL/DEDmnD2/C7Dh8Ow9pvpiNnJWBeC44KVJnnmuzjFzd8A
-	 gaUqFZ1zh2/g7fNtVCtqHAqedVDIuNCOtMLVtbKybkwaJ1KoJlbi8KCdoiv8HlSuZNKm9
-	 vMiNvbA4CsSFH1gDK7JiDxOsoLyx7FXuk8amc/Ic6rQWnd7U6k7/JRKoQjmXJS6VfeOJL
-	 y3cYOeToYin61bMVdAuz5lBJJmUGg8iuvHHER/WqpxRbdBiNBahThtj39KaI3kYbq2g==
+	t=1794111432;
+	b=jh+pCL375RHLVtHiexF58q9gP44AWYJtDkTW618Kz5QZ8WD5hKFNQwBrBdLHUUa6XPSr
+	 Pi/zN52h8K8mNJfq5gmRo1klNqh4ETa85CNnHQvWq3e3Leav0RKlCPZlZRjV2Pb9aJOk4
+	 npq/rLvNnp6LLdpooc1DQxqXCk2L4Ds/eECGLW29vG/KD6YQNUMurj9xxZ81mmOgLgwbj
+	 9HvVTK1nTCcqEdUQXPa98NoWWzHkYslYvcLnC1/dyTGcgPWU7Wp6rX/7n8GGVpJPU64qV
+	 ai0iyx8WNfD/9ld/IcD6RelbTz8vMr/fy4Igoy3XQ8cIKytpLvQo+h2XWp1EA5OLPxg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794104879;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=CgFyMsoiKO2B1HX2AvfFumGFOpktUiaDt0kSWOji51M=;
-	b=y76qe501JmAhGNYLBrZgvXuHQ8PWq7ijt1kjFxSepAobFAaY5jGw4A+/rrlXgJ8Sh0EL
-	 ycELbpprZa4IY/stGN62TmbsmCJPTPpcSyUnETNcxfHjlbWTJ7/4TOpINjrgzqgygR8QT
-	 NRhKHT6YGiZ/U9SLsECEP25skYS02KqbCIArOQuMuzyvkQ+iRxDPPDEUBIlroyq9L4CNM
-	 SvEhgdQpJ8yAxZXI6gm5CU+0+P961l4FjDwYCsNpnVuosbfYDlNstf8WkGDO/LxUClhje
-	 gmGYvp3fiInvEWYQuEey4IkawtIKrGemTn/57Oz0ONQ0dadygzl1uB78xx2PBfoFu7w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794111432;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=xf350kiWMiK9O1wpWwY7HDmzSJXiIhOkt3WgyUFMN9I=;
+	b=vrkwNK01cpnPoYe9WZwFTbVWdeCzTa+X8NxKztaXnm4Wcq7+DMhYb/awc647lS3hvcIu
+	 5E+Jg7VVgs+2G2dFrlN0M+2Gqehj/PrKsCwyKETNOhNAuClaemIXtKXLlR9U5gJyh19Oj
+	 3lqo2+64Gyzu0Rv7UCQlwUdRmDr8OOmENAZOvNTEayDJFNY6/ug/S7MvGNb/Y6J6mf+fN
+	 zgk7cClulY2X5xORJFOnHpOim65ic3mxBKn98dUyKcru7qoB5Zx7a9k/RIpQt6OSAXelv
+	 NeTQ7PtOVh3jFjyjaiecoGP41JYbNzitt6zDH8lvNdV9DXhEEaiuIQayvpsZU13GEVQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Crtt9KFl;
-	arc=none smtp.remote-ip=74.125.82.175
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XGf2buBt;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB85C606A31D
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Nov 2026 02:27:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB85C606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51450606A31A;
+	Sun,  8 Nov 2026 04:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Crtt9KFl
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso665744eec.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 07 Nov 2026 18:27:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794104878; x=1794709678; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CgFyMsoiKO2B1HX2AvfFumGFOpktUiaDt0kSWOji51M=;
-        b=Crtt9KFlMLRjcguZk1VYPvhTgDNZMElzf0tf141OxRDD0nRpz/y1O2me5bx5zPEHRw
-         DOcFer5e04/3lH3hXFl06ApuJDKLG77CFSixsb0t6MlRt5PwYzLnVHXQt/lmhfJSUCov
-         8/IoZwOneMKYGudlQKvHL0tGwwIWFHD5bmHdaSx2Aca7D6KfUw3p0kAAsMbidPHSH9K6
-         Vtd7DUJBiDizA1z7P9/HbJj4YxUHaR6Y20nKVwijj6Y8lmutdnjW1IMT8sE8avgxaW3d
-         2oCXfkkFNdLeVsQOzUyKG8TFQRCGvgtR9ixvehQM1zvDECpHHm1ePN1spXa/oKXtzuE9
-         +A7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794104878; x=1794709678;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CgFyMsoiKO2B1HX2AvfFumGFOpktUiaDt0kSWOji51M=;
-        b=N4jDkVEnlKtqAH3DtCN+73kmCfSB5xKk8OHk+SVVEpNmz//N3SLJ9RwICtjAndM/PR
-         0te9eKCi8RtmyJQl95bxJs4XPaEfCQjEeIkMKqZNu50GAeE8962Qf5+UVElorZtiddWq
-         OvRgT9Q4Ul91ncMcBAgpNGueUhumG8yCkE5wR97pa+iwpqTulUPei/SEBNBXdz+aAamW
-         j4pvV3iKXJkAarWlUSirHMBOgX/2hPiaZgcpw6mVpNl3QsFKHSBVWmaHw+zY5HrSgkOY
-         dfDtKWEQ/zJE2stSDN6WIoM6CCb5Xj/3I2Xf24OInsgx1aGDwilG/CAAx63spL/ZS8mE
-         99Ug==
-X-Forwarded-Encrypted: i=1; AKwUvBw7oMieDNdqyp309K6KWC0V1+tZpwjWkBsPqOBl55cYuwgYfdddLvMLXA8sU/PDKGTOWPQJttwTimlU69a5qA==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/FEd7cT4A11Ug5ZK3mL9YArnCu1n9J6wTcxCDgFq7RVJbd/ZyU
-	CLXgO6cEJblFS+a2Vf2YCV+qlCzrvJGinbwPeI46AQZke/1hsUrumdAs
-X-Gm-Gg: AYBFou2pLmlLVZozVdtMNJNFCmFd+D6+hwoYJ1YKwfn9SkP/L0TmuSzgBy8upXeeeTq
-	POrZ7/8ujNhhGrwoaPSmuEQ2ftSEgLNjla1v36UjctKFnoPHNeEldSRSfOuDwGk3cOuHO4bs3rc
-	XL7ZfVtcS9KTNOBkcTSL4KWOdGtvzgW5anO/Y6YMSPWqKTE1itOyOrdzf7kgBhpLdwCyU3ORjEL
-	WoT/XXUV8TCt9Dw6Q2wGB+R9iwuwgmgwS596h/CHSFuTYOJk65pinsfo0357PK66EDMVqJGTOmq
-	I6+vxrwtgQx1uBJ8DCpSKBO0WMkkS6AH+ag8N7+RBAsYSWiOmyBqLID0NbH8kW7wcKVRO/d6jDp
-	JcDUJXFpfjmbNkQDsQLEq3mvtbLb6VqPJ4+lmWmeQ67Jf7Z2iyXsy4azgNo/r5sO5WJqssHrCdZ
-	MOMj34Ote+wq9Kixtb6ZaA2T68nwwHzLoBAoY57ngxk++tLgyPPX8CHdTjkC40nM5fWequxXUSU
-	G/S/KfvAwQ4oW5YACporajg2zDl9CoxGnAdFpB2hbpRfS+hgvtFQ6xhBpOpSKDYE4KScQxX+SDU
-	/u9qvUFw265iVlk7R+dL
-X-Received: by 2002:a05:7022:b0c6:b0:190:d0d9:3110 with SMTP id a92af1059eb24-1b39ff2dademr463410c88.45.1794104877934;
-        Sat, 07 Nov 2026 18:27:57 -0800 (PST)
-Received: from debian ([169.211.140.146])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3771ea85bsm2390172c88.18.2026.11.07.18.27.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 18:27:57 -0800 (PST)
-Date: Sat, 7 Nov 2026 21:27:32 -0500
-From: Kwanghoon Son <asdfkwang@gmail.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XGf2buBt
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D801F0089F;
+	Sun,  8 Nov 2026 04:17:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794111431;
+	bh=xf350kiWMiK9O1wpWwY7HDmzSJXiIhOkt3WgyUFMN9I=;
+	h=From:To:Cc:Subject:Date;
+	b=XGf2buBttgHpApnHi9gEu2vVFkCf2HG5ErPIlQkrxG+hEKR/UeEqTACO99Wiaki3R
+	 Fv5SDN39lhCL/TPH3UT4rnszLlWzRhZG4m3Im0TpqWxQBlTXW4IPf7+QZHvlFc+jPa
+	 4m/hJ7UpHAtWL6BsMKfmjppwEiS7wixkTfr9pcLf5tc9VxEVRCLDp4rJd4KM01QwcM
+	 75eV585mORwleIBRJgPdXI5lyMw1FKJuKpn0qrWw3Mel1p1LOdcnn2G5QFp1SPrjRL
+	 XsMv97LfUnVKkPmw7arAtk/tkI+BvzWt5EudT4OWdsZSPK55FcwqVhHreNGRYTY/ei
+	 h4u7ZaGdTEI4g==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>,
-	Paul Walmsley <pjw@kernel.org>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Anup Patel <anup@brainfault.org>, Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	linux-riscv@lists.infradead.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH RFC 12/12] MAINTAINERS: Add Bouffalo Lab BL808 support
-Message-ID: <au_eFNCt54nlCafy@debian>
-References: <20261029-rust-bl808-console-v1-0-b736ee920078@gmail.com>
- <20261029-rust-bl808-console-v1-12-b736ee920078@gmail.com>
- <20261029-spyglass-evasion-772697094cb9@spud>
- <20261029-amuser-savior-6a6ab062f471@spud>
- <auSDJH9V31wmbrYv@debian>
- <20261030-slider-finished-360b10521e0b@spud>
- <auXQaY25XfYzxEb1@debian>
- <20261102-throng-botanical-b244058ecc37@spud>
- <auqC9jOIQTyieQUJ@debian>
- <20261106-dislike-despise-91106ac848dd@spud>
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 7.4 (2nd)
+Date: Sun,  8 Nov 2026 05:16:59 +0100
+Message-ID: <20261108041659.97199-1-ojeda@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -127,39 +68,59 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261106-dislike-despise-91106ac848dd@spud>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 06, 2026 at 06:00:13PM +0000, Conor Dooley wrote:
-> 
-> Cool. One thing that I noticed, and felt it was a bit odd actually is
-> that the uarts are fed directly from the crystal oscillator. Jisheng had
-> that in his original series though so I assume that's actually how the
-> hardware works?
+Hi Linus,
 
-I carried over the direct crystal reference from Jisheng's series.
-But will change in v2.
+Please pull these fixes for Rust.
 
-UART3's baud clock passes through a mux and divider. The current M1s
-firmware selects the 40 MHz crystal via MM_XCLK, while the APB register
-interface runs at 160 MHz.
+They have been in linux-next for almost a week.
 
-Following your feedback, the UART node in my v2 work now describes
-complete form of clock itself.
-two clock inputs:
+No conflicts expected.
 
-clocks = <&uart_apb>, <&uart_baud>;
-clock-names = "apb", "baud";
+(One of them is just a warning that one only sees with `CLIPPY=1`, but
+so far we have kept the builds warning-clean even with Clippy, and so
+I am still including this kind in my -fixes PRs. But I know you are
+trying to keep -fixes to actual issues, so if this is too much, we
+could also say that Clippy is out of scope for -fixes.)
 
-uart_apb: clock-uart-apb {
-    compatible = "fixed-clock";
-    #clock-cells = <0>;
-    clock-frequency = <160000000>;
-};
+Thanks!
 
-The fixed-clock providers currently reflect the firmware settings.
-I'll add proper clock-controller support before submitting the DTS.
+Cheers,
+Miguel
 
-Best regards,
-kwang.
+The following changes since commit 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4:
+
+  Linux 7.4-rc1 (2026-11-01 13:26:31 -0800)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.4-2
+
+for you to fetch changes up to 57d916a3eb765ee0577d269bb2ac1bdf3a7a7f40:
+
+  rust: bindings: derive Zeroable for bindgen's opaque array wrappers (2026-11-02 03:06:57 +0100)
+
+----------------------------------------------------------------
+Rust fixes for v7.4 (2nd)
+
+Toolchain and infrastructure:
+
+ - Fix build error with bindgen 0.73 in certain configs such as
+   allmodconfig by deriving 'Zeroable' for opaque array wrappers.
+
+'kernel' crate:
+
+ - 'cpufreq' module: clean 'undocumented_unsafe_blocks' Clippy warning
+   for Rust <= 1.86.
+
+----------------------------------------------------------------
+Miguel Ojeda (1):
+      rust: cpufreq: fix `undocumented_unsafe_blocks` in `PolicyCpu::from_cpu()`
+
+Sasha Levin (1):
+      rust: bindings: derive Zeroable for bindgen's opaque array wrappers
+
+ rust/Makefile          | 9 ++++++++-
+ rust/kernel/cpufreq.rs | 4 ++--
+ 2 files changed, 10 insertions(+), 3 deletions(-)
