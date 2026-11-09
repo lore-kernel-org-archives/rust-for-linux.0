@@ -1,65 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794232292;
-	b=cLq2NcOS8qK0vIPw3pCllrJob2GvCsfZIGvTiJ7LV8SATOjLnkrNjcKq+WYX/Qw3KOrM
-	 E+4qKnKbiGB0WJ6QnoWVnGXTNWupEliGzoFiSH/Xd4M+e8y/WNUGrt+/yxucv9thplp2N
-	 trXeVNFRyv6BlM2co/6qZFkWt2d8vUVhQjX+Mm2i0yPXn0mWFKzCj79tJPCaT8uh1i/7c
-	 bocjkxKIzF+oEVQboDzRTopQFo27GxaQMsEeXh4Zcj0lnjNKIQJrXR1vMT5b/hi9yrEQp
-	 2dtrLxhve3rt8mumLarmnpfn7LmwvR3oqbIfMoanUNUJQq8erkBTHzLOTBgwi/xW0jg==
+	t=1794233123;
+	b=PeniZl1wMfWVh13Ja9kad07VvDBWg2ZBulOD4lILlx8sdhQnnYRJhyQuQE31QEuPm3OS
+	 HPgpeyyR/nPxzpMZdehDjNECkadAVUFLJQIixFRt/RQoVaKxTudXJLZQ6hN6YOrn5ZDeJ
+	 OZ+oOsrUS8OKDn0ekywYADpuffOXovXF5/ZLX8i3Vs3/kqlFZ2eGPYhqo72YeiMBMYzEB
+	 s/z4XPcaPUc5aDi744ipO3saBebJqaoq3xYD/xeI/Cwtek3CemvJE366UyvVQQMfJA/Or
+	 jZWz9ix1M+RDkaefiOy88cP7o0PzHG/vCMXOnshwx22XZ4j/qn2e6d94uYN9N90ZQJw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794232292;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
-	 Date:Message-ID:MIME-Version:Content-Type;
-	bh=6YcYOdC7iHosICJsNPvA6c1/PmSp5VhjSW9aX6UnLmo=;
-	b=XoltVphPrJ7NAY1kaL++XALoj5h0lRTAB1CxKKh6NIi62KEfEutDvpvSSF1zcyaybSzh
-	 caRarHzWU+ZS06QI2cljM+Ecn6X/9xMgFmzhhltGGzu0kJQGfw/yjfJOL60psSrba88F3
-	 wOPsZE4iI8yvmiPNhqFBo+LaZZcSwA8hJVLDrWFaB42jWbJy+1IWZIenvdwWX1+GUxSi2
-	 lhjPMVGw4V4xcLDGwFv3jlZlGCpxMJ/kkRRMGgdnenPGwfNc8LXzIzw8OmVV3ugq9RhQ4
-	 FNn2if49qZOoaOwjq2M7/mCv8vMZOX11aDriS088bZq8qPaRitHAoYqyLrAl2vK4oVQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794233123;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=jo7KQrestHbM3KQGgB2ZehvfnJkiM0RdX1i9KTgsql0=;
+	b=BYmEQNV5MPLbSJBFcj58e3NVy6flkrqc1Lq0SJbORuu8rf4Nsy1KjqDWEzYNvQbivxcC
+	 mTqboPneGcb3jD4xilBxsQoJOFYzuDHqN03Gl2XhPJfUhANA2hsG3C+fr3C5MAwICSlc1
+	 UiMbNh4C0aZ3LyQSADbkI655Exg1+ujyvUw8e/RHrOunNR6d7HWDM9j8Fxull5pNa6Huu
+	 tlSSg5SNZXNqTBE6hPZCy17KqqQiXmAOuMjCTGiWX4X/engVKYo1rc/H5yHw8C65ApoOZ
+	 ZRnANfWbno5Pz1TIiQlzcfj2XQdpChesWQvVRTzyO4nPDYLm34ifgiQKCukqE93p80w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aAyxcFZx;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=suse.com;
+	spf=pass smtp.mailfrom=suse.com;
+	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=DUyuGSmU;
+	arc=none smtp.remote-ip=209.85.128.54
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B9E606A31C;
-	Mon,  9 Nov 2026 13:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE19606A31C
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Nov 2026 14:05:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DCE19606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aAyxcFZx
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C791F0089F;
-	Mon,  9 Nov 2026 13:51:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794232292;
-	bh=6YcYOdC7iHosICJsNPvA6c1/PmSp5VhjSW9aX6UnLmo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=aAyxcFZx4CjOcZ9lwqhVvPvhAJ9SWod3FcQZMUQhUdwuQjNS/yhPOF8u894Qxd/Q4
-	 EglLqS7QJBn0G01aZn2nlWw6k0rpgMY1GwD/ce50b/82D6OayUUcv9KW2gc+x02ee3
-	 dAJfStZMCyQkgHtAR8aSKWPSo8cymgby0XFYMkIPsTnK3boYWaKmj9Y9neWRQxaOV2
-	 JR1NpakwROrC+QXRgxlLXusTIb93xnw9NAalDFvgKw1CQu8ADzRMmbnhPvwU+M3Xdn
-	 dmNaYtSAp4/GVxpjcWerxnVYzkoAd3Kk+TYXhvoOyDo9Vl3YDEuWvQCfuq30LPq8BD
-	 eYYWPHfQSg6Uw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil
- Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Uladzislau Rezki <urezki@gmail.com>, Daniel
- Almeida <daniel.almeida@collabora.com>, Tamir Duberstein
- <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Onur
- =?utf-8?Q?=C3=96zkan?=
- <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Subject: Re: [PATCH v3] rust: alloc: add per-task memalloc scope abstractions
-In-Reply-To: <DMQOAI3KE9UD.3KOEVJO02ENM4@garyguo.net>
-References: <20261109-gfp-noio-v3-1-a573e7be9c44@kernel.org>
- <DMQOAI3KE9UD.3KOEVJO02ENM4@garyguo.net>
-Date: Mon, 09 Nov 2026 14:51:22 +0100
-Message-ID: <87v766qfj9.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=DUyuGSmU
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a20a37703bso6531365e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Nov 2026 06:05:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1794233121; x=1794837921; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jo7KQrestHbM3KQGgB2ZehvfnJkiM0RdX1i9KTgsql0=;
+        b=DUyuGSmUH5eDAXYPE494OxeHh+ehy1VF9d4zwanBWXOJRBHq0Ow7LBVP27VmCh3mSk
+         TcSNoZCRGZqD1R5/q04bOSMyUVY+QmxyBoKRfnCVgeyV+Mds7bVkQlWic/V4J8MXFAgA
+         bfUDaw5oAKCnEZxzmpaRDoYgBy0fABh9koMRwBo4JcooByf/NMHXhBK3Y6iNDcNGh5lE
+         u7UV05xyMGeFVrcybw1AfJMtoyF0b1OA7YxIeCHVbxZNpKLi2QpmVNr0qG7Qkje2Oth0
+         NgPXM27eqDCZbuOyIfUWruQL3PvktXLyMiRfPv0QvfsPvk1swAJA6wAn1Qdu+TvXC09/
+         cifA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794233121; x=1794837921;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jo7KQrestHbM3KQGgB2ZehvfnJkiM0RdX1i9KTgsql0=;
+        b=XXkbYzmNASivzG5KdBFSE1HgI6WttQvPQCaC4W7pEM/D+5+3n5ELQ2VNkUka7ZRp18
+         bz0mAPKYqzVyJ1uzSvcnPVDYPuiDeP3VQNtqnz3VsXlduqQI95KEr0wjF6mEK2g7phtf
+         wZY4g+rJOCl0Gf0EUWW4o8Wg9bfqFB02SiV+O34WU9vGXRfV200jUZ2WpaS5D/WeDZKu
+         dwDqad3+UHVqeXz5uCAF0PEcoPu0eXa6Q5nXJcKG5ak1+nJEiUdfpRY/9WiTKYg7GfT2
+         RGLg0HfD7Au0C1Iga1plOsNpiRsW0nuegheTQZweQ/KZwX46Mx1+bSB+kfLMSxIfWpsk
+         3/Qg==
+X-Forwarded-Encrypted: i=1; AL+hErEECOrq80l103v74S+460fYTITrwHSybhl/csy5kstn/llsE+TC8r4z2/azvo43SIv1IH1P7G9oULY3a1pdsw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9b/p7wme0MVBwg4PBuF5qCuojCE89oZUADuOziTm30J/U3rsie
+	YU8auzBOBFW+xO+M3rVh49dWzOq2HAZw3Y09VRlcaAq67XsXRqgSVxx3nJuJ6fTfnYU=
+X-Gm-Gg: AYBFou3AkgmvylLvN0IEKh0hwQq9qV1w1l27rOF3/bfwUNZvw61DDLjXsAdZcOY2asd
+	yZDnYYUGn4Mip+3duqsV5LK0A8XkqdF4fUoWEC7O7U7l9wCT0sWNqKdeDyUNnuKvKNeYmekP0kJ
+	fpKPuA9tB1NkCj3ftMY6tirCWn7ZOL9VqfqYNnm99/lFUpxzGLGOOAVl9motd05ucl36adr/rE9
+	VS+t7wnFQ9iAOmuY7JVR3oLWtvczw+5D84jJ1zhxsgP5tG3Kj+n9PHt9PvJz69ysuecqPob986D
+	eth8jJf5GbWhbQuzDJNbZp3MJ72mcxMv1285YesilQjN0Gqdaew2nc89oSi8p55ERpxVHWsGrfa
+	a91KlMw1bRXNZxMPHX+a04WDdLzxMk0YwpnwNoYY2gfnyqKMSFi4sltXtTt0dJvBuLhk0yIE9pa
+	vGOLFjCmeeiVzq/puk8ESi6MkK8+tIU6GGC5/CYn8+OvmZsqefQCr9/bHjjrnzd5RcyeYZv1p0J
+	JArk/KfZXEflaB2L0yI+j9cMsp5MlGo4zgiww8q1fe7LcW3kxDsMhZGQAkXaGwd0vQLgpIRAIP3
+	vS3LsMF1STWoZxSp9GygK+T7uT0dxF/Cl4pAUKj2//5Mc2uRA6gX7798LhfHrKXz
+X-Received: by 2002:a05:600c:19c9:b0:49e:7c8c:361d with SMTP id 5b1f17b1804b1-4b963c855cfmr76926345e9.22.1794233120810;
+        Mon, 09 Nov 2026 06:05:20 -0800 (PST)
+Received: from ?IPV6:2a07:de40:8100:0:89a9:fd0e:583d:4a53? ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b90f11172esm140959535e9.12.2026.11.09.06.05.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Nov 2026 06:05:19 -0800 (PST)
+Message-ID: <b8134de7-be7f-4bb5-96a7-c36b5d744852@suse.com>
+Date: Mon, 9 Nov 2026 15:05:16 +0100
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -69,175 +92,52 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/2] clean up EXPORT_SYMBOL_RUST_GPL
+To: Giuliano Procida <gprocida@google.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
+ Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ linux-modules@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ Aaron Tomlin <atomlin@atomlin.com>
+References: <CAGvU0Hm04LXTywU0eL6KN4=SoOAC+LU3BKqENnLR-WV-sHsuNA@mail.gmail.com>
+ <20261103165833.418845-1-gprocida@google.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20261103165833.418845-1-gprocida@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-"Gary Guo" <gary@garyguo.net> writes:
+On 11/3/26 5:58 PM, Giuliano Procida wrote:
+> Move EXPORT_SYMBOL_RUST_GPL definitions into linux/export.h and
+> prevent the emission of bogus type information for Rust symbols.
+> 
+> Addressing review comments, the first commit now ensures the moves do
+> not trigger warnings from scripts/misc-check about missing symbol
+> exports by extending regexes to match EXPORT_SYMBOL_RUST_GPL as well.
+> 
+> Giuliano Procida (2):
+>   rust: move EXPORT_SYMBOL_RUST_GPL to include/linux/export.h
+>   rust: exports: emit ___EXPORT_SYMBOL without C declarations
+> 
+>  drivers/gpu/Makefile                      |  4 ++--
+>  drivers/gpu/nova-core/nova_core_exports.c |  5 ++---
+>  include/linux/export.h                    | 14 ++++++++++++++
+>  rust/exports.c                            | 12 +-----------
+>  scripts/misc-check                        |  4 ++--
+>  5 files changed, 21 insertions(+), 18 deletions(-)
+Looks ok to me.
 
-> On Mon Nov 9, 2026 at 10:37 AM GMT, Andreas Hindborg wrote:
->> Add an abstraction for the per-task allocation policies exposed by
->> the kernel through paired save/restore helpers in `linux/sched/mm.h`:
->> `memalloc_noio`, `memalloc_nofs`, `memalloc_noreclaim` and
->> `memalloc_pin`. Each pair sets a bit in `current->flags` and returns
->> the bits it added, which the restore call clears again. The pairing
->> assumes strict LIFO nesting; restoring out of order corrupts the
->> per-task state.
->>
->> Expose each pair as an implementation of a `ScopeKind` trait on the
->> tag types `NoIo`, `NoFs`, `NoReclaim` and `MemallocPin`. The trait's
->> provided `with` method saves the policy, runs a closure and restores
->> the policy before returning.
->>
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->> Changes in v3:
->> - Rebase on v7.4-rc1.
->> - Replace the pinned `Scope` guard and `memalloc_scope!` macro with a
->>   closure-based `ScopeKind::with` entry point (Alice, Gary).
->> - Make the doctests compile and run under KUnit instead of `ignore`.
->> - Document that `NoReclaim` has no effect in hard interrupt context.
->> - Link to v2: https://msgid.link/20260605-gfp-noio-v2-1-cfa2e236c2a3@kernel.org
->>
->> Changes in v2:
->> - Rewrite the patch to use scoped allocation flags instead of exposing
->>   a `GFP_NOIO` flag constant.
->> - Link to v1: https://lore.kernel.org/r/20260128-gfp-noio-v1-1-9a808fc49b44@kernel.org
->> ---
->>  rust/bindings/bindings_helper.h |   1 +
->>  rust/helpers/mm.c               |  40 ++++++++++
->>  rust/kernel/alloc.rs            |   1 +
->>  rust/kernel/alloc/scoped.rs     | 171 ++++++++++++++++++++++++++++++++++++++++
->>  4 files changed, 213 insertions(+)
->>
->> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
->> index 3791af0aadc7..df21b5b129a4 100644
->> --- a/rust/bindings/bindings_helper.h
->> +++ b/rust/bindings/bindings_helper.h
->> @@ -86,6 +86,7 @@
->>  #include <linux/refcount.h>
->>  #include <linux/regulator/consumer.h>
->>  #include <linux/sched.h>
->> +#include <linux/sched/mm.h>
->>  #include <linux/security.h>
->>  #include <linux/serdev.h>
->>  #include <linux/slab.h>
->> diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
->> index b5540997bd20..1e490b57057e 100644
->> --- a/rust/helpers/mm.c
->> +++ b/rust/helpers/mm.c
->> @@ -48,3 +48,43 @@ __rust_helper void rust_helper_vma_end_read(struct vm_area_struct *vma)
->>  {
->>  	vma_end_read(vma);
->>  }
->> +
->> +__rust_helper unsigned int rust_helper_memalloc_noio_save(void)
->> +{
->> +	return memalloc_noio_save();
->> +}
->> +
->> +__rust_helper void rust_helper_memalloc_noio_restore(unsigned int flags)
->> +{
->> +	memalloc_noio_restore(flags);
->> +}
->> +
->> +__rust_helper unsigned int rust_helper_memalloc_nofs_save(void)
->> +{
->> +	return memalloc_nofs_save();
->> +}
->> +
->> +__rust_helper void rust_helper_memalloc_nofs_restore(unsigned int flags)
->> +{
->> +	memalloc_nofs_restore(flags);
->> +}
->> +
->> +__rust_helper unsigned int rust_helper_memalloc_noreclaim_save(void)
->> +{
->> +	return memalloc_noreclaim_save();
->> +}
->> +
->> +__rust_helper void rust_helper_memalloc_noreclaim_restore(unsigned int flags)
->> +{
->> +	memalloc_noreclaim_restore(flags);
->> +}
->> +
->> +__rust_helper unsigned int rust_helper_memalloc_pin_save(void)
->> +{
->> +	return memalloc_pin_save();
->> +}
->> +
->> +__rust_helper void rust_helper_memalloc_pin_restore(unsigned int flags)
->> +{
->> +	memalloc_pin_restore(flags);
->> +}
->> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
->> index 68d80f3fa6c8..5e4c142b5682 100644
->> --- a/rust/kernel/alloc.rs
->> +++ b/rust/kernel/alloc.rs
->> @@ -6,6 +6,7 @@
->>  pub mod kbox;
->>  pub mod kvec;
->>  pub mod layout;
->> +pub mod scoped;
->>  
->>  pub use self::kbox::Box;
->>  pub use self::kbox::KBox;
->> diff --git a/rust/kernel/alloc/scoped.rs b/rust/kernel/alloc/scoped.rs
->> new file mode 100644
->> index 000000000000..6745c06d6725
->> --- /dev/null
->> +++ b/rust/kernel/alloc/scoped.rs
->> @@ -0,0 +1,171 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +//! Scoped allocation policies for the current task.
->> +//!
->> +//! The kernel exposes several per-task allocation policies through save/restore pairs in
->> +//! [`include/linux/sched/mm.h`]: `memalloc_noio`, `memalloc_nofs`, `memalloc_noreclaim` and
->> +//! `memalloc_pin`. Each pair sets a bit in `current->flags` and returns the bits it added, which a
->> +//! later call clears again. The save/restore APIs assume strict LIFO nesting; restoring out of
->> +//! order corrupts the per-task state.
->> +//!
->> +//! This module exposes each policy as a [`ScopeKind`] implementation. [`ScopeKind::with`] saves
->> +//! the policy, runs a closure and restores the policy before returning.
->> +//!
->> +//! [`include/linux/sched/mm.h`]: srctree/include/linux/sched/mm.h
->> +//!
->> +//! # Examples
->> +//!
->> +//! ```
->> +//! use kernel::alloc::scoped::{NoIo, ScopeKind};
->> +//!
->> +//! // Every allocation inside the closure behaves as if `GFP_NOIO` were set, even though the call
->> +//! // site passes `GFP_KERNEL`.
->> +//! let b = NoIo::with(|| KBox::new(42_u32, GFP_KERNEL))?;
->> +//! assert_eq!(*b, 42);
->> +//! # Ok::<(), Error>(())
->
-> I think this usage looks a bit strange, especially that you have to import the
-> `ScopeKind` trait which is a bit awkward API.
->
-> Any reason to not just have API like this?
->
->     memalloc_flags_scope(MemallocScopeFlags::NO_IO, || KBox::new(42_u32, GFP_KERNEL))
->
-> Added benefit is that you can just define different scope kinds as bitflags:
->
->     impl_flags!(
->         #[derive(Clone, Copy)]
->         pub struct MemallocScopeFlags(u32);
->
->         #[derive(Clone, Copy)]
->         pub enum MemallocScopeFlags {
->             NO_IO = PF_MEMALLOC_NOIO,
->             NO_FS = PF_MEMALLOC_NOFS,
->             NO_RECLAIM = PF_MEMALLOC,
->             PIN = PF_MEMALLOC_PIN,
->         }
->     );
+Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
 
-Sure, we can do that. It's a bit long to write, but I guess that is OK.
-
-Best regards,
-Andreas Hindborg
-
-
-
+-- 
+Thanks,
+Petr
