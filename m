@@ -1,78 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794184627;
-	b=hprAYPKCtM/1EeKXSKAZ0h4b8jqHjW4kriAeDMIbzr3PvIVT1J+IuKWlV43TbJCLnPgU
-	 MjQGSfHhGcXwWGT+TB9Dl9asYsb5ht2vsjn+3gAQAfJ4MAq+IF/z4w8rwI6ZJzEfqHwn+
-	 XsrSPWAHqh0Qs2eFl6eIfvCqY4kT2vvVVZ+D43JZlKnqBC737UJICjsnLgXZCTe/hebkQ
-	 FkXMC88OsFmAhrK3+jKeuwAUekXLvU5ZOsklev6X39Cus4TX+vDfgdg6Nmps4FKj1NdBd
-	 YOcZjFA630H19FfZQIxKgKxnFuBhXFpZw887gGbkiI/vU63x+b30IyiqIEgAc4CQVlA==
+	t=1794184625;
+	b=aGrYFEZ4v8B1rW5HNRLCE9TByEgSxnVgCzhmxBZB8whvdCW2Cp7BzUWV3VOqFGvn3Hmq
+	 Dg5Yo5Xr7JSuPHIcvXlF7/Znf1e1yX9WeH+BMnPN4DnMnRVrck0Ck7IEDl237B3shPgjw
+	 PPBmrFcPOZTf7oF5a7KN96NzYuRpdi+0U6QgXK5zbT04Ldc4lAg4BaO3ew0m9lfgwkyZw
+	 2k2l4z3WLY5+nTzntnIZWFnIiTMWgPWJaumeAyiKDyR2WoY0IgiSHEDBey4mHjzb2h/52
+	 xSAsP9n+c6ZeV88mcKXOC2WfZFBFTtgD/MV4LEeWAEDF81ODJOw0k7vqlGs6gmQ5FaQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794184627;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794184625;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
 	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=eOWqZN2vW2kC8QQcwq92WRb+QnG24MxoJUzMmXz3TKY=;
-	b=rwuT+9ujH3lii3LAZO7vOR9hQZI2Pi9w/hXhw/GetKrGF2dB7YhboAYeD5vX5kGatwTY
-	 XoR5gkcj7uGRw26EEmcj2duB0QpoQmmH3WHhmXYU8qQezzOHcgcHDQpeYgFjcvL4DiwPa
-	 u1MWGKVzCRlgp4lDXiDX3tN27aas6/ZGomnUaZ3CPxsI3VxEAU5J4fSsD7kk3e4dA4UHJ
-	 +dek4/CuaNAWndB4bY/SaV7+jUotNaT/wCwACI+lv9OtBMbYS7hIPUlBbh3loH7xoK+bd
-	 GmcliS6HITckIBJKyj5KloOX1Fe3lQ9GJjljarpgW9LxJOnEqW1ITzaVjvvZJdkdPQw==
+	bh=9mhc6/Wh+icVyQadKHDl7NOuRUEYQpTaSVOjSJf9BhQ=;
+	b=i8suhjeu2J3jGlCr4gwSfsi4n+veGubv15dUCAFvg9lrbzADHA+drpWoIDpilEiWFL2Y
+	 1NUVjVGraI+QR/s/FJGPNYODZesm5OWbINxAowi++CFgbfC18v+wi46TVZeFa1r+BopI6
+	 Mc8v7SpnCWz5m3h2tdYas3w+WQgrsUb/lcUiDB7l7Xmoq1S6D7rtL9Z4FIzj08nC1wvBI
+	 KNISzeWKn8wGdrnb1P7hQUTLAaNaUU/UDpqsufni9XkA+3wGC9ANElNejFW1op6EAJus0
+	 9aFHNJs5FuLgyaVsmcdXqgEUpsx4UXKZ8irnmlO3Yw4tUQ9BB9NZ/xZpOYmS97M7W7A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HO4ZEgKo;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EveH983A;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64211606D832;
-	Mon,  9 Nov 2026 00:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F124C606D82B;
+	Mon,  9 Nov 2026 00:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HO4ZEgKo
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EveH983A
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794184627;
-	b=QDCKBZLo3kU1Yak3rtIENf305VSWXAK57ZUAe6BiZUDQwl043oRB9i4jIjn16gppaF9O
-	 DkwU7ZEUupXflDcGOdcZD8eqMCiD/AZtVCoEPxHlBNqDe1BvTxpnepBUXezFvU4dfVOuS
-	 E2cHGBsX+e0tAo0xMkoAjJrwpzjD62Et88P0e+1BdGYv+yHw2Q9y1PpmOH1DiRcgHrGmw
-	 f4Ee48sK0yyzUXhyUJOJRpYUzwjS5zo7t+JozDCOIz0XzYsuaZyQ0UOpPstxpHxMVICLX
-	 gmz+SXzu0vJce+7sXIugmgiK1ppdlaC1AYg2sG3ENx+mYyOpmwhrvi72CD5vJPw2Fqw==
+	t=1794184624;
+	b=j67VkOEk4f3U/PWI0iz59IZA9pr6Ijk6uz9Z7j7kuMPItkXFbeK+RbUs0JuB7l8XOEV3
+	 GxLDrWwHAd9CCCqrqk5dy9LlxgooHN7gYL5RiPbU4lDFL1SedoaOBSfoMsYsDfci+FymL
+	 jminWFV7E8VajQZx9aiK6Qu+PEy+hbt6voavIhUDHkQ1NsfQ6wHFI9laxJ2FZhq1kcOBp
+	 AzgE5wTeqKokovT+BLuM9S9FxyJfsf/f7Cv3lzJlgfH3vP5ZXLZ6bQ8bbLaeHOKFlMyl8
+	 hGp0fZ8iGRB9K1HuWhAQywGwJ3WDdIQ3PlDcoEEKR+oEmb4J2S7N9T08pyA65mYxUOQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794184627;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	c=relaxed/relaxed; t=1794184624;
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To;
-	bh=eOWqZN2vW2kC8QQcwq92WRb+QnG24MxoJUzMmXz3TKY=;
-	b=bMZ7lRk+Xnx3P7KFHH8aWuOZdNP0S+Cbx4t0EFNjU2kT2llkDIGwDbsdEx1yGRTVs5W9
-	 Q/Gyk3861LzhrMrpTHEMZQaCziHLmjZcJFOW4AaxVZ6AClKC+VFnZoNqTiqxeMbJWjjCI
-	 9zCZeJWtiEMVzuyWumnfAuN5sPDmdpzCh1nFFlVedJDzFa/nlsovKKqSMYSFFao012W9Y
-	 om/KXimPjCihTkJPuqlQaVbme9EWMKppmBmt1S1HsrvH4v35S3166s5vY2B/0vLzCksHt
-	 MNAT1WpH9gyN1VPy/f2sQfboUlp+Dg2e8MOOYVNj/XNNmIsldOOCTpPvNbf9ntrTs0A==
+	bh=9mhc6/Wh+icVyQadKHDl7NOuRUEYQpTaSVOjSJf9BhQ=;
+	b=CQrml4Pn8TKZqSE4rvnS42io1lViR401HQmWXnX+uBWi68+b8z8q10U2gmlX9Zlb6XqF
+	 g1AavaEBigH8/v4tm2cQxms5JQJlVXbRpdYda0NsmwaQ4EBZZFTH8e8LuMib4yFYhWwi2
+	 SkHE7LdJ2UsUB6Vt5ItZtnXJyRNOU69d+HdLKpp3n/Atq9pgiy6f98h7Rj6dvqfkwqVqd
+	 Ac4yUTmQbQW2AW0sf4dc8j0jggBwGCdkpO0a2mwekuDxMXbuUOLeZ6+FN+/m4E6c7heOt
+	 WWR5msjh9p30Z5Psa711tnGhzTkPw3mKmP9v6X6CgP2G5VG2/yRm+5sbf67PdgCHf5w==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 8510F1F0089F;
-	Mon,  9 Nov 2026 00:37:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794184626;
-	bh=eOWqZN2vW2kC8QQcwq92WRb+QnG24MxoJUzMmXz3TKY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=HO4ZEgKoyUxhMQmw/r6qWBDWBs9UuHq6TJwX/dugMKswBS3g9N6sGVLHZrYh4lqfN
-	 wgWxgOw7m9bz1jGRIvnHJeg0txQRpluQL/QDmczNhKt9gddNfmI48Af9/tjvci6i17
-	 50XIYSdrISzWz/78zdAAF/wKq1WTCqAZcbEixpMrkc+2Jo2DwfFvFvR1IVERSyV8U2
-	 02ua8daMbjGsd3f90Q9WB8VFXSim/t9L3hGp/FqXPTzfjA1G7UExVaOnigRgGxHfhH
-	 3jspGeU6wZpUqweOwkfLdamU2di98vtO/3yxWrSgH+Pha5tkOErcHRXXYBKXSpKOyK
-	 REqdZGx6XWK+Q==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 9C33E481C4;
+	by smtp.kernel.org (Postfix) with ESMTPS id 9F5991F008A2;
 	Mon,  9 Nov 2026 00:37:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794184624;
+	bh=9mhc6/Wh+icVyQadKHDl7NOuRUEYQpTaSVOjSJf9BhQ=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=EveH983AeqzLMR34pucaRkXxJsLNoIJ3eTT1HPouCqyJ2calJBKPR2NLiG4PcuVnl
+	 PdIlBjPwtEGD5lBaCIYnPY33ZfzNIlrhGiRqCr/Pm9kRw+7QXsZ1wYgc9tVPyr8iGB
+	 CMg/M+R58yP2upmihu3mk1flc5URKYkLJ/co6A+BSw7LXAHzfom7C5XO2MP4kONw4E
+	 o2sd0R8W4MkjQnyHrS/tzR1dJW3x7j4whPXiSKIQbedDw6qSN9IMkkdb/OdhX2jdVB
+	 gjWoIzxob8RMPfdB9axSZuXPaIMAY+I03htEYxMzdJbT9/vRBA3NZvZtjMXvOEJ0/E
+	 lsJ9ho77kBNcQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id F273B481A2;
+	Mon,  9 Nov 2026 00:37:01 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Mon, 09 Nov 2026 08:36:52 +0800
-Subject: [PATCH v6 09/10] drm/tyr: support write-combine BO mappings
+Subject: [PATCH v6 00/10] drm/tyr: add VM and BO ioctl support
+Date: Mon, 09 Nov 2026 08:36:43 +0800
+Message-Id: <20261109-tyr-ioctls-v6-0-b2896bf2b3c9@kylinos.cn>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -84,9 +85,13 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261109-tyr-ioctls-v6-9-b2896bf2b3c9@kylinos.cn>
-References: <20261109-tyr-ioctls-v6-0-b2896bf2b3c9@kylinos.cn>
-In-Reply-To: <20261109-tyr-ioctls-v6-0-b2896bf2b3c9@kylinos.cn>
+X-B4-Tracking: v=1; b=H4sIAJwV8WoC/2WQzW7CMBCEXyXyuUZrxz8YVRXvUfXg2GuwIE5rh
+ wiEePc6oUKgHmdX387OXEnBHLGQTXMlGadY4pCqUG8NcXubdkijr5pw4AoMMDpeMo2DG4+FBgY
+ YwLsuWEUq0NmCtMs2uf2M+NzTfCojTXge5/13xhDPi9nnV9X7WMYhXxbvqZ2nfzbcPNtMLQXKl
+ ZEydIwxL7eHyzGmoaxcIvOdSTxYBhxeWFFZDcKj1t5y3v5j5TOrX1hZWWl8QLN2HcAre7sHyvh
+ zqqWN91Skx1LsUtqmeV+OMtDAmeB6xRnIVgvKqLeHvD1gTnhcDXn38SjPDX0fx03jaq/Or8GgV
+ MI5a6xbc2FbZZwx0nYawTMV2vrG7RfsvIVxwwEAAA==
+X-Change-ID: 20260901-tyr-ioctls-f10ef0dcbfa6
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -105,11 +110,11 @@ Cc: Sami Tolvanen <samitolvanen@google.com>, rust-for-linux@vger.kernel.org,
  dri-devel@lists.freedesktop.org, driver-core@lists.linux.dev, 
  Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794184620; l=10160;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794184620; l=6331;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=5wWt26iAyWLWMAGjPpMaEoEP5nCYGY3PH94v69tzFyw=;
- b=KgWsx8S2vfcef68MJkD6Y98zUIZcMp7F7tSkCs5dTKXrCwYzMYyTOlCGAoUVTYAGmm2Pp/rLy
- JCHo1z57PIPC0pnnL1p4fyLmEsH2s3veUKjRQwH2g7ouze0YrbgaaYt
+ bh=oGqTiUtORqt7n4EG0Z3MQXdgq8LN86uO3RFcLiKSUTQ=;
+ b=D20rai7ipiOrUaAh7pEnAyLO6C4APPpErqt2r4hevEwbnSFlX5WF2owYIQA4WoNROZJgmc5Vm
+ A06zMI3l3NpA5SeC3vx4DEekQ48W0cXRJtsxcuR987jdak1C6NiiNyF
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
@@ -117,309 +122,139 @@ X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
 X-Original-From: Ke Sun <sunke@kylinos.cn>
 Reply-To: sunke@kylinos.cn
 
-From: Sami Tolvanen <samitolvanen@google.com>
+Add the VM and BO ioctls to the Tyr driver, aligning its userspace
+interface with panthor.
 
-Tyr maps shmem-backed buffers write-combine, but on a coherent device
-they are mapped write-back. Cache the coherence at probe and thread it
-through to every shmem::ObjectConfig::map_wc site.
+The series is based on v2 of Danilo's lifetime-parameterized DRM File
+private data series:
+https://lore.kernel.org/all/20261107021427.2105374-1-dakr@kernel.org/
 
-Userspace can opt out with DRM_PANTHOR_BO_WB_MMAP, which maps the
-buffer cached instead.
+It also carries Sami Tolvanen's buffer cache-management patches from
+https://gitlab.freedesktop.org/panfrost/linux sami/tyr/7.3/dev.
 
-The shmem layer zero-inits pages through a cached mapping, and those
-stale lines can land over later uncached writes, so fetch the sg_table
-at creation to flush them via dma_map_sgtable() before anyone accesses
-them uncached. Taking the bound device keeps the unsafe
-as_bound() call out of BO creation.
+The panthor GEM and VM IGT tests pass on an RK3588S device. The group
+and dev_query tests are not supported yet.
 
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-Co-developed-by: Alvin Sun <alvin.sun@linux.dev>
-Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+A branch with the full series and all prerequisites applied is
+available at:
+https://gitlab.freedesktop.org/alvinsun039/linux.git tyr-ioctls
+
+Link: https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/64
+Signed-off-by: Ke Sun <sunke@kylinos.cn>
 ---
- drivers/gpu/drm/tyr/driver.rs | 13 ++++++++-
- drivers/gpu/drm/tyr/file.rs   |  1 +
- drivers/gpu/drm/tyr/fw.rs     |  4 ++-
- drivers/gpu/drm/tyr/gem.rs    | 61 ++++++++++++++++++++++++++++++++++---------
- drivers/gpu/drm/tyr/vm.rs     |  9 ++++---
- 5 files changed, 71 insertions(+), 17 deletions(-)
+Changes in v6:
+- Rebase onto v2 of Danilo's lifetime-parameterized DRM File private
+  data series and use the Driver::File<'a> associated type instead of
+  ForLt.
+- Drop the unrelated Firmware::new closure rework from the VM
+  specifications patch (Deborah).
+- Merge the write-combine and WB_MMAP patches into one, with the full
+  should_map_wc() helper in a single place (Deborah).
+- Accept DRM_PANTHOR_BO_WB_MMAP directly in the BO_CREATE patch,
+  reject NO_MMAP combined with WB_MMAP, and return EOPNOTSUPP for
+  unsupported requests such as an exclusive VM (Deborah).
+- Pass the bound device from file.inner_with() to new_object() and
+  drop the unsafe as_bound() access (Deborah).
+- Expose all three DmaAttr values as constants instead of providing
+  is_coherent() (Deborah).
+- Validate the VM id before the empty-ops early return in VM_BIND and
+  reject sync objects before the size check, as in Panthor (Deborah).
+- Require an exact ops stride for now, use from_safe_cast for the id
+  and size conversions, and add TODO notes for variable strides and
+  zerocopy FromBytes (Deborah).
+- Link to v5: https://patch.msgid.link/20261027-tyr-ioctls-v5-0-59dfe98cb003@kylinos.cn
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index ba03cc4c52539..6869ab345d8fd 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -9,7 +9,8 @@
-         Bound,
-         Core,
-         Device,
--        DeviceContext, //
-+        DeviceContext,
-+        DmaAttr, //
-     },
-     dma::{
-         Device as DmaDevice,
-@@ -87,6 +88,12 @@ pub(crate) struct TyrDrmRegistrationData<'drm> {
- 
-     /// GPU information read from hardware during probe.
-     pub(crate) gpu_info: GpuInfo,
-+
-+    /// Whether the device is reported as DMA-coherent by firmware.
-+    ///
-+    /// Cached at probe via `device_get_dma_attr()`. Drives the BO
-+    /// cacheability policy in `crate::gem::should_map_wc`.
-+    pub(crate) coherent: bool,
- }
- 
- fn issue_soft_reset(dev: &Device, iomem: &IoMem<'_>) -> Result {
-@@ -151,6 +158,8 @@ fn probe<'bound>(
-             // other threads of execution.
-             unsafe { pdev.dma_set_mask_and_coherent(DmaMask::try_new(pa_bits)?)? };
- 
-+            let coherent = pdev.as_ref().dma_attr() == DmaAttr::COHERENT;
-+
-             let unreg_dev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, Ok(()))?;
- 
-             let mmu = Mmu::new(pdev.as_ref(), iomem.as_arc_borrow(), &gpu_info)?;
-@@ -161,6 +170,7 @@ fn probe<'bound>(
-                 &unreg_dev,
-                 mmu.as_arc_borrow(),
-                 &gpu_info,
-+                coherent,
-             )?;
- 
-             firmware.boot()?;
-@@ -186,6 +196,7 @@ fn probe<'bound>(
-                         }),
-                         iomem,
-                         gpu_info,
-+                        coherent,
-                     }),
-                 )},
-                 _: { dev_dbg!(pdev, "Tyr initialized correctly.") },
-diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
-index 49b22e7ee4179..b982e8db2c4c1 100644
---- a/drivers/gpu/drm/tyr/file.rs
-+++ b/drivers/gpu/drm/tyr/file.rs
-@@ -109,6 +109,7 @@ pub(crate) fn vm_create(
-                 pfile.reg.mmu.as_arc_borrow(),
-                 &pfile.reg.gpu_info,
-                 UserVaRequest::from_uapi(vmcreate.user_va_range),
-+                pfile.reg.coherent,
-             )?;
-             let user_va_range = vm.layout.user.end;
-             let id = pfile.vm_pool.add(vm).map_err(|e| {
-diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
-index 196ffc96d9d99..1c77bf109a9be 100644
---- a/drivers/gpu/drm/tyr/fw.rs
-+++ b/drivers/gpu/drm/tyr/fw.rs
-@@ -217,8 +217,9 @@ pub(crate) fn new(
-         ddev: &TyrDrmDevice,
-         mmu: ArcBorrow<'_, Mmu<'drm>>,
-         gpu_info: &GpuInfo,
-+        coherent: bool,
-     ) -> Result<Firmware<'drm>> {
--        let vm = Vm::new_for_fw(dev, ddev, mmu, gpu_info)?;
-+        let vm = Vm::new_for_fw(dev, ddev, mmu, gpu_info, coherent)?;
-         vm.activate()?;
- 
-         let result = (|| {
-@@ -235,6 +236,7 @@ pub(crate) fn new(
-                     size,
-                     KernelBoVaAlloc::Explicit(va),
-                     parsed.vm_map_flags,
-+                    coherent,
-                 )?;
- 
-                 let section_start = parsed.data_range.start as usize;
-diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index 60f6363995a5a..55e2d67b96d98 100644
---- a/drivers/gpu/drm/tyr/gem.rs
-+++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -7,6 +7,10 @@
- use core::ops::Range;
- 
- use kernel::{
-+    device::{
-+        Bound,
-+        Device, //
-+    },
-     drm::gem::{
-         self,
-         shmem,
-@@ -17,7 +21,8 @@
-     sync::{
-         aref::ARef,
-         Arc, //
--    }, //
-+    },
-+    uapi, //
- };
- 
- use crate::{
-@@ -38,6 +43,14 @@ pub(crate) struct BoData {
-     flags: u32,
- }
- 
-+impl BoData {
-+    /// Returns the flags the BO was created with.
-+    #[expect(dead_code)]
-+    pub(crate) fn flags(&self) -> u32 {
-+        self.flags
-+    }
-+}
-+
- /// Provides a way to pass arguments when creating BoData
- /// as required by the gem::DriverObject trait.
- pub(crate) struct BoCreateArgs {
-@@ -56,24 +69,48 @@ fn new(_dev: &TyrDrmDevice, _size: usize, args: BoCreateArgs) -> impl PinInit<Se
- /// Type alias for Tyr GEM buffer objects.
- pub(crate) type Bo = gem::shmem::Object<BoData>;
- 
-+/// Returns whether a BO should be mapped write-combine.
-+pub(crate) fn should_map_wc(coherent: bool, flags: u32) -> bool {
-+    if coherent {
-+        return false;
-+    }
-+
-+    if flags & uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_WB_MMAP != 0 {
-+        return false;
-+    }
-+
-+    true
-+}
-+
- /// Create a new GEM buffer object.
- #[expect(dead_code)]
--pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result<ARef<Bo>> {
-+pub(crate) fn new_object(
-+    ddev: &TyrDrmDevice,
-+    pdev: &Device<Bound>,
-+    size: usize,
-+    flags: u32,
-+    coherent: bool,
-+) -> Result<ARef<Bo>> {
-     if size == 0 {
-         return Err(EINVAL);
-     }
- 
-     let aligned_size = size.checked_next_multiple_of(PAGE_SIZE).ok_or(EINVAL)?;
- 
--    Bo::new(
-+    let map_wc = should_map_wc(coherent, flags);
-+    let bo = Bo::new(
-         ddev,
-         aligned_size,
-         shmem::ObjectConfig {
--            map_wc: true,
-+            map_wc,
-             parent_resv_obj: None,
-         },
-         BoCreateArgs { flags },
--    )
-+    )?;
-+
-+    bo.sg_table(pdev)?;
-+
-+    Ok(bo)
- }
- 
- /// Look up a GEM object by handle for a DRM file.
-@@ -82,18 +119,17 @@ pub(crate) fn lookup_handle(file: &TyrDrmFile, handle: u32) -> Result<ARef<Bo>>
- }
- 
- /// Creates a dummy GEM object to serve as the root of a GPUVM.
--pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice) -> Result<ARef<Bo>> {
--    let bo = Bo::new(
-+pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice, coherent: bool) -> Result<ARef<Bo>> {
-+    // FIXME: use a Rust resv-object abstraction once available, rather than a real BO.
-+    Bo::new(
-         ddev,
-         4096,
-         shmem::ObjectConfig {
--            map_wc: true,
-+            map_wc: should_map_wc(coherent, 0),
-             parent_resv_obj: None,
-         },
-         BoCreateArgs { flags: 0 },
--    )?;
--
--    Ok(bo)
-+    )
- }
- 
- /// Specifies how to choose a GPU virtual address for a [`KernelBo`].
-@@ -131,6 +167,7 @@ pub(crate) fn new(
-         size: u64,
-         va_alloc: KernelBoVaAlloc,
-         flags: VmMapFlags,
-+        coherent: bool,
-     ) -> Result<Self> {
-         if size == 0 {
-             dev_err!(vm.dev(), "Cannot create KernelBo with size 0");
-@@ -146,7 +183,7 @@ pub(crate) fn new(
-             ddev,
-             bo_size,
-             shmem::ObjectConfig {
--                map_wc: true,
-+                map_wc: should_map_wc(coherent, 0),
-                 parent_resv_obj: None,
-             },
-             BoCreateArgs { flags: 0 },
-diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
-index 11bc8e2c9d0be..6d312c3b2ccd1 100644
---- a/drivers/gpu/drm/tyr/vm.rs
-+++ b/drivers/gpu/drm/tyr/vm.rs
-@@ -473,13 +473,14 @@ pub(crate) fn new_for_fw(
-         ddev: &TyrDrmDevice,
-         mmu: ArcBorrow<'_, Mmu<'drm>>,
-         gpu_info: &GpuInfo,
-+        coherent: bool,
-     ) -> Result<Arc<Vm<'drm>>> {
-         // As in panthor: the CSF MCU is a Cortex-M7 and can only address 4G.
-         let layout = VmLayout {
-             full: 0..u64::SZ_4G,
-             user: 0..0u64,
-         };
--        Self::new_internal(dev, ddev, mmu, gpu_info, layout)
-+        Self::new_internal(dev, ddev, mmu, gpu_info, layout, coherent)
-     }
- 
-     /// Creates a user VM, splitting the GPU VA range per `user_va`.
-@@ -489,6 +490,7 @@ pub(crate) fn new_for_user(
-         mmu: ArcBorrow<'_, Mmu<'drm>>,
-         gpu_info: &GpuInfo,
-         user_va: UserVaRequest,
-+        coherent: bool,
-     ) -> Result<Arc<Vm<'drm>>> {
-         let mmu_features = MMU_FEATURES::from_raw(gpu_info.mmu_features);
-         let va_bits = mmu_features.va_bits().get();
-@@ -502,7 +504,7 @@ pub(crate) fn new_for_user(
-                 range.end
-             );
-         })?;
--        Self::new_internal(dev, ddev, mmu, gpu_info, layout)
-+        Self::new_internal(dev, ddev, mmu, gpu_info, layout, coherent)
-     }
- 
-     /// Initializes a VM with the given layout.
-@@ -512,6 +514,7 @@ fn new_internal(
-         mmu: ArcBorrow<'_, Mmu<'drm>>,
-         gpu_info: &GpuInfo,
-         layout: VmLayout,
-+        coherent: bool,
-     ) -> Result<Arc<Vm<'drm>>> {
-         let mmu_features = MMU_FEATURES::from_raw(gpu_info.mmu_features);
-         let va_bits = mmu_features.va_bits().get();
-@@ -520,7 +523,7 @@ fn new_internal(
-         let reserve_range = 0..0u64;
- 
-         // dummy_obj is used to initialize the GPUVM tree.
--        let dummy_obj = gem::new_dummy_object(ddev).inspect_err(|e| {
-+        let dummy_obj = gem::new_dummy_object(ddev, coherent).inspect_err(|e| {
-             dev_err!(dev, "Failed to create dummy GEM object: {:?}", e);
-         })?;
- 
+Changes in v5:
+- Replace the mm-based task_size() (always returned 0) with Sami's
+  CurrentTask::task_size() implementation (Deborah, Alice).
+- Use from_safe_cast() for the id conversions and annotate the AddError
+  fields so the VM pool patch compiles on its own (Deborah).
+- Store a clone on pool conflicts and return the caller's VM instead of
+  expect()-ing (Deborah).
+- Drop the redundant project() in PinnedDrop (Deborah).
+- Fix the rustfmt issues found in the series (Deborah).
+- Link to v4: https://patch.msgid.link/20261020-tyr-ioctls-v4-0-704de77da223@kylinos.cn
 
--- 
-2.43.0
+Changes in v4:
+- Rework VmPool teardown: add() returns an AddError the caller owns,
+  a conflicting stored VM is killed with EBUSY, and remove() kills
+  before the ID is reused (Daniel, Deborah).
+- Wrap dev_dma_attr in a DmaAttr type with dma_attr()/is_coherent()
+  and rename the patch accordingly (Danilo).
+- Fetch the sg_table unconditionally in new_object() and drop the
+  conditional flush call (Daniel).
+- Use dev_dbg!() instead of dev_err!() for user-input validation and
+  EOPNOTSUPP for the async VM_BIND path (Daniel).
+- Drop the pr_err!() calls from the VM specification patch (Daniel).
+- Link to v3: https://patch.msgid.link/20260929-tyr-ioctls-v3-0-26955fb111d5@kylinos.cn
+
+Changes in v3:
+- Drop the VmOwner wrapper and kill VMs explicitly on destroy and
+  file close (Deborah).
+- Add Sami Tolvanen's buffer cache-management patches: coherent
+  devices map buffers cached, write-combine buffers flush at
+  creation, and BO_CREATE accepts WB_MMAP.
+- Drop the new_dummy_object refactor; the dummy object stays a direct
+  Bo::new since new_object now fetches the sgtable for write-combine
+  buffers.
+- Document the LargeSizeConstants trait in the sizes patch (Miguel).
+- Misc commit message and comment cleanups.
+- Link to v2: https://lore.kernel.org/r/20260908-tyr-ioctls-v2-0-88bea777df67@kylinos.cn
+
+Changes in v2:
+- Fold the VM pool into vm.rs and cap it at 32 VMs per file (Deborah).
+- Add VmOwner so a VM is killed exactly once on drop, regardless of
+  remaining references (Daniel).
+- Replace the VmSpec enum with new_for_fw()/new_for_user()
+  constructors (Daniel).
+- Parse VM_BIND op types via VmBindOpType and use the kernel
+  Atomic<bool> for the unusable flag (Daniel).
+- Use PAGE_SIZE for the dummy object size (Daniel).
+- Rename BoData::create_flags() to flags() (Daniel).
+- Report VA-split failures with dev_err! at the caller.
+- Link to v1: https://lore.kernel.org/r/20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn
+
+---
+Alvin Sun (7):
+      rust: sizes: add SZ_4G constant
+      rust: sync: arc: relax `ForeignOwnable` for `Arc<T>`
+      drm/tyr: add per-file VM pool
+      drm/tyr: add user and MCU VM specifications
+      drm/tyr: add BO creation and lookup helpers
+      drm/tyr: add VM-related ioctls
+      drm/tyr: add BO-related ioctls
+
+Sami Tolvanen (3):
+      rust: task: add task_size()
+      rust: device: expose the device DMA attribute
+      drm/tyr: support write-combine BO mappings
+
+ drivers/gpu/drm/tyr/driver.rs   |  25 ++-
+ drivers/gpu/drm/tyr/file.rs     | 390 +++++++++++++++++++++++++++++++++++++++-
+ drivers/gpu/drm/tyr/fw.rs       |   5 +-
+ drivers/gpu/drm/tyr/gem.rs      |  79 +++++++-
+ drivers/gpu/drm/tyr/vm.rs       | 355 ++++++++++++++++++++++++++++++++++--
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/task.c             |   6 +
+ rust/kernel/device.rs           |  27 +++
+ rust/kernel/sizes.rs            |  12 ++
+ rust/kernel/sync/arc.rs         |  12 +-
+ rust/kernel/task.rs             |  12 ++
+ 11 files changed, 883 insertions(+), 41 deletions(-)
+---
+base-commit: cef0cd809e564cca9ac824a369c995ab7e0d16f3
+change-id: 20260901-tyr-ioctls-f10ef0dcbfa6
+prerequisite-message-id: <20261107021427.2105374-1-dakr@kernel.org>
+prerequisite-patch-id: e17775a2fb002d71edd479f6002dc3380b9b6bb4
+prerequisite-patch-id: 388c5b871c09dbb6bad46c68be04813bcbdaadb6
+prerequisite-patch-id: f31098f7dcd1b2d7843767f9ef778788f8773477
+prerequisite-patch-id: b0ea30b4c39e5a43e53ceaf28bd8b39db5b26a76
+prerequisite-patch-id: e0735b7cd0f226e702c0edc4ed889340f93d24cf
+prerequisite-patch-id: 086eb00ec9c9c445c99bbb8d1a052b3fad56b5bd
+prerequisite-patch-id: d186dd1af2f3ce256afd8c7b6ff749d74def5d1a
+
+Best regards,
+--  
+Ke Sun <sunke@kylinos.cn>
 
 
