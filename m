@@ -1,129 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.145
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794265092;
-	b=FKVh7RAFH7VgI+KvL3FJNyMqfsJa4CYRxkvBSZTQ/FeoAZLBNv5zZyQ1BUnwmuZAulVi
-	 EXzCZxpd5SKy60FQXPk/woVUaDpNeMZuRnf6WXRhAT8pAvwmI8PKdOI1mEfQFuNDRyrle
-	 VJMKtqQ6SfTcuQuNLVSzuz2wRYsdLf0qhtZic0OEG+kPJQr4WQsuhStM6FcKC5RGzTJM1
-	 36k+Eleq11Ez9p+gtMHzYkz/FXp+qAyxX6ZcE6BjaUbzkHfBicBJb6Nqzce9oDkw73tq9
-	 nSpKLcLXFNZPbdxXfnIJCa/Tnjr0Jf4lTNGCSwMnOrYn68a3cEd5O7T5gHvI2GZg9cg==
+	t=1794266376;
+	b=r8w9ymcTNxWqeIAdVmYwkB5fbNDmRwD37J2ssGDPsaAxMpsv0rxzmCQmCVFl4N8j8NOg
+	 ET8K8xWzw3mJCrLV3uBPV6MoXGXCikyyfRoc4OIIzgbJ9uhAtRf/2B0L+YYxmqvxEXfWy
+	 1HO/gr6RMG9CmgTTH+aA/ZiECZqFEC6K8hQloHnYDofY9jBAsYygUTEJiMU6XZIWVgn+j
+	 6Z8+M99rqkkAnEokeGWBalGLkMrRli/G/3WhewUyZmnfIjK6G4U7PE/dbseBStTOVnJKw
+	 Y7bjFLvBJdnujzBqlsFcJYRpLm2VKuVGZMlPFv0EDKesLPjzY1EbKJBK8nSZL2SufkA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794265092;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding;
-	bh=kcutZ0X+ZrDPvubgOobo9BpJ/79gJuK50QMpV5H02co=;
-	b=jffwx2u4HUhMe3kyqbglNklbDp+mRJBIi2aeucFx6ukYehq+yfyu+iAzNf3NoyTOmv1c
-	 HfzrhLrmQ6I37HfudNhgJBP/KwYoVDyNbYSMouJdo+1CKvxfznqBat/43AtqiXD45RKqL
-	 AZAKkuTtLiSNzzcFbRret2vk/HS85CgRXfXhXYQfhZWS9iP4rgE4wtpYPuHe1dWBeOeJH
-	 Nnn00W216ug4zHD+x/NVEVYeSHzwjcR4W3r+R78au1kBA8ZfU6KAaa1DR5qCaYLXga7R3
-	 G684/vU38PqwFEEw4RQ/HxIxUmYOy1vxGsAZ8jGHy+KTiP+ID7yqeadw4Qj9VbCvpqA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794266376;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:To:From:Subject:Cc:References:
+	 In-Reply-To;
+	bh=vemnQJ9hwOsOTNhn4Y7nyaok+XPfEto74vBaAcHLXVY=;
+	b=YAXSdFFFG5Bw9ubyuklYfj4pVXxsqCJBRipgTSUq98FUwvtFqNNXwNZuFm5hosXvkC93
+	 cq4MgJlN25tQNmHKGdG0aR0q8o1nP9ZcfbEGRy+9KNjj4vkWKcFpsJa2wpL3MHsIaN6mJ
+	 R21VaVBe4B63yFKPSWqza5774XZ4koLpEuVNr70J7z6WtFywKUcrEbrdOKPzQRe07/Kih
+	 zjXzZY0Sy1zHEvGWaWXOy/y+dyNu4Mku2rrbjnTUQSyamuf/kBgDlRwGieCG5LoCDz/y5
+	 QXDPIYbLRzQz9aw0eevdP2nSyRKE8e+vZAToSqshENo56LC/1exH8it/Cf22VORozug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=flapping.org;
-	spf=pass smtp.mailfrom=flapping.org;
-	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=mzzfJm+W;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=UAArsezJ;
-	arc=none smtp.remote-ip=202.12.124.145
-Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hs1FKz5H;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C928606A325
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Nov 2026 22:58:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0C928606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7404E606A321;
+	Mon,  9 Nov 2026 23:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=mzzfJm+W;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=UAArsezJ
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfout.stl.internal (Postfix) with ESMTP id 2995B1D001AF
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Nov 2026 17:58:11 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Mon, 09 Nov 2026 17:58:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1794265087;
-	 x=1794351487; bh=kcutZ0X+ZrDPvubgOobo9BpJ/79gJuK50QMpV5H02co=; b=
-	mzzfJm+WGMopTUGQVfMKK5ODmEpubpvfzw7hG2cOBxTxUA/XeQ19SrC/j7O/38kK
-	LBRhjwjvVVTPPX1nb4RUh+EDodVxIIAEIkJg0d1P1jC02RFERT073sbE0BUy3TDs
-	OiXxGzUZtqB7La4d6D07uhtADlOuk4vs1vsQ6XxA3+42QiAXsN1JbOjrbrwRNSim
-	1fWvUQRfp2POskoAAu+sYfZiCCMUxyQ72OsDGx2dJrwrQXJramgVz52IuFaLa62B
-	8aN+ei+rElD7UgXdaEVjjwN4AUCy2l+wLqtt4tXXsj4nIb60vqi+4CdgtURzgpA4
-	oVujUhW+U5AqdohA8aqnmQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794265087; x=
-	1794351487; bh=kcutZ0X+ZrDPvubgOobo9BpJ/79gJuK50QMpV5H02co=; b=U
-	AArsezJVNfh5on0ymY9AObrFnTi3McPKEERaed5GQA+JW9e7Pr1xE0vUzhQGeY3s
-	2YZ4EDsRQqsY2bsrDeLKxJGDfL6bh1Nuz7AVjaVkya+0jHfBxzk3T++NDpCcVUWf
-	D2gNciAG6/m7D9a5faZ+vjoYC5EYX2fAxTNJSVOUFZglsRkzxEaR8qK+5DUf5Bev
-	/qeCQS5Z5Nneu1rRZT8mRfbZeN6pJmOIZiKdtPhVY95ZwPVJDeqlHnjAMGT9qWcU
-	XQE45GjEkVnf0wH0dGaZ92VH5isgq4aAWLTRY5SV7dGS6Ah8MLyuZeoyNJr8aKs6
-	OAYVBqPpDAx67M9KoX0zw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794265087; d=flapping.org;
-	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
-	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm1:rsa-sha256:fBkvsUhB67Y5BIWvcvqh/mqGxofmCvBolj3iO7kghadLplQ
-	UzdGo0ng7QwDWp0qJfJWgihDp/2xgNVagIEgpmA65zdNgszbLIMdI+8AdAT+ahmk
-	31SGUOoATIbxYieRhw8JhI8VgG0o39lj4zf406FkAzyQBSpvTR5LLqHi36PGTP6+
-	QYhj5lbVsGD1OnWrM8m6bzBoUS69PC2vjLhWq1ZccObaTfHrZS4JhhMh91Z99gtl
-	9yQWENOkqaVmLU+XuzMMZhUZiUmTopJ1Rg96kLzTDaTfIfFRnj9tCSYQ7Vk9HWcX
-	5Ogumo7EmbryjgwGaVYCTrghhsi0BTabN5mxDLQ==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:0GozLqTu2IssOB8UF0Hcaw5N1gO/5S+HM0cjFnSNS9E=:kcutZ0X+ZrDPvubgOobo9BpJ/79gJuK50QMpV5H02co=;
-X-ME-Sender: <xms:_k_yah4ANSIYfzYp2Y7fpVgQPh5S9WccAERp3BeSoRJTQ96V2Jz1Qw>
-    <xme:_k_yaggIHWTe5XFihaFvf2Cx5jXbk-BGN5VbEzhjCf3nWN2U-STOjZCdm8QyTDeoH
-    40ZE7_0uLTexxP9sIumzZKxELD4Vfgh3fcFwf5E_5gA-yWExcYOdZzd>
-X-ME-Received: <xmr:_k_yasiAtXPBSp0o3Y8PB16OoVvImddlmg6xZbbOBvJQfZIkLIgFj8X_EvFJL1V8Jzgb9zzVG_yB6b--Qugk-2E->
-X-ME-Proxy-Cause: dmFkZTGneUUp0FtI+QifA0Lct3oPpXCkfmLj2XKFUNhJOHAQdI8CWr4Xgdc2qiNxI3m1I1
-    2ApEO1GDRxRm36XPZPBr0Dn8uNDzQ40r1l/gOYT59r1Lr7wJTeM9N0AduzLn+H3zxpssM7
-    i7ewCOsjgWBiiIdqubxVzE4N22lG4DmYZFmBNMkkjx4eP1wwFpKW6s2Dp9ljXEzF0ey7q1
-    T+2A/YeEj+/9sUX7NdLYon6fTcH9yf0T/KL9smxQue5efZvqT9MOC6lao5XPOqIyvvJP3h
-    OJTqMWQLx7j/GYQI5MfW9hANxINIi/uXDUUjwB82vPbAxkBBp0qa8MY07H5OwaB7BPIQth
-    rGaSpkIF2WqU2FlYGftS/4JbHrzkexIxG1ZzUM8WLYRV4uiFC0nuJiP1m2/N2lgstrR1iv
-    KP9U79blGj1FRt09WdoHUISeuGhRaU2hPm1I/n6kY38j3J0S+f+isQgtWgLpC4pZL4hjG2
-    qEs8OylyM+EA6P4MDaL/QXbOUHF/KSw988RsJ5sH6NizYlJ3O2+m9+xX28k7lbj1kcaSC6
-    SvOo3+EHMz8b4KGZlD+MfzafSndZ7c5VstxscVpqxZMYpOFWbxJ6ZHIiyU/5NzHWBup06F
-    OCviZ31PODibyM04Mwk2en5x7heatFfCY4UcrrsTXf5pOKnBRoMUT6jeeLog
-X-ME-Proxy: <xmx:_k_yagksbUSODwzYc7GxwO0KF77wQou7E0ibk5cZM0PO5Ic32o95sQ>
-    <xmx:_k_yakFyUmxWC-kucrSpJIrxaQOEnuY1_oOKyY9zQ1F2p4F9HCe44Q>
-    <xmx:_k_yaiP__eVIybcRelliD8mBz3p1KiQerMVaC0L8404hjSnZFf5iUA>
-    <xmx:_k_yarskzwaNxGXOqb_--HjCvlj9xdudfDKDiiy66z2xme1TKJNQ1A>
-    <xmx:_0_yajFKpHcT4saSmYaGxiAcLVec1ZeVAV_ORMP-p6-T_XImri0bwcVI>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 9 Nov 2026 17:58:01 -0500 (EST)
-Date: Tue, 10 Nov 2026 07:57:58 +0900 (JST)
-Message-Id: <20261110.075758.247487148810717068.tomo@flapping.org>
-To: a.hindborg@kernel.org
-Cc: tomo@flapping.org, fujita.tomonori@gmail.com, frederic@kernel.org,
- lyude@redhat.com, tglx@kernel.org, anna-maria@linutronix.de,
- jstultz@google.com, sboyd@kernel.org, ojeda@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org, boqun@kernel.org,
- daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com,
- work@onurozkan.dev, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: time: implement `Display` for `Delta`
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <8733tgnc41.fsf@t14s.mail-host-address-is-not-set>
-References: <20261103-time-delta-display-v2-1-b01b1fe9ff9f@kernel.org>
-	<I_BPRv0XwpoRCf2AG4Ot12JnHyqvdM9lb_wF0sZMixc0UIoaBb-aeNWYuff1oe4_X1m5SpCTcZp9woOg-dt9Eg==@protonmail.internalid>
-	<20261104.180854.547774168466136920.tomo@flapping.org>
-	<8733tgnc41.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hs1FKz5H
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800711F0089F;
+	Mon,  9 Nov 2026 23:19:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794266376;
+	bh=vemnQJ9hwOsOTNhn4Y7nyaok+XPfEto74vBaAcHLXVY=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To;
+	b=Hs1FKz5Hc+WM/bTbrnDd3G33dDqvx8BOEgsleRt8CVPUwCzy/3jwPnmFfe0pS0oFd
+	 nlUzduQJ36HySdckCQbMsgs5EGkd/FfDkIbEvyHOFottCLZZcNH8TmcIm4Sz72rzxf
+	 NBi02zPJbUkAXeZVKfEF0c7N9IClLIzMV2bHc9fhLFlmUG0khUfSk5MXFfWPF25yuQ
+	 4dECexBED2DW0cOZ4RH0h2lgWh2vjTeSnP3DFNPRvTAGjTCKmUcadVCpRyqbbmEdGQ
+	 qnISX31VsZm0vCLsZgIXucop2eI6nMKGKguEcE0WXsXxZ7S+4/jfzNZDdIHmhhAMUL
+	 IPhn9/DtPLKqw==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -133,28 +49,167 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 10 Nov 2026 00:19:26 +0100
+Message-Id: <DMR2CDPKE6SD.3KQ0GKUHG2HZ7@kernel.org>
+To: "Simon Song" <xinmengs@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2 05/12] rust: pci: add reset callbacks
+Cc: <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <linux-pci@vger.kernel.org>, <alex@shazbot.org>, <jgg@nvidia.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <jhubbard@nvidia.com>,
+ <ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
+ <kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
+ <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
+ <boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
+ <work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
+ <kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <peter@colberg.org>
+References: <20261023154009.2246627-1-xinmengs@nvidia.com>
+ <20261023154009.2246627-6-xinmengs@nvidia.com>
+In-Reply-To: <20261023154009.2246627-6-xinmengs@nvidia.com>
 
-On Wed, 04 Nov 2026 11:07:42 +0100
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
+On Fri Oct 23, 2026 at 5:40 PM CEST, Simon Song wrote:
+> @@ -175,6 +178,61 @@ extern "C" fn remove_callback(pdev: *mut bindings::p=
+ci_dev) {
+>          // Drop private data before returning to PCI core, while its rem=
+oval context is valid.
+>          drop(data);
+>      }
+> +
+> +    /// # Safety
+> +    ///
+> +    /// `dev` must belong to `T`. Any installed driver data must remain =
+installed until this
+> +    /// call returns. The data lifetime is independent of the callback b=
+orrow.
+> +    unsafe fn callback_data_with<R>(
+> +        dev: *mut bindings::device,
+> +        f: impl for<'borrow, 'data> FnOnce(Pin<&'borrow T::Data<'data>>)=
+ -> R,
+> +    ) -> Option<R> {
+> +        // SAFETY: The callback supplies a device bound to `T`.
+> +        let data =3D unsafe { bindings::dev_get_drvdata(dev) };
+> +        if data.is_null() {
+> +            return None;
+> +        }
+> +        // SAFETY: PCI installed pinned `T::Data`; the caller excludes i=
+ts removal.
+> +        Some(f(unsafe {
+> +            Pin::new_unchecked(&*data.cast::<T::Data<'_>>())
+> +        }))
+> +    }
 
-> We can also change it to be a `Debug` implementation. I was not aware
-> about the stability requirement. But I guess that is mostly a user space
-> thing? In the kernel we can change stuff as we see fit, as long as we do
-> not interfere with the uapi.
+This isn't needed, you can just use Device::drvdata_borrow() below.
 
-Right, in the kernel we can change the format as needed.
+> +
+> +    extern "C" fn reset_prepare_callback(pdev: *mut bindings::pci_dev) {
+> +        // SAFETY: PCI holds the device lock throughout reset.
+> +        let dev =3D unsafe { &*pdev.cast::<Device<device::CoreInternal<'=
+_>>>() };
+> +        // SAFETY: The device lock prevents removal of installed driver =
+data.
+> +        let _ =3D unsafe {
+> +            Self::callback_data_with(&raw mut (*pdev).dev, |data| T::res=
+et_prepare(dev, data))
+> +        };
+> +    }
+> +
+> +    extern "C" fn reset_done_callback(pdev: *mut bindings::pci_dev) {
+> +        // SAFETY: PCI holds the device lock throughout reset.
+> +        let dev =3D unsafe { &*pdev.cast::<Device<device::CoreInternal<'=
+_>>>() };
+> +        // SAFETY: The device lock prevents removal of installed driver =
+data.
+> +        let _ =3D unsafe {
+> +            Self::callback_data_with(&raw mut (*pdev).dev, |data| T::res=
+et_done(dev, data))
 
-Still, I think it is easier for users if the kernel crate follows some
-rule about when to implement Display and when to implement Debug.
+Here and above closure isn't needed, you can just use Device::drvdata_borro=
+w().
 
-As Miguel's suggestions in v1 show (12_345ns, 12.345ms, 12.3ms), Delta
-does not have a single obvious format. In the kernel crate, other
-types with a unit, Hertz, MicroVolt and MicroWatt, implement only
-Debug, not Display. Display for Delta would be the first exception.
+> +        };
+> +    }
+> +
+> +    const ERROR_HANDLERS: bindings::pci_error_handlers =3D bindings::pci=
+_error_handlers {
+> +        error_detected: None,
+> +        mmio_enabled: None,
+> +        slot_reset: None,
+> +        reset_prepare: if T::HAS_RESET_PREPARE {
+> +            Some(Self::reset_prepare_callback)
+> +        } else {
+> +            None
+> +        },
+> +        reset_done: if T::HAS_RESET_DONE {
+> +            Some(Self::reset_done_callback)
+> +        } else {
+> +            None
+> +        },
+> +        resume: None,
+> +        cor_error_detected: None,
+> +    };
+>  }
+> =20
+>  /// Declares a kernel module that exposes a single PCI driver.
+> @@ -375,6 +433,18 @@ fn unbind<'bound>(dev: &'bound Device<device::Core<'=
+_>>, this: Pin<&Self::Data<'
+>          let _ =3D (dev, this);
+>      }
+> =20
+> +    /// Called before a PCI function reset, with the device lock held.
+> +    fn reset_prepare<'bound>(dev: &Device<device::Core<'_>>, this: Pin<&=
+Self::Data<'bound>>) {
+> +        let _ =3D (dev, this);
+> +        build_error!(crate::error::VTABLE_DEFAULT_ERROR)
+> +    }
+> +
+> +    /// Called after a PCI function reset, with the device lock held.
+> +    fn reset_done<'bound>(dev: &Device<device::Core<'_>>, this: Pin<&Sel=
+f::Data<'bound>>) {
+> +        let _ =3D (dev, this);
+> +        build_error!(crate::error::VTABLE_DEFAULT_ERROR)
+> +    }
 
-So I would prefer Debug.
+This can both use #[optional].
 
-Maybe we should also write such a rule down in
-Documentation/rust/coding-guidelines.rst.
+(You can leave unbind() alone, I want to remove it anyways.)
+
+> +
+>      /// Enables Single Root I/O Virtualization (SR-IOV) for a PF.
+>      ///
+>      /// Called when userspace writes a nonzero VF count to `sriov_numvfs=
+`. The token carries the
+> diff --git a/rust/kernel/vfio/pci.rs b/rust/kernel/vfio/pci.rs
+> index 43c14b4e3a1..db30dbce6a8 100644
+> --- a/rust/kernel/vfio/pci.rs
+> +++ b/rust/kernel/vfio/pci.rs
+> @@ -1084,6 +1084,18 @@ unsafe fn unregister(&self) {
+>          // VGA and runtime PM callbacks. No field of the enclosing data =
+is being destroyed.
+>          unsafe { bindings::vfio_pci_core_unregister_device(self.dev.core=
+_device()) };
+>      }
+> +
+> +    /// Prepare the variant driver's state for a PCI reset.
+> +    pub fn reset_prepare(&self) {
+> +        // SAFETY: This owner keeps the pinned registration data alive.
+> +        unsafe { self.dev.registration_data_with(T::reset_prepare) };
+> +    }
+> +
+> +    /// Complete the variant driver's state update after a PCI reset.
+> +    pub fn reset_done(&self) -> Result {
+> +        // SAFETY: This owner keeps the pinned registration data alive.
+> +        unsafe { self.dev.registration_data_with(T::reset_done) }
+> +    }
+
+The unsafe accessor of self.dev shouldn't be needed. You can just call
+
+	T::reset_done(self.reg_data)
