@@ -1,88 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794242593;
-	b=vOd0YanwXrfq0gK2biadvnA7Tmk/rVpnws5oayETvn6GPFScsdyjCQ1eMPfOnwce/wDC
-	 K2067SUdzbK8ad7/qxIB09UColR4629BxkAzyRatrzAdgJW25FlYggHmrnnDKmvcG/fe9
-	 CAdZCtH/MaBJ+L8O8DJAi/wdFVec8BEme9nzpv9Fy88RDm/kWGbZDS4tw2U0UDqlYajCa
-	 hqGsMg8LKy7f5enh6KQfYINi+bin5vowIMN1/2pB3AjR3nNxdq9AiyFk1b8gU+vLonRC+
-	 FwNIU7VYE83aJqSOHFv6yMd2lhvjHd8kel3AQ5JdFkZeU+7SpWF4s/BEJpD/YbMwRUQ==
+	t=1794242748;
+	b=VkawIl50A7tMBQidB5B7SD96xObcLQ5yXMvNwo88VuLbD5VCKqsadViJkJApXCyo6ATv
+	 lmjTCiY+Hgpxbk+upJVUjDwGMsfg998aYr7XccYep3r8BrCSWg54wDdVB4Kc4eSjBp1y8
+	 aezn79slO5zzka9z/Xv49RWFhwLCqlACHXFCXCiB4VPWD/ftM2zR4YVwp/kqxhhh327zf
+	 HwAcu2+OdTTeVZ+TX4hm3vGy/VXgAE2yaPkDVDLjI/6wim3J52QL2UDIx3bvDg9r0IYnp
+	 opxQvtsCDLMzUjQD6uNeXLgrfOnezyJ8Wcqqrcy7zLMGp1UZnDsS4ubEOcv8hiXDTow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794242593;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794242748;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
 	 Content-Language:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=HLYen38mKGP677B1oAzbJm7ZesXCZSDjKVwDLOHWtRg=;
-	b=qBLUIiHR6nvDCoNhm7qugEcAk57reCyo1uaZw+KBzCWqT/9Kgq1Gpbpo6MuIwOuT+dv4
-	 Ga4UvpNMaH3Vy9ifnrpwxrqdwlNJ9Gjs09HxLFu5ILm0e9FdI7OMiWz22n06iBP95Lu2I
-	 zSjooI+M73XwPJcez+VlUH7JXz4bzSwcOspA62riUEQuvUimhKTg3yVOaAI2wPT6Ce+4T
-	 vNV8WuhSfmHue1oHAP8EZoGL7Azj2KrJpERAou1kHzsGU/x1ZzXYYlvO3SJPnwOzsKDym
-	 vOvsTgwuxZ4cm024pu1790jp2NabORejmGRbv8aq9uPs6ewVIdLs00bwP/+Xcs3zMJg==
+	bh=KaxLEDS88ItrKwFFpF3PUgaqHFKPv05h6XZaeYQUHW0=;
+	b=5LV1NKtLuA/0BRQ66LorgNgulXHzzG6cXjHuQarSjkn4nPQ+w8juQoc3mKn4UN7AdvI8
+	 k4r5y85GTqCRdEUX7sdgC18bUeZxTlz7VhaMRcgUImj4IKhDWgxAQQ1xSy40RHJYSYuUQ
+	 Q4rl/0NXH6h7jqn1A8oKAnHJfv7dA7wRty31hVXRTK0sPmxyyFq1j50c8YhvGwEWcX1dG
+	 LHZZKK45rmD0XVoVDLu+KwrnwXk3redlJ0be1q5xGhJrTm+cGULaZOhmI7YPw71pedQMA
+	 Ce9DkCLDsk3CUATj5oto4VTBDOpqXIAViBrk6LEwIf7FYBFZ7OOgaBCFXffGiQNmRqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=suse.com;
 	spf=pass smtp.mailfrom=suse.com;
-	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=YGuhw1oZ;
-	arc=none smtp.remote-ip=209.85.221.53
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=IVc4xmHR;
+	arc=none smtp.remote-ip=209.85.221.42
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA58606A331
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Nov 2026 16:43:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ADA58606A331
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981C660A2605
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Nov 2026 16:45:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 981C660A2605
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=YGuhw1oZ
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48e1d0e5dafso758078f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Nov 2026 08:43:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=IVc4xmHR
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48e09aa5264so671334f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Nov 2026 08:45:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1794242591; x=1794847391; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1794242746; x=1794847546; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=HLYen38mKGP677B1oAzbJm7ZesXCZSDjKVwDLOHWtRg=;
-        b=YGuhw1oZxUPL/bbx+i0ijosSnISYIbUul/qGq2zAELOacB08dvYDccSx/x9rU6g9gl
-         QyPht0zwbkvD9ejc3WNj6TDVij9KZUrBEQ9Xt5i0q2PMick2I5G7BiPPIhuJ5QsC5cpF
-         Hc9VdS41J2qakEC5kRjP6W1h9qpqNpRyQS76N9UiluO+WrKbrxUc+eHpH3MgwEVU/LBg
-         EKYTjvlmvVcRDnUT5YdBxwyzf6msDAIK2mLzEprKTk57LkQxxSPMwQJzYJo0fRMdPBCc
-         S1EcyuYCyB06Nre1/tH9qJ9dfWqNPjCBc4QnRUd5kWvI+126KhchYL1WWv8hq+Sx8TwT
-         sacg==
+        bh=KaxLEDS88ItrKwFFpF3PUgaqHFKPv05h6XZaeYQUHW0=;
+        b=IVc4xmHRUI7l0d1aI01B1bf0TgxhgAWqtMAsztsXJDiGo9QYkOa5VcjnsqiEUEW094
+         +obdWRcpaN+j/B14EgCb1KFG4LUdRJV+GvcaWubRrOtQazg82Ix3i4nQYf/jMIEHX2tU
+         ObAWnI3isjfiH/yuAvxeUlSdxCVgZvZqsNiqWudHZdY1CeA0GDvuzZKyEo07VSJB5Ahb
+         AkgMpN2gR8U3WlRYJOmZsZme0ERrSqL4LiPSZuS2JprQ1rmSLrAT4/GHrebv/GqHlMzY
+         v6V4vdWFB2UPahEWWeEq02QTnTWgioPULqgClxAVoK/PJ41XSdFU191pmOOCiiUzrCYI
+         QHHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794242591; x=1794847391;
+        d=1e100.net; s=20260707; t=1794242746; x=1794847546;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=HLYen38mKGP677B1oAzbJm7ZesXCZSDjKVwDLOHWtRg=;
-        b=hfiLvYOBIg9LkPwhJ1UhAdE23UPVGHV/nRt55FmoFUQOmUipHD1d87XGwh0Y3OkIpC
-         2ZQFyqtUJTL5KlAtfAVYAw1aeArUOpCbvK4miaex7Rw3R0UYdnrXpLNlDqDafujwBfHC
-         DPkGuLfyHWYj4UiDiZhi+/QqVG4TpbVlqGI5f+n35NA4LBqbPKYgplDVk705Hr97iHCX
-         mi1oyXMYxiSoPQhaePg551STGn1+9L7ZPDiqGWRkPkpVUr0nuQWGQ+dtMqLuADHquJyn
-         PqaERmnkNVtlzdp01kjUOL3QgO9myZmKKqFtMz3FR9a1723vbZPZWH5HDOqpsCs3zm8a
-         kGng==
-X-Forwarded-Encrypted: i=1; AL+hErGv62L9NkJSbwvVbdnfMrdNh93rqA/uoz02L4kLIggqHAfSdLGF51Zlf0XsPQBmLiGR3mPs5W5GydtiRiDjEg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8TD2TXP39dJHpvviflzoOsuvWgkx/Gfk1w8zT4pJhN2xa6IQXr
-	rw/J5k+VZNjjZ0leeCahFLm/hPxz5eKPyf/Wko9R/dVcr3WqCgYFgD5fl/vvkUrscAo=
-X-Gm-Gg: AYBFou04FYGV2iM6Q1EJswFZOvlOtgKd4N0vRkE1bhjf3E/XRQIYF3YJqoGH/BhW9Q6
-	5YxMhwbGPPvgDQ0d83rLZgIO4etYAwV20oAfAZwK2QI7+nVuPZD+mD61SUBWCrU/ChTlAkkR7YZ
-	KFIoKQF6DSHEZpnYRGFRvi6am6LsrvdqmXgPBJtRAyMmbEF5TZnpzXTbcir6fqKhGGPvem3xplt
-	uFLP8KKdgfEfIz9/x3dCgAEN1Sn+gxb+xmkj3uGxZGIiB5fN0CEdwxGsnak6LLnLooxRAEKsDfl
-	hJKSeNNquz0begzbtSMhqelYMsxH4qXYfIAgu2+vydCbsv9M9YaCBjbdfpX6gJ0VVPQkJGcZzEo
-	HEXgwjfhk+KeM7kXZOLGeLfMa/ZF3wEzmME0hyzEVo0mv0pAMT3SWnc5C8LP75hpSmGeEXZdgOq
-	4gpRXHpWDMJyJEWAy06uid1PUJn9GoHylF6N2TKZ7HSvGsWNLbioD+13wqslmHgGSW9FWbM8OXA
-	ePEzypcZ2dMFby7SraNKSIC1u2ruQIxCfri6+WcKRBtgySjgyYwBKN+yldg2/x9ZKKAvmyRDtIF
-	vZFKuPYRBWwkVTjzV2MCwR4km6z8HO4CYXR9MmoipCffd04J5N1oDZIOR7edsD34
-X-Received: by 2002:a05:600c:3508:b0:4a2:526b:d40f with SMTP id 5b1f17b1804b1-4ba015b8c6amr1961265e9.0.1794242591012;
-        Mon, 09 Nov 2026 08:43:11 -0800 (PST)
+        bh=KaxLEDS88ItrKwFFpF3PUgaqHFKPv05h6XZaeYQUHW0=;
+        b=2Fn1kDYmFlhGxgDrsRJ23SqNGLLXq/+sTHjZDRqQan/yAHEiROVav5OVvGcjy6c7u1
+         3QaEe7JkJwdPz1paIVf/6h1T7OFaix/XDYJm3lTZ+/S09V0feYzksrE8vgCwfz+EwfIX
+         Q1jjRDC+x6ON7BARQy07scs1Y5vATaCN+3Ehc6mbev9kdw0A1Xk2HT/ohtVpWKCSYQQO
+         htl2bz5+AY7VgKWF0OLe3k7nQIj9XajLaG/PI09jjPfy76VMDA+l2Hd98zsADnw7XTR0
+         u6BBFwE+NJxzW8UyClStWYluhF0utwe7ZGyS4S3+eYAbF2hyKuOqG8J/6WSCSjCTOfkl
+         5KQw==
+X-Forwarded-Encrypted: i=1; AL+hErHlE0PQj65XGqEPNJtwE35EENr943+IzRk690B9NdS9J01Wx3Txq8y/O/040N5NJf5GtO/JoLXPGA7vHrLxkg==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+xLSUpPBz7RgjtFghmlt08auiW1yG0wp6fjlytPMwqzTwY1/kW
+	vZo3A0iVLlS4fzMilQEvKtij9O/EkJZ70wpoJmvOOve0hg2t3bUmsY8/OPc0Jbv4WmI=
+X-Gm-Gg: AYBFou2O+WlwBP1GIQu4nWeU/A+kWqA/Rebo4Fe+EX7/w+4m0yJPaTBp0ThaJmXyGO+
+	cEz7wtOPoUCkZOy2qZo6XdtWyrM0lGMJ3ka7si7ZnXBjnb1DmhpkMT44jklVsfnFM97aULTssLr
+	mi5TcmK6xS0aQRhc4K09GGzvKQnUw3EOaZBCE2GoeAOgM0wKIdCJgOHQOaIN5so+Pw+G1aQtvoZ
+	shJenWRwnth13OMdFRevh0lLI1zKYg/76r/FPTjPZaFjUhyzKe5+Y/FVLzdRBoPgUsLqHh1HFt2
+	h+truRDjqtQmBOE0QX9O9wYcjaNUeQdhl5L38/Qa3JAzypEMQFCA135OKqUPpit5H1R0fye+SN0
+	jYvE7lVSzH+Q8D5eQe7M0qpUNNec0uLvNSIpHQ8BxR0EnD4wAQ5ysJCCbWrBwIdGIdnAXc7M+Or
+	dsvuEGqYmGQ/Deu5yt5WbjM1xkZ4ren6F1CttoZMfpduqXghGaO+0UnISxBfcPBjEZtyYwOu481
+	YpfPrPSVVcNa7nyJ7z6iWDX0pWFBzk8o4Y+tv595OAR3IbQFdVnT3OVGasktsfjrgKZLbU9SAqc
+	y72iqCgxGQA87PuEEFvcVy7U7IyQW4FXY0YB5bZGCP3MmMDZSrTdwVUFgvhR4jov
+X-Received: by 2002:a05:6000:2389:b0:491:8462:20cc with SMTP id ffacd0b85a97d-49830d8186fmr7425f8f.37.1794242745831;
+        Mon, 09 Nov 2026 08:45:45 -0800 (PST)
 Received: from ?IPV6:2a07:de40:8100:0:89a9:fd0e:583d:4a53? ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ba01d8ae9fsm806785e9.3.2026.11.09.08.43.09
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49597187162sm11283249f8f.34.2026.11.09.08.45.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Nov 2026 08:43:10 -0800 (PST)
-Message-ID: <1dddcf29-36a9-4ffd-999f-54b730c9ea27@suse.com>
-Date: Mon, 9 Nov 2026 17:43:09 +0100
+        Mon, 09 Nov 2026 08:45:45 -0800 (PST)
+Message-ID: <b5abb55f-202d-458b-ba6d-92af16f80137@suse.com>
+Date: Mon, 9 Nov 2026 17:45:44 +0100
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -93,7 +93,7 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 03/11] modpost: cache section relocation mismatch state
+Subject: Re: [PATCH v5 04/11] modpost: emit module descriptors as assembly
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
@@ -115,49 +115,150 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  llvm@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
  linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
 References: <20261104-build-speedup-v5-0-0f6018be8dae@kernel.org>
- <20261104-build-speedup-v5-3-0f6018be8dae@kernel.org>
+ <20261104-build-speedup-v5-4-0f6018be8dae@kernel.org>
 Content-Language: en-US
 From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20261104-build-speedup-v5-3-0f6018be8dae@kernel.org>
+In-Reply-To: <20261104-build-speedup-v5-4-0f6018be8dae@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 11/4/26 7:20 PM, Lorenzo Stoakes (ARM) wrote:
-> For every relocation modpost invokes check_section_mismatch() to determine
-> whether there is any kind of mismatch between the source and destination,
-> and if so which classification applies.
+> modpost generates a descriptor for every module in the form of a
+> <module>.mod.c file with .modinfo strings, the __this_module descriptor,
+> exported symbol tables and (with CONFIG_MODVERSIONS set), the CRC of
+> imported symbols.
 > 
-> Each time it does this it invokes section_mismatch() which iterates
-> through the sectioncheck[] array every time it's called.
+> These files are compiled like any other kernel C file with all of the
+> -include preamble, as well as including linux/module.h, header dependencies
+> generated by fixdep of a few hundred headers, an objtool run and if LTO is
+> being performed, a link is performed to generate native code.
 > 
-> When walked a relocation section the source is fixed and there aren't many
-> targets, so the same names are looked up over and over again.
+> On an x86-64 allmodconfig build 11,189 *.mod.c files are built, each
+> taking ~0.24s of CPU time to compile, and module finalisation as a whole
+> 6,300 CPU seconds, or 64 seconds of wall time when run over 128 threads.
 > 
-> Therefore cache not only mismatch categorisation but also whether a
-> mismatch even exists for a given section and look up the sections in the
-> cache.
+> It also generates ~1.3 GiB of *.mod.o.cmd files that every subsequent build
+> has to read back.
 > 
-> Special indices (undefined, absolute, common) take the uncached path as
-> before.
+> Avoid all this by emitting the descriptors as assembly instead.
 > 
-> This results in very significant speed ups for allmodconfig incremental
-> builds.
+> The layout required (size and alignment of struct module, struct
+> modversion_info, the module's name offsets, init, and exit fields and
+> whether the architecture uses PREL32 ksymtab references) can all be derived
+> from scripts/mod/module-offsets.h.
 > 
-> modpost is on the serial tail of every build that links vmlinux.
+> The fields of __this_module are emitted in offset order rather than
+> declaration order, as CONFIG_RANDSTRUCT shuffles struct module so the name,
+> init and exit fields can land anywhere.
+> 
+> An assembly file avoids all of the issues previously mentioned so this
+> conversion results in a very significant performance win on kernel build.
+> 
+> As a consequence of this change, since module-offsets.c includes
+> linux/module.h, scripts/mod is now built after the generated headers in
+> prepare0, rather than before.
+> 
+> Also update .gitignore and make clean to handle .mod.S files, but keep
+> .mod.c files there to ensure that users do not end up with untracked
+> changes/dirty trees after the change takes effect.
+> 
+> The sections were confirmed to be byte-for-byte identical to the C version
+> produced - each of .modinfo, .gnu.linkonce.this_module, __ksymtab*,
+> __ksymtab_strings, __kcrctab*, __kflagstab*, __versions,
+> __version_ext_crcs, __version_ext_names and their relocations - for all
+> 8,135 modules of a clang allmodconfig build with CONFIG_COMPILE_TEST off
+> and CONFIG_MODVERSIONS, CONFIG_EXTENDED_MODVERSIONS and
+> CONFIG_MODULE_SRCVERSION_ALL on, and for a sample built with gcc.
+> 
+> What differs is what the compiler added around them: the __UNIQUE_ID_*
+> locals, the KASAN constructor for the .mod.c globals, and on x86 a
+> .note.gnu.property that the linker already drops from any module containing
+> an assembly file and the loader never reads.
+> 
+> None of these have any impact on the build, however.
+> 
+> The assembly carries no debug information, so in order to keep describing
+> __this_module in each module's debug information, define it weakly in
+> module-common.c too, in a section which the module link discards.
+> 
+> Nothing initialises struct module::arch from C any more, so
+> MODULE_ARCH_INIT is removed from include/linux/module.h and from m68k, the
+> only architecture that defined it.
+> 
+> x86_64 kernels built with gcc and clang, with CONFIG_MODVERSIONS,
+> CONFIG_EXTENDED_MODVERSIONS and CONFIG_MODULE_SRCVERSION_ALL, were booted,
+> every module and an external one loaded and unloaded, and the srcversions
+> checked against modinfo, i386 and arm64 defconfigs (gcc and clang) and a
+> ThinLTO build were also built as part of testing.
+> 
+> An x86_64 CONFIG_RANDSTRUCT_FULL build with clang, which places the name
+> field after init and exit, was checked the same way and produces the same
+> .gnu.linkonce.this_module sections and relocations as the C version.
+> 
+> On the x86_64 allmodconfig with clang 22, "make modules" with every
+> *.mod.o and *.ko deleted goes from 64.5s (6,306 CPU-s) to 28.5s (518
+> CPU-s).
+> 
+> A consequence of this change is that the make jobs are now so small that
+> make cannot dispatch them quick enough, however the next commit in the
+> series addresses this issue.
+> 
+> This impacts clean and no-op builds with a large number of modules most
+> noticeably.
 > 
 > Whole build, 128-thread Threadripper 9980X, best of N runs:
 > 
 >                                          before   after     delta
 >                                          -------------------------------
->   x86 defconfig, touch mm/vma.c, gcc        8.5s     8.3s    -0.14s (-2%)
->   x86 defconfig, touch mm/vma.c, clang      7.7s     7.6s    -0.13s (-2%)
->   x86 allmodconfig, touch mm/vma.c, gcc    33.9s    29.4s     -4.5s (-13%)
->   x86 allmodconfig, touch mm/vma.c, clang  31.9s    27.9s     -4.0s (-13%)
+>   x86 allmodconfig, no-op make, gcc        12.7s     2.3s    -10.4s (-82%)
+>   x86 allmodconfig, no-op make, clang      13.9s     2.8s    -11.2s (-80%)
+>   x86 allmodconfig, clean, gcc            342.6s   306.6s    -36.0s (-11%)
+>   x86 allmodconfig, clean, clang          340.1s   290.2s    -49.8s (-15%)
 > 
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Looks reasonable to me.
+
+Looks ok to me from a modules perspective.
 
 Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
+
+> +/* The equivalent of KSYMTAB_FUNC()/KSYMTAB_DATA() and SYMBOL_FLAGS(). */
+> +static void add_asm_ksymtab(struct buffer *buf, const struct symbol *sym)
+> +{
+> +	const char *name = sym->name;
+> +
+> +	/* The name and namespace strings the entry refers to. */
+> +	buf_printf(buf, "\t.section \"__ksymtab_strings\",\"aMS\",%%progbits,1\n");
+> +	buf_printf(buf, "__kstrtab_%s:\n", name);
+> +	buf_asciz(buf, name);
+> +	buf_printf(buf, "__kstrtabns_%s:\n", name);
+> +	buf_asciz(buf, sym->namespace);
+> +	buf_printf(buf, "\t.previous\n");
+> +
+> +	buf_printf(buf, "\t.section \"___ksymtab+%s\", \"a\"\n", name);
+> +	buf_printf(buf, "\t.balign %d\n", KSYM_ALIGN);
+> +	buf_printf(buf, "__ksymtab_%s:\n", name);
+> +	add_asm_ksym_ref(buf, sym->is_func ? MOD_FUNC_PREFIX : "", name);
+> +	add_asm_ksym_ref(buf, "__kstrtab_", name);
+> +	add_asm_ksym_ref(buf, "__kstrtabns_", name);
+> +	buf_printf(buf, "\t.previous\n");
+> +
+> +	buf_printf(buf, "\t.section \"___kflagstab+%s\", \"a\"\n", name);
+> +	buf_printf(buf, "__flags_%s:\n", name);
+> +	buf_printf(buf, "\t.byte 0x%02x\n", get_symbol_flags(sym));
+> +	buf_printf(buf, "\t.previous\n");
+> +}
+> +
+> +/* The equivalent of SYMBOL_CRC(). */
+> +static void add_asm_crc(struct buffer *buf, const struct symbol *sym)
+> +{
+> +	buf_printf(buf, "\t.section \"___kcrctab+%s\",\"a\"\n", sym->name);
+> +	buf_printf(buf, "\t.balign 4\n");
+> +	buf_printf(buf, "__crc_%s:\n", sym->name);
+> +	buf_printf(buf, "\t.long 0x%08x\n", sym->crc);
+> +	buf_printf(buf, "\t.previous\n");
+
+Nit: add_asm_ksymtab() and add_asm_crc() emit unnecessarily .previous
+directives.
 
 -- 
 Thanks,
