@@ -1,109 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.127.136
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.96.115
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794226151;
-	b=j11aNbzOV+IimkaBixKeUCbwGNGAtbtNXGNv9tF/lgjdTUlx5co5v7b/0m1nM+wQYX3b
-	 WcZLSbR5rtIw4UuppanwDcIhpx9FsJiZlRaiGaRq0j0vaV1sVwYTcbbzdq8CXHPAkxrSG
-	 a0/oyrQ0gGRxiHQkw1e4p0uSHvbIGft7e6HbVQHmd9Ddko8RKTm+Cpgn97AbYwBt4Be6q
-	 h/66wPBHOhflI5N0WTwXXT89OOBGwG/NCWroxroWProz+YCs0MTvEb6+y74mrDjrIXsJW
-	 yotwuy1UrDfDDDiIx7DFiFzItePKfrZ7+zevBTG9+FEpizw0VPN/suYKQKZFPsLK5Lg==
+	t=1794226731;
+	b=hKzaPS8jsDzKq+BJQ61JuAF0hkyyU0ZWayzNW+LrArDpNFkiWlNBJoW9sXcsYvOoF6FQ
+	 py03O95KnJDG69MUhLUdlprGykIdguut/HHo1BAwtgx0mYtnkXkFdKU8e/qpe914vcB0d
+	 xy23W/ZCz+5YQTK6r2PlvD8Yeqt7dlUMAudwFQaCMZBQzlGFeKChfnJO98UaZKq4A5zGT
+	 ebAccYFLKkz8JmzJIm3uWyYmUylZTRa17w6JAA/Eyq1NzSJyP8rZ1FEAbMA/JwwtGcj5N
+	 oZ6DKXlBqjPAY7CLrD6KoFGGH49Mh4J+mef7+GACDfI90P9xKG4+R6nYK80BEhfXEJw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794226151;
-	h=DMARC-Filter:Received:Received:X-MS-Exchange-Authentication-Results:
-	 Received-SPF:Received:Received:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794226731;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:From:To:Cc:
+	 Subject:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
 	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
 	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
 	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=kBukfvrKHWty/D0wEXAHNvBJZFd6vag33klQlUrVbYw=;
-	b=DUHXVCewlAoPYxBYXh0t3lNKU6Ht6YwnnLFspo3K02F4TawRf7d1LErkJjRa1P7FaEYS
-	 Pz2wuKj1Jxe73wm1ge9G0KwzfB8zNjlRRnMvapm41JnOBk6GN7bRRPAaC4YaSUTtsWTVK
-	 uEYaNPCVbe8TGkFhFBHHQiuC6riWLi7ch/rJaGP1VtgMWnsCw/wdE9D+6nYBLt59F3tkD
-	 NWL3w5CTXc37LRj/tncImyQikW3wx1DUGoLLE8EHgYqlcFFioqCBoQkNkIksDsVgzll53
-	 t2Y89EW3dgcjP6L/gH9IJitRrPjTTHkaYzI+u/CVcvkT5NcgtxxQilCFM8NRWUCv6AA==
+	bh=Q+JNS4zNxX0LJcsOyuiae+sJIwpEyobXZzVTEHyUKTM=;
+	b=3iGutntlZWViTUsdBrnPcz9WYWG3TDo5J+BnqWU5guhvI6wjQLhcg9JWhlXZGSCJsoFY
+	 Gp0H6kTGMwvBm+NRjtRZOG7A1FuF2DTdBXfPHna1Up1PSRjKsQyO7HZ8i5TJoiFtDAjSY
+	 9UTVNet03G78pw7NPSatrpLD0LmkEIEf9Lx3DojwSADqGQ+dk3CD6bInZIEPuGB/MXrLc
+	 kl49PONVG9sjEwGttEXcYgwYK5k6XWUovVc1MIarMxgXQ1u+cB2b1XXCxGHavvomWMUxF
+	 eUMnkLUV5bty07A3FA7X0bEXqZbmmdJxszhNn9+lUxG4dnMghEDGkBSIwLJvf9tmgnw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=cixtech.com;
-	spf=pass smtp.mailfrom=cixtech.com;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.127.136
-Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazon11023136.outbound.protection.outlook.com [52.101.127.136])
+	dmarc=pass header.from=garyguo.net;
+	spf=pass smtp.mailfrom=garyguo.net;
+	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=Kjs8W2e8;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.96.115
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022115.outbound.protection.outlook.com [52.101.96.115])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B865E606A31C;
-	Mon,  9 Nov 2026 12:09:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B865E606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cixtech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cixtech.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA1D606D803;
+	Mon,  9 Nov 2026 12:18:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1DA1D606D803
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=Kjs8W2e8
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uZG7DXrlXaCEmofEs4vxrVPh7zozhXF+kDcJUyKD0rxZ1sbjFk3Y1rFLhvI/gsIddDANBK55ZiKUNE5T06/DnHbP5vnaKIaqfXmoE/YFE75S26uuuBe36CiMbkRArcGb0rS/T21SjnByrYH7a87RkXgW5wHQOKUlIn2Dq1XDxmf6rx+GUngspmdP+M7jnrWzKIQXsW6JqUiYIqox5IXbpybA2tWTnojtFGTXyMKAJlO/gD4M/7jCb6/leVOJPK3R0L4DUu1eVLjk2CDSDJ1dQP5ylJApEsBDrzNfQ3Rjb1XJxOl8Ob6t5j+DtM9U57sNsSqbmrktTAcsb/f+zAJwHQ==
+ b=QRIvLKN8ztkxMTuID3EGqxPcuygMjIGqtmMzIBFGVce+9VJCh05Nn/3O3KE19Lnhm5bpIjEaQ6+OBdtle52IevVwBG1ktY/M/3JSo2Lz40/qU2o4QmzB1D9/5oTG4CharAe/i74OED2esCl2hpKNGGA5iOLtjJ7+f7fcZPvtqt3yDgSoHDPiJEDv/yJZiLJdHIo7KaJ5yH51ybMgQjELToYNN1pPz+9GZJNP6rD1koBqtBlq0K8qd2xhu6EOd92OTPIpkO/uIkRJMziWBc0qhmJlwt1rWlx5cDanFq9T4JnM88Qxb6IJhv/79MDBUstHMoaFsTGfYC5jKt9tUpmzJg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kBukfvrKHWty/D0wEXAHNvBJZFd6vag33klQlUrVbYw=;
- b=ddgXB3KoJu6w/RKG9A45cyintVne38i1gQR3KuzYIMXhNhUwknfizS5yEcmqLTuY9A3+PGWGC83IK8PpBHbdQX3TK9u2sV30M6gEvVg6mOQDX0t98xUg06Ay5y4rqKj/9MiyBBjKkyEuVPHNF7ChsfD3cjs68Sy5b2dNqf5YQAlCSTEwGsf4wGpNclZ4ZcV2Ytnv1nAyWu0BpCKm81tBV+1xmbo44T5E54ArLhFymfwK2MqKxIvfLkdfIzPJUrigZ8r2lV/awW8usCoVj6ToTENPg2UX9C2iMQnA36cqkW4qot/Hh/Kl0P0kxn33I17WICJzjHg5AXfjbdNcCPKb2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 222.71.101.198) smtp.rcpttodomain=arm.com smtp.mailfrom=cixtech.com;
- dmarc=bestguesspass action=none header.from=cixtech.com; dkim=none (message
- not signed); arc=none (0)
-Received: from SI3PR02CA0012.apcprd02.prod.outlook.com (2603:1096:4:295::11)
- by SE3PR06MB9162.apcprd06.prod.outlook.com (2603:1096:101:31f::15) with
+ bh=Q+JNS4zNxX0LJcsOyuiae+sJIwpEyobXZzVTEHyUKTM=;
+ b=S1lBnN6D18YIx2r1K6Cx8GjgUd0acL+ENByrSAlAPoQh6t/83vA10CBDU4Iavwr+BjW8EehdHZNeNk59gXxWJBgw1wX3VhcSQi/nAVy2XwpKzyfboINajujMIvidugn2gKnX8pl1F09m3fbQG7P3j/YCzuPbjc6s2gYJP785qk3e2yrsdORGLvKF631vTSptSVnUfbUWM51dODWhrTxvUFOZFaOpXPdKDnlbQubmPjRoHBDyoC4s5Q5LCFvma+ce/cppXLBqnpCw/rpCQ4euZYplwaCqpghkfA78ziMjovFUPmPy2IE3p/LTLKmjFktz9PnSm7LoZkJD+iLq9xwMeQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Q+JNS4zNxX0LJcsOyuiae+sJIwpEyobXZzVTEHyUKTM=;
+ b=Kjs8W2e8x/3vq5IkxTzBDtU8vfG1a0YtnZlHSN8u6NYPFJ+iNWUZiKwpsudhZIpkDhcMTdPrhtYiUz0DldWpeYr8L8L0wyH3+1EbR7WljcPCf1yYIK3iwsUTgS+hjmXJCeQ0uw9nT8oAnvYk0P60bWxy+mz+mPzIS4tY5Mk3+wo=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
+ by LO3P265MB1833.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:f9::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.7; Mon, 9 Nov 2026
- 12:09:07 +0000
-Received: from OSA0EPF000000C8.apcprd02.prod.outlook.com
- (2603:1096:4:295:cafe::7b) by SI3PR02CA0012.outlook.office365.com
- (2603:1096:4:295::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.13 via Frontend Transport; Mon, 9
- Nov 2026 12:09:06 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 222.71.101.198) smtp.mailfrom=cixtech.com; dkim=none (message not signed)
- header.d=none;dmarc=bestguesspass action=none header.from=cixtech.com;
-Received-SPF: Pass (protection.outlook.com: domain of cixtech.com designates
- 222.71.101.198 as permitted sender) receiver=protection.outlook.com;
- client-ip=222.71.101.198; helo=smtprelay.cixcomputing.com; pr=C
-Received: from smtprelay.cixcomputing.com (222.71.101.198) by
- OSA0EPF000000C8.mail.protection.outlook.com (10.167.240.54) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Mon, 9 Nov 2026 12:09:05 +0000
-Received: from cix (unknown [172.16.64.42])
-	by smtprelay.cixcomputing.com (Postfix) with ESMTPSA id 4E7CA40920FB;
-	Mon,  9 Nov 2026 20:09:02 +0800 (CST)
-From: Cunyuan Liu <cunyuan.liu@cixtech.com>
-To: boris.brezillon@collabora.com,
-	steven.price@arm.com,
-	liviu.dudau@arm.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	gary.yang@cixtech.com,
-	fugang.duan@cixtech.com
-Cc: daniel.almeida@collabora.com,
-	aliceryhl@google.com,
-	p.zabel@pengutronix.de,
-	dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	cix-kernel-upstream@cixtech.com,
-	robin.wang@cixtech.com,
-	cunyuan.liu@cixtech.com
-Subject: [PATCH v2 2/3] drm/panthor: Add initial support for CIX Sky1
-Date: Mon,  9 Nov 2026 20:09:00 +0800
-Message-ID: <20261109120902.125242-3-cunyuan.liu@cixtech.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261109120902.125242-1-cunyuan.liu@cixtech.com>
-References: <20261109120902.125242-1-cunyuan.liu@cixtech.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Mon, 9 Nov
+ 2026 12:18:45 +0000
+Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0592.012; Mon, 9 Nov 2026
+ 12:18:45 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 09 Nov 2026 12:18:44 +0000
+Message-Id: <DMQOAI3KE9UD.3KOEVJO02ENM4@garyguo.net>
+From: "Gary Guo" <gary@garyguo.net>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>,
+ "Vlastimil Babka" <vbabka@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-mm@kvack.org>
+Subject: Re: [PATCH v3] rust: alloc: add per-task memalloc scope
+ abstractions
+X-Mailer: aerc 0.22.0
+References: <20261109-gfp-noio-v3-1-a573e7be9c44@kernel.org>
+In-Reply-To: <20261109-gfp-noio-v3-1-a573e7be9c44@kernel.org>
+X-ClientProxiedBy: LO2P123CA0088.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:138::21) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:400:1cb::9)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -113,255 +107,305 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: OSA0EPF000000C8:EE_|SE3PR06MB9162:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 0c4d08d6-c0a1-4aa9-7960-08df3e5a40a0
+X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|LO3P265MB1833:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81df8e5b-0c6c-4539-e1ef-08df3e5b99a5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|36860700016|1800799024|7416014|23010399003|261102123227099003|261028144727099003|261009223027099003|261021123027099003|261021121427099003|261022105027099003|261022075727099003|261026121527099003|261026140227099003|56012099006|3023799007|10067099003|6133799003|22082099003|18002099003;
+	BCL:0;ARA:13230040|10070799003|23010399003|376014|7416014|366016|1800799024|921020|261021130227099003|56012099006|261021123027099003|261021121427099003|261021135927099003|261022115727099003|261022113327099003|261022075727099003|261022105027099003|261026130827099003|261009223027099003|261026140227099003|261026121527099003|261028144727099003|261102123227099003|10067099003|18002099003|22082099003|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	SDshc3sgrYwKtynmi6DFMv8WunRU2GE0dyLcvBYtmAThC6mpLfJCVI8HE3ctBc/mQR34yS5avfyf5JCurzqZaxZSL6pKiMAI9LdfATF83+9yqdZNGkD/KD3BiSuJ+kxaNKQwVX+BqbvIiElFgYFlgklta+nrz2x0vytSQ5c1XH9sSsvIvA7nKxqwNsV+dtIkqx0ImUmM6JetlWs4f+dpOj9sxksyUPmRf2qLAfhY3S0toRiOUMbDBhpbi9sHXOLGufJxuH0ZmxmeFExYNVnHl+edo79XUAtPl/LL6gB01VE+zQia1zadkaMevkkINsjjC82s+ESYZfw/v++CyYvTC4/rYHyP2p4ayQZHnDxVcQD7wbtT6WwZokVxxQR12ej1FfPc+wnXTzCs0V0DJaSCvzzaGCv8QZUTHAZFZNaLvUOhoYQOOABUltxThFObw2tmEa4NvVzUSVoHyaVbHx+Ctd0chbhVgkbw/9/pWyWxz5BBejZj2jk/KlWMO97riSdMaw0qSzziqUer6NG1m7q5eEbynZqS2NF2gVRUgfz4kitJ4yDIoGBsnsu/TZLgLGBCkeCuxl12QQY4b04VmZqs/NlPFxzf4W9SMSPBPnA93EiJv+hMZQ9Or6rGBIGhOE5TGXC620L00cjwKm8S5YCSsVMbDVMe149V7Sx53Qw5r4/TVcFC9dJ3MOWD0yAgG3eAJLxEoIJa956BykBP7sh19g==
+	qtSCjiXQd/I5GGgIFPq0iN4zvxUlQJBK3sohMdt1O2WWE+UomyrnRd22w7F9J76+enlYcMR7B3+QaIaXBh5gL6ZZDnIfwG4/kUnai0D+T6Th0L68cdWKkZHyO/zI6I6tY0KsFNXLsjbqk+g3ujFmBWMFPzfqli/olOgkBVDdi5181f+/GkBESbHB9Oz4m+1HV/4k2MntitHZaei8+wSrJW3QdrGRUKpHh2m1ynveHaMkccvGEcoOIHQAvvDhCRCz02AEM58yIYje3N4L3+hyGDwBbct26+Tku5+PgahezzeZu2OHnNRo7I9ejDh5WvHfppiTW+MbicJOnVru2YbnQg2v/xLNLM1OLfDT2VSe+9fYBgCHnLIoF1CVqdY+VIzUGQzAqqhIkQj0bxR+B3MlwjsENQAFpepJA6vNsbkb/ClRbNNkOut3APM5VNgVoU1Y8ifHN26NbzkJFr8RP72DwCNiC8Nw4UPLm15mLev85tACI6+biHBHYc1BjDNM6Gqs/YgqdEGw3E+aS2T1t1IspG/6rquDXr9+H/LTlsSV7v5obYH3eQd5qxw/YnFUtNkhXPRz+DABmSiGtAKm1iue0jjli4/2rxDuonJOIwyQTKI7DrdRfhhGYwWghKUlvb/67Fcbh0op2hGYMf2bMmlJWvHtNaT17E0WcCHAZdfNS2Q=
 X-Forefront-Antispam-Report:
-	CIP:222.71.101.198;CTRY:CN;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:smtprelay.cixcomputing.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700016)(1800799024)(7416014)(23010399003)(261102123227099003)(261028144727099003)(261009223027099003)(261021123027099003)(261021121427099003)(261022105027099003)(261022075727099003)(261026121527099003)(261026140227099003)(56012099006)(3023799007)(10067099003)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(23010399003)(376014)(7416014)(366016)(1800799024)(921020)(261021130227099003)(56012099006)(261021123027099003)(261021121427099003)(261021135927099003)(261022115727099003)(261022113327099003)(261022075727099003)(261022105027099003)(261026130827099003)(261009223027099003)(261026140227099003)(261026121527099003)(261028144727099003)(261102123227099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	hS6Qn/QYWQV63Voyt5540c2SPfrCaSTEj0WNNbSQsCD1Lr8OyKjz9n2jySK5pvyKiEjMOxC95WlEJH3MOqgg/WaladMkgAy13ofpzGWInOQ4ci58ruA0EbDUQcBjLLnnXhwGfJLoWf5B3h82lq/jv5laREIlWADUcpzsKFz39CBn2gVbTTX1pN5Flsns0Tvfqi/ON1lUEgPimp6ROmVyKoW5CngDG9W76caKr116Wp7KyNKbPUSd/0Zp6BX22VIEn6NMVqRUKQv9Jc6SKHbF8tYByaJgKIX4871rVe0NNkZRfi7RxudfydXcsMshE2HOEFO4CC7pVYcOQ0hpjflfdlF/IsePgR8dCXUdBZ9wt7hJzeXXfKlkpYmGfRKaVdPP986BsreCjNP4vNEmCpCsEWQpfPIa7nw3kKVSRFrsQ7lVXSWirPCXqZJ31XvNT0Xt
-X-OriginatorOrg: cixtech.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 12:09:05.6922
+	=?utf-8?B?NkV3YkJ1RWVXZGl0dFFmL3l6ckI0WXpXZlBwZTA2MzJuVGx5UTAvVDVZYk80?=
+ =?utf-8?B?L0Y3VFAzSCtKRHhNM2J0czB1dUZRWGQxWEg3TWFheWZsMlp4TTZlZy9tR2F4?=
+ =?utf-8?B?ZXZwblBWNmlCS1UzZmNkejRKRVVib2hZcjBhdWRDajZZTC9abmsyQzZqNTZO?=
+ =?utf-8?B?ODE4K0NnQzdnNkdmeHhHMk1rZnFwaGVldHVYTVlEODFYMG93SlZLQVJ6S1ZR?=
+ =?utf-8?B?OGRQRzdla0k1NlMzdDNGWkh3RW03NEdBdTJhWThBc0hnYThXeTVkSWxrS1pX?=
+ =?utf-8?B?TjBLYWxSMnBobGxRWWJ3ZmtYQXNkTE50QWxQZFNCMk5lYi9TelRnU1hxT1dK?=
+ =?utf-8?B?T0w1M0tTdlB1SWdKakVkYzV1cHRJSVpqR1RPM3ZZaU9iUzQxakpyVVJPNkhK?=
+ =?utf-8?B?RnZ5NFM4R1NoRkdEWVQxR0F2NTZmVW5BMEQ2K2luVkdma0t3TlduQlB0dndr?=
+ =?utf-8?B?SWc2b2Z2MXdDT1UwNWxmQWh3WWQ5ZEtFenRORzZUenUrRWRHcUFaR1Rsd2N6?=
+ =?utf-8?B?VGtsQ2ZpeUtkSlFBSVJuRWF1RXZJQ2VMWDJWV0UwbHZXNGp2dUpXazJPSWRz?=
+ =?utf-8?B?M3hKa3VNVlNJK1FnZmJFRFMrQkpGYnJoUkhyZXVTYVFFWGRiUGd3YmxVSzRB?=
+ =?utf-8?B?OE5DaDNGLzNyRnlsUCtaNC9pODJHS09ReExqOGpQd0lSTERVQ09zeU1rYVUr?=
+ =?utf-8?B?aXR1aXF1OGYycGFIaFYyTGErdVZvck5uNy9kbTc4WDZLRWZtTzIwRFJadnlE?=
+ =?utf-8?B?bGNCUjNCZWdZV0ZaQnJUeUJ1b0ZYRmhVcWpXMXYyMWx2YlQzaCtjelZGQnJp?=
+ =?utf-8?B?eW0zT2hJWW9TVHFtRFZSZHh5bVhycjIrOEQwSEhKYzdWRFd6MjVLdlZ3dDNw?=
+ =?utf-8?B?aWMza3dQTUtmM2JMOFlXK0M2dnpNdldNRHBnNjk1UXNicFVXUTVsbGFZY3lr?=
+ =?utf-8?B?Vzh3M080UUdnbC84TDloQytraExrSGRoL0RIRlQ1UllDWmJRTlpKczBncHN5?=
+ =?utf-8?B?Njh6eUpkWmlLbThob2plWUJXMWRsZWwvUW1LSGlONTdDVEpZaE5ueGtQRWZE?=
+ =?utf-8?B?N0tzbHlHOHg2NjZlS2dJTGRNcHhqV1JvMkJlRjhMcVhaQzlBMUw0NHpYcGh1?=
+ =?utf-8?B?aG5SNWtPOVdaRm9CM3ZaZ1pPNXBFaFlLSDVZTnk4Q0JBaG81UlF1L0VpZllR?=
+ =?utf-8?B?VEFYZ0JjUW55clFHUHk1Vkg0TjV0bTJTUTVwOGREWDJFaWtjdDZibEFTOGk5?=
+ =?utf-8?B?cW03ZWdIWWJYMThKRUVvQStHcFZKKzZzTi9FSEh0ODNlTHdxNTNudXZKTHMv?=
+ =?utf-8?B?dnZra0FjS0lseXhjN1JLbVFqU1NnbFV5N0tjTEp2S2J0OXMzQmlmU3BROEhh?=
+ =?utf-8?B?Wms3TVBkYUtIV3UxczNiT011UDg2ZWRPVUJFeG9uamxRaVFtL3ZCQ1RUYThm?=
+ =?utf-8?B?dGg2K01BOTFMall6RmpweVluL1ZMUFBGSWpXQnFnOWkyOHQ3L3JZZDBqa0hY?=
+ =?utf-8?B?cUdzTkU5WCtEN1pJZmtXRHNITFVDZHc0TVVmSEVJZHpOeU81THpnT0FNNU1D?=
+ =?utf-8?B?VjlkMUNPUDBGKzRRTHJXMFBjSlVMa25hN3orMlZTbWhKbjZvbDhLaU5sZGhO?=
+ =?utf-8?B?RjNvTmJhR0pLQTZoNTYxVjdaUjR0OTR3K1EzMTdLWnJkcENla3hadDlNWll1?=
+ =?utf-8?B?YzdiREVTSldPcG9ZVVkrK1RLbi80QUgzSkVCMndvVm5hVTFnMzJwWWpVUUc5?=
+ =?utf-8?B?cjBEb2UrUlFGelFsUzcyUGpMWVRDcVVHVnZaVHhzSFZjUG5qc0FCZzY4SkZF?=
+ =?utf-8?B?RnZjR3cvenZRQ2ZVMzdRL1BIRTFWQ2JiOUQrNGY3UXM1SGJlWEgxdUlyK2Vi?=
+ =?utf-8?B?a3I3WXR0VmMwYWhZNk8zakRBcHVNREhzdkdSOGNFYkYrRzZWbVdLR2U4OXVF?=
+ =?utf-8?B?Tkl1U2FwT1VlaU1Pa2o4bGlJSEx0Z29FUUlLZWcxeEk5cG9ad1lxNkY0SEYv?=
+ =?utf-8?B?bGJCUlRlWlh0S0g3UEFGVTlneU1HSk1GVEprejMxdXE0bTlRbEZXMEQySEkw?=
+ =?utf-8?B?Rzk0TjVnSCt5N3NhclpYeVg2cURZK2xhSFY3V21mVzJLVzgya0hUaWR5VUxs?=
+ =?utf-8?B?a05SSTQ4NXJPa29XODJlYTVlNVg4clNDbGgzSXlETnByS1NGaW1XOVZTc2RF?=
+ =?utf-8?B?dUlaTEFrQWRjVVIxMms1ckVOQ3ZrbGQ2RnBRUjFTRXJ1N3FiREowTU1HS2xS?=
+ =?utf-8?B?OEtRSjAvTWJCTHJWQUFzcnFsQXZPeEZVMnp1NTlNbDk5eFdNOHN0VkJjRW4v?=
+ =?utf-8?B?RnhuSC82bHE0NU9La0FkVXlBL1B3YWsrZHo2VUd1K2EybGI1WTZuZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81df8e5b-0c6c-4539-e1ef-08df3e5b99a5
+X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 12:18:45.3084
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c4d08d6-c0a1-4aa9-7960-08df3e5a40a0
-X-MS-Exchange-CrossTenant-Id: 0409f77a-e53d-4d23-943e-ccade7cb4811
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0409f77a-e53d-4d23-943e-ccade7cb4811;Ip=[222.71.101.198];Helo=[smtprelay.cixcomputing.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	OSA0EPF000000C8.apcprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SE3PR06MB9162
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 369McrvBtxn2rfbDJ9pRVUpzVox5aParO3D8PO/tg5EhCNj7T2LQhYa1KUulm68gbyTP1hmct+e87ZmhbrIx1A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P265MB1833
 
-Add Sky1 SoC data for system-level cache settings and to skip devfreq.
+On Mon Nov 9, 2026 at 10:37 AM GMT, Andreas Hindborg wrote:
+> Add an abstraction for the per-task allocation policies exposed by
+> the kernel through paired save/restore helpers in `linux/sched/mm.h`:
+> `memalloc_noio`, `memalloc_nofs`, `memalloc_noreclaim` and
+> `memalloc_pin`. Each pair sets a bit in `current->flags` and returns
+> the bits it added, which the restore call clears again. The pairing
+> assumes strict LIFO nesting; restoring out of order corrupts the
+> per-task state.
+>
+> Expose each pair as an implementation of a `ScopeKind` trait on the
+> tag types `NoIo`, `NoFs`, `NoReclaim` and `MemallocPin`. The trait's
+> provided `with` method saves the policy, runs a closure and restores
+> the policy before returning.
+>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+> Changes in v3:
+> - Rebase on v7.4-rc1.
+> - Replace the pinned `Scope` guard and `memalloc_scope!` macro with a
+>   closure-based `ScopeKind::with` entry point (Alice, Gary).
+> - Make the doctests compile and run under KUnit instead of `ignore`.
+> - Document that `NoReclaim` has no effect in hard interrupt context.
+> - Link to v2: https://msgid.link/20260605-gfp-noio-v2-1-cfa2e236c2a3@kern=
+el.org
+>
+> Changes in v2:
+> - Rewrite the patch to use scoped allocation flags instead of exposing
+>   a `GFP_NOIO` flag constant.
+> - Link to v1: https://lore.kernel.org/r/20260128-gfp-noio-v1-1-9a808fc49b=
+44@kernel.org
+> ---
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/helpers/mm.c               |  40 ++++++++++
+>  rust/kernel/alloc.rs            |   1 +
+>  rust/kernel/alloc/scoped.rs     | 171 ++++++++++++++++++++++++++++++++++=
+++++++
+>  4 files changed, 213 insertions(+)
+>
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index 3791af0aadc7..df21b5b129a4 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -86,6 +86,7 @@
+>  #include <linux/refcount.h>
+>  #include <linux/regulator/consumer.h>
+>  #include <linux/sched.h>
+> +#include <linux/sched/mm.h>
+>  #include <linux/security.h>
+>  #include <linux/serdev.h>
+>  #include <linux/slab.h>
+> diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
+> index b5540997bd20..1e490b57057e 100644
+> --- a/rust/helpers/mm.c
+> +++ b/rust/helpers/mm.c
+> @@ -48,3 +48,43 @@ __rust_helper void rust_helper_vma_end_read(struct vm_=
+area_struct *vma)
+>  {
+>  	vma_end_read(vma);
+>  }
+> +
+> +__rust_helper unsigned int rust_helper_memalloc_noio_save(void)
+> +{
+> +	return memalloc_noio_save();
+> +}
+> +
+> +__rust_helper void rust_helper_memalloc_noio_restore(unsigned int flags)
+> +{
+> +	memalloc_noio_restore(flags);
+> +}
+> +
+> +__rust_helper unsigned int rust_helper_memalloc_nofs_save(void)
+> +{
+> +	return memalloc_nofs_save();
+> +}
+> +
+> +__rust_helper void rust_helper_memalloc_nofs_restore(unsigned int flags)
+> +{
+> +	memalloc_nofs_restore(flags);
+> +}
+> +
+> +__rust_helper unsigned int rust_helper_memalloc_noreclaim_save(void)
+> +{
+> +	return memalloc_noreclaim_save();
+> +}
+> +
+> +__rust_helper void rust_helper_memalloc_noreclaim_restore(unsigned int f=
+lags)
+> +{
+> +	memalloc_noreclaim_restore(flags);
+> +}
+> +
+> +__rust_helper unsigned int rust_helper_memalloc_pin_save(void)
+> +{
+> +	return memalloc_pin_save();
+> +}
+> +
+> +__rust_helper void rust_helper_memalloc_pin_restore(unsigned int flags)
+> +{
+> +	memalloc_pin_restore(flags);
+> +}
+> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+> index 68d80f3fa6c8..5e4c142b5682 100644
+> --- a/rust/kernel/alloc.rs
+> +++ b/rust/kernel/alloc.rs
+> @@ -6,6 +6,7 @@
+>  pub mod kbox;
+>  pub mod kvec;
+>  pub mod layout;
+> +pub mod scoped;
+> =20
+>  pub use self::kbox::Box;
+>  pub use self::kbox::KBox;
+> diff --git a/rust/kernel/alloc/scoped.rs b/rust/kernel/alloc/scoped.rs
+> new file mode 100644
+> index 000000000000..6745c06d6725
+> --- /dev/null
+> +++ b/rust/kernel/alloc/scoped.rs
+> @@ -0,0 +1,171 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Scoped allocation policies for the current task.
+> +//!
+> +//! The kernel exposes several per-task allocation policies through save=
+/restore pairs in
+> +//! [`include/linux/sched/mm.h`]: `memalloc_noio`, `memalloc_nofs`, `mem=
+alloc_noreclaim` and
+> +//! `memalloc_pin`. Each pair sets a bit in `current->flags` and returns=
+ the bits it added, which a
+> +//! later call clears again. The save/restore APIs assume strict LIFO ne=
+sting; restoring out of
+> +//! order corrupts the per-task state.
+> +//!
+> +//! This module exposes each policy as a [`ScopeKind`] implementation. [=
+`ScopeKind::with`] saves
+> +//! the policy, runs a closure and restores the policy before returning.
+> +//!
+> +//! [`include/linux/sched/mm.h`]: srctree/include/linux/sched/mm.h
+> +//!
+> +//! # Examples
+> +//!
+> +//! ```
+> +//! use kernel::alloc::scoped::{NoIo, ScopeKind};
+> +//!
+> +//! // Every allocation inside the closure behaves as if `GFP_NOIO` were=
+ set, even though the call
+> +//! // site passes `GFP_KERNEL`.
+> +//! let b =3D NoIo::with(|| KBox::new(42_u32, GFP_KERNEL))?;
+> +//! assert_eq!(*b, 42);
+> +//! # Ok::<(), Error>(())
 
-The GPU on CIX Sky1 needs an external reset before the driver first
-accesses the hardware. Without this reset, the GPU hardware cannot be
-accessed correctly. Acquire an optional exclusive reset for all platforms
-and apply it after enabling the clocks during initial probe. Platforms
-without a reset keep working through the reset framework NULL handling.
+I think this usage looks a bit strange, especially that you have to import =
+the
+`ScopeKind` trait which is a bit awkward API.
 
-Configure SYSC_ALLOC before L2 power-on. Without these settings, GPU
-rendering results are displayed incorrectly.
+Any reason to not just have API like this?
 
-Keep the clock settings provided by the PM firmware. This first version
-does not read OPPs or enable devfreq. It does not register a GPU cooling
-device.
+    memalloc_flags_scope(MemallocScopeFlags::NO_IO, || KBox::new(42_u32, GF=
+P_KERNEL))
 
-Tested on Orion O6: offscreen pixel readback, kmscube, glmark2 at 1080p,
-runtime suspend and resume with a retained EGL context, software-triggered
-reset-worker tests, and module unload and reload. Display tests used
-local Komeda support.
+Added benefit is that you can just define different scope kinds as bitflags=
+:
 
-Signed-off-by: Cunyuan Liu <cunyuan.liu@cixtech.com>
----
- drivers/gpu/drm/panthor/panthor_devfreq.c  | 11 ++++++++++-
- drivers/gpu/drm/panthor/panthor_device.c   | 13 +++++++++++++
- drivers/gpu/drm/panthor/panthor_device.h   | 19 +++++++++++++++++++
- drivers/gpu/drm/panthor/panthor_drv.c      | 14 ++++++++++++++
- drivers/gpu/drm/panthor/panthor_gpu.c      | 14 ++++++++++++++
- drivers/gpu/drm/panthor/panthor_gpu_regs.h |  2 ++
- 6 files changed, 72 insertions(+), 1 deletion(-)
+    impl_flags!(
+        #[derive(Clone, Copy)]
+        pub struct MemallocScopeFlags(u32);
 
-diff --git a/drivers/gpu/drm/panthor/panthor_devfreq.c b/drivers/gpu/drm/panthor/panthor_devfreq.c
-index 2249b41ca4af..1914549f7b1f 100644
---- a/drivers/gpu/drm/panthor/panthor_devfreq.c
-+++ b/drivers/gpu/drm/panthor/panthor_devfreq.c
-@@ -154,6 +154,12 @@ int panthor_devfreq_init(struct panthor_device *ptdev)
- 
- 	ptdev->devfreq = pdevfreq;
- 
-+	/* Keep the firmware clock settings until Sky1 devfreq is supported. */
-+	if (ptdev->soc_data && ptdev->soc_data->skip_devfreq) {
-+		ptdev->fast_rate = clk_get_rate(ptdev->clks.core);
-+		return 0;
-+	}
-+
- 	/*
- 	 * The power domain associated with the GPU may have already added an
- 	 * OPP table, complete with OPPs, as part of the platform bus
-@@ -323,8 +329,11 @@ unsigned long panthor_devfreq_get_freq(struct panthor_device *ptdev)
- 	unsigned long freq = 0;
- 	int ret;
- 
--	if (!pdevfreq->devfreq)
-+	if (!pdevfreq->devfreq) {
-+		if (ptdev->soc_data && ptdev->soc_data->skip_devfreq)
-+			return clk_get_rate(ptdev->clks.core);
- 		return 0;
-+	}
- 
- 	ret = pdevfreq->devfreq->profile->get_cur_freq(ptdev->base.dev, &freq);
- 	if (ret)
-diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
-index 9687c59de350..a3a32abec5f7 100644
---- a/drivers/gpu/drm/panthor/panthor_device.c
-+++ b/drivers/gpu/drm/panthor/panthor_device.c
-@@ -229,6 +229,11 @@ int panthor_device_init(struct panthor_device *ptdev)
- 		return ret;
- 	}
- 
-+	ptdev->reset_control = devm_reset_control_get_optional_exclusive(ptdev->base.dev, NULL);
-+	if (IS_ERR(ptdev->reset_control))
-+		return dev_err_probe(ptdev->base.dev, PTR_ERR(ptdev->reset_control),
-+				     "Failed to get GPU reset\n");
-+
- 	ret = panthor_devfreq_init(ptdev);
- 	if (ret)
- 		return ret;
-@@ -511,6 +516,12 @@ int panthor_device_resume(struct device *dev)
- 	if (ret)
- 		goto err_disable_stacks_clk;
- 
-+	if (!panthor_device_is_initialized(ptdev)) {
-+		ret = reset_control_reset(ptdev->reset_control);
-+		if (ret)
-+			goto err_disable_coregroup_clk;
-+	}
-+
- 	panthor_devfreq_resume(ptdev);
- 
- 	if (panthor_device_is_initialized(ptdev) &&
-@@ -553,6 +564,8 @@ int panthor_device_resume(struct device *dev)
- 
- err_suspend_devfreq:
- 	panthor_devfreq_suspend(ptdev);
-+
-+err_disable_coregroup_clk:
- 	clk_disable_unprepare(ptdev->clks.coregroup);
- 
- err_disable_stacks_clk:
-diff --git a/drivers/gpu/drm/panthor/panthor_device.h b/drivers/gpu/drm/panthor/panthor_device.h
-index b55a3f9edd41..afb4167bd364 100644
---- a/drivers/gpu/drm/panthor/panthor_device.h
-+++ b/drivers/gpu/drm/panthor/panthor_device.h
-@@ -19,6 +19,8 @@
- #include <drm/gpu_scheduler.h>
- #include <drm/panthor_drm.h>
- 
-+struct reset_control;
-+
- struct panthor_csf;
- struct panthor_csf_ctx;
- struct panthor_device;
-@@ -34,10 +36,24 @@ struct panthor_pwr;
- struct panthor_vm;
- struct panthor_vm_pool;
- 
-+/**
-+ * struct panthor_sysc_config - GPU system-cache configuration
-+ */
-+struct panthor_sysc_config {
-+	/** @alloc: System-cache allocation policies for GPU access types. */
-+	u32 alloc[8];
-+};
-+
- /**
-  * struct panthor_soc_data - Panthor SoC Data
-  */
- struct panthor_soc_data {
-+	/** @skip_devfreq: Keep the firmware clock settings without devfreq. */
-+	bool skip_devfreq;
-+
-+	/** @sysc_config: System-cache configuration, or NULL to keep defaults. */
-+	const struct panthor_sysc_config *sysc_config;
-+
- 	/** @asn_hash_enable: True if GPU_L2_CONFIG_ASN_HASH_ENABLE must be set. */
- 	bool asn_hash_enable;
- 
-@@ -138,6 +154,9 @@ struct panthor_device {
- 	/** @soc_data: Optional SoC data. */
- 	const struct panthor_soc_data *soc_data;
- 
-+	/** @reset_control: Optional external GPU reset. */
-+	struct reset_control *reset_control;
-+
- 	/** @phys_addr: Physical address of the iomem region. */
- 	phys_addr_t phys_addr;
- 
-diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
-index dc8d0191aef4..4d7b1230cd7b 100644
---- a/drivers/gpu/drm/panthor/panthor_drv.c
-+++ b/drivers/gpu/drm/panthor/panthor_drv.c
-@@ -1872,12 +1872,26 @@ static struct attribute *panthor_attrs[] = {
- 
- ATTRIBUTE_GROUPS(panthor);
- 
-+static const struct panthor_sysc_config sysc_config_cix_sky1 = {
-+	/* Sky1 needs these SYSC_ALLOC policies for correct display of GPU output. */
-+	.alloc = {
-+		0x00230000, 0x00000023, 0x00000000, 0x00000000,
-+		0x00523222, 0x00523200, 0x00000022, 0x00000032,
-+	},
-+};
-+
-+static const struct panthor_soc_data soc_data_cix_sky1 = {
-+	.skip_devfreq = true,
-+	.sysc_config = &sysc_config_cix_sky1,
-+};
-+
- static const struct panthor_soc_data soc_data_mediatek_mt8196 = {
- 	.asn_hash_enable = true,
- 	.asn_hash = { 0xb, 0xe, 0x0, },
- };
- 
- static const struct of_device_id dt_match[] = {
-+	{ .compatible = "cix,sky1-mali", .data = &soc_data_cix_sky1 },
- 	{ .compatible = "mediatek,mt8196-mali", .data = &soc_data_mediatek_mt8196, },
- 	{ .compatible = "rockchip,rk3588-mali" },
- 	{ .compatible = "arm,mali-valhall-csf" },
-diff --git a/drivers/gpu/drm/panthor/panthor_gpu.c b/drivers/gpu/drm/panthor/panthor_gpu.c
-index a383b04f101e..9a6963fe62ae 100644
---- a/drivers/gpu/drm/panthor/panthor_gpu.c
-+++ b/drivers/gpu/drm/panthor/panthor_gpu.c
-@@ -63,6 +63,19 @@ static void panthor_gpu_coherency_set(struct panthor_device *ptdev)
- 		  ptdev->gpu_info.selected_coherency);
- }
- 
-+static void panthor_gpu_sysc_config_set(struct panthor_device *ptdev)
-+{
-+	const struct panthor_sysc_config *config;
-+	unsigned int i;
-+
-+	if (!ptdev->soc_data || !ptdev->soc_data->sysc_config)
-+		return;
-+
-+	config = ptdev->soc_data->sysc_config;
-+	for (i = 0; i < ARRAY_SIZE(config->alloc); i++)
-+		gpu_write(ptdev->gpu->iomem, GPU_SYSC_ALLOC(i), config->alloc[i]);
-+}
-+
- static void panthor_gpu_l2_config_set(struct panthor_device *ptdev)
- {
- 	struct panthor_gpu *gpu = ptdev->gpu;
-@@ -317,6 +330,7 @@ int panthor_gpu_l2_power_on(struct panthor_device *ptdev)
- 	}
- 
- 	/* Set the desired coherency mode and L2 config before the power up of L2 */
-+	panthor_gpu_sysc_config_set(ptdev);
- 	panthor_gpu_coherency_set(ptdev);
- 	panthor_gpu_l2_config_set(ptdev);
- 
-diff --git a/drivers/gpu/drm/panthor/panthor_gpu_regs.h b/drivers/gpu/drm/panthor/panthor_gpu_regs.h
-index 4c5b953796e4..f9b65a4dae83 100644
---- a/drivers/gpu/drm/panthor/panthor_gpu_regs.h
-+++ b/drivers/gpu/drm/panthor/panthor_gpu_regs.h
-@@ -116,4 +116,6 @@
- #define   GPU_COHERENCY_ACE				1
- #define   GPU_COHERENCY_NONE				31
- 
-+#define GPU_SYSC_ALLOC(n)				(0x340 + (n) * 4)
-+
- #endif /* __PANTHOR_GPU_REGS_H__ */
--- 
-2.53.0
+        #[derive(Clone, Copy)]
+        pub enum MemallocScopeFlags {
+            NO_IO =3D PF_MEMALLOC_NOIO,
+            NO_FS =3D PF_MEMALLOC_NOFS,
+            NO_RECLAIM =3D PF_MEMALLOC,
+            PIN =3D PF_MEMALLOC_PIN,
+        }
+    );
+
+Best,
+Gary
+
+
+> +//! ```
+> +// # Implementation details
+> +//
+> +// Since the closure used in this API is synchronous it cannot contain a=
+ suspension point, so the
+> +// save and restore always execute in the same call frame, on the same t=
+ask, and nested scopes
+> +// restore in LIFO order.
+> +use crate::ffi::c_uint;
+> +
+> +/// A per-task allocation policy with a `memalloc_*` save/restore pair.
+> +///
+> +/// Implemented by the uninhabited types [`NoIo`], [`NoFs`], [`NoReclaim=
+`] and [`MemallocPin`]. Use
+> +/// [`ScopeKind::with`] to run code under the policy.
+> +pub trait ScopeKind {
+> +    /// Begin a scope on the current task and return the flags added to =
+`current->flags`.
+> +    ///
+> +    /// Every call must be paired with a [`restore`] call on the same ta=
+sk, in LIFO order with
+> +    /// respect to other scopes. Prefer [`with`], which arranges this au=
+tomatically.
+> +    ///
+> +    /// [`restore`]: ScopeKind::restore
+> +    /// [`with`]: ScopeKind::with
+> +    fn save() -> c_uint;
+> +
+> +    /// End a scope on the current task.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `prev` must be the value returned by the matching [`save`] call,=
+ the call must execute on
+> +    /// the same task that ran [`save`], and no scope begun after the ma=
+tching [`save`] may still be
+> +    /// active.
+> +    ///
+> +    /// [`save`]: ScopeKind::save
+> +    unsafe fn restore(prev: c_uint);
+> +
+> +    /// Run `f` with this policy applied.
+> +    ///
+> +    /// The current policy is saved before `f` runs and restored when `f=
+` returns.
+> +    fn with<R>(f: impl FnOnce() -> R) -> R {
+> +        let prev =3D Self::save();
+> +        let ret =3D f();
+> +        // SAFETY: `prev` was produced by the `save` above on this task.=
+ `f` is a synchronous
+> +        // closure, so it has already returned and any scope it began ha=
+s already been restored.
+> +        unsafe { Self::restore(prev) };
+> +        ret
+> +    }
+> +}
+> +
 
