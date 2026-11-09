@@ -1,78 +1,78 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1794184625;
-	b=iX6DLu2CYdympKroR3vZFFn3jMNt/z9ObDyCvmZe4tlsdG+x0BXiTg7OPVKTtPvEbKrg
-	 ydOv3PQmI8pW6PA0rE27g4shlWrZicnZRbCCm6gTNzGM8VNbiVLgTnvXSsV5MOytnwidV
-	 25xjJm7lAVCwHcyo3ti36SfxuhBdBQ6AskLc80Q2apyB3IyAQzLzAXojqb5yaoqcNXfsw
-	 ol+dT/wibjUH2MYTL99kfx/Q5CSKnU0QLojU1wPsQeCZjWtqy1V0lTiXZT13oQQ401bLy
-	 wRjAqwfiSf1BdDDlNoqINiLn5cQy+3h7yylou5I6uiMiKVYfZOziqBKeLfroU6K0nyw==
+	b=1yqbzEbG2sUz1ZjW2w+AABUMxxZDBPXgKLJmIRqlhtQkZ1pbe5nO/aETIpibFFNjOrnW
+	 YsUoj39KMAJq8nRSAS4n7B383+Tz8nyjYThfQf+Dc5Lf2YUFHaLUbmPlFEng869CJONhu
+	 kIrlMbfNBRIC240lmwuxRQnAwgSKmcV9Q1wNrd6cOz30lseYMYA6q2WRKkeIV0tuNXxo4
+	 tSJq5j0T6AsdEy1/RS/6Qhy4kknvB8HVoW2TSxAIec7uZE/KN9bMs4uY83KqjzmI2C6E3
+	 B9e6z75D3Cn02VqKTHa8jISH8T8tytPYJ7waZ9sLmg5KN88Xg7lxMz47/myCbKb06HA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794184625;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
 	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=yNtRNkBdxpQt6jw/UfG6Xg0klekmqsGOVL0iY18jIkM=;
-	b=a93qx5s94Z4vWuHdqMUUyHnG09v39Hr8NQ0ELQaK+zLjUCCP6VkvssY0tVa5xhh+E/g1
-	 KzNn4UXtC+4qmMRrYngTEHoHvstqUMgnKIkCZ6OlEv63HACxXJsikfcguMbRNstTi5Lqj
-	 Vl39DZqSa/Uge7t8tn0/Efhw9TssMekJNS4SaO170Q6wyopxbDvpNsBzjZChHVqeNCDf4
-	 pPuySw/2Z0NHw64eAvTvl5OfauIB/TbO73nhIfVANaDaKFpoMrFTlTvUPIyTafWEZNp2n
-	 ecktHGeycTlajYwT2oM5njoNNX+wbYwnkjtopztFYoDiZIwJqtImwvy9CQrtKLRYC3w==
+	bh=+VunOW8apSr7yIsryRx75d0Wg1VjgAKZRdL/2W/A7qI=;
+	b=oAgPWqLMsjUNamLyguu/MPZuu6Cl5k3jzqSirZx7zd8VqjJVaTQJT7olm9o1b1VCMsg1
+	 p9tQTSPT/Cn7kgSqXeets0X6Isqj11kjQVmR6HtUM26LeE/0TRZswIP/pTZ2TxUX8WPSC
+	 2RrZGhuMK1AHzOLuyUtABuxKMgtjsGnFWFW/uhm9JlUDw7sHNsqEAzm81JfL7cR86byxs
+	 QENYC8hymTKSAPzMGqafVZugbVtlwVISdQ0fYnthjxh02k0PRLYnpTFU373KtpSUwoktz
+	 WgaqE90lIsuB8rClS5SumbEJmFChG5xiqI3IP3ljCXBpwjWRlWY439VOqyqx3AIZAWQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dR90L945;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GyrpRDum;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B24E606D822;
-	Mon,  9 Nov 2026 00:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5B8606D830;
+	Mon,  9 Nov 2026 00:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dR90L945
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GyrpRDum
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794184624;
-	b=gv4ZmkeJAcdJOnZwHDsXrbxCold8hJOtr6cRBYDGDg+ZzPhNvZXhaOVIGSoqFJPH/ogz
-	 N3SdPqI/mSB0gLMT1jIcpdsc+dqdgTUjqMomgUBT6sVxKW4psGToMbnO7ngJfGH0U7hXI
-	 jTNv8isbLyiCqltLrcIaDf2e6XJ8yRsyjci+aDKtIbhrzglAjQKPDbjkC0yoJNFMct/IZ
-	 KPBNGcJToPdO7kJKBAQoNidBm9+ucv9SfdEi4Oimb2sypPJMCpCPGWGgR9YNbzwQPW1+R
-	 6Gbv6MwlEcgMjy+G1fMkkQgrt+au4t3+W4/A0TdkdbJ3QNGzgqqoMn8QGEdBQQUmNKQ==
+	t=1794184625;
+	b=MXqXjV5dxiz2VNpW6fngmB2JvYVm4X0mLy4bhnwTLI65N6IER4irCOyM6uwTcLeGJB5N
+	 2GIeWmZxVzY2G4ym+DkeMWkccMxsdOziQh5oUzJLc86Ne/olEVgea7bGzh6uhWblGhhAi
+	 +J4xv4gufiCq0bydXT6H5lGDxwpppQgw8RdePf71DjVIftC6fktFMEXH0SBdre5bX0XZv
+	 hfNbig2kBhVydkqw0eW0NrfOnCH9smEZ9oOpKLJPcNHMwJMOr85b8Z6t1VmgtMZZVOGQF
+	 MpnKVnOTZlmK/YL0+pppGYDPTQGSKuijmb4aHSOV1VpXUn8Gwl+fMWn/m0ChR2THEhg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794184624;
+	c=relaxed/relaxed; t=1794184625;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To;
-	bh=yNtRNkBdxpQt6jw/UfG6Xg0klekmqsGOVL0iY18jIkM=;
-	b=RaD2hORmTQvjdWXLXqD/gVaS/1CCg+z63xGzREKdFIc68TejeSW0c96hLv4L0h2+CySI
-	 lUILgaRyTiy4zJo3tw7FPjdF2StPDfPQENnm9FHekB4rNJCJ7Mmm0hnCZOOkmnu2m6YFK
-	 O8ioyB2GsSu+3a+Aq9Hn5x3ZYzSsdr3KiY6f5M7hXB4B9IRPgoHBXkyYOu+4XORfRepgb
-	 aOYhtfKjvgHA29phs62eivp1yypgMGAwzIrq4PBJc16ugLTnOgM3i0CTnfy0v0VAwZwz5
-	 M7beyMBUP0gMaBIRN4In/pFs1pqcGLRAesxZcOtCwXSXB/JzCuR+eViOoXBRMfrwDxw==
+	bh=+VunOW8apSr7yIsryRx75d0Wg1VjgAKZRdL/2W/A7qI=;
+	b=IP9u3f26ElG8ECi8lwIt8IGLnBQ9RkeGBbV0k9Up24N5y+Cqmy/vraR3cbihHEscXk9y
+	 JzLL/ThTKgmkWYQj6RfEhqtIfrXb8Inyce16CDFsIVSMxy0QpnUfd+hGiz/odXSLsFdL0
+	 G9aQ6i7hJnu+4JILi6aVC/6FKoesh9qtG77ddDbaA21N8M3Lvql7yOjqT/6YCHbUL96y7
+	 IhnO96P0cL7yn4N/kh4klYxVnto8Tbz3upnelQQyRea5PVbUCyRuCyawYWfQt2nTU9FJ2
+	 FfPlzEAei8ADtItaIH0dJ5uijiGviiD2k8keqS9unPFvphkkLyY4zULmt4kAjdBdEoA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id BE0381F008A4;
-	Mon,  9 Nov 2026 00:37:02 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 371CB1F008AB;
+	Mon,  9 Nov 2026 00:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794184624;
-	bh=yNtRNkBdxpQt6jw/UfG6Xg0klekmqsGOVL0iY18jIkM=;
+	s=k20260515; t=1794184625;
+	bh=+VunOW8apSr7yIsryRx75d0Wg1VjgAKZRdL/2W/A7qI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=dR90L945fJErJmlbhMUMKygnW0L6I432rC6ILoGRRmg0+rsK2RrFhUMZ8tYbXDuI3
-	 SjsureLoSBwnHQfOJYVFekss+ogNkbWCjmoem0ph/n3wSIjbq0gP204lCuGfUdIiUk
-	 vO2n6xrZ2AfmqA01cvJ5I2ARbAvG48dstJYoj2ezjfMqYr+n89yveZu5wR/CE55scr
-	 isA8+iArV+0go2FlG+zbELOhJZRRDBsey51EWNh/ak1+cHXE2mupAYvrUn5aLAvRpt
-	 +4QBA3w5Xg+jaWpC00+oMJjYTxoByD/CzQShJw1iTQYZ054C096eJUDi6vnWg+rnfC
-	 GZR/L2Kp3TS4w==
+	b=GyrpRDumK9ojsisvWXUm+6fknn7WLbRsoIaH/7tMYYauPfkEPHjl9JzaDSubF59z7
+	 +Xm5sThoqEV9aWfk4MYO8z4fkHzim4vATR09yk8WYgXRJE5xUv6hr7LcEVCX1k3Yyw
+	 akPnCJ3yYVXThUeBaaAlxBRiDQ9pxQkcOkwCgUueJbo5zq4d8MnhL5WTfTd+6c3R18
+	 rAVmH7KHKZjCHMv2UfLLuhkjTnYMogM7sISB2TO5mnvl0xb4lC7SOKVSYHx7EJxALY
+	 A8Cf++07pdQgsAdN8aOT4Ah+ndOR/EgrDuGqGzNJceqQdcrff2srthTFxepCVj6wmP
+	 Kspdjw5454yeA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 47723481B1;
+	by lkml.kernel.org (Postfix) with ESMTP id 8B775481C1;
 	Mon,  9 Nov 2026 00:37:02 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Mon, 09 Nov 2026 08:36:47 +0800
-Subject: [PATCH v6 04/10] drm/tyr: add per-file VM pool
+Date: Mon, 09 Nov 2026 08:36:51 +0800
+Subject: [PATCH v6 08/10] rust: device: expose the device DMA attribute
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -84,7 +84,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261109-tyr-ioctls-v6-4-b2896bf2b3c9@kylinos.cn>
+Message-Id: <20261109-tyr-ioctls-v6-8-b2896bf2b3c9@kylinos.cn>
 References: <20261109-tyr-ioctls-v6-0-b2896bf2b3c9@kylinos.cn>
 In-Reply-To: <20261109-tyr-ioctls-v6-0-b2896bf2b3c9@kylinos.cn>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -105,11 +105,11 @@ Cc: Sami Tolvanen <samitolvanen@google.com>, rust-for-linux@vger.kernel.org,
  dri-devel@lists.freedesktop.org, driver-core@lists.linux.dev, 
  Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794184620; l=6351;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794184620; l=2065;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=CS+VEPFg10Riae4OhToklyNt8xVJMBpKZlDDyzmV+jU=;
- b=NB5Ah7syJQp/7ze5P8p4dFXCwfIro926fxVzetZO4VdTfAJe55G4F/+MZcpPiDQrDsg8d8Rnw
- Bntc2oLUsksA8zoXEFtH3v+OoJc/l7AyIexvOWk/di+4eDUF+y0CZTf
+ bh=KscORanvQ0VZef2aYPEycjX8LK9CDe570yZ9DPQhtQk=;
+ b=p/fazEev6d7nnTlJDgNhn09Xi7loDcvwOz7D8Hd2NAetnnuf7Zhp5dWEZqB+uQB3JCNzMcAL8
+ 2/OxSdh97ezCz5YHhQN9ucvMR8lZ35z8Vt0aZ4k3TwvtIM6oxLOd+/v
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
@@ -117,190 +117,61 @@ X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
 X-Original-From: Ke Sun <sunke@kylinos.cn>
 Reply-To: sunke@kylinos.cn
 
-From: Alvin Sun <alvin.sun@linux.dev>
+From: Sami Tolvanen <samitolvanen@google.com>
 
-Userspace needs multiple independent GPU address spaces per file,
-addressed by ID through the VM ioctls as in panthor. Store them in an
-IdPool (capped at 32 for panthor parity) plus an XArray. On failure
-the caller receives the VM for teardown through the returned error,
-whether the un-stored clone or the original on an ID conflict, so an
-aborted creation never leaks a VM. The pool kills every VM still
-stored when the file closes.
+A driver may need to know whether its device is DMA-coherent, but
+rust/kernel exposes no accessor for the attribute today.
 
+Add a transparent DmaAttr wrapper around device_get_dma_attr(), with
+the three attribute values (unset, non-coherent, coherent) exposed as
+constants, so drivers can compare against the exact attribute they
+care about.
+
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+Co-developed-by: Alvin Sun <alvin.sun@linux.dev>
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
- drivers/gpu/drm/tyr/vm.rs | 140 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 139 insertions(+), 1 deletion(-)
+ rust/kernel/device.rs | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
-index 1dd11b2b12532..6f5518652a03f 100644
---- a/drivers/gpu/drm/tyr/vm.rs
-+++ b/drivers/gpu/drm/tyr/vm.rs
-@@ -33,6 +33,7 @@
-         }, //
-     },
-     fmt,
-+    id_pool::IdPool,
-     impl_flags,
-     io::PhysAddr,
-     iommu::pgtable::{
-@@ -41,6 +42,7 @@
-         ARM64LPAES1, //
-     },
-     new_mutex,
-+    num::casts::FromSafeCast,
-     prelude::*,
-     sizes::{
-         SZ_1G,
-@@ -53,7 +55,11 @@
-         ArcBorrow,
-         Mutex, //
-     },
--    uapi, //
-+    uapi,
-+    xarray::{
-+        AllocKind,
-+        XArray, //
-+    }, //
- };
- 
- use crate::{
-@@ -947,3 +953,135 @@ fn pt_unmap(dev: &Device, pt: &IoPageTable<'_, ARM64LPAES1>, range: Range<u64>)
- 
-     Ok(())
+diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+index 2291d85b6849e..c6381d47f51e8 100644
+--- a/rust/kernel/device.rs
++++ b/rust/kernel/device.rs
+@@ -260,6 +260,33 @@ pub unsafe fn drvdata_borrow<T>(&self) -> Pin<&T> {
+     }
  }
+ 
++/// The DMA attribute of a device, as reported by firmware. A transparent
++/// wrapper around the kernel's `enum dev_dma_attr`, covering all its states.
++#[repr(transparent)]
++#[derive(Clone, Copy, PartialEq, Eq)]
++pub struct DmaAttr(bindings::dev_dma_attr);
 +
-+/// Maximum number of VMs a single file may hold, matching panthor's
-+/// `PANTHOR_MAX_VMS_PER_FILE`.
-+const MAX_VMS_PER_FILE: usize = 32;
++impl DmaAttr {
++    /// The device has no reported DMA attributes.
++    pub const NOT_SUPPORTED: Self = Self(bindings::dev_dma_attr_DEV_DMA_NOT_SUPPORTED);
 +
-+/// Per-open-file pool of VMs.
-+#[pin_data(PinnedDrop)]
-+pub(crate) struct VmPool<'drm> {
-+    /// Parent device, for error reporting.
-+    dev: &'drm Device<Bound>,
-+    #[pin]
-+    ids: Mutex<IdPool>,
-+    #[pin]
-+    vms: XArray<Arc<Vm<'drm>>>,
++    /// The device is not DMA-coherent.
++    pub const NON_COHERENT: Self = Self(bindings::dev_dma_attr_DEV_DMA_NON_COHERENT);
++
++    /// The device is DMA-coherent.
++    pub const COHERENT: Self = Self(bindings::dev_dma_attr_DEV_DMA_COHERENT);
 +}
 +
-+/// Error returned when a VM cannot be added to the pool. The caller
-+/// owns the teardown of the VM in [`AddError::vm`].
-+pub(crate) struct AddError<'drm> {
-+    #[expect(dead_code)]
-+    pub(crate) error: Error,
-+    #[expect(dead_code)]
-+    pub(crate) vm: Arc<Vm<'drm>>,
-+}
-+
-+impl<'drm> VmPool<'drm> {
-+    /// Creates a new [`VmPool`].
-+    #[expect(dead_code)]
-+    pub(crate) fn new(dev: &'drm Device<Bound>) -> impl PinInit<Self> {
-+        let ids = IdPool::new();
-+        pin_init!(Self {
-+            dev,
-+            ids <- new_mutex!(ids),
-+            vms <- XArray::new(AllocKind::Alloc),
-+        })
-+    }
-+
-+    /// Stores the VM and returns the allocated ID.
-+    ///
-+    /// On failure - ID space exhausted or a store failure - the VM is
-+    /// returned in an [`AddError`] so the caller owns the teardown.
-+    // TODO: allocate IDs with the XArray directly (once it grows range
-+    // allocation, the equivalent of C's `XA_LIMIT`) and drop the IdPool.
-+    #[expect(dead_code)]
-+    pub(crate) fn add(&self, vm: Arc<Vm<'drm>>) -> Result<u32, AddError<'drm>> {
-+        let id = (|| {
-+            let mut ids = self.ids.lock();
-+            let unused = ids.find_unused_id(1).ok_or(ENOSPC)?;
-+            if unused.as_usize() > MAX_VMS_PER_FILE {
-+                return Err(ENOSPC);
-+            }
-+            Ok(unused.acquire())
-+        })();
-+        let id = match id {
-+            Ok(id) => id,
-+            Err(error) => return Err(AddError { error, vm }),
-+        };
-+
-+        let mut vms = self.vms.lock();
-+        match vms.store(id, vm.clone(), GFP_KERNEL) {
-+            Ok(prev_vm) => {
-+                if let Some(prev_vm) = prev_vm {
-+                    // An existing VM at the freshly allocated slot means the
-+                    // IdPool and the XArray are out of sync: the stored VM is
-+                    // a pool entry, so the pool kills it and the caller's VM
-+                    // is returned for teardown.
-+                    drop(vms.remove(id));
-+                    drop(vms);
-+                    prev_vm.kill();
-+                    self.ids.lock().release_id(id);
-+                    dev_err!(
-+                        self.dev,
-+                        "IdPool/XArray out of sync at VM pool id {id} (stored VM conflict)"
-+                    );
-+                    return Err(AddError { error: EBUSY, vm });
-+                }
-+                Ok(id as u32)
-+            }
-+            Err(err) => {
-+                // Drop the XArray spinlock before acquiring the `ids` mutex.
-+                drop(vms);
-+                // Release the pooled id; the VM never entered the pool, so it
-+                // is returned to the caller for teardown.
-+                self.ids.lock().release_id(id);
-+                Err(AddError {
-+                    error: err.error,
-+                    vm: err.value,
-+                })
-+            }
-+        }
-+    }
-+
-+    /// Removes and kills the VM with the given ID.
-+    #[expect(dead_code)]
-+    pub(crate) fn remove(&self, id: u32) -> Result<()> {
-+        let mut vms = self.vms.lock();
-+        let vm = match vms.remove(usize::from_safe_cast(id)) {
-+            Some(vm) => vm,
-+            None => return Err(EINVAL),
-+        };
-+        // Drop the XArray spinlock before killing, since `kill()` may sleep.
-+        drop(vms);
-+        // Kill the VM before handing the id back to the pool, so a VM is
-+        // never reusable while still alive.
-+        vm.kill();
-+        self.ids.lock().release_id(usize::from_safe_cast(id));
-+        Ok(())
-+    }
-+
-+    /// Gets a shared reference to the VM with the given ID.
-+    #[expect(dead_code)]
-+    pub(crate) fn get(&self, id: u32) -> Option<Arc<Vm<'drm>>> {
-+        let vms = self.vms.lock();
-+        let borrow = vms.get(usize::from_safe_cast(id))?;
-+        Some(Arc::from(borrow))
++impl Device<Bound> {
++    /// Returns the DMA attribute of the device as reported by firmware.
++    #[inline]
++    pub fn dma_attr(&self) -> DmaAttr {
++        // SAFETY: By the type invariants, `self.as_raw()` is a valid pointer
++        // to a `struct device`.
++        unsafe { DmaAttr(bindings::device_get_dma_attr(self.as_raw())) }
 +    }
 +}
 +
-+#[pinned_drop]
-+impl PinnedDrop for VmPool<'_> {
-+    fn drop(self: Pin<&mut Self>) {
-+        // Kill every VM left in the pool. The ID range is bounded by
-+        // `MAX_VMS_PER_FILE`, so this loop is cheap and runs at file close.
-+        for id in 1..=MAX_VMS_PER_FILE {
-+            // Release the XArray lock guard before killing: `kill()` may sleep.
-+            let vm = self.vms.lock().remove(id);
-+            if let Some(vm) = vm {
-+                vm.kill();
-+            }
-+        }
-+    }
-+}
+ impl<Ctx: DeviceContext> Device<Ctx> {
+     /// Obtain the raw `struct device *`.
+     pub(crate) fn as_raw(&self) -> *mut bindings::device {
 
 -- 
 2.43.0
