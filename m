@@ -1,102 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.195.132
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794238017;
-	b=LZ8/l2c2Y0zHcZo+kcZyLZAjMP7BT+TyDnJvsRtNZPb6u56/XgWSZrm45qOVvGoUmdcG
-	 yuAtpIXHOOcXOSOhOENPDWV1QeJxLy5ho2K2ZKFDWgoNDmfc/nYC8emuXldKKwlNUxbjz
-	 zzd0eeF9a4eZhfNL+EBJGBFrlPGwjTdqbELAaJ2iS6Ltll6e05IzGilj4Riu3wqoljjlN
-	 xHCPLGpkCURiYrIn0qIE/uFK6t2OFVWU/AanyLBhPhfmrKaMTppO47IfeyORm3gsGzFhK
-	 Q/KlZ3uqSA1z+qzn0pi+d0U1OMjxhTca9Tfxs5e6GDYNwOTgOeNRvFOL7FDDSIoFf3A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794238017;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
-	 From:To:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
-	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=uGuNxmUiUOX5X3BhBg+UxWeDlVqB4Is2LbBb+jXxk/o=;
-	b=CoUUZGDrILyjfQ7WMv6+HI2rWzxQknKlLd760rNmL8iMjaveGaMKRJhb+BoZjb5sjlke
-	 XAOX+R/RgCc9PzyAapAsV/6HD7/nOTDe9q8Pz4LHf3Kh2UhM1kcUwnQ6sRxeCNZzAja//
-	 qQCk97zE0t850/xfikCTQJRnYi4XEUxmEof5lOA47OonC2t3lNjiXsfU0CzxzDadyblwc
-	 iGNWFF4A1lPVTPwfWeZZKtYwJV79oC2Zh7E7mH+wno//XBLRDHolTz9goRVcjwzO4lFB0
-	 /ZKL0MNLEZ39xqZhZLQZ5F9c+zO3vM7sg7GTETuHEIePZAeuDIJlFhjjdVr1t+4iaQg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=garyguo.net;
-	spf=pass smtp.mailfrom=garyguo.net;
-	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=smM7CAl5;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.195.132
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020132.outbound.protection.outlook.com [52.101.195.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.48
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794239872;
+	b=kRbOd0obIPS93CW/tn9Najs8xA8T+WZlciEBcKwv2D6X1eUHtAP3UqCalqG2fsGod7DX
+	 czaDBW7y7S86WYzzr664vpkO7QglpS9p+6Bb2eIEDYrx+s4T84FEbNcCHIjSCTzRZECCL
+	 xwYH3gYRgcpOBYX0xMzac24VxOgDO1c/fBHbjjScAzCNtZqXt8HbCEm4Ttt/iFqYBz+OE
+	 l0L1bPiXNMYDyPf4LDzWidjVndtGAfPiE8M691TcBabSUlnmMRnvPklBDoPsk40TcwVvm
+	 z3fvPbqv8LW9IJ06cA0mB3VckVmMGdcAAbYtNvf4YVtJpX/M8ZAg5kOyG8/RfkJuUlw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794239872;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=KQFKpRV7NATJKFVseA51zGW96GPsJPPL3A6Ir3znGCk=;
+	b=XPYxumd1zMaSTqMl1crUkRMBn4aPwypQmWNFDhQ4Q05mPig6MM2wHIGzAxN8SwyBBA7m
+	 26rJ1NGC3dFpN9X6LfsCRP7LFY5KKeGT/MM3H+GXh6bgGMIb2WEgJHIs0Ry40pFMnGfOf
+	 74XliNnZ1K1xWcRhGcUNcFAdPzH0AdU5c0y6eaN4R/6TJsZQctu9MVSTZSP82dZcfP29P
+	 MUDgmnt3mLs87646l9YGwckKu6d2btYzKhFHkjx6wCvKieVRwHqLCetQ/IK1H4ihPIa08
+	 0lRBigI5nY2xM2wXIbEWAQnlK50PglMzD1v9TSwdK7FGLLUn0bK2pWNIUaSzRobR2GQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hLXCDde0;
+	arc=none smtp.remote-ip=74.125.82.48
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0E9606A33E;
-	Mon,  9 Nov 2026 15:26:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF0E9606A33E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C19606A326
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Nov 2026 15:57:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53C19606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=smM7CAl5
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KzqGJFveI6ZKyYaYT3gKw6Wwdy0KiriaLJBJXikh4ccA3X2iNAUZ6+9cAcZOVxVoJSqTTFyBeNP+dFTCKRyfsgtuY7U/giFfDJ10uUvZLES9yroAFhc6qJpZf1dIjzGKWORGOlnrRiHkQt8RwX7V9AOEV+39aQkA/abT2y2KU/1nGvwDkx9gdhkwuissLUUBT9xFwgbZ18t40+P1lDmR4tJhgfDe8ubfOaGi8z5bDTJSuEc2Ifq+G5lDpQz3ZY63s5s+D0nHJNh/Rn2B27nI72eVf2RKiPrcIeTyfqbx2MvwX9mjgB6qxTMAsNLJunGWOB4aYnYBe0/T/5Md7SBxmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uGuNxmUiUOX5X3BhBg+UxWeDlVqB4Is2LbBb+jXxk/o=;
- b=LzeCjpKhTebeG7siXy/eMNUj5ehIBdd0VnHwGCwDjrlOBWosBhsiX0ZG5RU6PEML3fNQOxs15UQ2yCPuc3EAWMU2s6OpNs/cQjQrOXmVZ3r0SvwJTL3aI2XVy038JfPDPC26wEDNV9iav1H7AwElrMWV7nzsviZpXkRAmQtrr6p/PXYvLl8va1lujMKqa8k+SCRuhET9UBxXJZ36B866CSwLRKU5TPs20evnza7wW1SC7UKhSSKB+7CjY4sL2pExWh6LeZMzg+GMruMMOmkWmXmBIt2G2XvwLrPBgxizGsdp14fOiqiAstnMJYoLMtFyaNtAUpvd8GSt7mcvvE0vgw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uGuNxmUiUOX5X3BhBg+UxWeDlVqB4Is2LbBb+jXxk/o=;
- b=smM7CAl5mG20z3NkvEJo3K8PmWzx5YIiv6QnR1RIkYhRYYgkKJ5S0csMK+0vrTQswckRNtagHRTAnWUiohEcMn0lou5flXzAcB7hRskAFZCxQ5ObWRIMdORF0ZXQZqwKIKTBCLeA/U5+F8lMGCP6aJwudMk5W5mZTTiBG4eO2sc=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
- by LOVP265MB8774.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:489::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Mon, 9 Nov
- 2026 15:26:52 +0000
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0592.012; Mon, 9 Nov 2026
- 15:26:52 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 09 Nov 2026 15:26:51 +0000
-Message-Id: <DMQSAJDM77O0.Z9EITIPLTKHP@garyguo.net>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v3 1/2] rust: impl_flags: add conversion functions
-From: "Gary Guo" <gary@garyguo.net>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "David Airlie" <airlied@gmail.com>, "Simona
- Vetter" <simona@ffwll.ch>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>
-X-Mailer: aerc 0.22.0
-References: <20261105-impl-flags-additions-v3-0-5b17c01c2b15@kernel.org>
- <20261105-impl-flags-additions-v3-1-5b17c01c2b15@kernel.org>
-In-Reply-To: <20261105-impl-flags-additions-v3-1-5b17c01c2b15@kernel.org>
-X-ClientProxiedBy: LO4P123CA0383.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18f::10) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:1cb::9)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hLXCDde0
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-1a2761c69fbso872594c88.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Nov 2026 07:57:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794239870; x=1794844670; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KQFKpRV7NATJKFVseA51zGW96GPsJPPL3A6Ir3znGCk=;
+        b=hLXCDde04W5diwbe0GkjBt0uSOoYyhvOqcmGMnNaj7NHl8xd8mikVinjwWXV5VGYDf
+         AwY5T+giJ6h0sL3kz0BJcUmrPNgAGEvBEEK9+1Asx13b+O2UEonf7hU/l5SAciNMQT3N
+         NYhX6qkHr4zLhUfZy1I19FS+NoRlCkIfkPG3FEgEZx3Wp81xyYYYBuMolTUW+4dhZYbR
+         c2/CcY3Pcnx2vJ0tC4uYkDCdmXLy3CxFD/H+7BdHUxwvBmUwihpCZmvYgCKNAm5Lb2tz
+         T5GXBDlDSqPkTtPMHZT3ivSrS2qVs3W4VXdaihX5uvLvXeK5o4N/UA8lCEMozXWIaVfq
+         nXEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794239870; x=1794844670;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KQFKpRV7NATJKFVseA51zGW96GPsJPPL3A6Ir3znGCk=;
+        b=xf8KpazZjWPkAfMKfBHu54uuB6YgyR/IZ+yJjUs9f3QnhqPm3zdE2Xj2Pa/5uiIbXP
+         DPJ9x7YfwxoAVif5jH6dShBwFPdRjlhoS0dQlWXi14vTUUMphcdy6umsyQdpcwsErhcC
+         /INsR/dkkSjupU3XLWtw5E8Qc+73olv/QsRbElZ2Elwn918EWWXtF12uxiLCoiWR6poq
+         ZmbHQMV9ESxquU3exhw+MO1R9KpeB/hptRWyQFxIcBFMxJwB97sZJha7C5QmJFu7vfaP
+         6pJQ2OBfbenYj4QqTTh1Ank3ofusbzi2h3cBO3B/TyRyK/5omWb9cd26AZW451NN/IMe
+         q/1g==
+X-Forwarded-Encrypted: i=1; AL+hErFU2nW+sFoIiHTxXg5blQVMhWu1pDCX2qMuKXGRW7jHn8KRP41pDIQLSOxO5+m1fCV/sGRLKctkK0SLhKMkkg==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+QMtOzI/1duW12c4AgSaAa4vW+DVe2NZQxp5mP8JdiCyBiNIx/
+	oFfP0MP4rUHs+cB1C0EvVWZobHQo8qsu1SS/fb/LDRS4Vdc7kRWGUVz9
+X-Gm-Gg: AYBFou0ztk0Wd4vLHme8+azVdo7BLBB6kgRq6n51lKKf7oUasQtczT7UT7IUzOX2EwF
+	Gq6JV2HE7uSrEEchGMlzHElUAEpX4Gx1aiNMDlBPNrn5c3VMs3IIMBOIEqLzfZ0gswDfZzY39nE
+	Hz6IaLJgy5TEJE1yZGex63uuRE+c4kVYQ9zB0Bc5fN/blhvIhVTG+eyhWeN7lh4pt8QwNJV+v2W
+	8lIuZ6YW+dCcSMLzMxApDejIa7aynG4LH3e+pNDvDMvH309pgBZ62Dt78+RjcuSRM0gxQBD+Yuw
+	ONBVOuBD2HI/RsPuDEIH+GBbMFFuGjmmSoGs2b3UBK6om3fxzq+k0pdw7xNPVDa62o/zwjOXThC
+	SKoW7VznLLLaKWY3I59llhqc0vp/SuEAET4dhaUwbpu+OR8XyS+JArXxEfnflcQo6GGLZmOCwwW
+	bWKOcDe/fbaaraQSWpsK5Bv/cM2ZTdtL8Lyky3gf5VsZ5TDoHmKBn2B2430bn8OU0Ap4SEt2WCY
+	fqyTCanZwjoC0fJPrKSC2wKgicyPD12dNmlSVRPJuGOAgjcdaazisgUH5bj1WbvGwohcki3sS+N
+	JN1+TOAhsj7Wws/9Sfnvx+euKF4hrBQqQIh8RpHe53BhB4uxFG2TFet0F+uCPsu2ZLKi1mU=
+X-Received: by 2002:a05:701a:c919:b0:166:af48:a2ba with SMTP id a92af1059eb24-1b39fdaf74fmr6537059c88.0.1794239870114;
+        Mon, 09 Nov 2026 07:57:50 -0800 (PST)
+Received: from localhost.localdomain ([125.166.179.225])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3757214cbsm13020828c88.13.2026.11.09.07.57.45
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 09 Nov 2026 07:57:49 -0800 (PST)
+From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Igor Korotin <igor.korotin@linux.dev>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Shuai Liu <847807867@qq.com>,
+	linux-iio@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH v7 0/4] iio: position: add Rust driver for ams AS5600
+Date: Mon,  9 Nov 2026 22:57:39 +0700
+Message-ID: <20261109155743.83740-1-muchamadcoirulanwar@gmail.com>
+X-Mailer: git-send-email 2.50.0
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -106,173 +106,98 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|LOVP265MB8774:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5ff3a91a-eb52-4a81-a19e-08df3e75e158
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|10070799003|376014|7416014|18002099003|22082099003|6133799003|10067099003|3023799007|921020|4143699003|261028144727099003|261102130727099003|261102123227099003|261022105027099003|261021123027099003|261021121427099003|56012099006|261026140227099003|261009223027099003|261026121527099003;
-X-Microsoft-Antispam-Message-Info:
-	GE2g02BPSe6N49Gvr3Rj/u+PXxisB60oGSdZ1QCd37kEHNa0w479IqA4jH2ikg3G05ykE7oYVQ3Y/b7FbIpn0J/vBXRTX2MkGWELat8FQc9QiHRs+iiBXhwMKw7KH+EAUP2MkLUwlADohwloK39vpC6gww1SUU44aZghi8JPs1CNxTYN+Rfs9Z8wPpDbIQHqd9h0NgD5gHDCC96KPy1Lsbx7DPDsVr24ji4uyRzStH06n3AvhBA8iBFgTjeS0GPg41jXv/NDEAAv1ET7cxlTd29g7dWQueP1znSKMS3yYRLDsu6MrQg9vMyucNLfvAFBvbelzUOYb81uDgO1OMMAqEpoUSxmArXcYEMESuHyOlDgRfOtc7mZXEhcqRaCVM6rLiWUdyh0fLLco2VydE7/tsDbahPn3erYU5GoIIhxJH1TuZ3JietNnHSeOOe49/sKkcasRLwjQ7iD9TVjcKLaDz8cuspcbEGpQK26f9yFBnw2ts973Mn8QyUNhmHg78+2NphvcDHLH8RfILSj0DiWLX6M6b8q3gRqVOrKo1AACSQgBGKM4Rq2x3HKUPM6avYK76j2CmgeZi5jNo007E04XjUsj3C5X4hiSqhMCbUZJ8ThzhGOuuQgamBpkGPPlHsurtqBj/3HaKz9N0oVgFrEdProLkaNJ43GySesoss8AwLUj3Pz3koskzAW+J6gY6AojrXq9faMdMPJglOD133xsg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(10070799003)(376014)(7416014)(18002099003)(22082099003)(6133799003)(10067099003)(3023799007)(921020)(4143699003)(261028144727099003)(261102130727099003)(261102123227099003)(261022105027099003)(261021123027099003)(261021121427099003)(56012099006)(261026140227099003)(261009223027099003)(261026121527099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RDExYWVHOTZ4UnA5L2lTSUdBLzZvUlF2a1pjb21nUiszY0U3WFo5b0xwYmlJ?=
- =?utf-8?B?eGtRK1JGKzQwaXcveHRWenFTdHlkNHgyZ2RLcW5DNy9Bc2l5WUdzQytCZFVN?=
- =?utf-8?B?MmtIdFUzZk4yRmRoM2Y1WWdrWXZlcDlBT3hhbmVGdmxKTEJyaHhTRjJzVzRt?=
- =?utf-8?B?Tlg5REkyQWgrUUhNUlZZSXZZQ0NVaGFjNnhRVFZ6NnVQUzFVUHNWV3JnR2xT?=
- =?utf-8?B?cmF2aUZqMHRXakxiU0Q2enNRT2FCdmdYUjdLeGFSb3V3dXVXMkc3R21EN0Qy?=
- =?utf-8?B?aTZ2SGEvMkZKME5jTGhHQWFMd3BsRWtYYmFDN0wyL3VMaFdHdEExd3lkWjgr?=
- =?utf-8?B?L1F0RWplMDQzK2tyT1UrZ1JybE5WRmo0eUFMVlkrTnFyQjY0a1M3L2dBWHhF?=
- =?utf-8?B?bmpNTlZIazJuQ0Z2MjM5c2dFTndoQUxYWmVHVzNLR0pCVlNHWm1PYTR2TFpj?=
- =?utf-8?B?YzRwSld3K3A3VGoyYWtQZW54SllTcFMyMDdXVmN5ZHJQTC9zdHdaMlZWSG1j?=
- =?utf-8?B?OFI2VDFvMXZWU01IQnNiRHVRUGJPSkp4UVMzNFZ4ZFlocDFCSUtBaG9oek85?=
- =?utf-8?B?d2hJUXpBc1pVbndONDVQMnV4Vng0a1lCNy9UWGNYWXFNUnJqTWdyODFWTlFu?=
- =?utf-8?B?NGlKNEFNZnRBbTZrZjM5QmZzajRWMEdmbUcvTGFUQlh4cURGY0xWWGtpZFZh?=
- =?utf-8?B?TkF0TytUU09UTWdPMGNmYlZrUUxnakxUTitNOFdGVHhCZmJHTkZEWHhxckhH?=
- =?utf-8?B?aUs1VGVmay8wTk12S3FISFgxK1Q1MWZ3VVk0U21Wdjg2U01IbENQYkVrRjR4?=
- =?utf-8?B?Z0NLZ1BUc1phYkVXanBCZSs3WnAyQXlGSE1vU1JhT2lLNjZPVUNPRzl5ZjdN?=
- =?utf-8?B?bWlvNWI3MmJ2WUc2eFV6ZUZ1OUNmWFZGL0FMWXNtZ0d5RnM0akNlY2pCM21x?=
- =?utf-8?B?b2hwZW9ObDV1d2ZTVlU1LzZiSlhWMUdwTXM2bVJzSmZPblIwWkZSNERJZTNM?=
- =?utf-8?B?T3V6enV0V0treUJjYmRzZjgzN2hVU1hqWFBRcTBTeDNzT3Q4YXBCMFlWbUEw?=
- =?utf-8?B?Y2ZqMG1KNWJndUpqN3dsWXh2eU1KSXBteWkvSWVReW9lbmdTOVlLOG5SWVVs?=
- =?utf-8?B?aldOOTZyQ2JDcFphOC9nLzdQdmcyZjRJOGJhSkxxS2FadHNVNTY0dnliUlJK?=
- =?utf-8?B?dk9TTUN4bTE5b0k1clVEMklZQkZrRDI1enlzSTJLYmpncWFaUXo5UGhLcFk4?=
- =?utf-8?B?MmZGa0JHOVBrMWhib2p2ayt1TFFZM1VlVjN4eEFlNFhqVHlXSE9XbitWWG5Y?=
- =?utf-8?B?N3E3T3J3TnJ4T1FieWZ4Y3RETENRdkNpSmFyWmR0QVZJZUlTR0JMNzd0dkND?=
- =?utf-8?B?RjZ0N0Nrd1FQVEhudGFMR0tqWEtOWGR3aHVDOHRVRGV1Y2hPMXBTQk13Ym5s?=
- =?utf-8?B?RE9VZDkwV2FBTWpJS0pjTUthSTByUFk3RUIxNTVNNUdEYlk4dXFyS2RwMGJH?=
- =?utf-8?B?WDIxN1JBZi9GU1FNSDJVVE81WGVwR2M2L0FXTzJSRFBtUmw5c0M4aFJ6MEJw?=
- =?utf-8?B?ZDRJZVdWeGxlUGRheVoxTmJNakVtR3pieXp0VDNsbjllREE0NE1LTCs5ZGhT?=
- =?utf-8?B?VUxhTEJkdVkxTHF2QUhwekhYWHc5WEVwczhMdU1MQWthd282RzlMMXNWZWFk?=
- =?utf-8?B?WmVDYVZvTDNDeWFzemR3NnprMUlOUnFBK3MrNytvMEkwMkFIdis3M3htZjRE?=
- =?utf-8?B?SXJ3TXJFNFlRZmIwVDJXelRKYW9pWW9DY25td253dXIyNVpEaXNXdTF1a2JE?=
- =?utf-8?B?OFV3a1FaTTRRSEc0alVYaDBReTk1bjQxQVVFQVNubWF5RE5CbVF4aHcyWUZ2?=
- =?utf-8?B?cjRBeFhVODFEK3M1OTFNeE1ERHFIZ3BHVzBoNWQwMDJnSk5WOUtqU0t5Kzh2?=
- =?utf-8?B?NHhrUC9YdmlYUmZFWWZ5eGdtZWppZ1dvTHdCbUFNUzBqdVdMdmtEdVJhcTA4?=
- =?utf-8?B?VzNFWW5WMCtwZ1VTVjY1Y0M0TUE2STMvU2xlbHZOTnp3dzVScU15NkY4RVc3?=
- =?utf-8?B?NjVueDU0WUtoSHdpY1RwZUE0bUkzKzhmU3dNVk5CZS9ZcnRiMVdsWkd6bjcr?=
- =?utf-8?B?ZFg2RzNLRGxSYjlkWm5FaXJSQ2g4SitKU3hST3E4cURMbkkxbk1RVXMwQmhV?=
- =?utf-8?B?OHF2N1kxcVBnMzFMU2dNcVJnQWFwUlVIMDR1ZVloWjNDYVpMYmNGc25zK3Z0?=
- =?utf-8?B?SmJ2RVNEQTdVdml4d0ZJSWxBOHdzbmVJYTZnKzdoS2VvVGNiNTFFeFhNNUEx?=
- =?utf-8?B?cDB5VVRsWGtOc2RVYjlVVnNsMVNlQ3RVZDJnRTdQZCs0SWl5R21mQT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5ff3a91a-eb52-4a81-a19e-08df3e75e158
-X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 15:26:52.5331
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SOjrnhLwEUjww5+zsFi/NPrc7GyTIDMB5uq7YKBM+dgbc1CvjPN9QG4K0l5dlBFkJT2imUDLH/PRUXbOpgsaYw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOVP265MB8774
+Content-Transfer-Encoding: 8bit
 
-On Thu Nov 5, 2026 at 3:42 PM GMT, Andreas Hindborg wrote:
-> Add two conversion functions to the `impl_flags!` macro:
->
->  - A `From<_>` implementation to convert from the flag value enum to
->    underlying type.
->
->  - A `TryFrom<_>` implementation to convert from the underlying
->    representation to flag container type.
->
-> Drop the hand-written `TryFrom<u32> for VmMapFlags` in tyr, which now
-> conflicts with the implementation generated by `impl_flags!`. The two are
-> equivalent.
->
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  drivers/gpu/drm/tyr/vm.rs | 13 -------------
->  rust/kernel/impl_flags.rs | 31 +++++++++++++++++++++++++++++++
->  2 files changed, 31 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
-> index 1dd11b2b1253..0d6e841a31ed 100644
-> --- a/drivers/gpu/drm/tyr/vm.rs
-> +++ b/drivers/gpu/drm/tyr/vm.rs
-> @@ -141,19 +141,6 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Re=
-sult {
->      }
->  }
-> =20
-> -impl TryFrom<u32> for VmMapFlags {
-> -    type Error =3D Error;
-> -
-> -    fn try_from(value: u32) -> Result<Self, Self::Error> {
-> -        let valid =3D VmFlag::Readonly as u32 | VmFlag::Noexec as u32 | =
-VmFlag::Uncached as u32;
-> -
-> -        if value & !valid !=3D 0 {
-> -            return Err(EINVAL);
-> -        }
-> -        Ok(Self(value))
-> -    }
-> -}
-> -
->  /// Arguments for a virtual memory map operation.
->  struct VmMapArgs<'drm> {
->      /// Access permissions and caching behavior for the mapping.
-> diff --git a/rust/kernel/impl_flags.rs b/rust/kernel/impl_flags.rs
-> index 6051487f6e28..052759b8038d 100644
-> --- a/rust/kernel/impl_flags.rs
-> +++ b/rust/kernel/impl_flags.rs
-> @@ -73,6 +73,17 @@
->  /// // useful for passing the value to a C API.
->  /// let raw: u32 =3D read_only.bits();
->  /// assert_eq!(raw, Permission::Read as u32);
-> +///
-> +/// // Convert a single flag value to its underlying integer representat=
-ion.
-> +/// let raw_read: u32 =3D Permission::Read.into();
-> +/// assert_eq!(raw_read, Permission::Read as u32);
-> +///
-> +/// // Construct a `Permissions` value from a raw integer. `TryFrom` rej=
-ects
-> +/// // integers whose set bits do not all correspond to declared flags.
-> +/// let parsed =3D Permissions::try_from(raw_read | Permission::Write as=
- u32).unwrap();
-> +/// assert!(parsed.contains(Permission::Read));
-> +/// assert!(parsed.contains(Permission::Write));
-> +/// assert!(Permissions::try_from(1 << 7).is_err());
->  /// ```
->  #[macro_export]
->  macro_rules! impl_flags {
-> @@ -115,6 +126,26 @@ fn from(value: $flags) -> Self {
->              }
->          }
-> =20
-> +        impl ::core::convert::From<$flag> for $ty {
-> +            #[inline]
-> +            fn from(value: $flag) -> Self {
-> +                value as Self
-> +            }
-> +        }
-> +
-> +        impl ::core::convert::TryFrom<$ty> for $flags {
-> +            type Error =3D ::kernel::error::Error;
-> +
-> +            #[inline]
-> +            fn try_from(value: $ty) -> Result<Self, Self::Error> {
-> +                if value & !Self::all_bits() !=3D 0 {
-> +                    return Err(::kernel::error::code::EINVAL);
+This series adds a Rust driver for the ams AS5600 12-bit magnetic rotary
+position sensor. It also adds fallible I/O, SMBus access, and the IIO
+abstractions needed by the driver. The driver exposes raw angle and scale
+through IIO sysfs.
 
-IMO this should be a new type, perhaps something like
-`kernel::bitflags::UnknownFlags`.
+Feedback on the I2C and IIO lifetimes, locking, and device teardown would
+be appreciated.
 
-Best,
-Gary
+The Region-based view models byte-addressed registers and is not a
+general model for command-indexed 16-bit registers. The standalone
+word-read helpers accept any SMBus command byte.
 
-> +                }
-> +
-> +                Ok(Self(value))
-> +            }
-> +        }
-> +
->          impl ::core::ops::BitOr for $flags {
->              type Output =3D Self;
->              #[inline]
+The current interface is intentionally limited while a Rust regmap
+abstraction is unavailable. Feedback on whether this is an appropriate
+interim approach, or whether the work should wait for regmap, would be
+appreciated.
 
+Based on Linux v7.3.
+
+Thanks to Igor Korotin for the device ownership and bound-client lifetime
+rework used in patches 3 and 4:
+https://lore.kernel.org/all/179286358623.55649.5397316745104390556@linux.dev/
+
+Thanks to Shuai Liu for reviewing v6. This version addresses the Clippy
+warnings, replaces the ignored SMBus doctest, and moves repeated unsafe
+SMBus calls into safe helpers:
+https://lore.kernel.org/all/tencent_173B7731E90B9624F9F82613DC3031B70907@qq.com/
+
+---
+
+Previous versions:
+
+  v6: https://lore.kernel.org/linux-iio/20261004130303.65432-1-muchamadcoirulanwar@gmail.com/
+
+Changes since RFC v6:
+
+- Rebase on top of Linux 7.3.0.
+- Make register() return Device<T, Registered>, stored in the driver
+  data, so the IIO device is unregistered before its private data is freed.
+- Remove the bound parent parameter from IioDriver::read_raw(); the driver
+  now stores its bound I2C client reference directly.
+- Drop the parent lifetime parameter from UnregisteredDevice.
+- Use pin_init::raw_try_init() in Device::build_device().
+- Document sign conventions for IioVal::IntPlusMicro and
+  IioVal::IntPlusNano.
+- Add IIO=y and I2C=y dependencies to CONFIG_AS5600.
+- Use typed pointer casts and lossless integer conversion to fix Clippy
+  diagnostics reported by Shuai Liu.
+- Replace the ignored AS5600 doctest with a generic no_run example.
+- Move raw SMBus FFI calls and errno conversion into safe bound-client
+  methods, as suggested by Shuai Liu.
+
+Testing:
+
+Clippy and debug builds completed for ARM with Rust enabled, I2C built
+in, and AS5600 built as a module.
+
+Runtime testing was performed on a BeagleBone Black with an AS5600 on
+i2c-2 at 0x36. Raw angle and scale reads worked with the magnet detected,
+and reads returned ENODATA when the magnet-detected bit was clear.
+
+I2C errors were propagated when the bus was disconnected, and reads
+recovered after reconnection. Concurrent reads were tested with 10
+readers, including during 20 unbind/rebind cycles.
+
+Lifecycle testing covered 50 unbind/rebind cycles, 50 module load/unload
+cycles, module removal during active reads, module removal with an open
+sysfs file descriptor, and module removal while the I2C bus was in an
+error state.
+
+KFENCE, UBSAN, lockdep, and kmemleak reported no issues. KASAN was not
+enabled because 32-bit ARM selects HAVE_RUST only when KASAN is disabled.
+
+Muchamad Coirul Anwar (4):
+  rust: io: add FallibleIoCapable
+  i2c: rust: implement SMBus access via IoBackend
+  rust: add minimal IIO subsystem abstractions
+  iio: position: add Rust driver for ams AS5600
+
+ drivers/iio/position/Kconfig    |  11 +
+ drivers/iio/position/Makefile   |   1 +
+ drivers/iio/position/as5600.rs  | 186 +++++++++++++
+ include/linux/iio/iio.h         |   6 +-
+ rust/bindings/bindings_helper.h |   2 +
+ rust/kernel/bits.rs             |  29 ++
+ rust/kernel/i2c.rs              | 235 ++++++++++++++++
+ rust/kernel/iio.rs              | 463 ++++++++++++++++++++++++++++++++
+ rust/kernel/io.rs               |  62 +++--
+ rust/kernel/lib.rs              |   2 +
+ 10 files changed, 978 insertions(+), 19 deletions(-)
+ create mode 100644 drivers/iio/position/as5600.rs
+ create mode 100644 rust/kernel/iio.rs
 
