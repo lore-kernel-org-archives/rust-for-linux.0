@@ -1,63 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794228262;
-	b=WWJnQfxV9uFlrZHOUMfGYXVreUWkt/nyz2oV0GlKEMqxFTcwfHv8RetY9G4kW4tWKxKv
-	 0XSjYnH2w1MJx3tKuf/2Jn36qkWCnE4JKUZ7kw2Xf6gZdqlPCFjS8aqr6RbmSY7DcBKvc
-	 2eYjSg/Dgmv+YTDIiWMhtw9hsaVIlDbdcYS4j8PAPNoEtU8i2FUV921PFV015C9GEn21G
-	 oYxJKpqXR0ORCyL5uE/2AdTU/O9S4t0GNKAXexkC3KDXAxCQ0BI6Ch60iSPIKMT7ds4jm
-	 G+6ux7DOYjCQzU476FmibV2Wp5rJr4quTnP1puPf+O+9fBM4EzsBe8jDrFeMq1t9NHg==
+	t=1794229678;
+	b=mA2JCQTQrVIYa+jvwG/9EnCMr7somvrstCc+ivy5NgRw6CjxzpAXin1NVZ4ahqfRVLhF
+	 idAmvM5ft4IY4NfbCI+DN5sIUhEK6M/YpzajkDQe3UcdGJ7k7P2cFVcjlfRDxsVasZxa8
+	 MhsgkVaF8oqH5sua8ebB8REunEfU8ekNgW5tbkV0f29EHiB0aUdsxBjde8KalTtfyhxrS
+	 IQy0olE3oBHZzfS6TrFnl8cCXvDcgUwy5nJ8CkrB04yD9x2LHQkuHDbLxJnb97crJHsYs
+	 CJDz2pYLjZAIf+J1rrqcCBU2XCkK9g9B6ezQSiecaa7eHfRE6dOorYeByGzUquWSZIg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794228262;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=wCwX+KhVRI6NnD4xYy03md5dg+U159xRfAejqBI6STk=;
-	b=xqOhA1rL1QnCVFCUAxTF0taNzRtVvM+iulxdNuNitWWVu7DY45mwfTo08iPdVSwH12Xf
-	 cRx8qIV+tqXAhSmEpyeRAqpgmqhQ7+1aJd0t7iQHjJtfZXXkIPgV2cEyl3kqej1+fLOzq
-	 BGkd6Z4wBo48WTQBYkDrRePDr2fWAEKNOYvgrBjFmNZ20h7fiS4V+WU2aBXfvb/STch1+
-	 LPqffhQUo3QRrLUD8bW/1YAD+BM2wA0t1a5YViMsbHYPE+gql8o4jU01ddj043D2kZiK8
-	 dBXA58FTYWmH+kGwBWC70lu2XsbFF2j7pXon8ylGZTUmkOsJ4I8WMdhpMuLim6GcTYQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794229678;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
+	 In-Reply-To;
+	bh=6EqaVezyVPtXvMeQC6ap3fEShaooSz1/C+wEJuwQn0Y=;
+	b=iIVBrfyvm+YZs0nEMCfu7Kyap9VlnaKaixa01Se9nltPEplLiWpaW2aGVNbOSHthFvKX
+	 Dy8/X+Wnsar/5xe0Tgm4NW1+GawShSQcCpXxGkoR3dHfdMdycEdh/Md9wdtj0u7jMbjud
+	 ZshyNNvPbR8KO9LjN58VzTGazaKkuFfBKRA9Hnj/v0YhuXOLYX1mvMKUt6CzYCa9bdl6Z
+	 ZLXEXm6IK9dk3opQ0hRxkBgyyJS2FFiaF2Qa/U8/QPbrJRJSTOGw/SaOqHY1GXTrAB6MW
+	 JdpcT/g/wfIGyiT6nZr+kSRdJ6vPZtkBbwd/G935XVVJlnxfHQ2tI0S+w+HBFVM//Ag==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DMYRPH2n;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N6zrtbC1;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AC2606A330;
-	Mon,  9 Nov 2026 12:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EA7606A33B;
+	Mon,  9 Nov 2026 13:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DMYRPH2n
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE3D1F008A3;
-	Mon,  9 Nov 2026 12:44:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N6zrtbC1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE6F21F0089F;
+	Mon,  9 Nov 2026 13:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794228262;
-	bh=wCwX+KhVRI6NnD4xYy03md5dg+U159xRfAejqBI6STk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DMYRPH2nOnyhO126h3rnBoMgFE9SIn6NtdkYLP/jQoYQAC+CPkhoPgYSNASMBCrBS
-	 GL3Jm/5m9IPuggNS+rS1XbCwgaBEBF1Hr0GwdcGkQT08dsz/s0QOHb8+rXXejo8lK1
-	 4Q9OS6MdWFeYU5uvw5Z3ktDNtKg8p4tK46y378n/zoL0ybszWeuEmjeXL2pWAHxXCT
-	 1l5hqBUFc8hLywPrQvxAbtfTaVjZItMdhXVFhLGLraL+HD59t6oz5R6s5kaXCTWLWN
-	 A197unf8VTm5h517oeBMmkxhNl3X7oglc2pYfEcdipAa/m86U+/i1LmuJDVGY+Ph2k
-	 3DtKlqib2sxbw==
-From: Sasha Levin <sashal@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>,
-	gregkh@linuxfoundation.org,
-	a.hindborg@kernel.org,
-	axboe@kernel.dk,
-	patches@lists.linux.dev,
-	pgovind2@uci.edu,
-	stable@vger.kernel.org,
-	ytan089@ucr.edu,
-	Boqun Feng <boqun@kernel.org>,
-	linux-block@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 6.12 0630/1536] rust: block: fix `Send` bound for `GenDisk`
-Date: Mon,  9 Nov 2026 07:44:16 -0500
-Message-ID: <20261109120000.sasha-rc-reply-001@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261108163608.122524-1-ojeda@kernel.org>
-References: <20261107135015.226523646@linuxfoundation.org> <20261108163608.122524-1-ojeda@kernel.org>
+	s=k20260515; t=1794229678;
+	bh=6EqaVezyVPtXvMeQC6ap3fEShaooSz1/C+wEJuwQn0Y=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=N6zrtbC1rX7wVQPI4Te1xgV92K6rFOhSt4qjXWKvCQa47vcGGxJFUEi9BP0hMZd3L
+	 0jFWiF/OlRb0WYNb0Ytek6HndakXsYE1cjzzKbBWoIEqOB57fvVwXBuzCt9cDPgpjT
+	 yy77EyQVx1zNl0aqxFAzYAkVOc/UfEb2AGb5MZeOtm0Gv6kmrSACSmL0qgatnEhPfR
+	 8J9dOwDNVHHp3kH8p/HwsIZB+6cTtiTwS/H/KsF6xs/waR+7VQsyeLGFOCutVQH4Xe
+	 wt+TqhSeSAo6uWhHacDWircctvmHZgDkCIdvpxDTJWG7wM42b4r2WulvbhzA0gSc4/
+	 yOeCFdn6IHIQg==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -66,26 +48,40 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 09 Nov 2026 14:07:48 +0100
+Message-Id: <DMQPC2HXYEZF.2NIJVLP4URRA9@kernel.org>
+Subject: Re: [PATCH v5 7/9] rust: pci: add SR-IOV enable and disable tokens
+Cc: "Simon Song" <xinmengs@nvidia.com>, <kvm@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <linux-pci@vger.kernel.org>, <alex@shazbot.org>, <jgg@nvidia.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <markus.probst@posteo.de>,
+ <jhubbard@nvidia.com>, <apopple@nvidia.com>, <joelagnelf@nvidia.com>,
+ <ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
+ <kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
+ <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
+ <boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
+ <work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
+ <kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <peter@colberg.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20261030171230.196717-1-xinmengs@nvidia.com>
+ <20261030171230.196717-8-xinmengs@nvidia.com>
+ <DMQNRGDHAK0A.3EZQZGAHKYF47@nvidia.com>
+In-Reply-To: <DMQNRGDHAK0A.3EZQZGAHKYF47@nvidia.com>
 
-On Sun, Nov 08, 2026 at 04:36:08PM +0000, Miguel Ojeda wrote:
-> This one breaks most Rust builds:
->
->     error[E0220]: associated type `QueueData` not found for `T`
->        --> rust/kernel/block/mq/gen_disk.rs:198:8
->         |
->     198 |     T::QueueData: Send,
->         |        ^^^^^^^^^ associated type `QueueData` not found
->
-> because there is no `QueueData` in 6.12.y. We would also need commit
-> 06dad60393f2 ("rust: block: implement `Send` and `Sync` for `TagSet`")
-> for the other bound anyway.
->
-> I would suggest dropping the patch for the moment.
+On Mon Nov 9, 2026 at 12:53 PM CET, Alexandre Courbot wrote:
+> Do we want to return the token back in case of error, so the caller may
+> try again?
 
-Dropped from the 6.12 queue, thanks for the report.
-
--- 
-Thanks,
-Sasha
+I'd leave it as is for now, I'm not aware of a failure reason that warrents=
+ a
+retry and I haven't seen any of the existing drivers needing that.
