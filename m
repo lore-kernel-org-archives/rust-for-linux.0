@@ -1,74 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794257729;
-	b=q8YdsBWzwvWclXujb6HzUQF/woX9vN4BZB2HsotForI8mHXXviOgdS3DkU1ECqSPn9CS
-	 lt713oys/ZllSStYLtL7J+U8buV6rqFVHF6jAR7zzokjLY1NZk0Taa+kPEEzM/OnvCMSz
-	 bL8Is8xVxO9miGo3MtfoNFGXRQr5R5NeAkDMFSufV3UbFlXmHboHnrpWbEWZx9Eno1YwF
-	 /0+Txg+sYS7rqmSRipRtfGmEmtb+wQbiq5Dl3DTXEGEr23JEvWjsdobLPk3W1BbQ7qo99
-	 YwUaMakbS/mt4LaFeq0oiizAil3r2pz5GNfmd4KiRWCdXyTnOG7KcXSKPdlZ0kuPJ9w==
+	t=1794258708;
+	b=iIzgwFASdij/J2fmpJ17AccNGKFeVFxb4bKAx3rcPE5sy7BYYYbx7LSJBsgy+v1AOc0q
+	 yaaRN9kjmr0HYk9ARrRSdtoZauGMjltzTXB70XjSvVTxoFbGX4aLakfJlKB3f+TPmTfmp
+	 M1hcSZufVfDq6QcnvrVakVtRxCicmbw8NROcCvJn52ik/Cdcl+ZwewewmG7l4Fl5LdXhq
+	 e0VD4DgLO5gOrpuHJ30LAt8LHzwoF3m4FsykBrS18UlbIAUkaetqj5ZNVU3dos33FxE9t
+	 UwUOG6zaet45zM+hHR5RvPpOSJ0qHbLJzn6U9Ny5Mvz9u5A5IwwTDT2JiddF3gnAr0g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794257729;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=vujv7FqdLR1EjILFPAaMdbnVnZNpLko+vttukT6h6N0=;
-	b=BfGCX/GP5DaMJc8M7JYQ/xPJsEmtOIZUNWtCt590e0Wdi73IhkD0M9S0mBCjoyOpKCAO
-	 U8aNr5cYsOpQtc2Jaej/BTtNMK+dIBKStthwpke9RsBItfzJTSGSXEOD0eaBoSFUfeJLL
-	 rTtLuJdbj6tuwfvKEY7wr3gmgVr4FFPKKzY/q1imYEL65aIXxUxmoIGHNvCllmY+a2RMm
-	 PKzkUDtPeRIUKw+tVYpsQHbiMrD5j6lQte/BPCKoFCDH4GATuRY2JsXYs5zL2aIWBfpAj
-	 9c0iUepn8EzXZrUYkxDpz3xaqMQtW+9W2hAOBGycBxSRnKMC9YMy/TLz2PK13zoSZFA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794258708;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:MIME-Version:Content-Type;
+	bh=n4OTzYxu/SdKmGerSaMFAsuzyevF34IameFiy0WGyOo=;
+	b=RX+rNbHYfrc5JgXuU6RT8zIxvDArvSpzQreI56914FgWnvF5/dB9YzUYlkLv3QsYZQYZ
+	 7/ZCDPM0EXxtQvXhnWHwX9WZl8l3FOH5hLnWrnRUxwz9mc2Hen//GHNIMvDRPBe94Ds+R
+	 QPSOhSvEtD2DSvVysZL1qvi0JlVbnTm3NyrIJltOUUM377dsz7Lve1WbZKVU0TDOY+ZAP
+	 oEUIukLTzNozhnmzUMCVa7+tUT0cCEaFgoPsZHv7m1ip135W2SYoAeUnaWBSwSDJqlMi9
+	 Mu/iQ7KEOGIuuE3EzkISnHQ+5Nn8w4InanJNcq+2gDh72w7f1wHz7mZFMw0mIpVigLg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--chriswiseman.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=boZPhSqu;
-	arc=none smtp.remote-ip=74.125.82.198
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="mcZea/7/";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA085606A32A
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Nov 2026 20:55:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DA085606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chriswiseman.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCC2606A325;
+	Mon,  9 Nov 2026 21:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=boZPhSqu
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-36f479b9819so2398023eec.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Nov 2026 12:55:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794257728; x=1794862528; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vujv7FqdLR1EjILFPAaMdbnVnZNpLko+vttukT6h6N0=;
-        b=boZPhSqu/blrBMW3/GJ/QNOiIIW7JkxddAefzNkyWy82X/u+FNNa9A8f6jcHoX+eVB
-         FySBUHkQRzDc+n7GMQ3kt03V151jljdADX36EpfwWpolRdrXgTbk9QfXzr1bnEArr8EZ
-         ctOjsqFZXCbOCuwk5eQ/mcfTLljsMr40Zf7dpX/9QR/a1oLIn9pD0hhHRmvNgx8s2kXs
-         H1w4NPqjfadiZDRikpLpi51CoN7shKjma/8JeIqcihoB5qU9rqrBqMKT1alX6GBVofCK
-         B+lf2dfmNec6t16HmgRh4XatSJhY5vVuV9H3YtGq1JwrVZBLTGc2YM06BgZbXoW1mv8o
-         HjrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794257728; x=1794862528;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vujv7FqdLR1EjILFPAaMdbnVnZNpLko+vttukT6h6N0=;
-        b=c8vycaeVLRzXD02EpNRfHAXbHd3gtPEye8aLvoaN6dZyGmXgQUvOQEQltOL4+UTQol
-         zlWR+9q2n4Vn9QXOcZyDbuPXc/WM6htYoxOPrd4KuHqolUaEdDu6HFVkgkw4pKc3KMxD
-         aA2hpL5MoR3SsHOloV7pMEfwhru96Y0JLP0Wh26nPH6kNx6W5h8xUGSX9kYmJaZHKLh3
-         Ck5XH5GbhYSQdJAYrvKIBwlyjqttBuCJOG68JQNvwHDtA+29OeHH755kb+s6nDBNo7nZ
-         C6o9+wjtDOb2lv0sgWfEbz7zflM3P8EojTuI7RtItOhVna3CQd/9Ro1y80GBZ89LcXZo
-         wV0A==
-X-Forwarded-Encrypted: i=1; AL+hErH7gD6QQKxityf6FnTihaJrq3Sr5bNivP6uZYyRis+dbm5xnhMf2QNtY/LDs2laG6uEfgVSPl8p8FHDKTDDSg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8g52hopx1HlreXbdBO8kNgbplsgASJOgQZrn0Z1NS6KWq0jjwW
-	7jCwNmc1TVcieYAg49ykV030rkOawr6s8sWFENF/evw/zfRlnZOhmjr+TQv7dmW+slQGtgMUI2Z
-	CwKtaBqZcvj8AQ/hwibaeSTOmyL/W6g==
-X-Received: from dyckg24.prod.google.com ([2002:a05:7301:d198:b0:370:f640:2508])
- (user=chriswiseman job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:693c:87cc:10b0:36e:dd5:fb08 with SMTP id 5a478bee46e88-375214da6d1mr573704eec.40.1794257727724;
- Mon, 09 Nov 2026 12:55:27 -0800 (PST)
-Date: Mon, 09 Nov 2026 20:55:27 GMT
-In-Reply-To: <avIiCpJ3ctbQaExK@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mcZea/7/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C8C1F008A1;
+	Mon,  9 Nov 2026 21:11:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794258707;
+	bh=n4OTzYxu/SdKmGerSaMFAsuzyevF34IameFiy0WGyOo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=mcZea/7/qUycnuIs/qCcr3HcHj2t/aa3fNZbNFB5XBvy8UpIP4wCM5YNFTYG/vrY/
+	 Tdxq8VdLlGHvXvdplOgbvTVLgXFjKVeeg4pUT+yi1RZgEt4jxTR5CFEHmS3AWFj9U7
+	 wRR7wcFkw63YvQGDO6HK6ik4PChf9jUypsmSoDDCZZMu5QVzCbcOVCcm8xMSTjnXoL
+	 ty2iJGImVABtFemDZGf3yzIO5Gt92Bp2Bv4OtRG7lVTAR2SlFKzE+b+f/9UYvg5s5J
+	 Ktc66Dp+JsxY1sOXUebsi7K1OPd9fPj5OYpQ5DQMkYkpAamlAyJAvOJxHO9N6G6qH8
+	 eGcAJ92oA3mGg==
+From: Thomas Gleixner <tglx@kernel.org>
+To: FUJITA Tomonori <tomo@flapping.org>, a.hindborg@kernel.org,
+ anna-maria@linutronix.de, frederic@kernel.org, gary@garyguo.net,
+ ojeda@kernel.org
+Cc: acourbot@nvidia.com, aliceryhl@google.com, bjorn3_gh@protonmail.com,
+ boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com,
+ jstultz@google.com, lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org,
+ tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, FUJITA
+ Tomonori <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH v1 1/2] hrtimer: Add hrtimer_forward_safe_from_callback()
+In-Reply-To: <20261101232829.593680-2-tomo@flapping.org>
+References: <20261101232829.593680-1-tomo@flapping.org>
+ <20261101232829.593680-2-tomo@flapping.org>
+Date: Mon, 09 Nov 2026 22:11:43 +0100
+Message-ID: <871p8tvhf4.ffs@fw13>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -77,50 +63,30 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <18e61a85b0d13e9c.3137322e32332e3235332e313736.9c152.0000sendgmr@google.com>
- <18e61a8cb2ff887c.3137322e32332e3235332e313736.9d011.0000sendgmr@google.com> <avIiCpJ3ctbQaExK@google.com>
-Message-ID: <18e67be5a0307330.3137322e32332e3235332e313736.d28ac.0000sendgmr@google.com>
-Subject: Re: [PATCH 2/2] rust_binder: account for deferred work size in Thread::read()
-From: Chris Wiseman <chriswiseman@google.com>
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Chris Wiseman <chriswiseman@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Mon, Nov 09, 2026 at 07:42:02PM +0000, Carlos Llamas wrote:
-> ok, so if userspace is setting TF_DEFER_COMPLETE, the read buffer size
-> should reflect the possiblity of a BR_TRANSACTION_COMPLETE no? I'm not
-> sure this is a driver issue. Maybe I'm missing something?
+On Mon, Nov 02 2026 at 08:28, FUJITA Tomonori wrote:
+> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 >
-> I guess we are trying to match the behavior we have without the
-> TF_DEFER_COMPLETE and using a smaller read buffer e.g. 65-bytes. I
-> suppose this makes sense.
+> A hrtimer can be started while its callback runs. hrtimer_forward()
+> writes the expiry without the base lock, so the caller has to serialize
+> it against a concurrent hrtimer_start(). Otherwise the write can change
+> the sort key of a queued timer.
+>
+> Add a variant which does the check and the update with the base lock
+> held. If the timer is already queued, the expiry is left alone and the
+> expiry set by hrtimer_start() wins.
+>
+> The first user is the Rust hrtimer abstraction. Safe Rust code can
+> start a timer while its callback runs, so forward() in the callback
+> can only be a safe API if the core handles a concurrent start.
+>
+> Suggested-by: Thomas Gleixner <tglx@kernel.org>
+> Link: https://lore.kernel.org/all/877bk3ixp5.ffs@fw13/
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Right, the goal is to match non-TF_DEFER_COMPLETE behavior for smaller
-read buffers (and when deferred BR_INCREFS/BR_ACQUIRE node items are
-queued via push_work_deferred()) so Thread::read() drains the local
-deferred items first instead of pulling a new transaction from the
-process queue that will not fit behind them.
+I don't have anything conflicting at the moment, so this can go through
+the rust tree.
 
-> It seems sashiko has found a legit issue, see:
-> https://sashiko.dev/#/patchset/18e61a85b0d13e9c.3137322e32332e3235332e313736.9c152.0000sendgmr%40google.com
-
-And yes, the Sashiko report is spot on: putting deferred_size in the
-while condition caused Thread::read() to skip the loop and return only
-BR_NOOP when writer.len() could fit the deferred items on their own
-(76 <= writer.len() < 76 + deferred_size).
-
-In v2, I will move the initial BR_NOOP reservation ahead of the queue
-check and keep the while condition at 76 bytes.  When
-inner.should_use_process_work_queue() is true and writer.len() < 76 +
-deferred_size, setting inner.process_work_list =
-!inner.work_list.is_empty() switches Thread::read() to
-Self::get_work_local so the loop drains the deferred items immediately
-without waiting on the process queue or busy-looping on BR_NOOP.
-
-Thanks,
-Chris
+Reviewed-by: Thomas Gleixner <tglx@kernel.org>
