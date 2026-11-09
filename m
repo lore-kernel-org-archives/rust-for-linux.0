@@ -1,88 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.42
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794242748;
-	b=VkawIl50A7tMBQidB5B7SD96xObcLQ5yXMvNwo88VuLbD5VCKqsadViJkJApXCyo6ATv
-	 lmjTCiY+Hgpxbk+upJVUjDwGMsfg998aYr7XccYep3r8BrCSWg54wDdVB4Kc4eSjBp1y8
-	 aezn79slO5zzka9z/Xv49RWFhwLCqlACHXFCXCiB4VPWD/ftM2zR4YVwp/kqxhhh327zf
-	 HwAcu2+OdTTeVZ+TX4hm3vGy/VXgAE2yaPkDVDLjI/6wim3J52QL2UDIx3bvDg9r0IYnp
-	 opxQvtsCDLMzUjQD6uNeXLgrfOnezyJ8Wcqqrcy7zLMGp1UZnDsS4ubEOcv8hiXDTow==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794242748;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=KaxLEDS88ItrKwFFpF3PUgaqHFKPv05h6XZaeYQUHW0=;
-	b=5LV1NKtLuA/0BRQ66LorgNgulXHzzG6cXjHuQarSjkn4nPQ+w8juQoc3mKn4UN7AdvI8
-	 k4r5y85GTqCRdEUX7sdgC18bUeZxTlz7VhaMRcgUImj4IKhDWgxAQQ1xSy40RHJYSYuUQ
-	 Q4rl/0NXH6h7jqn1A8oKAnHJfv7dA7wRty31hVXRTK0sPmxyyFq1j50c8YhvGwEWcX1dG
-	 LHZZKK45rmD0XVoVDLu+KwrnwXk3redlJ0be1q5xGhJrTm+cGULaZOhmI7YPw71pedQMA
-	 Ce9DkCLDsk3CUATj5oto4VTBDOpqXIAViBrk6LEwIf7FYBFZ7OOgaBCFXffGiQNmRqw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.com;
-	spf=pass smtp.mailfrom=suse.com;
-	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=IVc4xmHR;
-	arc=none smtp.remote-ip=209.85.221.42
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.195.85
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794243050;
+	b=RHBOXmVrXTKTXW5tmgkP9VnfGQzJSMgW6qao8olSjVG5UrceqciILNbkI20Xd0WFa51d
+	 8ri3JtYdEJtiY1EmszbcC2fafJeas/MIj0PO9KmCISVQ9zFkUBNIbbluic5mOTyiVPLZ+
+	 +mZ1QIVcy3jy+vBULtFnv/POLACKgIdUQGNsiM6bNAs0YTgAM5OLCf0OFjFpPt5xoCQpW
+	 ulKNbkEOd/bv9sY2vnKOstBYNqWodhVpe+rsMTbRwrQq6ElbxXR6MLtaEljLTz34Q2gAZ
+	 Jv2ywY/3QzNNOntqJjdBwb8KrC8RwpkbTuZRrHZeauFuRDXMitIPRFL/enf8iFFz8Rg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794243050;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:To:Cc:Subject:
+	 From:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=umxHRr0bwF4CF3RmK/VZJMzJGzqjH0iP22tVSnYZGPE=;
+	b=IUyr/OjIeN7vxZHIIZITKShusjV1Fa1fh8Aby6nF2s/58A1Y26dh3kVXUIMPLxVndFdM
+	 jJ0FzzQPHJ1D+a4rzaaz5tdGikjGl9ZhK/8r2BIZXxbdaOdyAC7Wm5+B6XQgu4L7LYydu
+	 xWivgkKtwRIboL4EUslZnr+ObMe05XGJr2vxKtuYCiThJ9YI9vCJ4ZQawhqF/6bG4xaSc
+	 Ke0VBG+5y9sJT50Z8VrvN5Klw1ACsQIG9hUoQCEZQ44EccLrFL7b1GYIlUi3izUxoNgqR
+	 820l4+fLkgl20wjmR6uzX7b1HkjmvovwG3bUbQ7l5neKfY/5HC8iu70erqXc5sEAWBA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=garyguo.net;
+	spf=pass smtp.mailfrom=garyguo.net;
+	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=M2UK8tVT;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.195.85
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020085.outbound.protection.outlook.com [52.101.195.85])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981C660A2605
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Nov 2026 16:45:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 981C660A2605
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5D9606A321;
+	Mon,  9 Nov 2026 16:50:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CA5D9606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=IVc4xmHR
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48e09aa5264so671334f8f.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Nov 2026 08:45:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1794242746; x=1794847546; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KaxLEDS88ItrKwFFpF3PUgaqHFKPv05h6XZaeYQUHW0=;
-        b=IVc4xmHRUI7l0d1aI01B1bf0TgxhgAWqtMAsztsXJDiGo9QYkOa5VcjnsqiEUEW094
-         +obdWRcpaN+j/B14EgCb1KFG4LUdRJV+GvcaWubRrOtQazg82Ix3i4nQYf/jMIEHX2tU
-         ObAWnI3isjfiH/yuAvxeUlSdxCVgZvZqsNiqWudHZdY1CeA0GDvuzZKyEo07VSJB5Ahb
-         AkgMpN2gR8U3WlRYJOmZsZme0ERrSqL4LiPSZuS2JprQ1rmSLrAT4/GHrebv/GqHlMzY
-         v6V4vdWFB2UPahEWWeEq02QTnTWgioPULqgClxAVoK/PJ41XSdFU191pmOOCiiUzrCYI
-         QHHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794242746; x=1794847546;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KaxLEDS88ItrKwFFpF3PUgaqHFKPv05h6XZaeYQUHW0=;
-        b=2Fn1kDYmFlhGxgDrsRJ23SqNGLLXq/+sTHjZDRqQan/yAHEiROVav5OVvGcjy6c7u1
-         3QaEe7JkJwdPz1paIVf/6h1T7OFaix/XDYJm3lTZ+/S09V0feYzksrE8vgCwfz+EwfIX
-         Q1jjRDC+x6ON7BARQy07scs1Y5vATaCN+3Ehc6mbev9kdw0A1Xk2HT/ohtVpWKCSYQQO
-         htl2bz5+AY7VgKWF0OLe3k7nQIj9XajLaG/PI09jjPfy76VMDA+l2Hd98zsADnw7XTR0
-         u6BBFwE+NJxzW8UyClStWYluhF0utwe7ZGyS4S3+eYAbF2hyKuOqG8J/6WSCSjCTOfkl
-         5KQw==
-X-Forwarded-Encrypted: i=1; AL+hErHlE0PQj65XGqEPNJtwE35EENr943+IzRk690B9NdS9J01Wx3Txq8y/O/040N5NJf5GtO/JoLXPGA7vHrLxkg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+xLSUpPBz7RgjtFghmlt08auiW1yG0wp6fjlytPMwqzTwY1/kW
-	vZo3A0iVLlS4fzMilQEvKtij9O/EkJZ70wpoJmvOOve0hg2t3bUmsY8/OPc0Jbv4WmI=
-X-Gm-Gg: AYBFou2O+WlwBP1GIQu4nWeU/A+kWqA/Rebo4Fe+EX7/w+4m0yJPaTBp0ThaJmXyGO+
-	cEz7wtOPoUCkZOy2qZo6XdtWyrM0lGMJ3ka7si7ZnXBjnb1DmhpkMT44jklVsfnFM97aULTssLr
-	mi5TcmK6xS0aQRhc4K09GGzvKQnUw3EOaZBCE2GoeAOgM0wKIdCJgOHQOaIN5so+Pw+G1aQtvoZ
-	shJenWRwnth13OMdFRevh0lLI1zKYg/76r/FPTjPZaFjUhyzKe5+Y/FVLzdRBoPgUsLqHh1HFt2
-	h+truRDjqtQmBOE0QX9O9wYcjaNUeQdhl5L38/Qa3JAzypEMQFCA135OKqUPpit5H1R0fye+SN0
-	jYvE7lVSzH+Q8D5eQe7M0qpUNNec0uLvNSIpHQ8BxR0EnD4wAQ5ysJCCbWrBwIdGIdnAXc7M+Or
-	dsvuEGqYmGQ/Deu5yt5WbjM1xkZ4ren6F1CttoZMfpduqXghGaO+0UnISxBfcPBjEZtyYwOu481
-	YpfPrPSVVcNa7nyJ7z6iWDX0pWFBzk8o4Y+tv595OAR3IbQFdVnT3OVGasktsfjrgKZLbU9SAqc
-	y72iqCgxGQA87PuEEFvcVy7U7IyQW4FXY0YB5bZGCP3MmMDZSrTdwVUFgvhR4jov
-X-Received: by 2002:a05:6000:2389:b0:491:8462:20cc with SMTP id ffacd0b85a97d-49830d8186fmr7425f8f.37.1794242745831;
-        Mon, 09 Nov 2026 08:45:45 -0800 (PST)
-Received: from ?IPV6:2a07:de40:8100:0:89a9:fd0e:583d:4a53? ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49597187162sm11283249f8f.34.2026.11.09.08.45.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Nov 2026 08:45:45 -0800 (PST)
-Message-ID: <b5abb55f-202d-458b-ba6d-92af16f80137@suse.com>
-Date: Mon, 9 Nov 2026 17:45:44 +0100
+	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=M2UK8tVT
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PMj5AJqQ2Q2aRVmXyeqw3B0EfEZDwt2TL8rPh5IXAXtAjvytL5std++Wxy5gaGIpk4zeSTxR43yWEgbCZ0I7QducX+aKBVSrrYV63fkaBABFAtB+uPhLbnaYdPse/90p1XnfSts3WoyMgzRLr3w8/8mQtOVgq6VJxycEwqzWyr5D0qB0pyPWEI7ZVEWsZ69ab6TyUnHh9+t0AVZyu2sVVltO4zfiPqGO1pc0Vwl87wCiW9IwTzaiFFxUOFepheqWsw3oZd7aGOM+LuVfZdh9vRdyz3xG3E/3l+oLSLx3yoDNe3EYFiBgEYmm3NkYJNphvzvefcGOsL1EVaMXx1eOFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=umxHRr0bwF4CF3RmK/VZJMzJGzqjH0iP22tVSnYZGPE=;
+ b=Ty5mkuA91zRk1pYYUoFknaXXEF0MSEsODtHj311v0gqK9ypssd+NZsqWCvDVLfZyVQgZCOcPwGnXsa3GJ21fawcLYix5ftZcj+EKFs8IJuCSRN5rLRIRacRNy36aMfBsWsQ1zuDRgvXhw5eOhYDh5Jm5/yz3VFT0CvE0MYcbqHa6axPKEKJRtppuIGueoV8y4MAxnDW43HI56PZopf6SA+C0fMOdgsVYusYH0o+YFZ+QdOM6mQny+ohPtppfINbUQdoAoW6CN7zgSIb2VH7I7COrfkgbdbI0db8PLGa+buzMrcZOOc5Fk3qFSC/q3u8o/qMuXJTP7RkFckw8TNwJuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=umxHRr0bwF4CF3RmK/VZJMzJGzqjH0iP22tVSnYZGPE=;
+ b=M2UK8tVTtCOUoCpPxwHDUP4Lx4QacLjXxJqiKVFNK0Sn4CYslyR9e5awD4KubHJBvS/JvymVz/i3squU4/yqBIb3mo7GId8RVt+VUn8x86z7H8E+iMwiqzGO79IHtUrJra3DdkoRdHVnHPL52/yH6M7PHOqt8g/vUnaLHYWlWTQ=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
+ by CWLP265MB6657.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1ed::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Mon, 9 Nov
+ 2026 16:50:46 +0000
+Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0592.012; Mon, 9 Nov 2026
+ 16:50:46 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 09 Nov 2026 16:50:45 +0000
+Message-Id: <DMQU2RZATGHR.1HI8FE2P58O7V@garyguo.net>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "Thomas Gleixner" <tglx@kernel.org>, "Peter Zijlstra"
+ <peterz@infradead.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ "Uladzislau Rezki" <urezki@gmail.com>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v3 3/3] rust: alloc: move `NumaNode` to the `numa`
+ module
+From: "Gary Guo" <gary@garyguo.net>
+X-Mailer: aerc 0.22.0
+References: <20260929-cpu-helpers-v3-0-e968ce5ee613@kernel.org>
+ <20260929-cpu-helpers-v3-3-e968ce5ee613@kernel.org>
+ <DLSQY2IKU5IO.3BFLXTCTJ5I6U@garyguo.net>
+ <878q3hopt6.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <878q3hopt6.fsf@t14s.mail-host-address-is-not-set>
+X-ClientProxiedBy: LO4P123CA0266.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:194::19) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:400:1cb::9)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -92,174 +110,128 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 04/11] modpost: emit module descriptors as assembly
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
- Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
- Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
- linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20261104-build-speedup-v5-0-0f6018be8dae@kernel.org>
- <20261104-build-speedup-v5-4-0f6018be8dae@kernel.org>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20261104-build-speedup-v5-4-0f6018be8dae@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|CWLP265MB6657:EE_
+X-MS-Office365-Filtering-Correlation-Id: 84f8f1ba-8ad8-4dce-0148-08df3e8199c6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|10070799003|23010399003|921020|261021121427099003|56012099006|261009223027099003|261022105027099003|261026140227099003|261026121527099003|261028144727099003|4143699003|261102123227099003|18002099003|22082099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	9Wbtk5RYXLaK/67Euh+uvpmvzBlJZ9+My5+J4vvOqDGFvFzUI2ziYq2KCdde1F9BKKIH/wUL68o43CJ2EhxcOEGDntKa7yI7FiP7MOmUXatqE5VH2TRzQx0R1cQn/LwoHSguPR9uVH4XOxQt2HKmqCNskMxWSXd9jSc7U21NSHSVf6+ucIhkTcFP2weR7C6gNvLIwiNA3Iu8OY286UbwcR9KNkLKT6YwGzYk6LH2ViXUuZS4pRr3QUVSSwMQ76XyzcuNR1kkOKFLGeQeUYwtEaNSbF1cjBD8OHOBZb/8UKrsNr4un6/Fq01lxwu4wI/d9WyPiwWVVoA0PTPBTYux8ffZk+rDa5flkXR83lmE9s+0VzoUecgXqtxPlKFofB+fm9HekiuP9mUQ0POyOz5S4UQXhnvAs1SWS7dfsdwj4TiCMxUcw2Y2PSHiBqwQxg9IMw8Yy7J0Fj1ogI9bQFO3mazNgS1x1mdHmzcOfmbMwMHHJqUgEIQ8i3Kgfd0k1xknPtMOOemouriAXHKSrw62c1Q4hn08UWSYh+C1kmeWSaAc6QGl6QNvkqtVF7kGcHOLIP5+xGLCsv86xlpCVxjEfo6YFnEJV65nSxNsIRx5nC8CZTFf0Ylc7uM+oyCkK7801HLkl08dhnvOepWfbEaUdA3DX24TA5JdJITwV05QAmAO/E+mADFRu1CQLnbk8pQy21tXkYkGLhcunEHpXb5GCA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(10070799003)(23010399003)(921020)(261021121427099003)(56012099006)(261009223027099003)(261022105027099003)(261026140227099003)(261026121527099003)(261028144727099003)(4143699003)(261102123227099003)(18002099003)(22082099003)(10067099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Vy9VTlJtYVVmeUNsRmhUQjZMSmdBRXVQUGtpRDVrWVFCMmIyRnh5cmd0Z0Ji?=
+ =?utf-8?B?TlJ1ZEdiWUJUZDhMU3FZTVdGTmlnTFlPdzRlV0JsbiswMmxFNnBTSUxTRG9L?=
+ =?utf-8?B?cjczQ09TeTZpY0RrdDdjV0FxUmxHNDdyVnF3ZitjNjh5aHA0NncyaXYrUHRv?=
+ =?utf-8?B?Q0NoaThHdWZBTlQwQitSQVJxL0F6dnlkUXBJb0RtUTl0S3ErOTR1MGJ0NUF2?=
+ =?utf-8?B?VlJGOEt3cjJCa0c4cS9JVzdiTm1OMWNFL01SblpnT05UK1d6d1N5VjM0U1JB?=
+ =?utf-8?B?NXprcEZsb0pkeHExWTJqcXR4RVcvS1RYRmtPVC94bURKVW1JeXdKK2JwVFZL?=
+ =?utf-8?B?UytKUWZoTjVSdi9qYWoxSWE2eDl5a056d3llbG5SaHloemFhc0x3QkN0K2NP?=
+ =?utf-8?B?cFI5WjRwMk1NdlZVZUMzbWlhTHg1M1hCODdtMTd3aU9oMGdnRVh5d3VPelAz?=
+ =?utf-8?B?V20wR21PRVd3UVlZWGZpSTcycHE3Ri8vams2Vkh6TmRHOWZEK3hyY1BjVXlJ?=
+ =?utf-8?B?N0dlL2xpeXQ2T0dXMWU4ZWE1bXQzakNGOWM2em43Qm1zN0dCZGZIRkM0UGdB?=
+ =?utf-8?B?a3kvVDV5MmVDZ0ZlK1NZWHZ2OEhxS3BjRkhpd01nTVB5NHZ6L2c2K2ROazNQ?=
+ =?utf-8?B?SDI4NXlsRDhXcm5Ybm94UFRlbFFUK1loSSt6OHVJSy9qQzJuWHNqcG5jZlAy?=
+ =?utf-8?B?M2dTYXhKeG91UkhoejF1N0ZLaW5FNEVtT0ZFVFBiS2wvUno1VFZYSm00TXpH?=
+ =?utf-8?B?b0dSVUxSeHg5ZW1BcC9sbEhrWnJNRENBNEZnTXVZZjRCeHB5WU5iQ3RocVJ4?=
+ =?utf-8?B?RVNYNG85WFpCM3pxQkUzcm1JR1k2cFQ4cTB3L2JUaW9YR3RPU0NIbStlczJ1?=
+ =?utf-8?B?TzREeEJvR2VDRkVrcVhiV25DWG0rZkJjdlhtWm4vR0ZOU3EzeGJCYUVsTFhx?=
+ =?utf-8?B?dWViZ3VMQjA2QkdpZXE2bThlUTBSMTIzWW1IclNROVRSZHQrNEJWV0FQYTNU?=
+ =?utf-8?B?aDFwNXNLUXpzTEgyK3pOSDg0S2xkMGlBcnNOSXkwL3NqSDhzdlMwQ3hkSHdL?=
+ =?utf-8?B?T0VjbWFlSzdhYlRJM1BhNGk0ODNoVkgrU0w4Vlc5OEd2U05ibmZKNDJCbll0?=
+ =?utf-8?B?WERXNXNqV3d0YmlFbXdJUkwzckcyeU00WEExeHZidEhld0NoT3VrdWJvNlQ3?=
+ =?utf-8?B?MjVxNVRvVWZwazFqeVZobmZ0dWxIQko4TE03NHB5dkFMZERGTzd0TStnUFBZ?=
+ =?utf-8?B?RnlBQlFROGNjUWxWMWdtRkZRcDBEOGk2TCtoajF0QVovVDFjQ0ZvWmVBbEhU?=
+ =?utf-8?B?ZlNRazhzYlV1aDBqYzZ3MC93WStVTlZibWk2T0g3MTlOY1p1UjZFM3JnWE1j?=
+ =?utf-8?B?WDV2emQ0VHlKYm1vRGxMUTBaZzQxQkZqRUV3b3pGakNWU25Qakl2eUg4VEhY?=
+ =?utf-8?B?MjNlNkk0K0FYdHRTZ3BHSFJ5NUF0OGNreFJmdDN0bUFoTVU2N1VDVEpxQlRD?=
+ =?utf-8?B?cXZHQi9xaXY3UUc5WVBLSWl2M2wzWjdlWFB3UHl5R2U0bmFMTFpoTWl3c0NH?=
+ =?utf-8?B?UjFLZitmWkNEdDhuZkU0N1B3K0lmMzVTcUcxQlA3dWt0RU1wWjJCL1Rudmoz?=
+ =?utf-8?B?S2xhSzRCQmh0anh6eXJQTTA3UUVFUVc3RVVFaXl4SEdvWHlBZVdXWVBGSWl4?=
+ =?utf-8?B?QksveXZveERUUHE5TTlzWVhQUGMySFJ3WHV1SHVkY05QZU9VWGRTTGpYcEI3?=
+ =?utf-8?B?bjVSamF0TW41MCtpU1poMFNHMUdZRnppZXQxUmtMQ2VMeUhHYkNtdVI1eWxh?=
+ =?utf-8?B?ei9UL3ordUpqK1kzQVZYczIrS2lGTm9YcVlJQTNyQjRkK1lEaEdDRmsxcG56?=
+ =?utf-8?B?TDI1MXdGY0N1dlI5ZlRWWHJKNDFVY3ZBWUpVSlpyQmpHbFMxTjNzZ0VHTzdp?=
+ =?utf-8?B?UVRoU296Z3cvVlA3K3J3SEp3a3RlUEIvL2FmcTZhWS84TVFrclFYZWt0SXBr?=
+ =?utf-8?B?MTRtaDM4Zll2T0JNOXlHM3kvN2ExQUd4RTRtTEJoOGJmVzgxYmtNWGhCNkgv?=
+ =?utf-8?B?WmtVVkdMYWNJNkhiczJ0M0pGY055dW5oSFVTZ1JPaVRFT2gza3pHOVdtU1Vs?=
+ =?utf-8?B?dWRlVGVaVlR4UUIyTC9rOUxNby82UUJYR20zaTlwNVJlaUF4eWdkZjhxVHVM?=
+ =?utf-8?B?OHdYd0psU1hEM3ViNnZvQVQ4SVNMUGV1TU9jbUFSV3ZNV0Q3OGZDTHVtVGRn?=
+ =?utf-8?B?bGppWkJPak11VWRGV2h1YWRtMkVnMWRuYktyOEw1L3VHRHZhR21URjlXMGxB?=
+ =?utf-8?B?Vmt0MEREbEZ5dDQ5OGtqcHAweTJmRllvby85eXdXWm9pSXAyWmw2Zz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 84f8f1ba-8ad8-4dce-0148-08df3e8199c6
+X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 16:50:46.4286
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0PrO/JXvaWum9kv8GPhmlxpOnwnQp7DDej5ylzDpmAYAGvlXnVhu5w6BAkU7pgvPFt4R6RQHEiqKAaKwmZ5Bpw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6657
 
-On 11/4/26 7:20 PM, Lorenzo Stoakes (ARM) wrote:
-> modpost generates a descriptor for every module in the form of a
-> <module>.mod.c file with .modinfo strings, the __this_module descriptor,
-> exported symbol tables and (with CONFIG_MODVERSIONS set), the CRC of
-> imported symbols.
-> 
-> These files are compiled like any other kernel C file with all of the
-> -include preamble, as well as including linux/module.h, header dependencies
-> generated by fixdep of a few hundred headers, an objtool run and if LTO is
-> being performed, a link is performed to generate native code.
-> 
-> On an x86-64 allmodconfig build 11,189 *.mod.c files are built, each
-> taking ~0.24s of CPU time to compile, and module finalisation as a whole
-> 6,300 CPU seconds, or 64 seconds of wall time when run over 128 threads.
-> 
-> It also generates ~1.3 GiB of *.mod.o.cmd files that every subsequent build
-> has to read back.
-> 
-> Avoid all this by emitting the descriptors as assembly instead.
-> 
-> The layout required (size and alignment of struct module, struct
-> modversion_info, the module's name offsets, init, and exit fields and
-> whether the architecture uses PREL32 ksymtab references) can all be derived
-> from scripts/mod/module-offsets.h.
-> 
-> The fields of __this_module are emitted in offset order rather than
-> declaration order, as CONFIG_RANDSTRUCT shuffles struct module so the name,
-> init and exit fields can land anywhere.
-> 
-> An assembly file avoids all of the issues previously mentioned so this
-> conversion results in a very significant performance win on kernel build.
-> 
-> As a consequence of this change, since module-offsets.c includes
-> linux/module.h, scripts/mod is now built after the generated headers in
-> prepare0, rather than before.
-> 
-> Also update .gitignore and make clean to handle .mod.S files, but keep
-> .mod.c files there to ensure that users do not end up with untracked
-> changes/dirty trees after the change takes effect.
-> 
-> The sections were confirmed to be byte-for-byte identical to the C version
-> produced - each of .modinfo, .gnu.linkonce.this_module, __ksymtab*,
-> __ksymtab_strings, __kcrctab*, __kflagstab*, __versions,
-> __version_ext_crcs, __version_ext_names and their relocations - for all
-> 8,135 modules of a clang allmodconfig build with CONFIG_COMPILE_TEST off
-> and CONFIG_MODVERSIONS, CONFIG_EXTENDED_MODVERSIONS and
-> CONFIG_MODULE_SRCVERSION_ALL on, and for a sample built with gcc.
-> 
-> What differs is what the compiler added around them: the __UNIQUE_ID_*
-> locals, the KASAN constructor for the .mod.c globals, and on x86 a
-> .note.gnu.property that the linker already drops from any module containing
-> an assembly file and the loader never reads.
-> 
-> None of these have any impact on the build, however.
-> 
-> The assembly carries no debug information, so in order to keep describing
-> __this_module in each module's debug information, define it weakly in
-> module-common.c too, in a section which the module link discards.
-> 
-> Nothing initialises struct module::arch from C any more, so
-> MODULE_ARCH_INIT is removed from include/linux/module.h and from m68k, the
-> only architecture that defined it.
-> 
-> x86_64 kernels built with gcc and clang, with CONFIG_MODVERSIONS,
-> CONFIG_EXTENDED_MODVERSIONS and CONFIG_MODULE_SRCVERSION_ALL, were booted,
-> every module and an external one loaded and unloaded, and the srcversions
-> checked against modinfo, i386 and arm64 defconfigs (gcc and clang) and a
-> ThinLTO build were also built as part of testing.
-> 
-> An x86_64 CONFIG_RANDSTRUCT_FULL build with clang, which places the name
-> field after init and exit, was checked the same way and produces the same
-> .gnu.linkonce.this_module sections and relocations as the C version.
-> 
-> On the x86_64 allmodconfig with clang 22, "make modules" with every
-> *.mod.o and *.ko deleted goes from 64.5s (6,306 CPU-s) to 28.5s (518
-> CPU-s).
-> 
-> A consequence of this change is that the make jobs are now so small that
-> make cannot dispatch them quick enough, however the next commit in the
-> series addresses this issue.
-> 
-> This impacts clean and no-op builds with a large number of modules most
-> noticeably.
-> 
-> Whole build, 128-thread Threadripper 9980X, best of N runs:
-> 
->                                          before   after     delta
->                                          -------------------------------
->   x86 allmodconfig, no-op make, gcc        12.7s     2.3s    -10.4s (-82%)
->   x86 allmodconfig, no-op make, clang      13.9s     2.8s    -11.2s (-80%)
->   x86 allmodconfig, clean, gcc            342.6s   306.6s    -36.0s (-11%)
->   x86 allmodconfig, clean, clang          340.1s   290.2s    -49.8s (-15%)
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On Wed Oct 28, 2026 at 2:36 PM GMT, Andreas Hindborg wrote:
+> "Gary Guo" <gary@garyguo.net> writes:
+>
+>>> diff --git a/rust/kernel/numa.rs b/rust/kernel/numa.rs
+>>> index 164e622d325f..4a3a880308f3 100644
+>>> --- a/rust/kernel/numa.rs
+>>> +++ b/rust/kernel/numa.rs
+>>> @@ -4,12 +4,15 @@
+>>>  //!
+>>>  //! C header: [`include/linux/nodemask.h`](srctree/include/linux/nodem=
+ask.h)
+>>> =20
+>>> -use crate::bindings;
+>>>  #[cfg(CONFIG_NUMA)]
+>>>  use crate::sync::atomic::{
+>>>      Atomic,
+>>>      Relaxed, //
+>>>  };
+>>> +use crate::{
+>>> +    bindings,
+>>> +    prelude::*, //
+>>> +};
+>>> =20
+>>>  /// Returns the number of online NUMA nodes.
+>>>  #[inline]
+>>> @@ -27,3 +30,33 @@ pub fn num_online_nodes() -> u32 {
+>>>          bindings::nr_online_nodes
+>>>      }
+>>>  }
+>>> +
+>>> +/// Non Uniform Memory Access (NUMA) node identifier.
+>>> +#[derive(Clone, Copy, PartialEq)]
+>>> +pub struct NumaNode(i32);
+>>
+>> FWIW the C type is nodemask_t and this should have mask in the name too.=
+ It is
+>> not an identifier. That said, this is an existing issue, so shouldn't bl=
+ock the
+>> move.
+>
+> What makes you say this? This is not a mask, it is a numa node id, which
+> is represented as i32. `NUMA_NO_NODE` is a valid id.
+>
+> I am using this to specify domain for block mq queues. If you take a
+> look at the allocation path:
+>
+>   blk_mq_alloc_queue
+>   blk_alloc_queue
+>   slab_alloc_node
+>
+> It's an id, named `numa_node`, `node_id`, `node`. Not a mask. Unless I
+> missed something?
 
-Looks ok to me from a modules perspective.
+Right, I got myself confused because NUMA_NO_NODE is defined in
+nodemask_types.h.
 
-Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
+If it's just an ID, would it make more sense to have `Option<NumaNode>` and
+`None` to represent no node preference?
 
-> +/* The equivalent of KSYMTAB_FUNC()/KSYMTAB_DATA() and SYMBOL_FLAGS(). */
-> +static void add_asm_ksymtab(struct buffer *buf, const struct symbol *sym)
-> +{
-> +	const char *name = sym->name;
-> +
-> +	/* The name and namespace strings the entry refers to. */
-> +	buf_printf(buf, "\t.section \"__ksymtab_strings\",\"aMS\",%%progbits,1\n");
-> +	buf_printf(buf, "__kstrtab_%s:\n", name);
-> +	buf_asciz(buf, name);
-> +	buf_printf(buf, "__kstrtabns_%s:\n", name);
-> +	buf_asciz(buf, sym->namespace);
-> +	buf_printf(buf, "\t.previous\n");
-> +
-> +	buf_printf(buf, "\t.section \"___ksymtab+%s\", \"a\"\n", name);
-> +	buf_printf(buf, "\t.balign %d\n", KSYM_ALIGN);
-> +	buf_printf(buf, "__ksymtab_%s:\n", name);
-> +	add_asm_ksym_ref(buf, sym->is_func ? MOD_FUNC_PREFIX : "", name);
-> +	add_asm_ksym_ref(buf, "__kstrtab_", name);
-> +	add_asm_ksym_ref(buf, "__kstrtabns_", name);
-> +	buf_printf(buf, "\t.previous\n");
-> +
-> +	buf_printf(buf, "\t.section \"___kflagstab+%s\", \"a\"\n", name);
-> +	buf_printf(buf, "__flags_%s:\n", name);
-> +	buf_printf(buf, "\t.byte 0x%02x\n", get_symbol_flags(sym));
-> +	buf_printf(buf, "\t.previous\n");
-> +}
-> +
-> +/* The equivalent of SYMBOL_CRC(). */
-> +static void add_asm_crc(struct buffer *buf, const struct symbol *sym)
-> +{
-> +	buf_printf(buf, "\t.section \"___kcrctab+%s\",\"a\"\n", sym->name);
-> +	buf_printf(buf, "\t.balign 4\n");
-> +	buf_printf(buf, "__crc_%s:\n", sym->name);
-> +	buf_printf(buf, "\t.long 0x%08x\n", sym->crc);
-> +	buf_printf(buf, "\t.previous\n");
-
-Nit: add_asm_ksymtab() and add_asm_crc() emit unnecessarily .previous
-directives.
-
--- 
-Thanks,
-Petr
+Best,
+Gary
