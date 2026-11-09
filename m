@@ -1,78 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.198.26
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794184627;
-	b=nlw3HJwKhbLx5zhSsV+Be7uAEfzfoGOHM1zM1KazZQmyiWlyZQvV1QiQ9MZogoGKQps6
-	 vVFE+23+uZ1rTMBqICpyPAc+UWniVfG5konxYGgjbGOZSRuzLyslwOF1lnvBkeI8k4QgD
-	 tT3I5DTwcdNy+X4ElZhIcfAHDMNeLMemVvUAUp6BZhF65YqWPB+bCwHgCuUSTnz3mNsOd
-	 Ujab72skvI0HXU6iglKR/rhQs1vyuBJy4l6SE1t4KwfY1uA2Eh2hSwVbhwu+YJRv6eSdX
-	 lS98iQOYL1fWIcUvsbozJKbFnb2SU3ghmcIPZRBd2+HD7+Lk0+ztFnT1HUUEFy7PbgA==
+	t=1794198729;
+	b=E9mt5SCrPpdsjCvQxVVHLW7vBNad+mVaeZFlI+suHUBFT+V4O3LdcWVkGEsFPkkxJkl0
+	 qRqFmuVQIS1JbRI1GlC4N3H3lPwxMG5BxJYVjx0w1KYP89CDGv0UZCaYbhmXRKr+x1YPl
+	 D/88qJCzHI0QWAF5Pte6lrupmEZJm3H5duvykfKptFIH/qKKhbsnpI5F1td37VCT1NIle
+	 V02lALchDkfIksEpSqKU/ApDm8kDUTMejU1/X7aR8lh7TDEIUJtHI5WBT32uyX9CIzIB7
+	 ka+0CxR2ajoHAtgxytpFBflHT4/SYfC1hAA77uOe/HDafUf70SQ2T+Ia74lN6oLDypA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794184627;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=YdXOK15yE1MmDDCwmBarMpm0tdr2rkMDF0O1NKiP8x8=;
-	b=ohzmwaes4uBCKYz2n7kmr+QrZ3O1cg50AYHU4NoSr9OEQncXKprkPKEJSYk9LaRK8rL/
-	 9eMKQS83BesVMkktD3gxeJWFGwlh0ZWG2gbSmgFRxLNi+IIa4HI58e93gI/JQb+o0ei4L
-	 FXoIeiJBE4cxnp/o6DmydWn0Wh9DAkfaENkwZ21cqotR/P3ui+Q+FK9H3kf3XzRWz7j/o
-	 ahBJj8qq0H58lesXLdoNyemevqrThe6sKvjONPZgTzMevswAKQbiFTDgwfS1uOX111wnR
-	 devJKlPU3rtERfAFKqIv5I6X1d6wnOLzMzNsSMm8cRM55L/uk84FbEmx7DxeVHXsIjQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794198729;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
+	 From:To:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=EDWQw94GFBz1m/KvPfkL59wiL3GWWDcYfvsx/ryT4jo=;
+	b=w7DithViYwGMlYn7VYQua6jRvY6nXXfS756rRSIjPPasMvmwPvAL5eg1RTuhsADXfgsI
+	 7mSZ0OP0eoaiD2bjfTHkipBHt55W8+//swmWSOkystQIQb1xvsjuB4DzrnS7+Ol0sMUFy
+	 nQMa3VqEHlopGSHIThq2hjvPYSaHwtOcKdJJib1GDBgNcNYWbFboQ/AmfMeM6APnoqtIn
+	 D+0UIhl0gVFnxl4mBg7Ic3eMdTk3XxOwds3blBiI7NxT4sT4pAFOjMAfbblFw07kgx0/O
+	 nfuJtrvGjkEv3kF1Z4HIdRIBJ2su7al0XUZx/Xocr0MZ0FcVd/fBDGqFVL2a+kHnZTA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HiTfpkVW;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=OiBPIuhj;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.198.26
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010026.outbound.protection.outlook.com [40.93.198.26])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6194606EE83;
-	Mon,  9 Nov 2026 00:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BBD606A31C;
+	Mon,  9 Nov 2026 04:32:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4BBD606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HiTfpkVW
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794184626;
-	b=bo6B+0Kqzj5//LtGxKniRMj+xxUh0k5c7fQmtOTMExyaWx1YhSoUsh9KGakIXbBhk1J9
-	 kPHkuODm8osJpzFr4NPbx112E69HeLc4/PX6wS13UURjgjwmM9iS8scKDDoKK7vWwoWDE
-	 8iRKNyOvCeMjJbfXPNtJ3UV+61R8Tu9xp3v1MAG0WFtgMibseDrN0ZdZrjoo9YaAirdMf
-	 C2aZwKuNvaZ1EquO5Th6h1ZiAZ/qzMpFRjNbf21AfQDmgKgUkwyy5okMeQG7jEC7G8/fV
-	 6MoH/WnAmFDFPSihLgm22hAPt4wM+4mFjJG1dgjkmEdyAp/az13i4Ob/I0a6VcYuGoQ==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794184626;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=YdXOK15yE1MmDDCwmBarMpm0tdr2rkMDF0O1NKiP8x8=;
-	b=QoBCtnS4W39m9+Iy2ajqji3WnhaVlYdcGRJiusW0TA2HHNlQsPHqvGrGogV4ENjU+xt6
-	 G0HYFdbNoYgv8lEslXO6J3Q5jo9Ib7dHLqwE8H9ltW7zlNX1OjYdxs2AsrUzHc/fmPXxh
-	 zpJYf+PraX0IXiT6gkln+NABy6bOdYlQECC1h4H2ESn/G5Ir0iAfDw6f7WT3mQ/5yGZbk
-	 DfuAOD1lIboHr9hfPqRC3DgOvSCnryZfsF0e5ZUe12gspE1AsPAo3Z6TIkVyr76YBGiFN
-	 RA6tU4LzDvgwvON3+lKTuoFJZMXuV1juHmZmdhg4SYT6XRUCvgB24QJizqD614CjK4A==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 35A021F008A5;
-	Mon,  9 Nov 2026 00:37:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794184626;
-	bh=YdXOK15yE1MmDDCwmBarMpm0tdr2rkMDF0O1NKiP8x8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=HiTfpkVWscqbJfLjAAOBMH7Z6tHVCMoFTkM+BmX7mYqyYkG3OJO1NY3b61L6lbgZP
-	 n8s1lAno68EmQnUraxKEJnzLIUjhN6IIhwGdm815qHAe4KMDcTQwEQ8HqI5lzfF0C3
-	 Ma8eWQKGg2vrH6r7zXVN1iuWPyTBdv4FnSKBMINpz+xLJNKPobU66b1RWDdp/5FFOG
-	 Oq7ca291oGYHn3G+tOwkoqbBaS7PG3HkbMvkaRnxNlWgKfD0yNhUU7810vw1/QbOPm
-	 N/XFeGWEOs9JyYtojNEoM1hCd6/x8q8ab+bFYemZVd/Xpp8CPGu/h0gwt/Fk7MX2H1
-	 Hr76ero8LBj/g==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 7A0F0481BD;
-	Mon,  9 Nov 2026 00:37:02 +0000 (UTC)
-From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Mon, 09 Nov 2026 08:36:50 +0800
-Subject: [PATCH v6 07/10] drm/tyr: add VM-related ioctls
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=OiBPIuhj
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IhNZI68z1vgnE2/YjltpfJVecUGVyvkROeTfgsh+3Y8iu6PwBSJjMfhIEQy3phIfMP5P30Nzm6gYqbvF0zmU6ojL5mVCtCQaKoTwUMR73OCYFwZcrIomBxPt+2BRS6iqTpEbUY/IYk+tIA8womnVYsl9fgv17/6oflgua2/yULijzjsrrdOf9bicRXTmI4zk59Qi/Bu7Jigu1YRODxctem6sF0MFT2waDvpX73u9Zh3EfeUwa65yaYL1HCW2TIFBdBslNcGn09GuQl6nQO7CL5jVS+vdH+1HJLyKT/HMSE1T/IozU5lJYijsxt3EOpBftVqIQ0eyxUsQ2eovUWZ6JA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EDWQw94GFBz1m/KvPfkL59wiL3GWWDcYfvsx/ryT4jo=;
+ b=PVwow/IxJyoxoQpvvA7HHrmcbPcauCZgWXNSd9WVZPtjRVTJi20u6CBvU/Mgg5KCAxE0N35olVpQcHStRX4VR/9rn4nr37Qmav7rT2Iyn7Dmz7Hl6988TN0/9Gegkve0to2khGng4S1NAZVihty4vAzG+Nu9unNUAhSibl4JpXzdoDMbflXbYiRJlvnx3b4ayW6Yknr3pQh9WJoc4yVZ5e1xzFFvLLvHq38zMgMsbxXdll9CnWRY0DPkzy564KisRXzK9bk/f9GHY8un0CF4txQkDGqrpbAg84Ce+kHh+TywTWKVo9hMkT8bP9MyFIKRBM7XFrhdxN2iy0NI7A4wjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EDWQw94GFBz1m/KvPfkL59wiL3GWWDcYfvsx/ryT4jo=;
+ b=OiBPIuhj/TDqU26Q32gTl2ZAYd3cPirxln2zJLtnYb4sDFWT9vyVcsfc8YaT7aMzdeRrtqG8mMF3OgZ0+BlNmfMweiZgrF++P+SCVCmHR4mFAsAfmCB/0a9KLng3UXixN8tVpB+apxyqXEclIOWyXvEUjiY9kY1EHSPB1cht144HMv/4oH4Xx203Ds5Xn0h1gf++o8sjKonU2BOI/tPe5X2GVwFMT8Pbspi7nE1zQcxmt4vIzxPlJb5C9JfT5m9xXWp/iHhOHcICwr9FwdUuBNbLgpq/iycybQ6D+eUSWZ0+me8HD5Nj4nxd4DTMN+nvBhKHfXBrDKOsRcpxMMYN4g==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
+ CH3PR12MB8546.namprd12.prod.outlook.com (2603:10b6:610:15f::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Mon, 9 Nov
+ 2026 04:32:04 +0000
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa%5]) with mapi id 15.21.0592.010; Mon, 9 Nov 2026
+ 04:32:03 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 09 Nov 2026 13:32:00 +0900
+Message-Id: <DMQED5AUZFY8.2PA1KAFPCNBBV@nvidia.com>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <nova-gpu@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 02/12] gpu: nova-core: falcon: widen the IMEM PIO
+ offset to 24 bits
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>
+X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
+References: <20261107-r000-fw-v2-0-fb37cc5b20cd@nvidia.com>
+ <20261107-r000-fw-v2-2-fb37cc5b20cd@nvidia.com>
+In-Reply-To: <20261107-r000-fw-v2-2-fb37cc5b20cd@nvidia.com>
+X-ClientProxiedBy: TYCPR01CA0127.jpnprd01.prod.outlook.com
+ (2603:1096:400:26d::12) To DS0PR12MB6413.namprd12.prod.outlook.com
+ (2603:10b6:8:ce::10)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -82,617 +104,87 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261109-tyr-ioctls-v6-7-b2896bf2b3c9@kylinos.cn>
-References: <20261109-tyr-ioctls-v6-0-b2896bf2b3c9@kylinos.cn>
-In-Reply-To: <20261109-tyr-ioctls-v6-0-b2896bf2b3c9@kylinos.cn>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Lyude Paul <lyude@redhat.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Johan Hovold <johan@kernel.org>
-Cc: Sami Tolvanen <samitolvanen@google.com>, rust-for-linux@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, driver-core@lists.linux.dev, 
- Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794184620; l=19980;
- i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=iYgiW5gql/76K/xpXr6ATRSbsbqSI6g1yVBtRFTra7c=;
- b=RdJx5ITiKtOP6DYBqcpZkieb7UdUnOFgKLiyloTFkxl2k65vudHmb1RMZ2rIUN9YFwACls6ls
- 5Fn6OqSVqD2A2WOITQ0RQy95k4X54LDd3m0DMEMUD0jQPbt44PwlWiI
-X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
- pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
-X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
- auth_id=950
-X-Original-From: Ke Sun <sunke@kylinos.cn>
-Reply-To: sunke@kylinos.cn
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|CH3PR12MB8546:EE_
+X-MS-Office365-Filtering-Correlation-Id: dcea02b1-18e4-45c6-7ef6-08df3e1a6766
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|10070799003|23010399003|11063799006|4143699003|56012099006|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	GPivYrlKLwVDCCcDNilOog9MBoh9E9gAWDT94mt3JmUuC+CUrUG5SNN0MeLZeQCFF3uk7IfjRQLr5BthgX9jji5T7lUyWNbh/g7WdxZPN8WoCVkNARFWrRyWdd/VWI08n/Tf5qQU41OplMnvYgOLim8QIFvFw7mmriRljvlWeU6ItA+3qMmi011GtlVmHD7FdJHM52+V2kybosOFTtJr6b9otIRZHEDodIjNU5g6eHfh2uYHaXzeo/mJQcAFeEP26aoGXMWcvPPXbn4TBG2DXsxLJaR5OA9RQknYcOXJmbAJ5vneP7We1QM9jrjI9U4cIxIVWBA6R+/9R5PHN5XWBylZJHTcIC1KFiVOSI47WqTOZ/dFtgqCObdPXi+hEpHSpbpdFp7og0+JdpqlLVrgX6STocj1wAPYh5MSzWJqWgWba38DilzGcFDguSD6B1IHTm1imjhaMP8XVG2ZlrqaS1r5j/QTf0XjpDxHoSpyLBVcNpeRSWgJxR0NMC+11iHG4zlK8AJRw46uHiCV+LPJIBAXyky9YKO5GnWqcjoUI2y6l6QTz6rwyHxEsGUjDM5XorxLSFn3c/uI9FPG9Bflqo7CuqH6KN+GgebBTNaMtQpT3Jat6onJl6Zq3JaP/SH3S5uoSd66AufiUhGkIQULkdeBa1kq+uJ+69n6pJtOOX0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(10070799003)(23010399003)(11063799006)(4143699003)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?V0ZEZ0wvc1dSa0hhb0xKTjM5UVQrQnJmMnp2UGRXYlMrZEQxZFRHZ1B5Mitz?=
+ =?utf-8?B?V0NPbmlRaFljZytqdEdLYUx4R2lGaExNWWZMeG1HYXBsckVMNklMNlYxOC9Z?=
+ =?utf-8?B?UWZ0WVBRUWRCNjFWdHBkMHhHV3JnUUdKUStYamxCYi8zcXQvMTJBbzI4Ry9m?=
+ =?utf-8?B?MlZ6WjlWK01EQ004TUYwOUNCYjNJUkpHbkpVMmZ3cnFLekhqaUdiMlVld3RK?=
+ =?utf-8?B?bGZKcFYzL0RuTHErN25IeWJtVWE1V2tCSUZXR0VXcHJ2ZU42ZGFtRTNTcDRB?=
+ =?utf-8?B?N0hkcGxIcXBKSlRVTVpsdzcrTzdrTVZ4TXh6Q0I0Ri9NNXp4NnIyMWZ1UUda?=
+ =?utf-8?B?V1daSlAxejVTYngwUHN2d1NaMHlIZTY1RjhBbTd4TWtFelh5QkY2UC9Sb0hG?=
+ =?utf-8?B?anNPdnNDMTA2TGNvUC9RcFllSzFCUnpOa2pEbExvTU5keFNDTmxBVTV3SHdw?=
+ =?utf-8?B?RTFpajN3RHo1N2h4eXFnNUdYK2lMOFhOQm5pWVA5TlQ0bm1OWXNyV0tqcEVJ?=
+ =?utf-8?B?b3h3blJDZFRaMkc1cC9FZ1IzWWcyMXgrMmVWb0ZXWFlBUy9kaU9rMUFjd3lu?=
+ =?utf-8?B?RGRFbTZrZzArbXgwalRsUmpJclZyMCtlMnE1dkhxNTdqV2RvaUxLTlhpdmxW?=
+ =?utf-8?B?aDdGVkhKWm5yL081SEJicDhRNWorMzBseHE4K0xFL2pERHRRazd6Q2dVbGdD?=
+ =?utf-8?B?bkhoVDhucHJPOGx0TC9NR3Ewc0lVV1RCS1NTQ205WXJCdTNMM055bzZwTEVx?=
+ =?utf-8?B?Y2I1RlBCUlp4QTgycm94R3VwSGJxZ2RnSUlzOUF3dHQrbWhLeXJQb2JNMStJ?=
+ =?utf-8?B?ZVMrb00xdk9NOElsUTJTVERvNENEam01YmdEWFF1d0NzL0QvMFphWjdqOTNJ?=
+ =?utf-8?B?MlBqN3dLc3UvbEhtZDAreDQzZWVMMmVnU2owVW9aTUJiMHdUdDV5UGNZZG1i?=
+ =?utf-8?B?QUwxSytKa20xVUZqSTdXTDRaYytxUHhNUE5zTW9CeWZ2QjIzb0p3elgrdm1O?=
+ =?utf-8?B?OVpNRS8rSEltVC9tY1o2V0tJUXc1eGNvVE9SZVdpOXFlRnFGVXRPdDJHbExE?=
+ =?utf-8?B?aXBSd2FnTWJqQ0FEK3FiTmtCS1N3VExZU2tweFhYTjRrMG9YNTJWTDErZFJ5?=
+ =?utf-8?B?N21nQXZYa0FILzN1bWpvNEpzaVhTZjMvL2c3VGc0Z09pc3pjM2hkSUdybDFn?=
+ =?utf-8?B?NlBqWjJwVlI2RzhCNzZGMDdEWHdiM2c3SG53NHUxeHhWQkx4K3RNR2VzUkRZ?=
+ =?utf-8?B?WjZ2QlkxTDYxZnJ3eWtMb05LUFJWWFBXQjVZdkViWDdCTXQvaVVqVEhHRWZL?=
+ =?utf-8?B?VW56S2Z4b1ZDdm1DT0NZcWZHWmt0UjlxamdZWHB1OUJKb3R5cUR1c2JheVRv?=
+ =?utf-8?B?ZnVyamFVT25vZGYzbUhLUDlXWlJFRzZWeWRJbnhkODVRc24wbGRKakUrcGFD?=
+ =?utf-8?B?cFN4S1REU3VJNThGNSs4VjU4bGRXTVdUNmRqSk5rQ1ovZDlhQzE5OWFqc3J2?=
+ =?utf-8?B?QUNKUnVOZUR0SXVUa1hkdUJtd3hWZVJpWFFOdUEvMUxYei9jUmQvUXBkc010?=
+ =?utf-8?B?MnhzbzZPWkdVNjYzQ3RwSThMQUFQNThPSjVJaXBoTnJSakRrTzVsQmJYQXov?=
+ =?utf-8?B?YWp1eWdvR2hSMlZXWnU2ZDhXem5jMnZ1RWZpV2VhWTdmaGZ0UkJhSkVWVnVM?=
+ =?utf-8?B?aW5oNVBQcTFaaWlGM0ZqTkJWTnVxb2RYVnFnQmxSeHVKTmxLeVRyVTRud3lB?=
+ =?utf-8?B?N29ZSXI4TXUxMjlFUEdWaWFvOTk2Y1dnNG1QWXpUQjdKVU1NdWxKQmJaQjJY?=
+ =?utf-8?B?MkFnUCtoMmkzTFpQSXI2dFN6elp2WEtKcEQ4TFdVZDBYQUpoTkEyamtiWFk3?=
+ =?utf-8?B?ZWtOcGNMMnJFQVd6RXUrR0NjWDdqOUxJUnlTeXhHT3JDYkh6UVNubHQ5VUJp?=
+ =?utf-8?B?S1QyUnQwNUdBZFdqNDgrODZQelVMTWxjcXJJUzIrWjQyVEd4djc1dS9SaHF4?=
+ =?utf-8?B?djlFd3VVWW9FQy93YnIwOFJXREZ0WWJPSnVLcTRyZkw2akxDYW8ybWEvQkJx?=
+ =?utf-8?B?TU1KT1Z1a0Jsai9aZVBmdlJNc3BIa3NpQ0FOQkRuZ1I0NG1POUZzT242WjZz?=
+ =?utf-8?B?VlZ2R1psM3ZGMVJyRzJOUFdNNytlb29lbnlSRVNGUCtLRllGOHE5cjg5anFQ?=
+ =?utf-8?B?K2RNTUo3UmtKemdPYnFySmVRRkFiUnFGUHJaVFNkYVZSald3aVlwc2lIeXpS?=
+ =?utf-8?B?SE05MU5pR2pJZ3NLWmtXNW9oanhpdGlpVHc3c1dHWUh3MDdmK0ZTeTdnSUZE?=
+ =?utf-8?B?ME5hYUo2M0ZBWWpXZ3dpdnY3VTdPbTJzNWJYN3E4cnFtbUpTVTczbjI5UXEw?=
+ =?utf-8?Q?ZI0kKPa0g3CqA67Wi2Y/yWx5l0rdC4/zNjzsAlrNQUzpw?=
+X-MS-Exchange-AntiSpam-MessageData-1: j1K0/rqHCX1QJA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dcea02b1-18e4-45c6-7ef6-08df3e1a6766
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 04:32:03.6379
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nFOPPaoNDQJHzhGmnsMy7dwAeeXA1XjrG8sb5kn9TWp+QsY07Bt3f/GdII9bhml0F6YxZrXMySrntTBh2GEUng==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8546
 
-From: Alvin Sun <alvin.sun@linux.dev>
+On Sat Nov 7, 2026 at 6:47 PM JST, Alexandre Courbot wrote:
+> `NV_PFALCON_FALCON_IMEMC` addresses IMEM with a 24-bit offset since GA100
+> (16 bits on Turing, with the following 8 bits unused).
+>
+> Nova declared it as 16 bits and carried IMEM PIO destinations as `u16`,
+> which prevents loading anything above 64 KiB of IMEM, a scenario that
+> becomes possible once the generic bootloader is placed at the top of
+> IMEM.
+>
+> Widen the register field and carry the destination as a 24-bit `Bounded`.
+>
+> Suggested-by: Eliot Courtney <ecourtney@nvidia.com>
+> Link: https://lore.kernel.org/all/DMNAN7KX22SC.QQ5HURCU332A@nvidia.com/
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
 
-Implement VM_CREATE, VM_DESTROY, VM_BIND and VM_GET_STATE. VM_CREATE
-hands the new VM to the per-file pool and, on insertion failure, the
-caller tears it down, so an aborted creation never leaks a VM.
-VM_DESTROY removes the VM from the pool and kills it, even if in-flight
-jobs still hold references (matching panthor: such jobs are expected
-to fault). VM_BIND runs synchronously for now.
-
-Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
----
- drivers/gpu/drm/tyr/driver.rs |  10 +-
- drivers/gpu/drm/tyr/file.rs   | 295 ++++++++++++++++++++++++++++++++++++++++--
- drivers/gpu/drm/tyr/gem.rs    |   1 -
- drivers/gpu/drm/tyr/vm.rs     |  69 ++++++++--
- 4 files changed, 356 insertions(+), 19 deletions(-)
-
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 46caf7b336d93..ba03cc4c52539 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -73,6 +73,9 @@ pub(crate) struct TyrDrmRegistrationData<'drm> {
-     /// Firmware sections.
-     pub(crate) fw: Firmware<'drm>,
- 
-+    /// Memory management unit for address space slots.
-+    pub(crate) mmu: Arc<Mmu<'drm>>,
-+
-     #[pin]
-     clks: Mutex<Clocks>,
- 
-@@ -171,6 +174,7 @@ fn probe<'bound>(
-                     pin_init!(TyrDrmRegistrationData {
-                         pdev,
-                         fw: firmware,
-+                        mmu,
-                         clks <- new_mutex!(Clocks {
-                             core: core_clk,
-                             stacks: stacks_clk,
-@@ -209,7 +213,7 @@ fn drop(self: Pin<&mut Self>) {}
- impl drm::Driver for TyrDrmDriver {
-     type Data = ();
-     type RegistrationData<'drm> = TyrDrmRegistrationData<'drm>;
--    type File<'a> = TyrDrmFileData;
-+    type File<'a> = TyrDrmFileData<'a>;
-     type Object = Bo;
-     type ParentDevice<Ctx: DeviceContext> = platform::Device<Ctx>;
- 
-@@ -218,6 +222,10 @@ impl drm::Driver for TyrDrmDriver {
- 
-     kernel::declare_drm_ioctls! {
-         (PANTHOR_DEV_QUERY, drm_panthor_dev_query, ioctl::RENDER_ALLOW, TyrDrmFileData::dev_query),
-+        (PANTHOR_VM_CREATE, drm_panthor_vm_create, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_create),
-+        (PANTHOR_VM_DESTROY, drm_panthor_vm_destroy, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_destroy),
-+        (PANTHOR_VM_BIND, drm_panthor_vm_bind, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_bind),
-+        (PANTHOR_VM_GET_STATE, drm_panthor_vm_get_state, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_get_state),
-     }
- }
- 
-diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
-index 933a365cb016e..49b22e7ee4179 100644
---- a/drivers/gpu/drm/tyr/file.rs
-+++ b/drivers/gpu/drm/tyr/file.rs
-@@ -3,37 +3,58 @@
- use kernel::{
-     drm::{
-         self,
-+        gem::BaseObject,
-         Registered, //
-     },
-+    num::casts::FromSafeCast,
-     prelude::*,
-+    sizes::SizeConstants,
-+    transmute::FromBytes,
-     uaccess::UserSlice,
-     uapi, //
- };
- 
--use crate::driver::{
--    TyrDrmDevice,
--    TyrDrmDriver,
--    TyrDrmRegistrationData, //
-+use crate::{
-+    driver::{
-+        TyrDrmDevice,
-+        TyrDrmDriver,
-+        TyrDrmRegistrationData, //
-+    },
-+    vm::{
-+        UserVaRequest,
-+        Vm,
-+        VmBindOpType,
-+        VmMapFlags,
-+        VmPool, //
-+    }, //
- };
- 
- #[pin_data]
--pub(crate) struct TyrDrmFileData {}
-+pub(crate) struct TyrDrmFileData<'a> {
-+    reg: &'a TyrDrmRegistrationData<'a>,
-+
-+    #[pin]
-+    vm_pool: VmPool<'a>,
-+}
- 
- /// Convenience type alias for our DRM `File` type.
- pub(crate) type TyrDrmFile = drm::file::File<TyrDrmDriver>;
- 
--impl drm::file::DriverFile<'_> for TyrDrmFileData {
-+impl<'a> drm::file::DriverFile<'a> for TyrDrmFileData<'a> {
-     type Driver = TyrDrmDriver;
- 
-     fn open(
-         _device: &TyrDrmDevice<Registered>,
--        _reg_data: &TyrDrmRegistrationData<'_>,
-+        reg_data: &'a TyrDrmRegistrationData<'a>,
-     ) -> impl PinInit<Self, Error> {
--        Ok(Self {})
-+        try_pin_init!(Self {
-+            reg: reg_data,
-+            vm_pool <- VmPool::new(reg_data.pdev.as_ref()),
-+        })
-     }
- }
- 
--impl TyrDrmFileData {
-+impl TyrDrmFileData<'_> {
-     pub(crate) fn dev_query(
-         _ddev: &TyrDrmDevice<Registered>,
-         reg_data: &TyrDrmRegistrationData<'_>,
-@@ -65,4 +86,260 @@ pub(crate) fn dev_query(
-             }
-         }
-     }
-+
-+    pub(crate) fn vm_create(
-+        ddev: &TyrDrmDevice<Registered>,
-+        _reg_data: &TyrDrmRegistrationData<'_>,
-+        vmcreate: &mut uapi::drm_panthor_vm_create,
-+        file: &TyrDrmFile,
-+    ) -> Result<u32> {
-+        if vmcreate.flags != 0 {
-+            dev_dbg!(
-+                ddev.as_ref(),
-+                "Invalid VM create flags: {:#x}\n",
-+                vmcreate.flags
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let ret: Result<u32, Error> = file.inner_with(|pfile| {
-+            let vm = Vm::new_for_user(
-+                pfile.reg.pdev.as_ref(),
-+                ddev,
-+                pfile.reg.mmu.as_arc_borrow(),
-+                &pfile.reg.gpu_info,
-+                UserVaRequest::from_uapi(vmcreate.user_va_range),
-+            )?;
-+            let user_va_range = vm.layout.user.end;
-+            let id = pfile.vm_pool.add(vm).map_err(|e| {
-+                e.vm.kill();
-+                e.error
-+            })?;
-+            vmcreate.user_va_range = user_va_range;
-+            vmcreate.id = id;
-+
-+            Ok(0)
-+        });
-+        ret
-+    }
-+
-+    pub(crate) fn vm_destroy(
-+        ddev: &TyrDrmDevice<Registered>,
-+        _reg_data: &TyrDrmRegistrationData<'_>,
-+        vmdestroy: &mut uapi::drm_panthor_vm_destroy,
-+        file: &TyrDrmFile,
-+    ) -> Result<u32> {
-+        if vmdestroy.pad != 0 {
-+            dev_dbg!(
-+                ddev.as_ref(),
-+                "Invalid VM destroy pad: {:#x}\n",
-+                vmdestroy.pad
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let ret: Result<u32, Error> = file.inner_with(|pfile| {
-+            pfile.vm_pool.remove(vmdestroy.id)?;
-+            Ok(0)
-+        });
-+        ret
-+    }
-+
-+    pub(crate) fn vm_bind(
-+        ddev: &TyrDrmDevice<Registered>,
-+        _reg_data: &TyrDrmRegistrationData<'_>,
-+        vmbind: &mut uapi::drm_panthor_vm_bind,
-+        file: &TyrDrmFile,
-+    ) -> Result<u32> {
-+        let async_flag = uapi::drm_panthor_vm_bind_flags_DRM_PANTHOR_VM_BIND_ASYNC;
-+
-+        if vmbind.flags & !async_flag != 0 {
-+            dev_dbg!(
-+                ddev.as_ref(),
-+                "Invalid VM_BIND flags: {:#x}\n",
-+                vmbind.flags
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        if vmbind.flags & async_flag != 0 {
-+            dev_dbg!(ddev.as_ref(), "Async VM_BIND not supported\n");
-+            return Err(EOPNOTSUPP);
-+        }
-+
-+        let count = usize::from_safe_cast(vmbind.ops.count);
-+        if count == 0 {
-+            return file.inner_with(|pfile| {
-+                pfile.vm_pool.get(vmbind.vm_id).ok_or(EINVAL)?;
-+                Ok(0)
-+            });
-+        }
-+
-+        // Panthor allows larger strides; UserSliceReader::read needs an exact one.
-+        if vmbind.ops.stride as usize != size_of::<VmBindOp>() {
-+            dev_dbg!(
-+                ddev.as_ref(),
-+                "Invalid VM_BIND op stride {} (expected {})\n",
-+                vmbind.ops.stride,
-+                size_of::<VmBindOp>()
-+            );
-+            return Err(EINVAL);
-+        }
-+        // TODO: support variable strides with copy_struct_from_user()
-+        // semantics: zero-pad shorter structs, reject non-zero trailing bytes.
-+
-+        let total_len = size_of::<VmBindOp>().checked_mul(count).ok_or_else(|| {
-+            dev_dbg!(ddev.as_ref(), "VM_BIND ops length overflow\n");
-+            EINVAL
-+        })?;
-+        let mut reader =
-+            UserSlice::new(UserPtr::from_addr(vmbind.ops.array as usize), total_len).reader();
-+        let mut ops = KVec::new();
-+        for _ in 0..count {
-+            ops.push(reader.read::<VmBindOp>()?, GFP_KERNEL)?;
-+        }
-+
-+        let ret: Result<u32, Error> = file.inner_with(|pfile| {
-+            let vm = pfile.vm_pool.get(vmbind.vm_id).ok_or_else(|| {
-+                dev_dbg!(ddev.as_ref(), "Invalid VM_BIND vm_id: {}\n", vmbind.vm_id);
-+                EINVAL
-+            })?;
-+
-+            for (i, op) in ops.iter().enumerate() {
-+                if let Err(e) = vm_bind_exec_op(&vm, file, op) {
-+                    dev_dbg!(ddev.as_ref(), "VM_BIND op {} failed: {:?}\n", i, e);
-+                    vmbind.ops.count = i as u32;
-+                    return Err(e);
-+                }
-+            }
-+
-+            Ok(0)
-+        });
-+        ret
-+    }
-+
-+    pub(crate) fn vm_get_state(
-+        ddev: &TyrDrmDevice<Registered>,
-+        _reg_data: &TyrDrmRegistrationData<'_>,
-+        vmgetstate: &mut uapi::drm_panthor_vm_get_state,
-+        file: &TyrDrmFile,
-+    ) -> Result<u32> {
-+        file.inner_with(|pfile| {
-+            let vm = pfile.vm_pool.get(vmgetstate.vm_id).ok_or_else(|| {
-+                dev_dbg!(
-+                    ddev.as_ref(),
-+                    "Invalid VM_GET_STATE vm_id: {}\n",
-+                    vmgetstate.vm_id
-+                );
-+                EINVAL
-+            })?;
-+            vmgetstate.state = if vm.is_unusable() {
-+                uapi::drm_panthor_vm_state_DRM_PANTHOR_VM_STATE_UNUSABLE
-+            } else {
-+                uapi::drm_panthor_vm_state_DRM_PANTHOR_VM_STATE_USABLE
-+            };
-+            Ok(0)
-+        })
-+    }
-+}
-+
-+fn vm_bind_exec_op(vm: &Vm<'_>, file: &TyrDrmFile, op: &VmBindOp) -> Result {
-+    if op.syncs.count != 0 {
-+        dev_dbg!(vm.dev(), "VM_BIND op syncs not supported\n");
-+        return Err(EINVAL);
-+    }
-+
-+    if op.size == 0 {
-+        return Ok(());
-+    }
-+
-+    let end = match op.va.checked_add(op.size) {
-+        Some(end) => end,
-+        None => {
-+            dev_dbg!(vm.dev(), "VM_BIND op VA range overflow\n");
-+            return Err(EINVAL);
-+        }
-+    };
-+    if op.va < vm.layout.user.start || end > vm.layout.user.end {
-+        dev_dbg!(
-+            vm.dev(),
-+            "VM_BIND op VA range {:#x}..{:#x} outside user range\n",
-+            op.va,
-+            end
-+        );
-+        return Err(EINVAL);
-+    }
-+
-+    if (op.va | op.size | op.bo_offset) & (u64::SZ_4K - 1) != 0 {
-+        dev_dbg!(vm.dev(), "VM_BIND op not GPU-page-aligned\n");
-+        return Err(EINVAL);
-+    }
-+
-+    match VmBindOpType::try_from(op.flags) {
-+        Ok(VmBindOpType::Map) => {
-+            // Once the VM is unusable only MAP ops are rejected; UNMAP
-+            // stays available for cleanup (see the UAPI docs).
-+            if vm.is_unusable() {
-+                dev_dbg!(vm.dev(), "VM_BIND map op on unusable VM\n");
-+                return Err(EINVAL);
-+            }
-+
-+            let map_flags = match VmMapFlags::try_from(op.flags & !VmBindOpType::MASK) {
-+                Ok(flags) => flags,
-+                Err(_) => {
-+                    dev_dbg!(vm.dev(), "VM_BIND op invalid map flags {:#x}\n", op.flags);
-+                    return Err(EINVAL);
-+                }
-+            };
-+            let bo = crate::gem::lookup_handle(file, op.bo_handle).map_err(|_| {
-+                dev_dbg!(vm.dev(), "VM_BIND op invalid BO handle {}\n", op.bo_handle);
-+                EINVAL
-+            })?;
-+            // Validate the BO window before mapping.
-+            let bo_size = u64::from_safe_cast(bo.size());
-+            if op.size > bo_size || op.bo_offset > bo_size - op.size {
-+                dev_dbg!(vm.dev(), "VM_BIND op BO range out of bounds\n");
-+                return Err(EINVAL);
-+            }
-+            vm.map_bo_range(&bo, op.bo_offset, op.size, op.va, map_flags)
-+        }
-+        Ok(VmBindOpType::Unmap) => {
-+            // Unmap must not carry map-specific flags or BO references.
-+            if op.flags & !VmBindOpType::MASK != 0 || op.bo_handle != 0 || op.bo_offset != 0 {
-+                dev_dbg!(
-+                    vm.dev(),
-+                    "VM_BIND UNMAP carries flags/BO refs: flags={:#x} bo_handle={} bo_offset={}\n",
-+                    op.flags,
-+                    op.bo_handle,
-+                    op.bo_offset
-+                );
-+                return Err(EINVAL);
-+            }
-+            vm.unmap_range(op.va, op.size)
-+        }
-+        Err(_) => {
-+            dev_dbg!(
-+                vm.dev(),
-+                "VM_BIND op type {:#x} not supported\n",
-+                op.flags & VmBindOpType::MASK
-+            );
-+            Err(EINVAL)
-+        }
-+    }
-+}
-+
-+#[repr(transparent)]
-+struct VmBindOp(uapi::drm_panthor_vm_bind_op);
-+
-+impl core::ops::Deref for VmBindOp {
-+    type Target = uapi::drm_panthor_vm_bind_op;
-+
-+    fn deref(&self) -> &Self::Target {
-+        &self.0
-+    }
- }
-+
-+// TODO: use zerocopy FromBytes when these traits are derived for bindings.
-+// SAFETY: `VmBindOp` contains only integers, so any bit pattern is valid;
-+// the `#[repr(transparent)]` wrapper has the same layout as the UAPI struct.
-+unsafe impl FromBytes for VmBindOp {}
-diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index 0e0989a48678f..60f6363995a5a 100644
---- a/drivers/gpu/drm/tyr/gem.rs
-+++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -77,7 +77,6 @@ pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result
- }
- 
- /// Look up a GEM object by handle for a DRM file.
--#[expect(dead_code)]
- pub(crate) fn lookup_handle(file: &TyrDrmFile, handle: u32) -> Result<ARef<Bo>> {
-     Bo::lookup_handle(file, handle)
- }
-diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
-index 44f5046037895..11bc8e2c9d0be 100644
---- a/drivers/gpu/drm/tyr/vm.rs
-+++ b/drivers/gpu/drm/tyr/vm.rs
-@@ -54,6 +54,11 @@
-     },
-     sync::{
-         aref::ARef,
-+        atomic::{
-+            Acquire,
-+            Atomic,
-+            Release, //
-+        },
-         Arc,
-         ArcBorrow,
-         Mutex, //
-@@ -173,7 +178,6 @@ pub(crate) enum UserVaRequest {
- 
- impl UserVaRequest {
-     /// UAPI boundary normalization: `0` -> [`Auto`](Self::Auto).
--    #[expect(dead_code)]
-     pub(crate) fn from_uapi(v: u64) -> Self {
-         match NonZeroU64::new(v) {
-             Some(size) => Self::Fixed(size),
-@@ -182,6 +186,38 @@ pub(crate) fn from_uapi(v: u64) -> Self {
-     }
- }
- 
-+/// Operation type, packed into the top nibble of
-+/// `drm_panthor_vm_bind_op::flags`.
-+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+pub(crate) enum VmBindOpType {
-+    /// Map a BO range into the VM.
-+    Map,
-+    /// Unmap a VA range.
-+    Unmap,
-+}
-+
-+impl VmBindOpType {
-+    /// Bits occupied by the op type in `drm_panthor_vm_bind_op::flags`.
-+    pub(crate) const MASK: u32 =
-+        uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_TYPE_MASK as u32;
-+}
-+
-+impl TryFrom<u32> for VmBindOpType {
-+    type Error = Error;
-+
-+    fn try_from(flags: u32) -> Result<Self, Self::Error> {
-+        const MAP: u32 = uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_TYPE_MAP as u32;
-+        const UNMAP: u32 =
-+            uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP as u32;
-+
-+        match flags & Self::MASK {
-+            MAP => Ok(Self::Map),
-+            UNMAP => Ok(Self::Unmap),
-+            _ => Err(EINVAL),
-+        }
-+    }
-+}
-+
- /// Final user/kernel VA layout for a VM.
- pub(crate) struct VmLayout {
-     /// Full GPU VA range covered by this VM.
-@@ -424,6 +460,8 @@ pub(crate) struct Vm<'drm> {
-     gpuvm: ARef<GpuVm<GpuVmData<'drm>>>,
-     /// VA layout for this VM.
-     pub(crate) layout: VmLayout,
-+    /// Whether the VM is unusable.
-+    unusable: Atomic<bool>,
- }
- 
- impl<'drm> Vm<'drm> {
-@@ -445,7 +483,6 @@ pub(crate) fn new_for_fw(
-     }
- 
-     /// Creates a user VM, splitting the GPU VA range per `user_va`.
--    #[expect(dead_code)]
-     pub(crate) fn new_for_user(
-         dev: &'drm Device<Bound>,
-         ddev: &TyrDrmDevice,
-@@ -512,6 +549,7 @@ fn new_internal(
-                 gpuvm,
-                 gpuvm_unique <- new_mutex!(gpuvm_unique),
-                 layout,
-+                unusable: Atomic::new(false),
-             }),
-             GFP_KERNEL,
-         )?;
-@@ -542,6 +580,7 @@ fn deactivate(&self) -> Result {
- 
-     /// Kills the VM by deactivating it and unmapping all regions.
-     pub(crate) fn kill(&self) {
-+        self.mark_unusable();
-         let _ = self.deactivate();
-         let _ = self
-             .unmap_range(
-@@ -553,6 +592,15 @@ pub(crate) fn kill(&self) {
-             });
-     }
- 
-+    /// Marks the VM unusable.
-+    fn mark_unusable(&self) {
-+        self.unusable.store(true, Release);
-+    }
-+
-+    pub(crate) fn is_unusable(&self) -> bool {
-+        self.unusable.load(Acquire)
-+    }
-+
-     /// Executes a virtual memory operation.
-     ///
-     /// This handles both map and unmap operations by coordinating between the
-@@ -664,6 +712,17 @@ pub(crate) fn map_bo_range(
-         };
-         let result = {
-             let mut gpuvm_unique = self.gpuvm_unique.lock();
-+            // Check under the GPUVM lock, which the kill path also takes to
-+            // unmap, so this serializes against a concurrent teardown.
-+            if self.is_unusable() {
-+                dev_err!(
-+                    self.dev,
-+                    "Failed to map VA {:#x}..{:#x}: VM is unusable\n",
-+                    req.region.start,
-+                    req.region.end
-+                );
-+                return Err(EINVAL);
-+            }
-             self.exec_op(gpuvm_unique.as_mut().get_mut(), req, &mut resources)
-         };
-         // We flush the defer cleanup list now. Things will be different in
-@@ -1099,15 +1158,12 @@ pub(crate) struct VmPool<'drm> {
- /// Error returned when a VM cannot be added to the pool. The caller
- /// owns the teardown of the VM in [`AddError::vm`].
- pub(crate) struct AddError<'drm> {
--    #[expect(dead_code)]
-     pub(crate) error: Error,
--    #[expect(dead_code)]
-     pub(crate) vm: Arc<Vm<'drm>>,
- }
- 
- impl<'drm> VmPool<'drm> {
-     /// Creates a new [`VmPool`].
--    #[expect(dead_code)]
-     pub(crate) fn new(dev: &'drm Device<Bound>) -> impl PinInit<Self> {
-         let ids = IdPool::new();
-         pin_init!(Self {
-@@ -1123,7 +1179,6 @@ pub(crate) fn new(dev: &'drm Device<Bound>) -> impl PinInit<Self> {
-     /// returned in an [`AddError`] so the caller owns the teardown.
-     // TODO: allocate IDs with the XArray directly (once it grows range
-     // allocation, the equivalent of C's `XA_LIMIT`) and drop the IdPool.
--    #[expect(dead_code)]
-     pub(crate) fn add(&self, vm: Arc<Vm<'drm>>) -> Result<u32, AddError<'drm>> {
-         let id = (|| {
-             let mut ids = self.ids.lock();
-@@ -1173,7 +1228,6 @@ pub(crate) fn add(&self, vm: Arc<Vm<'drm>>) -> Result<u32, AddError<'drm>> {
-     }
- 
-     /// Removes and kills the VM with the given ID.
--    #[expect(dead_code)]
-     pub(crate) fn remove(&self, id: u32) -> Result<()> {
-         let mut vms = self.vms.lock();
-         let vm = match vms.remove(usize::from_safe_cast(id)) {
-@@ -1190,7 +1244,6 @@ pub(crate) fn remove(&self, id: u32) -> Result<()> {
-     }
- 
-     /// Gets a shared reference to the VM with the given ID.
--    #[expect(dead_code)]
-     pub(crate) fn get(&self, id: u32) -> Option<Arc<Vm<'drm>>> {
-         let vms = self.vms.lock();
-         let borrow = vms.get(usize::from_safe_cast(id))?;
-
--- 
-2.43.0
-
+Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
 
