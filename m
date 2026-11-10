@@ -1,84 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794317964;
-	b=zqv78Jll3QIUPkDFZfeBdVR3yHQ1yIzvuHtetpOx+iwcS+x2mFNHhE7L0C46LKAuWu74
-	 xiAoPvD6JJZOyD6+OUcrDL94Xx2lUYD7lqMv6cZAu6nFR+Mz8DXxPINsACa8zzmbNMN6F
-	 kvw/LTUKx3WAbmL6LCDMSlaV8iyVbZGHcBc0gqhjdZTe5ZIbNN0sVNdZDclCZFBCPMeiX
-	 uaEnvYKDgfvbi8XV8yBzGuXMlzupesc4Lez6NN2uaYFJbrBr+GaHjgZTM2oejaLWlAckj
-	 Tom5OoyHyRo6atC2+8Owo1K7XQbJrj6y4stKcS5hrcXVlOQS7lZSD1GUBxevvJqV/ZQ==
+	t=1794318656;
+	b=OHwS65+hOx0ScV/JO/5jL0z6xCtQsAKTPBmF3wcJsYj3TFwQ6eZwAHuFV3+eml0onFVo
+	 oweelFYKZ/kxTOAHwy395T8e7CgJqNIngkjlR4AaSs7KWJHwBR+Awpd9GXZLC/nwXmtLZ
+	 bkopPFVUF0hK8fNEt3lTyX9TR2VhqDbpaQT/QfnG51YzI3SvMr50vFH9SI5Nu2NuTZFCc
+	 MUxwJAFDWGsfzMrQwyIBoioTf6AZ7wqgUQwgRAxlMmDRE0hVGhBJFXEZIxvJXpGNBAHdD
+	 aCEx2ip8Ql5D9EZPVi/Yty4nOta3Ab0xc4bAR4rztytiB6G4cIFzczvMVrdM08ANJMQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794317964;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794318656;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 Subject:From:To:Cc:X-Mailer:References:In-Reply-To;
-	bh=wrYdLEXUQczC45027W7j/17QxqnElVdgY/9dzZeBiks=;
-	b=KdoMBgPYsB06C2AQM5Sg58UbLg0WUQwyRTCpwASohQ9B9eY3VeObrYMkGt28Iw60QbpT
-	 ECpLKrgXeL99upUWdfyt0lpn9cBc8Q+sqXSY19xxgXbniLp+p+x7ivXWnQMQ67IBns2Bj
-	 ULLMzFHLAPDlX78EwA0m8Hg25vnPXPQfTSL5+O9rOOlZ3eIW1upjOKdEjcXVTb385DSLz
-	 bMW/pF4fHKnGfgH7/uy907ZC1B1Pk8uIxokimjpw1z8J0HuRxQCkb9bWCgxeTrH2n8wav
-	 KCuG0+bx533bibSsfZssMFGY78k2LY1TfA+g5KgcF+ECmm4Lj22ojBq1iK4OXI7pKNw==
+	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
+	bh=1NYWU2IFMFcOZ4Xu65TWye0KHFmImuRiCo78dAp2MRY=;
+	b=FLSr7F6oJcmg/Qma/716WcGOs5g08doUTdVpTlKlszQ+q471wxS8WhKY+pSTfbwpH+OU
+	 5v9qLC0Ua0tTlTFJS70+5MLTcDhqwLhJLKF7HLn3E1xIqI6W5uJQYy8seHQ0ZONPrpXps
+	 +aNcSKqPJqcWMORex4VAmgUvo7xOPACsXz5iggP1DFzNSfChM94qgsCjJx1ACnovq9ffT
+	 F8KIdXOaLX3V0lX+DAPcv3WMigls6M3UIYWyK0K6/R/kuRNqT8hXMZDg04k781kSFGRAe
+	 3FOhEoKXsQ3qUAHxhQ/+MFXKSkYYU2hWGhq6Ops1/WAm1PfpzRLNKl4NWM9kmrugNhA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="Jbfz6kh/";
-	arc=none smtp.remote-ip=74.125.224.44
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rgZQ2PXP;
+	arc=none smtp.remote-ip=209.85.128.175
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5107606A33A
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 13:39:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E5107606A33A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D773606A338
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 13:50:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7D773606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Jbfz6kh/
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-677af43eed4so2276511d50.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 05:39:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rgZQ2PXP
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-8b0ca1ebc8bso28049907b3.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 05:50:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794317963; x=1794922763; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
+        d=gmail.com; s=20260707; t=1794318655; x=1794923455; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-type:content-transfer-encoding:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=wrYdLEXUQczC45027W7j/17QxqnElVdgY/9dzZeBiks=;
-        b=Jbfz6kh/HpDc+iYvSMq+UD27VNHlFLPHcbic2zVDi+JV7ZfeXFUIEbMhdvsJYMtQD7
-         6tDwNbi5/fxQaTlyxIlz+BsqrNDOaoUW8Nim91YHiIh3tvKr8//JolyFGlzJ5cZHy5ld
-         KSfLQBQTPTmMVV5tCIi0vOS7Eg6cYK23ihpvtZmD36PM0vNB/h9Z4ZZFgL88WS97gMfy
-         8PWPw+IdllFB+D8w1sPQwGBaDYNLUH9EGuw8NN+zAG+wV6bxulLNs1+EZdEGhahjW1BT
-         v3p3HAQ9/xSKxm4FgZTtEUkXmfArxUyS7hUpAEy0HomOQ1Fw37vo8H6R/+ziuteR1QkA
-         wbUg==
+        bh=1NYWU2IFMFcOZ4Xu65TWye0KHFmImuRiCo78dAp2MRY=;
+        b=rgZQ2PXPVrNCfsW0OegwCsJKX6gwPzauztRbfGffPyiPzuH9sgNOFZHbjQ2TPU7xHd
+         HXnhXa/CInh3orIlh1j5T3FgG2yaY7i98dX3Z7aMte6sQntvLmkfWSYp2NqcP0OyOr6R
+         TU9q1AQwcelJn8HWOdT4V7fFrlBU6HOe+3Wxd2xifEaQvyl9uPYjW/6QJ104kynOpVAC
+         MuaW1ze5Xm7AU8GcgMXlK03ajGzPmnmXwZFSm0LBLQ856DiezSuINQxgnr8z8jbwnzHo
+         t36Yv0MGurTmPRlXEZZ1A1ASMmOLgWgTxPCgLHQi8kg2IO5j2qJUw7XFZhm7N4s8aVtb
+         kYHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794317963; x=1794922763;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
+        d=1e100.net; s=20260707; t=1794318655; x=1794923455;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=wrYdLEXUQczC45027W7j/17QxqnElVdgY/9dzZeBiks=;
-        b=GCVXM49ErsGE961SLMKFjy6ZfEogNrPLFTOzyOeQK1N3WcfN6giBISI+jePCuPBRSC
-         v0Zk13Bb64yexYp41RaTDR+vM5O4fzm+u3rFSJRlPLKnMK+N3kbJYfpcaW7xT2uzCTWQ
-         1QXzemoifng9hkTDYPensnHMDwuisJTBIN1aHLU4Ppe3RtvfCi9NSUHQdjZxHKy8gNWu
-         f1TA3sNUECP9z2DZf6gXtT/N3dMaGE3Y3pOIgz1jBUoPrW2hsUZMHVU22fPIID/x4Inr
-         hfKLOq7UDmKvW0tB7sBzy+ksMAmydCbIvvBaS6tTFvpVGJLviMbZ1CH718O/hl2xkRoN
-         e9Wg==
-X-Forwarded-Encrypted: i=1; AL+hErGZUO3zGh1i6R7/awM4iB+n1URUHbHODfqF3hMdtGinZZkaM3sZXZ05Nd95J73keTIW619tUY6GxQ0O2wOYug==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/ifC6hio/doR6+4B4BkdFzIYnXRH/ZV1QlR6MW83/TDtlO6OlE
-	FAMHNvANA3FWKgcrbaHN4QB816MckBi+HI5PKRbvcuGhfc24OKuEvnU=
-X-Gm-Gg: AYBFou0OOOH9ezTykWloDqMaPd8Gzqr88dGH38sG5EQDudrM2rEMqTXvEUINB9Bqjgz
-	sbAl/p53m6KAdnOYVlhWu12OUu6D/wr9OjA+YASEkCqDA8qhiFCc9WdvQUJtFi+lWIVLkw+whvt
-	UHyxBqgyf4r9vysWeXLxmhl6JYx9gL5ZvNqE29XTSQEmQq8RS/zC2DQlERdH6scH+JnfKlI0H2/
-	7I6V3pW3RRYohOmI33rJo2BY8krTIAxNnGiGaM7Lh8KsEIuwHmk7TLNCt3YAAuQFnOuFtYGG0+E
-	L1OI6IDBfKtYycVk9KwOkBtvqUFl/nw5+jtZ/rXHAEchxMefmU+1uMweDuvLI8DWj94SQLdcCeA
-	KIUMX2F2ZwSkA3yhjSCPtMG50bEYbzS6eL/leABExQkKG/xVvww1yKh2sstKOWhZueBeLpXRvRt
-	xlp7LeIyRDzSPQdxp+RpslnzeyI0KktMg9U/cikEXqLXPv7lrlpXIffKMbLBYejhP++HJ+MHqFE
-	8pJOuIBTKY1whA7eFoKqwdHnlyWoHDvFOnFTN9xPbqxGEJUfY3Zz1h4v6COYBg+fAKlroZw3Hbp
-	JK1hPAdMU6SuIRES3NH8fkEwUE6LQxGL3M8oZkbNVrM89mmcVk9fNSR1FHmLc/BB
-X-Received: by 2002:a05:690e:4810:b0:67b:f249:5820 with SMTP id 956f58d0204a3-67c5676f8d1mr1411133d50.41.1794317962789;
-        Tue, 10 Nov 2026 05:39:22 -0800 (PST)
+        bh=1NYWU2IFMFcOZ4Xu65TWye0KHFmImuRiCo78dAp2MRY=;
+        b=npqJZerwPCjgR15lIcGl0CiDeh9C4p1Dwt6wfbR53SyPG0aVhodxlflD392NFRMyGd
+         opoF9XQO9ZwFUTC+gvMK8du8ddgr2yuKbGhxrqj9ut0daPTa7RgXHu7eOmrGosEXjl/8
+         yaWYoJ3LUlt6h15XAGDg6q15LxN9WFE3amsyB6vUhHLWz/ndX5fSjr3wQ0hCt9gbYlKZ
+         kj8RJd3/Ksr1PCwYLnDjUfvhkiRVO+WvvE2C5DXVoBL+y8h9UXRw8s/rnh6GhAvTJAFs
+         TaLsef6dcY2wnSUy254d9aSZaWxxKSStOn2f6vDfQ61UY/qpeOMCpsGNw8HuV3lTJtTA
+         iPxA==
+X-Forwarded-Encrypted: i=1; AL+hErE33or+XAZlmImXqFBkrshdneRKx9FpVTHMU81xJugG+WuFJZaz2r9qL1mhhFbj5KB+MrOE/8uAnB875h2wFA==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/Tvt2yCGYXFlTAz9cpdtTxi1ApZwo1DBg33TbxOEs9tloYBUUP
+	Yj5MVpimMWqqtOZva+rx344TKdgjEGZGRQQ63HH7/vqAOyaD10y1IX8=
+X-Gm-Gg: AYBFou0CQgM25BFurs4D51vzVm6Ai5VAJKzHxtC4AositXkjLOKg/1XhA5JecVX1MA9
+	65h3E6VRvtZ1t+/pUimgkCXKYRurlaM5cYVcTXzAt4mvqiAabwtowviPndZqHoUN9mfJaRm+IJp
+	X7cFnDRQYV5QqTAyXyhauvPA9qJwBJbQ3fRuOVHLA+CL8OFWTvX9FciEL8DViEoPKmA4/qOStL2
+	B5IGNw3BemXhoXWE06S5+z6pYL2v3+M/w1thkn8omkfJSpWrzD/qxbJRv1QF6etRk5Pj0ByIgzh
+	HiSWGX9x0hXOtlqjXueiDieqdF60Efx6hqxQs74g03xDdJQaqpgsPvtiW6T+7CuALwD2gJmdT7y
+	X/i8oxTQHI4RztCGZq3tSsoKnoHZTmj+EDGhPrzbMYstszItT9j2CTWaRdLR2oosVPYoX6e+bU9
+	Dngm1bxAq+9X8wetsSYBMHIv2/kiyK9XSctyzJhq1PUCsZxZM4fcOezpcY6hqolXaAoOiG5QMn9
+	tVsKd3RyLKgSYQsxI37FWVTo4XExu3RkBTwz9Y4C0Hdi30ERld3VGI4lSitK5VNAH2txwunanUP
+	iBzA8seObeMT4BRFTlJUNkJf4g7cRc3SWrmq5nw5wlNh+xQH14wUloA1zaSSzzA/
+X-Received: by 2002:a05:690e:1306:b0:67c:332f:3fd8 with SMTP id 956f58d0204a3-67c565f716cmr1597436d50.5.1794318655428;
+        Tue, 10 Nov 2026 05:50:55 -0800 (PST)
 Received: from localhost ([186.158.238.108])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b3934643aasm18888917b3.43.2026.11.10.05.39.17
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b39324bf84sm19649867b3.3.2026.11.10.05.50.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Nov 2026 05:39:21 -0800 (PST)
+        Tue, 10 Nov 2026 05:50:54 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -90,122 +90,65 @@ Precedence: list
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Nov 2026 10:39:14 -0300
-Message-Id: <DMRKMOLNNODA.3M7QNVIBGVI5R@gmail.com>
-Subject: Re: [PATCH v2 1/3] rust: kunit: add #[should_panic] support
-From: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
-To: "David Gow" <david@davidgow.net>, "Alice Ryhl" <aliceryhl@google.com>,
- "Benno Lossin" <lossin@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- "Brendan Higgins" <brendan.higgins@linux.dev>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Danilo Krummrich" <dakr@kernel.org>, "Gary
- Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Andreas Hindborg"
- <a.hindborg@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+Date: Tue, 10 Nov 2026 10:50:49 -0300
+Message-Id: <DMRKVJYRSG2B.2LT5AVK5FQ52G@gmail.com>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Benno Lossin" <lossin@kernel.org>,
+ "Boqun Feng" <boqun@kernel.org>, "Brendan Higgins"
+ <brendan.higgins@linux.dev>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Danilo Krummrich" <dakr@kernel.org>,
+ "David Gow" <david@davidgow.net>, "Gary Guo" <gary@garyguo.net>, "Miguel
+ Ojeda" <ojeda@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "Alexandre Courbot" <acourbot@nvidia.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, "Burak Emir" <burak.emir@gmail.com>, "Rae Moar"
  <raemoar63@gmail.com>, "Tamir Duberstein" <tamird@kernel.org>, "Trevor
  Gross" <tmgross@umich.edu>, "Yury Norov" <yury.norov@gmail.com>,
  <kunit-dev@googlegroups.com>, <linux-kernel@vger.kernel.org>,
  <linux-kselftest@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2 3/3] rust: bitmap: kunit: uncomment
+ owned_bitmap_out_of_bounds panic case
+From: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
 X-Mailer: aerc 0.20.0
 References: <20261029-rust_kunit_v6_send-v2-0-5ce551efc48e@gmail.com>
- <20261029-rust_kunit_v6_send-v2-1-5ce551efc48e@gmail.com>
- <6d7a63ae-f08f-4973-b2d5-27be454380ef@davidgow.net>
- <DMMMDQO787UH.353XT44UDG8YS@gmail.com>
- <e7301e33-4813-4382-84e6-5c82a70b1ad7@davidgow.net>
-In-Reply-To: <e7301e33-4813-4382-84e6-5c82a70b1ad7@davidgow.net>
+ <20261029-rust_kunit_v6_send-v2-3-5ce551efc48e@gmail.com>
+ <CANiq72ma7GrbeMjktpWzNwWYj5y+AsQk8NROKY6TMdk3fwXEgA@mail.gmail.com>
+In-Reply-To: <CANiq72ma7GrbeMjktpWzNwWYj5y+AsQk8NROKY6TMdk3fwXEgA@mail.gmail.com>
 
-On Fri Nov 6, 2026 at 2:31 AM -03, David Gow wrote:
-> Le 05/11/2026 =C3=A0 1:58 AM, Nicol=C3=A1s Antinori a =C3=A9crit=C2=A0:
->> On Tue Nov 3, 2026 at 11:46 AM -03, David Gow wrote:
->> No problem at all!=20
->>=20
->> I'll be sending the v3 with the panic handler then. I decided go this
->> way because I thought it would be useful to catch C panics, but those
->> would be rather rare cases.
->>=20
->> The only thing I am not yet sure regarding the panic handler
->> implementation is how to read the `rust_should_panic` attribute from
->> `kunit_case` struct. If I am not mistaken, there's no way to retrieve
->> the test case linked to the running KUnit test from Rust. Would it be ok
->> to add a public `kunit_get_current_test_case()`? I am not sure if that
->> struct is meant to be used outside the runner.
+On Sun Nov 8, 2026 at 4:59 PM -03, Miguel Ojeda wrote:
+> On Thu, Oct 29, 2026 at 5:59=E2=80=AFPM Nicol=C3=A1s Antinori via B4 Rela=
+y
+> <devnull+nico.antinori.7.gmail.com@kernel.org> wrote:
+>>
+>> -    #[test]
+>>      #[cfg(not(CONFIG_RUST_BITMAP_HARDENED))]
+>> +    #[test]
 >
-> Yeah, this is a pain. In theory, struct kunit_case / struct kunit_suite
-> are internal to the executor, but we end up having to pass them around a
-> lot, and a way of getting the current test's attributes is, at a
-> minimum, something we should support.
->
-> I'd rather not expose the struct kunit_case to test authors (though
-> exposing it to the Rust macros is fine by me: they're sufficiently
-> KUnit-internal that it's fine). The ultimate best 'public' API would
-> probably be to have a bunch of 'kunit_get_attribute_value()' style
-> things, but that's definitely a more involved thing.
->
-> How about we compromise on a way to get the attributres for the current
-> test. The simplest implementation for that is probably just including a
-> pointer to struct kunit_attributes in struct kunit.
->
-> (Though the better long-term solution would be to pass a struct
-> kunit_case pointer in struct kunit, and generally rework things to not
-> pass struct kunit_case/kunit_suite around as regularly. There are a lot
-> of gotcha's there, though, so it's not worth holding this up on that.)
+> Is this one done to match the other? If so, please mention it in the
+> commit message, and consider whether the last test in the file should
+> also be changed then.
 
-I'll add a kunit_attributes pointer to kunit then! I can rework this
-later to add the public kunit_get_attributre_value functions.
+Yes! it was to match the other one. Since there are more tests the other
+way (#[test] on top) I can change the one I am uncommenting! (kunit.rs
+have also the #[test] attributes on top where a #[cfg(..)] is present).
 
->>>>   #[macro_export]
->>>>   macro_rules! kunit_assert {
->>>> -    ($name:literal, $condition:expr $(,)?) =3D> {
->>>> +    ($name:literal, $test_should_panic:expr, $condition:expr $(,)?) =
-=3D> {
->>>>           'out: {
->>>>               // Do nothing if the condition is `true`.
->>>>               if $condition {
->>>> @@ -93,6 +93,14 @@ macro_rules! kunit_assert {
->>>>                   ));
->>>>                   break 'out;
->>>>               }
->>>> +            // If condition fails but the test should panic, then we =
-just abort.
->>>> +            else if $test_should_panic {
->>>> +                // SAFETY: FFI call. The `kunit_test` pointer is vali=
-d because we got it from
->>>> +                // `kunit_get_current_test()` and it was not null.
->>>> +                unsafe {
->>>> +                    $crate::bindings::__kunit_abort(kunit_test);
->>>> +                }
->>>> +            }
->>>
->>> I'd rather us keep asserts working as normal: a failed KUnit assertion=
-=20
->>> shouldn't be considered a panic. If normal Rust assertions (particularl=
-y=20
->>> those outside the test-specific code) compile down to a panic, though,=
-=20
->>> that's okay.
->>=20
->> I'll revert this. I made the change because in user space those tests
->> pass [1] [*].
 >
-> Having thought about this a bit more, I think there's a compromise:
-> could we make the override of assert!() and assert_eq!() only appear on
-> non-should_panic tests. In that case, the assert!() and assert_eq!()
-> will behave the same as userspace tests (indeed, they'll use the same
-> code), and we won't need a complicated implementation. And later if we
-> want the (IMO, more logical) KUnit-style assertions which aren't
-> negated, we could suggest people use kernel::kunit_assert!() directly
-> (or with a small wrapper), so it's obvious the behaviour is different
-> from upstream assert!().
+> (We could do it in a separate, previous commit, but that is nit :)
 >
-> Thoughts?
+>>          let mut b =3D BitmapVec::new(128, GFP_KERNEL)?;
+>> -
+>>          b.set_bit(2048);
+>
+> Spurious change?
 
-I think it is a good solution! Making explicit that there is a different
-behavior using a different kind of assert, will make the tests easier to
-understand (since we are mimicking the userspace API, a Rust dev will
-expect a #[should_panic] test to pass if a common assert! fails).
+It was on purpose, I thought it looked tidier separating it (but it is
+just personal taste :P, gonna revert this in the v3)
 
-I'll be sending a v3 this week!
+>
+>> +    #[should_panic]
+>
+> It is great to have this, thanks! :)
+>
+> Cheers,
+> Miguel
 
-Regards,
-Nicol=C3=A1s=20
