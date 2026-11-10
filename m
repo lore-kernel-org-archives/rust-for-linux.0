@@ -1,49 +1,50 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794321937;
-	b=l2VLMtXm3kN5UgrANbyIZ/12hsPoWRhKMwaHMTD9vpLmHsEhDYosuWLC12mR9Tm1hoSP
-	 4j/4DcLI0U149rxZXMcrHtiaXZZHqWw5HXdSBadOTa4XLc+Z7gjp+O8g6yo095dq7LbDE
-	 vhFbkUyMRoGP2knZOqgL+9E80GGr4oRqjxKkdquylYFZJMXaMR45r6xgula9UbRamvqjP
-	 wtcg/vDbtesWF2IIocEyFxCIcv0MHKfpwMkaLWB2N5hdg4W2rylwrGfUuqhlOFAm5Xgjj
-	 WHIhYZ4Xem099vshESqB3mlHyt+DzBtJSgd628ue+y3Dzo7We6ap35e+QuBwAn/pd7g==
+	t=1794321948;
+	b=ahWrs3hNiT0LFpwFKlHMMsm1SuEB8z9zEFAf845tGYZJfajsZVaFyLZiChj5KQ3gOvwg
+	 T6kEyp3LD2fTca75fyw1YSZ+h2LOnFiRbonV3vx4sHzJq3MEpxUz+GYmf/fij53N1gFXi
+	 +JXumg8ECTVeDucgYjrieU53VHc9C3cREw7a1NqGiwAXOGnh/LfOGglQp/AYxrkoCibVu
+	 HsGX4tgvwh1oX9AWDRB4LUVJy4MWlV4b65p5cv6Npt8jl8ZiyuRK2Q+iqt0IUI6KJcZmZ
+	 U8TD2X8iOaeCJ2zjUHOJgRZCc3kLM0mi/VeK0ULHhEAEBQttWrckl03QdxzFGFYHGIQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794321937;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=XPqP3AioUFfQKztBBWV3IZAPOrIVFlq4HM+xiknXRb4=;
-	b=SlL0ktTwH8DebTxFPY/pyjZhQDCFWubvC85E9/g9GjiX5FKSuV0X6kollDOLUpeMkGb4
-	 HZ2j2kKJeQ3LGbMdbt66uLkuxpc2dOVBZAX26yRRAr4iq3jiDXNofDbXTe/MYSGEVRDGT
-	 SIG8MRZGV+Jm3uItbIEzZVi3xTUjK3gw0w4FQLPL9sbnGiLn7BvfB5uEqSltpjpvKnNJ0
-	 054ZeX0zwkuy+Of/DWruNfGkJjkjbQntVvkE90aHup5MyuTKcOtcbciaa7xl+qYlC1cdD
-	 nioD4ljpK2h3hqAIaErkLK5NtZ/Dndi7RDOdxkBtNOWd2KhTJEr7PKOwXf7GAPn95Ww==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794321948;
+	h=Received:DKIM-Signature:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=R9lBEoIWVZ1hq7v8fJDQt0mB70S3ebuyMNcxrw2vw24=;
+	b=zbxIDKcbqtolISbXuZxCJoK4QksXzz6hI3tvv/WhtPxMOdK9ONyNijpUkVR4jThjaPwT
+	 lkOPfTs9cjznMIJ9H9gYPVKKAnjdtlphFeCslHkoFlEWVFWwDj3FUR6GfcwrbN+dg9blm
+	 0T0jTBmcUnFszt5E0CCExBeuM/cApL4DyM4eAodUg0SBc06okqxEIjjtygPup0djFmiNr
+	 5Suq45pFimavTW8M95Hp5NwkTVQ0Q9UvZc4CItOO+vHNxLuna46vukvCxXwO8NXyzVCs4
+	 3OTu7KWb1xuSuUUIXV8NZ/ARC3ZUyUkgAW2i16d92tV9Fsn2nMnzqjhuIzims2G2YsQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d92FgsfQ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="CrmBV/WD";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4DF606A336;
-	Tue, 10 Nov 2026 14:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CF060A3819;
+	Tue, 10 Nov 2026 14:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d92FgsfQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21EE71F008A1;
-	Tue, 10 Nov 2026 14:45:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CrmBV/WD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF241F008AB;
+	Tue, 10 Nov 2026 14:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794321937;
-	bh=XPqP3AioUFfQKztBBWV3IZAPOrIVFlq4HM+xiknXRb4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=d92FgsfQ06bGMIRNBBVMq++CZTOjMikIQlWl9oCUQKAZURpASTlq4Z6F+6Y55qQ53
-	 TFDjAVtcmEcwCR/quqLIvgyzzlaVUNLseK8Cuzx0IP4uN9arM4rhYWQHBrwE70a0Xh
-	 PJjE5M8TV/rEkU7o7JYVWRdWtzZkE6LNIbK9nAWFIdtt1/vR9XXihTbYFPItJGfzpl
-	 C5vEYkGY6P5YWPbDhdB1yfbP4pHpOCIBWaQYrpiGlVDZaO5u1z8suH5gBcSdQzzAVk
-	 6JhMMUhk5VarccDQ03OTalYm0gVddNWNfb204yQ3TwdLIjdKz7zk64+slhRAUeQQ1O
-	 4mu+jhTQVo3Bg==
+	s=k20260515; t=1794321947;
+	bh=R9lBEoIWVZ1hq7v8fJDQt0mB70S3ebuyMNcxrw2vw24=;
+	h=From:Subject:Date:To:Cc;
+	b=CrmBV/WDDK8s7UxUEco04Menz3UIYnabxTXaDbMSrbR0SKNsyJ0WadwsoNIU3JuVN
+	 HpJ3q1W262L4Qs/2+dmakPhpJ0JLP5TWa2+EXLwNfzVBQFRZFKO8Q8LRFe/wdXdQ6s
+	 U2GVUzu3GxqpHqTE+jDXBOej/b6lNgvFfGHXJEoUf5dcCTrcewP948gfK8gmL68xB2
+	 2BleWlGDj0aI3tCGkS2cn06GHkojl7fgrokDvCiXbZNgGS0/46b4adQ9n58EzFwS1+
+	 lHtvt+a65Pvmf269FpQdTNQZPPYHHiGribnwyrvFywjptDZ1yyWmxYSQqvpCTfzVda
+	 QPgT6CBFIbTmw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 10 Nov 2026 15:44:21 +0100
-Subject: [PATCH v5 3/4] rust: io: copy `SysMem` with
- `atomic_per_byte_memcpy`
+Subject: [PATCH v5 0/4] rust: byte-wise atomic copies between `Page` and
+ shared memory
+Date: Tue, 10 Nov 2026 15:44:18 +0100
+Message-Id: <20261110-page-volatile-io-v5-0-a91ef252c24b@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -55,9 +56,12 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-page-volatile-io-v5-3-a91ef252c24b@kernel.org>
-References: <20261110-page-volatile-io-v5-0-a91ef252c24b@kernel.org>
-In-Reply-To: <20261110-page-volatile-io-v5-0-a91ef252c24b@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAMIt82oC/33Nz27CMAwG8FdBOS+T4/wp5bT3mDikjQPRqgalK
+ AJVfXdcLmyimnz6Pss/z2KikmgSh90sCtU0pTxysB870Z/9eCKZAmeBgA6UBnnx3NU8+GsaeJk
+ l2Bhtay00QQs+uxSK6fYkv4+cz2m65nJ/fqhqbf/BqpI8bdRB0z6is18/VEYaPnM5iVWr+BJQ4
+ YaALHjt+q5tgrI9vgn6t6A3BM1CcGD2TQcmGHgTzEtwYDcEI0ECoWpC20Wl/B9hWZYHqP1u1Xc
+ BAAA=
+X-Change-ID: 20260130-page-volatile-io-05ff595507d3
 To: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
  "Liam R. Howlett" <liam@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
  Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -74,90 +78,94 @@ Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3338; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=ZejpXXvNrU6pIH9Vpp03LpzkAZScISJJ50Lu4nFvg7c=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq8y38NrwaBIi3FYNgiPYhzvrryZVoOEERHn96/
- NBPqcWfqEuJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCavMt/AAKCRD6UCkIqsW9
- 0EneD/4w6Y1oEGE5aD6xSAKHWCYv47PTVWmiGhedDPkieHTXGQBpadKBP2IHkYy6JdDJK6HibVl
- N9K8HYtNYMGe/vVcmrpiQPgO0H9cEIyPB58Fy07U34N5AiumBgwzQoNx976zBlAsoxniod7pB1I
- 8GZ5YkoS/0cdYxrIM64zZ1Lx6/us5BN6t0c1HmNgj7DRtW4MC5zS+ZdIX5/2vLi+QWDpRvoaSrj
- w/7V6QbpRflEQQBTAvhsvZY1zabrOTXYAsfoYw0GOBidAtcJti2KJDY72f04aDGBNzFar5pcy3C
- 29Cmh9dQ/x2IqVTFp7rPHJfM0AhEJrEIe8qR+YM1+RRA3RuFlJL/gBF7PRSLceMwy2Gwg1FZLkd
- olyWcGytdvG0zs/dxRLuS0fxGVkL1vvPUcVRbbm4VHwt44322BQvTTWGuk+uHKXoTTPHV4dCLDt
- vX8LwtlO7uCcWL76rbopVIAO0gnFQ5Lw61QFuIpqZEhq4xf65xDN77YfFYS7a6JwrFKrdWB25df
- c+8mE57hyPOspEYjZ4JN+jYJeyBIo4rshIaTdUtcut8xTzJBZ6kPwlpBHu1NXpmG7O64J9Jsa60
- sgBRnazS/th+CpJS3ENdS07gLYRiuFW7xmMEOVSd8ErSVbUFKn/DUfxcj80bTumOxwGYQ4VeBsF
- uWzR1608VBa1DEQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3532; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=YOVunpKh8rriMHxdsM4btTJnoAAZxpp6z69TlPOEWpw=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq8y3JUG0x1nePgD55NR6MXTFhwklev6GpT7O63
+ jSLg5bIyAaJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCavMtyQAKCRD6UCkIqsW9
+ 0AOyD/45gUocLa+Lkb1gFgkWEP2yD2p6y0Pz+rdDUBXXjQDs+HePIJeJMsF3xvvVj8DQI20ZkBl
+ GFVSfsQsMDw3yWtNCs13S4MIu4crVcNdryWmNUW8q7X7DB81wNJDWQVj+nFKjBy5u86/gXgW5jl
+ 2ZPm1JxnoRpdI7AIOIAZ0bc/qBlSxFSfHd+rGDNhkrjY8/gMDih/qIxs+W8VnU3On9h96RebNjm
+ nG2u8Nrq/r2YYbm5U5kDlXN9kEDZKp3LzEFPkjUlFy/WH2MB+DO8lbc1OZCVLuPt2IuwO75BpP8
+ 8L2oH+shax6LvpS7ctTBELUHEFLvstzkG3G+c9dcHeLVwtOS+txAoueU819rpDYI0j0B9UdHROs
+ WbC5w/HCC1J9p2eqaWMik2SwMiIZOLNkmoMfesOUzPT1RBsTMOJsTK2TjbDrYxu6KUNvccg7RZw
+ m4x8laMxeVy7jrizDnWomsRPsj2Ojiut4DHpkeplcwq3W7Cwtjpf2muyeCIs08DZICw/r8yMnWi
+ uS3lIpVwI79gBJs2bhBNAAhl7FsLvjD1om3Vlqip5+9rtpimPVUpnFtgASnJhfHzjoy1Q14RiFL
+ 9EGC0NWji7qL6WddMIch3gExiqXyMRRyqeSXjY/elz8vZxWazOzi/5oxBecgp6I2avTAsko2hXA
+ L42uTiv9se6aarA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-The `IoCopyable` implementation for `SysMemBackend` calls
-`bindings::memcpy()` directly. The comments say that this is done "for
-volatile", but the requirements of the call are not stated anywhere. The
-reason the call is sound is that the kernel's `memcpy()` is byte-wise
-atomic, and that neither side of the copy is subject to plain accesses.
+This series adds a way to copy data between a `Page` and memory that is
+shared with actors outside the kernel, such as user space threads or
+hardware, without introducing a data race.
 
-Call `atomic_per_byte_memcpy()` instead, so that the requirements are
-spelled out at the call site and checked against the invariants of `SysMem`
-and the safety requirements of `IoCopyable`.
+The copy is built on `SysMem` from `kernel::io`, which already accesses
+system memory with volatile or byte-wise atomic operations. The series
+first makes the requirements of `SysMem` explicit by requiring freedom
+from plain accesses for the lifetime of a view. It then adds
+`atomic_per_byte_memcpy()`, a wrapper around the kernel's `memcpy()`
+with explicit safety requirements, and routes the `SysMem` copies
+through it. Finally, it adds `Page::{read,write}_bytewise_atomic`, which
+take a `SysMem<'_, [u8]>` view of the shared buffer.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/io.rs | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+Changes in v5:
+- Rebase on v7.4-rc2.
+- Build on `SysMem` from `kernel::io` instead of adding raw pointer
+  based helpers to `Page` (Gary).
+- Add a patch that requires freedom from plain accesses for `SysMem`
+  views (Gary).
+- Route the `SysMemBackend` copies through `atomic_per_byte_memcpy()`,
+  so that the requirements of the `memcpy()` call are explicit.
+- Let `Page::{read,write}_bytewise_atomic` take a `SysMem<'_, [u8]>`
+  instead of a raw pointer and a length.
+- Drop the claim that `atomic_per_byte_memcpy()` is volatile.
+- Add a non-overlap requirement to `atomic_per_byte_memcpy()`.
+- Add examples to `Page::{read,write}_bytewise_atomic` (Alice).
+- Link to v4: https://msgid.link/20260605-page-volatile-io-v4-0-0e217d9bf11a@kernel.org
 
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index 3bc4be35e355..b51cfc04e3ca 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -21,7 +21,8 @@
-     ptr::{
-         Alignment,
-         KnownSize, //
--    }, //
-+    },
-+    sync::atomic::atomic_per_byte_memcpy, //
- };
- 
- #[cfg(CONFIG_HAS_IOMEM)]
-@@ -1500,20 +1501,27 @@ fn io_write(view: SysMem<'_, $ty>, value: $ty) {
- impl IoCopyable for SysMemBackend {
-     #[inline]
-     unsafe fn copy_from_io(view: Self::View<'_, [u8]>, buffer: *mut u8) {
--        // Use `bindings::memcpy` instead of `copy_nonoverlapping` for volatile.
-         // SAFETY:
--        // - `view.ptr` is in CPU address space and valid for read.
--        // - `buffer` is valid for write for `view.size()` bytes which is equal to `view.ptr.len()`.
--        unsafe { bindings::memcpy(buffer.cast(), view.ptr.cast(), view.ptr.len()) };
-+        // - Per type invariant, `view.ptr` is a valid kernel accessible memory region of
-+        //   `view.ptr.len()` bytes that is free of plain accesses, so it is valid for atomic reads.
-+        // - Per the safety requirements of this function, `buffer` is valid for volatile writes for
-+        //   `view.size()` bytes, which is equal to `view.ptr.len()`, so it is valid for atomic
-+        //   writes.
-+        // - Per the safety requirements of this function, `buffer` does not overlap with `view`.
-+        unsafe { atomic_per_byte_memcpy(view.ptr.cast(), buffer, view.ptr.len()) };
-     }
- 
-     #[inline]
-     unsafe fn copy_to_io(view: Self::View<'_, [u8]>, buffer: *const u8) {
--        // Use `bindings::memcpy` instead of `copy_nonoverlapping` for volatile.
-         // SAFETY:
--        // - `view.ptr` is in CPU address space and valid for write.
--        // - `buffer` is valid for read for `view.size()` bytes which is equal to `view.ptr.len()`.
--        unsafe { bindings::memcpy(view.ptr.cast(), buffer.cast(), view.ptr.len()) };
-+        // - Per the safety requirements of this function, `buffer` is valid for volatile reads for
-+        //   `view.size()` bytes, which is equal to `view.ptr.len()`, so it is valid for atomic
-+        //   reads.
-+        // - Per type invariant, `view.ptr` is a valid kernel accessible memory region of
-+        //   `view.ptr.len()` bytes that is free of plain accesses, so it is valid for atomic
-+        //   writes.
-+        // - Per the safety requirements of this function, `buffer` does not overlap with `view`.
-+        unsafe { atomic_per_byte_memcpy(buffer, view.ptr.cast(), view.ptr.len()) };
-     }
- 
-     #[inline]
+Changes in v4:
+- Split `atomic_per_byte_memcpy` out into its own patch (Boqun).
+- Expand `atomic_per_byte_memcpy` documentation to explain the
+  concurrent-safe semantics and to note that the kernel's `memcpy()`
+  uses byte-wise atomic load/store instructions (Boqun).
+- Clarify the src/dst asymmetry in the documentation of
+  `Page::{read,write}_bytewise_atomic` (Boqun).
+- Use the "valid for atomic {reads,writes}" shorthand in the safety
+  lists of the new methods and of `atomic_per_byte_memcpy` (Benno).
+- Drop the redundant data-race bullets that v3 added on
+  `Page::{read,write}_raw` (Miguel).
+- Link to v3: https://msgid.link/20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org
 
--- 
-2.54.0
+Changes in v3:
+- Update documentation adn safety requirements for `Page::{read,write}_bytewise_atomic`.
+- Update safety comments in `Page::{read,write}_bytewise_atomic`.
+- Call the correct copy function in `Page::{read,write}_bytewise_atomic`.
+- Link to v2: https://msgid.link/20260212-page-volatile-io-v2-1-a36cb97d15c2@kernel.org
+
+Changes in v2:
+- Rewrite patch with byte-wise atomic operations as foundation of operation.
+- Update subject and commit message.
+- Link to v1: https://lore.kernel.org/r/20260130-page-volatile-io-v1-1-19f3d3e8f265@kernel.org
+
+---
+Andreas Hindborg (4):
+      rust: io: require freedom from plain accesses for `SysMem`
+      rust: sync: atomic: add atomic_per_byte_memcpy
+      rust: io: copy `SysMem` with `atomic_per_byte_memcpy`
+      rust: page: add byte-wise atomic copy methods for `SysMem`
+
+ rust/kernel/io.rs          |  72 +++++++++++++++++----------
+ rust/kernel/page.rs        | 121 +++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/sync/atomic.rs |  35 +++++++++++++
+ 3 files changed, 203 insertions(+), 25 deletions(-)
+---
+base-commit: 7475ea8b58616b33c04afb976cf0fbaad9dd63fb
+change-id: 20260130-page-volatile-io-05ff595507d3
+
+Best regards,
+--  
+Andreas Hindborg <a.hindborg@kernel.org>
 
 
