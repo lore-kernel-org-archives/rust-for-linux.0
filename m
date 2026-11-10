@@ -1,116 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.49
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794284539;
-	b=L1xbn/RPXWUyOk782Bl2KSSet0dZv01NLJ7u0thgdNCfiZ/2AVlQXrBvJL09OoVrDA/V
-	 Zmebw0HT3FiTkwF18s32HPM/iJ4b9xXvashhQXf3kv4gJcSuivwP6X2GQVS8JArHDjHDL
-	 obLV4Wk7uRCBssfoMVmU0KfDKgnS3CwiM6JQMtYfN5qLr6zxGIWn9VBnXIAvqMVBYNlzU
-	 FkEPdPQWerpefWJllrO0eewzYs9YLCBLXhNTKOIlIeD0cqhtSQxvljWaxf/NZG9l9YbH+
-	 S+udX+Xx6O+XeGiPCgihI8vtUgzrH7HCr+PKgUdm1144G3OeuB+k8ZhQf9JHLTUOhwQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794284539;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=uPNBoQQW3WB02TBAF3BzFuV2QfVhO4wd2JVa30h/5s0=;
-	b=YEhSY9LTD89f/XyiDWOD/BLzoGInAbPUbtvAftf9vOH2g1+Eifsj3TVufJ1SweiH7Fcm
-	 G3ZSLJKKfpqiZHtQF5TV82KONJUZ9ENS7BUErulmNd3f7zMBtxhdS921XBDadoC8uLHQL
-	 jGUB0PcdTcDa6nrOVtAuMcoZna8CuICUpA6Jfrrq+UnzzcG77BLTTxt31YvokOBJfGXUn
-	 EhpPhCmEb32cX2a5YCeo3JJbSSqugR1Ei3T69hTINd5dIvz//wthZ7Mdo36O1aSq8q/gX
-	 5e5/E1lYQBJGYk8q69FfSjUC7uRyrSGW2TfAQ95kdbAW0WfEekLLX1raiZJCDy3ESQw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Y6GcAIoM;
-	arc=none smtp.remote-ip=74.125.82.49
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.24
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794295815;
+	b=4tvdOeVgJwFs69P9RvBo1Bz6BSX0P13eZDQw6o15vTF2Ezxq/U7mB3dWkRxkG98q5wpA
+	 XS+vmMiAyGUb3vSre4h+Ic/c/T1Ro7uTlHkF+qDWPiUW/tL5rP7DQSNpytfm9p/TlA1r8
+	 PEHAjkGT8w6Ljojbfttrd5iuZT/wrph7UPSHc4snGwVJiYF6CoInCkuDoheRT8lENHeU8
+	 7Ki98ej5J9dXQZzKNpL/kIvB2Eu3CegYtmJz33nMu5wxIjc4266RXS/dvYXLby5RvICiT
+	 U5ce56NL7uUU/Jw1P30bdKRk8daMiLOJKmb74RO++/1Ij/9UltJr9xWSYixlV3ue3FA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794295815;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
+	 From:To:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=kZSyd0QwL/KB3cgMXlWoMMKqvCWxbgRt0H+S8C5CUro=;
+	b=cBrMs+E6/2Q9nL5pcUgiKp7RvI1xqmblXs7OzhdBvhiYpBZc534ZrAn8EHI5+Ss5+MHk
+	 jTFzlE8FoIGNu8ygvVdRmSCdT7T4Ox+CIt5TtaMnNLHI4tGricrSx5e0+N/mA/RJRpipu
+	 1BnRMHTNO4I/xtsIz6AtJQP7pTbi2By/xGU6RKKBELFnuLnWN39UnvRiR6kEIx0cQbsCm
+	 pr0cGpmiiEEHlnGsOslJI+5dqNdvTh/C0hDhYhJfBJUxc/2xlOm9hzxP6xhSYJardExdp
+	 iB43By1AeLa93lgos90WxzOd6BWrM+97mnZGWbSfOugpCdIRkDvSUx+FKB6htrMIPZg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=LY6Je66P;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.24
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012024.outbound.protection.outlook.com [52.101.43.24])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B31606A731
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 04:22:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48B31606A731
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF15606A321;
+	Tue, 10 Nov 2026 07:30:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7DF15606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Y6GcAIoM
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-1a3c08d6928so2883157c88.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Nov 2026 20:22:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794284537; x=1794889337; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uPNBoQQW3WB02TBAF3BzFuV2QfVhO4wd2JVa30h/5s0=;
-        b=Y6GcAIoMky3oeSIHUgB2Mjm010BlPmVQ7t0ba1wxD4W/1igjfnN3/JlTXkToWSFml0
-         ptSyuFK2E1l5miKEorIz2pgNYUJoq0fEtnt26LVxvTM8Qe+BfKtQjzV7Z0iNTw6E8yG2
-         CVqoAmzAf2FUiL5HMEQhKo0lFFTtr560hbQblk0AOZVH25CD7COwhtYObutS+4k1azhG
-         lAMOIRxuiXoo6udBIn9pguQULxNKBlZV0nMNhCCELShYjJlth6FX6nBJh+XmjMs5nLU3
-         pmZNpyheJdNuFvjLptOu+HQde5wVjpqTRn6suCUh0DV6+yLUK8R12xAtehl45jFtw/jK
-         4UHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794284537; x=1794889337;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uPNBoQQW3WB02TBAF3BzFuV2QfVhO4wd2JVa30h/5s0=;
-        b=GR0ASwizkqIn8F102DNbEMi1D3p9Bv0eqFQWV6pd+DSfz9DqK7G/ln34wXw/oflrm2
-         jg4IGyTwoZopjJZeaLDz0P8NI/3kflV0lTIVnCywgz/h/GRxCRIFficBlN8N0pPIchHU
-         Rj0My8uxEQwomX61h628n9P881I4EtWaSgpDQH6EEBDdqL+hfaqt1WOAIZeA5L+/pFc7
-         L5hHYkTcoMe5PGxG6eJe9om2HUDozoqPHVh3z/5wCN1opglV58M8TqUllF0XuufnV/NR
-         AgX1xpqcXDO7cetRmfcUc0Yuig4zcudExCZdOvZ8e8NtoVuNlvtrR8IRSu5tLSoCQ6Ix
-         Mm8w==
-X-Forwarded-Encrypted: i=1; AL+hErGeO27IdKKri7bhHQWPCPI4knZzF6PhX+9jbEz/9L+o3dce2YtiGbO4gPWJ0rG0bH2Yxh4nr4MunBTnryuKXw==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/HM6Ha6v8qJLyFu/11QmEhJTiNpJzCV9uuYssKPTuh5XFbjGHl
-	NmHWnaJDCfhnIeaXJ6InPY7JkzUuR3U+Hvo5U1lusiy3vNHmGGbZOkW6
-X-Gm-Gg: AYBFou1QJFiOpTfV+1PVp2gQSL/WI1uiJvNyBQcLZwns3yJYmSIZ6F7iHYWmwaDQBTM
-	GWFdz8JbuFlif4ZLl/zp2k8bFkg+gE5rcRzpbJIRbT1LTEswtr9vNC/fV3SQMykPyUkFxlRqvlW
-	k3NObG3TiVfxW8cVj73W81mskx//Jne1CB3fmfioqWU3SyA2JF6PHSnZjSRWkaVzY8QUwReJehm
-	wd41EBxrnoFwjWzuwjZG35uVotcHGbcmyL+68XPqNsQQoTFPZw16Z+2b8zSHHy2TksU9DzjJ1lt
-	jCVfzYL7cGHTDGpOuIDlLZYs95+e5miE8PvRe8nk8hjkzmBGMwnJa/Wwq9msznisVMwsIXU8+8e
-	Eo/lh/p1sWSyh+7IbRNp8xxLtV1RtJQO778DFVa8VF8qwUWXXbbJ/lPWV+wlAsDvUV6L1GPMLzr
-	/IoxrMa9JBD/oU65tVNmA4wB1xFzTiPk4xuBd1PRJ8w50fCKUL+QfXWDh+VNBYZTWAbx/Hhyfhe
-	cWOzcPmd0NtNGRdSiqHZDLNyKYH/iH+LgMAtOpkvSoLh1jAnELzkSBcr5syxw9IIGl1dNtFMfcw
-	RWXBiv6vZHr9NYl7xxIzgF40suxMzZdJ626Sse3ky4fBwYw=
-X-Received: by 2002:a05:701b:270c:b0:14a:5284:1bf5 with SMTP id a92af1059eb24-1b3b5fda3bfmr2024081c88.13.1794284537372;
-        Mon, 09 Nov 2026 20:22:17 -0800 (PST)
-Received: from toolbx.alistair23.me ([2403:581e:fdf9:0:13b2:851f:d9cb:44c5])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b7ba88sm3540459c88.22.2026.11.09.20.22.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 20:22:16 -0800 (PST)
-From: alistair23@gmail.com
-X-Google-Original-From: alistair.francis@wdc.com
-To: bhelgaas@google.com,
-	lukas@wunner.de,
-	bvanassche@acm.org,
-	linux-pci@vger.kernel.org,
-	alistair@alistair23.me,
-	linux-cxl@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	jic23@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	jgg@nvidia.com,
-	akpm@linux-foundation.org
-Cc: gary@garyguo.net,
-	a.hindborg@kernel.org,
-	wilfred.mallawa@wdc.com,
-	tmgross@umich.edu,
-	ojeda@kernel.org,
-	boqun.feng@gmail.com,
-	alistair23@gmail.com,
-	gregkh@linuxfoundation.org,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	alex.gaynor@gmail.com,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v6 25/25] lib: rspdm: Expose public Rust API
-Date: Tue, 10 Nov 2026 14:18:32 +1000
-Message-ID: <20261110041832.1730924-26-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261110041832.1730924-1-alistair.francis@wdc.com>
-References: <20261110041832.1730924-1-alistair.francis@wdc.com>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=LY6Je66P
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ARGakanUcxeW7HMWCFxxu58uLhAxyisDwh2Joq88imQ5MR2UBJ478rEamKYf813jULiCkNS+Y7nPr1nCmY8Bg47pg9eC/hDw0NPYtBzQ1lpvhdQ+vzMbdGX5SV5xnmAJrigACcRT0QqsZpcIB/Jt9YN/fHb4yP+gWIWBAYNaLfduftA5nWn7UvCv/LMz9VrpzHr+qFd1qFcCGGQ+vY100MOL4G7VbXp3WsTKWcNNBmwk8n0pq99hCIvpR0ffhFn7l0taMeW/tYj9RVI8aVTT611w4HBVdBIIh8YVJCs+/jknXJjWewlrZJ+02u9aFhgiEvmdfIiF8WSB1jzeF6thBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kZSyd0QwL/KB3cgMXlWoMMKqvCWxbgRt0H+S8C5CUro=;
+ b=NMfK3+mv8IqQ64154/D3rC9Je/9kiO1NfE2q849lUkUSmLcR+h7A5Ym3IZJhDs18a6N/ZZmS7Rj9mE3FHOn+mKRyawANEY2a5p8gq814WOptquC7YYnneVFDm8NlJexg4WUtuNK5v8Yamew8+ED3rh71af1A0jlrtHHlfIgzwsMqaNCG2Nry71V5im8UUpM79O7sw/lcAJqT2amg6sw23mWCOnp++pnb+piDExIHeZFRlLGLiNtvGnLedSyzrij6yq/bQFpNVM+sET4zzc3xhAj5BhM8/9Cwp4VWiUHN7Gj4+0J3FVFtv8TFBZX4kEcvq4afTIwg3YuvKdO2tE8+qg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kZSyd0QwL/KB3cgMXlWoMMKqvCWxbgRt0H+S8C5CUro=;
+ b=LY6Je66P6lhexJV3xRQOOmVnQsWOY5m1nRt8JLXJK9fAvFuoOAEUzaayGyBykk4swCwabtrc8SEIqBgj8bP6ox7o46aVMBc3oYoTfcZCH7nq6SIRPB0E/giV0XKFXekMqsbYu9rw18tETVmvUMiu8VjEaOv8QzS1BvvoyPwAEStCygRvp1FdaMPr8qPGcShbBkMa/wK0mPjbh/sr/edG0KeRor7C0stjCaGtZJHvoAcv+oS5bdoQrE7dUbC/PCV1X6NVSJgcdMXGxMGwXkEpZzoeBfyxc46uqva3WwMZ7vMrQMdafb4mo66ookzDu05Le6FDbWVG/9AliwU0h9GA8w==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
+ SA1PR12MB6894.namprd12.prod.outlook.com (2603:10b6:806:24d::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Tue, 10 Nov
+ 2026 07:30:05 +0000
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa%5]) with mapi id 15.21.0592.010; Tue, 10 Nov 2026
+ 07:30:05 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 10 Nov 2026 16:29:32 +0900
+Message-Id: <DMRCRMCFK31H.3GH97ALPTUEKU@nvidia.com>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>, "dri-devel"
+ <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH v11 4/5] rust: id_pool: do not round capacity up to
+ BitmapVec::MAX_INLINE_LEN
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Gary Guo" <gary@garyguo.net>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Burak Emir" <burak.emir@gmail.com>,
+ "Yury Norov" <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Boqun Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>
+X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
+References: <20261109-chid-v11-0-082aa9bf5a91@nvidia.com>
+ <20261109-chid-v11-4-082aa9bf5a91@nvidia.com>
+ <DMQOOESYWNCC.2SKYV8O6YSYOA@garyguo.net>
+In-Reply-To: <DMQOOESYWNCC.2SKYV8O6YSYOA@garyguo.net>
+X-ClientProxiedBy: LO2P265CA0505.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:13b::12) To DS0PR12MB6413.namprd12.prod.outlook.com
+ (2603:10b6:8:ce::10)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -120,188 +114,175 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|SA1PR12MB6894:EE_
+X-MS-Office365-Filtering-Correlation-Id: 963bfce1-b439-4356-0ddd-08df3efc6060
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|10070799003|1800799024|23010399003|366016|6133799003|10067099003|261026140227099003|261022105027099003|261022075727099003|261026121527099003|261028144727099003|261021121427099003|261102123227099003|11063799006|921020|56012099006|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	QrU61OTGL5qS4ubZI/ZryE8xXmyt+Vy19CxoHq+xhLUP/UOzoC7W6YXg/AI26pCER+BAWxp/Df3rxpxAUAfi32S7e74GtOFDN1dVP4F8PmeImCd7962sN1/iM9mU16WW9vkf3E2R/GQ7d1zEJGdy+bj1cxu9+ZAilMK/ubXC9plmNSpuTqa0hD2cGQiKppVwHo+8rQwBUKbF0Swt9Fl/7NxeJO+WkZptd6S+aHpSrEDkdsxlQlOMRKwIv9fawYNVR5ovsXGBVMcbvSN+CrEMARSHExe9s+wte7MHygZy03PalKtaKhfphlmHI/fHUzonFCnHR5+9ui0FMPBggubc1gnqDkgN+Go2+40pUsiU5m/yBCoOH8AQDDaS9XYuZBs0GFx24PN5LtpWABvxE/zHOOhpPpZjEk2z5X2p+53rO+PZJxtAlHWpryKu0X0UxEqh7SbLj5rwb9o2uXEmknNnDuuPlqvD3JZVtal+PyBpTn49vLsICAUuklerlQU+Z0+1idAx/XTz/yAUmOXLUruclz7xPVrDqMbYkiT61QAAAz853j3PyMkx0oy5HShEzQFfuF8Gax72zuJzHjLXSzmTmn1H/AvceRMYKK0Ii6F8AO8AubpPSmeUHK6lnmZWngxOMfT9A3+vQl0hia0kD1ArwfajoJXERis3/ewnTHg/jbnxRBxkrZ9j/qRsWOBWEG93S7JVD+nyfgcZ4in2TgFuZA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(1800799024)(23010399003)(366016)(6133799003)(10067099003)(261026140227099003)(261022105027099003)(261022075727099003)(261026121527099003)(261028144727099003)(261021121427099003)(261102123227099003)(11063799006)(921020)(56012099006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?T1ZMUHZHd2RRQ05BSzY2dFF3SlRsSm0wQXNXUmFUMlFTZzFVUmVFbkJWQytt?=
+ =?utf-8?B?SklQa0NFUkJvSk1WMW40anpNQ2VYRy8xTUFXZXgybngwSFdKRUZJS2tzbk5x?=
+ =?utf-8?B?QXp3SXNQaFBqK0JHeUJreXhORTVTYmM5dTJaSEZHTFA0czdYZnVPS3V5blc1?=
+ =?utf-8?B?dGJPLzFMellTZTlFYUVFR2JmS2pzL0Ftb3RFT3hvR3AxdFRlVEtIOE8vWndw?=
+ =?utf-8?B?S2NNSUVzK3lMZkpRQnltNVVoYjZVRlVrUE0zdVFSSTJOL0xack5WVm41SWJo?=
+ =?utf-8?B?dzVCUklxWUxHOFc4NHUzZlU4WHFxbjE5dkxnMWt3enJzOWVZSm5QQnVzdFZX?=
+ =?utf-8?B?aStLLzYrU1FXMVhua05XdGdXK0pMWWh1UDhCcnZlUHBBQkdjRk9vcExzb3FH?=
+ =?utf-8?B?NHhhcXhWVFV5bnE2QkN5Q0szaTNtSk01bTVTUnJ2WHNZc2loU1FMR2d3VGov?=
+ =?utf-8?B?WWhkVzBhWkF5THZTRmw2eWNadzBvTXB6QUtWZk1rbDN4elRXZjh6WXZsMFlu?=
+ =?utf-8?B?WmlPLzJreDh1WWZva21tTmxZdkxtNUVBR1o5alduUGNGVkRiaVFneG1NMTVa?=
+ =?utf-8?B?U3JSdE55TVVRaTdjcDRBL3Q0amlhRlAxTWZ1K0pDUVE2WHlUSEdxc25CcFA5?=
+ =?utf-8?B?SXZpeGVOaXM4b0JDS25pWDBQNEFWRWx2bTdmcFZQWHFvTlpSOWV5SitURzVo?=
+ =?utf-8?B?R1ZzU0ZDYm1HVzBJQXVQOCt0WVRyaW9ORDFVdVFWY2doS1I4S3VtbFpzbGZa?=
+ =?utf-8?B?VS9aNmpZWTBBSEFpRFBHL0JnNTZCUXpOWDJPaUhjTW8xcDhnN3BRbGkydzNj?=
+ =?utf-8?B?aktOUTBmbVB0cjRSZzZkN05mOWtxM0crS3B0bHdHenhWQzNWYmJvNE5DbXBX?=
+ =?utf-8?B?VGV4MG91eGdWZ3ZtM0gzdnZxcUVZancwdmE4TFlTUWkrTEJKU0FySWtoS2Fz?=
+ =?utf-8?B?dCtaVjdNekcyRDVrTU5jWGw5QmZ1M29kVXlleVRDaGlrWmJKWmMvRlg3UmZF?=
+ =?utf-8?B?N1ViQkpoM21BTXBBVUswbU1KanpVSWNXVWZZRENlRGtuSHl4QjVHTzd2a3Rj?=
+ =?utf-8?B?cUVudnhYb0NKb0d6WC9Od0hVNHJlVnl6S0J0LzJOR0JldHRxb3hmUzF3bXg3?=
+ =?utf-8?B?ZGc2dXZWbkI5emdoVWVJUXdZelo3RlVBVzAyS0t1di84MnhFRGJ4anBrT0JO?=
+ =?utf-8?B?S3dnZVRsVFUwa01lYy9ITmwvYnhhdnFtZzA5Zkp2Wko1RkF0VC9PbzFZdFpW?=
+ =?utf-8?B?Y3UwUDNpaC9CaEVBWnpON2lyODJTU2FDNFBIb0VGNU52NUdOcDRBWkZhNzdK?=
+ =?utf-8?B?NWVxbzkycGptS0NuL2I1eDd2WmExQ3Z2VXBlWkNYZzk4L2xvWHh4b1dhY1lW?=
+ =?utf-8?B?ZkI0MnVvZ3Z0aGFmS3hlbHozNTdxYUE3dHNUUE04QkZWUE9MV0Z0QUtoY3Bm?=
+ =?utf-8?B?Q2hjVjhSTVV4VUFaRHl6TWpNbnZBbTFHY3hpN2N4alN5WUNOWm50Njlwa3Ra?=
+ =?utf-8?B?TnJIR0VpdmRMSW9KMm16eS9lT3gyZkdZUXlZRHkvZlhKb0RWdzQ0cTJyWHN6?=
+ =?utf-8?B?R0hHdis5Y2FhMldDeUc4dWs3Rkw4Y3NoNEhEMWF5K2VSdUVNekxSMFhiSy9s?=
+ =?utf-8?B?djJXUmdZcngvT3hIUHhzdDhYNmNxWDVIQmwyOG5ZZHVENmhXdC9TamtvbW9Q?=
+ =?utf-8?B?eXBVVXJpcFdpcHF1QmNZWjAzYXhHaEdpeFZUQU5yd3hvV2J4V2xvendaYTZy?=
+ =?utf-8?B?TTM5MXNpWnFQUW1HQVZBUjNNcmhxN0tUQlVNZEFzSktjaFFhbEJOb1M0ekJG?=
+ =?utf-8?B?N3VQZ0JPMEEzV1NIZkVHZllFc1JOOTdvQ0RjMXZvWVBPVytJaEttc3RXNGdF?=
+ =?utf-8?B?VTdpc0JZVG1ocDZEQzBNdm5FeExtWXBDZHpLSGhmM1ZqbjJtbXE4M1piZlFX?=
+ =?utf-8?B?TXN4ZDhkOGQ5US9oa0t6L3ptbm1kVWdaS0FQUkovdVJ4V3BLVm5IRDdVbGNx?=
+ =?utf-8?B?NWdaTFpnam1pTVF1TURxbDVSZVMxRjZQeE9xRmFqc0FxaTVlMW9hSDE2S3Ex?=
+ =?utf-8?B?UDVkYjNrWkRFZ05BWllrYTFjSEl6cGwvQlF5eUZ2cjBVYlFlaVp6b0lMUTVx?=
+ =?utf-8?B?YVgrVlBLdk9qVFZza2Noa2swbWFydDU4QmhzdDVVSFM0K2N0RDhxTjFNMTRl?=
+ =?utf-8?B?NWx5bHVVS0dlUlptSVVOUW93ZDFxZG9SYzNBWVlOeldxRjBueXZzVytyYWFj?=
+ =?utf-8?B?bFlLVTRydWR1KzBlQjhTQkp1Q2RMaWUzdXJZUGV5YVFzYit2bVJ4UHdTUHNm?=
+ =?utf-8?B?NEJDQXJwM1hWcnVtZUNudWM2b0tOaC8waXhaRnJoNnVaWUxNdmlqTENWWW5t?=
+ =?utf-8?Q?YN6B71Gtsr60MG300imqmte6si6L/FegO2o61ZXk0D8NF?=
+X-MS-Exchange-AntiSpam-MessageData-1: lKlxXJrK/q4p8A==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 963bfce1-b439-4356-0ddd-08df3efc6060
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 07:29:38.1346
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wCffzWIjsnHITpCfJjGFezUFpBwN77LNG0w66EpEjCW+hN8/brbf1aPy8Pzfkxh9HriogRZwcSZBw6roBXmsfw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6894
 
-From: Alistair Francis <alistair.francis@wdc.com>
+On Mon Nov 9, 2026 at 9:36 PM JST, Gary Guo wrote:
+> On Mon Nov 9, 2026 at 8:32 AM GMT, Eliot Courtney wrote:
+>> Current code in IdPool::with_capacity rounds the capacity up to
+>> BitmapVec::MAX_INLINE_LEN, but BitmapVec::new works fine with values
+>> smaller than this and still uses an inline representation. Remove this
+>> behaviour.
+>>
+>> This allows specifying a real capacity of 0, which was not previously
+>> possible. This breaks `grow_request` in this case, so change it to grow
+>> to at least `BitmapVec::MAX_INLINE_LEN`, mirroring the capacity floor in
+>> `shrink_request`.
+>>
+>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>> Reviewed-by: Burak Emir <burak.emir@gmail.com>
+>> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+>> ---
+[...]
+>>      /// Returns a [`ReallocRequest`] for growing this [`IdPool`], if po=
+ssible.
+>>      ///
+>> +    /// Grows to at least [`MAX_INLINE_LEN`].
+>>      /// The capacity of an [`IdPool`] cannot be grown above [`MAX_LEN`]=
+.
+>>      ///
+>> +    /// [`MAX_INLINE_LEN`]: BitmapVec::MAX_INLINE_LEN
+>>      /// [`MAX_LEN`]: BitmapVec::MAX_LEN
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// use kernel::{
+>> +    ///     alloc::AllocError,
+>> +    ///     bitmap::BitmapVec,
+>> +    ///     id_pool::IdPool, //
+>> +    /// };
+>> +    ///
+>> +    /// // Grow goes to at least BitmapVec::MAX_INLINE_LEN.
+>> +    /// let mut pool =3D IdPool::with_capacity(1, GFP_KERNEL)?;
+>> +    /// let resizer =3D pool.grow_request().ok_or(AllocError)?.realloc(=
+GFP_KERNEL)?;
+>> +    /// pool.grow(resizer);
+>> +    /// assert_eq!(pool.capacity(), BitmapVec::MAX_INLINE_LEN);
+>> +    ///
+>> +    /// // Grow doubles if at least BitmapVec::MAX_INLINE_LEN.
+>> +    /// let resizer =3D pool.grow_request().ok_or(AllocError)?.realloc(=
+GFP_KERNEL)?;
+>> +    /// pool.grow(resizer);
+>> +    /// assert_eq!(pool.capacity(), 2 * BitmapVec::MAX_INLINE_LEN);
+>> +    /// # Ok::<(), AllocError>(())
+>> +    /// ```
+>>      #[inline]
+>>      pub fn grow_request(&self) -> Option<ReallocRequest> {
+>> -        let num_ids =3D self.capacity() * 2;
+>> +        let num_ids =3D usize::max(BitmapVec::MAX_INLINE_LEN, self.capa=
+city() * 2);
+>
+> It looks like your want the `IdPool` have a controlled capacity. However,=
+ as
+> soon as `grow_request` is used, the capacity becomes uncontrolled.
+>
+> It feels that this actually means that there are two use cases here: unbo=
+unded
+> IdPool (where capacity just means the _current_ capacity) and bounded IdP=
+ool
+> (where capacity means the _max_ capacity).
+>
+> This is more similar to a difference between `len()` and `capacity()`. It=
+ feels
+> to me that you're merrging `Vec<bool>` and `Box<[bool]>` into a single ty=
+pe
+> where it shouldn't.
 
-Expose a public Rust API and an example that can be used to authenticate
-an SPDM responder.
+Yerp I agree there are two use cases here and this is adding the
+"fixed+controlled capacity" use case. But e.g. for `Vec`, we also have
+this "double use case" with `push_within_capacity`. So you can use `Vec`
+in both use cases as well.=20
 
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- lib/rspdm/lib.rs   | 69 ++++++++++++++++------------------------------
- lib/rspdm/state.rs | 43 +++++++++++++++++++++++++++--
- 2 files changed, 63 insertions(+), 49 deletions(-)
+The analogy would be:
+Vec::len <=3D> # of actually allocated ids
+Vec::capacity <=3D> # of available or allocated ids
+Vec::push_within_capacity <=3D> IdPool::find_unused_id / reserve_ids
+Vec::reserve <=3D> IdPool::grow / IdPool::grow_request=20
+Vec::shrink_to <=3D> IdPool::shrink / IdPool::shrink_request
 
-diff --git a/lib/rspdm/lib.rs b/lib/rspdm/lib.rs
-index 6bfe1eedc4121..6b1f864fe7266 100644
---- a/lib/rspdm/lib.rs
-+++ b/lib/rspdm/lib.rs
-@@ -9,6 +9,26 @@
- //!
- //! Top level library, including C compatible public functions to be called
- //! from other subsytems.
-+//!
-+//! ```rust,ignore
-+//! struct MyTransport { }
-+//!
-+//! impl Transport for MyTransport {
-+//!     fn exchange(
-+//!         &self,
-+//!         dev: &Device,
-+//!         request: &[u8],
-+//!         response: &mut [u8],
-+//!     ) -> Result<usize, Error> {
-+//!         todo!()
-+//!     }
-+//! }
-+//!
-+//! fn authenticate_device(dev: &Device, transport: &MyTransport) -> Result {
-+//!     let mut state = SpdmState::new(ARef::from(dev), transport, 512, None);
-+//!     state.authenticate()
-+//! }
-+//! ```
- 
- use crate::bindings::{
-     spdm_state, //
-@@ -30,7 +50,7 @@
- };
- 
- use crate::consts::SPDM_MIN_DATA_TRANSFER_SIZE;
--use crate::state::{
-+pub use crate::state::{
-     SpdmState,
-     Transport, //
- };
-@@ -263,51 +283,8 @@ fn from(code: SpdmErrorCode) -> Self {
- 
-     let mut state = mutex.lock();
- 
--    if let Err(e) = state.get_version() {
--        return e.to_errno() as c_int;
--    }
--
--    if let Err(e) = state.get_capabilities() {
--        return e.to_errno() as c_int;
--    }
--
--    if let Err(e) = state.negotiate_algs() {
--        return e.to_errno() as c_int;
--    }
--
--    if let Err(e) = state.get_digests() {
--        return e.to_errno() as c_int;
--    }
--
--    if state.provisioned_slots == 0 {
--        return -(bindings::EIO as c_int);
--    }
--
--    let mut provisioned_slots = state.provisioned_slots;
--    while (provisioned_slots as usize) > 0 {
--        let slot = provisioned_slots.trailing_zeros() as u8;
--
--        if let Err(e) = state.get_certificate(slot) {
--            return e.to_errno() as c_int;
--        }
--
--        provisioned_slots &= !(1 << slot);
--    }
--
--    let mut provisioned_slots = state.provisioned_slots;
--    while (provisioned_slots as usize) > 0 {
--        let slot = provisioned_slots.trailing_zeros() as u8;
--
--        if let Err(e) = state.validate_cert_chain(slot) {
--            pr_err!("Certificate in slot {slot} failed to verify: {e:?}\n");
--            return e.to_errno() as c_int;
--        }
--
--        provisioned_slots &= !(1 << slot);
--    }
--
--    let provisioned_slots = state.provisioned_slots.trailing_zeros();
--    if let Err(e) = state.challenge(provisioned_slots as u8) {
-+    if let Err(e) = state.authenticate() {
-+        dev_err!(&state.dev, "Authentication failed: {e:?}\n");
-         return e.to_errno() as c_int;
-     }
- 
-diff --git a/lib/rspdm/state.rs b/lib/rspdm/state.rs
-index 059398e95b92d..0fe99caf27958 100644
---- a/lib/rspdm/state.rs
-+++ b/lib/rspdm/state.rs
-@@ -96,7 +96,7 @@
- ///
- /// This trait abstracts the bus-specific message transport (for example
- /// a DOE mailbox for PCIe CMA) from the SPDM session logic.
--pub(crate) trait Transport {
-+pub trait Transport {
-     /// Perform a single SPDM message exchange.
-     ///
-     /// Send `request` to the responder and write the response into
-@@ -115,7 +115,7 @@ pub(crate) trait Transport {
- /// it does not need to stay bound to its driver. `T` is data and an
- /// exchange function owned by the caller, so the borrow checker enforces
- /// that the transport data outlives `SpdmState`.
--pub(crate) struct SpdmState<T: Transport> {
-+pub struct SpdmState<T: Transport> {
-     /// Responder device (reference counted). Used for error reporting and
-     /// passed to `transport`.
-     pub(crate) dev: ARef<Device>,
-@@ -194,7 +194,7 @@ impl<T: Transport> SpdmState<T> {
-     ///
-     /// `transport_sz` is the maximum message size the transport can carry,
-     /// and must be at least the SPDM minimum data transfer size (42 bytes).
--    pub(crate) fn new(
-+    pub fn new(
-         dev: ARef<Device>,
-         transport: T,
-         transport_sz: u32,
-@@ -232,6 +232,43 @@ pub(crate) fn hash_len(&self) -> usize {
-             .unwrap_or(0)
-     }
- 
-+    /// Authenticates the responder through a sequence of GET_VERSION,
-+    /// GET_CAPABILITIES, NEGOTIATE_ALGORITHMS, GET_DIGESTS, GET_CERTIFICATE
-+    /// and CHALLENGE exchanges.
-+    pub fn authenticate(&mut self) -> Result {
-+        self.get_version()?;
-+        self.get_capabilities()?;
-+        self.negotiate_algs()?;
-+        self.get_digests()?;
-+
-+        if self.provisioned_slots == 0 {
-+            return Err(EIO);
-+        }
-+
-+        let mut provisioned_slots = self.provisioned_slots;
-+        while (provisioned_slots as usize) > 0 {
-+            let slot = provisioned_slots.trailing_zeros() as u8;
-+
-+            self.get_certificate(slot)?;
-+
-+            provisioned_slots &= !(1 << slot);
-+        }
-+
-+        let mut provisioned_slots = self.provisioned_slots;
-+        while (provisioned_slots as usize) > 0 {
-+            let slot = provisioned_slots.trailing_zeros() as u8;
-+
-+            self.validate_cert_chain(slot)?;
-+
-+            provisioned_slots &= !(1 << slot);
-+        }
-+
-+        let provisioned_slots = self.provisioned_slots.trailing_zeros();
-+        self.challenge(provisioned_slots as u8)?;
-+
-+        Ok(())
-+    }
-+
-     /// Start a SPDM exchange
-     ///
-     /// The data in `request_buf` is sent to the device and the response
--- 
-2.56.0
+Vec::push equivalent doesn't exist because neither binder's use case
+(needs to separate allocation) nor nova's use case (uses fixed capacity)
+requires a combined "reserve and push_within_capacity".
 
+That said with this patch `IdPool::with_capacity` provides a guarantee
+of the capacity which `Vec::with_capacity` doesn't (altho I think it
+could for non-ZSTs). So I agree that there is a conceptual difference
+here w.r.t. "controlled" (guaranteed) capacity. The reason I did it this
+way is that I think that providing this extra guarantee is easy to do
+(removes code) without unduly complicating IdPool, plus adding
+to/allowing reuse of the existing common API functions.
+
+We could consider in a follow-up to introduce a typestate, like Fixed vs
+Growable (defaulting to Growable) and grow/shrink is only implemented
+for `Growable`. But IMO it's overcomplicated to do this - if you don't
+want to grow it, just don't grow it. It's currently very hard to
+accidentally grow IdPool (compared to Vec where it would be far easier
+to mess it up if you tried to control the capacity). Perhaps if later
+many more things are added to IdPool then it'll then be worth to split
+it.
+
+WDYT?
