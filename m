@@ -1,60 +1,151 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794324497;
-	b=veZ3m6ORXjnDw+tfFmPdg+wpyVCanaMWEUQqNVXKOoDKM4BblAHsEAztKx8nE005S3Jk
-	 9jgwzFTnjiiKbZaAZBY2KH2OwrHEi74q8+VHbA2DgcdY6mec1Wng4ISHZgaSLG1cMf0K9
-	 BRX89SBUdWXwL5ZTwr9zn9oXxlScBUwE5ZJW/tj2jZaint9ZGEB7h0JI8NuAt+65ic11P
-	 pDKLrMiUFCMh3qmPXg1S0TU9yOX1qDjRtOnItJMYztdt33JfC5d9xdeK+BValrnXwYC+L
-	 oRT+L8GSsF0yDKWIMUzHmCJjhwBRsKrHlKTJuxHsVg14oUZp+wek6PoRgwfOQHtRSkQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794324497;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=8WCab1dfQGKFIAtl8TPq0xziMBqlNKmEQVjXJ5qrQKw=;
-	b=TGd3HcYHF5BeDxg9ZGFf6BUeEV7M9vqD8Vh575QcBolqT0iKfJ3u2bwkC2Pmp1DAA5eH
-	 fhCIp0ZbZG/0cPb0U09THQzxS7OJY2sAIC/V5F5sazAmC1hpwea64vUE/7fS1dnIJ6Nig
-	 pVDb0MIFQgwfLJlM7yWzqVVyN0e3zF25w72Cho+yvakSnahdfT2e8JW14JofI1FD03k6N
-	 ManykBf3Hmrt8cmw0zEM6Sw54ha+i4Ekbe3D0LKYKkaX5nOzx9eWibGVG4Pn9zll9qoCG
-	 D+vzvWSIuNA7bBLASEaLLbjzwW30OBYve1KXCQV7qdxA9DrlcxiK4ma4ZAtSxLxP9Uw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dviUlrjS;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=2 smtp.remote-ip=52.101.65.17
+ARC-Seal: i=3; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794325249;
+	b=Sn61WaO4iu67w9ZYkBeCONGhwsqKjGQhGFgLhxDMJliDzvUsCK1xABRlFrOFJXFVASRm
+	 49Y/rcFEnzVeacGZMp6mNGzPGR2QyOM/8DPPX/u96jV5txjHf0qNT5GDkY4s1ugadUbyH
+	 54GJJcUTzUsU6uNBOO889Oq7cI3VfYjt2sexj7XoNDWgaJxyZEBCI1CKXvxUVYJwGlvAu
+	 e/nGIvjOy+/Q4lordHCF6SuggmAFLNxISm5d5RKWNdGEBz+L92yqMTuDGF3jV5BCUmqxR
+	 kzhPUhnQMZSIsGVlIdypqOS/QIVmgKaVvc3bpK3CJq1f710C2yZGLUd6NfbAOhWHSsQ==
+ARC-Message-Signature: i=3; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794325249;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:
+	 DKIM-Signature:Authentication-Results-Original:Received:Received:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy:MIME-Version:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-LD-Processed:x-checkrecipientrouted:NoDisclaimer:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam-Untrusted:
+	 X-Microsoft-Antispam-Message-Info-Original:
+	 X-Forefront-Antispam-Report-Untrusted:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
+	 X-EOPAttributedMessage:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+	 X-MS-PublicTrafficType:X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=CcuPGAEOkQUt3riA01fEKj4eiLush5ZA51/BstSwJSQ=;
+	b=b/enFEckpBPC2DU/G7sNHNealsgCKPe/fiS6gC4k0hLrtcR05HZM7D28S5etYkaTFj+q
+	 JFsb+akH/Z4cwZl1dT5kra3N664l2K35i4iqLmhxM5uW4kNZuyMogsRw8gK6Sp9lP6U+S
+	 3OLBhQyZD8v5ww5E4MMUdLYwrtSezYX/idP0FAZgW/CfJhAe+ZmFnKTcpLzA+GNavhXeg
+	 +NJ7orkwzxiWC0Aa2o7blnNGQ0weEgnA7shwUQ2vpwS5xm6xOYPnGPb3aJmtFtsAtN3VC
+	 gsvWyCWtIhsNJZ47eA+jET6m5WxHtj0Z9wJYS0aY3JvpK1HvmPxIsCbdH3gU02Uafrg==
+ARC-Authentication-Results: i=3; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=YsK3KHFe;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=YsK3KHFe;
+	arc=pass header.oldest-pass=2 smtp.remote-ip=52.101.65.17
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011017.outbound.protection.outlook.com [52.101.65.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB80606A321;
-	Tue, 10 Nov 2026 15:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93E0606A33D;
+	Tue, 10 Nov 2026 15:40:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C93E0606A33D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dviUlrjS
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B1C1F0089F;
-	Tue, 10 Nov 2026 15:28:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794324493;
-	bh=8WCab1dfQGKFIAtl8TPq0xziMBqlNKmEQVjXJ5qrQKw=;
-	h=From:To:Cc:Subject:Date;
-	b=dviUlrjSk4hmIbCuQ1Fe0URP6IMPl6PJNPrXc+qgC/fj09d1x86f8uDqvNYdon3ja
-	 Ep/3eVsYCAnVg4P9jrNJWDSd+YFWZxE3QZpVtnPygASvgFBJvSRlqcaJbLX5ZZH2NL
-	 z+DYnSPxVLC/utkUc0GPY9IEkT6jhkOke/Qhy4l3DAHHbh13WK5TypSMBRwB5e8TS3
-	 tYv23RQSLFYYLhaCHOL8hwaC8jVehISV+3GJatDFckmdU7CSlGYyhqpK3xi0t/lBZ+
-	 0shBSVARVeknRzZaDgL2/lvulAs6+J5eUkWjCrLIo+f6dMRclK/xzZA2T69KNcKqiz
-	 q6breSk0e/lEQ==
-From: Danilo Krummrich <dakr@kernel.org>
-To: dakr@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	lossin@kernel.org,
-	gary@garyguo.net
-Cc: nova-gpu@lists.linux.dev,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] gpu: nova-core: use pin-init self-referential support
-Date: Tue, 10 Nov 2026 16:27:31 +0100
-Message-ID: <20261110152746.140351-1-dakr@kernel.org>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=YsK3KHFe;
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=YsK3KHFe
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=n8E2L5KLukCb5B6nN9aigDjGck0zhcc+6XtdItIQuHHoajRS+SfVe/zp9ZMNsOg4+JT7Xf4yGwFnd2FdgWfTbX7T3E8RB8hXxMxOB6NOp81mzxdbMP+26iVaRmjHdbhcbUe/5UsnGdYHH3Pac2ZcKHqY5Kugob5D54WW1LS4KGZqQW1oTKtK/UZwXrv4g9wZ4fzCqwaMQPoP3ZUPHo7k5MP6fFCDFbM4xAryslqGlTPgnlsaXfDG1ab4UytYr4pCT12oeMzLVSaHh6tc0Lbhgt6d/y1jDWbjccRMKeTKiva89mIbmLzytY3kr1ScXBOUeZNy/3GnJuI5PUGWKi3/WA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CcuPGAEOkQUt3riA01fEKj4eiLush5ZA51/BstSwJSQ=;
+ b=qt8XldrAG4+UjY3LEx2IKPZiOt185OjNG0bHiXa9tRNbg4sPrJnSvi5zPhOawkFgcRSbTI38O/Z+mLY4OUskkDttV62Fj0QAIMyS1ZmnN4PnhD+xlDIhjKqiwIbCP0g49maD2jvE1N7R9fZoeGoVZWW81s0uz1MOcwvdrMOgxKR7pqPTM0xvE9CwGTaFAe9NuG9iU0I1gzVcRMt5c9AAJ5UpLVNx7SYI64gARQpWkMINP6Og0V9OwP+Ywa7PCZPpRpw/5TR+1D25WKfYe8tjZWzExpk7QUtnokLbxBk/0S0Fln3bCQDpkKbZcA7ZLD8hPILyFwSk9Vkl34+ubGh8TQ==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=arm.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
+ dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CcuPGAEOkQUt3riA01fEKj4eiLush5ZA51/BstSwJSQ=;
+ b=YsK3KHFeyHFZ+JHSMDCS85bEcnZCpOifoc9ECOQ6YphqPgMVUqA8fPTo4BlAx+9iDqmJrcosXGC5EYvWE+egUe7v8qBe3YCsH+z0zgVlHKLfap0txe4ezUK9VOnV9/W7D2+mBdYYPJgwnOtTBToV544O4V1fUxQuontd+2DCppM=
+Received: from VI1PR06CA0147.eurprd06.prod.outlook.com (2603:10a6:803:a0::40)
+ by AS1PR08MB7586.eurprd08.prod.outlook.com (2603:10a6:20b:472::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.11; Tue, 10 Nov
+ 2026 15:40:40 +0000
+Received: from MI3PEPF00008491.eurprd03.prod.outlook.com
+ (2603:10a6:803:a0:cafe::81) by VI1PR06CA0147.outlook.office365.com
+ (2603:10a6:803:a0::40) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.8 via Frontend Transport; Tue, 10
+ Nov 2026 15:40:40 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 4.158.2.129) smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ MI3PEPF00008491.mail.protection.outlook.com (10.167.240.152) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.4
+ via Frontend Transport; Tue, 10 Nov 2026 15:40:40 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SnUqFBI8/VYM1OSCgVhLl3lk/1WlAU3yj3EAJody6/Cv26jzcVla67743ek57ycXga3M5DeJBU+cHtKccvY4bVkOanHxthV50TOIVH4eJXkjHiOHYDzQkQCVPzuktPyzuP7hit28gy6md+Q7vSmxn7AJ2yBZvqSVZMSgLlxICWnL9BzdVWKq48b9YWZovbb0FMT/2anW3jxc4IKE2Kg8rk4vfGiJFd0o/SiDCtX6geWd7FUyEY15nd2zWvQlafvXaNtgtzUzwK5Ie1y947k5l9LsmARkXIuzYJFnAV94wnm2in9Mx+W8gurrVPUbQ9hObg3EyLBZqflLyNtpp6MSjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CcuPGAEOkQUt3riA01fEKj4eiLush5ZA51/BstSwJSQ=;
+ b=u/mC9PMsquDx4D/TpH24/DtP7wrKUi89UMPC9f0OEABmYw94uma/M8a8xwsvBmHZWdz/l2pmaPtvAVje997wquNhvRr59U4vlimpEvCKPu2PyIm17dKL49IQ90f5X65sfVbva+ou5tIu4R3+f4tg10AETVozbBKikJ1lE057SBSrl8Y4D86LuDfbw4TCxZk2slB/Hdb9oGXz+91JQBf/Pae8dGIfjOCHzQx3CVgibZbu9dCml6fpYzFGnZxJK/cH8DmO/HKikEbu5/lvfnH/TOKL2Qh93qyQmaDXKkYZYBrVKf6RQ6ersj9PbIfObaeMlcBz2zFqvwl7hzrVG2WAwA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CcuPGAEOkQUt3riA01fEKj4eiLush5ZA51/BstSwJSQ=;
+ b=YsK3KHFeyHFZ+JHSMDCS85bEcnZCpOifoc9ECOQ6YphqPgMVUqA8fPTo4BlAx+9iDqmJrcosXGC5EYvWE+egUe7v8qBe3YCsH+z0zgVlHKLfap0txe4ezUK9VOnV9/W7D2+mBdYYPJgwnOtTBToV544O4V1fUxQuontd+2DCppM=
+Authentication-Results-Original: mx.microsoft.com 1; dkim=none (message not
+ signed) header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from MIWPR08MB568805.eurprd08.prod.outlook.com
+ (2603:10a6:290:e9::16) by MI9PR08MB570361.eurprd08.prod.outlook.com
+ (2603:10a6:290:83::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Tue, 10 Nov
+ 2026 15:40:03 +0000
+Received: from MIWPR08MB568805.eurprd08.prod.outlook.com
+ ([fe80::be50:76ed:509a:b9f2]) by MIWPR08MB568805.eurprd08.prod.outlook.com
+ ([fe80::be50:76ed:509a:b9f2%4]) with mapi id 15.21.0592.010; Tue, 10 Nov 2026
+ 15:40:03 +0000
+From: Karunika Choo <karunika.choo@arm.com>
+To: dri-devel@lists.freedesktop.org
+Cc: nd@arm.com,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	linux-kernel@vger.kernel.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v2 05/28] drm/panthor: Add 64-bit GPU_ID decoding for v15 GPUs
+Date: Tue, 10 Nov 2026 15:38:26 +0000
+Message-ID: <20261110153907.3241978-6-karunika.choo@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261110153907.3241978-1-karunika.choo@arm.com>
+References: <20261110153907.3241978-1-karunika.choo@arm.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PR1P264CA0026.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:19f::13) To MIWPR08MB568805.eurprd08.prod.outlook.com
+ (2603:10a6:290:e9::16)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -64,297 +155,236 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-TrafficTypeDiagnostic:
+	MIWPR08MB568805:EE_|MI9PR08MB570361:EE_|MI3PEPF00008491:EE_|AS1PR08MB7586:EE_
+X-MS-Office365-Filtering-Correlation-Id: 335977ad-cc81-4d37-df04-08df3f40f941
+X-LD-Processed: f34e5979-57d9-4aaa-ad4d-b122a662184d,ExtAddr,ExtAddr
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|22082099003|18002099003|6133799003|10067099003|3023799007|11063799006|261021123027099003|56012099006|261102123227099003|261028144727099003|261009223027099003|261022105027099003|261022075727099003|261026121527099003|261026140227099003|261021121427099003|261022113327099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ 0AS+bk9qwyrlWyv//jHFNWGhEwMVKrY2dp56KvBZHFHCidEib9h4A4bXhepmjPO8JKt8zQpZvp+G+hMGO0eujzmPpyy5IsYjXLDdVvgh7RlX2Bmb2vA6XsJ9f5Up8NPqXmLk7ditvaYAHsq8u0RC5JGwz2KtRK0VjM+PkBgofcqweAD1zvtgcnoHKgLR58pMUNCegU96GZtfKcfVef4/dBHCxBVdai1S6n1lsRWi9ppqLcSvVuDdlUIn7EVpWz81mGJpAUi9qh28ZMVQ2NLyzdOzhMgUM515kBxsAfeBmgEfz84XnlWIqs6Yfg7Ym6dXqH/UHnZzcZ6aVrDWEH0bvSfv0EWncjasXHToTthQ4CdeIzf2NLurxf2Hk02POZNOXREtdYYvOHm9/P0Dgsv+NZFgrKzbPaxxOm/uf898OJFzf0WR/nimDyz77xUcjloLI8r31SMm9SKWFfgBHQbGs2WE/pZYf3eHyPqdiGSho9iioGSNjBhtclo1S5IXTL+Js2Om3dfwM7ExSAAiVu3f+X9gPga+uGBnfRw9S3sr1d6r2I65kITQN31mPZUcYzIJx8+Yxjg720+47VUIVXyS/UXed+E9f6bwlEHNVEuT3/o=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MIWPR08MB568805.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(22082099003)(18002099003)(6133799003)(10067099003)(3023799007)(11063799006)(261021123027099003)(56012099006)(261102123227099003)(261028144727099003)(261009223027099003)(261022105027099003)(261022075727099003)(261026121527099003)(261026140227099003)(261021121427099003)(261022113327099003);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ Enm6mfxsso09cQe6IJE0Z4E8UQ0O/qkA3DomAhKPVMLtlwNKTXqM9KEPXrntcoM5qcU+Rz8VNQl3en0lNsdALYkBBwB9ZC9QbV/m8x2S25kXCTWvVO/+qzeyYstiMwkoi5dRKYNyKXVxQnWB4TfY027Nz+Wa6AdpvwCeh7nVMxqG1OqTajihwL/GAkLqTLNs4Hsxe6sAVXrEcQWYeht4w+mMgG3/Zv10udtYYJAj3W4fEcMcHn6miTsVzl3yqVSryDc8ECBYchOaetxQ4CwlkzaYEoIB4GEG9wQyJkL16EjBbvwQhnW+Jts3iYh7loS0Onu/CWaLQWkKyHPv3jA+TQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MI9PR08MB570361
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ MI3PEPF00008491.eurprd03.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	775561af-4668-41a9-49c1-08df3f40e34d
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|14060799003|36860700016|82310400026|7416014|23010399003|35042699022|1800799024|376014|18002099003|22082099003|6133799003|10067099003|3023799007|13003099007|11063799006|261022105027099003|261028144727099003|261009223027099003|261102123227099003|261026121527099003|261022113327099003|261021121427099003|261021123027099003|261022075727099003|261026140227099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	5v01HmvP/nMqZm4Y4B7/xUwprABn0WI1EJ6zegpeS76Zv8DiRim8MblOvUDhyWS5Yw3IrwzsvKxB+S+9zdelyP/GFh5PmCbPJzOp2tuDZxtTTR70V3IyMQyn3cWJNodjQeQ/gZd16366QTNzGGyZN4Hvmt9O9543lw5mHGQG5pDuPaQj8WXQ8N25ByQKmEE7egnPfyyUB+me46Xbl8sZMCSGqQAXk36yf4jDvV5lkXtio8OSigrILDvqfHsHmpatq5b1OVO59vJEKB+ZQEecuPYIQSWBI8/xHwX82Oe3kzfgVwRvwaR0rMKCZ3IqcBeB9FOdOL1ds0l6Ml0JBm8RPM+pnp7x21xEykSeAT1qWDOYXRZJhF2JtzcZMxZekHOhoynNZ9gybpadUNT5RWPwbu/UbSIqHLh+fWvIGWdhhckOszlh/ypCX6e5Ia98SuRGYuh14otpzKa5KWwRHtsNoZqN0AnXg23rmGIRM7RuBQ5hff+GRQERA9Y2D8IS98Baeu63pZsQV/gmlBqIpcsNaY3Qv3jU9GHi34WzzXHfjGVxfPuDwWwEzr/JD/BMoyKWdO1dhrhILEx4Q9Ef+3ktkxD0XPpRTvPfpVJEwt3LZGvv3aSZ9sVCnmlHmatU9iVyi5c2jhYVWDBX5NSODRfRJA==
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(14060799003)(36860700016)(82310400026)(7416014)(23010399003)(35042699022)(1800799024)(376014)(18002099003)(22082099003)(6133799003)(10067099003)(3023799007)(13003099007)(11063799006)(261022105027099003)(261028144727099003)(261009223027099003)(261102123227099003)(261026121527099003)(261022113327099003)(261021121427099003)(261021123027099003)(261022075727099003)(261026140227099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	6Hx1rbd2FyTB4yF7TS0g9WE26Jq2vzK+8BUIFhVdyb5NsGNamNWSSBAYpEXF1CDMgP5hToCzf/pUf69E2pRULIz2kvaXNhNNpwYAx//v+FtefVYPcvAy9LhD81/9dAblZvP1dPZkVS+Tx1hwLiUGWbjU9s35u8CP6lPY5qehMzUhC3PMFMayHgxRpNWmwVG1LBSVIpDWcz4mahAf2RUlSzumKM7HygxOYFvXsJ50EKFK499j9j1IPedY/aiSDjOO8oczw97FcYCgehCr+X0RZW6uNFyaubshpDud67MVSq0zlWyg4q/9RPStwpSS5Nk7+BTd6q8K5d7Y6WSzsEQUCvt2QNmKok2zlrx4BawNywGTEd+GROxJfvZDmPy6p34riZCuRI6q7h6XvCm9aJUssG3FTm3mAt+pZB/jbHXnoJnj5ABsBX9S9C4+Kc8HZyX0
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 15:40:40.0169
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 335977ad-cc81-4d37-df04-08df3f40f941
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MI3PEPF00008491.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR08MB7586
 
-Express all self-referential borrows through pin-init's self-referential
-support [1], replacing unsafely derived references.
+Mali v15 exposes a 64-bit GPU_ID register with a different field layout
+from earlier GPUs.
 
-Cc: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/all/20261008-dev-selfref-v2-0-e280b3c8fba5@garyguo.net/ [1]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Add the register definitions and decoding helpers for the new format,
+read GPU_ID_WIDE when the compatibility value indicates a v15 GPU, and
+populate both the cached GPU_ID fields and the uAPI gpu_id_wide field.
+
+This allows userspace and the driver to identify v15 GPUs correctly.
+
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Karunika Choo <karunika.choo@arm.com>
 ---
- drivers/gpu/nova-core/api.rs     | 24 ++++++++++++---
- drivers/gpu/nova-core/driver.rs  | 53 +++++++++++---------------------
- drivers/gpu/nova-core/gpu.rs     | 32 ++++++++-----------
- drivers/gpu/nova-core/irq/gsp.rs | 17 +++++-----
- 4 files changed, 59 insertions(+), 67 deletions(-)
+v2:
+- Picked up R-b from Liviu.
+- Rename the register macro from GPU_WIDE_ID to GPU_ID_WIDE.
+- Rename the uAPI field from gpu_wide_id to gpu_id_wide.
+- Print the upper 32 bits of GPU_ID_WIDE as the logged 'id' for v15 and
+  later GPUs. Keep the existing output for earlier GPUs. Continuation
+  fix for previous sashiko comment.
+- Link: https://lore.kernel.org/all/20260922205659.3C4F21F000FF@smtp.kernel.org/
+v1:
+- Decode selected GPU_ID format after checking compatibility value.
+- Document GPU_DISCOVER and GPU_CONTROL register offset differences
+  between GPUs.
+- Fix mask generation in panthor_gpu_discover_regs.h
 
-diff --git a/drivers/gpu/nova-core/api.rs b/drivers/gpu/nova-core/api.rs
-index eec69aace3b2..94808af3886d 100644
---- a/drivers/gpu/nova-core/api.rs
-+++ b/drivers/gpu/nova-core/api.rs
-@@ -22,11 +22,27 @@
+ .../drm/panthor/panthor_gpu_discover_regs.h   | 19 ++++++
+ drivers/gpu/drm/panthor/panthor_hw.c          | 62 ++++++++++++++-----
+ include/uapi/drm/panthor_drm.h                | 13 ++++
+ 3 files changed, 80 insertions(+), 14 deletions(-)
+ create mode 100644 drivers/gpu/drm/panthor/panthor_gpu_discover_regs.h
+
+diff --git a/drivers/gpu/drm/panthor/panthor_gpu_discover_regs.h b/drivers/gpu/drm/panthor/panthor_gpu_discover_regs.h
+new file mode 100644
+index 0000000000000..6896c263f76b6
+--- /dev/null
++++ b/drivers/gpu/drm/panthor/panthor_gpu_discover_regs.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: GPL-2.0 or MIT */
++/* Copyright 2026 ARM Limited. All rights reserved. */
++
++#ifndef __PANTHOR_GPU_DISCOVER_REGS_H__
++#define __PANTHOR_GPU_DISCOVER_REGS_H__
++
++#include <linux/bits.h>
++
++#define GPU_ID_WIDE					0x0
++#define   GPU_WIDE_COMPAT				0xF
++#define   GPU_WIDE_ARCH_MAJOR(x)			(((x) & GENMASK_U64(63, 56)) >> 56)
++#define   GPU_WIDE_ARCH_MINOR(x)			(((x) & GENMASK_U64(55, 48)) >> 48)
++#define   GPU_WIDE_ARCH_REV(x)				(((x) & GENMASK_U64(47, 40)) >> 40)
++#define   GPU_WIDE_PROD_MAJOR(x)			(((x) & GENMASK_U64(39, 32)) >> 32)
++#define   GPU_WIDE_VER_MAJOR(x)				(((x) & GENMASK_U64(23, 16)) >> 16)
++#define   GPU_WIDE_VER_MINOR(x)				(((x) & GENMASK_U64(15, 8)) >> 8)
++#define   GPU_WIDE_VER_STATUS(x)			((x) & GENMASK_U64(7, 0))
++
++#endif /* __PANTHOR_GPU_DISCOVER_REGS_H__ */
+diff --git a/drivers/gpu/drm/panthor/panthor_hw.c b/drivers/gpu/drm/panthor/panthor_hw.c
+index 854874a9f322a..30f5dfe500fb0 100644
+--- a/drivers/gpu/drm/panthor/panthor_hw.c
++++ b/drivers/gpu/drm/panthor/panthor_hw.c
+@@ -3,11 +3,13 @@
+ 
+ #include <linux/nvmem-consumer.h>
+ #include <linux/platform_device.h>
++#include <linux/wordpart.h>
+ 
+ #include <drm/drm_print.h>
+ 
+ #include "panthor_device.h"
+ #include "panthor_gpu.h"
++#include "panthor_gpu_discover_regs.h"
+ #include "panthor_gpu_regs.h"
+ #include "panthor_hw.h"
+ #include "panthor_pwr.h"
+@@ -238,21 +240,30 @@ static int panthor_gpu_info_init(struct panthor_device *ptdev)
+ 
+ static int panthor_hw_info_init(struct panthor_device *ptdev)
+ {
+-	u32 major, minor, status;
++	u32 prod_id, major, minor, status;
+ 	int ret;
+ 
+ 	ret = panthor_gpu_info_init(ptdev);
+ 	if (ret)
+ 		return ret;
+ 
++	/*
++	 * The logged 'id' contains four 4-bit architecture and product fields
++	 * in pre-v15 GPUs. In v15+ GPUs, this is now four 8-bit fields.
++	 * Preserve the pre-v15 format for compatibility. Tools decoding these
++	 * fields must handle the wider format for v15+ GPUs.
++	 */
++	if (ptdev->gpu_id.arch_major < 15)
++		prod_id = upper_16_bits(ptdev->gpu_info.gpu_id);
++	else
++		prod_id = upper_32_bits(ptdev->gpu_info.gpu_id_wide);
++
+ 	major = ptdev->gpu_id.ver_major;
+ 	minor = ptdev->gpu_id.ver_minor;
+ 	status = ptdev->gpu_id.ver_status;
+ 
+-	drm_info(&ptdev->base,
+-		 "%s id 0x%x major 0x%x minor 0x%x status 0x%x",
+-		 get_gpu_model_name(ptdev), ptdev->gpu_info.gpu_id >> 16,
+-		 major, minor, status);
++	drm_info(&ptdev->base, "%s id 0x%x major 0x%x minor 0x%x status 0x%x",
++		 get_gpu_model_name(ptdev), prod_id, major, minor, status);
+ 
+ 	drm_info(&ptdev->base,
+ 		 "Features: L2:%#x Tiler:%#x Mem:%#x MMU:%#x AS:%#x",
+@@ -296,18 +307,41 @@ static int panthor_hw_bind_device(struct panthor_device *ptdev)
+ static int panthor_hw_gpu_id_init(struct panthor_device *ptdev)
+ {
+ 	struct panthor_gpu_id *gpu_id = &ptdev->gpu_id;
+-	ptdev->gpu_info.gpu_id = gpu_read(ptdev->iomem, GPU_ID);
++	u32 gpu_id32 = gpu_read(ptdev->iomem, GPU_ID);
+ 
+-	if (!ptdev->gpu_info.gpu_id)
++	if (!gpu_id32)
+ 		return -ENXIO;
+ 
+-	gpu_id->arch_major = GPU_ARCH_MAJOR(ptdev->gpu_info.gpu_id);
+-	gpu_id->arch_minor = GPU_ARCH_MINOR(ptdev->gpu_info.gpu_id);
+-	gpu_id->arch_rev = GPU_ARCH_REV(ptdev->gpu_info.gpu_id);
+-	gpu_id->prod_major = GPU_PROD_MAJOR(ptdev->gpu_info.gpu_id);
+-	gpu_id->ver_major = GPU_VER_MAJOR(ptdev->gpu_info.gpu_id);
+-	gpu_id->ver_minor = GPU_VER_MINOR(ptdev->gpu_info.gpu_id);
+-	gpu_id->ver_status = GPU_VER_STATUS(ptdev->gpu_info.gpu_id);
++	if (GPU_ARCH_MAJOR(gpu_id32) == GPU_WIDE_COMPAT) {
++		/*
++		 * GPU_DISCOVER register block always starts at offset zero,
++		 * so does the GPU_CONTROL register block on pre-v15 GPUs.
++		 */
++		void __iomem *discover = ptdev->iomem;
++		u64 gpu_id64 = gpu_read64(discover, GPU_ID_WIDE);
++		if (!gpu_id64)
++			return -ENXIO;
++
++		ptdev->gpu_info.gpu_id_wide = gpu_id64;
++
++		gpu_id->arch_major = GPU_WIDE_ARCH_MAJOR(gpu_id64);
++		gpu_id->arch_minor = GPU_WIDE_ARCH_MINOR(gpu_id64);
++		gpu_id->arch_rev = GPU_WIDE_ARCH_REV(gpu_id64);
++		gpu_id->prod_major = GPU_WIDE_PROD_MAJOR(gpu_id64);
++		gpu_id->ver_major = GPU_WIDE_VER_MAJOR(gpu_id64);
++		gpu_id->ver_minor = GPU_WIDE_VER_MINOR(gpu_id64);
++		gpu_id->ver_status = GPU_WIDE_VER_STATUS(gpu_id64);
++	} else {
++		ptdev->gpu_info.gpu_id = gpu_id32;
++
++		gpu_id->arch_major = GPU_ARCH_MAJOR(gpu_id32);
++		gpu_id->arch_minor = GPU_ARCH_MINOR(gpu_id32);
++		gpu_id->arch_rev = GPU_ARCH_REV(gpu_id32);
++		gpu_id->prod_major = GPU_PROD_MAJOR(gpu_id32);
++		gpu_id->ver_major = GPU_VER_MAJOR(gpu_id32);
++		gpu_id->ver_minor = GPU_VER_MINOR(gpu_id32);
++		gpu_id->ver_status = GPU_VER_STATUS(gpu_id32);
++	}
+ 
+ 	return 0;
+ }
+diff --git a/include/uapi/drm/panthor_drm.h b/include/uapi/drm/panthor_drm.h
+index a2ff0f4ec6915..09b7f7931e4f4 100644
+--- a/include/uapi/drm/panthor_drm.h
++++ b/include/uapi/drm/panthor_drm.h
+@@ -376,6 +376,19 @@ struct drm_panthor_gpu_info {
+ 
+ 	/** @gpu_features: Bitmask describing supported GPU-wide features */
+ 	__u64 gpu_features;
++
++	/**
++	 * @gpu_id_wide: 64-bit GPU ID for v15 and later GPUs. @gpu_id is 0 when
++	 * this is populated.
++	 */
++	__u64 gpu_id_wide;
++#define DRM_PANTHOR_WIDE_ARCH_MAJOR(x)		(((x) >> 56) & 0xff)
++#define DRM_PANTHOR_WIDE_ARCH_MINOR(x)		(((x) >> 48) & 0xff)
++#define DRM_PANTHOR_WIDE_ARCH_REV(x)		(((x) >> 40) & 0xff)
++#define DRM_PANTHOR_WIDE_PRODUCT_MAJOR(x)	(((x) >> 32) & 0xff)
++#define DRM_PANTHOR_WIDE_VERSION_MAJOR(x)	(((x) >> 16) & 0xff)
++#define DRM_PANTHOR_WIDE_VERSION_MINOR(x)	(((x) >> 8) & 0xff)
++#define DRM_PANTHOR_WIDE_VERSION_STATUS(x)	((x) & 0xff)
  };
  
- /// API handle for the auxiliary bus child drivers to interact with nova-core.
--pub struct NovaCoreApi<'bound> {
--    pub(crate) gpu: Pin<&'bound Gpu<'bound>>,
-+#[pin_data]
-+pub struct NovaCoreApi<'bound>
-+where
-+    // `Gpu` is invariant in its resource lifetime, which outlives this API borrow.
-+    exists<'gpu_resources>: 'bound,
-+{
-+    #[uses('gpu_resources: invariant)]
-+    gpu: Pin<&'bound Gpu<'gpu_resources>>,
-     pub(crate) pdev: &'bound pci::Device<Bound>,
- }
- 
-+impl<'bound> NovaCoreApi<'bound> {
-+    /// Creates an API handle.
-+    pub(crate) fn new<'gpu: 'bound>(
-+        pdev: &'bound pci::Device<Bound>,
-+        gpu: Pin<&'bound Gpu<'gpu>>,
-+    ) -> impl PinInit<Self> + use<'bound, 'gpu> {
-+        pin_init!(Self { gpu, pdev })
-+    }
-+}
-+
- impl NovaCoreApi<'_> {
-     /// Obtain a [`NovaCoreApi`] handle from an auxiliary device registered
-     /// by nova-core.
-@@ -36,12 +52,12 @@ pub fn of(adev: &auxiliary::Device<Bound>) -> Result<NovaCoreApiHandle<'_>> {
- 
-     /// Returns the GPU [`GetGspStaticInfoReply`].
-     pub fn gsp_static_info(&self) -> &GetGspStaticInfoReply {
--        &self.gpu.gsp_static_info
-+        self.with_gpu(|gpu| &gpu.gsp_static_info)
-     }
- 
-     /// Returns the GPU [`Spec`].
-     pub fn spec(&self) -> &Spec {
--        &self.gpu.spec
-+        self.with_gpu(|gpu| &gpu.spec)
-     }
- 
-     /// Returns the size of the PCIe BAR used for accessing VRAM, typically
-diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
-index 560a70c4f5a7..ac5a9d9f8331 100644
---- a/drivers/gpu/nova-core/driver.rs
-+++ b/drivers/gpu/nova-core/driver.rs
-@@ -33,9 +33,11 @@
- #[pin_data]
- pub(crate) struct NovaCore<'bound> {
-     #[allow(clippy::type_complexity)]
--    _reg: auxiliary::Registration<'bound, ForLt!(NovaCoreApi<'_>)>,
-+    #[uses('gpu: invariant)]
-+    _reg: auxiliary::Registration<'gpu, ForLt!(NovaCoreApi<'_>)>,
-     #[pin]
--    pub(crate) gpu: Gpu<'bound>,
-+    #[uses('bar: invariant, 'bar1)]
-+    pub(crate) gpu: Gpu<'bar>,
-     bar: pci::Bar<'bound, BAR0_SIZE>,
-     bar1: pci::Bar<'bound>,
- }
-@@ -129,44 +131,25 @@ fn probe<'bound>(
-                 crate::irq::doorbell_test::run_selftest(pdev, bar, spec.chipset)?;
-             },
- 
--            // TODO: Use self-referential pin-init syntax once available.
--            gpu <- Gpu::new(
--                pdev,
--                // SAFETY: `bar` is initialized above, pinned, and outlives `gpu`.
--                unsafe { &*core::ptr::from_ref(bar) },
--                // SAFETY: `bar1` is initialized above, pinned, and outlives `gpu`.
--                unsafe { &*core::ptr::from_ref(bar1) },
--            ).pin_chain(|_gpu| {
-+            gpu <- Gpu::new(pdev, bar, bar1).pin_chain(|_gpu| {
-                 #[cfg(CONFIG_NOVA_CORE_SELFTESTS)]
-                 _gpu.run_selftests(pdev);
-                 Ok(())
-             }),
- 
--            _reg: {
--                // TODO: Use `&gpu` self-referential pin-init syntax once available.
--                //
--                // SAFETY: `gpu` is initialized before this expression is evaluated
--                // (`try_pin_init!()` initializes fields in initializer order), lives at
--                // a pinned stable address, and is dropped after `_reg` (struct field
--                // drop order).
--                let gpu = unsafe {
--                    Pin::new_unchecked(&*core::ptr::from_ref(gpu.as_ref().get_ref()))
--                };
--
--                // SAFETY: `NovaCore` is dropped when the device is unbound;
--                // i.e. `mem::forget()` is never called on it.
--                unsafe {
--                    auxiliary::Registration::new_with_lt(
--                        pdev.as_ref(),
--                        c"nova-drm",
--                        // TODO[XARR]: Use XArray or perhaps IDA for proper ID
--                        // allocation/recycling. For now, use a simple atomic counter that
--                        // never recycles IDs.
--                        AUXILIARY_ID_COUNTER.fetch_add(1, Relaxed),
--                        crate::MODULE_NAME,
--                        NovaCoreApi { gpu, pdev },
--                    )?
--                }
-+            // SAFETY: `NovaCore` is dropped when the device is unbound; i.e. `mem::forget()` is
-+            // never called on it.
-+            _reg: unsafe {
-+                auxiliary::Registration::new_with_lt(
-+                    pdev.as_ref(),
-+                    c"nova-drm",
-+                    // TODO[XARR]: Use XArray or perhaps IDA for proper ID
-+                    // allocation/recycling. For now, use a simple atomic counter that
-+                    // never recycles IDs.
-+                    AUXILIARY_ID_COUNTER.fetch_add(1, Relaxed),
-+                    crate::MODULE_NAME,
-+                    NovaCoreApi::new(pdev, gpu),
-+                )?
-             },
-         })
-     }
-diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-index d185e927233f..cbd720a4d11f 100644
---- a/drivers/gpu/nova-core/gpu.rs
-+++ b/drivers/gpu/nova-core/gpu.rs
-@@ -342,15 +342,15 @@ struct GspResources<'gpu> {
- /// The two drop as a unit, the handler first, on the drop of [`Gpu`] and on the error path of
- /// its constructor alike, so that the subtree is disabled only after the handler is freed.
- #[pin_data]
--struct GspSubtree<'a> {
-+struct GspSubtree<'a, 'gpu> {
-     #[pin]
--    irq: GspIrq<'a>,
-+    irq: GspIrq<'a, 'gpu>,
-     /// Must be kept declared *after* `irq`. A handler still in flight enables the subtree again
-     /// through its rearm.
-     _top: TopEnableGuard<'a>,
- }
- 
--impl<'a> GspSubtree<'a> {
-+impl<'a, 'gpu: 'a> GspSubtree<'a, 'gpu> {
-     /// Returns an initializer that registers the GSP event handler and then enables its subtree at
-     /// `TOP`.
-     ///
-@@ -362,7 +362,7 @@ unsafe fn new(
-         pdev: &'a pci::Device<device::Bound>,
-         tree: &'a Tree<'a>,
-         falcon: &'a Falcon<'a, GspFalcon>,
--        cmdq: &'a Cmdq<'a>,
-+        cmdq: &'a Cmdq<'gpu>,
-     ) -> impl PinInit<Self, Error> + 'a {
-         try_pin_init!(Self {
-             // SAFETY: this function's caller must not leak the `GspSubtree` that owns this
-@@ -383,7 +383,8 @@ pub(crate) struct Gpu<'gpu> {
-     /// any in-flight run of it has finished, before the command queue that it drains and the
-     /// falcon that it reads are freed, and before the GSP is unloaded.
-     #[pin]
--    _gsp_subtree: GspSubtree<'gpu>,
-+    #[uses('tree)]
-+    _gsp_subtree: GspSubtree<'gsp_resources, 'gpu>,
-     /// Static GPU information as provided by the GSP.
-     pub(crate) gsp_static_info: GetGspStaticInfoReply,
-     /// GPU memory manager owning memory management resources.
-@@ -403,9 +404,6 @@ pub(crate) struct Gpu<'gpu> {
-     /// Must be kept declared *after* `gsp_resources`, as the latter's `PinnedDrop` implementation
-     /// requires the sysmem flush page to be in place.
-     sysmem_flush: SysmemFlush<'gpu>,
--    /// Borrow of `tree` that `_gsp_subtree` holds. A field that borrows a sibling field is
--    /// self-referential, which `pin_init` cannot express, so the borrow is taken by hand.
--    tree_ref: &'gpu Tree<'gpu>,
-     /// The GIN CPU interrupt tree and the PCI vectors that deliver it.
-     ///
-     /// Must be kept declared *after* `_gsp_subtree`, which holds a borrow of it.
-@@ -456,10 +454,6 @@ pub(crate) fn new<'a>(
- 
-             tree: Tree::new(pdev, bar, spec.chipset, irq::gsp::GSP_SUBTREE.into())?,
- 
--            // SAFETY: `tree` is initialized above, is pinned at a stable address, and is dropped
--            // after every field that uses `tree_ref` (struct field drop order).
--            tree_ref: unsafe { &*core::ptr::from_ref(tree.as_ref().get_ref()) },
--
-             _: {
-                 let dma_mask = hal::gpu_hal(spec.chipset).dma_mask();
- 
-@@ -513,19 +507,17 @@ pub(crate) fn new<'a>(
-             }),
- 
-             _: {
--                irq::gsp::quiesce(tree_ref, &gsp_resources.gsp_falcon);
-+                irq::gsp::quiesce(tree.get_ref(), &gsp_resources.gsp_falcon);
-             },
- 
--            // SAFETY: the GSP falcon and the command queue are fields of `gsp_resources`, which
--            // is initialized above and pinned, so both references outlive the registration. The
--            // registration is a field of `Gpu` and is never leaked, so its `Drop` runs, and field
--            // drop order runs it before either is freed.
-+            // SAFETY: The registration is owned by `Gpu`, which is dropped when the device is
-+            // unbound, so the registration's `Drop` runs.
-             _gsp_subtree <- unsafe {
-                 GspSubtree::new(
-                     pdev,
--                    tree_ref,
--                    &*core::ptr::from_ref(&gsp_resources.gsp_falcon),
--                    &*core::ptr::from_ref(&gsp_resources.gsp.cmdq),
-+                    tree.get_ref(),
-+                    &gsp_resources.get_ref().gsp_falcon,
-+                    &gsp_resources.get_ref().gsp.cmdq,
-                 )
-             },
- 
-diff --git a/drivers/gpu/nova-core/irq/gsp.rs b/drivers/gpu/nova-core/irq/gsp.rs
-index 1abde8e0a405..f4fe7b5d691e 100644
---- a/drivers/gpu/nova-core/irq/gsp.rs
-+++ b/drivers/gpu/nova-core/irq/gsp.rs
-@@ -50,15 +50,16 @@ pub(crate) fn quiesce(tree: &Tree<'_>, falcon: &Falcon<'_, GspFalcon>) {
- }
- 
- /// Threaded IRQ handler for the GSP event.
--pub(crate) struct GspInterrupt<'a> {
-+pub(crate) struct GspInterrupt<'a, 'gpu> {
-     falcon: &'a Falcon<'a, GspFalcon>,
--    cmdq: &'a Cmdq<'a>,
-+    // `Cmdq` is invariant in `'gpu`; the handler borrows it for the shorter `'a`.
-+    cmdq: &'a Cmdq<'gpu>,
-     tree: &'a Tree<'a>,
-     /// For logging.
-     dev: &'a device::Device,
- }
- 
--impl GspInterrupt<'_> {
-+impl GspInterrupt<'_, '_> {
-     /// Clears the latch of every host-routed cause in `status` other than SWGEN0, and logs them.
-     ///
-     /// Returns the causes still set after the clear. A cause driven from outside the falcon stays
-@@ -83,7 +84,7 @@ fn clear_faults(
-     }
- }
- 
--impl irq::ThreadedHandler for GspInterrupt<'_> {
-+impl irq::ThreadedHandler for GspInterrupt<'_, '_> {
-     /// Top half, in hard interrupt context. Services the GSP vector only, so another vector
-     /// pending in the same leaf stays pending.
-     fn handle(&self) -> irq::ThreadedIrqReturn {
-@@ -145,13 +146,13 @@ fn handle_threaded(&self) -> irq::IrqReturn {
- /// The declaration order is the drop order, and it is required: the vector is disabled before
- /// `free_irq` runs. See "Enabling the GSP event" in `Documentation/gpu/nova/core/interrupts.rst`.
- #[pin_data]
--pub(crate) struct GspIrq<'a> {
-+pub(crate) struct GspIrq<'a, 'gpu> {
-     _leaf_guard: LeafEnableGuard<'a>,
-     #[pin]
--    reg: irq::ThreadedRegistration<'a, GspInterrupt<'a>>,
-+    reg: irq::ThreadedRegistration<'a, GspInterrupt<'a, 'gpu>>,
- }
- 
--impl<'a> GspIrq<'a> {
-+impl<'a, 'gpu: 'a> GspIrq<'a, 'gpu> {
-     /// Returns an initializer that registers the threaded handler and then enables the GSP
-     /// vector at its leaf.
-     ///
-@@ -171,7 +172,7 @@ pub(crate) unsafe fn new(
-         pdev: &'a pci::Device<device::Bound>,
-         tree: &'a Tree<'a>,
-         falcon: &'a Falcon<'a, GspFalcon>,
--        cmdq: &'a Cmdq<'a>,
-+        cmdq: &'a Cmdq<'gpu>,
-     ) -> impl PinInit<Self, Error> + 'a {
-         let dev = pdev.as_ref();
- 
-
-base-commit: a7cdb17ca0d7ce67e9f3a52d39edd60f03223729
+ /**
 -- 
-2.56.0
+2.43.0
 
