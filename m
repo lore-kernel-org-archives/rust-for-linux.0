@@ -1,111 +1,114 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.49
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794281883;
-	b=nYsfY5voqyCclN/PptusYa+eRJUGybPGRPqxa/a+hNNjkF3LPUDQ2V1hpV669S8F2zAc
-	 MDzpm6DzEEsRUcsBYIeW6ldumL9YMtG4yMagvT1Jo1uWR6KCjgzUmTH6n6lPIZ8OAU6pp
-	 sOSWSgq+ToSYMcJk0LE9eWwCVEvl6KPSd/loovg4FCaAguOXFOvMc5NbecxEDvwRafc3I
-	 ojeKysqq84U+LUIjuAPxWbmFqxPlRY2HIwLiJsV0eJOP+MD4zfhSX/9SJztpuGhRtmoOq
-	 b2ohFIAjvveKDB2uzx9pjfubjSziUBwROMWP0yFI9dR+c68ispg1bvhO1W0RCYaGrJg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794281883;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:X-NVConfidentiality:
-	 Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=mF0ONvtgZBz5/00SlejcCeAsL6JHc8mOf4kI4lWQL28=;
-	b=vYt3UlArpQFsNJcJ66ykWRasHO3D+HY85QVEj4FLyemXN4TFTXyl60sBcIL5EDzU5LQ9
-	 4wq4VFJpqAautoqEqpepYKlyOKdKiOFtXYHnhOgMAdpSvwDwWxW2LjVXyYfu/qizODo44
-	 6BYx/DYXdXQQVn7bb827vHYSYXdZYkywYIqtqtoSDCd9gQJMnnC6ESLo/9ctYaZ3N7/V7
-	 Ww1Vzv34VrTN/ZlZRta9b+ofMgssbtKV3M0rff+5eugE8tXZL3vXHjt2pj3zfd2Lze0pr
-	 eQXnwFpMdHmzGHVQFPotyq/qJpZ3MZyu3rZ27DJqE1/bX5Yn7cKPAMKwVjQl9eH5G5Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=sBwnGGmB;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.49
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011049.outbound.protection.outlook.com [52.101.62.49])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.50
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794284326;
+	b=ieK1/FYnUwOXzwmOuELSegIeZwLwe+BnWmARkecvorPS3iUQmcSahksWC6WzOlcwk+xz
+	 rhBKoq1flKBwTzebrqaDNAIvo5Z+EBafhAGy5Jpe+pMIuQ70JPzoUgdw3Tbf0GEYDy+GL
+	 oZyE+xJYbuaNoVwnXq+RAby3ZZxuVnYtcfiOX4jqr1aSYKXja0akVoxOde3Kx30U94Ik9
+	 xcuoshjDgwjm6l+xD36yW/OKCDvBQv/kTKkKmB30zlYQuaTg5Nkq21aQK6Q6qUisGJgyx
+	 AUrWBxtc2IHRjV7CLkfgYEd03g+Jg8QEPyCKbZqda1lUEJiw/gnS8aFgx3LbotnYXxQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794284326;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=Ywbh2lEyTcpQxsowWo8XEkNgOvkD1AiYRUBcCIG+9aA=;
+	b=yfM2XVE5LBkx0a7U+63J6pa5t4mV9HzodcfEVEfozjIK7bl5DsGj9xEcbhpzhnNXdFfS
+	 DYFxKn1wSWyVmK1KetdoqXQMmUBf2Xt7uOs4DouAHhY9p6BNiPHGBTXtitktbAZrDL1qu
+	 8k7tHlpcDTBGcXQ2wOw3psR5V8HXK6MesEux8796xRdHEvPmC7zPrgyCIjxKhdP1RkNjz
+	 oPkCiaxI6dTaOYa7MAZoVnE313ACH0sxAIEGhL+iLFQICvUBVVmDljldYtZC3AMMLaHnk
+	 znLp/DkHELMsiIfdfpY7mlM7YwMQ9zxSfc9EsunIHvyX2Gnfiai8f7W/HbfxZJa4pRw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0m+3ices;
+	arc=none smtp.remote-ip=74.125.82.50
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B315606AA05;
-	Tue, 10 Nov 2026 03:38:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B315606AA05
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E89A606A331
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 04:18:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E89A606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=sBwnGGmB
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LWViQnJ2zF+VmEzNsXsAlELmvwMWPCOPJn7qqIWQVEdGuCPYd/kUOScYpyTuOwYOEfozgGmHM+dJOwuQ6D3HVZaM5J0UN/3cMDaY2eINVx2V+97lbwcpLyGi664EXUtl2DTzPdBqZvQd8Hzm6g+QNgcfu86NTtibeyrTwLEhoj8SpYnptni+Xp9xJoYBl/RGI5sQqxSrxznhgY3H+1/VqMqwWs8lyxFMcILsX2hItmjyvZuuD/kZicwQ9/Czsa4gWVvMyL7zU0B4yxi+Gp5dOBP9wetoYZlT6wmGBwf9nlVCTlcrhaoil86PBmwH0tTowsLIIU+plSos+7ZpoaoQRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mF0ONvtgZBz5/00SlejcCeAsL6JHc8mOf4kI4lWQL28=;
- b=Ph90QnZBYyPxM177fw29A/agQxJ7tFhZ40KjHiAS9H5TD/EhpmjTh59kIbaGWmgxBTIU0F8Hn2ocVhErWXY212QjAl6BFWEwPVLj6G6LFPbeNunfBurEWVuVTJdLoPm+dwwPOLKPiX4/m8HJ+kVYA5moeq9n2gB/zeAjtWGHo93j3fO0DunOXBj7tWg79RYAAkyrDdsaq/qWKy9MTXDpPhWcx3zHQRjpVawrDnVZ8poWs7Tl0Okwiu5Dt4z3MjXlSn6jMvJZG+C58UoIYm3VJoiEIlh0wzqU9v1NWuHPtVLlcqiuMWozyYI0Oueia2PwfNSCT7HgDsY21gvBgObfRg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mF0ONvtgZBz5/00SlejcCeAsL6JHc8mOf4kI4lWQL28=;
- b=sBwnGGmB+UiTufAS8YXAri5CScTk4EAHXEX2B5zTRE97HKfb5UpeGjwjgXKadVKbtELdD6OnZ8hoRyaZJWWLwRS8n8yjC+Y4/dJwQZ907w0iJJwwXBFy7InXUewKIL1ybyXbTriu6lT+2m1ni8DLGmA2k1jqU4skoP1qApt5QqkbqsFo952C0P184Uybinwp5vgNa2NIFKjaIo/j/W+OIa8Pg2hvUwqi4lnlaiVfB7ZNYS2658RLjMPoCJ1NawoivIO2z/vobIYo5rh0Fi2+BtYF25efV6JHgkQ+abNmoqrrpbVVoe1SzB2ifai4gpyZ8f3xrzbVi/B1tggK/XotPw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA1PR12MB5614.namprd12.prod.outlook.com (2603:10b6:806:228::7)
- by SA1PR12MB9514.namprd12.prod.outlook.com (2603:10b6:806:458::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Tue, 10 Nov
- 2026 03:36:59 +0000
-Received: from SA1PR12MB5614.namprd12.prod.outlook.com
- ([fe80::1a0c:e9e8:f3a5:d9d6]) by SA1PR12MB5614.namprd12.prod.outlook.com
- ([fe80::1a0c:e9e8:f3a5:d9d6%6]) with mapi id 15.21.0592.010; Tue, 10 Nov 2026
- 03:36:59 +0000
-From: John Hubbard <jhubbard@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>
-Cc: Timur Tabi <ttabi@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Eliot Courtney <ecourtney@nvidia.com>,
-	Zhi Wang <zhiw@nvidia.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	nova-gpu@lists.linux.dev,
-	dri-devel@lists.freedesktop.org,
-	LKML <linux-kernel@vger.kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0m+3ices
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1b1ce85287aso1642599c88.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Nov 2026 20:18:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794284324; x=1794889124; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ywbh2lEyTcpQxsowWo8XEkNgOvkD1AiYRUBcCIG+9aA=;
+        b=0m+3icese11IhSMQal2EJxNJfKJ4k6gxX07pR73T4cNv+FOX0i2KgW3AlWl6pOLICZ
+         fA2xrJ607pNEP+FLRxfMDGomuVoMRkdyGw6gGM9Z5w8SgNyuAgka273Ozkjir/o2nXmm
+         KK/k9dvF1urNzmPTnpB6KcgDyQyOnM8g4e2LTLcGSs6xccWYBZCUAD8dg1TsiayGa/CP
+         d56hMRaI/nx9PH8IY/RSFj9oKf4DQi61HMGJ/Y0sTKrpzN7B1WgWhOAmjNTNaFavdR3k
+         W8cPRTq6xLSCrGoVwpIBLwruQBvEsUovZQ9yXkvNI4/T2qnvWMipsttJdUDtJRK6LM4d
+         BYuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794284324; x=1794889124;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Ywbh2lEyTcpQxsowWo8XEkNgOvkD1AiYRUBcCIG+9aA=;
+        b=zuMIdEXxR6FLSIU6+c9fs/NNasSQLuYyCF0pDq43lOQ6Q7Dg56p7LrECE+kR63G/IU
+         qHR3ClW6WTxT0U95o40tbBsN4br211yl1E+od98oJb+kCQXjsSCNJjucadqNG9D7yFCJ
+         wYi2wE6DLbOTnNBmvva0AfI/OVilreeqOkyW+JcCoy+wOXbHrWuMaCfDDKzg1njTe5BO
+         ExzRVVBkZZNF1sRaryr1i5XYo2oWFc3WLaL4IWYuZLEK6zfi8xKXFO+cYjuULeQca6dn
+         d66ynkjtX3q+9VIgI5Ywyt9+XggwBnrmRnCok5V/kFXye3wwsWMD1Q8LUGuWsjZjDiIb
+         8/Bg==
+X-Forwarded-Encrypted: i=1; AL+hErETh+tgGwe71u8iRcQRrs0XqsQrzNJdYc4FOauTKKVNP1eBpAUcXHCHC+/fk9yRDLTS/PWfLcBADVIpwk+92Q==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9R94eEtiic1OeQs6F8rI61sCPOykZ62ToU/vJk8VmyAX0EX0ZQ
+	QRlLaEulrRfZ2tH9VC8GmItww2k0giOiWJOi+hr5ozLO3lvPsgRqUdlq
+X-Gm-Gg: AYBFou0DpnY27hAw9p0vhvA8QAmhnsX9AWaO84FEzHqeM7BYay33PqPiVfoKPK32RNh
+	329jMbBemoy88FPN45b+hpQucJMxdR9zFFs43NwWLVKR29tWpYvR6BcNzXuP+cAC/E1731lTW1d
+	SO0o9sHV1sVJupSpXy6BtjYK+Cr/bvq30q4Iri4zdApQ7D7AybxO+hbXiR9a45KkXS7uGI78wpN
+	nOfdunGktb+8YBnPn6nDnzvuyNFmLAtvN8KBbd+58N5Qnk2CArGcFDM2rBp4YKXlQOKDSxtYtCd
+	GCjIUFZ7aYME7KmWJef58JnAXYYpP7PwWYByNy0XTUXqa7hFKXC92zSOxzUVXqqokcEvPN9tlZh
+	RIhlwNjldYpHLmYDyw4kXM8FU3pf5ikrmLh5PgaEXqQkhZtP94Ja3K4AhJ2dwTtJHp6077WI7JO
+	qWtLegXMzdQ0vbFo+AfZ0J5YC6K1KsDA6XRFu1iGA9l6Uix97ibDpa0iRuzFGldX7BJf2spcUJZ
+	m/Ec8UZSO/VkEaZjx7X5P0NjX0IhEsHM6VEbaztpMscy+SrWMAsP0nR6qz8FWygH5eDUzJc8OIr
+	Is1ZrdosFwfTURQqGQrdGhicGE0SV2z0g9FpSTNs4xPzZp4=
+X-Received: by 2002:a05:7022:3b82:b0:1b2:366a:e7d1 with SMTP id a92af1059eb24-1b3b6182c6bmr1995819c88.32.1794284323891;
+        Mon, 09 Nov 2026 20:18:43 -0800 (PST)
+Received: from toolbx.alistair23.me ([2403:581e:fdf9:0:13b2:851f:d9cb:44c5])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b7ba88sm3540459c88.22.2026.11.09.20.18.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 20:18:43 -0800 (PST)
+From: alistair23@gmail.com
+X-Google-Original-From: alistair.francis@wdc.com
+To: bhelgaas@google.com,
+	lukas@wunner.de,
+	bvanassche@acm.org,
 	linux-pci@vger.kernel.org,
+	alistair@alistair23.me,
+	linux-cxl@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	jic23@kernel.org,
 	rust-for-linux@vger.kernel.org,
-	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH 0/2] gpu: nova-core: add two prerequisites for the r000 GSP firmware
-Date: Mon,  9 Nov 2026 19:36:52 -0800
-Message-ID: <20261110033655.148487-1-jhubbard@nvidia.com>
+	jgg@nvidia.com,
+	akpm@linux-foundation.org
+Cc: gary@garyguo.net,
+	a.hindborg@kernel.org,
+	wilfred.mallawa@wdc.com,
+	tmgross@umich.edu,
+	ojeda@kernel.org,
+	boqun.feng@gmail.com,
+	alistair23@gmail.com,
+	gregkh@linuxfoundation.org,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	alex.gaynor@gmail.com,
+	Alistair Francis <alistair.francis@wdc.com>
+Subject: [PATCH v6 00/25] lib: Rust implementation of SPDM
+Date: Tue, 10 Nov 2026 14:18:07 +1000
+Message-ID: <20261110041832.1730924-1-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.56.0
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0176.namprd03.prod.outlook.com
- (2603:10b6:a03:338::31) To SA1PR12MB5614.namprd12.prod.outlook.com
- (2603:10b6:806:228::7)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -115,104 +118,243 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB5614:EE_|SA1PR12MB9514:EE_
-X-MS-Office365-Filtering-Correlation-Id: a0f15622-ddfa-4993-1055-08df3edbe00d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|18002099003|6133799003|10067099003|11063799006|56012099006|261102123227099003|261026121527099003|261028144727099003|261022105027099003|261009223027099003|261021121427099003|261021123027099003|261026140227099003;
-X-Microsoft-Antispam-Message-Info:
-	lttik//xaMneMdRpC5i6XDUSN/ngqopYVVK0VUnI2FDL7HCXQO4NbxREcVVJy4lo+HpHtYLlRiDErzf1TQ8AnWLYCIiHsZsHTokoT7OcM/NjQpGaFQgLagyDc3fpUXIXM5InFtst1HT1vNwKdrb1MuOPmTkd2ifFt5KYUpHKVLjkx88unXjIrxbXubkIfEcQ8n6Ghbhq+Vzi2svqJmhnljfn7f5TI2ComfIbkO+IOY+b/ibXEXY6BVzg41H4RZs9uuY5uAUYOX6NfzTPvD9valNNNJKm6a6NKhL80Je6xRrwGu2d0oZBfa3cZObS5jd68oiYs6NpLI5ikoxb8UGAhwSS/8n00O4dN+bp7rkZUdJhDbQ8vvDc8uY4x44Zn5uSr4FD4ZPYoEp4MzxbfQ2mNz4fyhZMUD+ydZzmnV11IH04k+iuvgo4tzjBCrFJyOkBofMJZxQcyMgrBBw9FAESyXHbfBqnRx+bDmfoyngW8CZyV7uteBeajavGZ+p73ZQzScGKLdeU0cjD5/f423FIWLKIIB+gXstAfY0DFukE4m3pVYo7rtS8Svwjly3bsGncExXuptUaGqqRB3duUvcxM8ZWSdW4Y/r4DYnvodXW2SrxR8Q1l/s09Bkb3Xd3XqS/+THItbX2DNlbXMaQyRyQImyeEaVTvFls7Y0mkhYowY8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB5614.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(18002099003)(6133799003)(10067099003)(11063799006)(56012099006)(261102123227099003)(261026121527099003)(261028144727099003)(261022105027099003)(261009223027099003)(261021121427099003)(261021123027099003)(261026140227099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?nQbs3HaLtsQAdhcE/Fhcued8Lve7u4wFdoy0Vp+Xr1q3uFEZZFvNReUDd+SK?=
- =?us-ascii?Q?TwZdNyPP14gH0hKxiN+sL/nbgmJ8xY/kmWWhr3KSNyFDjtMCWnI9kwpRcYnK?=
- =?us-ascii?Q?FCHgn7ZDAsMzbNsASAeG/sq0Yom58Xbr4I4qBADrdAVYZYIEivwrO/apYm4i?=
- =?us-ascii?Q?1idoGbB+q/rA4TTwdHGZ7xANl3wTkj9N/NyWcOGI97GS+OE9zMUUcVJfp5yR?=
- =?us-ascii?Q?EBYsQ1jYc6YMxJ88GmkIMxz3Am+/PaVSW+hA3bsTE+vwB1D01y6ELnXg0pKO?=
- =?us-ascii?Q?rylJBb+T03KBNkByqPNgz+uO2UIKtUtz2nV3VrQDcC0pJSKsQ4IEd1fgNFsF?=
- =?us-ascii?Q?juLmvZNu3xG/yWjPSPcDCpbDPAws8WrwaUQjs8H1SmfxU7i30m/RHrFZj4UO?=
- =?us-ascii?Q?0BCY/zHb5cJRpcRnEhYZ5C9mvk3ipW4ltZx6v/LW+0Y9SLNKqwXjmr/X0zud?=
- =?us-ascii?Q?NNhbyAHZQI2c60DwjEpoAGmXtksP25sCUZ/m2GCXqzXJyBrFDK9ihFmHAarS?=
- =?us-ascii?Q?c+D55PPd35c8/jJoSaxk/a4IMleS5jAvqLSFjckTO73jqJ8Wi+dT43o+9zyt?=
- =?us-ascii?Q?h3j2nDRsnludivIQ7VHBgApHNPGjAgRx5IjRtVoiLG7uWo4fNQ+jXKpaKbrX?=
- =?us-ascii?Q?Wg2iTYxHAGX2sVzFQTP7trfCak7O6kbFbKukut0naX00SVFBb8NupC3x4cI5?=
- =?us-ascii?Q?w73fwJnzNocFPvcRaE/I+fmoK3DksTdDO93SdwyiSb25eLI3zjAR5CcJ24u/?=
- =?us-ascii?Q?zOlPrk/NoS+wKIkOCnRaB1Jgr/pknJW1XYhUu3Lj0dQyiky7YWBTi83v/x3o?=
- =?us-ascii?Q?klfTs17ZvQERE3+qKmQwuNQqyNDaMPEU1z5/vXQfJAHiUnpQZ/E8hVMpdw8w?=
- =?us-ascii?Q?oYj8dZDI0VfN0M5W7Ms66D+l4hyfLzkVHfNJ8cIpZD6sjGMWj1TuMFsV/Zy7?=
- =?us-ascii?Q?VzY5xa+cr+ZICzyc0UBCAekZnAJ+6nB1RWyYtDpPXUwVzQrUgxsYS7IUcAtg?=
- =?us-ascii?Q?dHlA/03tkijXl7gCUqFdd4xHY3L84htqZ/yAgeMeABtR7A1xs2SY540xAGH6?=
- =?us-ascii?Q?iRt1Q6vmyRn24y32Gyk7cssN/D705za7QTfwhff6B+i7xL9V39O1jsImvesQ?=
- =?us-ascii?Q?auhEqJRWhwphawJbEMPEI50TbBK+rtmlbjK0nI+qVF0PLohx2n9Cf3Qp1EJD?=
- =?us-ascii?Q?ATobyzL6x8c/hWrDgHTYqHJsiEYkIQkNDH1mTYmDCYZuHJ8k5o09vJlnqwtg?=
- =?us-ascii?Q?cxQ7QHaSlPL5BGx3tJOKJG4xgYkfeRodsuFX8YFXA5GAazt8T+geJrcfxgLp?=
- =?us-ascii?Q?Nh4E4wPk7pJtuMC07piTaaGIz0N8+BQ/YaKd82bRviAn0n5xR83tWXqi6lBz?=
- =?us-ascii?Q?e8Mys4ZOHXGY5uiA5fi86oTrxA9Y61NlI+5n2WJ6sW2ov1ivKOyWmOEgMdHz?=
- =?us-ascii?Q?c2J74Y/mgPp53xuM8Q7J1DKPFZ7goFgc5eEftuGcDJ9hvWLBI0ja3N10tRP8?=
- =?us-ascii?Q?qFYyynnQsM29ClOoxV4/F/iFKecRwzornWzs7wSbVSkAsOpqxAK23yPuWIq7?=
- =?us-ascii?Q?lMJ/woBj7r7cOrVTjVW8e+MAzXL8JNcoQUK853PCXuXITrSRGLJro2dURPkR?=
- =?us-ascii?Q?uD7NukuVn7FoSlMFodOqc94gRk3VrEJErbdwRmbVnKtL8FobUWgEEhiEUCr9?=
- =?us-ascii?Q?gd1IJYwE1xGKBsntmI3ZVz4i/WliFm2/KAM8qoujVyHE3mq1JfeJ5v2xAbgs?=
- =?us-ascii?Q?H1aRChhlCA=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a0f15622-ddfa-4993-1055-08df3edbe00d
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB5614.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 03:36:58.9369
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Uqaz+WTchcGnEo+OWkk4BuzbjyS1ZQAdZJJs5GjjzzHAk1Q3Dl5xAkvRyfC5AYAScxyjbA2d8bB/OrGuoHEb1A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9514
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-Here are two preparatory changes for (or more accurately, from) the r000
-GSP firmware series [1], which enables nova-core to work with the GSP
-firmware for r615+ releases.
+From: Alistair Francis <alistair.francis@wdc.com>
 
-Both of these patches stand on their own, so posting them now helps
-avoid reviewing a huge-er r000 series. :)
+Security Protocols and Data Models (SPDM) [1] is used for authentication,
+attestation and key exchange. SPDM is generally used over a range of
+transports, such as PCIe, MCTP/SMBus/I3C, ATA, SCSI, NVMe or TCP.
 
-* For the Rust PCI abstraction, add an accessor for the PCI domain
-  number.
+From the kernels perspective SPDM is used to authenticate and attest devices.
+In this threat model a device is considered untrusted until it can be verified
+by the kernel and userspace using SPDM. As such SPDM data is untrusted data
+that can be mallicious.
 
-* Factor out the shutdown path's check for a suspended GSP. The r000
-  boot sequence needs the same check, so it gets factored out and
-  cleaned up a bit at the same time, by using register!() for the bit 31
-  access.
+The SPDM specification is also complex, with the 1.2.1 spec being almost 200
+pages and the 1.3.0 spec being almost 250 pages long.
 
-This applies to today's drm-rust-next: commit a7cdb17ca0d7.
+As such we have the kernel parsing untrusted responses from a complex
+specification, which sounds like a possible exploit vector. This is the type
+of place where Rust excels!
 
-An LLM coding assistant (Claude Code) helped write both patches, but I
-have fussed over every line of both the code and the commit messages.
-The LLM also drafted the first version of this letter, which I've
-completely rewritten, because it totally missed the point. All of the
-points. :)
+This series implements a SPDM requester in Rust.
 
-Testing: booted nova-core on my 3-GPU test system (Turing, Ampere and
-Blackwell GPUs) with all KUnit and built-in Nova tests enabled, as
-usual.
+This is done using the `Validate` and `Untrusted` traits. The `validate()`
+function has been updated updated to allow `context` which we use as
+part of the validation.
 
-[1] https://lore.kernel.org/all/20260918010719.1176945-1-jhubbard@nvidia.com/
+The validation has also swapped from a C style pointer cast to using a valid
+Rust struct and copying the data from the original buffer to the new struct.
+This obvious has some overhead, but as SPDM packets are relativly small, and
+not used as part of a constant hot path this seems fine. The big advantage is
+that we can validate everyting at once, convert the endianess when creating
+the struct and we get left with valid (not repr[c, packed]) Rust structs.
 
+This makes the code a lot cleaner and more robust. It also removes a large
+number of `unsafe`s and using `get()` for the arrays removes a large number
+of possible `panic`s. Thanks for everyone at Kangrejos for the help with this!
 
-John Hubbard (2):
-  rust: pci: add domain_nr() accessor
-  gpu: nova-core: factor out and expose Falcon::is_processor_suspended()
+This series also adds the required Rust Crypto bindings for SPDM.
 
- drivers/gpu/nova-core/falcon/gsp.rs |  7 +++++++
- drivers/gpu/nova-core/gsp/boot.rs   |  6 ++----
- drivers/gpu/nova-core/regs.rs       |  5 +++++
- rust/helpers/pci.c                  |  5 +++++
- rust/kernel/pci.rs                  | 14 ++++++++++++++
- 5 files changed, 33 insertions(+), 4 deletions(-)
+I have kept Jonathon's reviews of the SPDM code, as the changes since the
+last vesion are mostly just mechanical, convertting the repr[c, packed] structs
+to copy structs.
 
+This is based on Lukas' C implementation [2], but has been refacted during the
+first few RFCs. I have included some of the relevent patchesfrom Lukas' C
+SPDM implementation in this series where they are required.
 
-base-commit: a7cdb17ca0d7ce67e9f3a52d39edd60f03223729
+This is a standalone series and doesn't depend on Lukas' implementation.
+
+The goal of this series is to get the smallest possible SPDM implementation
+upstream. That will provide building blocks for us to continue working on.
+
+As such we don't yet provide evidence or certificates to userspace, allow
+userspace to provide a nonce, support PQC or more advanced SPDM features.
+This is enough to communicate with a device and return "authenticated" to
+userspace.
+
+Note that RFC v3 did provide evidence and certificates to userspace and
+allowed a custom nonce. Showing that it's possible. I also have patches
+that build apon [4] to do this via a TSM driver, again showing it's
+possible with the current approach.
+We just don't support it yet and for TSM I need [4] upstream first.
+
+This series is different to Lukas' original approach and the approach taken
+in the previous RFCs and instead adds the PCI-CMA support as a TSM driver.
+This was described by Dan in [3] and [5]. The advantage here is that for PCIe
+we can leverage the TSM work for a lot of the features and provide userspace
+a consistient interface between PCI TSM and CMA.
+
+This series also doesn't check the certificate chain against the kernel
+keyring and will instead leave that to userspace once [4] is merged.
+
+Other transport mode (such as ATA, SCSI, NVMe and MCTP) will
+therefore need slightly different approaches, as TSM doesn't apply.
+The library can support this though, it will just need some netlink
+and sysfs wrappers added as applicable. This way each transport can support
+SPDM in the way it sees fit.
+
+The entire tree can be seen here:
+https://github.com/alistair23/linux/tree/alistair/spdm-rust-tsm
+
+I'm testing this by running the following
+
+```shell
+cargo run -- --qemu-server response
+
+qemu-system-x86_64 \
+  -nic none \
+  -object rng-random,filename=/dev/urandom,id=rng0 \
+  -device virtio-rng-pci,rng=rng0 \
+  -drive file=deploy/images/qemux86-64/core-image-pcie-qemux86-64.rootfs.ext4,if=virtio,format=raw \
+  -usb -device usb-tablet -usb -device usb-kbd \
+  -cpu Skylake-Client \
+  -machine q35,i8042=off \
+  -smp 4 -m 2G \
+  -drive file=blknvme,if=none,id=mynvme,format=raw \
+  -device pcie-root-port,chassis=1,id=pci.1 \
+  -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323,spdm_trans=doe,bus=pci.1 \
+  -snapshot \
+  -serial mon:stdio -serial null -nographic \
+  -kernel deploy/images/qemux86-64/bzImage \
+  -append 'root=/dev/vda rw  console=ttyS0 console=ttyS1 oprofile.timer=1 tsc=reliable no_timer_check rcupdate.rcu_expedited=1 swiotlb=0 '
+
+echo tsm0 > /sys/bus/pci/devices/0000:01:00.0/tsm/connect
+```
+
+1: https://www.dmtf.org/standards/spdm
+2: https://lore.kernel.org/all/cover.1719771133.git.lukas@wunner.de/
+3: http://lore.kernel.org/69976d7d39c60_2f4a1009@dwillia2-mobl4.notmuch
+4: https://lore.kernel.org/all/69976d7d39c60_2f4a1009@dwillia2-mobl4.notmuch/
+5: https://lore.kernel.org/lkml/69e19c80b892b_fe0831000@djbw-dev.notmuch/
+
+v6:
+ - Add crypto bindings
+ - Expose public Rust API
+ - Address LLM generated reviews
+v5:
+ - Split out crypto into Rust kernel wrappers
+ - Use ZeroCopy for SpdmHeader
+ - Add the Transport trait and CTransport type
+ - Bind the device driver
+ - Address bugs and issues from reviews
+v4:
+ - Based on discussions at Kangrejos the following changes were made
+     - Add context to the validate functions
+     - Convert the validate() functions to be complete Rust structs and copy the
+       data, instead of C style pointer casts
+     - Use ForeignOwnable trait for SpdmState
+     - Use get() for array accesses
+ - Address review comments
+v3:
+ - Rebase on 7.3-rc1
+v2:
+ - Tidy up the PCI/TSM function naming and is_pci_tsm_host()
+ - A large number of changes (mostly to the Rust code) based on Sashiko reviews
+     - This includes a few local runs of Sashiko
+     - This has fixed a few undefined behviour bugs in the Rust code
+ - Rebase on v4 of Benno's validate patches (patch 1, 2, 3)
+v1:
+ - Add CMA as a TSM driver
+ - Initial support for SPDM 1.4
+ - Cleanup a range of comments and concerns from RFC
+ - Remove kernel keyring checks
+RFC v3:
+ - Use netlink to send information to userspace
+ - Don't autogenerate Rust helpers
+RFC v2:
+ - Drop support for Rust and C implementations
+ - Include patches from Lukas to reduce series deps
+ - Large code cleanups based on more testing
+ - Support for authentication
+
+Alistair Francis (19):
+  virt: coco: change tsm_register() to use a const struct
+  rust: add bindings for hash.h
+  rust: device: Expose Device as_raw() publicly
+  lib: rspdm: Initial commit of Rust SPDM
+  PCI/TSM: Rename pf0 to host
+  PCI/TSM: Support connecting to PCIe CMA devices
+  PCI/CMA: Add a PCI TSM CMA driver using SPDM
+  lib: rspdm: Support SPDM get_version
+  lib: rspdm: Support SPDM get_capabilities
+  rust: kernel: Add crypto hash bindings
+  lib: rspdm: Support SPDM negotiate_algorithms
+  lib: rspdm: Support SPDM get_digests
+  lib: rspdm: Support SPDM get_certificate
+  rust: public_key: Add crypto public key bindings
+  keys: Guard asymmetric-type.h behind CONFIG_KEYS
+  rust: x509: Add X509 certificate bindings
+  lib: rspdm: Support SPDM certificate validation
+  lib: rspdm: Support SPDM challenge
+  lib: rspdm: Expose public Rust API
+
+Benno Lossin (2):
+  rust: create basic untrusted data API
+  rust: validate: add `Validate` trait
+
+Lukas Wunner (4):
+  X.509: Make certificate parser public
+  X.509: Parse Subject Alternative Name in certificates
+  X.509: Move certificate length retrieval into new helper
+  PCI/CMA: Validate Subject Alternative Name in certificates
+
+ MAINTAINERS                               |   13 +
+ crypto/asymmetric_keys/x509_cert_parser.c |    9 +
+ crypto/asymmetric_keys/x509_loader.c      |   38 +-
+ crypto/asymmetric_keys/x509_parser.h      |   42 +-
+ drivers/crypto/ccp/sev-dev-tio.h          |    4 +-
+ drivers/crypto/ccp/sev-dev-tsm.c          |   14 +-
+ drivers/pci/Kconfig                       |   14 +
+ drivers/pci/Makefile                      |    5 +
+ drivers/pci/cma.asn1                      |   41 +
+ drivers/pci/cma.c                         |  271 +++++
+ drivers/pci/doe.c                         |    6 +-
+ drivers/pci/tsm.c                         |  185 ++--
+ drivers/virt/coco/tsm-core.c              |    4 +-
+ include/keys/asymmetric-type.h            |    5 +
+ include/keys/x509-parser.h                |   57 ++
+ include/linux/oid_registry.h              |    3 +
+ include/linux/pci-doe.h                   |    4 +
+ include/linux/pci-tsm.h                   |   48 +-
+ include/linux/pci.h                       |    1 +
+ include/linux/spdm.h                      |   71 ++
+ include/linux/tsm.h                       |    2 +-
+ lib/Kconfig                               |   18 +
+ lib/Makefile                              |    2 +
+ lib/rspdm/Makefile                        |   10 +
+ lib/rspdm/consts.rs                       |  123 +++
+ lib/rspdm/lib.rs                          |  317 ++++++
+ lib/rspdm/state.rs                        | 1000 ++++++++++++++++++
+ lib/rspdm/validator.rs                    | 1140 +++++++++++++++++++++
+ rust/bindings/bindings_helper.h           |    5 +
+ rust/helpers/hash.c                       |   22 +
+ rust/helpers/helpers.c                    |    1 +
+ rust/kernel/device.rs                     |    3 +-
+ rust/kernel/hash.rs                       |  141 +++
+ rust/kernel/lib.rs                        |    7 +
+ rust/kernel/public_key.rs                 |   83 ++
+ rust/kernel/validate.rs                   |  281 +++++
+ rust/kernel/x509.rs                       |  236 +++++
+ 37 files changed, 4082 insertions(+), 144 deletions(-)
+ create mode 100644 drivers/pci/cma.asn1
+ create mode 100644 drivers/pci/cma.c
+ create mode 100644 include/keys/x509-parser.h
+ create mode 100644 include/linux/spdm.h
+ create mode 100644 lib/rspdm/Makefile
+ create mode 100644 lib/rspdm/consts.rs
+ create mode 100644 lib/rspdm/lib.rs
+ create mode 100644 lib/rspdm/state.rs
+ create mode 100644 lib/rspdm/validator.rs
+ create mode 100644 rust/helpers/hash.c
+ create mode 100644 rust/kernel/hash.rs
+ create mode 100644 rust/kernel/public_key.rs
+ create mode 100644 rust/kernel/validate.rs
+ create mode 100644 rust/kernel/x509.rs
+
 -- 
 2.56.0
 
