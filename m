@@ -1,97 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794312871;
-	b=FB1TVO5ogXWH50YlK/3aO0wiLxwOoqeSTi1AetTwtZv/wBV7tfgOawd+5pZ8WoBy8QLX
-	 GPA4waotA8nf6bJcdn30HMsgYrp2QcRc/eHY3QdRpwZIQomJIRrTpXHtSAd4Z64sv2GB3
-	 ij60dX8gmfMlRIRw3I/XSsuFBk29cP4k+Y4zz2UlIN24pI8Vb5EkNgz5sHnK64XIQaJDi
-	 8Mj3i11LadME0E2zXYuih5EyJXPveoYjgmgmC53T9egTFnX4bI+hO7ELzbhDbO664K8Qu
-	 db4G4xK9jXntmZKESewNWO3EOum33mJ0aiah9ikUQPhtgt+S0jeakrAZc0dIi5jHe9A==
+	t=1794314624;
+	b=n+nac0GFhgtapr04Zfg/JI7ODPTnEBreppgbDdJLpAxfHZE16QlhJARwpj8I+73qcPqc
+	 tBGmK0KHTgb3jOIcJNOmFbemteNPMZAt2mDdd8zplM6ZxlC6aATB+dEurDnLzozkR+Mou
+	 CTWh5/T1OzUbnlX8xPLZG+zd3XxIvnE1ZkF7CVW/XuUobd3cO+sqfpJhl4Cxcli6XpIOK
+	 9NaTG9crw2zPofJEu2KUJ+mfHjaVFyS21EeV8GmswdY/84FMp9hZPw8+EkzDnCi7jBQBi
+	 f1+Z3nrbZneteT0qRns+6NKH3k4GZcabRDCzfRxWvnHFr6saUC0k9VnApWyrcyYUJYQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794312871;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=iP7ihblxE57Xx8rjE7fq3FQri1E1LvdLUGQwTbaBM2w=;
-	b=jlUz2UbDgmPpiZ0BBxXA1t+mRSiD7OPaAsvZ6DLaxJj7//i4ySu8UKAknGRcXGNxWe1g
-	 vtliPFa2vj/D8VfRsvYsb0l/pELvoDgqZkcsWtN5FuAm9egNa8tT4/jFbuE1luWYbDsVC
-	 RRqTy9G+49WUe4DBEA0ZX5R+1Qk/Ekizd60VFj3pl08h54DYpOXyif2sDF1l2LHGK/CMr
-	 frRCjt/A2XRRdkgOJMg5CcG0zTgkcTHVOsIDCPqgfTb6d6Qjq07/JOKhjXy4GIx7RXCVv
-	 58OnBs41x9xFgtIcSDUZTQgXeAnKYtTxN8sPAKdyFblaoMm3ZOu1dfPVRxyTik2NJfg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794314624;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
+	 In-Reply-To;
+	bh=XPefT0fr3wupychDfnABDtN7x7rVMQKiNrbW2cLICoA=;
+	b=E0PU5V8rjbBnCUnJVqImsFZVKGxqIVfG+Xb0LV93dmod10DWlnQ4tj81Gm/e0M/vD8NV
+	 ehvH7qXmbTD0S7jKbF21pjwKuP4FMKnNvVt0rGJ6WIAMqCh/ckFgCaSNvTPxpTeIpegib
+	 8bYfQMsRcZRQVfi1Fs1MR/IPlRuIJICaZF4grwL0viJ0/ovw33c5DnHDeiSu50tduYd93
+	 3c/cp5RcW/KcSo/oqii2+DzRESgFtNkRXv2TN+bIdJDh5WAD8kJ9GtvZWYhpkLur+CNVq
+	 82U9oySRPCgaRZk6L3k/Ne8npAC1aPOJTxbU2R4n5Bl+hlvK6fP2p1Q5z1IUo+Mb0/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GKVck9DA;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bsWPymX7;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B17606A31C;
-	Tue, 10 Nov 2026 12:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF48606A321;
+	Tue, 10 Nov 2026 12:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GKVck9DA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A202C1F008A1;
-	Tue, 10 Nov 2026 12:14:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bsWPymX7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15C81F0089F;
+	Tue, 10 Nov 2026 12:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794312871;
-	bh=iP7ihblxE57Xx8rjE7fq3FQri1E1LvdLUGQwTbaBM2w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GKVck9DAyjJRwF6HuQpkK7AbBrIq+eQ3cPUnGzG1Gq6VuJ8UdC/rCB6CSKkKcIn5Q
-	 aRteYVwg0E/vjLAXAgSdndPFJbm2kW7UBAXPX2wxyItnKElyEsLD/JgTWO8DtW5Dh3
-	 h3jcYUcQVTzLucvFJrStVxZQYgRn0K2azySx1VuMNH8H+8ewWXtkM6vCbuFPilzsPN
-	 NSvLuLl8hwNDOj7EqwhE6MCfb1dosSfzqmEaasFJc7Whkck+lVyJ4XXZBZBJcTx8Qd
-	 XGZ0iAu3gUthpEeOCBdSh9mvjej8lNkfPGb0llFg+KFxSchaArzxL3km1wwecp/SCl
-	 SZ6Yu7OkzoWBA==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 7494D198003A;
-	Tue, 10 Nov 2026 07:14:21 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Tue, 10 Nov 2026 07:14:27 -0500
-X-ME-Sender: <xms:nArzanSpIIwG51tsHxoNjg4cx6XZb8fKe9mFQiaStEaiiWGXacBybg>
-    <xme:nArzakaVN84v7aVb-PegN2kbNzRsB3CRvMureoDByD8I5xamajVLlGpz647xE3fm3
-    51B8K8DIgvq8gUblQ1_wtJPjuOKxEnDGaUv3u-nc8ErEhpB3-Hwsxog>
-X-ME-Received: <xmr:nArzanTpMal-hQi5JzOJnpszvHZD8_1RlukXgFm8HSGeIx7gjB6EKJdzoew>
-X-ME-Proxy-Cause: dmFkZTGpbVzkrelYKxT3HOk2p4weC4oCcSZPW/rpHgt9mwOOujexV3ntOnbLy9kT90zWH2
-    X4R/Pc7He9zKvvIIHknrJ6jmRqd+GEiC5OJ1/9zKSazJXODPTmBjL5gTrOW05ZhonWrI0U
-    H7BGU8fq4gRtYPJHKGaPFUfd+hhqfZs0WJnuKaF+0z1+xy9ewLL2avPysZ0hBftBGgc1ji
-    WNjIvzjtJS6O1t8aThrFrTYaX6K2a/nHsjYlaSHjs0ddkvqo5ZzGQQwxlvpOQpp6n9RdMq
-    LUyGL1B9cM4bURzCmIX/QZAKp+9nxEgKsjUMOYTJUoyJO1N1eTM0iZVOZQxVws8ePh1gf5
-    u3NT1w0HRepOqC6jxxdIbkR0OIlfn08JNCqChvaiOat1qs/Hvs4BeuDHJ+03E4GxBLn7AO
-    9iaWFSdMmsDwlTfkeYfju8yOlYi22QNnwJ+V7OmWCOi9D2Qgdp7rMn0ILlObukPllx8sp6
-    sgtZnaDrpNVkntf/YPmW6nW2IwRTwVszcOKhtCnGhQn68O5yLhgSQvPSdVi/TWcO5aJME1
-    AEY2vAPdhKIz5yKKlYXlb4TNn/LlK8U8Y7KG9HvGrQdaItlAJAEARWVtXQQmQULCTORKOG
-    tQUdCQhsBV3Keoy0kZLDn2YA5jCy79U1wRJL8S9SH4wnTl0B20/HB6fTGrIw
-X-ME-Proxy: <xmx:nArzak63XRT07vEmPmWdj3UQk19LRBHMl5JrY5kevBf3xCYTpbZ34g>
-    <xmx:nArzaiT_kk--095o0kgnoe_C38SrCC57yVH7d8pyGoRFenBerbO_5w>
-    <xmx:nArzamTn6p9WWzTEKKy5ym9NJMOSo0Usfg-Cs0u9knPk_yDjYCeNgg>
-    <xmx:nArzaoNTDpTG50M4xFTa42zG1GDWh9eEqtpP7nfOAgtsLCIUoCitng>
-    <xmx:nQrzav1UKN_6PhSRRpxLt3yvag5XAx38k6QE3cFnxbcCpC6V8RwR5kkj>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 10 Nov 2026 07:14:20 -0500 (EST)
-Date: Tue, 10 Nov 2026 12:14:18 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Uladzislau Rezki <urezki@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 0/4] MAINTAINERS: remove my reviewerships, add CREDITS
- entry for THP
-Message-ID: <avMKVYORkTQfdVB9@thinkstation>
-References: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
+	s=k20260515; t=1794314624;
+	bh=XPefT0fr3wupychDfnABDtN7x7rVMQKiNrbW2cLICoA=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=bsWPymX7+lfe73MT5e35/b1PX3m7Vta5PtxMBjI10WgFUUwnrU/Q4C0qJp6T0VKTg
+	 1SE59OtlHhLqFyp7UB8nK94wEW+5ypzsN92WP2QjGAcdhFm7Dxz5TLJQLxhRA8lzAv
+	 5zUWiLeaDowhPvo9jsuz1zKsQq3oMmbGwftVORred8EmSkDBWcVSVhQVVkWjFGQ7vj
+	 kVdj5iaENTuBGloeoyVRgjkcuYnSqE1SYXpVJkG5ZnbG7wnndMd/qFThaC7DkurgBK
+	 UQyNWYPQTS3h/U288xm1AXdVJk+vef7rgBYOYH2fgP3xun4TMeK4D1EfvTKdPTkEYF
+	 Q8mHmqdxeDlPA==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -100,21 +48,99 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 10 Nov 2026 13:43:38 +0100
+Message-Id: <DMRJG3ZQXY6Q.1WSE0ZB1YLDO8@kernel.org>
+Subject: Re: [PATCH 1/2] rust: pci: add domain_nr() accessor
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Eliot
+ Courtney" <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>, "LKML"
+ <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+To: "John Hubbard" <jhubbard@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20261110033655.148487-1-jhubbard@nvidia.com>
+ <20261110033655.148487-2-jhubbard@nvidia.com>
+In-Reply-To: <20261110033655.148487-2-jhubbard@nvidia.com>
 
-On Tue, Nov 10, 2026 at 12:03:06PM +0000, Lorenzo Stoakes (ARM) wrote:
-> Given the current throughput in the kernel resulting from AI-generated
-> series, I unfortunately lack the bandwidth to generally be able to offer
-> review except in those areas I maintain.
+On Tue Nov 10, 2026 at 4:36 AM CET, John Hubbard wrote:
+> The nova-core driver has to send the GPU's PCI location to the GPU's
+> firmware as one word that holds the domain, the bus and the device
+> number.
+>
+> The PCI abstraction has dev_id(), which packs the bus, the device and
+> the function into one value. It has no accessor that reports the domain.
+>
+> Add an accessor for the domain number.
+>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
 
-Oh. Sorry to hear this.
+Is this tag intentional? (Just asking since my tooling flagged it as it was=
+n't
+present in the first submission of this patch and some other criteria.)
 
-Thank you for you job.
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> ---
+>  rust/helpers/pci.c |  5 +++++
+>  rust/kernel/pci.rs | 14 ++++++++++++++
+>  2 files changed, 19 insertions(+)
+>
+> diff --git a/rust/helpers/pci.c b/rust/helpers/pci.c
+> index a8540f90b13c..49f2c089d236 100644
+> --- a/rust/helpers/pci.c
+> +++ b/rust/helpers/pci.c
+> @@ -7,6 +7,11 @@ __rust_helper u16 rust_helper_pci_dev_id(struct pci_dev =
+*dev)
+>  	return PCI_DEVID(dev->bus->number, dev->devfn);
+>  }
+> =20
+> +__rust_helper int rust_helper_pci_domain_nr(struct pci_dev *dev)
+> +{
+> +	return pci_domain_nr(dev->bus);
 
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Rust helpers should generally be transparent wrappers and not provide any
+semantics, even if it is just to resolve a pointer.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> +}
+> +
+>  __rust_helper resource_size_t
+>  rust_helper_pci_resource_start(struct pci_dev *pdev, int bar)
+>  {
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index 769d01d23429..57718e48208d 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -408,6 +408,20 @@ pub fn dev_id(&self) -> u16 {
+>          unsafe { bindings::pci_dev_id(self.as_raw()) }
+>      }
+> =20
+> +    /// Returns the PCI domain number of the bus that this device is on.
+> +    #[inline]
+> +    pub fn domain_nr(&self) -> u32 {
+> +        // SAFETY: By its type invariant `self.as_raw` is always a valid=
+ pointer to a
+> +        // `struct pci_dev`.
+> +        let domain_nr =3D unsafe { bindings::pci_domain_nr(self.as_raw()=
+) };
+> +
+> +        // CAST: `pci_domain_nr()` returns an `int`, but a registered bu=
+s never has a negative
+> +        // domain, because `pci_register_host_bridge()` fails when the d=
+omain allocation fails.
+> +        // A negative value here is a kernel bug rather than a condition=
+ for a caller to handle.
+> +        debug_assert!(domain_nr >=3D 0);
+> +        domain_nr as u32
+
+NIT: Please move the comment directly above the actual cast statement.
+
+> +    }
