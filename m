@@ -1,62 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794305044;
-	b=izst3ZoNzCdFUWaXMqP8ooLFFdpckJfDWWtPwTNJqtmji/9AgXcit5SzlE7JHuCHw/Yd
-	 1//4LJpH5pK+ur+LBklXUEYxEEevUMItKjazNzW6wy2SwsqaLrJecv1PBY3BUFLTwFr+1
-	 u3d/Zdf79yKqYsSsrmyWOMNvwZNIdIUTflZAbYYygERtPGmzunXahvSlRgr7WRIjnbM/o
-	 CAJX4tVyZmp2W+Hz/TfHu8WxCS6ZxGLmnHrzDr3KfZJbtV5/Rsl/n5GAPlUIE3FN73oSH
-	 IBH1YCzV8NRiwfJQHd/WygtR0a2TwNVYtSuC8zrq6l+VQMnzVZhzFRbYMELRufvJBSQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794305044;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
-	bh=5v0nfMk4rBodRMogcp330VoEDCSVbK9/ewM4ci8K6Js=;
-	b=yLLCgY8/4f5xikUCfGjzPHavnhUG5O72VfRqIJ4IghhJ03BVVE0nrzd4dm6qI2ZeQ7L4
-	 SxfMc4rfpkbeq7ToRknB6QIeH2cFtGoblow4WnvgDy/EvWFZnAwkLh6QRnBjWNp5oekad
-	 pqJ7RqTY+IhdxEPSQRf1uFEIu8pyInvqfeYNu5wHeB5m/BRelxuGs9c22q/O3WKu3qEwY
-	 MYCT7ioGdtvhhxz8pUue2O2JFb6j+SsMVubv826bfGYrTfUJUxdbBt9nxP336KyRksCcn
-	 1rqKMqcKeZfc/8h28iu5MPkSZNSRZnlHvoOoJ6dQTT7EqqTWY0cS7FQ7j5njR3W0HCA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=tvw01Pb7;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7781606A32A
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 10:04:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7781606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.4
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794305705;
+	b=NY0CHIHf3soScJwZbeQyXe1F1MZ+x1osWq8c5sng2Dmi9GTQ88ZIh5zv4fHCPAJqpJp1
+	 f8UYniabf1NuTQx/FRmF/bC35C6RN2ZwR5F+Li+LbfDSIbtegrQ7HlJYx9JOcjcMX8Bm5
+	 cCMjjaxIMAU7hi97MgX7DwekUu5Oje1JXJiBjCJOH0WMfoVkXwfrFDZA9Hs065EUahSX/
+	 ng+gMkBMcilMzcaHSSX6cQJ3gNkea1KpvPkNn/vAfGrLjrWs5TAwKOyA/GV4iOOvslUs7
+	 v80EZovSk692b7j/GHIhZqOttzCYHehJU93KUG41cKpKkGiSQMrqunqAcbEYpTZJpdA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794305705;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Content-Type:Date:
+	 Message-Id:Cc:Subject:From:To:Content-Transfer-Encoding:References:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=9Kx580bdjFfKc47n7nkVpe8IJZx9lzBzvw16KF5viOM=;
+	b=DtEnMBkiCl8U9cmmSZ7APm/zgyfY+KfejpATYCTPCqiQ138Z44jR3VclOrcWXOYOBjC3
+	 3ej+BAVEyz6wKHnfL+bEDiJK+IaR3+D7tG19V64yYT7TQS2PIzFKC1BhwZlbL7NsmGpnn
+	 id2tw5MxUaJ7zNZwnldk2br6SVp1Velmlssf6/Xg6QnZHvJe4hU5rxg3SZpQSfPVn7ld3
+	 kaaXiOYiOtS0iZHa+QRCLtxoghSKmhKjkrwqc4HKosz83OzEzwuAmX4hd/YmMhLTS927Z
+	 yEZjpKBSQEAoOnJ0GfDEud1ksza0Qq3PLwjFn8n1zL3TuBMus3l597OAWGe88rSH0lw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b="My/o+55Z";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.4
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011004.outbound.protection.outlook.com [52.101.62.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13D3606A332;
+	Tue, 10 Nov 2026 10:15:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D13D3606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=tvw01Pb7
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2A54D1F02
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 02:04:00 -0800 (PST)
-Received: from [192.168.0.1] (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E8F4D3F85F
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 02:04:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794305043; bh=u5FOKVXPwtEHvG/wCtI/T33KcnjC+imee3/ObiHKJ8s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tvw01Pb7xwfpb0XvK+vtkoovhcBHJe7XBi7IAFnQD0WsYVOyLi6kH4H+1Uloi6Gmf
-	 DShULHoeOEo3k4SsxpLpd7/pzIpq6HSC4F1ThSXVdIknq/6Ajw+QJemrN54MazNERb
-	 +zUeksOnKTXDYYySkGpEjLEAGZb3c0BOstxGoGn4=
-Date: Tue, 10 Nov 2026 10:03:46 +0000
-From: Liviu Dudau <liviu.dudau@arm.com>
-To: Cunyuan Liu <cunyuan.liu@cixtech.com>
-Cc: boris.brezillon@collabora.com, steven.price@arm.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, gary.yang@cixtech.com,
-	fugang.duan@cixtech.com, daniel.almeida@collabora.com,
-	aliceryhl@google.com, p.zabel@pengutronix.de,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, cix-kernel-upstream@cixtech.com,
-	robin.wang@cixtech.com
-Subject: Re: [PATCH v2 2/3] drm/panthor: Add initial support for CIX Sky1
-Message-ID: <avLsAlL048MtIX4x@e142607>
-References: <20261109120902.125242-1-cunyuan.liu@cixtech.com>
- <20261109120902.125242-3-cunyuan.liu@cixtech.com>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=My/o+55Z
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Yyuzrz+vo3a2NEC4shXY9Mp3hs5Z41Pyw/csPGYQQA16gMSzE5UcMlKMBq+SWyAjUYQZMtIZgP9YDG6RH/w/l2V+L08u3D3nqahtK2fkpfZ3CZQ8aPLScrqGSuxO0v7/LpZiX/qi0bNNPClFK2/YWt7dPMeHSNFqWPVwhmnwS2jtRyd/WL5XRljBx0cQqMomnXlZc9NKCGEGuK8DZYUqsHa61D7P1/IQIkq3scBY4twYIGJ80SykIfyGj7h3Snp1RbPOARkmSol+YJgBZTJQgk+E8//HwjojW46wvfkXimR5x8FoE/bFW8rKVu8Woz/eRsqXYm/hH/qL+XWFl4gGgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9Kx580bdjFfKc47n7nkVpe8IJZx9lzBzvw16KF5viOM=;
+ b=Zq5wRi897CfFy8apbBZebEjUTjW4I7wnzQzyveT87ScFy1TBOrhbI6ZrchAL0cC/YIoAHRX2rgYx/NCmLF95/gFyVh+w25sAPI4L8eXuaCDDtcsEBpUzi013Bjy2GyCIQLrf3JTe4w/EsxHuSEMKE3uE7tXlMNXB5kVMUCQURkpZkcGGryjsrO10cKKMPSxLdvMZRbtFNDTcEm8BBli+AI/MirB/XSuUwdJv3F+rROYVdHiKLMpxB2f3ey7+thKABvrHT6F69TBowxr45QVvS3tYLKcoQGGahdCyFa6yFDI0gfLlXLIi+VIosTxleTWQawimDclIFawFjB4PCAa7dA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9Kx580bdjFfKc47n7nkVpe8IJZx9lzBzvw16KF5viOM=;
+ b=My/o+55Z2GrVpi3O8dqbLmWk/54P6L9w2LfTWufBqWjumDcAQh2w+8BkVXC+wSKDPOEPRFEWgVnx267hYb14D3HyGxQiBH1Ec7f87M7EfF93bNtOpFQUarkGZsOxvk0F5Fn1dugFshopSFNyu1YkwVLrZ36LG6M1adbZYbbuOP+W9Oc5avm/DZynLpnFSu5Ua+hXKw6CrugKZlmKQ9tYDeEK1RA+hF4K98SBylZZDIYlBu+PWm+dJGuF8j1LLKrwZq5kElEuhlqwuWU5bZoZIqXZzK77PAJVdcMapDBGinevaVLMG2SY97TUgSOUil8+w8MZaRjaPjfaE5wQT9cTag==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by SAEPR12MB328447.namprd12.prod.outlook.com (2603:10b6:802:209::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Tue, 10 Nov
+ 2026 10:14:50 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0592.010; Tue, 10 Nov 2026
+ 10:14:50 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 10 Nov 2026 19:14:47 +0900
+Message-Id: <DMRGA5G0Q00Y.22IKP8FGI185B@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, <nova-gpu@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 03/12] gpu: nova-core: place the generic bootloader
+ at the top of IMEM
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Eliot Courtney" <ecourtney@nvidia.com>
+Content-Transfer-Encoding: quoted-printable
+References: <20261107-r000-fw-v2-0-fb37cc5b20cd@nvidia.com>
+ <20261107-r000-fw-v2-3-fb37cc5b20cd@nvidia.com>
+ <DMQETIYO7A62.263CE3B815QGF@nvidia.com>
+In-Reply-To: <DMQETIYO7A62.263CE3B815QGF@nvidia.com>
+X-ClientProxiedBy: TYCP301CA0069.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:7d::9) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -66,274 +103,120 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261109120902.125242-3-cunyuan.liu@cixtech.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|SAEPR12MB328447:EE_
+X-MS-Office365-Filtering-Correlation-Id: e8e0664a-dc82-447f-824b-08df3f1374ae
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|10070799003|23010399003|10067099003|11063799006|4143699003|56012099006|261022075727099003|261021121427099003|261022115727099003|261026121527099003|261102123227099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	gUnWaRzJWYrCnwW4cileAdeTs+mRVVhcaaWPx09trIb1N/l9cRL43w2iA6+a8qREN3TAi1qGjnFhsZn0XNae8vpAj7bJqMAlyOY7IHdVl7jb+YjtjytohGK3khYPBO34TeqwBJxvqUVPhA8EaGyQPwTDfS8eI5+4rWvOzXzpa/UC5uTXR2ERLm3cYPiLy55W4Dkw6petqddNQ5rWtxcaQhxiMZT1Nft9UPMbO4ob9mMQAU8Cd2jyM1zY3VZtuFybi0ntnbNAxZnP89151tGIvh/hbPvxf+vtsgHStmh9dLxQa7+jDV6b2l8t1VZ+bCmSwGlrvLhtbIqSIWG2RMimXfN37JkBl6S74Cw/nfgwmkwfTQRGYnX5DqdmqDw8pdIpUw3ZAtUWClAplPHj5RsX6At5Fzdb3RcE63ygJvaKzvPadDdzUAmlpnnhq4JTbYb4eOSye8zfOW+OudeRrDdgevs+arKmPS7R0YJYardagR5mMAy9tWVGAPwybdTopM1RpWQUqyKRcRQhjmoJ4zJR5xaI+6GRbJ0clIwaAsrRB0NL1zYGETKYNOzD331WS/UkzIiPJ18x0BAJRK6RUgPckZFYcJr3ko07hk6/ogb7b92qNxcjFq8YWLZkUSrblN8Wkj1JH4xsBHrwF7r1XrwttQikSgHXkNNwDD2KdE28j7Q=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(10070799003)(23010399003)(10067099003)(11063799006)(4143699003)(56012099006)(261022075727099003)(261021121427099003)(261022115727099003)(261026121527099003)(261102123227099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QUYwMVk3OVFzeGN4bkR4VHNNRC9BTXFMQ0NobTJLT1Vld2drMHd2ZWk3ZlpU?=
+ =?utf-8?B?Y1oyNktZdEZnLzZKVE1rNW54T1d5MXJMZGpBaXZWc1E2NkF0cE94bTZPRFA4?=
+ =?utf-8?B?N1JNcHEvZUg1c1RmY1Z2MnkwYWZBck8vQXMxUlNlYlU3M0UrdGYwdTdYZWtm?=
+ =?utf-8?B?UkJHb1Y2ZzlLcldNNElhZ0xZc1Y2aHZFd2o0OWNuNUYwL0gvR0Rrd1REK2Vh?=
+ =?utf-8?B?YldTcVJKRjYvbVlpWHYrU2piNm1VUnBna2xEMnpYeUlHTUFQd0ptNDRGUkxD?=
+ =?utf-8?B?TEVoaG9aQzdVd3VXZGl2Mzh6TlpaR0dUMS9rN3VnMmJsNi9EcTcxdzhZQndS?=
+ =?utf-8?B?dTk1WFVZMWI0MThmeVRPT2NjYVFlOEppQ2UxdzZsQkwzYlo4YkthVkdIQ2lG?=
+ =?utf-8?B?eURrK0JMTkc0NVZMaGVtMUlMQ2dVZDFiMlRSWnRCQUErZWpOdEdVMkM0V1hi?=
+ =?utf-8?B?OWdpU0t1RndEeTRLVHBpQTI3VmtLRjIwdVg3RXhhUHo5QTRSaWVGMXhnUmQ0?=
+ =?utf-8?B?ZXdkSDNNbjROVHhZNUNwUU9kS0hWMkZ3V1htVk54SlJXSUxKWWtnVEN2cWh4?=
+ =?utf-8?B?MTlXUlRYUkcrM3F4Nm51bmZrOGhvdFYyM1JMblRCMHk3NjZFc2RKVG1MMXp1?=
+ =?utf-8?B?RzVLSWY3MStYYjdNd2dTc1VOMjJObXF5N1F2bm12SUFzN1hNN1NvQ0xKeHFS?=
+ =?utf-8?B?RmxTSFRCVm9pdXR2NTllZnE5RTVyOEtubHk5TUNOZjh3dnV5NmhWbmIzUHJS?=
+ =?utf-8?B?eHdEVzRoQ1U2NUIxeXEwWGl0b2VIY2thb0x2c1llcm1UdzltNnJuckFncWZr?=
+ =?utf-8?B?cCtIZGRHMnFOSXdSQzBZMk1pajUrTW8vSzlUcWIrSUFHbnNWS2NtQjhwbWpD?=
+ =?utf-8?B?dVJ5NU43VUxoekxLOXZrWlBTZGpqSklTVUpjRTBtclhJMkRiMlc0a3VaaHhW?=
+ =?utf-8?B?L3hVUkxna3FOUkVlVCsyaGtxdVdrc3hQQVh6a0FiUHp2OWVIb3p1Ujgwd1JE?=
+ =?utf-8?B?Z0E5ek9YYlp4UCswcEhnNHFNMVJzVFY0Uk16MmxZU1MxMFpKbFErYXd0a1Fn?=
+ =?utf-8?B?NUVhczVxUFJaV2dOZzN4ZEFiZ043TFFRa0N2UFNWSU9vekk1N2UvZFpncEtR?=
+ =?utf-8?B?Y3REYkU5dENzWGFXUVRlZTkveGVvOEFpbnFoYjBqdGp1TWVmVmYrV1NTd01R?=
+ =?utf-8?B?dHhDWVZoeEhBMFZsMzlsNWY1UTBpMTJ2aG9Gb0tTSG5hT3lNZTFFMnVwL3hN?=
+ =?utf-8?B?QnJmUVJ3MXRmRzlZNllXV2tRbGVFVWVteUlPb3FMT0hQdVlCRG5rUjJOM21m?=
+ =?utf-8?B?UDAxdVNMYnhuYm01VVVLa2N4NXpmbTAyblJHcmFEeUJzdkh4MDl0dDl0bUhF?=
+ =?utf-8?B?YU4xeFRLL2Z0U2lFNHlIVDFNRkEyQ3o3bUtvYTM0T3V5OTUwYVJXVnBDN0J2?=
+ =?utf-8?B?YXRROEkrUTJBWnNKZmJvRWV4c3RhOEplSlFUbE9KNk9sV2dGbmdwajNYOW1C?=
+ =?utf-8?B?YzhpemNoanVFdC83L2lHRzVvKzNVM3FXRE55UkYxclROdGY2aVRic2xpcjlB?=
+ =?utf-8?B?YW5IL3RTdU5GZG5kTXc5VEQ3bThVcEQ2UmJXUzJwU3pBK1h5NTdBVDBUcE5q?=
+ =?utf-8?B?YnVWVzZtVGZDSVB3bkNheXdweXZJZ2REeWVWV09qTDhqdkZQcFhsM1Z6V2VN?=
+ =?utf-8?B?dllXak1TalhtZHYzajZIRWNGOG9uOW5jWmdyVXFDVW5xbjZvOEtWdnp6ejdp?=
+ =?utf-8?B?NC9PTU8xUXBwa0gwSTkyWENnNE13cXZURWhqYW16TVJQeGgxd09hV0hHN3lx?=
+ =?utf-8?B?R1BYekhaV3BiZk9OMGlHZlM3ejQzelNSd2JPRDM2d0ZLNlhrODFxaE9ocFhI?=
+ =?utf-8?B?OWNXMkNXT3RJUjhzYk9ISUl5bGhnWmo1Q2FzaWNPQ3pYZ2UrVmlNNFAzT2Yv?=
+ =?utf-8?B?dnpWdEFxQjh2Y3crdUdsenQxQ3ptQTBxaVBxTDhUcTY4a0IrRUl6WWl6Znlv?=
+ =?utf-8?B?K0xheGMyaW5NUlFUTkhmcTJKY0NRa2MycEVBSDgyTHlKdmNzTmltL3pGSCti?=
+ =?utf-8?B?MmRCdjFQbm1HVGg3TEdRWXZsbWZPUnpGOXAzV1UyM0diN3BlcnQ2cEdtR3F2?=
+ =?utf-8?B?a3Q2WTlkcDIxRFNzOGo0YS9PSi80VzM4QXdONERITkg1ZnppLzNGYnpONlBZ?=
+ =?utf-8?B?QTUxWExhUGFncW90QVVrK3hlaEdDSUUvM2ZQV0xyQ042VktBSFhnMm1BYmJ6?=
+ =?utf-8?B?WkRBZE0yWmk3SWI3dlNxanR0RnVucWh4eUFDQ2l2Y3h2b3NGdHlvdzN6c2hV?=
+ =?utf-8?B?empJRVliYjBRVEJHWnU3aXM0cmh5bStiajZsbzBFc2lqKysvRnBFZWNwd0I3?=
+ =?utf-8?Q?wszUhpz1AazLei1sPuXc78cYNDk8s2uwv8Bzs1Xl4s/9S?=
+X-MS-Exchange-AntiSpam-MessageData-1: cljaOcrktIUhyQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e8e0664a-dc82-447f-824b-08df3f1374ae
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 10:14:50.6471
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hid0HU/v35qRZh9Hx7rGt7Wme03pwUjs7iPNA80ohE6BnttuJPttujqhBwwhdOkAFJ5WvmTgX6pmNHz7qOG7Zw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAEPR12MB328447
 
-Hi Cunyuan,
+On Mon Nov 9, 2026 at 1:53 PM JST, Eliot Courtney wrote:
+> On Sat Nov 7, 2026 at 6:47 PM JST, Alexandre Courbot wrote:
+>> From: John Hubbard <jhubbard@nvidia.com>
+>>
+>> The generic bootloader was loaded right below the first 64 KiB of IMEM,
+>> on the assumption that every falcon it runs on has a 64 KiB IMEM. The
+>> r000 load-and-execute bootloader event can name any image for it to
+>> load, and the bootloader must then sit above the blocks that the image
+>> occupies, that is, in the last blocks of IMEM, regardless of its size.
+>>
+>> Place the bootloader at the top of the falcon's IMEM, using the IMEM
+>> size that the HWCFG register reports, instead of assuming a 64 KiB IMEM.
+>>
+>> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+>> Reviewed-by: Timur Tabi <ttabi@nvidia.com>
+>> Reviewed-by: Zhi Wang <zhiw@nvidia.com>
+>> [acourbot: split out of the patch separating the bootloader from FWSEC;
+>>  convert the IMEM size with usize::from()]
+>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>> ---
+>
+> [...]
+>
+>>  impl GenericBootloader {
+>> -    /// Loads the generic bootloader image for `chipset`, placed right =
+below the first 64 KiB of
+>> +    /// Loads the generic bootloader image for `chipset`, placed in the=
+ last blocks of `falcon`'s
+>>      /// IMEM.
+>>      ///
+>>      /// # Errors
+>>      ///
+>>      /// - `EINVAL` if a required TLV field is absent.
+>> -    /// - `EOVERFLOW` if the image does not fit below 64 KiB.
+>> +    /// - `EOVERFLOW` if the image does not fit in IMEM.
+>>      /// - `ENOMEM` if the padded copy of the code cannot be allocated.
+>> -    pub(crate) fn new(dev: &device::Device, chipset: Chipset) -> Result=
+<Self> {
+>> +    pub(crate) fn new(
+>> +        dev: &device::Device,
+>> +        chipset: Chipset,
+>> +        falcon: &Falcon<'_, Gsp>,
+>
+> optional nit: `falcon` is passed twice in (`new` and `run`), so we
+> could call `run` with a different `falcon` (which could have a
+> different `imem_size` to the first one). we could just compute
+> `imem_dst_start` in `run` and drop `falcon` from `new`.
 
-On Mon, Nov 09, 2026 at 08:09:00PM +0800, Cunyuan Liu wrote:
-> Add Sky1 SoC data for system-level cache settings and to skip devfreq.
-> 
-> The GPU on CIX Sky1 needs an external reset before the driver first
-> accesses the hardware. Without this reset, the GPU hardware cannot be
-> accessed correctly. Acquire an optional exclusive reset for all platforms
-> and apply it after enabling the clocks during initial probe. Platforms
-> without a reset keep working through the reset framework NULL handling.
+Good idea. This looks better if we move this patch after patch 5 (which
+introduces the `run` method), so I'll do that as well.
 
-Adding support for an external reset should be separate from the enablement
-of Sky1 GPU.
-
-> 
-> Configure SYSC_ALLOC before L2 power-on. Without these settings, GPU
-> rendering results are displayed incorrectly.
-
-Adding support for SYSC_ALLOC should be a separate patch. It can be used
-by other SoCs as well, not just Sky1. 
-
-> 
-> Keep the clock settings provided by the PM firmware. This first version
-> does not read OPPs or enable devfreq. It does not register a GPU cooling
-> device.
-
-This looks like a stop gap measure. What is your plan here? When do you
-think you might be able to provide OPP and devfreq support and what is
-the hold up?
-
-> 
-> Tested on Orion O6: offscreen pixel readback, kmscube, glmark2 at 1080p,
-> runtime suspend and resume with a retained EGL context, software-triggered
-> reset-worker tests, and module unload and reload. Display tests used
-> local Komeda support.
-> 
-> Signed-off-by: Cunyuan Liu <cunyuan.liu@cixtech.com>
-> ---
->  drivers/gpu/drm/panthor/panthor_devfreq.c  | 11 ++++++++++-
->  drivers/gpu/drm/panthor/panthor_device.c   | 13 +++++++++++++
->  drivers/gpu/drm/panthor/panthor_device.h   | 19 +++++++++++++++++++
->  drivers/gpu/drm/panthor/panthor_drv.c      | 14 ++++++++++++++
->  drivers/gpu/drm/panthor/panthor_gpu.c      | 14 ++++++++++++++
->  drivers/gpu/drm/panthor/panthor_gpu_regs.h |  2 ++
->  6 files changed, 72 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/panthor/panthor_devfreq.c b/drivers/gpu/drm/panthor/panthor_devfreq.c
-> index 2249b41ca4af..1914549f7b1f 100644
-> --- a/drivers/gpu/drm/panthor/panthor_devfreq.c
-> +++ b/drivers/gpu/drm/panthor/panthor_devfreq.c
-> @@ -154,6 +154,12 @@ int panthor_devfreq_init(struct panthor_device *ptdev)
->  
->  	ptdev->devfreq = pdevfreq;
->  
-> +	/* Keep the firmware clock settings until Sky1 devfreq is supported. */
-> +	if (ptdev->soc_data && ptdev->soc_data->skip_devfreq) {
-> +		ptdev->fast_rate = clk_get_rate(ptdev->clks.core);
-> +		return 0;
-> +	}
-
-This should not be in the driver. If you want to have a fixed frequency just use a fixed
-clock provider, or make the clock provider query the firmware for the value.
-
-> +
->  	/*
->  	 * The power domain associated with the GPU may have already added an
->  	 * OPP table, complete with OPPs, as part of the platform bus
-> @@ -323,8 +329,11 @@ unsigned long panthor_devfreq_get_freq(struct panthor_device *ptdev)
->  	unsigned long freq = 0;
->  	int ret;
->  
-> -	if (!pdevfreq->devfreq)
-> +	if (!pdevfreq->devfreq) {
-> +		if (ptdev->soc_data && ptdev->soc_data->skip_devfreq)
-> +			return clk_get_rate(ptdev->clks.core);
->  		return 0;
-> +	}
->  
->  	ret = pdevfreq->devfreq->profile->get_cur_freq(ptdev->base.dev, &freq);
->  	if (ret)
-> diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
-> index 9687c59de350..a3a32abec5f7 100644
-> --- a/drivers/gpu/drm/panthor/panthor_device.c
-> +++ b/drivers/gpu/drm/panthor/panthor_device.c
-> @@ -229,6 +229,11 @@ int panthor_device_init(struct panthor_device *ptdev)
->  		return ret;
->  	}
->  
-> +	ptdev->reset_control = devm_reset_control_get_optional_exclusive(ptdev->base.dev, NULL);
-> +	if (IS_ERR(ptdev->reset_control))
-> +		return dev_err_probe(ptdev->base.dev, PTR_ERR(ptdev->reset_control),
-> +				     "Failed to get GPU reset\n");
-> +
->  	ret = panthor_devfreq_init(ptdev);
->  	if (ret)
->  		return ret;
-> @@ -511,6 +516,12 @@ int panthor_device_resume(struct device *dev)
->  	if (ret)
->  		goto err_disable_stacks_clk;
->  
-> +	if (!panthor_device_is_initialized(ptdev)) {
-> +		ret = reset_control_reset(ptdev->reset_control);
-> +		if (ret)
-> +			goto err_disable_coregroup_clk;
-> +	}
-> +
->  	panthor_devfreq_resume(ptdev);
->  
->  	if (panthor_device_is_initialized(ptdev) &&
-> @@ -553,6 +564,8 @@ int panthor_device_resume(struct device *dev)
->  
->  err_suspend_devfreq:
->  	panthor_devfreq_suspend(ptdev);
-> +
-> +err_disable_coregroup_clk:
->  	clk_disable_unprepare(ptdev->clks.coregroup);
->  
->  err_disable_stacks_clk:
-> diff --git a/drivers/gpu/drm/panthor/panthor_device.h b/drivers/gpu/drm/panthor/panthor_device.h
-> index b55a3f9edd41..afb4167bd364 100644
-> --- a/drivers/gpu/drm/panthor/panthor_device.h
-> +++ b/drivers/gpu/drm/panthor/panthor_device.h
-> @@ -19,6 +19,8 @@
->  #include <drm/gpu_scheduler.h>
->  #include <drm/panthor_drm.h>
->  
-> +struct reset_control;
-> +
->  struct panthor_csf;
->  struct panthor_csf_ctx;
->  struct panthor_device;
-> @@ -34,10 +36,24 @@ struct panthor_pwr;
->  struct panthor_vm;
->  struct panthor_vm_pool;
->  
-> +/**
-> + * struct panthor_sysc_config - GPU system-cache configuration
-> + */
-> +struct panthor_sysc_config {
-> +	/** @alloc: System-cache allocation policies for GPU access types. */
-> +	u32 alloc[8];
-> +};
-> +
->  /**
->   * struct panthor_soc_data - Panthor SoC Data
->   */
->  struct panthor_soc_data {
-> +	/** @skip_devfreq: Keep the firmware clock settings without devfreq. */
-> +	bool skip_devfreq;
-> +
-> +	/** @sysc_config: System-cache configuration, or NULL to keep defaults. */
-> +	const struct panthor_sysc_config *sysc_config;
-> +
->  	/** @asn_hash_enable: True if GPU_L2_CONFIG_ASN_HASH_ENABLE must be set. */
->  	bool asn_hash_enable;
->  
-> @@ -138,6 +154,9 @@ struct panthor_device {
->  	/** @soc_data: Optional SoC data. */
->  	const struct panthor_soc_data *soc_data;
->  
-> +	/** @reset_control: Optional external GPU reset. */
-> +	struct reset_control *reset_control;
-> +
->  	/** @phys_addr: Physical address of the iomem region. */
->  	phys_addr_t phys_addr;
->  
-> diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
-> index dc8d0191aef4..4d7b1230cd7b 100644
-> --- a/drivers/gpu/drm/panthor/panthor_drv.c
-> +++ b/drivers/gpu/drm/panthor/panthor_drv.c
-> @@ -1872,12 +1872,26 @@ static struct attribute *panthor_attrs[] = {
->  
->  ATTRIBUTE_GROUPS(panthor);
->  
-> +static const struct panthor_sysc_config sysc_config_cix_sky1 = {
-> +	/* Sky1 needs these SYSC_ALLOC policies for correct display of GPU output. */
-> +	.alloc = {
-> +		0x00230000, 0x00000023, 0x00000000, 0x00000000,
-> +		0x00523222, 0x00523200, 0x00000022, 0x00000032,
-> +	},
-> +};
-
-These should not be in the driver but in the device tree bindings. If you extract
-the system cache code into a separate patch we can have a proper discussion there.
-
-> +
-> +static const struct panthor_soc_data soc_data_cix_sky1 = {
-> +	.skip_devfreq = true,
-> +	.sysc_config = &sysc_config_cix_sky1,
-> +};
-> +
->  static const struct panthor_soc_data soc_data_mediatek_mt8196 = {
->  	.asn_hash_enable = true,
->  	.asn_hash = { 0xb, 0xe, 0x0, },
->  };
->  
->  static const struct of_device_id dt_match[] = {
-> +	{ .compatible = "cix,sky1-mali", .data = &soc_data_cix_sky1 },
->  	{ .compatible = "mediatek,mt8196-mali", .data = &soc_data_mediatek_mt8196, },
->  	{ .compatible = "rockchip,rk3588-mali" },
->  	{ .compatible = "arm,mali-valhall-csf" },
-> diff --git a/drivers/gpu/drm/panthor/panthor_gpu.c b/drivers/gpu/drm/panthor/panthor_gpu.c
-> index a383b04f101e..9a6963fe62ae 100644
-> --- a/drivers/gpu/drm/panthor/panthor_gpu.c
-> +++ b/drivers/gpu/drm/panthor/panthor_gpu.c
-> @@ -63,6 +63,19 @@ static void panthor_gpu_coherency_set(struct panthor_device *ptdev)
->  		  ptdev->gpu_info.selected_coherency);
->  }
->  
-> +static void panthor_gpu_sysc_config_set(struct panthor_device *ptdev)
-> +{
-> +	const struct panthor_sysc_config *config;
-> +	unsigned int i;
-> +
-> +	if (!ptdev->soc_data || !ptdev->soc_data->sysc_config)
-> +		return;
-> +
-> +	config = ptdev->soc_data->sysc_config;
-> +	for (i = 0; i < ARRAY_SIZE(config->alloc); i++)
-> +		gpu_write(ptdev->gpu->iomem, GPU_SYSC_ALLOC(i), config->alloc[i]);
-
-This will crash for arch10 GPUs. I know that you're relying here on soc_data not having
-the fields filled in, but if we move the sysc_config data to being provided by DT, we
-need to check here.
-
-> +}
-> +
->  static void panthor_gpu_l2_config_set(struct panthor_device *ptdev)
->  {
->  	struct panthor_gpu *gpu = ptdev->gpu;
-> @@ -317,6 +330,7 @@ int panthor_gpu_l2_power_on(struct panthor_device *ptdev)
->  	}
->  
->  	/* Set the desired coherency mode and L2 config before the power up of L2 */
-> +	panthor_gpu_sysc_config_set(ptdev);
->  	panthor_gpu_coherency_set(ptdev);
->  	panthor_gpu_l2_config_set(ptdev);
->  
-> diff --git a/drivers/gpu/drm/panthor/panthor_gpu_regs.h b/drivers/gpu/drm/panthor/panthor_gpu_regs.h
-> index 4c5b953796e4..f9b65a4dae83 100644
-> --- a/drivers/gpu/drm/panthor/panthor_gpu_regs.h
-> +++ b/drivers/gpu/drm/panthor/panthor_gpu_regs.h
-> @@ -116,4 +116,6 @@
->  #define   GPU_COHERENCY_ACE				1
->  #define   GPU_COHERENCY_NONE				31
->  
-> +#define GPU_SYSC_ALLOC(n)				(0x340 + (n) * 4)
-> +
->  #endif /* __PANTHOR_GPU_REGS_H__ */
-> -- 
-> 2.53.0
-> 
-
-Best regards,
-Liviu
-
-
--- 
-====================
-| I would like to |
-| fix the world,  |
-| but they're not |
-| giving me the   |
- \ source code!  /
-  ---------------
-    ¯\_(ツ)_/¯
