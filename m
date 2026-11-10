@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.170
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794284386;
-	b=U5SmlWlKVVqLhurEVOyq+Ys0RsSz+YvgOR6LuQ/2ffcoxxtYsdW3d9zMuoiAj81LaTqI
-	 u6Ztc0eGUSZf+jAr22kQ/M0nzEjMA44LKIAhnrhjxvJhvz243o4PpnZq3ThREV37yEK+U
-	 pykv2mm3C8KAQNEj8QYmA5F02WhDmq3pPR1krpdPB/BjB21oTdaR1Gv0mMcD8isJGMFlJ
-	 6cL6vmEKyGVBTtWLO6dW44nl3eu/W+KjPPV5+WBsWTBPuH8xpEYmqcK+zWUpGG2WCbO0K
-	 v9+JN1j16bT1caK+DUcyrhwGzVqhxesm8BCVYdE1+kkM6ByWi9oVtoJmAQSq5TfURPA==
+	t=1794284394;
+	b=cTOso4R0XoqXR7bh4yVZve+m3vqiyb8OWK4FEtU1FloWkCrYVsZB8ADyg0VrMYJCEpRo
+	 tXQqcBmadVjdnGuir9aIuzi/Tp5cw9bk5WxkJ/pm+YpmBOxp9Ffvo19uJq9Uiei7XYPhl
+	 bmBLdFbaldWqrndKXZE29FBUwLDGrsemo1Z6A2+903QC2fRfKhMZRyvsAL9ePIn4MawvC
+	 60Rj+ViW/nMrwa6az8MW6YbBBwAG1R+eX5krr6hjl4nOltDczKP5tYeQRY7CY8Q5xerKn
+	 rctog0daoZpeKHgojQQ+qgyFFlQdMv7ZvUHyYSrWbVMg8kfJ8MTDupxj7T3uFq9kWtw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794284386;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794284394;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=GWNZ8zQxqiZGzpWyot+03nwu4qhuEeSDcx/Yq9DH+WA=;
-	b=lyLE0fBc55/c3dYBFz2KZYyJEwJmaeLLD2j6lehjo2VPBcL0+nnFp0VqWf/wHwUKYyGj
-	 kmK2BpwZe0PMc2FiyHzEC0L2E7WQLyfA+qYA/cl4LTRP3rEV0O8Zbm4GQ92FcHgS51237
-	 QeQZuWcXH1FwkKOmJUMs7FE83nkOBNkKfWi6bG+EoZzmqdOUgWL4LlZguFskX7T/WrhHB
-	 P8j0by/3KzeKYLX6Lq3rmE1FaK+OyC5DjvhgcFhWVVwDusOqTJTRSapW/7jG94x9znauH
-	 DUR07kZnUXM8iaWQ9ko1kDWo57V8MzBzALIHf7muLdwGJExbd2e0kd45LffN898iN3g==
+	bh=3AxS6ewNN37c8Z1T2Uoj4Jwsnbq6o66JX4RBhLIPEDs=;
+	b=qZSyok7WYQVerTgi9KJ2iF1kJozKcWj4QNPVrgVIOq5clrOUJ/PoHdbc5k1HGNti1VKC
+	 /HRuNf9BisLiynSJb/CXp+eV9V+z7gwJq0gMjiPBfO7I/CLLI1vpLBYyMntcCCLP4sRp4
+	 tQXdeaihXWe0dLImgUrFonU3fuWFr3FQ624DumAbaHKmJ8WnFoV1Lc1Rix2WsM1Sp7X98
+	 CwUmlhROGGwsRp6P6XgAbuvFn1umbAPXIQm5jCsjHGHHW1ZRjMTGKqG6b5i12Y7a2Lx2n
+	 8N8+/osV0riVA+XIag0rWAsDf4V1OditfdhK6lMkObY9sM45eK2OwtTvURTtdlnqbzQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yGtenEbZ;
-	arc=none smtp.remote-ip=74.125.82.50
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bAdLG6I0;
+	arc=none smtp.remote-ip=74.125.82.170
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B559F606E8EB
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 04:19:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B559F606E8EB
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE7F606E8EE
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 04:19:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3FE7F606E8EE
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yGtenEbZ
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1b3a05f8b5bso2461091c88.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Nov 2026 20:19:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bAdLG6I0
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-36dbde64409so3183797eec.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Nov 2026 20:19:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794284385; x=1794889185; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794284393; x=1794889193; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=GWNZ8zQxqiZGzpWyot+03nwu4qhuEeSDcx/Yq9DH+WA=;
-        b=yGtenEbZG7Qy6TLOfNHH0y5Y07HDUztMPNGH3pc770I1r2cy3ZaH19A2RVmEr0UI/O
-         NZeYX9CpwtGDlWb0S9HZyajA8d25SmnVgJ4F6kjH4/q45zPIe1zefUOfIaqHT0g3hwFK
-         Cn6+z73Wn3D/7ZIxwbuXvB0QWjr96G80mTxU2EXqHyigkYPy0OKly1nGOk5paCbWlat3
-         Qk2roQcaq3Gvka9pimS3DGiW9wA52FY8ZRCFgkmUQEq86+1KQeoXmZW/nju7ed4FzWuB
-         NbXDttmUANX+suQLHNmfzHEMZ0+Kzh8LhSxP+wbrlgmKTAIxym4xWpgfOT7EiNtfWu01
-         T+Nw==
+        bh=3AxS6ewNN37c8Z1T2Uoj4Jwsnbq6o66JX4RBhLIPEDs=;
+        b=bAdLG6I0SEmoBfqYyUKe4jfQKmj4cvRp+anU2Oj5X0c+tjnjU59+VA8jKT18ZQe/my
+         1NrBxCtLGndpR7JX52vRaLI/OHEVVmEBDmojm8MthHWn6SR3kGWvFZ44fCtuACa0sgDA
+         6QsIpWMMPsrPsXtwmzjWeN0K+kXepme8doarva6YuCZtrU7O/N/BXDGI/28Ae798vZYV
+         slUmkSL+oM/WLaktRkrd/0TFjbDoJYl+8vuyHhX766Ljbk6SztVXDT96+gpuH6/Iu9Kc
+         c/h49WO/AxN8dbZftCq5H5N5bEBhro/po5jMkc72OtKLfwrKmrsGz/n11bnhfJiQSS7M
+         XeNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794284385; x=1794889185;
+        d=1e100.net; s=20260707; t=1794284393; x=1794889193;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GWNZ8zQxqiZGzpWyot+03nwu4qhuEeSDcx/Yq9DH+WA=;
-        b=M69ZIUgi9WJ4KEaWrMg3f8QXfVzc9fhgpEWBx2QXXTM9r7aC5C6DH35jMCMYbrvw+p
-         kYH0tXxRB0LbJtErndcMLA8TgiJtjK4F7hQ26kw6PR2ZULT73Cvsc2b4a6Cp1DdA5OrZ
-         WZmkRd5q7Kc7V7lTQUFNRktGGvoeFeA4NVdTwnKApkNNEg+nOc/dLxB6w52Al433F6Rr
-         xeXMADGvvE4He8gawNSdPVAyudnpHcrIX8BQ8ZecZUiTQ0hko3eoyPzl1Axm84mZYtdi
-         t3Vr1Zsde0pGT5V4ZYC18NLP2GkGMreeVoMAQJS9qNkkFtcbT+HHgfBb6hI8A46jlt0t
-         CE6w==
-X-Forwarded-Encrypted: i=1; AL+hErG4QfaFiXmlanBFfYW38PQ5bwsHBNymoramLnYkN9I8Xdro2cBLu0vKaG5hzLgGvzunxonjcQpDqsrP/IJwuQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z9ap8lyJr/QNJ+2FxnxWPObp3mI5Mzh4XM+/pgf5viMRuPOaOgN
-	1gC59fqURN22mbSBcZMMM8r3K1M6XAf1+poqHc6YNGja0H5isMDTmU8j
-X-Gm-Gg: AYBFou2j6TgV1rN/XNr2/UlZf5d+UiJkPCwA0qctmzRlqjeAEAFCx1+11bL+hDggLBd
-	UHWIoznWpcjUQroKFUv04nj6s+6rYJ4cQoXXHDtSmZPrNZ+Fo1qQ20LtVbnnW7tH7Qbn9DwVet1
-	aS7Og1LottEaX36Erx7gvJXk6+NjIAHuKRjTzNqyeHlEc+Fm7CsGSGOMb939Rz8hff9TjHJp/Up
-	OXy9RjbDeNdsZenNt98VQ4JyiXJ7mfuMtExX1ap+0oO/k54hMO4qk2+5vCXOhu9DtS3dsYAGJNP
-	PixfIOj+BXiWqTsz8fhVNf8HiZNQHVBFK7naVfvYE1z9SDCCxT6j30k1BxbSBY5ewtOanFGX4Dd
-	IvTA1eB8zsycoKw9g5DtRcWCise1m1r8WPgMalSNNE58lQTnyfhPre2L90YxMSykaBocKQVR2yC
-	1WGscIdaZvCUNRqyy8SyXnXXBcKnymkyxS5+6go+g1PkmFyCLGNdjW7DtQ7SLmGdYH2VNrB87ax
-	vz8dMeT72kyJsAteiMCOxcf85dqFUVRiICwxIsXoUrOBlP4IQPD28MhgdJQmoGTygYdZg6PpvcY
-	T5CSvM1ehzshY2jFHS66jKHMwGsMnf/ldjgaMLtO9O5zYl0=
-X-Received: by 2002:a05:701b:450c:10b0:149:49c:233 with SMTP id a92af1059eb24-1b3b603e878mr2107744c88.27.1794284384921;
-        Mon, 09 Nov 2026 20:19:44 -0800 (PST)
+        bh=3AxS6ewNN37c8Z1T2Uoj4Jwsnbq6o66JX4RBhLIPEDs=;
+        b=xWnoq5j1OMU9J06+GK3eUOvvmGR3idfO+DVZ6DSwYobUn/OdExeJc8/DBz8NrqVHZ0
+         rLPE1hzzdy1SNSYkcSDyHMclF2Hvvzf4FTZdHbVMGipwVAQVZm0QK+ozcGu90BFmHxjR
+         9jlmw+ZYmaRs4bkNkocjfvDkv9ETbsItuAyCf2FVh1UXSttV2zvK4t5kLMWBOouV9T90
+         d0HWYptYA+PqKFr9ak6djWLj+cqU6iHnRyHcGLya+rw2r3iyhSP6BY/eLZvi0xfzFF++
+         JVzR77uxcqzuxa0Uo8JpWGlLYExGmSmLa5CUTShWdJu3gUyz0nlL5ZB2ez0qD2cP/9To
+         d7Bw==
+X-Forwarded-Encrypted: i=1; AL+hErHnf37tRK4jqFZajRBnDQWJp/bLV8NNz7uZWoOV7oVGD1ja2CS84Ojx/QBPnQs2nBhE7m18Ek3P1mK7CrlR/g==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/ucR7uSQC3ChS6Lr0+qB9zHUjb514AIiubMfZkUyvylSJu5iSM
+	aNSiEdvABKJo+IIytV+svy63mndha/xb63zMd49ZbbaychHfXhi1Hufa
+X-Gm-Gg: AYBFou1yWdgSZFD7rwCBrjELiPkgJRpY/BUtf+gVzzMWZC/bwcxT1TBc2Ay6HBKF72W
+	Du83U7U7Twl2X7Ph6/cI6rXjhYzc4c0w2clA3HDJeYezEEdxvTG1MRTig8blkb7GOyyBRP62/FD
+	VOo7Smt3kFaOCQJO2XTTkvJoTPBOccWGsADQMW2R2gDCo49ak2fRYt0kq8ZhIy23okWH3s1ZvL7
+	h+vc63iPo+qpcrqkIG+sjyZ8Pk2SxK81NDcpXHBDMT5+LwAFZJYS40wVHz3doKs+sJ3YcQsLwtL
+	gIWe8uwv8OlpzhPi8nB1A/4PUQW9QIAojHpOHa6IhuVqP4VCPu+OUsmJ5LaAbUB6ynTsk7Ej2H1
+	3nqwnw90lqphx5nZQYmknIxH39vF5SN6SPewrs5+3ecFfOkheEXl+6ABP75fdazpqwfHkf5hSUX
+	JLXPU7fJIH+lXWPpZET0fwaX7UJ13H1YPEhe3aUSPAPIlG5oxbMujWiv+u2vShPvDa/nSJgKcTN
+	JwOne6REfh11In5kY6BhGFHXTw8BtytySyMaS5HSQYNgvsj/B6Pam8SJ5900hDJGFor8ttrs+9b
+	WFGphdHK6u3jQl+fa9sLm2gwfT0c6t3pSSlHHIxJrNt1S2o=
+X-Received: by 2002:a05:701b:2807:b0:144:fb31:a597 with SMTP id a92af1059eb24-1b3b61860eemr1668909c88.47.1794284393237;
+        Mon, 09 Nov 2026 20:19:53 -0800 (PST)
 Received: from toolbx.alistair23.me ([2403:581e:fdf9:0:13b2:851f:d9cb:44c5])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b7ba88sm3540459c88.22.2026.11.09.20.19.37
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b7ba88sm3540459c88.22.2026.11.09.20.19.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 20:19:44 -0800 (PST)
+        Mon, 09 Nov 2026 20:19:52 -0800 (PST)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: bhelgaas@google.com,
@@ -105,9 +105,9 @@ Cc: gary@garyguo.net,
 	benno.lossin@proton.me,
 	alex.gaynor@gmail.com,
 	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v6 07/25] rust: add bindings for hash.h
-Date: Tue, 10 Nov 2026 14:18:14 +1000
-Message-ID: <20261110041832.1730924-8-alistair.francis@wdc.com>
+Subject: [PATCH v6 08/25] rust: device: Expose Device as_raw() publicly
+Date: Tue, 10 Nov 2026 14:18:15 +1000
+Message-ID: <20261110041832.1730924-9-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261110041832.1730924-1-alistair.francis@wdc.com>
 References: <20261110041832.1730924-1-alistair.francis@wdc.com>
@@ -124,69 +124,28 @@ Content-Transfer-Encoding: 8bit
 
 From: Alistair Francis <alistair.francis@wdc.com>
 
-Make the functions crypto_shash_descsize(), crypto_shash_digestsize()
-and crypto_free_shash() available to Rust.
+We are going to call the as_raw() function later as part of the SPDM
+library, so expose it publicly.
 
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- rust/bindings/bindings_helper.h |  1 +
- rust/helpers/hash.c             | 22 ++++++++++++++++++++++
- rust/helpers/helpers.c          |  1 +
- 3 files changed, 24 insertions(+)
- create mode 100644 rust/helpers/hash.c
+ rust/kernel/device.rs | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 3791af0aadc73..4992bc3194e7e 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -28,6 +28,7 @@
-  */
- #include <linux/hrtimer_types.h>
+diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+index 2291d85b6849e..be89e9023b09f 100644
+--- a/rust/kernel/device.rs
++++ b/rust/kernel/device.rs
+@@ -262,7 +262,8 @@ pub unsafe fn drvdata_borrow<T>(&self) -> Pin<&T> {
  
-+#include <crypto/hash.h>
- #include <linux/acpi.h>
- #include <linux/gpu_buddy.h>
- #include <drm/drm_device.h>
-diff --git a/rust/helpers/hash.c b/rust/helpers/hash.c
-new file mode 100644
-index 0000000000000..1e50fe16c5031
---- /dev/null
-+++ b/rust/helpers/hash.c
-@@ -0,0 +1,22 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <crypto/hash.h>
-+
-+#ifdef CONFIG_CRYPTO_HASH2
-+
-+__rust_helper unsigned int rust_helper_crypto_shash_descsize(struct crypto_shash *tfm)
-+{
-+	return crypto_shash_descsize(tfm);
-+}
-+
-+__rust_helper unsigned int rust_helper_crypto_shash_digestsize(struct crypto_shash *tfm)
-+{
-+	return crypto_shash_digestsize(tfm);
-+}
-+
-+__rust_helper void rust_helper_crypto_free_shash(struct crypto_shash *tfm)
-+{
-+	crypto_free_shash(tfm);
-+}
-+
-+#endif /* CONFIG_CRYPTO_HASH2 */
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index d62c7be1ca7bd..0dcdad905f0ef 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -67,6 +67,7 @@
- #include "fs.c"
- #include "fwctl.c"
- #include "gpu.c"
-+#include "hash.c"
- #include "interrupt.c"
- #include "io.c"
- #include "irq.c"
+ impl<Ctx: DeviceContext> Device<Ctx> {
+     /// Obtain the raw `struct device *`.
+-    pub(crate) fn as_raw(&self) -> *mut bindings::device {
++    #[inline]
++    pub fn as_raw(&self) -> *mut bindings::device {
+         self.0.get()
+     }
+ 
 -- 
 2.56.0
 
