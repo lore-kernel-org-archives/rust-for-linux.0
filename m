@@ -1,64 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794298442;
-	b=W9OWkFsRPoMznChLZxzuYbrxMlTJoSTikO8JUY03fsZggz64Pjpp7SpYBljs008/i+kW
-	 mDe5OCce+ucOAB4BqL0XipWYv5xpU+isfpFZu7S+iK9jKxICkWXVMsPQ6Niuvxsmv7LJF
-	 1bWRuMCJFvWyB+B+oC8WaEMyI9JvLkcr/67Y+S9tZgkq307CfbN+i61oCpWLURaHd204x
-	 He0YgAKM/NvsgRPovZJA1gfyXnn2Lx52aZ4nTIy2CFVErALy35/5xR7v38fufkgE1iyF5
-	 XtvWfKE4S0OH9X6HxbQSyLIkIWj0XbXEYUeL3U/erPms57IJXOFwLqOtVwY9Ye51iMQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794298442;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
-	 Date:Message-ID:MIME-Version:Content-Type;
-	bh=gMycr7807LolwYYXBGXWxdyF4BE05wA7uJvTcdiuEbo=;
-	b=fZW4nQRgV9eqPHj/2CUaV2iEyPIU3UdwSARuMx8CvWW1UqJZZVtaA6Ru7dgc3iQ4YuI4
-	 yYn3+V7O6QjbpM1c4dCH40vPDOqPup0op311AleZZRfwn/miTFrIU6AqMvAdcZex9wZ0K
-	 R4thPbKlscMo2CVumQ6nr7kFWwNskOTDQNjNl3ywCLcn/368dpgtULhyyT1aw3Ibnfo+1
-	 9l9nAI6/KVRR5LjM6La8kJKvC8kieCC/6m5k4b/6km3i41wy9w5EXnTzRflj01AQo15Sw
-	 NcKc3c3QlqiaGBJ6pQLhPh5eV+7xMfijdHAKAjt5nwYbbfXNu/UH5gmNs5iGq/p5KRw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cnU6FVC2;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.174
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794298560;
+	b=bwBuf+LH6gOEOrmKkilsd9fOIyxTrbjrY3eeIQjcGiY/YLoQqJGU+S9q2csef5kV4K16
+	 maQX1cSazLN8WzHkkZ/G2D2H9JOfy9hmrqTm7b5CpflckIIFbfJUMLHN/5qpaflTmVr+I
+	 LVHxGtj9XzPHXftAMhL+jAYLDvtE6u2P68VoFlW8PlDjELUkhjHFa/1xvCaung53jCG/0
+	 O0HQJYc+vd6n8fKMGiG/YBmerqygCYYn+5SrYweDkc/kKRpSUoMZl6RMKIZreWUb879im
+	 uhzsMfnoxrDVfQ+NnYVRWL+jt9++fVcbViQOpemgtIahzyz5LvQC4dL71EmZ2JvdzsQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794298560;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=/Xc0/rpdCy7AH8vJ8uevr6qJbvz6HEgRC2sFXRCHrFQ=;
+	b=a6ig5laoO8RRKJTfsR0XH2wcDwfwTlBawscboGXvqaEsgJuqT7Yd+KgV3WqsJHzpf9vL
+	 W1Lx5ayvaxD9cuoKlvVc4mM9Or6vAVSpGLcpP4ppVAK2wUz3gGUyI6YWI+TR3SvBGvogo
+	 dqtZ/ObwfeyhIgnge+G9JumAbAHFLeoyNRV+7iNjKXnDYTnn4zJI2VElRVae2byDw3Wrk
+	 qwcdkzjC7uCinMJqiNyfvjCi6FPfBwsII7uxaNM+0yU1hGhOTxWzvr6Yj/tI3/da4V8+n
+	 ZR2FtxFVaT6p+0mfrYaQQBtMZhoklgOQb2YBDhmSzmTfcg4oYdqBkr6nqo7IFHauldw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XGZBNpRJ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.174
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A402606A31C;
-	Tue, 10 Nov 2026 08:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A834F606A32A
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 08:15:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A834F606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cnU6FVC2
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF4E1F0089F;
-	Tue, 10 Nov 2026 08:13:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794298441;
-	bh=gMycr7807LolwYYXBGXWxdyF4BE05wA7uJvTcdiuEbo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=cnU6FVC2ndoDYMpl545KxokiHxlnQqHTbTLejYLhBQhUQU0OD/VFpHftOK/lxk4lC
-	 3VyP/a/2B9xenXOWtoSSAn9+DMG+CKapLR9pYs/PJsriNlbUmNUzMD2lzwHgH0ov6q
-	 ZNtSsd75vVE5fDwCydkWm+Oereo7xmeZwVfE8g470RFFu22pGQ2ivD4hdkDzgZovrr
-	 +9ISZ4NMx0HTXZJmcqPYsIQAXhA8Qg2F2aUADY+jaonjV+ICbppVU27mkW6USZzS/u
-	 mQw15LZKOH2l5VELJvGlsIcS0UGEiD/Wwy2fejksI9viXKqrIqAkkntm2HqWxU0IPs
-	 ZQhbeSihbCvNA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>,
- David Airlie <airlied@gmail.com>, Simona
- Vetter <simona@ffwll.ch>, Tamir Duberstein <tamird@kernel.org>, Alexandre
- Courbot <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?=
- <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v3 1/2] rust: impl_flags: add conversion functions
-In-Reply-To: <DMQSAJDM77O0.Z9EITIPLTKHP@garyguo.net>
-References: <20261105-impl-flags-additions-v3-0-5b17c01c2b15@kernel.org>
- <20261105-impl-flags-additions-v3-1-5b17c01c2b15@kernel.org>
- <DMQSAJDM77O0.Z9EITIPLTKHP@garyguo.net>
-Date: Tue, 10 Nov 2026 09:11:32 +0100
-Message-ID: <87mrrhqf63.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XGZBNpRJ
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-36e90071735so288486eec.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 00:15:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794298559; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WdvuUDypvhwQDdBKCZ7LVtK7TdSopIiOnubzhd8EsVZBc3M5fDUsg+rKeqLGAvnThT
+         bB6Jvy0S7PYHualCmnoY1Sobt/A2cSAxcEBo+DPN0XzNCMtHIoHu64E3emDqaAj+zS/j
+         QAkTaSMqzZJ2C/U+afx40cZ8HWAhbZGR46C8Fs2GSJ/7L1kPfqNkLuTOFYW5lBijpspJ
+         XwLMpCTYFG0PX7qPSpIMP6IXF/woOiayMVvCsFBanM4Lo85Rf3vK5GMnEZi+aldNX2pX
+         xe6jOsHrrzLl++GUoEILkbITuylToe3LZV1lbOnxX2vKK+kMJ8i5sOVAVRJNQeUAwnIz
+         KBcA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/Xc0/rpdCy7AH8vJ8uevr6qJbvz6HEgRC2sFXRCHrFQ=;
+        fh=j05LJluMcTEU9rqactIkOCacTCu7lo2ngAXV5u/hUVw=;
+        b=rvH+oAjQAk+V64slzAr3vG9qLn4wBKU8gVtUcK9EB5aUJ6DCMRKqLkEV8P/u3uIBFR
+         Vbkmzb7qEEyJINK33aOOKdyjoAXfm3FNCHCrofSjKM8QMLqJ7wfFatPSnB+SeAtVnscO
+         h67IbW7fK9qawmtplf6kkLH4Pmzc0cWEm/oQMbI+Tq12O/5Uy5z4GCAA31RrEHllO7mP
+         2Bci/SAAr6QZv4i2SUyG12uJUtBvpQa/IlfiPmA/bkv67sEgogGGQuLqjXFTrndBpWHj
+         1R4NzSWfB8kHT7FR9rIOEJiGkk/97ivTMpd6JvUe5uFy1OthnscGzdiiofSWZCrTj6u6
+         qwDg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794298559; x=1794903359; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/Xc0/rpdCy7AH8vJ8uevr6qJbvz6HEgRC2sFXRCHrFQ=;
+        b=XGZBNpRJY0jnuBeXNYz1U5VVLyNMRnRa+ymN1HRDOHkdOd4JQMS2+5zKie4z3n+xvJ
+         giq++xKICcPpaxiWd+sCEITYNYsvyR+bX/47Tu5dg+wniCBN6SJuQN5Lvga/5WNRd8Us
+         nsuJv/7ihZQhKNuTd5lPJHKnVRa9e+DfTefIjR2+fTaTv3vaC6bEmwyebZOyIvrruLcx
+         PyqY4yzIdMCw2ZFV6iaetg9QwFUCQW0YPUmX9s8493bV2eWB+4rLJ0zRXOxA/smA++8Y
+         I3w7PolkN7v872su7CSmf83BaIl3jJwgguHTFQuy2n9kLt4Rf1t6T4S2XOxq0U4Sb6Au
+         6rsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794298559; x=1794903359;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/Xc0/rpdCy7AH8vJ8uevr6qJbvz6HEgRC2sFXRCHrFQ=;
+        b=l7KzBFv2o7Eb6F5t3pxZY3HxPw1HEVIlgE+foenV9hVoybKbqlPlRBzKukB9OChzAN
+         Kq/xmY8xAm+4Xh201kKOTEvhSz4ne6v+wOE84vCDu1qzkdDM7Z/ldTZlqh4aVSoEreKv
+         OAZNerzdj6UoTMzAzy8J31MtXPm/0hAU+aG9qO8Pih0rdgBNW55U+L1eEoNo9mfM+0lZ
+         Po9XOICFVuzZHG5YDIpN501wbF5+6TOpYpffBdghBdAzQhfYGNqxZEbmHWy495PSka8F
+         yIiZ6cJUF1OJxVEJD2Ez5NXDJRDmriK1NPPp7J2oic6J0mtEfj5N2BmPzJtLNSGn70lR
+         mzng==
+X-Forwarded-Encrypted: i=1; AL+hErGuZ6QqDbOaI27sIsjWzh9KN0Am6RPfa8z3yCkOw0osAXk/TqA4fmx6pAB7RPvMUrZFO+sBnieYteV8Ryc6yw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8RZ7wtYtDi18Xns4TneB4WNdJMhSa7V86xoVpghxBkUO92rYAk
+	m3nOs5F/iuT3poyky+9CBHDkI5f5Caw6hFT9+kkd2FPgW/1M++QEJsaOPnESJxh4n/JEDFds1kl
+	hTFCuBF7bKTsIgijQ4W/xJACBHA4HSWM=
+X-Gm-Gg: AYBFou04yECak9vFz9TD0TuW5vv3cmU857BwhhwV7L6brFd0FUlBQI2/PhqA4K5xJ++
+	UKnLRLoWbeGFeqsDl9gAWnDZeSzmy9wIqjmt+P8F+kvssW4Lvwi3pqaZxR8tIenFCUzvbT3Ptkc
+	nVPFdET+YgnNV1rG/EN5wZcftibrLJzXFcYtVRZLDLenqBI12ZmY9/oLVzytkfM950PCqsP/nVh
+	SmUefU/NTUv4EWeARY6C1V7amwoclPygIxjayXnTjWiptA+Iv65X7oRMhKHOvIgRFJfI7nmg/wW
+	t0xD7P09ahsgv2jqFf3FzKvXYIPtazRTm+7RfJW6TF9NYFA/8nZTaGOSXKH1mKs5I5v7AjjVYc6
+	Upfb3ZyDxWcmC9tjNKxKEHmdsi5OOLqMxyXx6vY21e3uCi3bbW7KEY4et7+/p7OPPUUHqXnSeFk
+	pd/nVd6XJF8SqcbA9G3FxjtQvygA4Z0XXjt6cCDerqnakeuKgniPEqZp1k6gUwyIk2FbfGswCZQ
+	hj/tYfjM6RpdFpXEs9NrJ9SH81LYxq/Pqg=
+X-Received: by 2002:a05:693c:6089:b0:35f:ea17:d171 with SMTP id
+ 5a478bee46e88-3751e99321fmr4325717eec.2.1794298558497; Tue, 10 Nov 2026
+ 00:15:58 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -68,99 +106,35 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20261103-time-delta-display-v2-1-b01b1fe9ff9f@kernel.org>
+ <I_BPRv0XwpoRCf2AG4Ot12JnHyqvdM9lb_wF0sZMixc0UIoaBb-aeNWYuff1oe4_X1m5SpCTcZp9woOg-dt9Eg==@protonmail.internalid>
+ <20261104.180854.547774168466136920.tomo@flapping.org> <8733tgnc41.fsf@t14s.mail-host-address-is-not-set>
+ <20261110.075758.247487148810717068.tomo@flapping.org> <87se19qgeu.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87se19qgeu.fsf@t14s.mail-host-address-is-not-set>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 10 Nov 2026 09:15:46 +0100
+X-Gm-Features: AclHuK_MI8rOthbRv1i5nWdpIAxbnLDNEYvOPfNdpenBYaVTmaGUwNiPwQARWQA
+Message-ID: <CANiq72m4YdDbmE=M=mu=2g3pUzSXn-JRQ27TcyVhAOAwCyyJdA@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: time: implement `Display` for `Delta`
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: FUJITA Tomonori <tomo@flapping.org>, fujita.tomonori@gmail.com, frederic@kernel.org, 
+	lyude@redhat.com, tglx@kernel.org, anna-maria@linutronix.de, 
+	jstultz@google.com, sboyd@kernel.org, ojeda@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, dakr@kernel.org, boqun@kernel.org, 
+	daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com, 
+	work@onurozkan.dev, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Gary Guo" <gary@garyguo.net> writes:
-
-> On Thu Nov 5, 2026 at 3:42 PM GMT, Andreas Hindborg wrote:
->> Add two conversion functions to the `impl_flags!` macro:
->>
->>  - A `From<_>` implementation to convert from the flag value enum to
->>    underlying type.
->>
->>  - A `TryFrom<_>` implementation to convert from the underlying
->>    representation to flag container type.
->>
->> Drop the hand-written `TryFrom<u32> for VmMapFlags` in tyr, which now
->> conflicts with the implementation generated by `impl_flags!`. The two are
->> equivalent.
->>
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->>  drivers/gpu/drm/tyr/vm.rs | 13 -------------
->>  rust/kernel/impl_flags.rs | 31 +++++++++++++++++++++++++++++++
->>  2 files changed, 31 insertions(+), 13 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
->> index 1dd11b2b1253..0d6e841a31ed 100644
->> --- a/drivers/gpu/drm/tyr/vm.rs
->> +++ b/drivers/gpu/drm/tyr/vm.rs
->> @@ -141,19 +141,6 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
->>      }
->>  }
->>  
->> -impl TryFrom<u32> for VmMapFlags {
->> -    type Error = Error;
->> -
->> -    fn try_from(value: u32) -> Result<Self, Self::Error> {
->> -        let valid = VmFlag::Readonly as u32 | VmFlag::Noexec as u32 | VmFlag::Uncached as u32;
->> -
->> -        if value & !valid != 0 {
->> -            return Err(EINVAL);
->> -        }
->> -        Ok(Self(value))
->> -    }
->> -}
->> -
->>  /// Arguments for a virtual memory map operation.
->>  struct VmMapArgs<'drm> {
->>      /// Access permissions and caching behavior for the mapping.
->> diff --git a/rust/kernel/impl_flags.rs b/rust/kernel/impl_flags.rs
->> index 6051487f6e28..052759b8038d 100644
->> --- a/rust/kernel/impl_flags.rs
->> +++ b/rust/kernel/impl_flags.rs
->> @@ -73,6 +73,17 @@
->>  /// // useful for passing the value to a C API.
->>  /// let raw: u32 = read_only.bits();
->>  /// assert_eq!(raw, Permission::Read as u32);
->> +///
->> +/// // Convert a single flag value to its underlying integer representation.
->> +/// let raw_read: u32 = Permission::Read.into();
->> +/// assert_eq!(raw_read, Permission::Read as u32);
->> +///
->> +/// // Construct a `Permissions` value from a raw integer. `TryFrom` rejects
->> +/// // integers whose set bits do not all correspond to declared flags.
->> +/// let parsed = Permissions::try_from(raw_read | Permission::Write as u32).unwrap();
->> +/// assert!(parsed.contains(Permission::Read));
->> +/// assert!(parsed.contains(Permission::Write));
->> +/// assert!(Permissions::try_from(1 << 7).is_err());
->>  /// ```
->>  #[macro_export]
->>  macro_rules! impl_flags {
->> @@ -115,6 +126,26 @@ fn from(value: $flags) -> Self {
->>              }
->>          }
->>  
->> +        impl ::core::convert::From<$flag> for $ty {
->> +            #[inline]
->> +            fn from(value: $flag) -> Self {
->> +                value as Self
->> +            }
->> +        }
->> +
->> +        impl ::core::convert::TryFrom<$ty> for $flags {
->> +            type Error = ::kernel::error::Error;
->> +
->> +            #[inline]
->> +            fn try_from(value: $ty) -> Result<Self, Self::Error> {
->> +                if value & !Self::all_bits() != 0 {
->> +                    return Err(::kernel::error::code::EINVAL);
+On Tue, Nov 10, 2026 at 9:07=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
 >
-> IMO this should be a new type, perhaps something like
-> `kernel::bitflags::UnknownFlags`.
+> Good idea, I suggest you submit a patch, then general discussion can
+> happen in that thread.
 
-Is really useful? If this happens, you probably cannot recover anyway.
+Yes, please!
 
-Best regards,
-Andreas Hindborg
-
+Cheers,
+Miguel
