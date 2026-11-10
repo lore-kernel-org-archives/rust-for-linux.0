@@ -1,55 +1,69 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794337763;
-	b=DlmoqpIzVzOd2et/XrvU8ZFEREP5soDXCDbOJ5UtkZcZnCzkpkScn5wkzqgMiXVV4t+m
-	 jrl2fUKeXybF5/J6GLCI36SnU2SONDX3L+hgmk5TtLqCFsg02ueVHbFsvzPpJq6h70PkC
-	 UMjPOuv1OdQcUavWGG4PqtVEPXUb07vIeafIDWcLewzv/GGGcOIAZ1xDskG4dQMv1OEU5
-	 +sQUluvvA/j3crMat6bLQI0cgCxQGETWp6d7/F1wnLMTZyduYQImoTib+/Z4z96wyBWx3
-	 Qwv9WA+sITkmhqyozU+dpYMtSjY6IApHA8+5sfyCTHKr50jMEEd+G2qvb6n+uDO3Ydw==
+	t=1794338335;
+	b=l3uCLvtH+VBWIP7VZBJ1p/wEusLTtyl6nAU4OhP1PT5a7KbLdWejRm/dJH2jbwMN4ZqL
+	 Kx0lFfKpaNriQhCf8fCsIHLY56vd0HS1j/o+1iZ7o4InxfotlYCKm/i/lCGCoRwIMBRpA
+	 fApxtWi/7+CHw123xu3S/Wg2QuCvfUE6yXGSFsxe0vG82BAqIhP4pUestxKy/6TkzdbFQ
+	 n8OMBB8aPmmTPlxRw/Lg3ONq1tpS+SN3BjgWQ4yh6pdTOtFxoIcj1r88Zsnfw5CdBHuJ7
+	 WFJ+YgV2dZU2zPU56CnfC3naUxtis4hSkT3lsb6AlE5UOo5ZtjccWkqvL7znTIwzxVQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794337763;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=W+WHa4Tx0FQeM/03RDwXEAIwHC3edRmTKXzFoRa1jD8=;
-	b=B/4LlMXu81OqJ2lJAHJlfFTwDGhJk6RZpOYyq21YzmbIxDq2G2Ko/f4zTEA5fgdYJCgb
-	 pd6a+sB2qNUbagzRXoh9j+YxSOSzvNl6W1Id4QGoSSiV5BICK2zerI76x2Wdxrw77BxzT
-	 f2flGLPuT7DEM7XARLkpfVDwe+0CmPyAHPgc7CclT2ar/uwVSJR8EgIIuZkO+gHDvsN3L
-	 jcS50eSJ8jhFmzME2oMXWUSqOfz7mQ06v/5DcthgkBXElPBgb0CkqyXAo2N9buQ8LwqaL
-	 Mo5esIxMItSPh0f+rXGgVoSlDNU9ZJi9DPygz6bvdCvz0eWpTg3W8fFNqbnMIw8kq1A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794338335;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=EJk3YmOxg0lJBokWvd1lYbv0iZ6w5uZScCFE1jaF0zg=;
+	b=W8xpbF9NAoWPxy8AzTfZHOWDzhoLAxm3B5Co+pwTkhMfJJrU9xDdjMUGxg3AMp+D7/UZ
+	 J/BI6sXPVio3+4MK9lgxfsntS12tZSf5v687vp3TYIKu4o7bSDUfoYhc+QPkR6jinRu3+
+	 IMuOlwU9ZtUS7cKk2jDECFRyW5vmQ4w0mmmq3R3B10fOJBkwc4kXdoXu+EKRiP4Tb/gIF
+	 NsgwBJVlcle/qJ+Cp6ibEpNLHVaKpgJ/Q/KM76e2qh0vV9UqheQo8fBdPcz9XowY3H7yi
+	 FWZvTFIBHm6pD03QfV0IUJkeM/miojPwoMz6R8RJPrbOVJbh0+Wcw3qXuHDfSkHJIfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bglyxXwZ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jlA4Tqbo;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C45606A325
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 19:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B13D606A31C;
+	Tue, 10 Nov 2026 19:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bglyxXwZ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E291F008A1
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 19:09:23 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jlA4Tqbo
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF34B1F0089F;
+	Tue, 10 Nov 2026 19:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794337763;
-	bh=W+WHa4Tx0FQeM/03RDwXEAIwHC3edRmTKXzFoRa1jD8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=bglyxXwZhyuRgmFOeALSHNg3i9G+F+dEGWc+WpFP+/s37zzIxn5NO9E9jL+3R63Bm
-	 kC1t66ugxjCC+DGJdyggcyEpur2diPQ2cj/2niEY3bXp18Xyde4N4SgtjypFHg07RX
-	 nNt9IB1Pyo5UXtnxiwwuo/pGQaooKaOqZl+S5l9vCcBYowdJ7i8choGB0ABE8fDRAO
-	 IDslbNOGPosKnbAT3VDamaJEjrl/9QWADByJR3PXYNI1smQYdKt4aqNCQDtxHZdAjz
-	 RdhLsM6qzgydo3C6wdZv5aCI5+0Dxakipha9SAanffrY51SlJjsoX6VnWKJFlLWFHE
-	 bP6lWSDmVlV+w==
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-93f3c895a0eso203991685a.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 11:09:23 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErH/yHRylSj/inGsE0Nl0UDjJxfG5rUjRqPWZBwqfGp7OGCG9WNFekI0bEGDmv4HdiTI+U5HcCS/1xEYoTnidQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/iXzttWxkkvNqJfFggIazoQu+iPmvLBbSbQEte1irsW+AqbHSv
-	HdG05KsIs7XfQ7BKL/B36kyyXLarcxoYQunZ+6eWqpOPfn43BrwuI3THNanhBBFisBmNhMeuISc
-	jL/ZaDPIPVxEbDzmkw2TxLHosY60NmP4=
-X-Received: by 2002:a05:620a:2984:b0:93f:623a:adfe with SMTP id
- af79cd13be357-9479f326c45mr594443385a.58.1794337762570; Tue, 10 Nov 2026
- 11:09:22 -0800 (PST)
+	s=k20260515; t=1794338334;
+	bh=EJk3YmOxg0lJBokWvd1lYbv0iZ6w5uZScCFE1jaF0zg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jlA4TqboaRmQqFcwJxLUB0Xjiny3+yZ2Gw4htr3kCUa9BKK3RwtSjicIXi71bQzIL
+	 pln6NHDgcYKn/fycKT1oNaV5BQnj0eGWSPyMP2h91MRWkV89byoERa5AhdUYefPjPW
+	 1esKXgmfPWasQH1b5ahQF4d2XJeK24eAYBB4RCRPZI/g6u36mSRDazWI7ifq4tzl6R
+	 SkVel42DVjWCaeSjnlACzY4zmk+uQiOheNZOttg4oe4Q4YXi3lznEMgBHTDtiyVwC7
+	 9eHWYNPI0sfgU3c7fJcI9Z06vh5LIoXNlsO8Di/42cf72IOyoKWMtEILX3u/0v8tBW
+	 iPUMzMt0rswKA==
+Date: Tue, 10 Nov 2026 19:18:44 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Uladzislau Rezki <urezki@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 0/4] MAINTAINERS: remove my reviewerships, add CREDITS
+ entry for THP
+Message-ID: <avNsYKFvA5u46us3@gremlin>
+References: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
+ <20261110105430.54c7a914e163250222151d69@linux-foundation.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -59,79 +73,46 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
-In-Reply-To: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 11 Nov 2026 03:09:11 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wPJ_QtogRWti7S_w2pLjp5OtiO_yMK3xPDUsbKb7vcpQ@mail.gmail.com>
-X-Gm-Features: AclHuK-DC-lJkNatH4VO2rw16n-NSlpOLDxaxjxsORriFsDN1xlQXsk_TPJhSYE
-Message-ID: <CAGsJ_4wPJ_QtogRWti7S_w2pLjp5OtiO_yMK3xPDUsbKb7vcpQ@mail.gmail.com>
-Subject: Re: [PATCH 0/4] MAINTAINERS: remove my reviewerships, add CREDITS
- entry for THP
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Uladzislau Rezki <urezki@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261110105430.54c7a914e163250222151d69@linux-foundation.org>
 
-On Tue, Nov 10, 2026 at 8:03=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.o=
-rg> wrote:
+On Tue, Nov 10, 2026 at 10:54:30AM -0800, Andrew Morton wrote:
+> On Tue, 10 Nov 2026 12:03:06 +0000 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 >
-> Given the current throughput in the kernel resulting from AI-generated
-> series, I unfortunately lack the bandwidth to generally be able to offer
-> review except in those areas I maintain.
+> > Given the current throughput in the kernel resulting from AI-generated
+> > series, I unfortunately lack the bandwidth to generally be able to offer
+> > review except in those areas I maintain.
 >
-> I have separated the patches into areas maintained by David, Andrew, and
-> Alice + Danilo, so each can take the patches relevant to the subsystems,
-> for convenience.
+> Sigh.  Is
 >
-> Apologies for doing this, but given the current trends I'd like to do
-> something to make my inbox a little more manageable :)
+> 	Nacked-by: Andrew Morton <akpm@linux-foundation.org>
 >
-> Also add a CREDITS entry for THP, as, since Zi's rightful and well-earned
-> appointment as co-maintainer there, I have no fear of needing to step in
-> there, and so would like to record my time in that role.
->
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
-> Lorenzo Stoakes (ARM) (4):
->       MAINTAINERS: Remove myself from MM core reviewership
->       MAINTAINERS: Remove myself from MM misc, reclaim reviewership
->       MAINTAINERS: Remove myself from MM rust reviewerships
->       CREDITS: add entry for THP maintenance
->
+> allowed?
 
-Thanks so much for all your hard work across so many areas,
-especially in THP/mTHP.
+I appreciate it :) but sadly not!
 
-Acked-by: Barry Song <baohua@kernel.org>
-
->  CREDITS     | 6 ++++++
->  MAINTAINERS | 5 -----
->  2 files changed, 6 insertions(+), 5 deletions(-)
-> ---
-> base-commit: b3dfbde62cf1981c4638939c159dfd087b7a72e9
-> change-id: 20261110-drop-reviewerships-264c745b11b5
 >
-> Cheers,
-> --
-> Lorenzo Stoakes (ARM) <ljs@kernel.org>
->
+> Thanks, hang in there.
 
-Thanks,
-Barry
+Thanks :)
+
+This is mostly about cutting down the noise in my inbox. And likely the premise
+is false and I'll end up reviewing all sorts still, but I would like to be less
+subject to being self-nerdsniped into reviewing things unrelated to my
+maintainerships :)
+
+Of course the AI wave has been horrible, and is getting significantly worse.
+
+At first it was once in a while that I'd see slop.
+
+Then it was at least once a week.
+
+Then every few days.
+
+Nowadays it's pretty much half of what I see, if not more.
+
+There still plenty of great people in mm though, regardless :)
+
+--
+Cheers, Lorenzo
