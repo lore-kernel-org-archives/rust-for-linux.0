@@ -1,98 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.0
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794306924;
-	b=2NvT5X3Crlqe99qu0PX1uVkfQ7W87pg2kQHVsmiy+w3vWOgoeqLAhbiumtUibneWv8Mf
-	 ntq1q3bmxgHNhRUPUzU6NTduMWjNmnBv+BCddDmS452ig2pkskRhefXRa4i4MSAv2nR+V
-	 71aVuXuZcwfSno8MWmf1Nmderu6n0YKqbBV3vx0ROZkwj5Zey1DZAIE1HVdM95JHgTbud
-	 lMw2jssIdZZQQwg8xChDfdqnZ15QzzKVtpPqU8x53pIJHZpzVra49ICynkMfhhaczsOw8
-	 3Eqdu6/EhtvLEatjpDMq1i5s7Jc/C051mb+4bdBtnKhxXZTXM1iaa8+w2b4ecdy77qw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794306924;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
-	 From:To:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:
-	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=QwfYXsIdfpmBf4/2YepCLwVvS24ohMONopp8RJiFIjY=;
-	b=1uoK3HPeCG9pjUjj6oTLR09zQ7g5DMA5goyIzmqCIArZiHRLpI1LS4n5Q8p9EnDFN3Hj
-	 3WmSu9vH46hmfuGvBvixNr1Jgr75wAp50aLhCqMxL5OEld6kUPWQf7VbBsqITcs0GppTJ
-	 0h8FePYZ8zE3kzfqJTsmikwOh68xf4j36JrxytBw2ASiFbPoo5gHLlwp0nrDDSxzesSIt
-	 3XOhJmtTnZEYv987/C+2YQxx8vv0Kr8NqwGmo5mTh8VlRhsE13pfsqM7212J0PpieqTi8
-	 TrC1iprojXxa/YdQ3wpNspNskiqRyZ7x6UEDZX74fj7bL9XVK++K8d22ufrLC9nz+NA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=cWzOig87;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.0
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012000.outbound.protection.outlook.com [52.101.48.0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.181
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794308437;
+	b=MbNWxv7tPwjBKNO44BHCt+lFtrSQq6wHpILhTZwSJzAGPpkz+y3gJTEf5d9SaDz+hgpn
+	 DV1Il1v1cRQNqb/dX7ykE/N7ihgCDAMSUkChHQdoQYqXrf7wGvSzGBbKrHU2UUxiyhkQg
+	 thgALpT1x/IFeNyXZvHHZhphO8mOVrPE234IqV1sClkCycbjh+rlNgBK3usD9OCR78QRQ
+	 z3UnjGVF80VqvDDRALcHnMO2Bj32yZeOGH4Q9hVndOfWSxtrBQCpEUxlA951ENGQzbOwE
+	 9ghYKMC0aV/nNzJMCIBs4DDImx7wN3KrGCZXsVjx+txAdiqzecNoUJr0KFF8DzFgECA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794308437;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
+	bh=K10v5vnvxkJjsI7G5IeZLrlXvK0KiwHpcAB9TIGHcs0=;
+	b=Meu5DITzj3mIUkCq5w6eotIsgkIBfEn8m50RWk92wPcrcluMXn2SiVZ6xG03ELP6dQoH
+	 Ey6dSuYM55zlwuuDjhuXkIZlXEuUkXIPIIkqImCIxSR1zLfs/i6nRAAps3ymgFoFhrt9A
+	 m+uEF3AA30Jf7MUQauch/atkUTXGXRSj0s9ebtdZpiLmFGX3xY+T7ndZ9trkYqy5/OCtM
+	 ULnE7fLacit0j4KMDJTEzBUdxp/YhU3g1IJWir3ocY1Kbgk1nyDm2eSpuOKXrQNlcp/b8
+	 5JPqTC+l3aZtETAc7iCJ9URPEsOKZp5Pv5GFAdAhC5b6RfijLGviz9C6OE5bhFT/xgg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="vqFta6X/";
+	arc=none smtp.remote-ip=209.85.210.181
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDDF606A31C;
-	Tue, 10 Nov 2026 10:35:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AEDDF606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23ED260A2619
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 11:00:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23ED260A2619
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=cWzOig87
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NSFy6+HiXzorWbAb3DTc5jCo+3Qzki/vyxPDtZxq2Nj3dSRdCIOKUuKcytpWgBFaMHy90A+zXpH0fe6OJzHR9MC0bNVIWh015HGJbhDh64ac7Sk0m1ZIUgfDKVEheoIu0oJcvhLq1dDKaIZljU688A1rg7ZieTdHgtwT6AicVqs0A6e8fRtpuKh7HkSGAdkfHkW+ROe3e6TLts4pm0VIqCe5+PUP7y/s+ADxuYMrXxJzUt2vg5/5mdmITObshR/cXkTbiLNW3PhkKl6lewpbJR9crFqtMonmV28oGO0ElIvDbKDna/mZgbqbBfPve6s1aIBFp7r57qj1n+3sWLp6Eg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QwfYXsIdfpmBf4/2YepCLwVvS24ohMONopp8RJiFIjY=;
- b=AUaCMh2xHtGxGH4+VagkzdH7RuG3Aee7s2Dx/DwywfaQEtrmty9G0QYfn4+9geF9DKihg6O0heJoxTBCam3kSWxzDeSBqUVDr2/0o3gS8wvr7TDX/Z+gbRrHJqSibx29qtncgO89hJzHWge37J6WZsZ2qwpi1f/qKEiz61KT7RnaxuhIo+JVGbro8FTXQsiWTqrxZwUtRB4/HD9Jm8ebW6JPplZQoC44pvXzVlPRkvU8/ZZ9ljDijr59FYSkMneG7Bgf5wci2gsJiUSoi25OvLmRwCTQi3521W41HbZ46i+H+P/wm1imefWD9A6dv2rQFAMaaLFdEZwWNpOFYUXpSg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QwfYXsIdfpmBf4/2YepCLwVvS24ohMONopp8RJiFIjY=;
- b=cWzOig877yawnBfw3XTm9MaPfHfltNr3pJ175ZrL1IIiW31bRL1CL/ftT0C0ijKNXUiZH6SwZk6RCa9+0AeCxmpZ+fV5bGH41tICaKIerWGsIZ5fBujnUsbOAz7/V5hNfzFI2yEfenHV+XeACtXEEUYTr0IMWN3u3NOSk7PrzGUdxfFloek6ZPDGGXZ588Hx5m7I3Y2/5uXL8m3JeWgJmdA9XmIncpjtcI4V9zE0ti6ky67V+UudfUboiQYlpIcCneI/q3iFyRzbu9Yh5N2/RQF8LUeUR8XAdWnlg0UaUntjvig9ct1ncKBKP3vU/nPdz2wRqBThIW1Nof9Luv26WQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by DS0PR12MB9400.namprd12.prod.outlook.com (2603:10b6:8:1b6::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Tue, 10 Nov
- 2026 10:35:19 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0592.010; Tue, 10 Nov 2026
- 10:35:18 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Nov 2026 19:35:15 +0900
-Message-Id: <DMRGPTJ9CH1A.2M8LD751KZRIB@nvidia.com>
-Cc: <dakr@kernel.org>, <aliceryhl@google.com>, <ojeda@kernel.org>,
- <airlied@gmail.com>, <simona@ffwll.ch>, <abdiel.janulgue@gmail.com>,
- <daniel.almeida@collabora.com>, <robin.murphy@arm.com>,
- <a.hindborg@kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <driver-core@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] rust: scatterlist: honor the device's maximum
- segment size
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Matteo Kloiber" <kernel@matt3o12.de>
-References: <20260831233215.287881-1-kernel@matt3o12.de>
- <20260831233215.287881-3-kernel@matt3o12.de>
-In-Reply-To: <20260831233215.287881-3-kernel@matt3o12.de>
-X-ClientProxiedBy: OS0P286CA0101.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:604:b1::16) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vqFta6X/
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8b29b83fdf1so793013b3a.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 03:00:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794308436; x=1794913236; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=K10v5vnvxkJjsI7G5IeZLrlXvK0KiwHpcAB9TIGHcs0=;
+        b=vqFta6X/r5LS26yBm9gAjDv2NrQgK/wlH6ENp80rV48JVxxZlHIMf4l0Var7EUuZ+s
+         0XBm8Vfnk8VbEaN2fWpDvNiFUaS7qUbYbMfM0g2HdXSu9Z0H+UiZt5MfOc9VI4JixQ1Z
+         epZdNoALcpvyqbkULVYSF1kgRZFVvrcjZnJ/Xe5upVvG9USbrxi7AblO9+VJL2lzelM3
+         BNxMUmxEKhf6dj2X0zGjQSdSLGnckhbn/gsSe/BhNb/y3ox9Ay6ZIRVvdsfqjT6IRMjd
+         pu78lUL0QeYCJ5Ds9tORw98LPbwYoSfcrOlbgNYzvFNOl3tkgEETWU/thY5bhPYmS1pz
+         Cs2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794308436; x=1794913236;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=K10v5vnvxkJjsI7G5IeZLrlXvK0KiwHpcAB9TIGHcs0=;
+        b=cpnksLT5ViEAZ3nIG/DjrLCqHt9+8hyOqEm47OAqUQtl7XWykbiFBeKnHk4FJyZAjQ
+         SG8fQowEN5HFZKpa5ZYF9q35EKquoIZMWCYfECbkrxhO3Iko79suYQerigs+wbe/cr1F
+         eEFZ1uzIHL/ZNMOc23sCsBb50RCQgrimx4F12PyhAXSHh1omEfUMAHMTYI9zH46O6MNV
+         L17sDjJiJKnesjbFZMXhm6/5rThwJ/d9FDaxm1yc2BneTCb5J8FayHILJ3JXa/4UlOdL
+         vRR9EArAtuYxonmVW370rw5RrogGviQjpdoAATIF2Bp22RxhwJv6c0pdReAf2LrRLGwK
+         2Zrw==
+X-Forwarded-Encrypted: i=1; AL+hErFkXKEF5yRDRiaj50bkxGcDDDKUfIrTEZrb2Do6KQFsfYT3sjAI5auBcwc1Wc4DnSx0mnQTp88hVpNRlDd34w==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/wEFmWuK+atyIemJxSnxFieTp2xNF8VMszfX5IyHfZJZfdq5dt
+	gX12dXuWog1EyUySise4B+yTdAI7TAYdzsjunHNtX6aNDJiAe5421Aet
+X-Gm-Gg: AYBFou184llF5jFgnz+isADhC37JjedyZxGzCUfPbWyhy32ZFKmFY7v9EVXPyfoGNYL
+	YztsdMQO4djFGikPAzsjbMUDAlS1OCTvYJRgoVv37m9Evc1rKfhiaEehTJ5y+HV/f776VH4115O
+	zA/q0VJ8Lv9igeNlfrzO3Oz9i4X3icv8hZBa3io8Y0AhjkFy09SjVuyCjqgHVmFfTkf2ShwdBN+
+	6m2Ub/r9jRmlsMtK9qZ7ydUxf3nsUgpMH44Jxs8JMAbXO5DNE1zxK0aXBS0w/3VIFu4iCuNyhW9
+	/6CID6K+j4cjLyGla7N/BN5oDWluMgOpBKShVikbH/ZZQfeWOU8spH98dUN4s9T3E1YFArc2+k6
+	woikVQ/b+c1EnZLfiHzBkaKxndxLasmJybOPGUEUsz2VVsmd7a5TQBmGmEr0G3PrZJWEdUCT99H
+	taoZlsLJh0YA1IPQLqqsn0efYeWFYxI4N6Fkd1YCss4ecIZNeofs4QTHajevT8zvLHwnhDSO+pW
+	ankpo0SvnCNCm6hDI9MM/98eCCOmCeIxlPacbhwEm5A8+W3ItlH1xNBN8TyQ7ZFUEkL2pNtGghr
+	1zQRX/fnsbd607evz9I8KgEz8+mdXMaAu+lTa7Sz3LldV8XDTCtM8M2j17pXvibIVPZ1FT5OnmW
+	KlZLbvfT0PXA6twa5eHzaelBvmHh1KYWvQsaF/dwkt86PSX0Hi1hYb03V9Q==
+X-Received: by 2002:a05:6a21:700a:b0:3de:5a00:e248 with SMTP id adf61e73a8af0-3f190991937mr2018801637.76.1794308436090;
+        Tue, 10 Nov 2026 03:00:36 -0800 (PST)
+Received: from [169.254.3.1] ([143.248.188.96])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baa7de768fsm740596b3a.6.2026.11.10.03.00.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 03:00:35 -0800 (PST)
+From: SeungJong Ha <engineer.jjhama@gmail.com>
+Date: Tue, 10 Nov 2026 19:59:26 +0900
+Subject: [PATCH net-next 1/2] rust: net: phy: make Device generic over a
+ lock context
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -102,84 +93,316 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|DS0PR12MB9400:EE_
-X-MS-Office365-Filtering-Correlation-Id: 29e630b4-8eb9-48d5-abc3-08df3f1650cc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|10070799003|22082099003|18002099003|10067099003|11063799006|4143699003|56012099006|261022075727099003|261022113327099003|261026121527099003;
-X-Microsoft-Antispam-Message-Info:
-	cRpI0GrYeMKlBFr+eY+PCZroof8B921FwzHHjwzZQULdX9c9bRTbX/Zio+CY3evYETO323W437Y1QIStnN2Hqd32yDhsXxLHh81yMe/lBPmuhNTtGNN3Eq5CrHK0x6j/G6+NclMm4lS9P1vvdEiO3LZfQO4FR4cZYKIzZQnxRwm2qegCd3l1oaRA8VR3XdLy0v1evklXPkHAjRAPhrk4WKzu/e5yJasy2yqgG2S29aYaCeSu2cbkHW6HOCVj9A/FMaFS0KvkKMTP1VaBeJSFqXVI4iYBdQc2XBSAhMe1mtfuNSJ5etteU0TGB9VXudax+K0xoy9DneuYUmq9etV2Qd10ahnflrjsPvc00XU9mprVNk3XHT8zVie5xyeI7GTmbrFjfagDqEM9P/F5q7O0DkNKLLaE77umXUjzq1RRD9jwpdFTDTbl2H3ETniEA+QaovZ+6pimNpffCBboUHFlF4qPmpM76RqiWVHMGAgOpyzt8YXRcjB8Iq1qSOFi5UT3ngNMkvd/4SzyMsmSxaYCqfZiUuhDC6USuxcX2RL/PcxDnasC09J+KDtJ73sH8oDe6MADG0PJIZgmDj0kgIZEY5S/FD4kJQpj2nsrK2rGJnzZUIcTeaQl4nubYfpb8p2yJNemZ7nCZXrShLzAToVQPg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(10070799003)(22082099003)(18002099003)(10067099003)(11063799006)(4143699003)(56012099006)(261022075727099003)(261022113327099003)(261026121527099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?L0hXNStFKzB4TlllVXpLQ2w2K0FJTmY4NjRreGQwNXE3eXUvNHkvUVRiTUR2?=
- =?utf-8?B?Smxmd1pVbVRDOWdERHlNWmJFNXdaSkdaM2RTMDFWMTNkNGdZcWNMMXNjSU9E?=
- =?utf-8?B?OEtNK25BVDFEMGhXZStCYnAzZWNEcFRpb21CbDhuejJnTVJ6dGZYMXd5OUhm?=
- =?utf-8?B?NWtMb1N4blJ4TXE0ZTNtYzAxR2k4NkYwVHRrODV1c3NzbGZJUW9leWlJbTlJ?=
- =?utf-8?B?NHRjREUxWXFrUWgrVmtDU202ZGlOSDlCSzI0N2ZHSUd1TEVwNVZxWVJEYUR0?=
- =?utf-8?B?RXdBSUZCMzVaM3JLL0l1R3VyZjZMN0NLY0YyTDlNTytkZ0FHbmc2cmUrNHh1?=
- =?utf-8?B?cUZVMlYyM1h2WGdkZEJhd2ZUaEYxRDhvMndueHVxTTBIWVN2eUhiMktDVkov?=
- =?utf-8?B?UEwxU1RwVWFZZDhSUW90YlR3aUc3UnIzcmI2bmF3WDVoUGN3WTJicS84dXcz?=
- =?utf-8?B?VFBpY09Bc2hWOVJxRXovRTc4UlpWSWROMWdZd1VlaDBRbkpuRWplZ1o1YkRr?=
- =?utf-8?B?WHBTYzU2Skg1RnZwNFlwMUdqN2svS3VHaW9LYzRDREVONXl0M2pabnBqY3JT?=
- =?utf-8?B?bXJRbFgrZEEvK1JySFJSUTA1RUM1ZnlMYjdzQm1QVnI1d3BHYjFhVWJyOHAy?=
- =?utf-8?B?TDNEZFRWZ0pyekl5TDkveHQyMDJleHgvY0lhTVk4UHdNM1NmMm1Ub2dlMElh?=
- =?utf-8?B?Z1NHUnFhM0NSQkx1MUhNM2dyUjBwVVdnTWorTG8zM3NUMitEWStVUXJ0aEk2?=
- =?utf-8?B?VmowczhiamhSM3JIRGs4SG5yR1NCYUlpM1d2YkI0bklETWI2bVBneG9Ra0dY?=
- =?utf-8?B?cHJKNXdWVi9scHBucXFETHVqbUZMUVJ2TmU4ZDZoY0RFYVlhOEhqMTZRdVVO?=
- =?utf-8?B?UDRBbyttc3ZDNGRyVXA1anIzYTFacEs4UzhveWlhS2hBdUl6OTJPR0xVMFIw?=
- =?utf-8?B?L21ZRlJyZkhiTU1MbFVBdlZ2aVlGc0MrMkF6R2hBWkdKM3crb3FwQkdYQkVY?=
- =?utf-8?B?WTRYdGVNblp0NlpyVUVOZnVtNXhUSEFsSzNnZXFBQk42ckRFTHovVUNLR25h?=
- =?utf-8?B?WXJ5Qk9uWUtoaHBlL242UXdtbC95cDVCdDdiSlVNZ0ErbUE4UVBpZzRVc3dq?=
- =?utf-8?B?cy96Nmh4c2J4cWpjNllMTFRYS20vdEdEeCtGMzRTTHRJK2FFdEdJSTJFVzJ4?=
- =?utf-8?B?NkwyQktjUUNPZGFwR1ZDMTRpR0JzZVg5WnRETThPeTIveElvQzJFbGtiQllU?=
- =?utf-8?B?U2p1V2pEZVpqMkxWMElZQzh1TW5TNDBuZjdUQ0pDeWtuL2t5VGQzSGVCdm9F?=
- =?utf-8?B?UFRRYUJ3QWEweXV4WlJSSTIvZlh1UVhGMEtaOFpjNmdkTDNUUDBUYjUzdkdR?=
- =?utf-8?B?ZnRBbFdDVm83dWZvRGo2TzBCS3VNMEZ0ZUROdTlDa1M2WG1ncm85c2txVlgr?=
- =?utf-8?B?Y09hYU5vQUQ0ZFBWdXc4dTlOT2VkT1VHU2sreHBBV2Zwc2x0M1Q0dDQwSDJz?=
- =?utf-8?B?YS9ZYlVIRHdSMUlDZytiT0E0ZFVhVWx2TlhWdEo3d2p4eUJMbGF0VTk1eEl6?=
- =?utf-8?B?eVoxTWEycWUvYXFUY0JMY0Y2ZFNHUnNCUTJ5bHRvVldnNkVCVWxHYWt4cEEx?=
- =?utf-8?B?bUVJSS9WMTlkVWxDbDZTZEVUMFEvT01VT05aL0dsY3RNcTFCcmtzcGRMc1M0?=
- =?utf-8?B?TXNFbGIzUFVnOGs5NGxPOHQyRTUvLytVL0pHbVhyd2RqQXQ3S0hTY1I0bE9y?=
- =?utf-8?B?L0xacEJuWGhSU1FOS0dmYWRXTTJpZDdXcTZWMjc4K3ZPMTV4T0NhdytkdkpW?=
- =?utf-8?B?N0VlQXpuWmtFcDcrRGMxcmgwTWNkZzlQZFhQQW50ZUxuQjFCT2p0dTR2akNZ?=
- =?utf-8?B?UU0rTCtMRkxsUTBwVWVnSlZoUzdkK3hLYWYxMFNEdmluQ3czVUVKSzUrdHVl?=
- =?utf-8?B?QTROclJxMGpCNFl1OFRxbmo1ejFTK3NYVXlSQ20ycWt3WGtxVXp4MnlnWFRq?=
- =?utf-8?B?NC9CTllFVmFwYU95aGxiSEVZQ29oSFU3cFRNNlArNHIvbnRZd3NrR0I2NllO?=
- =?utf-8?B?SUp5Tk5KSjNoVGJtQ2FrZmp6N0VwWWV3RUltUGZaZjVoQUZrUTROcCtybEJC?=
- =?utf-8?B?bGc4d21ZYkZvTEV3V1MvV1NETVA3S04xMHlPQ0IzZXFnN1dIRXJMbjg2Zlpz?=
- =?utf-8?B?MUtYUERsWW5zNHd5MVdXQVFLc0pHMnBUbjBJRlB6aHFIRlRzTTNPYjNaS2Jy?=
- =?utf-8?B?WEdWWTBHQlRVeFpoa00xazcyc2lKbE53WkJHbVExVEdFc0Fja04zSmk4bGFB?=
- =?utf-8?B?bnRUd3dEemhsTTNhVmlCK1BxalBJeEtBMEFON1dZT1NjQkdzdFpuaGhjU1FZ?=
- =?utf-8?Q?vH7K82K+L+hONNxNZ0LRXfZVlOzk1Z2CgZIkiSABotbjn?=
-X-MS-Exchange-AntiSpam-MessageData-1: kN+vnwsEI9/Gpg==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 29e630b4-8eb9-48d5-abc3-08df3f1650cc
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 10:35:18.9113
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RisSVmuTpKcGfF7xvXbxfXGN0igRU4/V1/eWL4lNnqUzt8Kqxxwc6jAv/ujHFKSjI3jC7X5s3hapEtIwaVX/gA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9400
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261110-exp-phy-rs-maybelocked-v1-1-3023cc9055e9@gmail.com>
+References: <20261110-exp-phy-rs-maybelocked-v1-0-3023cc9055e9@gmail.com>
+In-Reply-To: <20261110-exp-phy-rs-maybelocked-v1-0-3023cc9055e9@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Trevor Gross <tmgross@umich.edu>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, SeungJong Ha <engineer.jjhama@gmail.com>
+X-Mailer: b4 0.15.2
 
-On Tue Sep 1, 2026 at 8:32 AM JST, Matteo Kloiber wrote:
-> SGTable::new() caps segment length at dma_max_mapping_size() only, which
-> limits the DMA mapping path (e.g. swiotlb), not the device itself. The
-> per-device limit from dma_set_max_seg_size() is ignored, so contiguous
-> page segments can be longer than the declared max segment size,
-> potentially causing problems for future drivers that use this
-> abstraction.
->
-> nova-core declares an unlimited segment size, so this does not change
-> its behavior.
+Make `Device` generic over a lock context, as `device::Device` is over
+its device context: `Locked`, the default, for callbacks that run under
+`phy_device->lock`, and `MaybeLocked` for callbacks that may run without
+it. `Device<Locked>` derefs to `Device<MaybeLocked>`. The next patch
+uses `MaybeLocked`.
 
-Hi Matteo,
+Methods that do not need the lock (`phy_id`, register access,
+`read_paged` and `genphy_soft_reset`) move to both contexts and take
+`&self` instead of `&mut self`, since a `MaybeLocked` callback may run
+concurrently with a `Locked` one on the same device. No functional
+change.
 
-Do you have plans to keep working on this and follow up on the feedback
-received on this revision?
+Built with AX88796B_RUST_PHY=y and CLIPPY=1.
+
+Signed-off-by: SeungJong Ha <engineer.jjhama@gmail.com>
+---
+ rust/kernel/net/phy.rs     | 145 ++++++++++++++++++++++++++++++++-------------
+ rust/kernel/net/phy/reg.rs |  17 +++---
+ 2 files changed, 113 insertions(+), 49 deletions(-)
+
+diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+index c4e7b1d6c6f4..60c58bbc12d6 100644
+--- a/rust/kernel/net/phy.rs
++++ b/rust/kernel/net/phy.rs
+@@ -50,6 +50,48 @@ pub enum DuplexMode {
+     Unknown,
+ }
+ 
++/// A trait implemented by all contexts a [`Device`] can be used in.
++///
++/// - [`Locked`]: Serialized against every access made under `phy_device->lock`. The default
++///   context of [`Device`].
++/// - [`MaybeLocked`]: `phy_device->lock` may or may not be held.
++///
++/// [`Device<Locked>`] dereferences to [`Device<MaybeLocked>`].
++pub trait PhyContext: private::Sealed {}
++
++/// The [`Device`] context of every [`Driver`] callback that does not take a
++/// [`Device<MaybeLocked>`].
++///
++/// PHYLIB holds `phy_device->lock` for these callbacks, except for [`Driver::probe`], which runs
++/// before the device is published, and for [`Driver::suspend`] and [`Driver::resume`], which run
++/// without concurrent access to the instance.
++///
++/// # Invariants
++///
++/// For the lifetime of a [`Device<Locked>`] reference, the holder is serialized against every
++/// other access to the `phy_device` made under `phy_device->lock`.
++pub struct Locked;
++
++/// The [`Device`] context of callbacks that PHYLIB calls both with and without
++/// `phy_device->lock` held.
++///
++/// A callback in this context must not take `phy_device->lock`.
++///
++/// # Invariants
++///
++/// None beyond those of [`Device`].
++pub struct MaybeLocked;
++
++mod private {
++    pub trait Sealed {}
++
++    impl Sealed for super::Locked {}
++    impl Sealed for super::MaybeLocked {}
++}
++
++impl PhyContext for Locked {}
++impl PhyContext for MaybeLocked {}
++
+ /// An instance of a PHY device.
+ ///
+ /// Wraps the kernel's [`struct phy_device`].
+@@ -57,11 +99,13 @@ pub enum DuplexMode {
+ /// A [`Device`] instance is created when a callback in [`Driver`] is executed. A PHY driver
+ /// executes [`Driver`]'s methods during the callback.
+ ///
++/// `Ctx` is the [`PhyContext`] of the callback. Methods that rely on `phy_device->lock` are
++/// implemented for [`Device<Locked>`] only.
++///
+ /// # Invariants
+ ///
+-/// - Referencing a `phy_device` using this struct asserts that you are in
+-///   a context where all methods defined on this struct are safe to call.
+-/// - This struct always has a valid `self.0.mdio.dev`.
++/// - `self.0` is a valid `phy_device`, and `self.0.mdio.dev` is a valid `struct device`.
++/// - The invariants of `Ctx` hold for the lifetime of a reference to [`Device<Ctx>`].
+ ///
+ /// [`struct phy_device`]: srctree/include/linux/phy.h
+ // During the calls to most functions in [`Driver`], the C side (`PHYLIB`) holds a lock that is
+@@ -71,7 +115,7 @@ pub enum DuplexMode {
+ // [`Driver::resume`] and [`Driver::suspend`] also are called where only one thread can access
+ // to the instance.
+ #[repr(transparent)]
+-pub struct Device(Opaque<bindings::phy_device>);
++pub struct Device<Ctx: PhyContext = Locked>(Opaque<bindings::phy_device>, PhantomData<Ctx>);
+ 
+ impl Device {
+     /// Creates a new [`Device`] instance from a raw pointer.
+@@ -91,14 +135,6 @@ unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
+         unsafe { &mut *ptr }
+     }
+ 
+-    /// Gets the id of the PHY.
+-    pub fn phy_id(&self) -> u32 {
+-        let phydev = self.0.get();
+-        // SAFETY: The struct invariant ensures that we may access
+-        // this field without additional synchronization.
+-        unsafe { (*phydev).phy_id }
+-    }
+-
+     /// Gets the state of PHY state machine states.
+     pub fn state(&self) -> DeviceState {
+         let phydev = self.0.get();
+@@ -177,27 +213,6 @@ pub fn set_duplex(&mut self, mode: DuplexMode) {
+         unsafe { (*phydev).duplex = v as c_int };
+     }
+ 
+-    /// Reads a PHY register.
+-    // This function reads a hardware register and updates the stats so takes `&mut self`.
+-    pub fn read<R: reg::Register>(&mut self, reg: R) -> Result<u16> {
+-        reg.read(self)
+-    }
+-
+-    /// Writes a PHY register.
+-    pub fn write<R: reg::Register>(&mut self, reg: R, val: u16) -> Result {
+-        reg.write(self, val)
+-    }
+-
+-    /// Reads a paged register.
+-    pub fn read_paged(&mut self, page: u16, regnum: u16) -> Result<u16> {
+-        let phydev = self.0.get();
+-        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+-        // So it's just an FFI call.
+-        let ret = unsafe { bindings::phy_read_paged(phydev, page.into(), regnum.into()) };
+-
+-        to_result(ret).map(|()| ret as u16)
+-    }
+-
+     /// Resolves the advertisements into PHY settings.
+     pub fn resolve_aneg_linkmode(&mut self) {
+         let phydev = self.0.get();
+@@ -206,14 +221,6 @@ pub fn resolve_aneg_linkmode(&mut self) {
+         unsafe { bindings::phy_resolve_aneg_linkmode(phydev) };
+     }
+ 
+-    /// Executes software reset the PHY via `BMCR_RESET` bit.
+-    pub fn genphy_soft_reset(&mut self) -> Result {
+-        let phydev = self.0.get();
+-        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+-        // So it's just an FFI call.
+-        to_result(unsafe { bindings::genphy_soft_reset(phydev) })
+-    }
+-
+     /// Initializes the PHY.
+     pub fn init_hw(&mut self) -> Result {
+         let phydev = self.0.get();
+@@ -276,7 +283,61 @@ pub fn genphy_read_abilities(&mut self) -> Result {
+     }
+ }
+ 
+-impl AsRef<kernel::device::Device> for Device {
++impl<Ctx: PhyContext> Device<Ctx> {
++    /// Gets the id of the PHY.
++    pub fn phy_id(&self) -> u32 {
++        let phydev = self.0.get();
++        // SAFETY: `phydev` is valid by the type invariant of `Self`. `phy_id` is set by
++        // `phy_device_create()` and never written afterwards.
++        unsafe { (*phydev).phy_id }
++    }
++
++    /// Reads a PHY register.
++    // This function reads a hardware register and updates the stats.
++    pub fn read<R: reg::Register>(&self, reg: R) -> Result<u16> {
++        reg.read(self)
++    }
++
++    /// Writes a PHY register.
++    pub fn write<R: reg::Register>(&self, reg: R, val: u16) -> Result {
++        reg.write(self, val)
++    }
++
++    /// Reads a paged register.
++    pub fn read_paged(&self, page: u16, regnum: u16) -> Result<u16> {
++        let phydev = self.0.get();
++        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
++        // So it's just an FFI call.
++        let ret = unsafe { bindings::phy_read_paged(phydev, page.into(), regnum.into()) };
++
++        to_result(ret).map(|()| ret as u16)
++    }
++
++    /// Executes software reset the PHY via `BMCR_RESET` bit.
++    pub fn genphy_soft_reset(&self) -> Result {
++        let phydev = self.0.get();
++        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
++        // So it's just an FFI call.
++        to_result(unsafe { bindings::genphy_soft_reset(phydev) })
++    }
++}
++
++impl core::ops::Deref for Device<Locked> {
++    type Target = Device<MaybeLocked>;
++
++    fn deref(&self) -> &Self::Target {
++        let ptr: *const Self = self;
++
++        // CAST: `Device<Locked>` and `Device<MaybeLocked>` transparently wrap the same type.
++        let ptr = ptr.cast::<Self::Target>();
++
++        // SAFETY: `ptr` was derived from `&self`, and the invariants of `MaybeLocked` are
++        // implied by those of `Locked`.
++        unsafe { &*ptr }
++    }
++}
++
++impl<Ctx: PhyContext> AsRef<kernel::device::Device> for Device<Ctx> {
+     fn as_ref(&self) -> &kernel::device::Device {
+         let phydev = self.0.get();
+         // SAFETY: The struct invariant ensures that `mdio.dev` is valid.
+diff --git a/rust/kernel/net/phy/reg.rs b/rust/kernel/net/phy/reg.rs
+index 80e22c264ea8..6d27a70d6180 100644
+--- a/rust/kernel/net/phy/reg.rs
++++ b/rust/kernel/net/phy/reg.rs
+@@ -8,7 +8,10 @@
+ //! Ethernet management interface clauses 22 and 45 register namespaces, as
+ //! defined in IEEE 802.3.
+ 
+-use super::Device;
++use super::{
++    Device,
++    PhyContext, //
++};
+ use crate::{
+     build_assert::build_assert,
+     error::*,
+@@ -44,10 +47,10 @@ pub trait Sealed {}
+ /// ```
+ pub trait Register: private::Sealed {
+     /// Reads a PHY register.
+-    fn read(&self, dev: &mut Device) -> Result<u16>;
++    fn read<C: PhyContext>(&self, dev: &Device<C>) -> Result<u16>;
+ 
+     /// Writes a PHY register.
+-    fn write(&self, dev: &mut Device, val: u16) -> Result;
++    fn write<C: PhyContext>(&self, dev: &Device<C>, val: u16) -> Result;
+ 
+     /// Checks the link status and updates current link state.
+     fn read_status(dev: &mut Device) -> Result<u16>;
+@@ -104,7 +107,7 @@ pub const fn vendor_specific<const N: u8>() -> Self {
+ impl private::Sealed for C22 {}
+ 
+ impl Register for C22 {
+-    fn read(&self, dev: &mut Device) -> Result<u16> {
++    fn read<C: PhyContext>(&self, dev: &Device<C>) -> Result<u16> {
+         let phydev = dev.0.get();
+         // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
+         // So it's just an FFI call, open code of `phy_read()` with a valid `phy_device` pointer
+@@ -116,7 +119,7 @@ fn read(&self, dev: &mut Device) -> Result<u16> {
+         Ok(ret as u16)
+     }
+ 
+-    fn write(&self, dev: &mut Device, val: u16) -> Result {
++    fn write<C: PhyContext>(&self, dev: &Device<C>, val: u16) -> Result {
+         let phydev = dev.0.get();
+         // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
+         // So it's just an FFI call, open code of `phy_write()` with a valid `phy_device` pointer
+@@ -196,7 +199,7 @@ pub fn new(devad: Mmd, regnum: u16) -> Self {
+ impl private::Sealed for C45 {}
+ 
+ impl Register for C45 {
+-    fn read(&self, dev: &mut Device) -> Result<u16> {
++    fn read<C: PhyContext>(&self, dev: &Device<C>) -> Result<u16> {
+         let phydev = dev.0.get();
+         // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
+         // So it's just an FFI call.
+@@ -206,7 +209,7 @@ fn read(&self, dev: &mut Device) -> Result<u16> {
+         Ok(ret as u16)
+     }
+ 
+-    fn write(&self, dev: &mut Device, val: u16) -> Result {
++    fn write<C: PhyContext>(&self, dev: &Device<C>, val: u16) -> Result {
+         let phydev = dev.0.get();
+         // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
+         // So it's just an FFI call.
+
+-- 
+2.54.0
+
