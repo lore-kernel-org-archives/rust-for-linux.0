@@ -1,102 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.53
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794342682;
-	b=eBkjqizb6ZPECy8b1aABif0Igh8iHkOtKfC3RY9GCGYtJb1WuG0ssRs0VIiyrlZTg6wY
-	 rNcIjWzmsc62dLMbfZEdg40Gq3bhOL96TnV3CQKXjcRdflnigig9er/BEpqCXiQklSHF7
-	 8EVku0LmopLFGwIn8EvPCgAvu5233zhBF3ET0UWbS2MwwBmCwGNaRxOGU/t2G/ORnHyGL
-	 sS/MFxth0GbjBHB18p7PGMdHcUK/d7/GEsXls1QdOjZsHmBO6HiHSLufPopHlPttYBBRK
-	 FFbWgpWr0JlLomwbIsWsbFQUhTK5ArgdS4G09X5xu6i3CyggAr0e7piCeV1SlbrWS5A==
+	t=1794343442;
+	b=QawYyf+Uv7eHVpq+fYvEo6d+DSDV5D8E/kWJLkKr6m1EJDEaleRyZ1/zU88vtjpnc8Je
+	 x5iIi4oHk6rPkq+bPjt3QH7bNjWO2+Huzg1FZZO1G2g6wtmCAUqNu5r1PNaQOBCDw4GPN
+	 HIzGI9RJURXbVTJC9M7U8Ekj7L1tkwh082rIEnyUu6nagiNl8HKkCL8iZszYj1ti/LTKT
+	 V48JO8x/qEBQf9dkDrePVrdqy10qrK8UI6m0kGGVsXX2oYoBKcD1d6HhrctzrtTG+JqmZ
+	 mD7aT6QkgTCda1MB1MoVQbGb/y219yVqL8oN3s4eNGULsO1IdnVc+cG7pSGgKbeaT+g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794342682;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794343442;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=euMDcLXwVyFRBye3EMDIFi0Mnp2snBdaowuxW7mbjUU=;
-	b=qqQQ92yT7PdiWDCwQbdgdky7mv3agBG9fCVNMzqtk+DKIQ2DP9sEf54VOla5fUu57OEK
-	 fCb8r/h+U5WhiJfSCFcDNbcGYSzJP126H/a0RED7AjKoSBvp2CRxz3cbLttkcMWuBv732
-	 I17ePOgigpccJ80uFEu1VuRc0zD6oXboe9kJXyI48Hqjct/NM8IVd436UQK3zcIdMYa9A
-	 YCwOAsr1Ap+e7YmKwpvfNwF+ho/Cy7pe4VOnkxnLRvWdDXsHBKCN3wRAUZkS+VLMVjxYZ
-	 F/71R0PPVReFwsvhrHujNmFjfi8v6BXjlO3Eih+uhjXccviPK+ctpyAdoVIx0NHOpiA==
+	bh=ZRgSF8D4bd4C8Ia14tMpoUoyFPEZ196x64KWzShEANc=;
+	b=RfIT8O6LQAL+O0TCKS9G0bAvCeG08nZNStBAfiDtClV1qt3D71ZTFaZrxkUGAcdSjlne
+	 ju2ZkC6zFog6YLVSseRJVYKl+ygj/NftFPHWhuj/ZJTjevefmTdzz8Nn95uTj7gdUVLrd
+	 58G8zP3vq4AImV8cd/ahBib6kR7KPoIl3AQ8Ei1yAOligYQnuXvhZSSfRNSv0hs5Rscz+
+	 VbUVQAYDPsHxy3XRvrfs6+YpwlzAxRZLf8s/qeFOfVd4hf5h/wGY/iTFgTxxpPxV8abTK
+	 eA2C1wWXrvjIqnKfE/IxnLg41qiKpCrGl1Cl9VTKQu5k67KzaeLXm+24HF3jM3l/ONQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=k2tE9abR;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.174
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="ef6hQC/u";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.53
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF707606C8E5
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 20:31:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EF707606C8E5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDCD606A326
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 20:44:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BFDCD606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=k2tE9abR
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cd5f2834b19so172980a12.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 12:31:21 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794342681; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ef6hQC/u
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4b79502c27aso26233785e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 12:44:01 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794343440; cv=none;
         d=google.com; s=arc-20260327;
-        b=NPWvtKMg/d8G4KK3XX8t6Ewh2sZEAzuBO5ZuzRnY4oxlm82BWmvt7uxbKjtVkQq1EE
-         uOrhj1BenzyFtwJ9CMgZXf2O0Xu/IhQorrrEbTfIjejV7D8AfxCnHeYHsuDamp0NX1XU
-         eHo8AtgJiWIWLXkDKfInRRvtelHH8OIcjnJAcoViCnGvMMIOYsdtl98OGxlgQNPwX3aq
-         1LhlfpYkjgUihu2qHV4U5Y/E85PWmQiLA4vn/gKT3Wmp0dD9qIIKk9hCcWdFzJJpHaZm
-         1xkPMiv1yQRWzkj4W+Vgmf+kNi+0aTdvnBBSL3oqw6z/pDNfe/L6UIqw++NZVHkaD8oE
-         8csQ==
+        b=US0ukPiNOLnfcmtVUL3VPsKxAhfPSnVhcsms7Wb35+joUg6xGhvTuUcNb6q2iVihvC
+         laYor6Jc+du2aIUDKEHY0Am/9tHgmyQbHUxGT9kvisAc04kOOjae6OG1TcWuNup0xdFM
+         OEHGEFBeS++h/lYZqkN9JFbl7gZHTd4QZmlZGmGLRuPT2lXMzWTtU9YFPWd6UaVvKwhx
+         qvU/2JZ3jaztEovAefdAuu1Ne/gRLe3Ukf75XYgmS1MaSCnXu4oQ+ucbQwhhNUp5h3NN
+         6ynD1uLMPiyigJFSjf7MJ8+N6MJ0ivsFcIHD1jeI0DtGPeCTYfkJBTTi1XA/cnB4/3TU
+         n18w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=euMDcLXwVyFRBye3EMDIFi0Mnp2snBdaowuxW7mbjUU=;
-        fh=QqrTV4Nwwo5ESVZGEFv7C+hyJV0LvqNA5kU81aq4CeI=;
-        b=XvJEEIFyr7JyAqP2Mnqkx7eqBoJwymq04AO7QYA0ulSdGZXYy9He6MLWUhB9mzrMuQ
-         Qcdihga8em9G7nPeifiVNKHo66GVc3E991BQSPOVWhG3IaG5rlbGWAQrC1FXZkAlp1BU
-         qKNNJdFOi8/+cWBKuMbvmJo/c99zFCLqe1fc4qObmbuuP6fSKC+pxmPoVLW3B/Muxqqi
-         WHVRWl+yYIlCpFcTM+H/To/ttGVb6L04A1/WXjOxMgi9dSrw3bR/XXfvAsF1gXDqgbsW
-         xbDtrP5OVLw+JhFB/1JL046nSm1iTXicXbxZqqjlK2rnT1EdcSStv0R4FyGxVStsNXai
-         kbAQ==;
+        bh=ZRgSF8D4bd4C8Ia14tMpoUoyFPEZ196x64KWzShEANc=;
+        fh=wEM1SAm97UDsFFAZS+3VXXZKAcryl4nOfC3++LPpun8=;
+        b=TqcR5NqOsm4Kyy60XiVgHfr2Vb3Ihej+R7oeUUy65dd3J4J697SJMPaWOEWkWA+CJb
+         d0z8QwltyAh9cKFgxBdEJWzR4dP35Kv9C+TtLxBQdQaEb00MDwGa9opA9djG0B2WsCR6
+         E+KXYhLcJ84tPBpze7J8Ss6XjyiNPo5K4UJ9Y0mKtQWCFQjnNzVFC8Mw8jA24OSagXtm
+         uHoB6JaejDYarMIBZHzNvYCkJ0wNluSdQr3QqMJ0u2VvhL8lBwzeEgzctIDM8y/OtOQl
+         fOKJpsVwNW+qczWGvSclJA7eGz7xcyGzEBTZRwVNSoWdUm2h18Dv6AHd2Pwj9UyWirQw
+         8Jpw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794342681; x=1794947481; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794343440; x=1794948240; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=euMDcLXwVyFRBye3EMDIFi0Mnp2snBdaowuxW7mbjUU=;
-        b=k2tE9abRBySKHePpNw1+hoNwrpCgT9c1iMM92CBR/SFMFu9jyXbH2iCcyH+EmTQTiC
-         yBLJMfHXGvpr8xfRPVxQgfnzsDthjwfax2/Tnn6lH65+pgpZ0HNuhexFozmuzYNDgx1y
-         +ICdy5xZl5sBC6bwvrkn36HKWD07+HHxiPTqxB/C1Omj/my+bOWwBptkbM1GsQUlAwPd
-         k5iKPtFQZWvnr7YHFJcpDSPfMwZhKuL+MTgC+TsDNhb2aGfrhumIhozOSJlps1NyLDFl
-         5aulmNUtJ6KcGlw54fstXxrfYoWNLogwNTb77YvSuFf2tr3hJNYtNL4UfLVJ9xRwvNJ4
-         xX7Q==
+        bh=ZRgSF8D4bd4C8Ia14tMpoUoyFPEZ196x64KWzShEANc=;
+        b=ef6hQC/uSVy9ydem1JLqPW7Vd3y0dUQg/gsHXvcfGN4D8Y3eL1yncC0OmJSA/nfdKu
+         FUtmqhY9UtVIq+ypvvHig7m0gg76e3P1c/CX3LREmGszKXLR+9QXsHiQ+dZ11CmSzNzS
+         GmJU45hQltt5B81++O8M/FJB4IPRcnyTP9SuDS4PYNgOK90SJ/KMrjoRGWiQCkv7V7MI
+         dt28GR52dia5nENFtuxs4vI90/aO6kDeGQoTGy6Kmb8qYBel5UteHEZexa/qWKY40huR
+         OfZmOhZ6mmg8K3LKPcUZut5Ipc39QHcskeP//JuyaQzP/aAYKbjemoh2fa5d4C2r7gtn
+         qgjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794342681; x=1794947481;
+        d=1e100.net; s=20260707; t=1794343440; x=1794948240;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=euMDcLXwVyFRBye3EMDIFi0Mnp2snBdaowuxW7mbjUU=;
-        b=vDovEeXKo1VTpuru7/J+1dqD14bvad+EmkyFzU/Sg9mNVNu1k6b6R91T8k68sP8q/a
-         GRGDtoOTb01J9WU2kitlKbfuAgMIKQTQCQ78KzAhZvhVItHFYNBidKLnA4hQJvqcj3Sj
-         oPqJZYYBJZzfPfmipuNdepCCJXtR6K7zRoGhJCwRSGkSHIZxwQgyYOu4Kp3iH6D3cFNL
-         DOq9aUF4bKVeOpQKTxrkNN6IJ2J0KcEGAK656D2aGoVL8LqmObBb2pgMezj9rlgW7AJi
-         qTYFKO5l/arAezxo1ioUP+G9mNKUsBlUveT9cOLksHk9adEwlirIBmrDDmwBuFWU3wsU
-         eTwg==
-X-Forwarded-Encrypted: i=1; AL+hErHfbctTgkS2r6CPTLotWW3xgxmebOshwLaHM2y1v/M/M119yKR+bdYnd0mfc9dgrFKtIxcSBiIRjbls87W/sA==@vger.kernel.org
-X-Gm-Message-State: APuU4Z9V21qjZy6hbnFd0Kb0wzDne4ZQhIWahiLi3pzuYN7HLkVTa12A
-	inJ18kpQsPW5WAAg8gSkDUG8ZYygT+bF9/BWLBCq85j4CYATQ7vxdKTmd6m0TjnFD4zOz/KU62U
-	o2w0y1ZG0QnJ5BQrO5H7WSBJ9fiW91jk=
-X-Gm-Gg: AYBFou17tgZqdUtkrUEA8NI5QkslrM62HgHKxkCdhZXyhCO7altUXikYdvq6BE3Re64
-	18L7+c3w4al1/Rl/3S2113rldCcDUnR0uGPvpVcvFIYQo+Ew1RA70dMHck28afOdqvC7RBFKn0F
-	10P8E+ti4VEp0HXm9t/5cOhIr09p8k46rTa5Z+8JOAAvVAygeOKK/IfS1/Sin5dwilzO9iEVCyE
-	utOHP4KEA7GF95iUPvIeu7i5SyhBVzCJuU4ar9JSZbga/N5vhnp55BbH2iQWzOs3RLxky3Zqx+/
-	V4bSxQNIy3AQxgDyFmlqDIItUv6xHffCSqjPEn90oObRO+e8yclWx8EkV1zlYZJzyD7myQcCx8C
-	T6fAPltoOd8/Lmef0NIURg4I2WI6ifO+bMajrkHQbVS9aPFYMyeaub6Mgkg26PyyNQdq9mRFSxt
-	RyGeA75r7b1VunYER0gUV+sCQXB5wlgRcjtqIvZidpt43+fiNGotjxzEvUD4hoIlQWIJ0nJ3eWx
-	YwoBaNeRBZoD7ObTL9kJJ/KQV3SDUFtvsnDmc4bAXzFbkkglzArFPFsHw==
-X-Received: by 2002:a17:90b:4b0e:b0:3ab:be66:ddc5 with SMTP id
- 98e67ed59e1d1-3b182f3642cmr189775a91.6.1794342681275; Tue, 10 Nov 2026
- 12:31:21 -0800 (PST)
+        bh=ZRgSF8D4bd4C8Ia14tMpoUoyFPEZ196x64KWzShEANc=;
+        b=BUc7AAvCm8x6CPpuon+z7JZSAVgXY53jW2OYa12F0AqghCtADLOBp3hivlUivblG66
+         mElUt45QYFPxJS3GcyLgoDTuOqFMLzhdBlTGi1UVAlZOQiqnvXJVLNa89DA17xIyhty9
+         AD9DvZz0AcbHti3mfByR5R8kxgb4AVrkj8cc9mCi7RI5TOPXi1Ohn5zlrJXxDxnB6xOc
+         UP5ebZavMNkz4lg/jNFI560OEWH3d2yxTCSX14GHyJWKjNdiJrQFWdQku+z1zfGi8HHC
+         4CcOn2fLASfO1DQLPg4xJh3oJAQjrgJPX/s9gjX4VG2gGfDcrRuNis9YcQfiimBz1HNo
+         b9QQ==
+X-Forwarded-Encrypted: i=1; AL+hErGdVdx2XKHae9H+I/KB9jZb19JG+2wjA1Yx9xO9jxrOjzmowoVG/pb0G+gHSOPlFGKkHiI3kojZUuTcmK2Gew==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+Bs4oT44DEeTzPrUfqUWA1HN5sd+remdUDB3rMUMUqq1wmj/yd
+	vW1wd2BYWKzP/4Ghmnvx14qSrOa4ddqzK8sJ+FLXogBg3ITM1klfQNTHZ0OuU1zIB33ANjJJBvg
+	Qt4wR8rQavUChkZScpg2nbiMcNAtB9084itBqqP4T
+X-Gm-Gg: AYBFou0olKdW4kP4ecyJ7n2PAEOzfgV51s++j2CVw/B0Vv/V108vNgRfaOrRAim6AMO
+	d/YgYwnKxyrtuVBFMHrHPy0QLClUVyB7kcj4ee3+HKzRHHJULN9X08qTn8w32z8Fq3tZx4TtAw5
+	jQ7KjfCLeuK92pxEBhY2Ic2gidfhdHWF2TeOXc6tpQZ9IYb93eDPth55lndBhxzl9fQbSUwoVMY
+	nUAYE7ywjO+tBykQ41m9Vy4c9lZ8W3UAeuzXpKvo3T+Oa79JqPp8MXLD9ejnk7KH8GXP0TUU51z
+	4HDw3v/6TIMeul7Szts/mHKMv6YCwa6bxqEFTMpNtjk4bX24H22fnNIWHV7BrmXxSwr3uecbeAf
+	KT87y/lEYK6ctMsMR4j8n3SRLDPaE/qSdK9URTZH7PMRAwzSxqst2MGDASBqFTUjnciyPoSx3K7
+	W3ru7ZXVji9wMU70c=
+X-Received: by 2002:a05:600c:354a:b0:4a1:7e77:c382 with SMTP id
+ 5b1f17b1804b1-4ba0935dbe6mr4583165e9.5.1794343439620; Tue, 10 Nov 2026
+ 12:43:59 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -106,51 +105,71 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261018175457.87803-1-ojeda@kernel.org>
-In-Reply-To: <20261018175457.87803-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 10 Nov 2026 21:31:08 +0100
-X-Gm-Features: AclHuK_uckGpnRQludUiuJa2Hr3E-2Svi5DrMdfVjm-Nu4czLx7g97kWJ04gZ0I
-Message-ID: <CANiq72npfiOC2ZCan-zAe-h79kba_5jtWFAeAoigCs_hnO8gJA@mail.gmail.com>
-Subject: Re: [PATCH] x86/rust: use `-Zindirect-branch-cs-prefix` for RETPOLINE builds
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	stable@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>
+References: <20261107021427.2105374-1-dakr@kernel.org> <20261107021427.2105374-8-dakr@kernel.org>
+ <au7eV0D_44ipe3mw@google.com> <DMP0HGBVA3Q9.T8UP93DA34UK@kernel.org>
+In-Reply-To: <DMP0HGBVA3Q9.T8UP93DA34UK@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 10 Nov 2026 21:43:47 +0100
+X-Gm-Features: AclHuK_M_RBnCdkeBBogWw-mSzZ7FX9o88E5X3OuiqD9l_BOcZbdHx_bNnfG79w
+Message-ID: <CAH5fLggzEvheweiHte5KTaQi4G_5GtV02krR0OpXB+buDUORBg@mail.gmail.com>
+Subject: Re: [PATCH v2 7/7] rust: drm: make Driver::File lifetime-parameterized
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: acourbot@nvidia.com, daniel.almeida@collabora.com, ojeda@kernel.org, 
+	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
+	tamird@kernel.org, work@onurozkan.dev, brauner@kernel.org, lyude@redhat.com, 
+	alvin.sun@linux.dev, deborah.brouwer@collabora.com, laura.nao@collabora.com, 
+	beata.michalska@arm.com, nova-gpu@lists.linux.dev, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 18, 2026 at 7:55=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Sat, Nov 7, 2026 at 2:26=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+rote:
 >
-> The C compiler is asked to add a `cs` prefix to the `call` and `jmp`
-> instructions that go through the indirect thunks for the `r8`-`r15`
-> registers, which makes them 6 bytes long instead of 5. That gives
-> `patch_retpoline()` enough room to inline them, e.g. as `lfence; call
-> *%r11` for `spectre_v2=3Dretpoline,lfence`.
+> On Sat Nov 7, 2026 at 9:16 AM CET, Alice Ryhl wrote:
+> > On Sat, Nov 07, 2026 at 03:03:25AM +0100, Danilo Krummrich wrote:
+> >> +        // Run driver destructors without `filelist_mutex`. Take each=
+ link before dropping its
+> >> +        // allocation to avoid recursively dropping the entire chain.
+> >> +        while let Some(mut data) =3D files {
+> >> +            files =3D data.as_mut().project().next.take();
+> >> +            drop(data);
+> >> +            drm.open_count.fetch_sub(1, Release);
+> >> +        }
+> >
+> > Instead of transferring all the files to another linked list, how about
+> > taking them off the file list one-by-one? If you release the mutex in
+> > between dropping each file, then we still avoid deadlocks if the file
+> > private data destructor takes the lock.
 >
-> However, Rust code does not get the prefix, e.g. for a
-> `CONFIG_MITIGATION_RETPOLINE=3Dy` build:
+> I did consider this, and technically it would (currently) work with
+> list_del_init(), but I did not like it because it would be a very subtle =
+change
+> in semantics from the perspective of the C code. (I.e. for C drivers the =
+list
+> entry would remain intact after this callback, whereas for Rust drivers i=
+t would
+> be removed.)
+>
+> Actually, I did hesitate to move drop() out of the filelist_mutex protect=
+ed path
+> at all because I don't think there's a way this could actually ever produ=
+ce a
+> lock inversion, but the "move to a separate list" approach was pretty sim=
+ple and
+> very few code so I thought it's worth ruling it out anyway.
+>
+> (In any case, I'll soon start working on the C code to implement a common
+> lifecycle scheme.  Once we have that, the Rust code becomes even more str=
+aight
+> foward.)
 
-Any comments on this?
+As per discussion on chat, my suggestion doesn't quite work. The point
+of moving to a separate list is that we don't want to modify the
+existing file list.
 
-If it helps, then I am happy to take it via one of the Rust trees with
-an Acked-by from x86.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-Thanks!
-
-Cheers,
-Miguel
+Alice
