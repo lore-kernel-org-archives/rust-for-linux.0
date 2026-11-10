@@ -1,45 +1,113 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794325847;
-	b=ttJXwFWMZXQOirHkkkSm/YCHXiN9TyCWc3ylS+PNIlNxhW4fbbQTi83k3nCsFOQJkmIa
-	 glgYyfAjNNYANe+RtiA7D1maqFvt9TxZTB+yoA/kFo+WygT/VT5AGFIqudyLSsX6W7BFZ
-	 yisM/yzbBxt6IOZpabulNHkCMbfSev1o6BsuE4zhZMbRB0BdotdJeGk8SYeXPlAFc8jwx
-	 +AjBj4qCyxxlzduU+1l6pLsIMEJqRCxqALEgxJyFb9sCIGvpw+oIOqG5JXVhZwXcLAD2C
-	 r9y+HIGAQhSrnq9nwAwDsjBmkaATObzr8BX5wIrDnTgibz0Drgi/AHW5L5QkJ22L8xQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794325847;
-	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
-	 In-Reply-To;
-	bh=ZUw5z1eM2NFz4khMwpmWruXLJlm01GUhS15bXvEkmbo=;
-	b=bY8PO1BNUacYUkCbbgQILFQDeUPdn2GkQtEUK93IB081bjTCYI3QRKaAj55PGfg7bavh
-	 arPnTMLYG6tZVJVyyFwawO28wGhhQVkMjTjTYXENkfrbJTnNR5olSEjw7+NkSKLF6/Qa0
-	 6CiasWjJsh1gI/wxwczx+Sow+W3+53dd3JlRPkNIE45J9g44lPbQwp7xCRboaNzNnZB8I
-	 OyuLJzGGiyzWB9uDazhhL4W2Ke3GqD/JTpC9Qwo6jY1sqPnUkYsRvOySscXM45VWO/n7r
-	 50zxELRgLDBJ1zbyjvQLcPIqFYfAbNPvqLgdXmejnFPmstrpMjTKYldu67qV8psms7Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nQ2rz7zB;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.2
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794330577;
+	b=aWeNZZGb0Ddznh4X0HYrCOZ+gEvUSKFVrYdcQ+r0QFGKvLh+HAVqHfvhE1Y06KDKuZtz
+	 htDKg8f8bug5nQSCJF1mvFYh//DWh4qzQCC+aFMU6Cx1wLruUCyljQEgtoaDeq5NMw/dd
+	 dmhprEDezT2Yriqxq5pDHPVWv6OC8MHFbSTVIXajDJEDDSKHMNrM/6txbxuwpX6I8ztxC
+	 86ex50Fcb/RFJ4jppNDmDAgsihGu+fzhab/RshLPcUm+HE05RXjxTl9+ukGNc4VcSdsh5
+	 xh5Jr0KjfgnE9/i4RZl/sZCns5wfHS0llP2LgUpYDt7WsD0oGRN9eqEDYcnlCag7pwg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794330577;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:X-Mailer:Message-ID:In-Reply-To:References:Content-Type:
+	 X-MS-Reactions:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=TjfwBwSmtkY9nfGgM0uqUFNDpVYLX8qmebOZlXfwnlc=;
+	b=jmqF+hTZq68hYRUqaWb8Tmv5Q8+0YiPHgBY+iLTxcv4Y+Jf1GaAeNvrDM1EpvTKApFyB
+	 l6IWtKUJlwO1ZBOcRGJPxE52IaYZrRBqnRSpv3vIeGV5gO/VEReNWyAJTIA6yjcvhxLJi
+	 nbUI67gHjAb2vf6Oc975FUBBAglMmvTSwcMi9MN8kl0yWPBP0PrZ2UUbt5l5msRZ4BGbz
+	 mm8/Mq3p6PsyYsrXtHg1QuJR+h+A8pwMrMlhmLYkGgQhUdN3fmx5XKROy/soFnqd8lgpf
+	 qxW6G20FdXjFLb+FWjIQATcDOW0kD1wj4dLkz9K66jEOQZ0rK+jQiar6aW7TyBYpY5A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=uJ2V7Mre;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.2
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010002.outbound.protection.outlook.com [52.101.61.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFEB606A31C;
-	Tue, 10 Nov 2026 15:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37884606A320;
+	Tue, 10 Nov 2026 17:09:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37884606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nQ2rz7zB
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8415B1F0089F;
-	Tue, 10 Nov 2026 15:50:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794325842;
-	bh=ZUw5z1eM2NFz4khMwpmWruXLJlm01GUhS15bXvEkmbo=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=nQ2rz7zB4Y2lnwHdGpoFBI2xx+VUgVa9x2d6GcUxdt0hXimnKhgOUKkngq6GMMTzr
-	 PP3dEryfLHyVApZGqRbnfZ3uymSIr5eGTzvBWbukshagJPyXejDNrdOPHlzIGx7YV7
-	 OgurmVm9QE6xPP3UKwI4tf5974MX/9Q9C7TLhXVtBl0MdEbW2GxqBYFzrcPPQ6Sn1L
-	 I5OUWbnEMjodgQOItGQ8fD5KFPsvHktQw8ypOPTF8sSrdUkUWS+63KKX6TWuEIck0s
-	 c3QX+fT5jkTA1FnhYnjEPnZI26Zc137tm2EX1Xo8xINBwYzqxbV3PRt++95VlLWggF
-	 sJkNE57DfdnOQ==
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=uJ2V7Mre
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pWzip2wHoW6vQO52wcxOp92TaQg4X5egcuGevQn8dbl0Q6CVfaQhvdfuVLW2d6oLDxH9cVxyvDMl/7X4vClFArbDxIfuJKuHCivAfi5P8Qnhks53AaAVqs74ic+knMPjGIDWhcB/OFYm9bckSV5u/8f+P8suqzdYy9DAZX8moyA4trpBiH79+ZFYJxzllKUzYBEfAlbpaXphqZMS3ynExlXCvypr49RctUU9YlNMF7Ykyk3KXWaux9dQx/RcvUHUdUo1G6y0vH7aWEs6FRJGWUuG+ToJIwABuo0DVdrAVnlxJXGe0imGzO5xT3X7Vt7GsohIhzBjBRDIg6GPlKYl3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TjfwBwSmtkY9nfGgM0uqUFNDpVYLX8qmebOZlXfwnlc=;
+ b=SEZmsVWDllz3e2iESmNuDuS5EY7MZ8zp3tNk+ITtPUD0XEK/S/87iKfioXZwEF/Qb6z8HlslTgh21TDhiyYh5qjDEvJKfreR8aVo6KCNcKTOgupBR4pma//pMJX1NjC6dbH1lGfP0RP6rweMxlFOQhnafslPQeenQSqAo+1o4q/OpoRj212EcBGFU1tbKR5hSBDcOJBf3YbE1DxTrOduA4xQnKBG7hNcIBEsbp6G/dKhLs+2iXamq8Nwa0UCKMUbI4QQhq0pzJxSQiG/e+rn9WHEZfwh3GxEMvID3EuSh+mX6z4dpbHgZA12R6Es6cG6atfLHkF9QdCMLPGnUaBHBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TjfwBwSmtkY9nfGgM0uqUFNDpVYLX8qmebOZlXfwnlc=;
+ b=uJ2V7Mre8SuFAxq1GKF1Elew902iW3bbpnOlwXRTZZ2UWeCbo0CifG9pjwFOxHhJbIr+AXLXjvARBSAFdqoxDsMlxroCnMTMIE4NZ/ZMikDShhMtqxLZXYMU5BF70muftSZN8Ad7j4wdfk0j3LcyxoGLBFTYqqrDGMNzs+Y+Ig569M5quDhSTupXs+OMRHqxZ2qkQOWrwkslA7pat1dcj6R7oBWlUUHAWvTctTizKNeLPKA8Vm6o347leMRePn9XQhozPihqs6PjoF9t/+8xkWjMfHCLuLKPURaWgyW+3zpiotAOW/EA+uLj1bmXvhl6KBHY/wwpG4TGi0TyNq6ncQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by IA0PR12MB8864.namprd12.prod.outlook.com (2603:10b6:208:485::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Tue, 10 Nov
+ 2026 17:07:50 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0615.007; Tue, 10 Nov 2026
+ 17:07:49 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 0/4] MAINTAINERS: remove my reviewerships, add CREDITS
+ entry for THP
+Date: Tue, 10 Nov 2026 12:07:47 -0500
+X-Mailer: MailMate (3.0r7038)
+Message-ID: <B605494D-6ED4-45C1-B618-30458A69C91A@nvidia.com>
+In-Reply-To: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
+References: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
+Content-Type: text/plain
+X-MS-Reactions: disallow
+X-ClientProxiedBy: BN9PR03CA0442.namprd03.prod.outlook.com
+ (2603:10b6:408:113::27) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -48,481 +116,103 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Nov 2026 16:50:31 +0100
-Message-Id: <DMRNF7IZQ1YI.1MRPH47QJC9XC@kernel.org>
-Subject: Re: [PATCH v2 11/12] gpu: nova-core: publish typed SR-IOV PF APIs
-Cc: <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <linux-pci@vger.kernel.org>, <alex@shazbot.org>, <jgg@nvidia.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <jhubbard@nvidia.com>,
- <ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
- <kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
- <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
- <boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
- <work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
- <kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
- <peter@colberg.org>
-To: "Simon Song" <xinmengs@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20261023154009.2246627-1-xinmengs@nvidia.com>
- <20261023154009.2246627-12-xinmengs@nvidia.com>
-In-Reply-To: <20261023154009.2246627-12-xinmengs@nvidia.com>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|IA0PR12MB8864:EE_
+X-MS-Office365-Filtering-Correlation-Id: b9a1f30a-dad7-480b-4fdd-08df3f4d262d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|366016|261009223027099003|10067099003|261022105027099003|261026140227099003|261026121527099003|261021123027099003|261028144727099003|261021121427099003|261102123227099003|11063799006|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	DckJTm7H91DLE2Z+19e7XB4igaH3zpToFD6vAy3qw2VLII/GKTbTYDXdDwhdetXhosyC8dogSaFEs3feUzFvkCjEW/lIBrV2gvcJMSmOf1m4iA4tEgOUAD0qKa0cZa0OLWtsLPMkzTqZNkv4XzCxzm3OiAmbXxmK6VAoSImF89MQN7nWMXw6OTNExSVQgjbudv12KUuaO+ftGWxjaByhvR13f3vO1ojlSJfFiBo7iJo+wN/1HLQAi99z3QT/4XVleflPFLcIRGtXrPwxEynMJDxIJdJR+8tLrIZwmNgN29dUsohvdB0ZS+zTLxSNk1sdgY+eS+ot2T850KXZ8ofTDBXg3kPHzICC4L3fT2bdS7e9XFZfNQVZGtnjnPnnoUuCqUXfYKKILW1YHUfAJnlmw/0SoNmElm+pbnONOC5IEqFJ7/flkBwBbCeEfTkhVyNtUA8kCX6HRIWgOKMF4IaL/GXLPwcYTo3NYxvQrNU7M0yPOBCN6plL3r+p3zH6BQwtxTyJhat9nNz70WCrQvrSLxIVqtl0SMx2O4Ci4oRwMF9ZQoxOjy2RC5vuoiQaPbB3OfMLD63YiQmGyiDL7M6aKNxuLOxnuuS3Xhvgb5VtYxsU13fR70cOBhzk2Zd6IvikJ0duYPiXuFTY4uk3pC5+YbD7crfTG8yoDaQmFnZfQ48=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(366016)(261009223027099003)(10067099003)(261022105027099003)(261026140227099003)(261026121527099003)(261021123027099003)(261028144727099003)(261021121427099003)(261102123227099003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?5uM3i/G/UA2yz17cPFkPEvlnBgpuIij92FmQLx0xxF1NgxzbwtZ/xFnIrzx6?=
+ =?us-ascii?Q?jE6/V0yvugKEo5DC79vXFEUmisaQG7ou/OGW0dQr7nf8EsOh29Fe26YGUd93?=
+ =?us-ascii?Q?5sip9CnWxPtgbjCvhLXvpV9Z1oq5tvFF6z3TVYKXJQfCpYTHA0Jxz8nH7vvy?=
+ =?us-ascii?Q?r0RcDAC/KI6042P1w6/x0iBooTXBKk3Ak9NUEDPRsoWYRv7rSFwxxn6JHq1k?=
+ =?us-ascii?Q?7tDoJtydUpp7IIjV6DhcIXSyD9nYi5BmJfUxvyBTNFz9w9iaPCJpSJuI9a7U?=
+ =?us-ascii?Q?RSR9awdc54TLSbJqLenyiZoSN4K74ixjkiGK7TNNUYyGB+N7rTu5jWTgfcqL?=
+ =?us-ascii?Q?zn5U7/Ez82WhcZgS6sFLM6r6R9kh6pfKsMbi1Os95hNMIp9TuOR0s66OJqTS?=
+ =?us-ascii?Q?KMAo2AloQoCq+2dUmk21clghO4V2rMpobIz1VYtysIVCNsuH1jajcmDHndIp?=
+ =?us-ascii?Q?YY1WYIZtBjXaZM92PJyyQ1a/I9gx7PSBMBSEGSYdNdleWxyhKhiUPWzCuGzb?=
+ =?us-ascii?Q?vQ2yv2jPM93dxJvA7f16l8Bfjc15u4cxLeA4lZ1XHC6H2nf73mock0HaBI4D?=
+ =?us-ascii?Q?LHG4wZEtyKa8MzNVH9H6KOrm0/0tMWfW7hpbNpnpTKM/SRXfV4eGJRHxLQIi?=
+ =?us-ascii?Q?acdKriqgRIG49Wz9vefxYRJbIH6tDyun0U1zdb2c7GVZU/bDuhFV6tfLx5Z2?=
+ =?us-ascii?Q?YmQwlL+BfLc99qM8ENkxndfNNjc9DAzL8gOlrfcPIUxpTvrNlZDnNACXRTLv?=
+ =?us-ascii?Q?OjiMiaKPkkmyfgGcFK4/XiiNWypjK6o8LSQrbpJb7jo+NG0VtM1ylTK3ln5D?=
+ =?us-ascii?Q?HTygXkekkU12TSWaXMYshz9ruCrrtoBCjfn1R5tY1nlwcrc42RtWojsoWPiC?=
+ =?us-ascii?Q?DwgRINEBkRXWYRKX2sLw2Dp/1Hea1aPHS9P7ANZ597qo3R26446MPEGkUlub?=
+ =?us-ascii?Q?+KrRBsaeuxiHLr7fkYRglJETCcTe8nHmZdcUo4Kme+NXH9VkRYkfD2X0vVTa?=
+ =?us-ascii?Q?tlL255FbxCnBt4xqJ196X+u+tvO5TRD7t1Dif6P1jW0XeoR27ebm5Aav2DPz?=
+ =?us-ascii?Q?J+BpPiGgdT9yk83p3euHoULjtnVmMZLT2bJiGbtQxrRNkrb7troxG4aeqwl4?=
+ =?us-ascii?Q?o3/BMLQzVaV2P8bIUEHj07I0XOYU1NbC8Ir1KwChiP7wQtIEAL6bf0epMcn9?=
+ =?us-ascii?Q?ZRFEKZhrzVFv6azgqppFciX7oPYCjujglQgRCiC+3M5ASlefbY5iujClDAIO?=
+ =?us-ascii?Q?15Dy8MEYXj9GrAPRdI7rFBWvGkSxNDEGU8q85ne7E681HUyAYovwrZs7YX2Z?=
+ =?us-ascii?Q?vmtXvfYx6dWi1tT2iv8bmXJf78Za2iDlAJ4SOiexviMvCsML6ucqFYv9D5fV?=
+ =?us-ascii?Q?X7BxYAAXs0+Vj1C6kOdpPA+KD6MpB90+D6HrYtxojEWj6Nxvmjabi0I6mxIg?=
+ =?us-ascii?Q?GqNwjn+BeoyLGj48SsJ/SlPZNzLrYZe6rK/QTVMORWZ8JqaQdPUU1Hvsfne6?=
+ =?us-ascii?Q?pzQ1MQVh7pWI8z9d33wepLpDyKd/uORyxZdQJPlV9EPKkNTJED9heke8wn8k?=
+ =?us-ascii?Q?HAfdxPg7ZWNUiXnHxgbfqwL+iVYYMQYShvj5QeyjjUiEUZQLTo8iNZyJIq/g?=
+ =?us-ascii?Q?3kVLAdjD7HQ6sjo4B6J+pqFM+ZLTNA/y3J+KLr+gNTfjXdkoXvChYgBRhlgP?=
+ =?us-ascii?Q?T2CwhXGELeOlz/rBFFY0Ahr5ZZQ/7N9qPct5vhxTZ6AGgq7w?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9a1f30a-dad7-480b-4fdd-08df3f4d262d
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 17:07:49.6525
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sV27MXoR67FX9bfhxGF5nxRPnJri23sadE31HTtWZVOgC7dFOkRiDXM+WuoQKame
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8864
 
-On Fri Oct 23, 2026 at 5:40 PM CEST, Simon Song wrote:
-> diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driv=
-er.rs
-> index dc6febeee65..99beab18987 100644
-> --- a/drivers/gpu/nova-core/driver.rs
-> +++ b/drivers/gpu/nova-core/driver.rs
-> @@ -35,6 +35,12 @@
->      }, //
->  };
-> =20
-> +#[cfg(CONFIG_PCI_IOV)]
-> +use kernel::types::ForLt;
-> +
-> +#[cfg(CONFIG_PCI_IOV)]
-> +use crate::vgpu::vgpu_api::NovaCoreVfApi;
-> +
->  /// Counter for generating unique auxiliary device IDs.
->  static AUXILIARY_ID_COUNTER: Atomic<u32> =3D Atomic::new(0);
-> =20
-> @@ -42,6 +48,10 @@
->  pub(crate) struct NovaCore<'bound> {
->      /// Firmware-control registration.
->      _fwctl: fwctl::Registration<'bound, NovaCoreFwCtl>,
-> +    #[cfg(CONFIG_PCI_IOV)]
-> +    #[allow(clippy::type_complexity)]
-> +    #[pin]
-> +    _vf_registration: pci::VfRegistration<'bound, ForLt!(NovaCoreVfApi<'=
-_>)>,
->      #[pin]
->      pub(crate) gpu: Gpu<'bound>,
->      bar: pci::Bar<'bound, BAR0_SIZE>,
-> @@ -114,6 +124,11 @@ fn probe<'bound>(
->          pin_init::pin_init_scope(move || {
->              dev_dbg!(pdev, "Probe Nova Core GPU driver.\n");
-> =20
-> +            #[cfg(CONFIG_PCI_IOV)]
-> +            if pdev.is_virtfn() {
-> +                return Err(ENODEV);
-> +            }
+On 10 Nov 2026, at 7:03, Lorenzo Stoakes (ARM) wrote:
 
-There's a lot of config guards, but we should actually stub the correspondi=
-ng
-functions, so they work regardless.
+> Given the current throughput in the kernel resulting from AI-generated
+> series, I unfortunately lack the bandwidth to generally be able to offer
+> review except in those areas I maintain.
+>
+> I have separated the patches into areas maintained by David, Andrew, and
+> Alice + Danilo, so each can take the patches relevant to the subsystems,
+> for convenience.
+>
+> Apologies for doing this, but given the current trends I'd like to do
+> something to make my inbox a little more manageable :)
 
-I suggest something like the diff in [2], that should be worked into the IO=
-V
-series.
+Thank you for all your work. Yeah, your inbox size shrinks but is never
+going to be empty. ;)
 
-> +
->              pdev.enable_device_mem()?;
->              pdev.set_master();
-> =20
-> @@ -144,6 +159,18 @@ fn probe<'bound>(
->                  // Run optional GPU selftests.
->                  #[cfg(CONFIG_NOVA_CORE_SELFTESTS)]
->                  _: { gpu.run_selftests(pdev) },
-> +                #[cfg(CONFIG_PCI_IOV)]
-> +                _vf_registration <- {
-> +                    // SAFETY: `gpu` is initialized at its pinned addres=
-s and
-> +                    // outlives the registration and its borrowed API da=
-ta.
-> +                    let gpu =3D unsafe { &(*this.as_ptr()).gpu };
+>
+> Also add a CREDITS entry for THP, as, since Zi's rightful and well-earned
+> appointment as co-maintainer there, I have no fear of needing to step in
+> there, and so would like to record my time in that role.
 
-You can use pin-init self-reference for this, see also [1].
+Thank you for the kind words.
 
-> +                    let api =3D NovaCoreVfApi::new(gpu, pdev);
-> +                    // SAFETY: Probe has exclusive access to the registr=
-ation
-> +                    // slot and no VFs are enabled before successful pro=
-be. The
-> +                    // registration keeps PF services available until VF=
- removal
-> +                    // completes and is dropped before its borrowed GPU =
-resources.
+Acked-by: Zi Yan <ziy@nvidia.com>
 
-VFs not being enabled before successful probe is not a safety requirement, =
-the
-API does ensure this.
+>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+> Lorenzo Stoakes (ARM) (4):
+>       MAINTAINERS: Remove myself from MM core reviewership
+>       MAINTAINERS: Remove myself from MM misc, reclaim reviewership
+>       MAINTAINERS: Remove myself from MM rust reviewerships
+>       CREDITS: add entry for THP maintenance
+>
+>  CREDITS     | 6 ++++++
+>  MAINTAINERS | 5 -----
+>  2 files changed, 6 insertions(+), 5 deletions(-)
+> ---
+> base-commit: b3dfbde62cf1981c4638939c159dfd087b7a72e9
+> change-id: 20261110-drop-reviewerships-264c745b11b5
+>
 
-The only requirement is to store it in the driver's bus device private data=
-.
 
-> +                    unsafe { pci::VfRegistration::new(pdev, Ok(api)) }
-> +                },
->                  _reg: auxiliary::Registration::new(
->                      pdev.as_ref(),
->                      c"nova-drm",
-> @@ -176,4 +203,24 @@ fn probe<'bound>(
->              }))
->          })
->      }
-> +
-> +    #[cfg(CONFIG_PCI_IOV)]
-> +    fn sriov_enable<'bound, 'callback>(
-> +        _dev: &'bound pci::Device<Core<'_>>,
-> +        _this: Pin<&Self::Data<'bound>>,
-> +        token: pci::SriovEnable<'callback>,
-> +    ) -> Result<pci::SriovEnabled<'callback>> {
-> +        let num_vfs =3D token.num_vfs();
-> +        token.enable(num_vfs)
-
-NIT: Maybe provide a pci::SriovEnable::enable_all() helper for this in the =
-core code.
-
-> +    }
-> +
-> +    #[cfg(CONFIG_PCI_IOV)]
-> +    fn sriov_disable<'bound>(
-> +        _dev: &'bound pci::Device<Core<'_>>,
-> +        _this: Pin<&Self::Data<'bound>>,
-> +        token: pci::SriovDisable<'_>,
-> +    ) -> Result {
-> +        token.disable();
-> +        Ok(())
-> +    }
->  }
-
-[1] https://lore.kernel.org/nova-gpu/20261110152746.140351-1-dakr@kernel.or=
-g/
-
-[2] Diff for IOV series
-
-diff --git a/rust/helpers/pci.c b/rust/helpers/pci.c
-index a8540f90b13c..0185baa7aacc 100644
---- a/rust/helpers/pci.c
-+++ b/rust/helpers/pci.c
-@@ -41,6 +41,27 @@ __rust_helper u32 rust_helper_pci_ext_cap_next(u32 heade=
-r)
- }
-
- #ifndef CONFIG_PCI_IOV
-+__rust_helper int rust_helper_pci_iov_vf_id(struct pci_dev *pdev)
-+{
-+	return pci_iov_vf_id(pdev);
-+}
-+
-+__rust_helper int rust_helper_pci_enable_sriov(struct pci_dev *pdev,
-+					    int nr_virtfn)
-+{
-+	return pci_enable_sriov(pdev, nr_virtfn);
-+}
-+
-+__rust_helper void rust_helper_pci_disable_sriov(struct pci_dev *pdev)
-+{
-+	pci_disable_sriov(pdev);
-+}
-+
-+__rust_helper int rust_helper_pci_num_vf(struct pci_dev *pdev)
-+{
-+	return pci_num_vf(pdev);
-+}
-+
- __rust_helper unsigned int
- rust_helper_pci_sriov_get_totalvfs(struct pci_dev *pdev)
- {
-diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-index 0bcbf73bb363..dcdef0eb1ae2 100644
---- a/rust/kernel/pci.rs
-+++ b/rust/kernel/pci.rs
-@@ -36,7 +36,6 @@
- mod cap;
- mod id;
- mod io;
--#[cfg(CONFIG_PCI_IOV)]
- mod iov;
- mod irq;
-
-@@ -60,7 +59,6 @@
-     Extended,
-     Normal, //
- };
--#[cfg(CONFIG_PCI_IOV)]
- pub use self::iov::{
-     SriovDisable,
-     SriovEnable,
-@@ -96,7 +94,6 @@ unsafe fn register(
-         name: &'static CStr,
-         module: &'static ThisModule,
-     ) -> Result {
--        #[cfg(CONFIG_PCI_IOV)]
-         build_assert!(
-             T::HAS_SRIOV_ENABLE =3D=3D T::HAS_SRIOV_DISABLE,
-             "PCI drivers must implement both sriov_enable and sriov_disabl=
-e"
-@@ -116,7 +113,6 @@ unsafe fn register(
-             if let Some(ops) =3D T::PM_OPS {
-                 (*pdrv.get()).driver.pm =3D ops.raw;
-             }
--            #[cfg(CONFIG_PCI_IOV)]
-             if T::HAS_SRIOV_ENABLE {
-                 (*pdrv.get()).sriov_configure =3D Some(Self::sriov_configu=
-re_callback);
-             }
-@@ -592,6 +588,8 @@ fn runtime_resume<'bound>(dev: &Device<device::Bound>, =
-this: Pin<&Self::Data<'bo
-
-     /// Enables Single Root I/O Virtualization (SR-IOV) for a PF.
-     ///
-+    /// This callback is only invoked when `CONFIG_PCI_IOV` is enabled.
-+    ///
-     /// Called when userspace writes a nonzero VF count to `sriov_numvfs`.=
- The token carries the
-     /// requested count and permission to enable VFs on this PF. Return th=
-e guard obtained from
-     /// [`SriovEnable::enable()`] after completing setup; dropping it roll=
-s back the enable.
-@@ -624,7 +622,6 @@ fn runtime_resume<'bound>(dev: &Device<device::Bound>, =
-this: Pin<&Self::Data<'bo
-     ///     Ok(enabled)
-     /// }
-     /// ```
--    #[cfg(CONFIG_PCI_IOV)]
-     fn sriov_enable<'a>(
-         dev: &'a Device<device::Core<'_>>,
-         data: Pin<&Self::Data<'a>>,
-@@ -636,6 +633,8 @@ fn sriov_enable<'a>(
-
-     /// Disables all VFs of a PF in response to a userspace request.
-     ///
-+    /// This callback is only invoked when `CONFIG_PCI_IOV` is enabled.
-+    ///
-     /// Called when userspace writes zero to `sriov_numvfs`. Call [`SriovD=
-isable::disable()`]
-     /// while resources used by VF drivers are still available. Returning =
-an error before calling
-     /// it leaves the VFs enabled. Returning success requires that all VFs=
- have been disabled.
-@@ -661,7 +660,6 @@ fn sriov_enable<'a>(
-     ///     Ok(())
-     /// }
-     /// ```
--    #[cfg(CONFIG_PCI_IOV)]
-     fn sriov_disable<'a>(
-         dev: &'a Device<device::Core<'_>>,
-         data: Pin<&Self::Data<'a>>,
-diff --git a/rust/kernel/pci/iov.rs b/rust/kernel/pci/iov.rs
-index c5b6fd31d1e4..abba5eeaa49b 100644
---- a/rust/kernel/pci/iov.rs
-+++ b/rust/kernel/pci/iov.rs
-@@ -23,12 +23,50 @@
- };
- use core::{
-     any::TypeId,
-+    ffi::c_void,
-     marker::PhantomPinned,
-     mem::ManuallyDrop, //
- };
-
-+/// Returns the PF's registration pointer, or null when SR-IOV is disabled=
-.
-+///
-+/// # Safety
-+///
-+/// `pdev` must point to a live PCI device. The caller must exclude concur=
-rent changes to its
-+/// registration pointer.
-+unsafe fn vf_registration_data_ptr(pdev: *mut bindings::pci_dev) -> *mut c=
-_void {
-+    #[cfg(CONFIG_PCI_IOV)]
-+    {
-+        // SAFETY: The caller guarantees the device's validity and exclude=
-s concurrent changes.
-+        unsafe { (*pdev).vf_registration_data_rust }
-+    }
-+    #[cfg(not(CONFIG_PCI_IOV))]
-+    {
-+        let _ =3D pdev;
-+        core::ptr::null_mut()
-+    }
-+}
-+
-+/// Updates the PF's registration pointer, doing nothing when SR-IOV is di=
-sabled.
-+///
-+/// # Safety
-+///
-+/// `pdev` must point to a live PCI device. The caller must exclude concur=
-rent access to its
-+/// registration pointer and uphold the invariants of any published regist=
-ration data.
-+unsafe fn set_vf_registration_data_ptr(pdev: *mut bindings::pci_dev, data:=
- *mut c_void) {
-+    #[cfg(CONFIG_PCI_IOV)]
-+    // SAFETY: The caller guarantees the device's validity and exclusive a=
-ccess to its slot.
-+    unsafe {
-+        (*pdev).vf_registration_data_rust =3D data;
-+    }
-+    #[cfg(not(CONFIG_PCI_IOV))]
-+    let _ =3D (pdev, data);
-+}
-+
- impl Device<device::Core<'_>> {
-     /// Returns the number of Virtual Functions (VF) enabled for a Physica=
-l Function (PF).
-+    ///
-+    /// Returns zero when `CONFIG_PCI_IOV` is disabled.
-     #[inline]
-     pub fn num_vf(&self) -> u16 {
-         // SAFETY: `self.as_raw()` is valid and this call runs in the PCI =
-core callback context.
-@@ -110,7 +148,7 @@ pub fn enable(self, num_vfs: u16) -> Result<SriovEnable=
-d<'a>> {
-
-         // SAFETY: The PF's driver data and registration remain installed =
-throughout this callback.
-         // The registration owns final VF teardown after the enable guard =
-is disarmed.
--        if unsafe { (*self.pdev.as_raw()).vf_registration_data_rust }.is_n=
-ull() {
-+        if unsafe { vf_registration_data_ptr(self.pdev.as_raw()) }.is_null=
-() {
-             return Err(ENODEV);
-         }
-
-@@ -225,6 +263,9 @@ fn new<E>(data: impl PinInit<F::Of<'a>, E>) -> impl Pin=
-Init<Self, E> {
- /// [`Device::vf_registration_data_with()`] and [`Device::vf_registration_=
-data()`].
- ///
- /// Drop disables SR-IOV before clearing the registration pointer and rele=
-asing the data.
-+///
-+/// When `CONFIG_PCI_IOV` is disabled, the registration still initializes,=
- pins and owns its data,
-+/// but does not publish it to VF drivers.
- #[pin_data(PinnedDrop)]
- pub struct VfRegistration<'a, F: ForLt + 'static> {
-     pdev: &'a Device<device::Bound>,
-@@ -262,7 +303,7 @@ pub unsafe fn new<'core, I>(
-                     return Err(EBUSY);
-                 }
-                 // SAFETY: The core callback serializes changes to this de=
-vice's registration.
--                if !unsafe { (*pdev.as_raw()).vf_registration_data_rust }.=
-is_null() {
-+                if !unsafe { vf_registration_data_ptr(pdev.as_raw()) }.is_=
-null() {
-                     return Err(EBUSY);
-                 }
-             },
-@@ -272,15 +313,17 @@ pub unsafe fn new<'core, I>(
-             _: {
-                 // The data initializer may have registered another object=
- on this device.
-                 // SAFETY: The captured core context still serializes regi=
-stration changes.
--                if !unsafe { (*pdev.as_raw()).vf_registration_data_rust }.=
-is_null() {
-+                if !unsafe { vf_registration_data_ptr(pdev.as_raw()) }.is_=
-null() {
-                     return Err(EBUSY);
-                 }
-
-                 // SAFETY: The data is initialized and pinned, the slot is=
- unoccupied, and
-                 // no VF can access it yet. No fallible work follows publi=
-cation.
-                 unsafe {
--                    (*pdev.as_raw()).vf_registration_data_rust =3D
--                        core::ptr::from_ref(inner.as_ref().get_ref()).cast=
-_mut().cast();
-+                    set_vf_registration_data_ptr(
-+                        pdev.as_raw(),
-+                        core::ptr::from_ref(inner.as_ref().get_ref()).cast=
-_mut().cast(),
-+                    );
-                 }
-             },
-         })
-@@ -297,7 +340,7 @@ fn drop(self: Pin<&mut Self>) {
-
-         // SAFETY: The device is valid and all VF remove callbacks have co=
-mpleted, so no VF
-         // can access the registration pointer. The data remains alive unt=
-il this returns.
--        unsafe { (*self.pdev.as_raw()).vf_registration_data_rust =3D core:=
-:ptr::null_mut() };
-+        unsafe { set_vf_registration_data_ptr(self.pdev.as_raw(), core::pt=
-r::null_mut()) };
-     }
- }
-
-@@ -310,6 +353,8 @@ unsafe impl<F: ForLt> Sync for VfRegistration<'_, F> wh=
-ere for<'a> F::Of<'a>: Se
-
- impl Device<device::Bound> {
-     /// Return the zero-based VF index within its PF, or an error for a no=
-n-VF device.
-+    ///
-+    /// Returns [`ENOSYS`] when `CONFIG_PCI_IOV` is disabled.
-     pub fn vf_id(&self) -> Result<u32> {
-         // SAFETY: `self.as_raw()` points to a live PCI device; the helper=
- checks VF membership.
-         let id =3D unsafe { bindings::pci_iov_vf_id(self.as_raw()) };
-@@ -324,6 +369,7 @@ pub fn vf_id(&self) -> Result<u32> {
-     ///
-     /// The data lifetime must be hidden behind a higher-ranked closure in=
-dependently of the
-     /// reference lifetime, or `F` must be covariant in its encoded lifeti=
-me.
-+    #[cfg(CONFIG_PCI_IOV)]
-     unsafe fn vf_registration_data_pinned<F: ForLt + 'static>(&self) -> Re=
-sult<Pin<&F::Of<'_>>> {
-         if !self.is_virtfn() {
-             return Err(ENODEV);
-@@ -333,7 +379,7 @@ unsafe fn vf_registration_data_pinned<F: ForLt + 'stati=
-c>(&self) -> Result<Pin<&
-         // VF removal completes, and the PF keeps the registration install=
-ed until then.
-         let ptr =3D unsafe {
-             let pf =3D (*self.as_raw()).__bindgen_anon_1.physfn;
--            (*pf).vf_registration_data_rust
-+            vf_registration_data_ptr(pf)
-         };
-
-         if ptr.is_null() {
-@@ -360,11 +406,23 @@ unsafe fn vf_registration_data_pinned<F: ForLt + 'sta=
-tic>(&self) -> Result<Pin<&
-         Ok(unsafe { Pin::new_unchecked(&*data_ptr) })
-     }
-
-+    /// Returns [`ENODEV`] because no VF registration can be published.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The data lifetime must be hidden behind a higher-ranked closure in=
-dependently of the
-+    /// reference lifetime, or `F` must be covariant in its encoded lifeti=
-me.
-+    #[cfg(not(CONFIG_PCI_IOV))]
-+    unsafe fn vf_registration_data_pinned<F: ForLt + 'static>(&self) -> Re=
-sult<Pin<&F::Of<'_>>> {
-+        Err(ENODEV)
-+    }
-+
-     /// Access the VF registration data through a closure with an HRTB lif=
-etime.
-     ///
-     /// `F` is the [`ForLt`](trait@ForLt) encoding of the data type. Retur=
-ns
-     /// [`ENODEV`] if this is not a VF or no data was registered,
-     /// or [`EINVAL`] if `F` does not match the type registered by the PF.
-+    /// Returns [`ENODEV`] when `CONFIG_PCI_IOV` is disabled.
-     ///
-     /// The reference is borrowed from this VF, while the registration dat=
-a's lifetime remains
-     /// abstract so the closure cannot store shorter-lived references in i=
-nvariant data.
+Best Regards,
+Yan, Zi
