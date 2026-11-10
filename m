@@ -1,49 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794267030;
-	b=P62bo795oxwEfITpbZm7frNoOkP7zuloNhipql8lrAAw1LNtYY4Y2HeIadD1dGjmXlh1
-	 qmCr/g78UU2L+2Rr1lvXNoaNNA710JolNnnKWovYDYpArj1KAHPSzQ+Nzb+zzHRUu8CyF
-	 DIBNDTdjxriskvG3N5V5BhPOiEBHiFaWjAQtNGbBhoh/60zKlDnBKujgH7JgE8a51H9p6
-	 Ue47LxyUw1UiT9XkV/0d+K6ZUS6ujcDkC2WBgMUNjOIeQBMJpDIBcazLZa7E7GMcMrBTe
-	 sOKbEaaa8KgY1OkIwSWhYwlEh3tHMYRE1UNT8Ud1tdxmyqJBCCQpL25HbJBPTeqIJMQ==
+	t=1794269425;
+	b=aVsGzPqb492Iy9PICnwRej89Ibl8nWir+YN/GHqBfAaih3suDyaVfMM6e49y1gCEnCch
+	 zdI4XoGZnoGl0Jx06c5QzKveeJgyciVg1C7HwXDbpJeSZwghZROjGEj6PdxFxz9zGxEmv
+	 XvnzyxBhzdSD54qvduX8yNI9RE+bMVIbJ0kxy/trpJrUTiPk6IvVNmVanTiXyHnJnjW1Q
+	 wF7CInjdFugY16jj1nHMxWgLF5h9XnxnvE19S6AX/tZd+LGvIHD+PLRzQDZth55NzEaC3
+	 CUbDRpQiGO8C58SqOYbp4cbOAujNCAARPBcnpzbokomHI9YyGa2eaodG01u704hwoYg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794267030;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=JmASC/2ykPTmrP4QNaDXpA3LsM8BcZdtf8jvbdaN/YE=;
-	b=ODiHY5fROJmbms+86k8VI9bqH/SnFSqkb9kzY2PcsFEzLlF7b8OW08bhw00QMMeL2ydd
-	 JTmzUB02RNPAMnmdSoCB5Xx/Ox3JXPAz3vW+b02CCvqFMhoMOIWkNPho7PgJ1hh+UH04D
-	 1ImssZWLjTOpAJgd3ODrV9vsQKlGFYyCAedGS/zLsM0GRvdoMWdh2kFBwjk/cr35zAsmq
-	 yRzmD06+trGac1y7Z9JonyXNILC2RvNwYclin4CnvW7CoVdtXA5sva7q0e80s+/FhcyoL
-	 N5wgUJ/szmvE/pByZj1PDcUS1slc95hrMVZ5oPmqncBh+RE5T7HZxZtXqkdGnSAT7oQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794269425;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
+	 In-Reply-To;
+	bh=dz2fvkSwnZplQkX1U9pzrU7rFR3GRdiaB6bhtOf/H60=;
+	b=M+1cEN/cQBJSaELCHfZ/mD8TzpMtIv13v55vcPrbLXSE9/kQKM50wM1sYaSlJEE26ryV
+	 u4T1TnmgaSxkgmZN+XYRsDyDwS4ZJL4rtiqXtQACrnr0oDFd8krcv7Bho/eIjMzR/AjfO
+	 obPu1bAXUU5zwAJh7gLwG9/Chs5iN8yHOKQO+g82+7MQ3IjwRX+Jg645CZlYZJo0OAjyd
+	 uB0V0N8WO/omk6KNRauGBRbNwA+PVEjrNMysj0hd0+6IlgggP/EouI7qAtwiSmFd84yvH
+	 Hq37c9ocAxcnMVfiwP93KLU+RDnOGXTmfB717Kb/4ghtjhDQTxSGImZdEFFP0UtPEKA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XJkJYljb;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fCj5FFRq;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B789606A326;
-	Mon,  9 Nov 2026 23:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615CF606A321;
+	Tue, 10 Nov 2026 00:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XJkJYljb
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4BA91F008AB;
-	Mon,  9 Nov 2026 23:30:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fCj5FFRq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F9A1F0089F;
+	Tue, 10 Nov 2026 00:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794267029;
-	bh=JmASC/2ykPTmrP4QNaDXpA3LsM8BcZdtf8jvbdaN/YE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=XJkJYljbRx9yqJVdE8hLep9GsGmSyaYObPKs3ZnLfiITnHXC03hfsbWZtS80Y5Op8
-	 jjTaTRWn8+GZ0/4l1zI9uuQ14/51ceSctblK6uJ0/2NvZIa7oOcRqEBQmsrKAbQf4k
-	 E1+Q+H1m8Gt4xhN6Yz3Ohhr6Q867/oGrzfdB/PfXQrwr5SzUB2FQPSvOMBE8FZTWae
-	 T9HSn6EHYY7IpiimaZnPgx6k0gFy0Dmnqg/LWjw9qdvmzXgku6c5BcgyjbPxtAQDlH
-	 mLQ38qSrkS6r0fsLS3tq1fXmk7/qq0wuchFsExGOMqfyIwNpAMC9mKhDNk2zO4BkUl
-	 wXZwkKOp0BYUw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AB847391AFA5;
-	Mon,  9 Nov 2026 23:30:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1794269425;
+	bh=dz2fvkSwnZplQkX1U9pzrU7rFR3GRdiaB6bhtOf/H60=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=fCj5FFRqRM5NX6wqVhMfGWJhXWGI7k4HNPP5SYpZXp6fIJhbYuBhGZKgm1VP/hYUx
+	 X7pD03O7uixBW0BaNJND7Bid20cISEoxJZKHTeonSfF2sT0j9AeQBu/5YoeeymcnCX
+	 LSiPs/fChguo2+aRIj3pwETTiHs8H007sRY4/6XgYpJFi5tAKCKADUSjxZFIXquoI6
+	 C8CTEFVTVb1vZpgDfBIBvwf0R3fS8wUvLVWW7NYCzivSwM+cCoP5TmPssSeFD5zO+O
+	 ShBEsE7tgGUR0AXBmBb+GQiZMRtQXA1eXAntv/bny6a5v1fR5quH6iyfGteoEmSUxU
+	 DftRxsHV17FjA==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -52,47 +48,100 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] rust: netlink: remove unnecessary bitfield
- transmutes
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179426702842.3543549.289908194176999743.git-patchwork-notify@kernel.org>
-Date: Mon, 09 Nov 2026 23:30:28 +0000
-References: <20261102023301.206989-3-blum@kernel.org>
-In-Reply-To: <20261102023301.206989-3-blum@kernel.org>
-To: Thorsten Blum <blum@kernel.org>
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, ojeda@kernel.org, boqun@kernel.org,
- gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org,
- acourbot@nvidia.com, work@onurozkan.dev, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 10 Nov 2026 01:10:16 +0100
+Message-Id: <DMR3FALTBPDB.15ASJDTIC5GXS@kernel.org>
+Subject: Re: [PATCH v2 06/12] rust: pci: add a bind callback after
+ installing driver data
+Cc: <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <linux-pci@vger.kernel.org>, <alex@shazbot.org>, <jgg@nvidia.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <jhubbard@nvidia.com>,
+ <ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
+ <kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
+ <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
+ <boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
+ <work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
+ <kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <peter@colberg.org>, <beata.michalska@arm.com>
+To: "Simon Song" <xinmengs@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20261023154009.2246627-1-xinmengs@nvidia.com>
+ <20261023154009.2246627-7-xinmengs@nvidia.com>
+In-Reply-To: <20261023154009.2246627-7-xinmengs@nvidia.com>
 
-Hello:
+On Fri Oct 23, 2026 at 5:40 PM CEST, Simon Song wrote:
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index adc7e92d44e..1951b3c8a5c 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -154,6 +154,13 @@ extern "C" fn probe_callback(
+>              let data =3D T::probe(pdev, info);
+> =20
+>              pdev.as_ref().set_drvdata(data)?;
+> +            // SAFETY: `set_drvdata` installed the pinned `T::Data` abov=
+e.
+> +            let data =3D unsafe { pdev.as_ref().drvdata_borrow::<T::Data=
+<'_>>() };
+> +            if let Err(error) =3D T::bind(pdev, data) {
+> +                // SAFETY: Failed bind leaves no callbacks borrowing the=
+ installed data.
+> +                drop(unsafe { pdev.as_ref().drvdata_obtain::<T::Data<'_>=
+>() });
+> +                return Err(error);
+> +            }
+>              Ok(0)
+>          })
+>      }
+> @@ -416,6 +423,15 @@ fn probe<'bound>(
+>          id_info: Option<&'bound Self::IdInfo>,
+>      ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound;
+> =20
+> +    /// Complete probe after the pinned driver data has been installed.
+> +    ///
+> +    /// Called with the PCI device lock held. On error, the data is drop=
+ped without calling
+> +    /// [`Self::unbind`]. Any callbacks started here must be stopped bef=
+ore returning an error.
+> +    fn bind<'bound>(dev: &Device<device::Core<'_>>, this: Pin<&Self::Dat=
+a<'bound>>) -> Result {
+> +        let _ =3D (dev, this);
+> +        Ok(())
+> +    }
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+No, please don't introduce a new bus callback for the sake of ordering
+registrations against each other, it does not scale.
 
-On Mon,  2 Nov 2026 03:33:03 +0100 you wrote:
-> Use __BindgenBitfieldUnit::new() to build the bitfield.
-> 
-> Since the generated type implements PartialEq, compare the bitfields
-> directly in test_family_flags_bitfield().
-> 
-> Signed-off-by: Thorsten Blum <blum@kernel.org>
-> 
-> [...]
+The answer is almost always to use a new registration data container and, w=
+here
+needed, self-referential pin-init in order to represent ordering dependenci=
+es.
 
-Here is the summary with links:
-  - [net-next] rust: netlink: remove unnecessary bitfield transmutes
-    https://git.kernel.org/netdev/net-next/c/ce8659b5c8ac
+Fixed ordering imposed by bus callbacks falls apart with different driver n=
+eeds,
+whereas separate registration data containers and self-referential pin-init=
+ are
+flexible and represent data dependencies and lifetimes directly.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+IIUC, this comes down to the runtime PM implementation in this series, so p=
+lease
+base your code on the generic runtime PM work [1] from Beata (Cc) instead.
 
+If you respin this series before Beata respins the runtime PM work, please =
+take
+my latest feedback on her series into account, since it may affect how this
+series integrates with it.
 
+I'd also suggest splitting out the runtime PM support as separate patches a=
+t the
+end of this series, so we can start landing the rest independently.
+
+[1] https://lore.kernel.org/all/20261026120523.526942-2-beata.michalska@arm=
+.com/
