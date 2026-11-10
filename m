@@ -1,63 +1,68 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794298078;
-	b=uOFzGVREU7mUvzySnaRPUXB9DDm9gNu1GdBwaqkldHDuT+c/+Xg76O4V6x9enlxApGRL
-	 pnoRRAuO5vr8QlgyXZEEygz66TtyMLGeTcqp8o41vL+Xkvtv0Mt7S5VPwF7G20P22859w
-	 Iy4o8YoGLnxQ227OzGugWgh0p7ZUY2Uuj2O9pILV7KBfG2oJcDVczWm1QTj1LghcJr7lS
-	 sCkXU9r1mZFFCNpp2zqVcK4Y7n11731WeILruG8yJWtqBVfJ8yiLoCiJL6DdWWZ5unf0c
-	 k79TWvm9j/nGq3k16RHNdS/zggV/5n3L3O55r8wMtnZ/2B0eZIoj0tBh4QFMsGsHloQ==
+	t=1794298083;
+	b=y4caMgtEsMeQGtii9szml+G3uvPcYqVmHESOSB4QvRYR/4vSwPQuibb3M7MhwmIzCtOs
+	 V5fgm6Ew1s8C0iZacqSM+D3ZLvF5hKG8knHYTNRwWOjpJ2cuAt65aCqOpKZDfZZgAQnEQ
+	 atWikoB6szUBE64tTdBHnngDfrJHLmvVPo0yv84iN70c4Hv0hFUbLU9sbw2JkUZs6n9mY
+	 vRpdhY7dQiyBFraBHPYGsnmVtkj0wkcdXxhMiKE3JEQzRdSC/wpIo8L/FtG0Ie/HHeWM4
+	 q6O1q9AWWDiQDGrmVWzA55hlLh+c4VjsE/Db5eKsKzCYQKDl+sJOJ+pQagZ5SpN3TfQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794298078;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794298083;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
 	 Date:Message-ID:MIME-Version:Content-Type;
-	bh=bIQ1XGg/Lq1ppVRS0y1xt4VLyyU3xPEc9jxagqiKYNI=;
-	b=bEC9TI5eMCJBxnuCKuR8KHH/ApuQhb1dX8plv5dIOCgILNnvElaLcLMVIjMzxAeCrl7A
-	 KCTkMhXkVrlaA2HMbjrfEOxVKG8LmJmLkx9uSPaHa5xHlvYPEu3/Ckg+STSOcphtgLE0t
-	 CnTrcU40c+b4ve/dhYnN0A35EqCf2hhB4KT56lnI+6MXxKuntEdGjqFWqszWD80CfUpor
-	 TTMZMj1ENuTl35N7vC2ZXr5LcN8LdTGGWE0GXfCCsWNdpdL04FK3RB0OhpnMT+4EV2Q5g
-	 uwYY1YYp1JYZ+gpt+jxDZpaIz98SPkzHQQY953aeHnEB8/p8mJWr78pvt7tzA4ZPyag==
+	bh=bumsT3247uJhgV6jVLN6Z+t5ji3XDdbkIBaiaUNDB+c=;
+	b=rTNadG+chjWtSe8UIStayvlwh0nM6dyeKzwSlDbNNza6bj9U3RMXpz01auJ/uE+mMAC8
+	 u93v3JbXAnDh7t2eCdpZjQqqOEvTPuD6szsApdDFn1ucQYdeATDAZfd2CClsPhjMMbv2n
+	 TlOaiuThfYdSFoGFiv4ObH6sOR6SIeTTNyILLsawZ7ELlWVCdD0bpHLXeKZi4jA0mo3VN
+	 NQafSoBKiKKsTNmy1z6191dbsP0vQ9toxJ6CdcR2MXuNWIIIBxROOwVFKKzZFx/gVZblG
+	 v7iZKZCHg1nB8iW5IJRCi/UYrxGQYHDIx+OdaGbXegXXSEN2KGTfazRR+sJTiSqUA5A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aDBb6M+r;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GvX3GZoU;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A35C606A31C;
-	Tue, 10 Nov 2026 08:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45970606A325;
+	Tue, 10 Nov 2026 08:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aDBb6M+r
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07CF81F0089F;
-	Tue, 10 Nov 2026 08:07:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GvX3GZoU
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D2D1F008A1;
+	Tue, 10 Nov 2026 08:07:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794298077;
-	bh=bIQ1XGg/Lq1ppVRS0y1xt4VLyyU3xPEc9jxagqiKYNI=;
+	s=k20260515; t=1794298082;
+	bh=bumsT3247uJhgV6jVLN6Z+t5ji3XDdbkIBaiaUNDB+c=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=aDBb6M+rqnzZ1hzeDzZg0e7bL6DaJ1PzD8qB3eb+JZLNJARUnhI8Zqz3z+twgexGx
-	 PujYgg/p1ZLrf25Dt2TrDlvXo6SlgcZLdHrbn4VmWwX+FjPkKF4DDjJ7SItxZd8/5q
-	 uoxebaznGXXlcJKbA3ef4VO5uscEw+3bk1ck/pdr112hhq9VK19wv7DZd3OZ/YEHmF
-	 uqftyPowKnQ/HZNWh/Ub3jElQShL6pzLK/nuqk6zAWLXan7Albh5p6epk3eq7tc++u
-	 5feiWVNUzA07NritRAmrhBYByVDz9YhChWAC35jPr5dUQtFLRTHxeNryRCpUccQUDy
-	 00EENENDLqjkg==
+	b=GvX3GZoUV93UQPhoWyGuESc41gYkEOZkOWOPkt2N/TCeX4GgczNSI3xqsr8XJ1zQt
+	 tbRFaqpzcPcdmsTsNz/BknBkdEY24nHzG45VVjF0OeZE2XD9tDsOWxvYDMPhT66zLF
+	 5/VZ5o8CWlTS71V9gp2a9kqAC0mIEvzgDlLzjhXj54L/sK41lYWujjeXoS0xpOdl1N
+	 lb3NBAQmBaqtPRJjHC+gCGfzP8r2ITacNL9qZuLFKFvJ7DF/XILH2yRgzMnOAa164H
+	 ALuXCLmoDQyAc25j24mHm7wIR2uxCt/eQVAmwuu8KO3A1S/JrUX4VoFyulBmXV+FXZ
+	 ufo2WK3zHNGTQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: FUJITA Tomonori <tomo@flapping.org>
-Cc: tomo@flapping.org, fujita.tomonori@gmail.com, frederic@kernel.org,
- lyude@redhat.com, tglx@kernel.org, anna-maria@linutronix.de,
- jstultz@google.com, sboyd@kernel.org, ojeda@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org, boqun@kernel.org,
- daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com,
- work@onurozkan.dev, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: time: implement `Display` for `Delta`
-In-Reply-To: <20261110.075758.247487148810717068.tomo@flapping.org>
-References: <20261103-time-delta-display-v2-1-b01b1fe9ff9f@kernel.org>
- <I_BPRv0XwpoRCf2AG4Ot12JnHyqvdM9lb_wF0sZMixc0UIoaBb-aeNWYuff1oe4_X1m5SpCTcZp9woOg-dt9Eg==@protonmail.internalid>
- <20261104.180854.547774168466136920.tomo@flapping.org>
- <8733tgnc41.fsf@t14s.mail-host-address-is-not-set>
- <20261110.075758.247487148810717068.tomo@flapping.org>
-Date: Tue, 10 Nov 2026 08:44:41 +0100
-Message-ID: <87se19qgeu.fsf@t14s.mail-host-address-is-not-set>
+To: Gary Guo <gary@garyguo.net>, Gary Guo <gary@garyguo.net>, Miguel Ojeda
+ <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>,
+ Thomas Gleixner
+ <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Lorenzo Stoakes
+ <ljs@kernel.org>, Vlastimil
+ Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] rust: alloc: move `NumaNode` to the `numa` module
+In-Reply-To: <DMQU2RZATGHR.1HI8FE2P58O7V@garyguo.net>
+References: <20260929-cpu-helpers-v3-0-e968ce5ee613@kernel.org>
+ <20260929-cpu-helpers-v3-3-e968ce5ee613@kernel.org>
+ <DLSQY2IKU5IO.3BFLXTCTJ5I6U@garyguo.net>
+ <878q3hopt6.fsf@t14s.mail-host-address-is-not-set>
+ <DMQU2RZATGHR.1HI8FE2P58O7V@garyguo.net>
+Date: Tue, 10 Nov 2026 08:56:32 +0100
+Message-ID: <87pkwdqfv3.fsf@t14s.mail-host-address-is-not-set>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -69,39 +74,70 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain
 
-FUJITA Tomonori <tomo@flapping.org> writes:
+"Gary Guo" <gary@garyguo.net> writes:
 
-> On Wed, 04 Nov 2026 11:07:42 +0100
-> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+> On Wed Oct 28, 2026 at 2:36 PM GMT, Andreas Hindborg wrote:
+>> "Gary Guo" <gary@garyguo.net> writes:
+>>
+>>>> diff --git a/rust/kernel/numa.rs b/rust/kernel/numa.rs
+>>>> index 164e622d325f..4a3a880308f3 100644
+>>>> --- a/rust/kernel/numa.rs
+>>>> +++ b/rust/kernel/numa.rs
+>>>> @@ -4,12 +4,15 @@
+>>>>  //!
+>>>>  //! C header: [`include/linux/nodemask.h`](srctree/include/linux/nodemask.h)
+>>>>  
+>>>> -use crate::bindings;
+>>>>  #[cfg(CONFIG_NUMA)]
+>>>>  use crate::sync::atomic::{
+>>>>      Atomic,
+>>>>      Relaxed, //
+>>>>  };
+>>>> +use crate::{
+>>>> +    bindings,
+>>>> +    prelude::*, //
+>>>> +};
+>>>>  
+>>>>  /// Returns the number of online NUMA nodes.
+>>>>  #[inline]
+>>>> @@ -27,3 +30,33 @@ pub fn num_online_nodes() -> u32 {
+>>>>          bindings::nr_online_nodes
+>>>>      }
+>>>>  }
+>>>> +
+>>>> +/// Non Uniform Memory Access (NUMA) node identifier.
+>>>> +#[derive(Clone, Copy, PartialEq)]
+>>>> +pub struct NumaNode(i32);
+>>>
+>>> FWIW the C type is nodemask_t and this should have mask in the name too. It is
+>>> not an identifier. That said, this is an existing issue, so shouldn't block the
+>>> move.
+>>
+>> What makes you say this? This is not a mask, it is a numa node id, which
+>> is represented as i32. `NUMA_NO_NODE` is a valid id.
+>>
+>> I am using this to specify domain for block mq queues. If you take a
+>> look at the allocation path:
+>>
+>>   blk_mq_alloc_queue
+>>   blk_alloc_queue
+>>   slab_alloc_node
+>>
+>> It's an id, named `numa_node`, `node_id`, `node`. Not a mask. Unless I
+>> missed something?
 >
->> We can also change it to be a `Debug` implementation. I was not aware
->> about the stability requirement. But I guess that is mostly a user space
->> thing? In the kernel we can change stuff as we see fit, as long as we do
->> not interfere with the uapi.
+> Right, I got myself confused because NUMA_NO_NODE is defined in
+> nodemask_types.h.
 >
-> Right, in the kernel we can change the format as needed.
->
-> Still, I think it is easier for users if the kernel crate follows some
-> rule about when to implement Display and when to implement Debug.
->
-> As Miguel's suggestions in v1 show (12_345ns, 12.345ms, 12.3ms), Delta
-> does not have a single obvious format. In the kernel crate, other
-> types with a unit, Hertz, MicroVolt and MicroWatt, implement only
-> Debug, not Display. Display for Delta would be the first exception.
->
-> So I would prefer Debug.
+> If it's just an ID, would it make more sense to have `Option<NumaNode>` and
+> `None` to represent no node preference?
 
-Ok, I can respin it as Debug.
+I guess we could define it as `Option<i32>`. That would be nice.
 
->
-> Maybe we should also write such a rule down in
-> Documentation/rust/coding-guidelines.rst.
-
-Good idea, I suggest you submit a patch, then general discussion can
-happen in that thread.
+I can send a follow up once this lands. FYI there is a v4 of this [1].
 
 Best regards,
 Andreas Hindborg
 
-
+[1] https://lore.kernel.org/r/20261030-cpu-helpers-v4-2-a8d840d34837@kernel.org
 
