@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794312240;
-	b=pHQkQLFfMUUAOnwSpM2OY9bl/0tzR2wP7fHhKRWD3N7t+6OALt2G0Ip54+vOmtWXTyCi
-	 QeiaycywoWCfm6bwB8loG4wTvjp41frHrw3ZAVhNWP6rHsX4clg1Q2VuNKrIyMHs/11dA
-	 LmfuJ4TyCOCHLA+b8oFHXBG1tcvhsWoSOesv9xXjbMTS7QiZ0Nxb8XpVxwvuSLGdy1Zi3
-	 GwpekjlQ7DwjcGvEl/3VKE5nqcRZuJ/HgFV2PTGCJSHTNOw7JOzLXaGnwRWr9O6fDhact
-	 rjf3LpI7Z7fEd0083bg7yOAjiBO4a8ef8EEWKtQj3GS557q3ATJyh/Gi7FVUeh48Axg==
+	t=1794312249;
+	b=e0p+APjTpsdwMKF+oAQX3Hc/ua1ao0YM5ptZ4e6B7KlIEr0nqT/yZGPVKCKNCuEspOIL
+	 zWuxj6YH3uZC2834VkGwbZLOPimz5LXA5EjBSeM5u09IT1W0aIAAyu/yGUxmoh+akaBEW
+	 edov/JJNNH94XeQQvXAR2HR4As1///Zomd1PnG7Jwc1VeA2Ne4fDvB/d7Oeu2TKf9ppsD
+	 n4sWqWOX1IDG8nxf9KwH3Sz161kzOMQ8SVu+hzYDcBw5cyik/3npAfdEYuM5fnM9pdlv1
+	 tF/mczrMzRmPiCa/hNbUZDex69Z90nuVrP8dNowYGN2aC61cujHQq4UIiqBs1L8X/Ww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794312240;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794312249;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=zsf6gGfdxiLjXd17MrZhzZWiPYtcEveS8tZd3C8SJcA=;
-	b=2DnVm6ihAUn4KKxD9gFD07JLNFsrXByGpKhtOWFvIvr8SdHx31XBvyjEBrUeZX/NOY/8
-	 VkpQldr+TD365CiZnHUgohpFULYvRXkOheo4iPsOFMCcdctxO3rf2235OMcnilC4/C8Uf
-	 jSyWXiNfyhk08B7vz+1MEJG1iRzdOKRZ1WtUvZoObv04ss69oidTybgdBSsyjMCdhgErv
-	 UUkfHbPhZaRI/3az+htO+kIA2EKAn2M/NJLIf8gICUelXCxhQbtuVKQcmQ6RvzNhaO14F
-	 4F+ad2KJj+5IJknOpyyBQHRGc51MBaaq5RONbu4vA5/4wa2+PLT2sy3Yz99L03pTukQ==
+	bh=JzZk1RLuM8spDo9JKHdWOYveSLRK6lJWUSM1rGChjXw=;
+	b=r+KOoKOeRKuQFI414eFrj7CJac/BN743re/Ns/vY+usBwevKNIYw2uDl7cqEv2Ld7lCz
+	 KXtRIofAhq23YLe8nQkorS1FlXz8Dk/gPxttQVPK0ZTYaPlsnqMnq87wK36BEWoJNq1NC
+	 BRqRt7yAGpgolkf527E4O8osgbR5a8YD014eL9XDSy1jS0hnyo5+Om5urRyjWQCQJLMG3
+	 B2xUyJAEV3fwZSpCCJqj6DtmBM2Qrap2PcvaYDGR1vmqSdmEyhBGUl8mRVjwA/vhpXgCn
+	 bp6cmEB149xEKlvkAWpgEPWZQlk0AwM66aM9KFouXeALr69H6E+4jjTXRhqC7XWTMEg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UazZJbNr;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Boff+uIt;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCEB60A3811;
-	Tue, 10 Nov 2026 12:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2E8606A31C;
+	Tue, 10 Nov 2026 12:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UazZJbNr
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 797F51F0089F;
-	Tue, 10 Nov 2026 12:03:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Boff+uIt
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674FB1F0089F;
+	Tue, 10 Nov 2026 12:04:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794312239;
-	bh=zsf6gGfdxiLjXd17MrZhzZWiPYtcEveS8tZd3C8SJcA=;
+	s=k20260515; t=1794312248;
+	bh=JzZk1RLuM8spDo9JKHdWOYveSLRK6lJWUSM1rGChjXw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=UazZJbNrY1JnrRiMYG+J0CIP3aLqOo+qTwuIM/q4+cinWIPihQs0HVHhnZppz+9Zq
-	 2HmOkA2WZ8/4p1a0izUyBmorR0W3FdKa9tcCYEy21LSjDnI9aC4z+ZP6pTkqaX0DZP
-	 O76bOwgjQQUPXQFqr9yFdcCcM3//NNJRR5+zL0GTxfwreoJyLdgaYirFCtfmU6BcfG
-	 o3BwtOCHGh1Lw9FiGx+6l8NsAi1UzbnjMaHJSfepOnR1TgGwzWuKe7PnILEVVU+luz
-	 WYbqNPN8joKKJiK8chAgQIrqHpcpXextzsf1hsNDrX5z77U3+TSrzImPIX6pyx3sMe
-	 AayZgScOpn3jQ==
+	b=Boff+uIt4fpQBBVexb0HKl7uHzWduiQHV5j/QhpigCwkTTzCn8CHJUM8gE5r67mxm
+	 0yDoKKLtbzCXTUsNCKEW1YHWAt7GZsJkzXi98WX8NKCXNeS52hE4R4ddyCmYCMNkb1
+	 lv+kSHWYcDoS81Fqya38IMEoVZRHbn2wkLe0sk+FArsO1oofAc1b3IC2yK5sFiQWhh
+	 JQBUfcmJtpbwIDLQdrruaKNscGQHe3mN2dIIff16DvI1luvrK7F98qdeAK1Bk1Okom
+	 TGk9MetqRdIVkj/UkUUdgb0ZRtFTrAUjNHS+SAsngeJi8m+LQ8iNWh6UTkE6WMCfbY
+	 N0mn9TUVVGfLg==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 10 Nov 2026 12:03:09 +0000
-Subject: [PATCH 3/4] MAINTAINERS: Remove myself from MM rust reviewerships
+Date: Tue, 10 Nov 2026 12:03:10 +0000
+Subject: [PATCH 4/4] CREDITS: add entry for THP maintenance
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -54,7 +54,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-drop-reviewerships-v1-3-07c2f06e8dfa@kernel.org>
+Message-Id: <20261110-drop-reviewerships-v1-4-07c2f06e8dfa@kernel.org>
 References: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
 In-Reply-To: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
 To: David Hildenbrand <david@kernel.org>, 
@@ -81,46 +81,46 @@ Cc: "Liam R. Howlett" <liam@infradead.org>,
  linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1057; i=ljs@kernel.org;
- h=from:subject:message-id; bh=F5gq5QS7pGTPR4Dfl1UG5qSMcHZqfSOEnv60atDlEJI=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI+c/A0VdyY/TdQNrjigvJsTm3f7F/fSwLXPSxs3rpeo
- tVtw7ULHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZiIQzDDX/EtxwqlzXXjErXM
- b7/oNhQqEBRffP500OMWr5B5x6Ysj2RkmLgwXlD5tNPZ1TtrbaoffH59fEmA5yOX2e7LtvkIPXM
- 0ZQQA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=904; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=takUyaLXbztd4jtf7ScJW0qPqBvaRlKq7K6u3UStV5g=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI+c/C82LFW1a0juPf/vOPpOd4/Pefz3888sXjy6VMFc
+ UbbsgNyOkpZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCRvHJGhjMKf93myt9s0aiS
+ mHONizlf85P4tf1RTlYzV7qv62C8v4+R4Wrerhx19xVrmie7N5xZseudVifb4o3b/XZx3F6QdXR
+ 2CScA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 
-Given the current throughput in the kernel resulting from AI-generated
-series, I unfortunately lack the bandwidth to generally be able to offer
-review except in those areas I maintain.
+Given my workload and current areas of focus, I think it's unlikely I will
+return to THP, so add a CREDITS entry to reflect my time as co-maintainer
+there.
 
-Therefore, remove myself as a reviewer.
+With Zi being appointed as an absolutely worthy successor as THP
+co-maintainer I am confident in its success, and this additionally makes me
+feel that it is unnecessary for me to return (for the best possible
+reasons!)
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- MAINTAINERS | 2 --
- 1 file changed, 2 deletions(-)
+ CREDITS | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index bb4f973b195f..83fc5cee8680 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17958,7 +17958,6 @@ F:	tools/testing/selftests/mm/uffd-*.[ch]
+diff --git a/CREDITS b/CREDITS
+index c6c7b173b064..226a71e45edc 100644
+--- a/CREDITS
++++ b/CREDITS
+@@ -3939,6 +3939,12 @@ D: mandocs and mandocs_install build targets
+ S: (Email me and ask)
+ S: Australia
  
- MEMORY MANAGEMENT - RUST
- M:	Alice Ryhl <aliceryhl@google.com>
--R:	Lorenzo Stoakes <ljs@kernel.org>
- R:	Liam R. Howlett <liam@infradead.org>
- L:	linux-mm@kvack.org
- L:	rust-for-linux@vger.kernel.org
-@@ -24655,7 +24654,6 @@ K:	\b(?i:rust)\b
- RUST [ALLOC]
- M:	Danilo Krummrich <dakr@kernel.org>
- M:	Alice Ryhl <aliceryhl@google.com>
--R:	Lorenzo Stoakes <ljs@kernel.org>
- R:	Vlastimil Babka <vbabka@kernel.org>
- R:	Liam R. Howlett <liam@infradead.org>
- R:	Uladzislau Rezki <urezki@gmail.com>
++N: Lorenzo Stoakes
++E: ljs@kernel.org
++W: https://ljs.io
++D: THP co-maintainer
++S: UK
++
+ N: Henrik Storner
+ E: storner@image.dk
+ W: http://www.image.dk/~storner/
 
 -- 
 2.56.0
