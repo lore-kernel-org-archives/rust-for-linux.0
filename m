@@ -1,69 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794314809;
-	b=pi9takwyBScAydwxIeREkn/R3OmlMlcDcRuBn0TaWTH/YGdDjDoK7tZdDsUXM2APnqen
-	 2Lc+re6p5Tz8RLvm80A+lzkzLXpyhqzPEMVNr+gacT14rijUkbfymvTaCf/HylV2XWE2h
-	 9UlI4HJcyDo+M4MM7FNapNfpyTf6VfUP5IjlBwyCO/D6GP8VbsNaZyO3EwPSUxIr/ELnj
-	 VRmjkDFTLacOcntB79vvqjxFhLvpXXvD50u41w/hBGZb59iLQSpli3XeyvQcUUUVatp89
-	 CNDdF1OKRg7pQGHlPFPSXLhKqbo8LPpDt0talPnGqRuCQww5kORJSPJV2cg83//hZKw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794314809;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=Iadron3w0mtp6FUOIlxkmVN3eT1tt34wJC4l9phyJAw=;
-	b=SJdvwXfI+hNA7PgRER+14fgXq+vu2vYtSrRnSPC9mDeLAnUu/+OYjlFHGa3Oyzy3M6Ph
-	 wexyeqBR0XFwfYKn00Un0GzXRMVJXdnMVhthWAVzOkBzk17B4J9UgR/FBmgmEuU7v70//
-	 AbUjsKH2q4Kb8x6KbkDpiAT/ENip+6X2ROmgZD3I0aurt8a7PdCXU7J4M/1Yc4d2+R4os
-	 oK0KtSJkA4bUAi9hoYU5BXqLilUehUoxqgFBc/MEjb87ncjgSNPQWU5O2hDrhUKN24ie1
-	 bnbedU8mcnOmhHgfk6GcEBQZfAN1mHykJYLN600tVvmmSOujZR30C63QZahplWuiOxA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GCDwX14v;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.179
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794315215;
+	b=SrWnf39sWEMiY0rHAZvPXHf4sb3XbpXl4CKpwUAfVYl3ESlddTQ/YTgY+3R5vG35wnc1
+	 AvB6GfvizZQsHLAm886mHybA/FZYesUa4h6PZ6OD0EIHNyilBo3dnG+SWtO4DOE4RPqBl
+	 39Px1xFsuOBgADs2x956bDvWYPyJEH0WSICT/oe+afvuUM1i+WW91FRFrRgSOJzWL26xL
+	 I9hMc6i9YHNXpVoWVwiDtKvqYOU42ZZjGUgzJQGcC7WaWDWlf7HrQUTVz3ay0E4pzZDTy
+	 2/+bPmch6G0PkbjChOZqo3a3Q+XCw3goVxIbNLGqgk6JVW+4yjlCsUuReT2mCbuWnow==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794315215;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=28GoECiSpx4IVB0HDzc0QHmygncCgnFuLh5fsE2WXLg=;
+	b=c5UAXqFkXq4RSTOhnpPkkQLYUx5izZ3InjNYbJlAaIoKkZ+bvgbvdcVpccngk1iqcjC3
+	 XmcUGRmYfMyRsIfpG0v7jFDHhiefrQW+25M/XJmpo+yfwwK/nlezSfpC/892vXVTDAUt3
+	 35pz6vuPq0NxsTzLhayb3ZKUP2HqFyK2uU85yz0uBqugxqiG1TIahmKP1iWhEjq3kBl5Q
+	 fJLDHFV+pSjum/4Ykkm+Qs0WH8+MorhVP3C67yWSKLP2qbqq5itWDAXWLAQGPDIjpo8+a
+	 xugmFIwsE8PFFc1fOTm0Psi4c1U1nWXvTGQclziB6IpUnbSvCTPd2FqvX5Nj+PAzH+A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lWrRRuhh;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.179
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C7B606A330;
-	Tue, 10 Nov 2026 12:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A493C60A261A
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 12:53:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A493C60A261A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GCDwX14v
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8721F00900;
-	Tue, 10 Nov 2026 12:46:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794314809;
-	bh=Iadron3w0mtp6FUOIlxkmVN3eT1tt34wJC4l9phyJAw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GCDwX14v21WbLajB2krTKYrET/K+N61tHnKhsWXud1ti9u60OCiTW5U1YiOLKl+79
-	 cRfsMDlqLKMteU8ZF8SIcjuKSEXCrHFqpqXb+CzVAdfBfUt7tgmKmxsZg1J5rf6QjU
-	 vhoO3l5RHIcd6zeTRltf01kH5JNxY3cs9lnTBmDlY9SFnlNbkkJQYYPz1GM/0b+yF3
-	 DOFL52/UerZ+0bck/E59XBGVrT8iuMFDs+iPGfbM8Wd/wIpWHE1h48068QUX0UdXLa
-	 XiKG51ZqsgY2iChGwRIxH3edF7xYm+yOINlp4helsaQqqv/DbAZHLrSiQOyBISslxu
-	 6Mg8xCAWlc/PA==
-Date: Tue, 10 Nov 2026 12:46:37 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Uladzislau Rezki <urezki@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 0/4] MAINTAINERS: remove my reviewerships, add CREDITS
- entry for THP
-Message-ID: <avMR7WWJ2nis94vG@gremlin>
-References: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
- <e1b0d6b4-f7ec-44df-a9f0-0e3a3722a973@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lWrRRuhh
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-35159e0092aso194420eec.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 04:53:34 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794315214; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XX7BM3SEnIxd2x/LklVTtbD1ZqVzbdHLqhzceikmO1XRofdmIgmf4DNrpVwGBT/wTx
+         Tm29qy2qRTYOOzBGbWOmhL9m5JW0yd6HkGvittI8j9338IO+q0iJpqorWGNB1e45PrEm
+         3FiN3m+vUkWALeDoEKIVFF/xLW2ebgTs2bEplr2hVU3FuFCtTvKYtE49W1yM7/IPqbx2
+         VscEtBdKTffNIduZTT7WGQG5mjGW4w0+wL0sUPbUNUEjuKUnedE6sEp/E6QIMdhJO1ce
+         rS3vp+EOFwxiUtxuaOzxhFmipfz3SRvtu2oEkXNRTB3J7KF3t+zx99QNdFtahPtQfuYC
+         CQoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=28GoECiSpx4IVB0HDzc0QHmygncCgnFuLh5fsE2WXLg=;
+        fh=FkzNuqlWwZ+vJLzPYxVg7Po+kpYR4h7cWIoVkrrunhw=;
+        b=dW5khElS/a2vmInjCDAvbnhR9nbWmeUYXNM9PTPOaAZVyGSMmcAwgMzj/zzINJFst7
+         +5sKGJLcSr8N3GHi+rQDigCU3STt2d82kc8b1qq6rp+lKK+en5SYWzPQOmUQ9eKH93e2
+         D/bpwlWnNZVGCNZuR+nzy6PaZ3QRc53Gae5UiRemdcBfgwgGtA5A+fqCkaWDXa7E8voO
+         k1tnpeIk3rBw3idzbvJbWuDVLYMGJz9uGqcWWWm86YrOEh/O9nhvovbcMolCLjERFqgY
+         NveT+USbG4Ksa4JX/2+2bOR9XDnnb3lzoc1QLThixuAMvqQhKsM0fB851P6FvLDoRlhY
+         SlzA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794315214; x=1794920014; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=28GoECiSpx4IVB0HDzc0QHmygncCgnFuLh5fsE2WXLg=;
+        b=lWrRRuhhh6EtAXYSdTrI71Ke2uMKfLFTWSIPQHitBs1U8yk/QUoHYz7VQTSMtm/6Fj
+         UscIoVERTrjxLoOY/DMvY0yX4WmfFZ4VOS6OVTUjFiBH7nE/aPXTuMVYuo79b7fk247F
+         GugOBzQbmqsm7gRRjuMwbiykhDuAgcjLZqjbsqmsufiW4BBl6VNbQ5pGh3MDz8kKuuJy
+         RPWuueEaVQXGCjchwlKqEhEj6lJwWeoHgpIxBbz3kRfFtiW7ykvvutDdOzkLYQwemwKp
+         lI0i/cTR2t+/uNKFKeiyw30lG0/gyvcajUF/645yaSm2Q+eAm/ZnrX3zLBy7Rv344Zxp
+         VY2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794315214; x=1794920014;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=28GoECiSpx4IVB0HDzc0QHmygncCgnFuLh5fsE2WXLg=;
+        b=LuA9Wbf35RImK3MlpFpFlTR4MGDp3ajRgb5OcWTg3cVv457tmJzZByYwQ4hmrK0eX9
+         Vwyl31dwlWnZubf7OTC/O/iTee3h7c7FwpbVZBfbVZFIx8wpBsYBAuHVd8I1NTRXuRoN
+         MBxi4H3kzfD51e2796Z2+Ta6QX/3xFaE+F3b+dphMO+JKzJhtrBgvFh/2xBw/LJkz8oO
+         cLyczucTpT/TvhRI8OBrNiIDog/k9i3DkLJ5iZO3yfikRd06xWFnzP6lT2kzA7JQnF1w
+         h15wbCa+FVo4pH8ET6+9wJxlM0uDrXf+Jyk5VuPtxvF8WavCaz1P0rjyb8Ug6qfMD41T
+         tLlA==
+X-Forwarded-Encrypted: i=1; AL+hErFzCV1qK5vk++WEgUtnSwTD7D+9QeUqf1l2HbavV0ikJgtSE8I0kwvTt9yeR3eBVo0DdY0H+qfwxQxowAssDQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+os8HuuiFTn32gKZy36clxtIVSo2cxh1FVMUn+AdYB1amLcBiQ
+	RtnE2xqI2z+3wctqSuno60zhdGUkQuCBepDsx7YMgGAIU3Ju5ZCYF0QnpXw2/1+pgHHel+phizD
+	PA9oogvulf9EzR+kWSvpYZ9C/rfAhFNs=
+X-Gm-Gg: AYBFou30G7XpVrIE6BxNehiRGu3u9mZROrt5BOfcx1FfFmYtfEM/muLr1B4gbdBCVkJ
+	66xMWHVdY/8Cfu1en7uJk9B2gl9RMPjrliRp3UvzSq80J6/F7/s5bO5+EcC16ghfI3LnvjWozXa
+	VdsC9B6xM5gat9RpWTkCe0arN7pEF57o4HOxdo6eqylpI5Rfav/hGqNJ5nXsLxJZ3GxOcUD+t2L
+	R9oOohsiTxbs3p5ARYVrTxasV4qCRl+5dTmbGifaqbprq9pDJMH+Msd37R71NtBfa0bcg8CIPO3
+	+VK1uEFFhjQtdJJCHgttVlkauun77WI676aY3olfE2SMJBDqx/wiavagxeVuMd4uaQJ+ux8GmYm
+	4UsF1Ls/utpXuEcNj4hAnpzlPjGAGffUOm9/J6AM1K8poWNHVubPYf32KVM2DNQZibovk/lPXjf
+	T3XATuM3il9J5boOTFNZclCBjKSPoMSqCSABE7viADEjqaoehhkq7JHmRi7iXvvP/pBVqYgAKLO
+	fJHlJIENnwy97+4+Ec4vo2CUnvDN3Be+M4=
+X-Received: by 2002:a05:693c:821c:b0:36c:a1bc:6114 with SMTP id
+ 5a478bee46e88-37519aba700mr4904579eec.0.1794315213601; Tue, 10 Nov 2026
+ 04:53:33 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -73,40 +106,40 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e1b0d6b4-f7ec-44df-a9f0-0e3a3722a973@kernel.org>
+References: <20261105005951.756157-1-dakr@kernel.org> <20261105005951.756157-2-dakr@kernel.org>
+In-Reply-To: <20261105005951.756157-2-dakr@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 10 Nov 2026 13:53:20 +0100
+X-Gm-Features: AclHuK-pVseIc6DHnBPBDBXyJhILLTldFlfGpbyMvwQl7Ef2kEFTlDEPMhY_FZ0
+Message-ID: <CANiq72=xRMO_Q0EeeProKRnjHd_9oGufXUVb153FRrBn9xBk1A@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] rust: task: add safe schedule_timeout() wrapper
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: boqun@kernel.org, gary@garyguo.net, aliceryhl@google.com, lyude@redhat.com, 
+	daniel.almeida@collabora.com, work@onurozkan.dev, ojeda@kernel.org, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, tamird@kernel.org, acourbot@nvidia.com, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 10, 2026 at 01:06:52PM +0100, David Hildenbrand (Arm) wrote:
-> On 11/10/26 13:03, Lorenzo Stoakes (ARM) wrote:
-> > Given the current throughput in the kernel resulting from AI-generated
-> > series, I unfortunately lack the bandwidth to generally be able to offer
-> > review except in those areas I maintain.
-> >
-> > I have separated the patches into areas maintained by David, Andrew, and
-> > Alice + Danilo, so each can take the patches relevant to the subsystems,
-> > for convenience.
-> >
-> > Apologies for doing this, but given the current trends I'd like to do
-> > something to make my inbox a little more manageable :)
+On Thu, Nov 5, 2026 at 2:00=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> w=
+rote:
 >
-> Yeah, it's crazy.
->
-> Thanks a lot man!
+> +/// Timeouts at or above [`MAX_SCHEDULE_TIMEOUT`] mean an indefinite wai=
+t. In that case, the return
+> +/// value is `MAX_SCHEDULE_TIMEOUT` as [`Jiffies`].
 
-Thanks, I'll still obviously help you out wherever needed! (I will still of
-course send that fix series I'm working on now :P)
+[`MAX_SCHEDULE_TIMEOUT`]
 
->
-> Andrew can just queue the whole series I guess.
+By the way, should we even allow higher values? Clamping is OK, but I
+wonder if we should take the chance to make those EB by adding a
+`debug_assert!`, before we have callers relying on that.
 
-Ah no need to split then :P still perhaps reasonably logical to break out by
-maintainer anyway!
+With that considered:
 
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-Thanks!
-
---
-Cheers, Lorenzo
+Cheers,
+Miguel
