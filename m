@@ -1,50 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794312213;
-	b=qqWfgSXMTtUp3oOPbrs42ZAwJ0pTxrpXyshIaRG/y6VswGyCdmaY8F+qO6k1lGAn51l8
-	 V3eGn0wIP8baBzb8L+9Ymsc/BPTs3CdRVcCN6tOJbTAVoiOc4IdR7AzmQQ9QkBTdQzf/Q
-	 37TsetLhQ6qMRAfhIxiTUNo1U9BXjq2ZV5pNnTwNRe1fyI3pt0XDyPZUj6mn1E6eB/DJe
-	 ACBQNVxSztGULOzXGVmCf1RuMcqNGTHuyVwK4Z0q19BaTWvINYDBqfj2MgR1ZMH9wqecO
-	 FbnZ2Ns6tvp0kc07YAYBaVgV3xtixa6dPkaQ00HcU/fTvrKj/EGIBq3S0dSwHEKPWfQ==
+	t=1794312222;
+	b=nj0PRKINJ+sv20F5P8CZNieYRur6FZcLgi5kwLyEi/Zzs4Z5doqOTjj43of8xMsjsgdD
+	 5mWtE2JABPkDqTE+xAknTOSqYq7VKJ1VwfbBcs4H1ywG2RrYO4O3vUO38xMm5zZkSf7er
+	 Zphur9cJqCstzrXysgoImgxfW+o1Bl1bW2i9B9f/jzpamrjrI11YzBQsJ33YzldM2E+Ex
+	 v7D3M+QAUN1/5GIfv6LpiVXRDq+ZOWJyGvnXWxuhCB7xKJIHVep2L7/iQeoMXy+5kHyLf
+	 HXWxGQkAO51uLv1l2tibHLVeT7RfqjhXRZ/JoQt1J2+RA//xAuRu0XSteNviybyDN4Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794312213;
-	h=Received:DKIM-Signature:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=TI1T5UEakcFCW/hN65+9GVK1NvkYkGyn8kT8/oGVat4=;
-	b=AYFKezmEHKgpu6xm7335wixeFn6VapSqskxmdzkQR/XmtCKpMabEwnEuK5g/4Tw1oxXk
-	 +G4RKNQB/cXLpyFkb3ovfD1ngShY5ByPEiOWjM8IGAO2qOOURFFLTrsfpCAVk7QNNHeRU
-	 JYhLcPnB4v3JTysIuToDpLpN+r9MnRJPo/JfP7VgpE1upsjGDdDFbXpvFWS3/RGOrEGoe
-	 fyMe+YIlSdc1EjvT7I6mPVvDyYI32mEcudGsHOsLjq9fIIjA4uzgwudtjC6K9w9PM53ca
-	 3nnshdzw5dapzWD620BbcJF0CrvXn76d7PSiFawHC/CWG+on5EfoG/89qQg7nphL2RA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794312222;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=JqBx0yzByauj+DMV1nyno17Po8meeyCDbZXiNPgYBhk=;
+	b=a+LUlmGGYaTv8vL1nU2QOzdS/BicW1saZKpGOSGxUPrbq6+vulqEK1B0EpYG8mG5YxWU
+	 EZFckMc8rKAGfTI/ffC1EUD+KIAQ0AG/E3IKO7UP7Ajq7xuVbkX7YGM2OxFBumlSz5qAH
+	 SrFtKN15o/gezXMqnmBgSWuxuy6lS5cFMxQ64qH5pcbcgrK1wussTMoedIS0XTC7xmQUO
+	 LemmNq7RxmCUmu516mJQG+0og4xdrH6vHFragtpUfDyAeKAZZz+3LwKncxSQjk08qUfsE
+	 xu0arYLisMFwCMlj/p0eWH/UvSv73+1w98jxp1BrmDMQ3Xd8NQMfTsjcniNsw1Lkltw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UPocwhfr;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JCZx8O4M;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0ED606A321;
-	Tue, 10 Nov 2026 12:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA68606A321;
+	Tue, 10 Nov 2026 12:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UPocwhfr
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C38B51F0089F;
-	Tue, 10 Nov 2026 12:03:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JCZx8O4M
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD4671F008A2;
+	Tue, 10 Nov 2026 12:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794312213;
-	bh=TI1T5UEakcFCW/hN65+9GVK1NvkYkGyn8kT8/oGVat4=;
-	h=From:Subject:Date:To:Cc;
-	b=UPocwhfrTcka6Jg9F8LF7zn2qR/0V9QoQoXrd3GozUtn5Hk0w1nDCmDSEp4+87mBE
-	 3WFAAzcj+rgUdlirlEo1Mgn97Se9rCjIiJRh/jCDf5qAtl8+PqC4HRTd70YK78XeC5
-	 4BghLIMT1BcaHMlHkU/KRF/63RovlWUFT1VTz0/Wnsx9BB8uqFcyvWauI1Wh98paJn
-	 VT8jN47ZwM+o+DUcD3THeQEj2JJH/hTu8h/+fZULBTTuZirj+VKGC+WWjjk82CKMDB
-	 M9vmeDN6jfjsy9yDBousXx06QjAZFr8O/BESOqB3I7zggOdTjG9pMIwoF/viFrWqn1
-	 K+qsluotQw7/w==
+	s=k20260515; t=1794312222;
+	bh=JqBx0yzByauj+DMV1nyno17Po8meeyCDbZXiNPgYBhk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=JCZx8O4M4hGc/8Bn7L3F9RADLN5n41NYkCJfUUO/4rhPpwAJzQTHSmU6bnD9GZ/hI
+	 2evHiCX3cUjXiwsXUB/m0GiauxaQSWbJ2ssp+bCCKTirVgKSpJ746kJTEYAEeptLyY
+	 l9xD32bY7sy2enVtJOdq1kZGceBgSELpIL/Riod2QdyPaHMkWbO5LCDmU24qInzg3Q
+	 EFAdtlF8XgRZjlVeSDcUx1cLNaeX2Dytc9cbqQUzsYW2+hB6y9HDoSqni46UGC/uev
+	 dgfxWC7crqTjYAk6lz9ccOfur9hTEkuhg2LQqZU9AXYAOGpVIRN3Ur+uqVKRUs5YD0
+	 FNDctkE4t7Cxg==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Subject: [PATCH 0/4] MAINTAINERS: remove my reviewerships, add CREDITS
- entry for THP
-Date: Tue, 10 Nov 2026 12:03:06 +0000
-Message-Id: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
+Date: Tue, 10 Nov 2026 12:03:07 +0000
+Subject: [PATCH 1/4] MAINTAINERS: Remove myself from MM core reviewership
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -56,10 +54,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqAMAzAviI9O7BjKvgV8eC0ai9ztKDC2N+dH
- gNJEigJk8JQJRC6WPkMBbCuYDnmsJPhtTDYxnaI2JhVzmg+k24SPTiqsZ1betd6RN9CCaPQxs8
- /HaecX89JO6dkAAAA
-X-Change-ID: 20261110-drop-reviewerships-264c745b11b5
+Message-Id: <20261110-drop-reviewerships-v1-1-07c2f06e8dfa@kernel.org>
+References: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
+In-Reply-To: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
 To: David Hildenbrand <david@kernel.org>, 
  Andrew Morton <akpm@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
  Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
@@ -84,12 +81,12 @@ Cc: "Liam R. Howlett" <liam@infradead.org>,
  linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1291; i=ljs@kernel.org;
- h=from:subject:message-id; bh=dCVSMtwDwE7/hcxW0886EMv9/VrEruWg6lsa6zaZd68=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI+c3Be6f/26HzVeq+JU8/vM5fUY/1mb6KfoHhgefdhx
- uO53FzlHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZiIwmqG/ymsz79EHL8mran3
- uVx+iWiWmGgou2Lu6eiv8xm4OZP4BRkZVv85HZgX99aSgyf9qmER4/57m6zS9A6ZTxfOnGj6c8Y
- 1TgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=752; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=OH5BliIH94nkWp/ohQ8/EQpKL0UvlMGgtBbAdMYML5E=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI+c3AnCZdKP99y2aHkfh9Dotz+NPGfjbFWIleZWxQYZ
+ +3Zv/ZmRykLgxgXg6yYIsvzL+L7g0TC5nVe8HeDmcPKBDKEgYtTACbyqZiRYQ+n27HlXRsr/ie6
+ ZuXU7BL/mxJy3Nxk54HyCI3nx5unBjP8Ztmcyveh4XPSETWB3WqL3jzKr38Txr9uRrf87pe3mno
+ dWAA=
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 
@@ -97,33 +94,26 @@ Given the current throughput in the kernel resulting from AI-generated
 series, I unfortunately lack the bandwidth to generally be able to offer
 review except in those areas I maintain.
 
-I have separated the patches into areas maintained by David, Andrew, and
-Alice + Danilo, so each can take the patches relevant to the subsystems,
-for convenience.
-
-Apologies for doing this, but given the current trends I'd like to do
-something to make my inbox a little more manageable :)
-
-Also add a CREDITS entry for THP, as, since Zi's rightful and well-earned
-appointment as co-maintainer there, I have no fear of needing to step in
-there, and so would like to record my time in that role.
+Therefore, remove myself as a reviewer.
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
-Lorenzo Stoakes (ARM) (4):
-      MAINTAINERS: Remove myself from MM core reviewership
-      MAINTAINERS: Remove myself from MM misc, reclaim reviewership
-      MAINTAINERS: Remove myself from MM rust reviewerships
-      CREDITS: add entry for THP maintenance
+ MAINTAINERS | 1 -
+ 1 file changed, 1 deletion(-)
 
- CREDITS     | 6 ++++++
- MAINTAINERS | 5 -----
- 2 files changed, 6 insertions(+), 5 deletions(-)
----
-base-commit: b3dfbde62cf1981c4638939c159dfd087b7a72e9
-change-id: 20261110-drop-reviewerships-264c745b11b5
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 222b7fc2c3aa..c2f7fed0d850 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17505,7 +17505,6 @@ F:	mm/balloon.c
+ 
+ MEMORY MANAGEMENT - CORE
+ M:	David Hildenbrand <david@kernel.org>
+-R:	Lorenzo Stoakes <ljs@kernel.org>
+ R:	Liam R. Howlett <liam@infradead.org>
+ R:	Vlastimil Babka <vbabka@kernel.org>
+ R:	Mike Rapoport <rppt@kernel.org>
 
-Cheers,
 -- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
+2.56.0
 
