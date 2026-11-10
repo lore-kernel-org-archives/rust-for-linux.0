@@ -1,45 +1,69 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794314624;
-	b=n+nac0GFhgtapr04Zfg/JI7ODPTnEBreppgbDdJLpAxfHZE16QlhJARwpj8I+73qcPqc
-	 tBGmK0KHTgb3jOIcJNOmFbemteNPMZAt2mDdd8zplM6ZxlC6aATB+dEurDnLzozkR+Mou
-	 CTWh5/T1OzUbnlX8xPLZG+zd3XxIvnE1ZkF7CVW/XuUobd3cO+sqfpJhl4Cxcli6XpIOK
-	 9NaTG9crw2zPofJEu2KUJ+mfHjaVFyS21EeV8GmswdY/84FMp9hZPw8+EkzDnCi7jBQBi
-	 f1+Z3nrbZneteT0qRns+6NKH3k4GZcabRDCzfRxWvnHFr6saUC0k9VnApWyrcyYUJYQ==
+	t=1794314729;
+	b=ezsigb4bzV/EpWPaM8L71ohSclkfDHEtDMI2tqzCvm0l55MM9l1+iZXZwiCP/qaHsmXt
+	 tw//lpXljPay1YoeUd3uOeXmwXdZ/btk6yIW4qX+rofOPsxuI3LXZorhwVdMPa5qeiY0B
+	 Xe9gTTMWJFwYyidDjaXqMORHLx1AUF8rkBncDhVsL+zQ5B3QfH1O60AaC9xkKyQFPSdbo
+	 yyh+6bbI7GqU7n2+fx5Y0d/FNCOuTCeMrelNzp48e4Oxbtw4BYx2juYjQRu1d8tEyEXna
+	 3Jh5LuKQua7jRNC/6k6kPSEZuSmSC40DQT+56Xlo7JkUxYXqJ1mL9HKQUdItgn12zFw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794314624;
-	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
-	 In-Reply-To;
-	bh=XPefT0fr3wupychDfnABDtN7x7rVMQKiNrbW2cLICoA=;
-	b=E0PU5V8rjbBnCUnJVqImsFZVKGxqIVfG+Xb0LV93dmod10DWlnQ4tj81Gm/e0M/vD8NV
-	 ehvH7qXmbTD0S7jKbF21pjwKuP4FMKnNvVt0rGJ6WIAMqCh/ckFgCaSNvTPxpTeIpegib
-	 8bYfQMsRcZRQVfi1Fs1MR/IPlRuIJICaZF4grwL0viJ0/ovw33c5DnHDeiSu50tduYd93
-	 3c/cp5RcW/KcSo/oqii2+DzRESgFtNkRXv2TN+bIdJDh5WAD8kJ9GtvZWYhpkLur+CNVq
-	 82U9oySRPCgaRZk6L3k/Ne8npAC1aPOJTxbU2R4n5Bl+hlvK6fP2p1Q5z1IUo+Mb0/Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794314729;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=SVZpaCs3v/sBrxut5K0oJJA2z/xOJJAdv8TBSqGnsnw=;
+	b=q0MIlR9oPj9PWuuj/KnBRsZvGoNvCF2mcAUmhBCoPPLbWh95HR1o148d9U0iz2DlEMjz
+	 l5um9YRsquAtJy/noWkUw549BFEeKZCLo9KS/McrNs3BMdexR6jHYejjQXY9BOwqiP+Vz
+	 2BSEnwVnrEjg/Lpj+QPu6LHTT91G9nJjQWO6gKiGP3PuRkvlVU1jmQcLgvpzvI4zzs+Rj
+	 LVgDGNWPrf5hVUHTI2CwkBBvFHR+su3wewWWbZLpBiZt5g6RSqeL59uYJo2u4oCVfc44G
+	 WDvaRa/XcVFOjBiNQpPgr0Dh7FF0y8v2Nb8rwLz1brsw1XFu5onxN//kvt/eeTum4IQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bsWPymX7;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="YZ/IDAw5";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF48606A321;
-	Tue, 10 Nov 2026 12:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C25606A321;
+	Tue, 10 Nov 2026 12:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bsWPymX7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15C81F0089F;
-	Tue, 10 Nov 2026 12:43:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YZ/IDAw5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF781F0089F;
+	Tue, 10 Nov 2026 12:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794314624;
-	bh=XPefT0fr3wupychDfnABDtN7x7rVMQKiNrbW2cLICoA=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=bsWPymX7+lfe73MT5e35/b1PX3m7Vta5PtxMBjI10WgFUUwnrU/Q4C0qJp6T0VKTg
-	 1SE59OtlHhLqFyp7UB8nK94wEW+5ypzsN92WP2QjGAcdhFm7Dxz5TLJQLxhRA8lzAv
-	 5zUWiLeaDowhPvo9jsuz1zKsQq3oMmbGwftVORred8EmSkDBWcVSVhQVVkWjFGQ7vj
-	 kVdj5iaENTuBGloeoyVRgjkcuYnSqE1SYXpVJkG5ZnbG7wnndMd/qFThaC7DkurgBK
-	 UQyNWYPQTS3h/U288xm1AXdVJk+vef7rgBYOYH2fgP3xun4TMeK4D1EfvTKdPTkEYF
-	 Q8mHmqdxeDlPA==
+	s=k20260515; t=1794314728;
+	bh=SVZpaCs3v/sBrxut5K0oJJA2z/xOJJAdv8TBSqGnsnw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YZ/IDAw5kTQN8T16yrZOI/9JLS/BYMIEnaAYwEogjl1aOlG7sfGF3dLhC6PsdYlS9
+	 EG3SB48+EZum9ANIUh09V6sJhvGXcU7WeyMuFeNETFZfnqoJQOO7B3eEwrFHm3+2np
+	 XW4DfA/F6nxXvZ3byZ+jDzotl5+NhypIyEtYV5E2+bZGt/Aycjxd4RrAh9BbzFyx8X
+	 mlI1I/AyolCp0EpsRQpu3UYUc9qXoab6fTonzR6MmuidTva3g/uFoCg+xKSoyHkRhM
+	 wAuPHP4fD1OTuOoScAVH4cg6/ET3IxoFXgQzhRcEKzI0eYSzZ/rMcDFShiZBmt4dng
+	 WOTUOQrVSZtlA==
+Date: Tue, 10 Nov 2026 12:45:16 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Uladzislau Rezki <urezki@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 0/4] MAINTAINERS: remove my reviewerships, add CREDITS
+ entry for THP
+Message-ID: <avMRk95T26rsq4JK@gremlin>
+References: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
+ <avMKVYORkTQfdVB9@thinkstation>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -48,99 +72,30 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Nov 2026 13:43:38 +0100
-Message-Id: <DMRJG3ZQXY6Q.1WSE0ZB1YLDO8@kernel.org>
-Subject: Re: [PATCH 1/2] rust: pci: add domain_nr() accessor
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Eliot
- Courtney" <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn
- Helgaas" <bhelgaas@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>, "LKML"
- <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-To: "John Hubbard" <jhubbard@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20261110033655.148487-1-jhubbard@nvidia.com>
- <20261110033655.148487-2-jhubbard@nvidia.com>
-In-Reply-To: <20261110033655.148487-2-jhubbard@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <avMKVYORkTQfdVB9@thinkstation>
 
-On Tue Nov 10, 2026 at 4:36 AM CET, John Hubbard wrote:
-> The nova-core driver has to send the GPU's PCI location to the GPU's
-> firmware as one word that holds the domain, the bus and the device
-> number.
+On Tue, Nov 10, 2026 at 12:14:18PM +0000, Kiryl Shutsemau wrote:
+> On Tue, Nov 10, 2026 at 12:03:06PM +0000, Lorenzo Stoakes (ARM) wrote:
+> > Given the current throughput in the kernel resulting from AI-generated
+> > series, I unfortunately lack the bandwidth to generally be able to offer
+> > review except in those areas I maintain.
 >
-> The PCI abstraction has dev_id(), which packs the bus, the device and
-> the function into one value. It has no accessor that reports the domain.
+> Oh. Sorry to hear this.
+
+TBH I'm still likely to dive in here + there (just did in KSM :))
+
+But want to do something about my inbox...
+
 >
-> Add an accessor for the domain number.
+> Thank you for you job.
 >
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-Is this tag intentional? (Just asking since my tooling flagged it as it was=
-n't
-present in the first submission of this patch and some other criteria.)
+Thanks!
 
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-> ---
->  rust/helpers/pci.c |  5 +++++
->  rust/kernel/pci.rs | 14 ++++++++++++++
->  2 files changed, 19 insertions(+)
->
-> diff --git a/rust/helpers/pci.c b/rust/helpers/pci.c
-> index a8540f90b13c..49f2c089d236 100644
-> --- a/rust/helpers/pci.c
-> +++ b/rust/helpers/pci.c
-> @@ -7,6 +7,11 @@ __rust_helper u16 rust_helper_pci_dev_id(struct pci_dev =
-*dev)
->  	return PCI_DEVID(dev->bus->number, dev->devfn);
->  }
-> =20
-> +__rust_helper int rust_helper_pci_domain_nr(struct pci_dev *dev)
-> +{
-> +	return pci_domain_nr(dev->bus);
 
-Rust helpers should generally be transparent wrappers and not provide any
-semantics, even if it is just to resolve a pointer.
-
-> +}
-> +
->  __rust_helper resource_size_t
->  rust_helper_pci_resource_start(struct pci_dev *pdev, int bar)
->  {
-> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-> index 769d01d23429..57718e48208d 100644
-> --- a/rust/kernel/pci.rs
-> +++ b/rust/kernel/pci.rs
-> @@ -408,6 +408,20 @@ pub fn dev_id(&self) -> u16 {
->          unsafe { bindings::pci_dev_id(self.as_raw()) }
->      }
-> =20
-> +    /// Returns the PCI domain number of the bus that this device is on.
-> +    #[inline]
-> +    pub fn domain_nr(&self) -> u32 {
-> +        // SAFETY: By its type invariant `self.as_raw` is always a valid=
- pointer to a
-> +        // `struct pci_dev`.
-> +        let domain_nr =3D unsafe { bindings::pci_domain_nr(self.as_raw()=
-) };
-> +
-> +        // CAST: `pci_domain_nr()` returns an `int`, but a registered bu=
-s never has a negative
-> +        // domain, because `pci_register_host_bridge()` fails when the d=
-omain allocation fails.
-> +        // A negative value here is a kernel bug rather than a condition=
- for a caller to handle.
-> +        debug_assert!(domain_nr >=3D 0);
-> +        domain_nr as u32
-
-NIT: Please move the comment directly above the actual cast statement.
-
-> +    }
+--
+Cheers, Lorenzo
