@@ -1,68 +1,64 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794298083;
-	b=y4caMgtEsMeQGtii9szml+G3uvPcYqVmHESOSB4QvRYR/4vSwPQuibb3M7MhwmIzCtOs
-	 V5fgm6Ew1s8C0iZacqSM+D3ZLvF5hKG8knHYTNRwWOjpJ2cuAt65aCqOpKZDfZZgAQnEQ
-	 atWikoB6szUBE64tTdBHnngDfrJHLmvVPo0yv84iN70c4Hv0hFUbLU9sbw2JkUZs6n9mY
-	 vRpdhY7dQiyBFraBHPYGsnmVtkj0wkcdXxhMiKE3JEQzRdSC/wpIo8L/FtG0Ie/HHeWM4
-	 q6O1q9AWWDiQDGrmVWzA55hlLh+c4VjsE/Db5eKsKzCYQKDl+sJOJ+pQagZ5SpN3TfQ==
+	t=1794298442;
+	b=W9OWkFsRPoMznChLZxzuYbrxMlTJoSTikO8JUY03fsZggz64Pjpp7SpYBljs008/i+kW
+	 mDe5OCce+ucOAB4BqL0XipWYv5xpU+isfpFZu7S+iK9jKxICkWXVMsPQ6Niuvxsmv7LJF
+	 1bWRuMCJFvWyB+B+oC8WaEMyI9JvLkcr/67Y+S9tZgkq307CfbN+i61oCpWLURaHd204x
+	 He0YgAKM/NvsgRPovZJA1gfyXnn2Lx52aZ4nTIy2CFVErALy35/5xR7v38fufkgE1iyF5
+	 XtvWfKE4S0OH9X6HxbQSyLIkIWj0XbXEYUeL3U/erPms57IJXOFwLqOtVwY9Ye51iMQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794298083;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794298442;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
 	 Date:Message-ID:MIME-Version:Content-Type;
-	bh=bumsT3247uJhgV6jVLN6Z+t5ji3XDdbkIBaiaUNDB+c=;
-	b=rTNadG+chjWtSe8UIStayvlwh0nM6dyeKzwSlDbNNza6bj9U3RMXpz01auJ/uE+mMAC8
-	 u93v3JbXAnDh7t2eCdpZjQqqOEvTPuD6szsApdDFn1ucQYdeATDAZfd2CClsPhjMMbv2n
-	 TlOaiuThfYdSFoGFiv4ObH6sOR6SIeTTNyILLsawZ7ELlWVCdD0bpHLXeKZi4jA0mo3VN
-	 NQafSoBKiKKsTNmy1z6191dbsP0vQ9toxJ6CdcR2MXuNWIIIBxROOwVFKKzZFx/gVZblG
-	 v7iZKZCHg1nB8iW5IJRCi/UYrxGQYHDIx+OdaGbXegXXSEN2KGTfazRR+sJTiSqUA5A==
+	bh=gMycr7807LolwYYXBGXWxdyF4BE05wA7uJvTcdiuEbo=;
+	b=fZW4nQRgV9eqPHj/2CUaV2iEyPIU3UdwSARuMx8CvWW1UqJZZVtaA6Ru7dgc3iQ4YuI4
+	 yYn3+V7O6QjbpM1c4dCH40vPDOqPup0op311AleZZRfwn/miTFrIU6AqMvAdcZex9wZ0K
+	 R4thPbKlscMo2CVumQ6nr7kFWwNskOTDQNjNl3ywCLcn/368dpgtULhyyT1aw3Ibnfo+1
+	 9l9nAI6/KVRR5LjM6La8kJKvC8kieCC/6m5k4b/6km3i41wy9w5EXnTzRflj01AQo15Sw
+	 NcKc3c3QlqiaGBJ6pQLhPh5eV+7xMfijdHAKAjt5nwYbbfXNu/UH5gmNs5iGq/p5KRw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GvX3GZoU;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cnU6FVC2;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45970606A325;
-	Tue, 10 Nov 2026 08:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A402606A31C;
+	Tue, 10 Nov 2026 08:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GvX3GZoU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D2D1F008A1;
-	Tue, 10 Nov 2026 08:07:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cnU6FVC2
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF4E1F0089F;
+	Tue, 10 Nov 2026 08:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794298082;
-	bh=bumsT3247uJhgV6jVLN6Z+t5ji3XDdbkIBaiaUNDB+c=;
+	s=k20260515; t=1794298441;
+	bh=gMycr7807LolwYYXBGXWxdyF4BE05wA7uJvTcdiuEbo=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=GvX3GZoUV93UQPhoWyGuESc41gYkEOZkOWOPkt2N/TCeX4GgczNSI3xqsr8XJ1zQt
-	 tbRFaqpzcPcdmsTsNz/BknBkdEY24nHzG45VVjF0OeZE2XD9tDsOWxvYDMPhT66zLF
-	 5/VZ5o8CWlTS71V9gp2a9kqAC0mIEvzgDlLzjhXj54L/sK41lYWujjeXoS0xpOdl1N
-	 lb3NBAQmBaqtPRJjHC+gCGfzP8r2ITacNL9qZuLFKFvJ7DF/XILH2yRgzMnOAa164H
-	 ALuXCLmoDQyAc25j24mHm7wIR2uxCt/eQVAmwuu8KO3A1S/JrUX4VoFyulBmXV+FXZ
-	 ufo2WK3zHNGTQ==
+	b=cnU6FVC2ndoDYMpl545KxokiHxlnQqHTbTLejYLhBQhUQU0OD/VFpHftOK/lxk4lC
+	 3VyP/a/2B9xenXOWtoSSAn9+DMG+CKapLR9pYs/PJsriNlbUmNUzMD2lzwHgH0ov6q
+	 ZNtSsd75vVE5fDwCydkWm+Oereo7xmeZwVfE8g470RFFu22pGQ2ivD4hdkDzgZovrr
+	 +9ISZ4NMx0HTXZJmcqPYsIQAXhA8Qg2F2aUADY+jaonjV+ICbppVU27mkW6USZzS/u
+	 mQw15LZKOH2l5VELJvGlsIcS0UGEiD/Wwy2fejksI9viXKqrIqAkkntm2HqWxU0IPs
+	 ZQhbeSihbCvNA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Gary Guo <gary@garyguo.net>, Miguel Ojeda
- <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron
+To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
+ <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron
  <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
  Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
  Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>,
- Thomas Gleixner
- <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Lorenzo Stoakes
- <ljs@kernel.org>, Vlastimil
- Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] rust: alloc: move `NumaNode` to the `numa` module
-In-Reply-To: <DMQU2RZATGHR.1HI8FE2P58O7V@garyguo.net>
-References: <20260929-cpu-helpers-v3-0-e968ce5ee613@kernel.org>
- <20260929-cpu-helpers-v3-3-e968ce5ee613@kernel.org>
- <DLSQY2IKU5IO.3BFLXTCTJ5I6U@garyguo.net>
- <878q3hopt6.fsf@t14s.mail-host-address-is-not-set>
- <DMQU2RZATGHR.1HI8FE2P58O7V@garyguo.net>
-Date: Tue, 10 Nov 2026 08:56:32 +0100
-Message-ID: <87pkwdqfv3.fsf@t14s.mail-host-address-is-not-set>
+ David Airlie <airlied@gmail.com>, Simona
+ Vetter <simona@ffwll.ch>, Tamir Duberstein <tamird@kernel.org>, Alexandre
+ Courbot <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?=
+ <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v3 1/2] rust: impl_flags: add conversion functions
+In-Reply-To: <DMQSAJDM77O0.Z9EITIPLTKHP@garyguo.net>
+References: <20261105-impl-flags-additions-v3-0-5b17c01c2b15@kernel.org>
+ <20261105-impl-flags-additions-v3-1-5b17c01c2b15@kernel.org>
+ <DMQSAJDM77O0.Z9EITIPLTKHP@garyguo.net>
+Date: Tue, 10 Nov 2026 09:11:32 +0100
+Message-ID: <87mrrhqf63.fsf@t14s.mail-host-address-is-not-set>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -76,68 +72,95 @@ Content-Type: text/plain
 
 "Gary Guo" <gary@garyguo.net> writes:
 
-> On Wed Oct 28, 2026 at 2:36 PM GMT, Andreas Hindborg wrote:
->> "Gary Guo" <gary@garyguo.net> writes:
+> On Thu Nov 5, 2026 at 3:42 PM GMT, Andreas Hindborg wrote:
+>> Add two conversion functions to the `impl_flags!` macro:
 >>
->>>> diff --git a/rust/kernel/numa.rs b/rust/kernel/numa.rs
->>>> index 164e622d325f..4a3a880308f3 100644
->>>> --- a/rust/kernel/numa.rs
->>>> +++ b/rust/kernel/numa.rs
->>>> @@ -4,12 +4,15 @@
->>>>  //!
->>>>  //! C header: [`include/linux/nodemask.h`](srctree/include/linux/nodemask.h)
->>>>  
->>>> -use crate::bindings;
->>>>  #[cfg(CONFIG_NUMA)]
->>>>  use crate::sync::atomic::{
->>>>      Atomic,
->>>>      Relaxed, //
->>>>  };
->>>> +use crate::{
->>>> +    bindings,
->>>> +    prelude::*, //
->>>> +};
->>>>  
->>>>  /// Returns the number of online NUMA nodes.
->>>>  #[inline]
->>>> @@ -27,3 +30,33 @@ pub fn num_online_nodes() -> u32 {
->>>>          bindings::nr_online_nodes
->>>>      }
->>>>  }
->>>> +
->>>> +/// Non Uniform Memory Access (NUMA) node identifier.
->>>> +#[derive(Clone, Copy, PartialEq)]
->>>> +pub struct NumaNode(i32);
->>>
->>> FWIW the C type is nodemask_t and this should have mask in the name too. It is
->>> not an identifier. That said, this is an existing issue, so shouldn't block the
->>> move.
+>>  - A `From<_>` implementation to convert from the flag value enum to
+>>    underlying type.
 >>
->> What makes you say this? This is not a mask, it is a numa node id, which
->> is represented as i32. `NUMA_NO_NODE` is a valid id.
+>>  - A `TryFrom<_>` implementation to convert from the underlying
+>>    representation to flag container type.
 >>
->> I am using this to specify domain for block mq queues. If you take a
->> look at the allocation path:
+>> Drop the hand-written `TryFrom<u32> for VmMapFlags` in tyr, which now
+>> conflicts with the implementation generated by `impl_flags!`. The two are
+>> equivalent.
 >>
->>   blk_mq_alloc_queue
->>   blk_alloc_queue
->>   slab_alloc_node
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> ---
+>>  drivers/gpu/drm/tyr/vm.rs | 13 -------------
+>>  rust/kernel/impl_flags.rs | 31 +++++++++++++++++++++++++++++++
+>>  2 files changed, 31 insertions(+), 13 deletions(-)
 >>
->> It's an id, named `numa_node`, `node_id`, `node`. Not a mask. Unless I
->> missed something?
+>> diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
+>> index 1dd11b2b1253..0d6e841a31ed 100644
+>> --- a/drivers/gpu/drm/tyr/vm.rs
+>> +++ b/drivers/gpu/drm/tyr/vm.rs
+>> @@ -141,19 +141,6 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+>>      }
+>>  }
+>>  
+>> -impl TryFrom<u32> for VmMapFlags {
+>> -    type Error = Error;
+>> -
+>> -    fn try_from(value: u32) -> Result<Self, Self::Error> {
+>> -        let valid = VmFlag::Readonly as u32 | VmFlag::Noexec as u32 | VmFlag::Uncached as u32;
+>> -
+>> -        if value & !valid != 0 {
+>> -            return Err(EINVAL);
+>> -        }
+>> -        Ok(Self(value))
+>> -    }
+>> -}
+>> -
+>>  /// Arguments for a virtual memory map operation.
+>>  struct VmMapArgs<'drm> {
+>>      /// Access permissions and caching behavior for the mapping.
+>> diff --git a/rust/kernel/impl_flags.rs b/rust/kernel/impl_flags.rs
+>> index 6051487f6e28..052759b8038d 100644
+>> --- a/rust/kernel/impl_flags.rs
+>> +++ b/rust/kernel/impl_flags.rs
+>> @@ -73,6 +73,17 @@
+>>  /// // useful for passing the value to a C API.
+>>  /// let raw: u32 = read_only.bits();
+>>  /// assert_eq!(raw, Permission::Read as u32);
+>> +///
+>> +/// // Convert a single flag value to its underlying integer representation.
+>> +/// let raw_read: u32 = Permission::Read.into();
+>> +/// assert_eq!(raw_read, Permission::Read as u32);
+>> +///
+>> +/// // Construct a `Permissions` value from a raw integer. `TryFrom` rejects
+>> +/// // integers whose set bits do not all correspond to declared flags.
+>> +/// let parsed = Permissions::try_from(raw_read | Permission::Write as u32).unwrap();
+>> +/// assert!(parsed.contains(Permission::Read));
+>> +/// assert!(parsed.contains(Permission::Write));
+>> +/// assert!(Permissions::try_from(1 << 7).is_err());
+>>  /// ```
+>>  #[macro_export]
+>>  macro_rules! impl_flags {
+>> @@ -115,6 +126,26 @@ fn from(value: $flags) -> Self {
+>>              }
+>>          }
+>>  
+>> +        impl ::core::convert::From<$flag> for $ty {
+>> +            #[inline]
+>> +            fn from(value: $flag) -> Self {
+>> +                value as Self
+>> +            }
+>> +        }
+>> +
+>> +        impl ::core::convert::TryFrom<$ty> for $flags {
+>> +            type Error = ::kernel::error::Error;
+>> +
+>> +            #[inline]
+>> +            fn try_from(value: $ty) -> Result<Self, Self::Error> {
+>> +                if value & !Self::all_bits() != 0 {
+>> +                    return Err(::kernel::error::code::EINVAL);
 >
-> Right, I got myself confused because NUMA_NO_NODE is defined in
-> nodemask_types.h.
->
-> If it's just an ID, would it make more sense to have `Option<NumaNode>` and
-> `None` to represent no node preference?
+> IMO this should be a new type, perhaps something like
+> `kernel::bitflags::UnknownFlags`.
 
-I guess we could define it as `Option<i32>`. That would be nice.
-
-I can send a follow up once this lands. FYI there is a v4 of this [1].
+Is really useful? If this happens, you probably cannot recover anyway.
 
 Best regards,
 Andreas Hindborg
-
-[1] https://lore.kernel.org/r/20261030-cpu-helpers-v4-2-a8d840d34837@kernel.org
 
