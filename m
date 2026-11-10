@@ -1,45 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794339860;
-	b=UN8eaTzEXwy7lGmlG1QpdTE0Lm2D1QA9Xg05b6RaH6oYJT3vypskWzWvDLa/TPRwA0Ti
-	 UyxIVwi5imeHI92Rp+oiumHAisfGe5ncIr6cy77axFG0WHtFe+28DJfs7WQSR1X4vaEWu
-	 sVmzy3FTYwpfZsAKYEZ5HrHqkoBsEmuhuumC4V1Z/gC+9C5AOVX9fL7vD5fZO1iiv2CFH
-	 WADCmRrLwJQwe36b174C4ua3+TC8YxBGXQ5NikHuXGSMcdVawP1JoInsVpZfMuXoZIRM9
-	 4FROVIDEKR8EiX4mmEoCpv3vIoeSLp9UktrbN0M3DK6KdS3dWUHTTjBdTsSrDOTup+w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794339860;
-	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:To:From:Subject:Cc:References:
-	 In-Reply-To;
-	bh=fWfqbq9OHseUAlW92SLhKNSaqa3qmI+MBczXn8z6J5A=;
-	b=jJAGOyLY471pdiVxA9c7f9tyXCt1n5ANPtJFQE226afZPq8Ffe5QzIn/o/LF4CTf5C2T
-	 lI6X/F/S+yADsiCLHj41zlxYAn9s82CNaz1rKe7pUmWi1aZJCBXWrnJTU8RJPeyRqQ/qo
-	 gxx1NbsW8pQN14pWMm0yTJ2/F2rsDQhpc/VFTPNZtHvn+fuhBmHydGcfsu2//NYz/2sji
-	 outECwEuuj52pCamKOFnY+XVA3dJBZX2m9Vhex/jTbVSJQ1TQVMzoq8k31VnZzEqaKc7k
-	 O16OGPNa2z6qGDI+85cyPjth3/0sG/jPronPQ51CsecQmEuWq3Pp9OYuasrQ1TW0EKg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O6Uit6jO;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.174
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794342682;
+	b=eBkjqizb6ZPECy8b1aABif0Igh8iHkOtKfC3RY9GCGYtJb1WuG0ssRs0VIiyrlZTg6wY
+	 rNcIjWzmsc62dLMbfZEdg40Gq3bhOL96TnV3CQKXjcRdflnigig9er/BEpqCXiQklSHF7
+	 8EVku0LmopLFGwIn8EvPCgAvu5233zhBF3ET0UWbS2MwwBmCwGNaRxOGU/t2G/ORnHyGL
+	 sS/MFxth0GbjBHB18p7PGMdHcUK/d7/GEsXls1QdOjZsHmBO6HiHSLufPopHlPttYBBRK
+	 FFbWgpWr0JlLomwbIsWsbFQUhTK5ArgdS4G09X5xu6i3CyggAr0e7piCeV1SlbrWS5A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794342682;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=euMDcLXwVyFRBye3EMDIFi0Mnp2snBdaowuxW7mbjUU=;
+	b=qqQQ92yT7PdiWDCwQbdgdky7mv3agBG9fCVNMzqtk+DKIQ2DP9sEf54VOla5fUu57OEK
+	 fCb8r/h+U5WhiJfSCFcDNbcGYSzJP126H/a0RED7AjKoSBvp2CRxz3cbLttkcMWuBv732
+	 I17ePOgigpccJ80uFEu1VuRc0zD6oXboe9kJXyI48Hqjct/NM8IVd436UQK3zcIdMYa9A
+	 YCwOAsr1Ap+e7YmKwpvfNwF+ho/Cy7pe4VOnkxnLRvWdDXsHBKCN3wRAUZkS+VLMVjxYZ
+	 F/71R0PPVReFwsvhrHujNmFjfi8v6BXjlO3Eih+uhjXccviPK+ctpyAdoVIx0NHOpiA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=k2tE9abR;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.174
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391A4606A320;
-	Tue, 10 Nov 2026 19:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF707606C8E5
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 20:31:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EF707606C8E5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O6Uit6jO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE7C1F0089F;
-	Tue, 10 Nov 2026 19:44:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794339859;
-	bh=fWfqbq9OHseUAlW92SLhKNSaqa3qmI+MBczXn8z6J5A=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To;
-	b=O6Uit6jO3IsZoIfrOy3SW4hqltdD1ucWDADRC3HhxylC/zZnFAOdNMh7Q62k2iJNl
-	 98Y2Ol65S0WRG+Dsv/Fo7Ph6FVV+dR3TbRmS1vtGkkhsLH5/hY5NWEloToTLTMoBag
-	 zzgQOQqOrX+UUlJIXG4FKrP1ZqkyAhbuOtxsWlACnLrAEqwFf2U9RYYzM9W1DsZwAi
-	 dIrJ39C3ygTIBdBR7TmjPzKTghgaJaYX5iZ2CHTW5vBJUF1BeKaw76TENQUS21XL+u
-	 xyn3mkt8y8SEL4D9QbqvNuKdAE47PNLXd4Q4xe8DdoRvdrn8pRk/vOWngLU9PJ7WpG
-	 xy4in6w8m33zQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=k2tE9abR
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cd5f2834b19so172980a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Nov 2026 12:31:21 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794342681; cv=none;
+        d=google.com; s=arc-20260327;
+        b=NPWvtKMg/d8G4KK3XX8t6Ewh2sZEAzuBO5ZuzRnY4oxlm82BWmvt7uxbKjtVkQq1EE
+         uOrhj1BenzyFtwJ9CMgZXf2O0Xu/IhQorrrEbTfIjejV7D8AfxCnHeYHsuDamp0NX1XU
+         eHo8AtgJiWIWLXkDKfInRRvtelHH8OIcjnJAcoViCnGvMMIOYsdtl98OGxlgQNPwX3aq
+         1LhlfpYkjgUihu2qHV4U5Y/E85PWmQiLA4vn/gKT3Wmp0dD9qIIKk9hCcWdFzJJpHaZm
+         1xkPMiv1yQRWzkj4W+Vgmf+kNi+0aTdvnBBSL3oqw6z/pDNfe/L6UIqw++NZVHkaD8oE
+         8csQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=euMDcLXwVyFRBye3EMDIFi0Mnp2snBdaowuxW7mbjUU=;
+        fh=QqrTV4Nwwo5ESVZGEFv7C+hyJV0LvqNA5kU81aq4CeI=;
+        b=XvJEEIFyr7JyAqP2Mnqkx7eqBoJwymq04AO7QYA0ulSdGZXYy9He6MLWUhB9mzrMuQ
+         Qcdihga8em9G7nPeifiVNKHo66GVc3E991BQSPOVWhG3IaG5rlbGWAQrC1FXZkAlp1BU
+         qKNNJdFOi8/+cWBKuMbvmJo/c99zFCLqe1fc4qObmbuuP6fSKC+pxmPoVLW3B/Muxqqi
+         WHVRWl+yYIlCpFcTM+H/To/ttGVb6L04A1/WXjOxMgi9dSrw3bR/XXfvAsF1gXDqgbsW
+         xbDtrP5OVLw+JhFB/1JL046nSm1iTXicXbxZqqjlK2rnT1EdcSStv0R4FyGxVStsNXai
+         kbAQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794342681; x=1794947481; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=euMDcLXwVyFRBye3EMDIFi0Mnp2snBdaowuxW7mbjUU=;
+        b=k2tE9abRBySKHePpNw1+hoNwrpCgT9c1iMM92CBR/SFMFu9jyXbH2iCcyH+EmTQTiC
+         yBLJMfHXGvpr8xfRPVxQgfnzsDthjwfax2/Tnn6lH65+pgpZ0HNuhexFozmuzYNDgx1y
+         +ICdy5xZl5sBC6bwvrkn36HKWD07+HHxiPTqxB/C1Omj/my+bOWwBptkbM1GsQUlAwPd
+         k5iKPtFQZWvnr7YHFJcpDSPfMwZhKuL+MTgC+TsDNhb2aGfrhumIhozOSJlps1NyLDFl
+         5aulmNUtJ6KcGlw54fstXxrfYoWNLogwNTb77YvSuFf2tr3hJNYtNL4UfLVJ9xRwvNJ4
+         xX7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794342681; x=1794947481;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=euMDcLXwVyFRBye3EMDIFi0Mnp2snBdaowuxW7mbjUU=;
+        b=vDovEeXKo1VTpuru7/J+1dqD14bvad+EmkyFzU/Sg9mNVNu1k6b6R91T8k68sP8q/a
+         GRGDtoOTb01J9WU2kitlKbfuAgMIKQTQCQ78KzAhZvhVItHFYNBidKLnA4hQJvqcj3Sj
+         oPqJZYYBJZzfPfmipuNdepCCJXtR6K7zRoGhJCwRSGkSHIZxwQgyYOu4Kp3iH6D3cFNL
+         DOq9aUF4bKVeOpQKTxrkNN6IJ2J0KcEGAK656D2aGoVL8LqmObBb2pgMezj9rlgW7AJi
+         qTYFKO5l/arAezxo1ioUP+G9mNKUsBlUveT9cOLksHk9adEwlirIBmrDDmwBuFWU3wsU
+         eTwg==
+X-Forwarded-Encrypted: i=1; AL+hErHfbctTgkS2r6CPTLotWW3xgxmebOshwLaHM2y1v/M/M119yKR+bdYnd0mfc9dgrFKtIxcSBiIRjbls87W/sA==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9V21qjZy6hbnFd0Kb0wzDne4ZQhIWahiLi3pzuYN7HLkVTa12A
+	inJ18kpQsPW5WAAg8gSkDUG8ZYygT+bF9/BWLBCq85j4CYATQ7vxdKTmd6m0TjnFD4zOz/KU62U
+	o2w0y1ZG0QnJ5BQrO5H7WSBJ9fiW91jk=
+X-Gm-Gg: AYBFou17tgZqdUtkrUEA8NI5QkslrM62HgHKxkCdhZXyhCO7altUXikYdvq6BE3Re64
+	18L7+c3w4al1/Rl/3S2113rldCcDUnR0uGPvpVcvFIYQo+Ew1RA70dMHck28afOdqvC7RBFKn0F
+	10P8E+ti4VEp0HXm9t/5cOhIr09p8k46rTa5Z+8JOAAvVAygeOKK/IfS1/Sin5dwilzO9iEVCyE
+	utOHP4KEA7GF95iUPvIeu7i5SyhBVzCJuU4ar9JSZbga/N5vhnp55BbH2iQWzOs3RLxky3Zqx+/
+	V4bSxQNIy3AQxgDyFmlqDIItUv6xHffCSqjPEn90oObRO+e8yclWx8EkV1zlYZJzyD7myQcCx8C
+	T6fAPltoOd8/Lmef0NIURg4I2WI6ifO+bMajrkHQbVS9aPFYMyeaub6Mgkg26PyyNQdq9mRFSxt
+	RyGeA75r7b1VunYER0gUV+sCQXB5wlgRcjtqIvZidpt43+fiNGotjxzEvUD4hoIlQWIJ0nJ3eWx
+	YwoBaNeRBZoD7ObTL9kJJ/KQV3SDUFtvsnDmc4bAXzFbkkglzArFPFsHw==
+X-Received: by 2002:a17:90b:4b0e:b0:3ab:be66:ddc5 with SMTP id
+ 98e67ed59e1d1-3b182f3642cmr189775a91.6.1794342681275; Tue, 10 Nov 2026
+ 12:31:21 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -48,312 +105,52 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20261018175457.87803-1-ojeda@kernel.org>
+In-Reply-To: <20261018175457.87803-1-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 10 Nov 2026 21:31:08 +0100
+X-Gm-Features: AclHuK_uckGpnRQludUiuJa2Hr3E-2Svi5DrMdfVjm-Nu4czLx7g97kWJ04gZ0I
+Message-ID: <CANiq72npfiOC2ZCan-zAe-h79kba_5jtWFAeAoigCs_hnO8gJA@mail.gmail.com>
+Subject: Re: [PATCH] x86/rust: use `-Zindirect-branch-cs-prefix` for RETPOLINE builds
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	stable@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Nov 2026 20:44:09 +0100
-Message-Id: <DMRSE390GRTH.OZ9KS5QS8M4H@kernel.org>
-To: "Simon Song" <xinmengs@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 10/12] rust: vfio: separate common device handling
- from PCI
-Cc: <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <linux-pci@vger.kernel.org>, <alex@shazbot.org>, <jgg@nvidia.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <jhubbard@nvidia.com>,
- <ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
- <kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
- <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
- <boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
- <work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
- <kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
- <peter@colberg.org>
-References: <20261023154009.2246627-1-xinmengs@nvidia.com>
- <20261023154009.2246627-11-xinmengs@nvidia.com>
-In-Reply-To: <20261023154009.2246627-11-xinmengs@nvidia.com>
 
-On Fri Oct 23, 2026 at 5:40 PM CEST, Simon Song wrote:
-> +/// A VFIO device, independent of its bus-specific wrapper.
-> +///
-> +/// # Invariants
-> +///
-> +/// The underlying `vfio_device` is initialized and remains alive while =
-borrowed.
-> +/// Callback contexts are borrowed only for the corresponding callback a=
-nd thread;
-> +/// only [`Normal`] references can be reference-counted.
-> +#[repr(transparent)]
-> +pub struct Device<Ctx: DeviceContext =3D Normal> {
-> +    raw: Opaque<bindings::vfio_device>,
-> +    _context: PhantomData<(Ctx, NotThreadSafe)>,
-> +}
+On Sun, Oct 18, 2026 at 7:55=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
+>
+> The C compiler is asked to add a `cs` prefix to the `call` and `jmp`
+> instructions that go through the indirect thunks for the `r8`-`r15`
+> registers, which makes them 6 bytes long instead of 5. That gives
+> `patch_retpoline()` enough room to inline them, e.g. as `lfence; call
+> *%r11` for `spectre_v2=3Dretpoline,lfence`.
+>
+> However, Rust code does not get the prefix, e.g. for a
+> `CONFIG_MITIGATION_RETPOLINE=3Dy` build:
 
-I think this needs to be declared differently, see below.
+Any comments on this?
 
-> +impl<Ctx: DeviceContext> Device<Ctx> {
-> +    /// # Safety
-> +    ///
-> +    /// `raw` must point to an initialized `vfio_device` that remains al=
-ive for
-> +    /// `'a`. The caller must provide the guarantees of `Ctx` throughout=
- the borrow.
-> +    #[cfg_attr(not(CONFIG_VFIO_PCI_CORE), expect(dead_code))]
-> +    unsafe fn from_raw<'a>(raw: *mut bindings::vfio_device) -> &'a Self =
-{
-> +        // SAFETY: Self is a transparent wrapper; the caller guarantees =
-validity and context.
-> +        unsafe { &*raw.cast() }
-> +    }
-> +
-> +    fn as_raw(&self) -> *mut bindings::vfio_device {
-> +        self.raw.get()
-> +    }
-> +}
-> +
-> +// SAFETY: VFIO uses the embedded class device's refcount to own the ful=
-l allocation.
-> +unsafe impl AlwaysRefCounted for Device {
-> +    fn inc_ref(&self) {
-> +        // SAFETY: A shared reference keeps the initialized VFIO device =
-alive.
-> +        unsafe { bindings::get_device(&raw mut (*self.as_raw()).device) =
-};
-> +    }
-> +
-> +    unsafe fn dec_ref(obj: NonNull<Self>) {
-> +        // SAFETY: The caller owns the VFIO reference being released.
-> +        unsafe { bindings::put_device(&raw mut (*obj.as_ref().as_raw()).=
-device) };
-> +    }
-> +}
-> +
-> +// SAFETY: Ordinary VFIO references expose no unsynchronized callback op=
-erations.
-> +unsafe impl Send for Device {}
-> +// SAFETY: Shared access only changes the embedded class device's refere=
-nce count.
-> +unsafe impl Sync for Device {}
-> +
-> +/// Callback data stored after the bus-specific C device structure.
-> +///
-> +/// # Invariants
-> +///
-> +/// `reg_data` is dangling when unpublished; otherwise it borrows pinned=
- data kept
-> +/// alive until callback access has ended. `open_data` is null outside a=
- successful
-> +/// first open, otherwise owns a pinned allocation until the last close.
-> +/// The bus-specific layer drains callbacks before releasing either allo=
-cation.
-> +struct CallbackData<R: CovariantForLt, O: ForLt> {
-> +    reg_data: UnsafeCell<NonNull<R::Of<'static>>>,
-> +    open_data: UnsafeCell<*mut O::Of<'static>>,
-> +}
+If it helps, then I am happy to take it via one of the Rust trees with
+an Acked-by from x86.
 
-We don't need to arbitrarily limit registration data to require covariance,
-eventually we will need invariant data.
+Thanks!
 
-Also, I think we don't need ForLt/CovariantForLt at all. Both types are
-associated types of an ops trait, so they can just be GATs, i.e.:
-
-	type RegistrationData<'a>: Send + Sync + 'a;
-	type OpenData<'a, 'data: 'a>: Send + Sync + 'a;
-
-> +
-> +#[cfg_attr(not(CONFIG_VFIO_PCI_CORE), expect(dead_code))]
-> +impl<R: CovariantForLt, O: ForLt> CallbackData<R, O> {
-> +    fn new() -> Self {
-> +        Self {
-> +            reg_data: UnsafeCell::new(NonNull::dangling()),
-> +            open_data: UnsafeCell::new(core::ptr::null_mut()),
-> +        }
-> +    }
-> +
-> +    /// Access registration data without allowing its erased lifetime to=
- escape.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Registration data must be published and remain valid through thi=
-s call.
-> +    /// The caller must exclude concurrent changes to `reg_data`.
-> +    unsafe fn registration_data_with<V>(&self, f: impl for<'a> FnOnce(&'=
-a R::Of<'a>) -> V) -> V {
-> +        // SAFETY: The caller keeps registration data alive and excludes=
- mutation.
-> +        // Covariance permits shortening its erased lifetime to this bor=
-row.
-> +        let reg_data =3D unsafe { (*self.reg_data.get()).cast::<R::Of<'_=
->>().as_ref() };
-> +        f(reg_data)
-> +    }
-> +
-> +    /// # Safety
-> +    ///
-> +    /// The caller must be an I/O callback while VFIO keeps the device o=
-pen.
-> +    /// Registration and open data must remain valid, with their pointer=
- slots
-> +    /// unchanged throughout the call.
-> +    unsafe fn callback_data_with<V>(
-> +        &self,
-> +        f: impl for<'borrow, 'data> FnOnce(&'borrow R::Of<'data>, Pin<&'=
-borrow O::Of<'data>>) -> V,
-> +    ) -> V {
-> +        // SAFETY: The caller excludes open/close and unregister while b=
-orrowing the data.
-> +        unsafe {
-> +            self.registration_data_with(|reg_data| {
-> +                let ptr =3D (*self.open_data.get()).cast::<O::Of<'_>>();
-> +                // The data lifetime stays independent of the callback b=
-orrow,
-> +                // so borrowed OpenData fields cannot be stored back int=
-o OpenData.
-> +                f(reg_data, Pin::new_unchecked(&*ptr))
-> +            })
-> +        }
-> +    }
-
-I don't think we necessarily need the extra closure, we only ever pass this=
- to
-callbacks of the ops trait, but it would allow us to make the accessor safe=
-:
-
-If we move them onto Device directly, we can leverage the type states. E.g.=
- we
-can group them with traits and only implement e.g. callback_data_with() for=
- type
-states that allow for this.
-
-> +
-> +    /// # Safety
-> +    ///
-> +    /// Call only during exclusive first open, with no existing open dat=
-a.
-> +    /// All resources borrowed for `'a` must remain valid until `close()=
-` returns.
-> +    unsafe fn open<'a, I: PinInit<O::Of<'a>, Error>>(&self, init: impl F=
-nOnce() -> I) -> Result {
-> +        // Allocate before calling the driver so allocation failure cann=
-ot follow open.
-> +        let data =3D KBox::<O::Of<'a>>::new_uninit(GFP_KERNEL)?;
-> +        let data =3D data.write_pin_init(init())?;
-> +
-> +        // SAFETY: Only the owning pointer moves; close drops the alloca=
-tion in place.
-> +        let raw =3D KBox::into_raw(unsafe { Pin::into_inner_unchecked(da=
-ta) });
-> +        // SAFETY: First open is exclusive; the caller keeps borrowed re=
-sources alive
-> +        // through close. Lifetimes do not affect the allocation's layou=
-t.
-> +        unsafe { *self.open_data.get() =3D raw.cast::<O::Of<'static>>() =
-};
-> +        Ok(())
-> +    }
-> +
-> +    /// # Safety
-> +    ///
-> +    /// Call once after a successful open, with all callbacks drained an=
-d the next
-> +    /// open excluded. Registration data and borrowed resources must rem=
-ain alive.
-> +    unsafe fn close(&self) {
-> +        // SAFETY: Last close exclusively takes the allocation published=
- by open.
-> +        let raw =3D unsafe { core::mem::replace(&mut *self.open_data.get=
-(), core::ptr::null_mut()) };
-> +        // SAFETY: The allocation came from KBox::into_raw and is destro=
-yed without moving it.
-> +        unsafe { drop(KBox::from_raw(raw)) };
-> +    }
-
-This seems like a bit of a back and forth because logically we want those
-methods on vfio::Device so you can take advantage of the type system
-information.
-
-But in this implementation CallbackData lives in the vfio::pci::Device, lik=
-ely
-for memory layout reasons.
-
-But we can also do something like this:
-
-	#[repr(C)]
-	pub struct DeviceBase<Raw, R, O, T, Ctx =3D Normal> {
-	    raw: Opaque<Raw>,
-	    data: CallbackData<R, O>,
-	    _context: PhantomData<(T, Ctx, NotThreadSafe)>,
-	}
-
-	// vfio.rs
-	pub type Device<T, Ctx =3D Normal> =3D DeviceBase<
-	    bindings::vfio_device,
-	    T,
-	    <T as Operations>::RegistrationData<'static>,
-	    <T as Operations>::OpenData<'static, 'static>,
-	    Ctx,
-	>;
-=09
-	// vfio/pci.rs
-	pub type Device<T, Ctx =3D Normal> =3D super::DeviceBase<
-	    bindings::vfio_pci_core_device,
-	    T,
-	    <T as Operations>::RegistrationData<'static>,
-	    <T as Operations>::OpenData<'static, 'static>,
-	    Ctx,
-	>;
-=09
-Of course we can't have AsRef<vfio::Device> with this, but we don't need it=
-.
-
-For instance, there's only one AlwaysRefCounted impl needed:
-
-  unsafe impl<Raw: RawDevice, R, O, T> AlwaysRefCounted
-      for DeviceBase<Raw, R, O, Normal>
-  {
-      fn inc_ref(&self) {
-          let vdev =3D unsafe { Raw::raw_vfio_device(self.as_raw()) };
-
-          unsafe { bindings::get_device(&raw mut (*vdev).device) };
-      }
-
-      unsafe fn dec_ref(obj: NonNull<Self>) {
-          let raw =3D unsafe {
-              Opaque::cast_into(&raw const (*obj.as_ptr()).raw)
-          };
-
-          let vdev =3D unsafe { Raw::raw_vfio_device(raw) };
-
-          unsafe { bindings::put_device(&raw mut (*vdev).device) };
-      }
-  }
-
-We can either rely on the fact that vfio_pci_core_device's first member is =
-the
-vfio_device, or make it explicit with something like:
-
-	/// Maps a C device structure to its embedded VFIO device.
-	///
-	/// # Safety
-	///
-	/// Implementations must return the address of the `vfio_device` at the
-	/// beginning of `Self`, preserving the input pointer's provenance.
-	unsafe trait RawDevice {
-	    /// # Safety
-	    ///
-	    /// `raw` must point to an initialized, live `Self`.
-	    unsafe fn raw_vfio_device(
-	        raw: *mut Self,
-	    ) -> *mut bindings::vfio_device;
-	}
-
-Not that this isn't only to make use of some type system information (there=
-'s
-other ways to achieve that too) but also to make vfio::Device useful for no=
-n-PCI
-implementations, as they need CallbackData too.
+Cheers,
+Miguel
