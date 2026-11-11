@@ -1,63 +1,113 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794429935;
-	b=Fa6AiwPJWmYPT3EOFDewJPFJK+kp3WE+uFXUPrIhLBRFZAsE8x1FfNYxCrs0OCcU/roM
-	 Rnt1nEoeuB5zMNj+qNHIQQ+zcjYsDxg+YjKn4U5gZavcsagu3cSfvAQ4eCLo7f07VZICa
-	 +quBtj6JK3W2RZ7b9/m9fxZEGafC3i37AfRJp9WgZgofhzT7aUCN2YAixmvRcqhuA9srk
-	 5gd+PFDfLjGp+GF4Oru7ByxhpCh0ekhfJS9RcvadC3dem3bFHNwGhF5k5vUGtLZNzUonw
-	 whhw90RhFutbX4S78UevglG0iDDT1VeFWIwfiVmfUiBZsQO2PZId/bypSPy+25w3bKg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794429935;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=yVeXYht7akFSY/gai/1Qv7DeakG1hQuPn+nM3CDxqEA=;
-	b=LRCdpweZhMG4bO1qvvDXUAjHDMCkhJssnAKRTT5N5skVnTmsbHPHCo7Quyn+85DpWLGq
-	 vp79qEAteOT3WA1a5zWsUrHqNsT8ZDiCGukR29pGfSNxnyKnUCQHzXf5BCtRIti8KcBFC
-	 yjVcKoy46FpbVygXdUyNoH6obvv41w/q4QkZTg10sF7PMujz2ejK7XBpXqUavhcYFPcGM
-	 uAcCZxPopRseGYn4AT1Ztq/ChC7G64QrQyG7SkFnUSwqtZegb2zwqwSJ7GYLPXKOMnRYQ
-	 zZ1W9WFiSMEdX0xGDMZBHc8gYMVcbYjlcHEMBTNGTTooMySLEgxKrQK40X8AaQolj0w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=gCGULcr3;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D17606A324;
-	Wed, 11 Nov 2026 20:45:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 60D17606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794430050;
+	b=oMrpY8IVUOjWUqZjLAOhTMLo2stjt9ST6HhYttlDftNTaUp5M96S2Or5dKisWCfuAWBm
+	 RJSs2j2FxRA2n17axNP9KgDpeNZjKOzAmReSxEiZUbxetB25MsZsyr/7BFi/x/tfNe3qp
+	 4mYPWIXXlPRkTMySodFBLadYSSs2Wn3ny8y2Fg1Z5m3RSGkpqvtq63tIVg3EJbXT/snmz
+	 HLRURJ44RK9MzObwupspuMEf6ngo+/S2mwmMSHeFwXpZNDDNFRzZ52z7dALI6Qq8hPeNe
+	 i0zlgG8yZdpDCuBq0K3JhjX1PUVPWyUbHPjtBt4NACDDzS/F6dgO+aBbxKRIo8gsksw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794430050;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=Na6ndTZniISHVBzl5iqz5UYWXSzKlLO7N99KsHmGVKE=;
+	b=I2f4Aivwlxd160HohDC/B5RvJid+qxqVZVb9k5LfvUzYa8qlipiVw/AGPH+qIrylyToc
+	 AwYCThZElDzOaKgxGiEeK1vXKJutidBSOZR0R3VvJNGRcJt8gO9KT60YY0eZRXcHmlZPK
+	 aiYL4mU0rsrsuOybXKCbOoCPNGnhfPwxZ/pp/Pozt0+4a3gpF9RzI7wCFzVHSgOQPWwoA
+	 M/T92dZfRrt3BLCHPC0q0rJE4flmLA6R+EoZXieXKdpxcRYr3Y/Oo0MT3mB8fZ8cMH/dD
+	 6nVNEMUsnj7oa21uLLDMcspUS1rUchVIdxy6E4l3Tiebr3VvnvGqUbEDOuNsBJMqGwQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=DNfh+2eQ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.13
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011013.outbound.protection.outlook.com [40.93.194.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC44D606A327;
+	Wed, 11 Nov 2026 20:47:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DC44D606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=gCGULcr3
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 677F9153B;
-	Wed, 11 Nov 2026 12:45:30 -0800 (PST)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B30373F85F;
-	Wed, 11 Nov 2026 12:45:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794429933; bh=4ZrLT8DNHk4yKklrJI+ERSH8q+MA2T/2YvUo3b0tsZQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gCGULcr330vGNwdoUpKcc4HVf4e4fgoEmxaE5hlC0E5kphTVGycXKjofZotPTa2H8
-	 d77g+CVxBrethlQJByqeKuPvYheYaWHVsmXS5/jqlrFn7ZwfzIfbT64d7UDKYJ/qsv
-	 tXMWvfGCB7/YokTgiHk1+NC+Nj+foSaTCzfTEKtM=
-Date: Wed, 11 Nov 2026 21:45:25 +0100
-From: Beata Michalska <beata.michalska@arm.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: ojeda@kernel.org, gregkh@linuxfoundation.org, rafael@kernel.org,
-	aliceryhl@google.com, boqun@kernel.org, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-	tmgross@umich.edu, daniel.almeida@collabora.com,
-	boris.brezillon@collabora.com, work@onurozkan.dev,
-	samitolvanen@google.com, acourbot@nvidia.com,
-	rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH v5 1/3] rust: add runtime PM support
-Message-ID: <avTT5VuspuFKbnBv@arm.com>
-References: <20261026120523.526942-1-beata.michalska@arm.com>
- <20261026120523.526942-2-beata.michalska@arm.com>
- <DMNFI31C8X12.3L2J0GKKNJN81@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=DNfh+2eQ
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=W0SKenQf4mcffcGhdHMDL/VLQVyzfOIMk58t52TIEfaGzuLgmDm4DMTnnjTwg9/87QVJFdYgWFlGLZul2bieNWiuPdesVPGdsjKbBycTmlTgxAwHjJ+GfPDQPPc0syRaYqcn/0W6dRIKpwLwiX9h0Wxbt3XepUuEvjkfYkQCpXmUdFdSbu0igZCw1G/It9dBH2LvQWJlFD8OpqTDxg/14rx2KfiTQj1lKzmg/GcqJggxlrr/DfJYW9WS/P+8obajcNdVP5NvJ8DYhR/634hLq+vgzvPK64OZ3pXgqqPbsMGwPrjpym2AA3rYL1rHqiLwuqDnR6jM97Yc/drob3gZZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Na6ndTZniISHVBzl5iqz5UYWXSzKlLO7N99KsHmGVKE=;
+ b=JcH6fVdgxp8hEqlKuGKc54mX6TWhIKD0x/kes5RsztzpWI1InrJd+FEraHaQrUxsZfet3iz8CfqpC3/GbzZg+cEKx1VELb/MsqCxHHKbXbEuycLbGLQ/hwaKOgX3iPHqM32/LyoGa6AnIx+WxJAxNDO6UXa3QRqrys/rDsOkmeJGNppuCjmXrEe7mRkA1yMTQnB5ndMH4p0hliZM326yTV9MUblCQ6cyhRFdA4SihWcfN8pZ7oPj3INmvDdtTgFVnhng1NDA/eUMKvS+jSw1DEqvFUjF3+yFkL4s+SGYg7rX96c6QoOzGqsMuH89MQnRb1QlHUyHPnyWR/Zxa04JKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Na6ndTZniISHVBzl5iqz5UYWXSzKlLO7N99KsHmGVKE=;
+ b=DNfh+2eQ3jfXwIBkOdpH7X+IyYp312I23wCpx+UuL3VzzB5M0MebFlX1VD6sUCs0lIY6moSNMfw1Iz1XhX8IN3Hmr/t/+UHj0N1sA6N/bRc2sb4/To7rwllBb8Ref4n0htbhnqYCuQovvrXNXtIHrZ7lnKph77G6/0pMddaDiPTZKYM0qZspzvG12TpIZXQvzanOYyYMUpCirQGmPnFCHGLYq2Q0H4qgrnUc+K4xeU9HAf6Rk9E2hnH5LUIJ/PyWXt20SMNRdd6c583XzdBdEu3tqvgaGaxNDNbIRCxoSZVREK9+qS6D+YP8egu0H+kIeAKB2AnpSkdtDnweXHkEuA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
+ by PH0PR12MB8128.namprd12.prod.outlook.com (2603:10b6:510:294::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Wed, 11 Nov
+ 2026 20:47:25 +0000
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286%4]) with mapi id 15.21.0615.007; Wed, 11 Nov 2026
+ 20:47:25 +0000
+Date: Wed, 11 Nov 2026 15:47:23 -0500
+From: Yury Norov <ynorov@nvidia.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Eliot Courtney <ecourtney@nvidia.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Burak Emir <burak.emir@gmail.com>,
+	Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+	Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v11 4/5] rust: id_pool: do not round capacity up to
+ BitmapVec::MAX_INLINE_LEN
+Message-ID: <avTUWznKqpgUI5M-@yury>
+References: <20261109-chid-v11-0-082aa9bf5a91@nvidia.com>
+ <20261109-chid-v11-4-082aa9bf5a91@nvidia.com>
+ <avNXkJjOoTzUu-1r@yury>
+ <DMRW81BTJRI1.6KL933YC1FM8@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DMRW81BTJRI1.6KL933YC1FM8@nvidia.com>
+X-ClientProxiedBy: BN9PR03CA0701.namprd03.prod.outlook.com
+ (2603:10b6:408:ef::16) To LV3PR12MB9356.namprd12.prod.outlook.com
+ (2603:10b6:408:20c::21)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -67,365 +117,187 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DMNFI31C8X12.3L2J0GKKNJN81@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|PH0PR12MB8128:EE_
+X-MS-Office365-Filtering-Correlation-Id: 682bc37a-4822-4c60-85d1-08df4034fdbe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|10070799003|376014|23010399003|4143699003|261009223027099003|261021121427099003|11063799006|261021135927099003|261022105027099003|261026140227099003|261026121527099003|56012099006|261021123027099003|261028144727099003|261102123227099003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	L4CRZQxTueq66H32Y4+dtXgIRTEcdD0PLiJM+kisaNtT7r8mCFmQ66qIAPYMfwMSZoLM/2UO+Odh1r+RSqoNCTyJ8NsztY9yftAhgUbWSyrWvYfrimDf3QbSD1EN79MYnWAMsDoXk2FPPVUuMHIPGZi5DfCTuvOA3qmyapSfYE00dixwglMe8sOUi4Pm3XyDTbMCM5Xi1GH4HQquakvmolevEnpAbCtGQJbaDTJoHLOzcSnYe6vXuYG3AgQz/QEZFdNqtUE+G98n+RFH1NNtnWYW6e28E84aLUR7go09fDW7iqGwXJz9udBH+JW31Pt5P5GoKPngIDIsUukz1NdMHSq3FN73k2jYZZ3X7QAgS4QC0F6alXT/AljCds/VmMPHxeSrEhNyV+nhui1g7h2/nEn8sbRdwMv8w1fMyfGLz0kqYxEvJ2ELpxTIvMAHUdyiDEeIwBS6xyGUqXq9OQY3S5O58L37rsg7AkKPGYyP28aPiSq7QR1r10cOT9iKlQB0BZCw2W4ywQC+AGZwewecMbpyM3zuS8EtZKi04aaoOXARw/Ap5KeVWXBe4dJEZnQd6OIWPzH7kfnMEH4O4//F0NLFUeG4DEKUkGHNjbKxBM+YcvSGT9LPwgFTMnqM1h+gD4Jkf6GoFaN8mAnQVUcVEtYSDAQbGilX2xMc64nwBM4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(10070799003)(376014)(23010399003)(4143699003)(261009223027099003)(261021121427099003)(11063799006)(261021135927099003)(261022105027099003)(261026140227099003)(261026121527099003)(56012099006)(261021123027099003)(261028144727099003)(261102123227099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?C3+L5vU8mzVoM7J7QXhopWKn0t7A7BODtl+N0GH5vC9ol8QycV8pSLPh9bvy?=
+ =?us-ascii?Q?r5A0ahow08/teY4WqFGvNlqWTBCDWLxfFUDGRSAa8FfgNFIncX9eV5sxlbNV?=
+ =?us-ascii?Q?DFMCx5txWiqu8SqYVWb8oP4vLiJikkeBuH9E79eCIzJQd+IMLwp7YyIOhUJ4?=
+ =?us-ascii?Q?26bAEvaCYU9VHsYSLfZdQ6kyWjlEbShkiRFybzLw5KmcBpXTistST7NthKvY?=
+ =?us-ascii?Q?eXUrCIMPvnl3LpNL8N4kFk+9m5CBzuAWuadSiOnaWUP/F82HXH4yn9wWMtRc?=
+ =?us-ascii?Q?+RPyIl3It8CQS168sbDbJWfS7vIfjO/dbTqco2W024eENe6enqf9KHGoAMH8?=
+ =?us-ascii?Q?ChJeVauSOwPTon/irT3qwzTgaDdxz69jZptygwh4vX5xQ5xwDCgTYdnsaw5J?=
+ =?us-ascii?Q?lpU9PU0WRWbpEdPvqEpB3G8l4PLjn9bveVPlt81VJk6aSEikBItPOS5pUqIH?=
+ =?us-ascii?Q?hX8ReFkpUG/sjXrTY/PSAZ7IGAZNJML+TKtbWa4bfF6LMDcuYRvgv5kLn4oI?=
+ =?us-ascii?Q?XsAaj+FoJ7H+i+BM8eGBL81V0Dx45sYlqAbEq/hkML2Nd/hF5YO50M8jOwH8?=
+ =?us-ascii?Q?qFsloWjsmvxiC4xtAkMl5kBf19AN0jeQNXrt1jJyWZJySVXI856MXuC9kvG7?=
+ =?us-ascii?Q?rap6oqJOZDo8Z8LwPjLs/C7Z5Zxz3qC7+Up33A8yYvoWUMxmBofq1fij2ypu?=
+ =?us-ascii?Q?X/Vj4XKz1kJSH1zlZukjEgQt9ml5bgqsMsnsqDpWBpyY0hTyCsI8goqDJ9Qw?=
+ =?us-ascii?Q?SdjqshC3tCblY2BBcnf6/IqpwVLFs/jJFf9R8VnSCUNI/uuz366T83GranT0?=
+ =?us-ascii?Q?WBTNwuiFXWIWSpFR+xeGxSZRlVecPEbneTnGQ5Uq4rWS8RIdxFBKNaathzxv?=
+ =?us-ascii?Q?YpSN65Uxb9Rn57r+t/oPboctPTyV7diz8FiQ/Uky8A5BcKkZctEoyGIgfHSj?=
+ =?us-ascii?Q?WQEGLRsW1fmPif4MGVh0EaKb+zf0UI4Y9QaUImex3LIYmql99Ee5Ux4SxGtW?=
+ =?us-ascii?Q?rAQQ/QLMj7P8n7Bqgt/B95JvAelQpY8RU8BiTTBlJ9MVhVBX7ZJt6oFRD9Wn?=
+ =?us-ascii?Q?jxaTJue/qIrDcRSbfc1PMUdWANjx4SFk/2dMx2F9GDStz41qmhKgfmpwwtbg?=
+ =?us-ascii?Q?eWNkVMFHHthKCqksjKcfrF9pdlwPYTeDDGwARh5qbHk7Cuy4GC4byEncT48P?=
+ =?us-ascii?Q?hj1fRFD5vfnTXrQeeNXEQLrcJjctcdH2VHVRDbrDa3bfHZvCiP5T85Q4/LJL?=
+ =?us-ascii?Q?tt282sMh3mtsgZm+IN6CuB5QIZhqDD2JmmG8hoW0pp4JjtgGoT5AC0SqROCA?=
+ =?us-ascii?Q?kiBO5CftHtC++/8LAv55zfI08T8uHGao3VPuv+rIF0SXZbLZPTHduW9UdOsD?=
+ =?us-ascii?Q?WURji0/Byg373ZERP+P4tpClqfCn8RDtBiU9mOomTv0EnH7VAyGmpD0K6j2l?=
+ =?us-ascii?Q?18VS7vBzv3f6Tq1VqWzd1kf/wjp/HpsM+lnN4QRxUO/ZuKDlhTPPngtB0KEY?=
+ =?us-ascii?Q?G9bQdVge3b/mbTFq7AC7P9EhdIh3GPSVB96gi5AW5ZvHhZtT3RbgZTY7se1I?=
+ =?us-ascii?Q?cPXvrs0DKUIr4NBkBj8HdbbiclUqX8Fu5wUnUQQpVhP8maNlDRLzk8bTzunK?=
+ =?us-ascii?Q?O8A075QQZY5eAl3GOSN1i2k+cz4xA2ANsKdXL1l872zV0zMEQ/73dhP7GU9t?=
+ =?us-ascii?Q?e3qzHHhIJTdW0RdcuUgiFz0mvItk8zym31qXYEGyCG+YRxngHWU6HATFznUH?=
+ =?us-ascii?Q?U52GWPzPpBwpR/XniwJNkNHwuV+bqsuvzvWAIgUHujMUt3/TQcGy?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 682bc37a-4822-4c60-85d1-08df4034fdbe
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 20:47:25.1076
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vjx/e3/47YoyrhOI3spNGyVGDnDMK7aNQSjOj3GLz4RWj1V49ZIUWRJbk0ZJbraohfW8f9z2/LRrEwYk5adY3Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8128
 
-Hi Danilo,
+On Wed, Nov 11, 2026 at 07:44:19AM +0900, Alexandre Courbot wrote:
+> On Wed Nov 11, 2026 at 2:42 AM JST, Yury Norov wrote:
+> > On Mon, Nov 09, 2026 at 05:32:52PM +0900, Eliot Courtney wrote:
+> >> Current code in IdPool::with_capacity rounds the capacity up to
+> >> BitmapVec::MAX_INLINE_LEN, but BitmapVec::new works fine with values
+> >> smaller than this and still uses an inline representation. Remove this
+> >> behaviour.
+> >> 
+> >> This allows specifying a real capacity of 0, which was not previously
+> >> possible.
+> >
+> > How real capacity 0 became possible? Did we eventually find a use case
+> > for it? If not, it should not be possible, and the implementation
+> > should not explicitly handle that case.
+> >
+> >> This breaks `grow_request` in this case, so change it to grow
+> >> to at least `BitmapVec::MAX_INLINE_LEN`, mirroring the capacity floor in
+> >> `shrink_request`.
+> >
+> > Not the grow_request only, I believe. I recall the discussion about
+> > panic on most operations on a 0-bit pool.
+> 
+> You have panics on most operations of a pool of any size if accessed out
+> of bounds. Zero size is not special.
+> 
+> >  
+> >> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> >> Reviewed-by: Burak Emir <burak.emir@gmail.com>
+> >> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+> >> ---
+> >>  rust/kernel/id_pool.rs | 38 ++++++++++++++++++++++++++++++++------
+> >>  1 file changed, 32 insertions(+), 6 deletions(-)
+> >> 
+> >> diff --git a/rust/kernel/id_pool.rs b/rust/kernel/id_pool.rs
+> >> index 92eeb7caa243..f77bd90325ff 100644
+> >> --- a/rust/kernel/id_pool.rs
+> >> +++ b/rust/kernel/id_pool.rs
+> >> @@ -112,13 +112,8 @@ pub fn new() -> Self {
+> >>      }
+> >>  
+> >>      /// Constructs a new [`IdPool`] with space for a specific number of bits.
+> >> -    ///
+> >> -    /// A capacity below [`MAX_INLINE_LEN`] is adjusted to [`MAX_INLINE_LEN`].
+> >> -    ///
+> >> -    /// [`MAX_INLINE_LEN`]: BitmapVec::MAX_INLINE_LEN
+> >>      #[inline]
+> >>      pub fn with_capacity(num_ids: usize, flags: Flags) -> Result<Self, AllocError> {
+> >> -        let num_ids = usize::max(num_ids, BitmapVec::MAX_INLINE_LEN);
+> >>          let map = BitmapVec::new(num_ids, flags)?;
+> >>          Ok(Self { map })
+> >>      }
+> >> @@ -152,6 +147,13 @@ pub fn capacity(&self) -> usize {
+> >>      /// let resizer = alloc_request.realloc(GFP_KERNEL)?;
+> >>      /// pool.shrink(resizer);
+> >>      /// assert_eq!(pool.capacity(), BitmapVec::MAX_INLINE_LEN);
+> >> +    ///
+> >> +    /// // A pool at the `MAX_INLINE_LEN` floor cannot shrink further.
+> >> +    /// assert!(pool.shrink_request().is_none());
+> >> +    ///
+> >> +    /// // Neither can a pool with a capacity below `MAX_INLINE_LEN`.
+> >> +    /// let small = IdPool::with_capacity(8, GFP_KERNEL)?;
+> >> +    /// assert!(small.shrink_request().is_none());
+> >>      /// # Ok::<(), AllocError>(())
+> >>      /// ```
+> >>      #[inline]
+> >> @@ -198,12 +200,36 @@ pub fn shrink(&mut self, mut resizer: PoolResizer) {
+> >>  
+> >>      /// Returns a [`ReallocRequest`] for growing this [`IdPool`], if possible.
+> >>      ///
+> >> +    /// Grows to at least [`MAX_INLINE_LEN`].
+> >>      /// The capacity of an [`IdPool`] cannot be grown above [`MAX_LEN`].
+> >>      ///
+> >> +    /// [`MAX_INLINE_LEN`]: BitmapVec::MAX_INLINE_LEN
+> >>      /// [`MAX_LEN`]: BitmapVec::MAX_LEN
+> >> +    ///
+> >> +    /// # Examples
+> >> +    ///
+> >> +    /// ```
+> >> +    /// use kernel::{
+> >> +    ///     alloc::AllocError,
+> >> +    ///     bitmap::BitmapVec,
+> >> +    ///     id_pool::IdPool, //
+> >> +    /// };
+> >> +    ///
+> >> +    /// // Grow goes to at least BitmapVec::MAX_INLINE_LEN.
+> >> +    /// let mut pool = IdPool::with_capacity(1, GFP_KERNEL)?;
+> >> +    /// let resizer = pool.grow_request().ok_or(AllocError)?.realloc(GFP_KERNEL)?;
+> >> +    /// pool.grow(resizer);
+> >> +    /// assert_eq!(pool.capacity(), BitmapVec::MAX_INLINE_LEN);
+> >> +    ///
+> >> +    /// // Grow doubles if at least BitmapVec::MAX_INLINE_LEN.
+> >> +    /// let resizer = pool.grow_request().ok_or(AllocError)?.realloc(GFP_KERNEL)?;
+> >> +    /// pool.grow(resizer);
+> >> +    /// assert_eq!(pool.capacity(), 2 * BitmapVec::MAX_INLINE_LEN);
+> >> +    /// # Ok::<(), AllocError>(())
+> >> +    /// ```
+> >>      #[inline]
+> >>      pub fn grow_request(&self) -> Option<ReallocRequest> {
+> >> -        let num_ids = self.capacity() * 2;
+> >> +        let num_ids = usize::max(BitmapVec::MAX_INLINE_LEN, self.capacity() * 2);
+> >
+> > You only need this max(...) thing to fix the behavior of 0-len bitmap.
+> > We don't have any users with the request to support them. Please don't
+> > add any extra code to handle unwanted and unsupported cases.
+> 
+> No, this code is a side-effect of the pool not being rounded up to
+> `MAX_INLINE_LEN` (note how the `max` moved from `with_capacity). It
+> would still be there even if we did not support zero-size.
 
-Thank you for the review!
-I've applied fixes for most of them, apart from one. See below.
+The commit message says exactly opposite:
 
-On Thu, Nov 05, 2026 at 05:47:28PM +0100, Danilo Krummrich wrote:
-> On Mon Oct 26, 2026 at 1:05 PM CET, Beata Michalska wrote:
-> >  drivers/base/base.h             |    4 +
-> >  rust/bindings/bindings_helper.h |    1 +
-> >  rust/helpers/helpers.c          |    1 +
-> >  rust/helpers/pm_runtime.c       |   89 +++
-> >  rust/kernel/lib.rs              |    1 +
-> >  rust/kernel/pm.rs               | 1106 +++++++++++++++++++++++++++++++
-> 
-> I think this fits better under rust/kernel/device/pm.rs. This would also avoid
-> naming like DevPMOps, which can then just be device::PMOps.
-> 
-> We should also add the file to POWER MANAGEMENT CORE in MAINTAINERS.
-> 
-> > diff --git a/drivers/base/base.h b/drivers/base/base.h
-> > index a5b7abc10ff0..e79108bc754a 100644
-> > --- a/drivers/base/base.h
-> > +++ b/drivers/base/base.h
-> > @@ -103,6 +103,7 @@ struct driver_private {
-> >   *			   dev_err_probe() for later retrieval via debugfs
-> >   * @device: pointer back to the struct device that this structure is
-> >   *	    associated with.
-> > + * @rust_private: private data used exclusively by the Rust driver core
-> >   * @dead: This device is currently either in the process of or has been
-> >   *	  removed from the system. Any asynchronous events scheduled for this
-> >   *	  device should exit without taking any action.
-> > @@ -119,6 +120,9 @@ struct device_private {
-> >  	const struct device_driver *async_driver;
-> >  	char *deferred_probe_reason;
-> >  	struct device *device;
-> > +#ifdef CONFIG_RUST
-> > +	void *rust_private;
-> 
-> Let's call this pointer pm_registration_data_rust. Or even just add
-> 
-> 	struct {
-> 		void *pm_registration_data;
-> 	} rust;
-> 	
-> > +use core::{cell::UnsafeCell, marker::PhantomData, mem::ManuallyDrop};
-> 
-> NIT: Formatting.
-> 
-> > +impl From<Mode> for core::ffi::c_int {
-> > +    #[inline]
-> > +    fn from(mode: Mode) -> core::ffi::c_int {
-> > +        mode.0 as core::ffi::c_int
-> > +    }
-> > +}
-> 
-> You can just use c_int, as it comes from the prelude. Also note that the prelude
-> takes it from ::ffi, rather than ::core.
-> 
-> > +    /// Explicitly release the scope
-> > +    /// This should be used in favor of regular drop
-> > +    /// when error handling is required.
-> 
-> NIT:
-> 
-> 	// Explicitly release the scope.
-> 	//
-> 	// This should be used in favor of regular drop when error handling is
-> 	// required.
-> 
-> > +    pub fn release(self) -> Result {
-> > +        self.release_inner();
-> > +        core::mem::forget(self);
-> > +        Ok(())
-> > +    }
-> > +}
-> > +
-> > +impl<'a> Drop for RetainScope<'a> {
-> > +    fn drop(&mut self) {
-> > +        self.release_inner();
-> > +    }
-> > +}
-> > +
-> > +/// Runtime PM helpers - wrappers around C runtime PM interface.
-> > +/// All methods require a reference to a bound device.
-> 
-> I'd rather say a few words about what those helpers are. The fact they require a
-> &Device<Bound> is rather obvious from the signature; if at all I'd rather
-> mention why that is.
-> 
-> > +struct Request;
-> > +
-> > +impl Request {
-> > +    #[inline]
-> > +    fn active(dev: &device::Device<device::Bound>) -> bool {
-> > +        // SAFETY: `dev.as_raw()` must provide a valid pointer to
-> > +        // `struct device` for the duration of the call.
-> 
-> This reads like a requirement, but it rather is the justifiation for this
-> requirement coming from pm_runtime_active().
-> 
-> > +        // The `Device<Bound>` reference provides that guarantee.
-> 
-> Plus that we are in a scope where the device is guaranteed that the device
-> remains bound to the driver, which is a requirement as well.
-> 
-> > +/// Common runtime PM callback entry point
-> > +///
-> > +/// The generated extern "C" callbacks call into this helper with the raw
-> > +/// `struct device *` provided by the PM core. It rebuilds the Rust device
-> > +/// reference, retrieves the device's PM registration data and performs
-> > +/// handoff to corresponding driver callback.
-> > +#[cfg(CONFIG_PM)]
-> > +fn runtime_pm_callback<T, F>(dev: *mut bindings::device, cb: F) -> Result
-> 
-> This function has to be unsafe, given that it takes a raw pointer.
-> 
-> > +where
-> > +    T: PMOps,
-> > +    F: FnOnce(
-> > +        &<T as PMOps>::DeviceType,
-> > +        <T as PMOps>::RuntimePayloadType,
-> > +    ) -> PMCallbackResult<<T as PMOps>::RuntimePayloadType>,
-> > +{
-> > +    let dev: &device::Device<device::Bound>  =
-> > +             // SAFETY: `dev` is provided by the PM core and remains
-> > +             // valid for the duration of the callback.
-> > +            unsafe { device::Device::from_raw(dev) };
-> 
-> Please prefer Device::from_raw() plus Device::as_bound().
-> 
-> > +
-> > +    // SAFETY: `dev` is provided by the PM core and remains
-> > +    // valid for the duration of the callback.
-> > +    let ptr = unsafe { (*(*dev.as_raw()).p).rust_private };
-> > +
-> > +    if ptr.is_null() {
-> > +        return Err(ENODEV);
-> > +    }
-> 
-> How can we ever reach this?
-> 
-> > +/// Typed reference to a driver's runtime PM ops.
-> > +///
-> > +/// Instances of this type are generated from static [`DevPMOps`]
-> > +/// and are used by bus registration code to install the matching
-> > +/// C `dev_pm_ops` pointer into the driver object.
-> > +/// The `A` parameter identifies the bus adapter that is allowed
-> > +/// to install the table.
-> > +pub struct DevPMOpsRef<'a, A> {
-> > +    #[cfg_attr(not(CONFIG_PM), allow(unused))]
-> > +    ops: &'a bindings::dev_pm_ops,
-> > +    _p: PhantomData<fn() -> *const A>,
-> > +}
-> 
-> I'd probably rename this to pm::AdapterOpsRef<'a, A> and add a type alias:
-> 
-> 	pub type OpsRef<T> = AdapterOpsRef<'static, <T as PMOps>::Adapter>;
-> 
-> so it looks cleaner in drivers:
-> 
-> 	 const DEV_PM_OPS: Option<device::pm::OpsRef<Self>> = Some(TYR_PM_OPS.pm_ops());
-> 
-> (I'd probably also rename DevPMOps to device::pm::Ops, as I think that reads
-> cleaner.)
-> 
-> > +/// Runtime PM callbacks implemented by a driver.
-> > +///
-> > +/// Defines the [`PMOps`] trait and its corresponding [`bindings::dev_pm_ops`].
-> > +///
-> > +/// The Adapter associated type identifies the bus adapter that installs
-> > +/// the generated PM ops.
-> > +/// Implementations should normally be enabled through a
-> > +/// bus-specific constructor for [`DevPMOps`], which constrains
-> > +/// [`Self::DeviceType`] to the correct bound device type for that bus.
-> > +///
-> > +/// Each C callback recovers the Rust bus device from the raw
-> > +/// `struct device *`, borrows the registered runtime PM payload, and delegates
-> > +/// to the matching [`PMOps`] trait method.
-> 
-> This kind of implementation detail doesn't belong in this doc-comment.
-> 
-> > +#[vtable]
-> > +pub trait PMOps: Sized {
-> > +    /// The bus adapter that installs the generated PM ops.
-> > +    type Adapter: driver::DriverLayout + 'static;
-> > +
-> > +    /// Type of the bound bus device passed to runtime PM callbacks.
-> > +    type DeviceType: AsBusDevice<device::Bound>;
-> > +
-> > +    /// Type of the payload moved through runtime PM transitions.
-> > +    type RuntimePayloadType: Send + 'static;
-> 
-> I got back to this type after writing the below, because at first I thought this
-> is purely the data type that is cycled through suspend() and resume().
-> 
-> However, reading further this is currently the Registration's private data. This
-> won't work. The Registration's private data must not require 'static as we need
-> device resources in this data.
-> 
-> So, there should be at least two separate types:
-> 
->   (1) The private data of pm::Registration.
-> 
->   (2) An object that is created and returned by suspend() and passed by value to
->       resume(), so it can store e.g. reverse guard types (see below).
-> 
-> This should also get us rid of the PMPayload magic.
-> 
-The `'static' lifetime is definitely a shortsighted idea on my side.
-Splitting the data does seem reasonable, though I'm not sure how that would allow
-us to get rid of moving around the `PMPayload`, as this is what I assume you
-are referring to by 'magic'. The pm framework still needs to keep the callback
-data between the transitions. Also I am not convinced the pm should distinguish
-between suspend and resume data - my thinking was it should be handled by the
-driver. We just need 'an' object to move back and forth.
+  This allows specifying a real capacity of 0, which was not previously
+  possible.
 
----
-BR
-Beata
+Eliot, can you reword please? We don't have a single use-case for
+0-sized bitmap, nor in C, neither in rust. If your code handles such
+a bitmap correctly to some extend, it's purely accidentally, and
+nobody should rely on it.
+ 
+> Forbidding zero-sized pools would actually require *more* code in this
+> patch to enforce that rule, and would not allow us to remove any in
+> exchange afaict.
 
-> > +
-> > +    /// Runtime resume callback.
-> 
-> It would be good to expand this doc-comment explaining the semantics of
-> RuntimePayloadType.
-> 
-> > +    fn runtime_resume<'a>(
-> > +        _dev: &'a Self::DeviceType,
-> > +        _payload: Self::RuntimePayloadType,
-> > +    ) -> PMCallbackResult<Self::RuntimePayloadType> {
-> > +        build_error!(VTABLE_DEFAULT_ERROR)
-> > +    }
-> > +
-> > +    /// Runtime suspend callback.
-> > +    fn runtime_suspend<'a>(
-> > +        _dev: &'a Self::DeviceType,
-> > +        _payload: Self::RuntimePayloadType,
-> > +    ) -> PMCallbackResult<Self::RuntimePayloadType> {
-> > +        build_error!(VTABLE_DEFAULT_ERROR)
-> > +    }
-> 
-> I think for Tyr it so far is sufficient to have a single RuntimePayloadType that
-> keeps cycling through the callbacks, but there will be use-cases where the types
-> differ.
-> 
-> For instance, for a PCI driver you will have DeviceDisableGuard stored in
-> suspend() and then you'll want to drop it in resume() so the device gets enabled
-> again.
-> 
-> We should also avoid requiring 'static, as reverse guards will borrow the
-> regular guard, e.g. pci::DeviceDisableGuard will borrow from
-> pci::DeviceEnableGuard.
-> 
-> For runtime_resume() I think of something like:
-> 
-> 	fn runtime_resume<'a>(
-> 	    dev: &Self::DeviceType,
-> 	    suspended: Self::SuspendData<'a>,
-> 	) -> Result<(), (Self::SuspendData<'a>, Error)>;
-> 
-> 
-> > +/// Runtime PM context tied to a device.
-> > +pub struct PMContext<'a, T: PMOps> {
-> > +    // Preferably, PMContext could be shared via borrowed reference over
-> > +    // a pm Registration's lifetime but that bears complications on its own
-> > +    // when the context needs to be shared across different Registration types.
-> > +    inner: Arc<PMContextInner<'a, T>>,
-> 
-> Since we now have self-referencial pin-init, can we please avoid this Arc?
-> 
-> > +impl<'a, T: PMOps> Registration<'a, T> {
-> > +    /// Creates a runtime PM registration for `dev`.
-> > +    ///
-> > +    /// The provided profiles and configuration are stored in the associated
-> > +    /// [`PMContext`]. The `payload` is stored as a Registration data
-> > +    /// and is used to service PM transitions.
-> > +    ///
-> > +    /// The device must use the callback represented by `ops`, generated
-> > +    /// for the same bus adapter and driver pair `(D, T)`.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// The returned [`Registration`] object cannot be mem::forgotten,
-> > +    /// or it's [`Drop`] implementation cannot be skipped in any way.
-> > +    ///
-> > +    pub unsafe fn new(
-> > +        dev: &'a device::Device<device::Core<'_>>,
-> > +        ops: &'static DevPMOps<T>,
-> > +        profiles: Option<KVec<PMProfile>>,
-> > +        configs: Option<KVec<PMConfig>>,
-> > +        payload: T::RuntimePayloadType,
-> 
-> This should be impl PinInit<T::PMRegistrationData<'a>, E> + 'a.
-> 
-> > +    ) -> Result<Self> {
-> 
-> This should be impl PinInit<Self, Error> + 'a.
-> 
-> > +        // SAFETY: For the duration of this call, `dev` is a valid `Device<Core>`,
-> > +        // and so is its raw `struct device` pointer.
-> > +        unsafe {
-> 
-> Please use separate unsafe blocks per unsafe operation.
-> 
-> > +            let drv = (*dev.as_raw()).driver;
-> > +            if drv.is_null() || (*drv).pm != ops.as_raw() {
-> 
-> drv.is_null() can't happen as we require Device<Core>.
-> 
-> > +                return Err(EINVAL);
-> > +            }
-> > +        }
-> > +
-> > +        let payload = KBox::new(
-> > +            RegistrationData::<T> {
-> > +                data: PMPayload {
-> > +                    in_flight: AtomicFlag::new(false),
-> > +                    inner: UnsafeCell::new(ManuallyDrop::new(payload)),
-> > +                },
-> > +                _marker: PhantomData,
-> > +            },
-> > +            GFP_KERNEL,
-> > +        )?;
-> > +
-> > +        let inner_ctx = Arc::new(
-> > +            PMContextInner {
-> > +                dev,
-> > +                state: Atomic::new(PMContextState::Disabled),
-> > +                profiles: profiles.unwrap_or_default(),
-> > +                configs: configs.unwrap_or_default(),
-> > +                _marker: PhantomData,
-> > +            },
-> > +            GFP_KERNEL,
-> > +        )?;
-> > +
-> > +        // SAFETY: For the duration of this call, `dev` is a valid `Device<Core>`,
-> > +        // and so is its raw `struct device` pointer.
-> > +        // The payload allocation is converted into a foreign pointer
-> > +        // and owned by this `Registration` until `Drop` clears
-> > +        // `rust_private` and reconstructs the `KBox`.
-> > +        unsafe {
-> 
-> Same as above.
-> 
-> > +            let ptr = (*(*dev.as_raw()).p).rust_private;
-> 
-> This is accessed a couple of time, let's add a helper for this.
-> 
-> > +            if !ptr.is_null() {
-> > +                return Err(EBUSY);
-> > +            }
-> > +            (*(*dev.as_raw()).p).rust_private = payload.into_foreign();
-> > +        }
-> > +
-> > +        Ok(Self {
-> > +            ctx: PMContext { inner: inner_ctx },
-> > +        })
-> > +    }
+I trust you here. Maybe declaring nbits in the allocation API as
+NonZero would help - IDK... I just want to make sure we're not
+bloating the implementation for unneeded and confusing functionality.
+
+Thanks,
+Yury
