@@ -1,100 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.45
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794402137;
-	b=CElNSO3eXDPsRipdqOb1wE+WwRmrXDdhqQ+1V7zLYZ2aESahw71+1bLbIdy0niI9Cg+W
-	 PWpAJ54U76CuKosP75c21T1dSU5Of6AxCB0rrHji72c4k06tcxcC0jxSpWgqoZ1EpGImF
-	 q+ifsDB/Apuc3AutMfKiEberbbkuLKRvKVTv9ZATfoQ8tKpclqgOdwaavvOh8rpzyS5RX
-	 UyMw1PNreKcDKaYEZWV9+p10q0IOk6/RGJrmH+dBXf3roGIYTkUuVQryd/c1X3CdoGoIf
-	 avoES/Vdd1AjfkrOdJ1L9Wl+xTZoWY34G72umuEriI51rG0CLQ8guh08CxPj/PfQcRA==
+	t=1794402254;
+	b=g1kL2ZFuxYkIoj5+7z9xoeMVhEhPQviL/WHPSRMupYhKSyi7n1FYzsQDfqC61sUObr9U
+	 FQGLdoGWB4rIRVWTLVY6md63iAqI5UmB2Wbhs7HK3EDhYqjsZ9Xr1UAVgB7T8bUwwq45j
+	 MI5HkNacUhHo5BPsLkKHrmN+5FN3xF8fpbtAulML6lHDg+LmYqSIW33cLB9bwUrmJNyyN
+	 MLkXejzzbiAilMLjXGWzFs6GMP6dySIE55C5VkEmMi9Bv9ZCo0vORAS6KmExn7+P1vlng
+	 vEXItdZPvWoSUTnctAbIkG1Z6zUrkpj1GigvRHRhCa0niRY4CNyr10XXRxHDlW2PToQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794402137;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=nX7qc9rNmcYIZ7uf5CPDonzii/Z2ibr+PLktCg4La0o=;
-	b=49kX97ORr1NDs9dcf4d4IyWtIWbbeq7mGki52++PxRGSmws2uKzdc5UDVgjqa2YYTw/u
-	 aUkNgtg2K0GPeoUz8V/sBYdXhLsq8wF37UhA7abzxJnpJqjXE1JkSj1nORcj79esXNAzz
-	 nXqLUmV5sKEfuehKp54XYHjKJdR47kCrIYpMTIGTv58ZKxoc1q3b42VJ+KnXBpG+4zAhb
-	 11Zwc+aUGoAI/0HPnCg1kwTClUBueJyaPguwiky54DLzkn0+VwC3H9Bs6utsfJXXhv4fr
-	 7dn5VjS5KfW8sXJ8RHcE+hTRH8XhS3tGn7KPdoinxv3srweQwdzHaAAzZCo40pqadqw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794402254;
+	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
+	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
+	 References:To:X-Mailer:X-ZohoMailClient;
+	bh=YNKbqnPxAy2kyKtQIxYMphXXlBnE1sy3rQHY1OtNP0o=;
+	b=eANHp2VkoHv8R4II/Ugsud1poZ6P0rV3AQ6MZY55cBuV6yIoZPSYq2+J7lZwEMkULMv/
+	 YrU4EVfU+AQQoZlN4BIxv7maXRXcZMlU3jpcD165jVM/LUXhE+Kz+1yD5a/lNf2xXvmFT
+	 TqWn1veJHZpi8ydp0B1bEB7hRrYENNVkySpBlTuuptitGw+iRBaCQZ8w09+a/Biq7TQh3
+	 DSjv9Fm7BXsYRa95ykpdBHbM+JtQsSGEHJLBiy44/zZ74y/qtEloUo8IKcZ0j8qwEkdtS
+	 kJLVm4KZ9yW0rkERtv/v7I9pF6dKM57H1yqHPi8wO6ssAQ2PdKfyde6sxx1roebTanw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XU2lr0rW;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.45
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=iUCXqri5;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E16D606A338
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Nov 2026 13:02:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E16D606A338
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9255C606A33D;
+	Wed, 11 Nov 2026 13:04:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9255C606A33D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XU2lr0rW
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-451a49abd8aso2992858fac.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Nov 2026 05:02:17 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794402136; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kI1iIkFOMjL6Pr8YSQb4S3ffM6ckHkWzjtiEAxcxQ5HzJ5cT0xvNtjJSy+Wf4FvI5v
-         KBnvCjYlvXgFY/6RAt4k8uPbwkCRedsIZAqxjPZkNTuK+yMAniW3o+D3QWOaYjVSKeti
-         bbOgvF/CeYCIWcN+egmNT2zfmLKrEk0OlJJonf6DiGxfVHGk7EfvvIdhYRYLFM5i+PeC
-         MVoQrZ9cAR2kzJlWt9hhxIs3954PoRzxUGQk0GMDBKuLDj1SrIk6txrd02HycgWjKSZB
-         zRtr7em3Gx2pT4MvtKTlUEN57i6aBI77//bowRMZbmE6kScbq+Y5DeCtPEKBpjNLzuR5
-         xV1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=nX7qc9rNmcYIZ7uf5CPDonzii/Z2ibr+PLktCg4La0o=;
-        fh=+rip9djQKqmqcy9P5mHOvdPM3Rt5FnZhfePmQlllDJU=;
-        b=VnszwYrRvpdvQbgtUxqcNgwfI2RietgRQfbyFMKgYes+UQWqk7Z95ciWY4WmcUorOq
-         9whjUHWWMnlXwx/h3SdtYSA/wRzhtPNxlGhhKsvAbOrd0/p+5pa1uWJNPdyX7ni+4stP
-         Jyy2ZlForkw30BdwNQ+mEH4c8O03GkKOEHheGddm1aEM0+S2s8r9gEqfWS9jk7xwpbtJ
-         HLETxNmJ0/LUel/YcoinC7PUPvSiliNHPvJEAqigEyR6Sv7B8dOepw/0Su4yvo0GqdbX
-         37+xWF5cBIKzPwGrZtWNL0kE77sfN6NKoSxDa2C9BYgsTetV4FSv7ozZiEBqTfh4Usza
-         IJmA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794402136; x=1795006936; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nX7qc9rNmcYIZ7uf5CPDonzii/Z2ibr+PLktCg4La0o=;
-        b=XU2lr0rWzFRjJIIJUzN04OUmRen1C1VcmIGzUXnaQVk6tg/62Lmfbbgx7t4GTgDNRE
-         rb8rVDc5VFFcOor9LRkTxhNbJAVq6m18xv+Vfr1d1On6AY2mjaLNmQYu6CTwa1xYSt4L
-         FdcQy6fo3o3MHaZjyAWtWH3UyQq5fQdTN1ZjSNCc+C7xds80ukr7KE4LZx1A6eb0H69x
-         w0PJC9RgsAlctoChVykksVv6uZRisbfaKmLxMtJJDHEdBpwrHzKpBUkTtCH/Kye8LOOb
-         FS/xLl4/LzHiiApjZTMiL9S7dJA0bEx9mAOmzipxWcVMd/cZcuXOvlupPj0I++EMCqHo
-         cRjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794402136; x=1795006936;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=nX7qc9rNmcYIZ7uf5CPDonzii/Z2ibr+PLktCg4La0o=;
-        b=OB8sLnVEswtrNdcuv+lNY5CQEOi9CO5TdR6ZIERlCeqlR54qfeycodAidyaMvP+O44
-         SA9HiD//8RSToJ4YdOb47Ry516D2gAP1bj0vj1Qx+lq1laFojlOS7wluio2NynTaikno
-         uFGhHPD0EznAfTvO44FTuuP/wNU6oOg6avTPaAUiS4/kvvogKUS91FRcQGh8UTUEf2jZ
-         UcjHpxjmnxUFewhjOkV8oHOooEB2/kWxW8cGYqCfMiMju1Z9F0hslw3bgtjKcQwfV2+Y
-         3cLgaprJ4HNZZJAi2fQsqa9X5vfKe2ztjt5Al3Gy3k1eCIpIS6u+2+UWiBZ4aMjtywLn
-         ZMPA==
-X-Forwarded-Encrypted: i=1; AL+hErHHMK+hZNFkW+JZBdRxPtygN1aCEgFCLPkg3DKwt/HcpDaInuY3J6np8S+Boc0pFK6iZXQfivgIf42lIAwlrw==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+s6ThbWcOffq4XlveEo1ampYw/Z+POUfLiQ548iiQpTvp/31Jt
-	88xieE5oIdd0WV0eSb6ujLlJdQAPKWFTg4XAkHlmyup2F7S1ZyyubqomupDySrwDL7Z0keM9j9s
-	gH0agn7nAtDHHrUcGOoDoGoSEoM2IyU4=
-X-Gm-Gg: AYBFou08Bdyw0i4qkKrpuaiptyUX55ArQC9qEZGeQneDRw+9WFu/h1Kc5hvzaReyBZB
-	xFWzIrffCClnXCS0caoBPwAAmyOiCOxbOBulk3EeKsBkT5YNI7VFDDC+odmOQ34+TDTzavO6Qdp
-	KyZj8OOU0wbFDav9gNYkfIZxS1jheXgutlgSDKmSxbbQY2sgrIDUWXMAzI1yuUeAg0JZCQHT04U
-	uncqhfj7p6C9qZHCV6tiW63UHfxGOwxrzQrI259Vigmoc4zN1EwOHNcVJZkinXpIJqt9Ol0rVuc
-	qey/ugKbrr5tBsZ/BSL4H0TSNDQAFYILlnztXCgDkb8AlP8pkIBFP7blDyMLvr+4gbwlGX1JSq1
-	a8K2ZXUPKgM0iBEExEnAmIbAs3o4AZUM6alPBXPxifEH0vp4saMotyGcdhy9PgMw2ljQNya8T3W
-	fP0l5NO7qRNn7W6QEYLnwqrPCDet1K+sqPv0AhmmocPKd/let9ympqtztt
-X-Received: by 2002:a05:6870:ac8d:b0:4ad:8667:442f with SMTP id
- 586e51a60fabf-4ae46b1d1aamr2290030fac.25.1794402136269; Wed, 11 Nov 2026
- 05:02:16 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=iUCXqri5
+ARC-Seal: i=1; a=rsa-sha256; t=1794402226; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Zh2WZxtb83wiwRb55pRxREL5E1WrfyKssqgEz5SCi92CW7JIemCmbhV1yFx0zfNB4HLzo8ucwBbftVkLr8vLtgD56heloJGjJgeTIpoKIPN1wz78hTT3/+TZi/eb1dMj5ClJklA/Z3JK5IrLbAAdGPnlaYaxMvu3CE0W/NlAuPM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1794402226; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=YNKbqnPxAy2kyKtQIxYMphXXlBnE1sy3rQHY1OtNP0o=; 
+	b=X1e+dM4k5IyuX5JjIXL+KLKDEqYIKs41O9z/fGRRTjynLSKGIxsjl0FssYE1L2yN4mZ6C0KDur/CqyYGa4rAeDAGaEr2b8LIJjlp2ZbsbM2m+8y0EBxqmeyK9HgEK0giPBHk+l4MiP/OJBe/tyuxs1850SNCYWoK9GOqkB97Dcg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=iUCXqri5yD3OP75C+gC4ZVBcwt7hvAazBVIpSV6pFx/07tOgbLBtVVSxIUNAv/0n4+eU7RBrPLRQWqStItspt3s+uOKz6SL0SV8ozwbF2aTNZSYNI0Y2jfpU6onvXsM1UoXvLro64Lc8Ml6TkQkxTKCa8wdofnk8RVLnsSU5kzQ=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=YNKbqnPxAy2kyKtQIxYMphXXlBnE1sy3rQHY1OtNP0o=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1794402223658550.9611442995573;
+	Wed, 11 Nov 2026 05:03:43 -0800 (PST)
+Content-Type: text/plain;
+	charset=us-ascii
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -103,51 +57,59 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261110-exp-phy-rs-maybelocked-v1-0-3023cc9055e9@gmail.com> <20261110-exp-phy-rs-maybelocked-v1-1-3023cc9055e9@gmail.com>
-In-Reply-To: <20261110-exp-phy-rs-maybelocked-v1-1-3023cc9055e9@gmail.com>
-From: =?UTF-8?B?7ZWY7Iq57KKF?= <engineer.jjhama@gmail.com>
-Date: Wed, 11 Nov 2026 22:02:04 +0900
-X-Gm-Features: AclHuK-SC0uSru3uT5u5C9HU1bsCE1Mn6-6Bwp33kN4egHoHVGBL0SbyXWSBoQA
-Message-ID: <CAGAB664Z1avii3rw6pSu4wT9eCmwYJ4R08ix2Z_YNm9KeEs-EQ@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/2] rust: net: phy: make Device generic over a
- lock context
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH 0/7] rust: io: add read-only and write-only views and
+ registers
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20261020080147.1743459-1-aliceryhl@google.com>
+Date: Wed, 11 Nov 2026 10:03:25 -0300
+Cc: Danilo Krummrich <dakr@kernel.org>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ driver-core@lists.linux.dev,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org,
+ dri-devel@lists.freedesktop.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <D2C021BF-4C1D-46B7-A6CF-9C76C56805B0@collabora.com>
+References: <20261015-io-access-modes-v1-0-93611b84b5e3@collabora.com>
+ <20261020080147.1743459-1-aliceryhl@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-ZohoMailClient: External
 
-Sashiko's review of this patch was sent off-list [1], so I am replying
-here.
 
-> Can calling genphy_soft_reset() on a Device<MaybeLocked> cause a data race
-> on struct phy_device fields and bitfields when a Device<Locked> callback
-> runs concurrently?
+Gary,
 
-The race comes from the caller, not from this series. PHYLIB calls
-soft_reset without `phydev->lock` on some paths, and on those paths
-`genphy_soft_reset()` and `phy_init_hw()` itself touch these fields the same
-way for every C driver. This series does not change what runs there; it
-makes the Rust interface match that contract, so a soft_reset
-implementation no longer gets a `&mut Device<Locked>` and cannot call the
-methods that rely on the lock. Before it, the callback could do strictly
-more on the same path.
+> On 20 Oct 2026, at 05:01, Alice Ryhl <aliceryhl@google.com> wrote:
+> 
+> On Thu, Oct 15, 2026 at 04:19:40PM -0300, Daniel Almeida wrote:
+>> This series adds read-only and write-only I/O views, and the #[ro]
+>> and #[wo] attributes to register!. An access in the wrong direction
+>> then does not compile.
+> 
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> 
+> I heard a suggestion that it'd be better to drop the Io from these trait
+> names so they are just Readable and Writable, because not all
+> implementations do IO (i.e. if it's SysMem it's arguably not IO). Not
+> super important to me, though.
+> 
 
-> Should the methods in impl<Ctx: PhyContext> Device<Ctx>, Deref::deref(),
-> AsRef::as_ref(), and the Register::read() and Register::write()
-> implementations [...] have #[inline] annotations?
-
-The moved methods did not have `#[inline]` before. This patch only moves them.
-I can add it in v2 if that is preferred.
-
-[1] https://sashiko.dev/#/patchset/20261110-exp-phy-rs-maybelocked-v1-0-3023cc9055e9@gmail.com?part=1
+Any further thoughts on this series other than the feedback you have
+already shared?
