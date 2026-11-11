@@ -1,99 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.75.114
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.45
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794402049;
-	b=uQdwjFZG5So7fQ5Hb7gPx4/nlnOw4/2enYtnRd1UNWb70bsACHR79Zw+lRoo4kDrJFDd
-	 IcELM3ZyFb8k/QdoP/UuYSKPQ6mxim3xD+kK5+H48RoUyW2mPEvibvzSIzszFDbu4k1LH
-	 IoKMm1NpHtAMFCgGvPOMpZ763bCJpeV8MP0TTE4WoDs60lq7DSuSNt4ixJ0GC1HC8eJtt
-	 bzwuJyJliBExHgP87O4JU/cIt6yEYovniX3t3p0kA3I5ldmeNpm7x9n/BxP4fLmFjiyc6
-	 qClU1Xoppqag+Eks8lv8lrC7V+FurVx9ucFnbVq7kRHvOPBbB8e5FafhPTsKoSL5uEw==
+	t=1794402137;
+	b=CElNSO3eXDPsRipdqOb1wE+WwRmrXDdhqQ+1V7zLYZ2aESahw71+1bLbIdy0niI9Cg+W
+	 PWpAJ54U76CuKosP75c21T1dSU5Of6AxCB0rrHji72c4k06tcxcC0jxSpWgqoZ1EpGImF
+	 q+ifsDB/Apuc3AutMfKiEberbbkuLKRvKVTv9ZATfoQ8tKpclqgOdwaavvOh8rpzyS5RX
+	 UyMw1PNreKcDKaYEZWV9+p10q0IOk6/RGJrmH+dBXf3roGIYTkUuVQryd/c1X3CdoGoIf
+	 avoES/Vdd1AjfkrOdJ1L9Wl+xTZoWY34G72umuEriI51rG0CLQ8guh08CxPj/PfQcRA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794402049;
-	h=DMARC-Filter:Received:Received:X-MS-Exchange-Authentication-Results:
-	 Received-SPF:Received:Received:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=iORx3w5FkLYMo5FmpEuyNzVrPoVAC1WcY+wYqaiaaH8=;
-	b=kOAF8VWpzciGa5B89eAS5x2GOE9CwANG/XRUAc4yYkYMdjk3ucJKcW0wji+NKvPceEJl
-	 x85y2ce4l3knI8L7PqZlbLqGMh5NprLrI9+Fewiiqi1110u8CdJqCjuoFo+dVA9Z4r4ZT
-	 XwQzd90IZtaCVESBUUt4J+fB2D2IPDTkQGkDjsvpxg6uh2hiWQ3xfFEI4eXvwN5Jj3wIj
-	 Ztoh76NZj5UOdnfTfynazOQm2EN8O+J9t5UrSVaxF/L8O2VulzwwmzPU+aH0qgBUuVJU6
-	 h/7yVa4IsWNp68TgXQe2LVMUDMQkJY/W5c7xzna0Uk46C//6RomByJDCXiIK/YLfIsA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794402137;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=nX7qc9rNmcYIZ7uf5CPDonzii/Z2ibr+PLktCg4La0o=;
+	b=49kX97ORr1NDs9dcf4d4IyWtIWbbeq7mGki52++PxRGSmws2uKzdc5UDVgjqa2YYTw/u
+	 aUkNgtg2K0GPeoUz8V/sBYdXhLsq8wF37UhA7abzxJnpJqjXE1JkSj1nORcj79esXNAzz
+	 nXqLUmV5sKEfuehKp54XYHjKJdR47kCrIYpMTIGTv58ZKxoc1q3b42VJ+KnXBpG+4zAhb
+	 11Zwc+aUGoAI/0HPnCg1kwTClUBueJyaPguwiky54DLzkn0+VwC3H9Bs6utsfJXXhv4fr
+	 7dn5VjS5KfW8sXJ8RHcE+hTRH8XhS3tGn7KPdoinxv3srweQwdzHaAAzZCo40pqadqw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=cixtech.com;
-	spf=pass smtp.mailfrom=cixtech.com;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.75.114
-Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazon11022114.outbound.protection.outlook.com [40.107.75.114])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XU2lr0rW;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.45
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066AC606A32E;
-	Wed, 11 Nov 2026 13:00:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 066AC606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cixtech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cixtech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NUkkZmtpLoz5DRJhCkOhmR3Jen7fBaA1wVYajG6hMe5XlUyKbq3QVzXwvOaSSLLMmI9iaUDioUDmg3MwOazuLEktDZZr43yXP29ZEvej87ePdEck9za2wLxfDE22kLCQdhVza7CNxx7KhmreaaMZG+yWgTAm0D1aBWnzhxdUVayHt6Gua74i2kourRxofvj22V7cWX8j2pSViYHRlDawxcnbEiMqr6nFkjcAEMexA7FHxAf9qy+AMbPRTR3OcPZJmvZi2Kzg1PzqLn29oan1DAnv7fvbsQGkkQcwz9pJjKchJbxdCEybO7aI4foESWFmDT1rfmWRQu4BOand9QSRkg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iORx3w5FkLYMo5FmpEuyNzVrPoVAC1WcY+wYqaiaaH8=;
- b=Jc8JkaiqeHWWeBAEnYpgpIwIN/kNSmrdnz6yDBmXVu/8ULzOeIkjzhFur8J0IEHIYG+JN7eI0d8Scanb6/TxImN3SVwQF+n8fZvn/6CJSJmjQ/H1o9Rkta+Ijw2jLinJ/HujWuaI8e34syfedGYFJWpK1J5dgfhGT26c00MTeFkIvf8seSJmfmZqBvTmjvA1TnqCFUpQF/ofAguFjd4Jo2/Sm9/a6f+bLL5djXVCbaQTq3Stn1Lhe3LXOva1bqe6SGy8V7u/LYEVpkCz5+59PDnKfQDGng93cLMKgfBbpa1uWZrFhx50KRhoV25nhX65Kt36b2l4DDmTJHRTHKKUaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 222.71.101.198) smtp.rcpttodomain=arm.com smtp.mailfrom=cixtech.com;
- dmarc=bestguesspass action=none header.from=cixtech.com; dkim=none (message
- not signed); arc=none (0)
-Received: from TYCP286CA0223.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:3c5::11)
- by TY8PR06MB9294.apcprd06.prod.outlook.com (2603:1096:405:3a8::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Wed, 11 Nov
- 2026 13:00:42 +0000
-Received: from TY2PEPF0000AB83.apcprd03.prod.outlook.com
- (2603:1096:400:3c5:cafe::6e) by TYCP286CA0223.outlook.office365.com
- (2603:1096:400:3c5::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.9 via Frontend Transport; Wed, 11
- Nov 2026 13:00:37 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 222.71.101.198) smtp.mailfrom=cixtech.com; dkim=none (message not signed)
- header.d=none;dmarc=bestguesspass action=none header.from=cixtech.com;
-Received-SPF: Pass (protection.outlook.com: domain of cixtech.com designates
- 222.71.101.198 as permitted sender) receiver=protection.outlook.com;
- client-ip=222.71.101.198; helo=smtprelay.cixcomputing.com; pr=C
-Received: from smtprelay.cixcomputing.com (222.71.101.198) by
- TY2PEPF0000AB83.mail.protection.outlook.com (10.167.253.4) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Wed, 11 Nov 2026 13:00:37 +0000
-Received: from cix (unknown [172.16.64.42])
-	by smtprelay.cixcomputing.com (Postfix) with ESMTPSA id 253DD4102E73;
-	Wed, 11 Nov 2026 21:00:36 +0800 (CST)
-Date: Wed, 11 Nov 2026 21:00:35 +0800
-From: Cunyuan Liu <cunyuan.liu@cixtech.com>
-To: Liviu Dudau <liviu.dudau@arm.com>
-Cc: boris.brezillon@collabora.com, steven.price@arm.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, gary.yang@cixtech.com,
-	fugang.duan@cixtech.com, daniel.almeida@collabora.com,
-	aliceryhl@google.com, p.zabel@pengutronix.de,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, cix-kernel-upstream@cixtech.com,
-	robin.wang@cixtech.com
-Subject: Re: [PATCH v2 2/3] drm/panthor: Add initial support for CIX Sky1
-Message-ID: <avRm82TLBe6I6LAD@cix>
-References: <20261109120902.125242-1-cunyuan.liu@cixtech.com>
- <20261109120902.125242-3-cunyuan.liu@cixtech.com>
- <avLsAlL048MtIX4x@e142607>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E16D606A338
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Nov 2026 13:02:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E16D606A338
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XU2lr0rW
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-451a49abd8aso2992858fac.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Nov 2026 05:02:17 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794402136; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kI1iIkFOMjL6Pr8YSQb4S3ffM6ckHkWzjtiEAxcxQ5HzJ5cT0xvNtjJSy+Wf4FvI5v
+         KBnvCjYlvXgFY/6RAt4k8uPbwkCRedsIZAqxjPZkNTuK+yMAniW3o+D3QWOaYjVSKeti
+         bbOgvF/CeYCIWcN+egmNT2zfmLKrEk0OlJJonf6DiGxfVHGk7EfvvIdhYRYLFM5i+PeC
+         MVoQrZ9cAR2kzJlWt9hhxIs3954PoRzxUGQk0GMDBKuLDj1SrIk6txrd02HycgWjKSZB
+         zRtr7em3Gx2pT4MvtKTlUEN57i6aBI77//bowRMZbmE6kScbq+Y5DeCtPEKBpjNLzuR5
+         xV1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=nX7qc9rNmcYIZ7uf5CPDonzii/Z2ibr+PLktCg4La0o=;
+        fh=+rip9djQKqmqcy9P5mHOvdPM3Rt5FnZhfePmQlllDJU=;
+        b=VnszwYrRvpdvQbgtUxqcNgwfI2RietgRQfbyFMKgYes+UQWqk7Z95ciWY4WmcUorOq
+         9whjUHWWMnlXwx/h3SdtYSA/wRzhtPNxlGhhKsvAbOrd0/p+5pa1uWJNPdyX7ni+4stP
+         Jyy2ZlForkw30BdwNQ+mEH4c8O03GkKOEHheGddm1aEM0+S2s8r9gEqfWS9jk7xwpbtJ
+         HLETxNmJ0/LUel/YcoinC7PUPvSiliNHPvJEAqigEyR6Sv7B8dOepw/0Su4yvo0GqdbX
+         37+xWF5cBIKzPwGrZtWNL0kE77sfN6NKoSxDa2C9BYgsTetV4FSv7ozZiEBqTfh4Usza
+         IJmA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794402136; x=1795006936; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nX7qc9rNmcYIZ7uf5CPDonzii/Z2ibr+PLktCg4La0o=;
+        b=XU2lr0rWzFRjJIIJUzN04OUmRen1C1VcmIGzUXnaQVk6tg/62Lmfbbgx7t4GTgDNRE
+         rb8rVDc5VFFcOor9LRkTxhNbJAVq6m18xv+Vfr1d1On6AY2mjaLNmQYu6CTwa1xYSt4L
+         FdcQy6fo3o3MHaZjyAWtWH3UyQq5fQdTN1ZjSNCc+C7xds80ukr7KE4LZx1A6eb0H69x
+         w0PJC9RgsAlctoChVykksVv6uZRisbfaKmLxMtJJDHEdBpwrHzKpBUkTtCH/Kye8LOOb
+         FS/xLl4/LzHiiApjZTMiL9S7dJA0bEx9mAOmzipxWcVMd/cZcuXOvlupPj0I++EMCqHo
+         cRjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794402136; x=1795006936;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=nX7qc9rNmcYIZ7uf5CPDonzii/Z2ibr+PLktCg4La0o=;
+        b=OB8sLnVEswtrNdcuv+lNY5CQEOi9CO5TdR6ZIERlCeqlR54qfeycodAidyaMvP+O44
+         SA9HiD//8RSToJ4YdOb47Ry516D2gAP1bj0vj1Qx+lq1laFojlOS7wluio2NynTaikno
+         uFGhHPD0EznAfTvO44FTuuP/wNU6oOg6avTPaAUiS4/kvvogKUS91FRcQGh8UTUEf2jZ
+         UcjHpxjmnxUFewhjOkV8oHOooEB2/kWxW8cGYqCfMiMju1Z9F0hslw3bgtjKcQwfV2+Y
+         3cLgaprJ4HNZZJAi2fQsqa9X5vfKe2ztjt5Al3Gy3k1eCIpIS6u+2+UWiBZ4aMjtywLn
+         ZMPA==
+X-Forwarded-Encrypted: i=1; AL+hErHHMK+hZNFkW+JZBdRxPtygN1aCEgFCLPkg3DKwt/HcpDaInuY3J6np8S+Boc0pFK6iZXQfivgIf42lIAwlrw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+s6ThbWcOffq4XlveEo1ampYw/Z+POUfLiQ548iiQpTvp/31Jt
+	88xieE5oIdd0WV0eSb6ujLlJdQAPKWFTg4XAkHlmyup2F7S1ZyyubqomupDySrwDL7Z0keM9j9s
+	gH0agn7nAtDHHrUcGOoDoGoSEoM2IyU4=
+X-Gm-Gg: AYBFou08Bdyw0i4qkKrpuaiptyUX55ArQC9qEZGeQneDRw+9WFu/h1Kc5hvzaReyBZB
+	xFWzIrffCClnXCS0caoBPwAAmyOiCOxbOBulk3EeKsBkT5YNI7VFDDC+odmOQ34+TDTzavO6Qdp
+	KyZj8OOU0wbFDav9gNYkfIZxS1jheXgutlgSDKmSxbbQY2sgrIDUWXMAzI1yuUeAg0JZCQHT04U
+	uncqhfj7p6C9qZHCV6tiW63UHfxGOwxrzQrI259Vigmoc4zN1EwOHNcVJZkinXpIJqt9Ol0rVuc
+	qey/ugKbrr5tBsZ/BSL4H0TSNDQAFYILlnztXCgDkb8AlP8pkIBFP7blDyMLvr+4gbwlGX1JSq1
+	a8K2ZXUPKgM0iBEExEnAmIbAs3o4AZUM6alPBXPxifEH0vp4saMotyGcdhy9PgMw2ljQNya8T3W
+	fP0l5NO7qRNn7W6QEYLnwqrPCDet1K+sqPv0AhmmocPKd/let9ympqtztt
+X-Received: by 2002:a05:6870:ac8d:b0:4ad:8667:442f with SMTP id
+ 586e51a60fabf-4ae46b1d1aamr2290030fac.25.1794402136269; Wed, 11 Nov 2026
+ 05:02:16 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -103,175 +104,50 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <avLsAlL048MtIX4x@e142607>
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY2PEPF0000AB83:EE_|TY8PR06MB9294:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1058a81c-8b23-406c-cc4c-08df3ff3c821
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|7416014|1800799024|36860700016|82310400026|261026140227099003|4143699003|261009223027099003|261102123227099003|261028144727099003|56012099006|261022105027099003|261022075727099003|261021121427099003|261026121527099003|18002099003|22082099003|3023799007|6133799003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	fDcTr1lDRK66cXs8/fcaA4kToAqxka9eA2MuAgDYbdJiPgSi73dkh0p+VmrEB2Jtrvt9EeQ//y1qE/RHWrW6Lcj61ug5tHJitPec0IXpU6KCYVNSkGix+SBPa9zCYrtFm/sQS3AMTK5gegekNqhSccuI1+nYy7SgO5LeHuYsx4YnQD8lPInI3v4iq/YCMSCKqfeDMqVqVL7aXPRrF8Js4UPsePy5wlTpIV5oAZTX/dPjuRFDcAPSzCrzmnIygfuzf6eKCIaUBsLdKT0zw6ZJ62s4tvdUOBQriL4Oyy7IwmaviHvOhrd6XvIJJd+hJmLKWKBkTXrTfddLc5lNQ1D5CgFitsgxb0ZwIXivhzbzz1bJLRWsuNLGvjbAZb2f5Caf/KTAo+01sdkuN4PcvixjogsipRqp2LWPLKu26Oo2r4K+pfZzpoZXSA5md/yn4bPYxN+A2BdfoiPYeuR4whgo9CIE4Vi5GTLpNA06+iPprb7VY9/kxwB1tkbJmYYCYcr02hfDZWGpd3AHWw4Mx5Sw8KWhOEoLg/91tnrQrBAZDaN+2Z5O7q+rQo/w89P80ED2j3AJF6dqWxx15oEheFYq/YZAjHr6Lx5P6hBH12MB4bWq0H2xISsDP+NV+vuxBox4NrVhgQwUXPvyjCMMuCiD/9hZhhkOmwLv56LAzxSEGWz7XdCz+EUOyRQ+SID0tfYhqpPElZ4DXEwNghrffuMa5w==
-X-Forefront-Antispam-Report:
-	CIP:222.71.101.198;CTRY:CN;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:smtprelay.cixcomputing.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(1800799024)(36860700016)(82310400026)(261026140227099003)(4143699003)(261009223027099003)(261102123227099003)(261028144727099003)(56012099006)(261022105027099003)(261022075727099003)(261021121427099003)(261026121527099003)(18002099003)(22082099003)(3023799007)(6133799003)(10067099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	RoREtYnLJUtQStPBchIxbhzgggkF684xAmSz+SPqrDYoIWgMlvhoLoahvtcrymKTmvqYxosjTT0A1mPMD5updFA1fUG2EIHQQObcVRIf55MtDNd1Ue939aA7K1PZE6Gh+cjGgN1acUoM9VHHmFTBhyJ2Vm0IA1dxdsYMU+QhBb/Ol4nEiOUGw9BYSTb+AG8DJqDj8Aa9ZK39YwYgpaKevX0lyvJGrZfJA+1pv4CHSBP/898fV8T93KmVsiHviZvCCbL7vYPsk0QF1gxWV4KP4/zUCqGbhZKQehs8ge9r3uuIGyfgPehRR820m+XFe6U+O/AVazTIX6yEOKkDfxkXZ/bPRq3JgL+ra1IVMgVgRUYQwql8wskNWUBWFx8QDYMreQUGxJi3GiST2fhVHRvQhCe8t9MeIXtqKGD7szLKb8m67HJboacyPtnmQDerCnHk
-X-OriginatorOrg: cixtech.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 13:00:37.3748
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1058a81c-8b23-406c-cc4c-08df3ff3c821
-X-MS-Exchange-CrossTenant-Id: 0409f77a-e53d-4d23-943e-ccade7cb4811
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0409f77a-e53d-4d23-943e-ccade7cb4811;Ip=[222.71.101.198];Helo=[smtprelay.cixcomputing.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	TY2PEPF0000AB83.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY8PR06MB9294
+References: <20261110-exp-phy-rs-maybelocked-v1-0-3023cc9055e9@gmail.com> <20261110-exp-phy-rs-maybelocked-v1-1-3023cc9055e9@gmail.com>
+In-Reply-To: <20261110-exp-phy-rs-maybelocked-v1-1-3023cc9055e9@gmail.com>
+From: =?UTF-8?B?7ZWY7Iq57KKF?= <engineer.jjhama@gmail.com>
+Date: Wed, 11 Nov 2026 22:02:04 +0900
+X-Gm-Features: AclHuK-SC0uSru3uT5u5C9HU1bsCE1Mn6-6Bwp33kN4egHoHVGBL0SbyXWSBoQA
+Message-ID: <CAGAB664Z1avii3rw6pSu4wT9eCmwYJ4R08ix2Z_YNm9KeEs-EQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 1/2] rust: net: phy: make Device generic over a
+ lock context
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Liviu,
+Sashiko's review of this patch was sent off-list [1], so I am replying
+here.
 
-Thanks for your review.
+> Can calling genphy_soft_reset() on a Device<MaybeLocked> cause a data race
+> on struct phy_device fields and bitfields when a Device<Locked> callback
+> runs concurrently?
 
-On 2026-11-10 10:03:46 +0000, Liviu Dudau wrote:
-> > The GPU on CIX Sky1 needs an external reset before the driver first
-> > accesses the hardware. Without this reset, the GPU hardware cannot be
-> > accessed correctly. Acquire an optional exclusive reset for all platforms
-> > and apply it after enabling the clocks during initial probe. Platforms
-> > without a reset keep working through the reset framework NULL handling.
-> 
-> Adding support for an external reset should be separate from the enablement
-> of Sky1 GPU.
+The race comes from the caller, not from this series. PHYLIB calls
+soft_reset without `phydev->lock` on some paths, and on those paths
+`genphy_soft_reset()` and `phy_init_hw()` itself touch these fields the same
+way for every C driver. This series does not change what runs there; it
+makes the Rust interface match that contract, so a soft_reset
+implementation no longer gets a `&mut Device<Locked>` and cannot call the
+methods that rely on the lock. Before it, the callback could do strictly
+more on the same path.
 
-I will move the external reset support into a separate patch.
+> Should the methods in impl<Ctx: PhyContext> Device<Ctx>, Deref::deref(),
+> AsRef::as_ref(), and the Register::read() and Register::write()
+> implementations [...] have #[inline] annotations?
 
-> >
-> > Configure SYSC_ALLOC before L2 power-on. Without these settings, GPU
-> > rendering results are displayed incorrectly.
-> 
-> Adding support for SYSC_ALLOC should be a separate patch. It can be used
-> by other SoCs as well, not just Sky1.
+The moved methods did not have `#[inline]` before. This patch only moves them.
+I can add it in v2 if that is preferred.
 
-I will also move the SYSC_ALLOC support into a separate patch.
-
-> >
-> > Keep the clock settings provided by the PM firmware. This first version
-> > does not read OPPs or enable devfreq. It does not register a GPU cooling
-> > device.
-> 
-> This looks like a stop gap measure. What is your plan here? When do you
-> think you might be able to provide OPP and devfreq support and what is
-> the hold up?
-
-The PM firmware already provides GPU performance states through SCMI.
-However, some states describe both a clock frequency and a shader-core
-configuration.
-
-For example, the vendor driver interprets levels 72 and 216, exposed
-as nominal 72 MHz and 216 MHz OPPs, as 350 MHz with two and six shader
-cores. They are not actual clock rates of 72 MHz and 216 MHz.
-
-Importing the firmware OPP table alone is therefore not enough.
-Panthor also needs to distinguish these performance values from the
-actual clock rates and safely change the shader-core configuration
-during performance-state transitions.
-
-I plan to implement and validate this in a separate patch series.
-I do not yet have a firm submission date.
-
-> > --- a/drivers/gpu/drm/panthor/panthor_devfreq.c
-> > +++ b/drivers/gpu/drm/panthor/panthor_devfreq.c
-> > @@ -154,6 +154,12 @@ int panthor_devfreq_init(struct panthor_device *ptdev)
-> >
-> >       ptdev->devfreq = pdevfreq;
-> >
-> > +     /* Keep the firmware clock settings until Sky1 devfreq is supported. */
-> > +     if (ptdev->soc_data && ptdev->soc_data->skip_devfreq) {
-> > +             ptdev->fast_rate = clk_get_rate(ptdev->clks.core);
-> > +             return 0;
-> > +     }
-> 
-> This should not be in the driver. If you want to have a fixed frequency just use a fixed
-> clock provider, or make the clock provider query the firmware for the value.
-
-Sky1 already uses the SCMI clock provider to query the actual clock
-rate and control clock enable and disable through the PM firmware.
-
-I tested removing the skip_devfreq early return while keeping the
-SCMI clocks. The driver correctly read the core clock as 900 MHz,
-but probe failed because the normal initialization path requires an
-OPP table. Changing to a fixed-clock provider alone would still leave
-this issue.
-
-I have now tried the approach used by Panfrost: if adding the OPP
-table returns -ENODEV, continue without devfreq. Other errors are
-still returned:
-
-  ret = devm_pm_opp_of_add_table(dev);
-  if (ret == -ENODEV) {
-    /* Keep the clock provider's rate when no OPP table is present. */
-    ptdev->fast_rate = clk_get_rate(ptdev->clks.core);
-    return 0;
-  }
-  if (ret)
-    return ret;
-
-The current frequency is read from the clock provider, and the
-Sky1-specific skip_devfreq flag is removed.
-
-This passed probe, rendering, runtime suspend/resume and module
-reload tests on Orion O6. Would this generic no-OPP approach be
-acceptable for the initial support?
-
-> >
-> > diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
-> > index dc8d0191aef4..4d7b1230cd7b 100644
-> > --- a/drivers/gpu/drm/panthor/panthor_drv.c
-> > +++ b/drivers/gpu/drm/panthor/panthor_drv.c
-> > @@ -1872,12 +1872,26 @@ static struct attribute *panthor_attrs[] = {
-> >
-> >  ATTRIBUTE_GROUPS(panthor);
-> >
-> > +static const struct panthor_sysc_config sysc_config_cix_sky1 = {
-> > +     /* Sky1 needs these SYSC_ALLOC policies for correct display of GPU output. */
-> > +     .alloc = {
-> > +             0x00230000, 0x00000023, 0x00000000, 0x00000000,
-> > +             0x00523222, 0x00523200, 0x00000022, 0x00000032,
-> > +     },
-> > +};
-> 
-> These should not be in the driver but in the device tree bindings. If you extract
-> the system cache code into a separate patch we can have a proper discussion there.
-
-I will move the eight SYSC_ALLOC values into a DT property, such as
-arm,sysc-alloc, and submit the system-cache support as a separate patch.
-
-> >
-> > +static void panthor_gpu_sysc_config_set(struct panthor_device *ptdev)
-> > +{
-> > +     const struct panthor_sysc_config *config;
-> > +     unsigned int i;
-> > +
-> > +     if (!ptdev->soc_data || !ptdev->soc_data->sysc_config)
-> > +             return;
-> > +
-> > +     config = ptdev->soc_data->sysc_config;
-> > +     for (i = 0; i < ARRAY_SIZE(config->alloc); i++)
-> > +             gpu_write(ptdev->gpu->iomem, GPU_SYSC_ALLOC(i), config->alloc[i]);
-> 
-> This will crash for arch10 GPUs. I know that you're relying here on soc_data not having
-> the fields filled in, but if we move the sysc_config data to being provided by DT, we
-> need to check here.
-
-I will add an architecture check to reject the configuration on
-arch10 GPUs before accessing SYSC_ALLOC. I will also guard the
-register-write function.
-
-I will wait for your feedback on the no-OPP approach before sending v3.
-
-Best regards,
-Cunyuan
+[1] https://sashiko.dev/#/patchset/20261110-exp-phy-rs-maybelocked-v1-0-3023cc9055e9@gmail.com?part=1
