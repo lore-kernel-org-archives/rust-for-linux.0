@@ -1,62 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794413987;
-	b=DoCUsr+yTDhxoOpkwplnHF2EGDxGOtsX7w+ryw7b4+Ow5ziJjJg1k4FctAQhcgiQHsBf
-	 fWa5JSsHeyFR5GCrVXSC42JFyFVZRngNZpGFuEqi1rqsJZrApOFdb+ZoZ0kdHQvJsBbKI
-	 qUzoZMOoI3UryWMI9/9/rb3f6hH9YpTV5xTesiHy8h8EQ/IQorcDzolJPhBi/ZOByRxfK
-	 p3yEQxDT/dVTH/LnlA3aLjutnW4G1hemI5+xsEjS2hMKGeCPKNbIbqHwiaZh3hva1tvVP
-	 /IMMaSBgGOnpejQqARN9fXdCcfJ1UL0pkhkWzAbf8w0zY5UEVebuu0xH0qSktmeJ+JA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794413987;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=lGLmK5dw4SpXx2ZnUwOnF7DJKetT8Q6/Wf0ECSIHbMo=;
-	b=5QoAyrr0pmGlkM3SlsYC98AyaJTLJ9XMjPSWBDWYJTmRAfsDZ1DGS9vVRJuRrTDBwn9M
-	 djnyA98xzJ2aalyJG1xhn1RdGbj7QtXrm+/jnDz57wyie+ZCDpGkARBbPcfNQ7ibBgSEt
-	 jV8hZNboN2dMR2xg4svvANkvNmc7xOuF/vcf0/Oeex+SnCJvM6NLRC5kDPgBX7qmNtVhn
-	 s8/NFUIUW1c9RRoybhj1huTbzfgPlUMnyTHbW1axPK71sISytgABla6HoSVGyd/1goxlz
-	 PNfBtEJPay1gaT/wSM4vI7TvJVxuN++a1Ea6CgdpSypBusVac5LSvZP0toN+EYZWtfA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MsFwQou3;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794416098;
+	b=Ppp4aPirZB3ZUjxTnnejucHR4jwndTvQd+R16VR2xeJiFTmIBQ/H3DYzxvFaFPRznmUz
+	 obcaren5xmhFJLcO8RIhTElxRhbY6ciiVYo0ZFwyOqDnPvuxVsXcToD69FTRTPwADSZtD
+	 XNFMBChZYc+2ANAKArRZFSrfGXRt+EDcQ7z3IrdxtRqAqcTVmiRDvQz0RI3I8+IclXOr8
+	 GirCJDQ5A3eZQfkBQxtgPZYyX9pVKvByqdyNf3e5LyhOQ8bfgEWCqYUjfv+XFK90U1Uvv
+	 w5n+tFHU74l6Hr1jmi4jcBEmDdNbYzlrHxQzhIPiAdQiGVDHY8m+RtyAIpS0TeziSyQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794416098;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Message-ID:
+	 In-Reply-To:References:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Importance:User-Agent:X-Mailer;
+	bh=anBX1iahvKt8bwlS8JRUYhxSTZUTNVrvDroUXrWSpb8=;
+	b=lXaxgHlQHIrJn1d+inkax5TX+UefExrlZ7ZEY/uz/+CQuem6btV8Lb1eEYpBNgfVPnYw
+	 GRDbqz0zzU3u0dje9uoSRCepdL2kLV9JsWeII56z/Psh2aIpTDYyQf36900Z/LRerfTdc
+	 lKbiBcudUxhrUHvGsc29tgPiGDwD3/ngxDoYPHd0e3Mq/ks9kNIeF95NQEvDdsDu6c81q
+	 qP8XFKB3AjzclwcAE094DmraYf/1Z9DLg+Vj96lgjrZR22GKlcI7Vv5DhAD9qqeo52+2c
+	 /De/j6IsCsvuvJVt0xwT47bfM0a3u49N+cj+/dXv/F4RD8uUR70adNp2U2ragEZOF0A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b="YrRCI/SC";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A0D60A260B;
-	Wed, 11 Nov 2026 16:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EB2606A338;
+	Wed, 11 Nov 2026 16:54:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66EB2606A338
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MsFwQou3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F191F00A08;
-	Wed, 11 Nov 2026 16:19:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794413986;
-	bh=lGLmK5dw4SpXx2ZnUwOnF7DJKetT8Q6/Wf0ECSIHbMo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MsFwQou3JJylY8p+5sJ8/TyxGF1Vcnk2S/XzUX5JtxWrdX1B6XW1MNIHBOzHcMhDP
-	 3ijVBGtGps+wx2EgDp81Das4IFzG+lcVxXtoUrLJEO8Ci+G5Ul/D5dBw84Tx2Jiu3E
-	 QTlwOG/6N9fLiOKp7oW5pN5utIytwu5SGh0R093NjRRoKuUPMPp8bxzKsgFzgUdHKH
-	 4gmnKYV1HjwFuBkjYZKqI5sQynjWluoq6xObw3Q0WcpzF1BQKLlZLCvHkpbf4FS0Y3
-	 nleXy+PLY1AK/WSo9dWQ0sO+zNT5HvG7LlWeEcOew6kaQUwvCLr9gEz9BO5gwiNtOJ
-	 8ml2u63bIPnTg==
-From: Danilo Krummrich <dakr@kernel.org>
-To: dakr@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	lossin@kernel.org,
-	gary@garyguo.net
-Cc: nova-gpu@lists.linux.dev,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] gpu: nova-core: use pin-init self-referential support
-Date: Wed, 11 Nov 2026 17:19:03 +0100
-Message-ID: <20261111161935.750047-2-dakr@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261111161935.750047-1-dakr@kernel.org>
-References: <20261111161935.750047-1-dakr@kernel.org>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=YrRCI/SC
+ARC-Seal: i=1; a=rsa-sha256; t=1794416045; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=MtTGZx4kbRO7jubVIf2+B7jKJWmy8aP1wK1Az6LPjajCTNhMbkLd2PNQiwCvjmGlnzknYrpNeEHEc5du38u8KKGdwpW6CjFFyFPn5qO2oXmaiiVmb271fBaTUVqMoV/n7JEbyc98/PwElPfLfyX0AGWBlGbynLWgPE839jFaF3o=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1794416045; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=anBX1iahvKt8bwlS8JRUYhxSTZUTNVrvDroUXrWSpb8=; 
+	b=bIrPcfQGvmUstLvfOrclgBBgRWPfxLaVD8Gu3ouqkSC7SaumggN/2V0dyH8QeCY3NHw+8FXywTw229MAegdvhYAmTCf/oUjnwcQGHkR8ib5Rt5EhwbGsvlaCYJ1vD5RaNEk3q/80HpqBblqnG4zXAM5cIE/w8ztTG733YYDcx10=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=YrRCI/SCYZnWGK6UWC56IKByqgiyk5EnemJkzINpCd5B08tLFoIuKCQ4HvHJlIywJ3bo9w3FD73tl7qFmbP0rtHWWra6odsIjsk0KLa/caLmx6vXuq4DhElAxyPoPFyWKiSDoNajrGIDJ6XJdNd5zbXjK7HC0Ltv2YDoMnRHQ6I=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=anBX1iahvKt8bwlS8JRUYhxSTZUTNVrvDroUXrWSpb8=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 1794416041785477.2653723756649; Wed, 11 Nov 2026 08:54:01 -0800 (PST)
+Date: Wed, 11 Nov 2026 13:54:01 -0300
+From: Daniel Almeida <daniel.almeida@collabora.com>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	"Viresh Kumar" <viresh.kumar@linaro.org>,
+	"Danilo Krummrich" <dakr@kernel.org>,
+	"Alice Ryhl" <aliceryhl@google.com>,
+	"David Airlie" <airlied@gmail.com>,
+	"Simona Vetter" <simona@ffwll.ch>,
+	"Michal Wilczynski" <m.wilczynski@samsung.com>,
+	"Drew Fustini" <fustini@kernel.org>, "Guo Ren" <guoren@kernel.org>,
+	"Fu Wei" <wefu@redhat.com>,
+	=?UTF-8?Q?=22Uwe_Kleine-K=C3=B6nig=22?= <ukleinek@kernel.org>,
+	"Stephen Boyd" <sboyd@kernel.org>,
+	"Brian Masney" <bmasney+clk@redhat.com>,
+	"Jerome Brunet" <jbrunet+clk@baylibre.com>,
+	"Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+	"Gary Guo" <gary@garyguo.net>,
+	=?UTF-8?Q?=22Bj=C3=B6rn_Roy_Baron=22?= <bjorn3_gh@protonmail.com>,
+	"Benno Lossin" <lossin@kernel.org>,
+	"Andreas Hindborg" <a.hindborg@kernel.org>,
+	"Trevor Gross" <tmgross@umich.edu>,
+	"Tamir Duberstein" <tamird@kernel.org>,
+	"Alexandre Courbot" <acourbot@nvidia.com>,
+	"linux-pm" <linux-pm@vger.kernel.org>,
+	"linux-kernel" <linux-kernel@vger.kernel.org>,
+	"dri-devel" <dri-devel@lists.freedesktop.org>,
+	"linux-riscv" <linux-riscv@lists.infradead.org>,
+	"linux-pwm" <linux-pwm@vger.kernel.org>,
+	"linux-clk" <linux-clk@vger.kernel.org>,
+	"rust-for-linux" <rust-for-linux@vger.kernel.org>,
+	"Boris Brezillon" <boris.brezillon@collabora.com>,
+	=?UTF-8?Q?=22Onur_=C3=96zkan=22?= <work@onurozkan.dev>,
+	"Maurice Hieronymus" <mhi@mailbox.org>
+Message-ID: <1a1cb87df11.2c57f9fa237371.844135553238709982@collabora.com>
+In-Reply-To: <20261013-clk-type-state-v6-0-a5e9977b3509@collabora.com>
+References: <20261013-clk-type-state-v6-0-a5e9977b3509@collabora.com>
+Subject: Re: [PATCH v6 0/7] Clk improvements
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -66,271 +94,177 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
 
-Express all self-referential borrows through pin-init's self-referential
-support [1], replacing unsafely derived references.
 
-Cc: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/all/20261008-dev-selfref-v2-0-e280b3c8fba5@garyguo.net/ [1]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
-Changes in v2:
-  - Make `Cmdq` lifetime covariant using existential lifetimes.
----
- drivers/gpu/nova-core/driver.rs       | 53 +++++++++------------------
- drivers/gpu/nova-core/gpu.rs          | 24 ++++--------
- drivers/gpu/nova-core/gsp/cmdq.rs     | 16 ++++++--
- drivers/gpu/nova-core/gsp/cmdq/gmc.rs |  9 +++--
- drivers/gpu/nova-core/gsp/cmdq/rpc.rs | 11 +++---
- 5 files changed, 50 insertions(+), 63 deletions(-)
+Hi all,
 
-diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
-index 2376d960eb6b..d6bc972d47c7 100644
---- a/drivers/gpu/nova-core/driver.rs
-+++ b/drivers/gpu/nova-core/driver.rs
-@@ -33,9 +33,11 @@
- #[pin_data]
- pub(crate) struct NovaCore<'bound> {
-     #[allow(clippy::type_complexity)]
--    _reg: auxiliary::Registration<'bound, ForLt!(NovaCoreApi<'_>)>,
-+    #[uses('gpu: invariant)]
-+    _reg: auxiliary::Registration<'gpu, ForLt!(NovaCoreApi<'_>)>,
-     #[pin]
--    pub(crate) gpu: Gpu<'bound>,
-+    #[uses('bar1)]
-+    pub(crate) gpu: Gpu<'bar>,
-     bar: pci::Bar<'bound, BAR0_SIZE>,
-     bar1: pci::Bar<'bound>,
- }
-@@ -129,44 +131,25 @@ fn probe<'bound>(
-                 crate::irq::doorbell_test::run_selftest(pdev, bar, spec.chipset)?;
-             },
- 
--            // TODO: Use self-referential pin-init syntax once available.
--            gpu <- Gpu::new(
--                pdev,
--                // SAFETY: `bar` is initialized above, pinned, and outlives `gpu`.
--                unsafe { &*core::ptr::from_ref(bar) },
--                // SAFETY: `bar1` is initialized above, pinned, and outlives `gpu`.
--                unsafe { &*core::ptr::from_ref(bar1) },
--            ).pin_chain(|_gpu| {
-+            gpu <- Gpu::new(pdev, bar, bar1).pin_chain(|_gpu| {
-                 #[cfg(CONFIG_NOVA_CORE_SELFTESTS)]
-                 _gpu.run_selftests(pdev);
-                 Ok(())
-             }),
- 
--            _reg: {
--                // TODO: Use `&gpu` self-referential pin-init syntax once available.
--                //
--                // SAFETY: `gpu` is initialized before this expression is evaluated
--                // (`try_pin_init!()` initializes fields in initializer order), lives at
--                // a pinned stable address, and is dropped after `_reg` (struct field
--                // drop order).
--                let gpu = unsafe {
--                    Pin::new_unchecked(&*core::ptr::from_ref(gpu.as_ref().get_ref()))
--                };
--
--                // SAFETY: `NovaCore` is dropped when the device is unbound;
--                // i.e. `mem::forget()` is never called on it.
--                unsafe {
--                    auxiliary::Registration::new_with_lt(
--                        pdev.as_ref(),
--                        c"nova-drm",
--                        // TODO[XARR]: Use XArray or perhaps IDA for proper ID
--                        // allocation/recycling. For now, use a simple atomic counter that
--                        // never recycles IDs.
--                        AUXILIARY_ID_COUNTER.fetch_add(1, Relaxed),
--                        crate::MODULE_NAME,
--                        NovaCoreApi::new(pdev, gpu),
--                    )?
--                }
-+            // SAFETY: `NovaCore` is dropped when the device is unbound; i.e. `mem::forget()` is
-+            // never called on it.
-+            _reg: unsafe {
-+                auxiliary::Registration::new_with_lt(
-+                    pdev.as_ref(),
-+                    c"nova-drm",
-+                    // TODO[XARR]: Use XArray or perhaps IDA for proper ID
-+                    // allocation/recycling. For now, use a simple atomic counter that
-+                    // never recycles IDs.
-+                    AUXILIARY_ID_COUNTER.fetch_add(1, Relaxed),
-+                    crate::MODULE_NAME,
-+                    NovaCoreApi::new(pdev, gpu),
-+                )?
-             },
-         })
-     }
-diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-index d185e927233f..d35b686732b4 100644
---- a/drivers/gpu/nova-core/gpu.rs
-+++ b/drivers/gpu/nova-core/gpu.rs
-@@ -383,7 +383,8 @@ pub(crate) struct Gpu<'gpu> {
-     /// any in-flight run of it has finished, before the command queue that it drains and the
-     /// falcon that it reads are freed, and before the GSP is unloaded.
-     #[pin]
--    _gsp_subtree: GspSubtree<'gpu>,
-+    #[uses('tree)]
-+    _gsp_subtree: GspSubtree<'gsp_resources>,
-     /// Static GPU information as provided by the GSP.
-     pub(crate) gsp_static_info: GetGspStaticInfoReply,
-     /// GPU memory manager owning memory management resources.
-@@ -403,9 +404,6 @@ pub(crate) struct Gpu<'gpu> {
-     /// Must be kept declared *after* `gsp_resources`, as the latter's `PinnedDrop` implementation
-     /// requires the sysmem flush page to be in place.
-     sysmem_flush: SysmemFlush<'gpu>,
--    /// Borrow of `tree` that `_gsp_subtree` holds. A field that borrows a sibling field is
--    /// self-referential, which `pin_init` cannot express, so the borrow is taken by hand.
--    tree_ref: &'gpu Tree<'gpu>,
-     /// The GIN CPU interrupt tree and the PCI vectors that deliver it.
-     ///
-     /// Must be kept declared *after* `_gsp_subtree`, which holds a borrow of it.
-@@ -456,10 +454,6 @@ pub(crate) fn new<'a>(
- 
-             tree: Tree::new(pdev, bar, spec.chipset, irq::gsp::GSP_SUBTREE.into())?,
- 
--            // SAFETY: `tree` is initialized above, is pinned at a stable address, and is dropped
--            // after every field that uses `tree_ref` (struct field drop order).
--            tree_ref: unsafe { &*core::ptr::from_ref(tree.as_ref().get_ref()) },
--
-             _: {
-                 let dma_mask = hal::gpu_hal(spec.chipset).dma_mask();
- 
-@@ -513,19 +507,17 @@ pub(crate) fn new<'a>(
-             }),
- 
-             _: {
--                irq::gsp::quiesce(tree_ref, &gsp_resources.gsp_falcon);
-+                irq::gsp::quiesce(tree.get_ref(), &gsp_resources.gsp_falcon);
-             },
- 
--            // SAFETY: the GSP falcon and the command queue are fields of `gsp_resources`, which
--            // is initialized above and pinned, so both references outlive the registration. The
--            // registration is a field of `Gpu` and is never leaked, so its `Drop` runs, and field
--            // drop order runs it before either is freed.
-+            // SAFETY: The registration is owned by `Gpu`, which is dropped when the device is
-+            // unbound, so the registration's `Drop` runs.
-             _gsp_subtree <- unsafe {
-                 GspSubtree::new(
-                     pdev,
--                    tree_ref,
--                    &*core::ptr::from_ref(&gsp_resources.gsp_falcon),
--                    &*core::ptr::from_ref(&gsp_resources.gsp.cmdq),
-+                    tree.get_ref(),
-+                    &gsp_resources.get_ref().gsp_falcon,
-+                    &gsp_resources.get_ref().gsp.cmdq,
-                 )
-             },
- 
-diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
-index 5f3de456042e..22a073233362 100644
---- a/drivers/gpu/nova-core/gsp/cmdq.rs
-+++ b/drivers/gpu/nova-core/gsp/cmdq.rs
-@@ -451,10 +451,15 @@ fn log(&self, dev: &device::Device) {
- /// Provides the ability to send commands and receive messages from the GSP using a shared memory
- /// area.
- #[pin_data]
--pub(crate) struct Cmdq<'cmdq> {
-+pub(crate) struct Cmdq<'cmdq>
-+where
-+    // Hide the mutex's invariant resource lifetime so `Cmdq` remains covariant.
-+    exists<'gpu>: 'cmdq,
-+{
-     /// Inner mutex-protected state.
-     #[pin]
--    inner: Mutex<CmdqInner<'cmdq>>,
-+    #[uses('gpu: invariant)]
-+    inner: Mutex<CmdqInner<'gpu>>,
-     /// DMA address of the command queue's shared memory region.
-     pub(super) dma_addr: DmaAddress,
- }
-@@ -498,6 +503,11 @@ pub(crate) fn new(
-         })
-     }
- 
-+    /// Runs `f` with the command queue locked.
-+    fn with_inner_locked<R>(&self, f: impl FnOnce(&mut CmdqInner<'_>) -> R) -> R {
-+        self.with_inner(|inner| f(&mut inner.lock()))
-+    }
-+
-     /// Computes the checksum for the message pointed to by `it`.
-     ///
-     /// A message is made of several parts, so `it` is an iterator over byte slices representing
-@@ -522,7 +532,7 @@ fn calculate_checksum<T: Iterator<Item = u8>>(it: T) -> u32 {
-     ///
-     /// `EIO` if a message fails framing or checksum validation.
-     pub(crate) fn drain(&self) -> Result {
--        self.inner.lock().drain()
-+        self.with_inner_locked(|inner| inner.drain())
-     }
- }
- 
-diff --git a/drivers/gpu/nova-core/gsp/cmdq/gmc.rs b/drivers/gpu/nova-core/gsp/cmdq/gmc.rs
-index 04033c64ca72..f6db7ce62f39 100644
---- a/drivers/gpu/nova-core/gsp/cmdq/gmc.rs
-+++ b/drivers/gpu/nova-core/gsp/cmdq/gmc.rs
-@@ -302,10 +302,11 @@ pub(crate) fn send_gmc_command<C>(
-         Error: From<C::InitError>,
-         Error: From<<C::Reply as MessageFromGsp>::InitError>,
-     {
--        let mut inner = self.inner.lock();
--        let seq = inner.send_gmc_command(command)?;
-+        self.with_inner_locked(|inner| {
-+            let seq = inner.send_gmc_command(command)?;
- 
--        inner.await_gmc_reply::<C>(seq, on_event)
-+            inner.await_gmc_reply::<C>(seq, on_event)
-+        })
-     }
- 
-     /// Sends `command` to the GSP without waiting for a reply.
-@@ -323,7 +324,7 @@ pub(crate) fn send_gmc_command_no_wait<C>(&self, command: C) -> Result
-         C: CommandToGsp<Reply = NoReply>,
-         Error: From<C::InitError>,
-     {
--        self.inner.lock().send_gmc_command(command).map(|_| ())
-+        self.with_inner_locked(|inner| inner.send_gmc_command(command).map(|_| ()))
-     }
- }
- 
-diff --git a/drivers/gpu/nova-core/gsp/cmdq/rpc.rs b/drivers/gpu/nova-core/gsp/cmdq/rpc.rs
-index 10d3f68b2f61..2a332e2f2450 100644
---- a/drivers/gpu/nova-core/gsp/cmdq/rpc.rs
-+++ b/drivers/gpu/nova-core/gsp/cmdq/rpc.rs
-@@ -273,10 +273,11 @@ pub(crate) fn send_rpc_command<M>(&self, command: M) -> Result<M::Reply>
-         Error: From<M::InitError>,
-         Error: From<<M::Reply as MessageFromGsp>::InitError>,
-     {
--        let mut inner = self.inner.lock();
--        inner.send_rpc_command(command)?;
-+        self.with_inner_locked(|inner| {
-+            inner.send_rpc_command(command)?;
- 
--        inner.await_rpc_msg()
-+            inner.await_rpc_msg()
-+        })
-     }
- 
-     /// Sends `command` to the GSP without waiting for a reply.
-@@ -293,7 +294,7 @@ pub(crate) fn send_rpc_command_no_wait<M>(&self, command: M) -> Result
-         M: CommandToGsp<Reply = NoReply>,
-         Error: From<M::InitError>,
-     {
--        self.inner.lock().send_rpc_command(command)
-+        self.with_inner_locked(|inner| inner.send_rpc_command(command))
-     }
- 
-     /// Waits for an unsolicited GSP event of type `M`. Events that arrive before it are logged and
-@@ -314,7 +315,7 @@ pub(crate) fn await_rpc_msg<M: MessageFromGsp>(&self) -> Result<M>
-         // This allows all error types, including `Infallible`, to be used for `M::InitError`.
-         Error: From<M::InitError>,
-     {
--        self.inner.lock().await_rpc_msg()
-+        self.with_inner_locked(|inner| inner.await_rpc_msg())
-     }
- }
- 
--- 
-2.56.0
+ > This series contains a few improvements that simplify clock handling for
+ > drivers.
+ > 
+ > Patch 1 converts clk.rs to the kernel-vertical style for imports.
+ > 
+ > Patch 2 replaces OptionalClk with Clk::get_optional(). There is no struct
+ > optional_clk in C, and Clk already allows a NULL pointer.
+ > 
+ > Patch 3 implements the same typestate pattern that has been used
+ > successfully for Regulators. This is needed because otherwise drivers
+ > will be responsible for unpreparing and disabling clocks themselves and
+ > ultimately handling the reference counts on their own. This is
+ > undesirable. The patch automatically encodes this information using the
+ > type system so that no misuse can occur.
+ > 
+ > Patch 4 adds guards that prepare and/or enable a clock for the lifetime
+ > of the guard without consuming the Clk, so that a driver can keep a
+ > long-lived Clk<Prepared> and enable it for scoped sections.
+ > 
+ > Patch 5 makes things more convenient by offering devres-managed APIs. This
+ > lets drivers set clock parameters once and forget about lifetime
+ > management.
+ > 
+ > Patch 6 adds ExclusiveClk<T>, which holds rate exclusivity over a Clk<T>
+ > in any state until it is dropped.
+ > 
+ > Patch 7 uses it in pwm-th1520 to lock the clock rate for the lifetime of
+ > the driver data.
+ > 
+ > ---
+ > Changes in v6:
+ > - Rebased onto the latest clk-next.
+ > - Moved the import style conversion to the front (Alexandre, Onur).
+ > - Kept Alexandre's and Onur's Reviewed-by on the imports patch, and
+ >   Alexandre's on the devres patch. Dropped Alexandre's Reviewed-by on the
+ >   type-state patch, which changed too much since v5.
+ > - Split the OptionalClk removal into its own patch (Gary).
+ > - Replaced "rust: clk: implement Clone for Clk<T>" with EnabledGuard,
+ >   PreparedGuard and PrepareEnabledGuard (Alexandre, Gary). Clones shared
+ >   a single struct clk, so per-consumer state such as the rate
+ >   exclusivity taken by clk_rate_exclusive_get() was shared between them.
+ > - Dropped Clk::<Prepared>::with_enabled(), superseded by EnabledGuard.
+ > - Named the ClkState constants ENABLED and PREPARED from the start
+ >   (Alexandre).
+ > - Implemented Debug for Error<State> (Alexandre).
+ > - Documented that dropping a prepared or enabled Clk may sleep
+ >   (Alexandre).
+ > - Used a different connection id for the second clock in the example
+ >   (Alexandre).
+ > - Used `?` in the per-state get() and get_optional() shortcuts.
+ > - Dropped the trailing `//` from doctest imports (Alexandre).
+ > - Removed the intra-doc links from SAFETY comments (Onur) and reworded
+ >   the devm_enable_optional() documentation (Alexandre).
+ > - Expanded the devres commit message (Gary).
+ > - Added ExclusiveClk and its pwm-th1520 user, based on Maurice
+ >   Hieronymus's series [1], with ExclusiveClk made generic over the clock
+ >   state, ExclusiveClk::new() in place of Clk::rate_exclusive_get(), and
+ >   a new ExclusiveClk::into_inner().
+ > - Link to v5: https://patch.msgid.link/20260706-clk-type-state-v5-0-67c5f326a16c@collabora.com
+ > 
+ > [1] https://lore.kernel.org/rust-for-linux/20260711-rate-exclusive-get-th1520-v4-0-8244a0666a71@mailbox.org/
+ > 
+ > Changes in v5:
+ > - Rebased onto the latest clk-next.
+ > - New patch: "rust: clk: implement Clone for Clk<T>". Each clone is an
+ >   independent view of the same underlying clock, owning its own
+ >   prepare/enable counts; the raw pointer is shared through an Arc so
+ >   clk_get()/clk_put() stay balanced. Follows the v3 discussion with
+ >   Boris Brezillon and Gary Guo.
+ > - Moved rate() and set_rate() from Clk<Enabled> to all states; the C API
+ >   does not restrict these to enabled clocks, and some clocks can only
+ >   change rate before being prepared.
+ > - Made Clk::<Enabled>::disable() infallible, matching unprepare() and
+ >   the void C API (Onur).
+ > - Fixed a typo in the "# Invariants" section, fixed SAFETY comments
+ >   that referred to the non-existent `self.0` field, and added missing
+ >   INVARIANT comments on the state transitions.
+ > - Added the missing rustdoc link definitions for clk_unprepare and
+ >   clk_put (Maurice).
+ > - Dropped the redundant `Result` import and the `use
+ >   kernel::error::Result;` lines from the doctests; the prelude already
+ >   provides it (Miguel).
+ > - Added #[inline] to the devm_* helpers.
+ > - Link to v4: https://patch.msgid.link/20260618-clk-type-state-v4-0-8be082786080@collabora.com
+ > 
+ > Changes in v4:
+ > - Rebased onto clk-next. Alice Ryhl's "rust: clk: implement Send and Sync"
+ >   series is now merged upstream, so it is no longer carried as a dependency.
+ > - Fixed the build with CONFIG_CPUFREQ_DT_RUST=y. The generic DT cpufreq
+ >   driver only has the (unbound) per-CPU device, so it cannot hand a
+ >   &Device<Bound> to Policy::set_clk(). Added a pub(crate) Clk::get_unbound()
+ >   for the few in-tree abstractions that operate on a device outside a bind
+ >   scope; set_clk() now takes &Device and uses it. Clk::get()/get_optional()
+ >   and the devm_* helpers still require &Device<Bound>.
+ > - Added impl From<Error<State>> for kernel::error::Error, so the fallible
+ >   state transitions can be used with `?` (and chained) instead of
+ >   .map_err(|e| e.error).
+ > - Added Clk::<Prepared>::with_enabled(), which runs a closure with the clock
+ >   temporarily enabled, scoping the Enabled state without giving up the
+ >   prepared clock.
+ > - Documented how to change a clock's state at runtime via an enum, for
+ >   drivers that enable/disable across resume/suspend.
+ > - Link to v3: https://lore.kernel.org/r/20260107-clk-type-state-v3-0-77d3e3ee59c2@collabora.com
+ > 
+ > Changes in v3:
+ > - Rebased on top of 6.19-rc4
+ > - Dropped patch 1 (from Alice), added her series as a dependency instead
+ > - Fixed Tyr, PWM_TH1520 drivers
+ > - Changed clk.rs imports to kernel-vertical style
+ > - Added support get_optional shortcut for Prepared and Enabled (i.e.:
+ >   Clk::<Enabled>::get_optional())
+ > - Fixed misplaced #[inline] tag
+ > 
+ > Thanks, Danilo {
+ >   - Moved the devres changes into its own patch
+ >   - Require &Device<Bound> for all functions where a &Device is used
+ >   - Account for con_in in SAFETY comments where applicable
+ >   - Added backticks
+ > }
+ > 
+ > - Link to v2: https://lore.kernel.org/r/20250910-clk-type-state-v2-0-1b97c11bb631@collabora.com
+ > 
+ > Changes in v2:
+ > - Added Alice's patch as patch 1, since it is a dependency.
+ > - Added devm helpers (like we did for Regulator<T>)
+ > - Fixed missing clk_put() call in Drop (Danilo)
+ > - Fixed missing parenthesis and wrong docs (Viresh)
+ > - Removed extra "dev" parameter from "shutdown" example (Danilo)
+ > - Removed useless type annotation from example (Danilo)
+ > - Link to v1: https://lore.kernel.org/rust-for-linux/20250729-clk-type-state-v1-1-896b53816f7b@collabora.com/#r
+ > 
+ > ---
+ > Daniel Almeida (6):
+ >       rust: clk: use 'kernel vertical style' for imports
+ >       rust: clk: replace `OptionalClk` with `Clk::get_optional()`
+ >       rust: clk: use the type-state pattern
+ >       rust: clk: add guards for scoped prepare and enable
+ >       rust: clk: add devres-managed clks
+ >       rust: clk: add `ExclusiveClk`
+ > 
+ > Maurice Hieronymus (1):
+ >       pwm: th1520: Lock clock rate with clk_rate_exclusive_get
+ > 
+ >  drivers/cpufreq/rcpufreq_dt.rs |   7 +-
+ >  drivers/gpu/drm/tyr/driver.rs  |  32 +-
+ >  drivers/pwm/pwm_th1520.rs      |  25 +-
+ >  rust/kernel/clk.rs             | 834 +++++++++++++++++++++++++++++++++++------
+ >  rust/kernel/cpufreq.rs         |   8 +-
+ >  5 files changed, 748 insertions(+), 158 deletions(-)
+ > ---
+ > base-commit: d3645b43ad60fe1ab3b4a869f6908414d5831a65
+ > change-id: 20250909-clk-type-state-c01aa7dd551d
+ > 
+ > Best regards,
+ > --  
+ > Daniel Almeida <daniel.almeida@collabora.com>
+ > 
+ > 
+
+
+Gentle ping here.
+There's been no further comments, should I assume this is good?
+
+-- Daniel
 
