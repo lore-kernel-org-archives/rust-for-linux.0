@@ -1,101 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.96.140
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794390777;
-	b=nGkznytmZcb8rapL12RFJmTDswDhb7yAA+nWUo03UNukptHTgA1iDTJnF8szaV/VLRgM
-	 aPSoFM+syb7UsV5Q+nmi6MbLy2Bo4MaLmnzeJJxVWHmn1gJZDyAMzir8+ObuB9GjcGLst
-	 vqC4s6LS6A3tY9KTPMqpwFd6fZ2lHPvT+HLSsmv7JgnR/WsOz3HYnK0OPciNwWkTk9mR+
-	 mJrzfpDrSJgCA+nkpPvYe9OWu3/L5cRpQxVJ0BZJoe6ky00dWgHBHJ+Sh+SCv609OY8zx
-	 tsXuSjqyE1OfkF9HAmUSTV0W6wO3S8yKgHALTXQN3DRkYs8JK6pfQWkHFxxoFdvMH/w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794390777;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
-	 From:To:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
-	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=SdhRWh7k3xNLlyD+HHTgoBv1iS6P3q5aSPf/cstv8hI=;
-	b=4Qe3RYjCBADmmyIh3clJLaR4c9LWkLoM65vULRjJyU6G4Mmzv7Xqqjj7F3lXZyx8zUv2
-	 V/aTge1LaRLR5CAQYKKWnj/KHqiJCbOu7E24gwqOKOY1x+VW/5mZfbjvemY5BRRkj70AU
-	 FWjJR0QfUSyGnolMPTV+l6bSY1vgUxnjlowqHhxHO5z/Jg21SYqeRTX952Gkn2UqoZS8E
-	 ahUGIX7jcqR0zWT6mK5APm7+PE5czcUq6FOeUQX3ntmyo/klaYdYrm3JTmlr4DKYcTSOr
-	 SUP7oPCgtKA9rKxLBhDTsbRzwXvUagUf8A+hCcKIN4Rj6MhXphnbwlLFCMQhdK1H7rA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=garyguo.net;
-	spf=pass smtp.mailfrom=garyguo.net;
-	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=g4FUvZ34;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.96.140
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022140.outbound.protection.outlook.com [52.101.96.140])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.108
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794391675;
+	b=H55t447ZjGaAM7y1llzkQ51Hwpu79PRkzbgtAEb9/glh9Piku9/lPP+RtqN2Gwzk7fqc
+	 ZtVtMGMKi7UvszB6qRZKPaakf5Px1Iv8XoV+rmQV822dxdBMfZFsc+4BnlF1E/pwk08Gy
+	 /1y+9iSmQm9Cdb1jzvhbFhO7l3b7GKT0RFFifnGpEPWSU1+fFZYLf3X5zB2xEoyJFtpBT
+	 XhbJqf5BIMyQ9Skmnsd+cf47mSP6RW1cwIjls8/ajKnBdQ5x7I638KVcCoivUgFf+RbEN
+	 qGRU9d5jqxj+pVyz/F4bmtjyZpY9nvGfFqs+NdlmJa2HGpg5ZAt0tE8TX8LKA4SAhyQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794391675;
+	h=DMARC-Filter:DKIM-Signature:X-Pm-Submission-Id:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=YeX7nxnzoiug76CLEvqV8toUAsSHur5IcXgBBibQZw0=;
+	b=P5h2VFyEvWSux+ad645Ui9Bn5k1KptR5H2MkoFn6hfMmpwEq+WF2Y4ZEw4FDAO/9dck5
+	 gUSVAhxbDdT4ItVA1JAzu5k0F4/91NIc3SUKVIMtNp4r5X/3FS/B929ixCiFVlNKlbOp7
+	 mRppdPVRrhBjw9S3ZbfJrKdZd8Bn8D9l7yLR8jF4gONN69ekXi0McdC9M4Q5xN3Jo3FQY
+	 75ONQiucJqxAfmi9aGWfJIV8OgFwOJZypL+svb1MzoZPfzLkVugHj92a3fALm5xisRa5J
+	 V00ufvDkXM7ixjwJASmPGTDeQ+L2Cf8aa5DmO73bVvpdxwZFpf5yHW6t5IjOo9jmAQQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=onurozkan.dev;
+	spf=pass smtp.mailfrom=onurozkan.dev;
+	dkim=pass header.d=onurozkan.dev header.i=@onurozkan.dev header.a=rsa-sha256 header.s=protonmail2 header.b=WYrx19jn;
+	arc=none smtp.remote-ip=109.224.244.108
+Received: from mail-244108.protonmail.ch (mail-244108.protonmail.ch [109.224.244.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40F8606A32D;
-	Wed, 11 Nov 2026 09:52:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E40F8606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131EC606A324;
+	Wed, 11 Nov 2026 10:07:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 131EC606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=g4FUvZ34
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mMXZ/Oye61TAYdAPxhvHCmyRPGAPm6FVIGkRI+pb3mZZja2ojRTlZpkVtyBht/W7KrnJrk8xK3aNMpK3rKCIcXLGkM+JWLtp6IHxwCZDEg80mC/4g0j2x7D/gFcq6+fDi1ocwaCbJ+d+HaJdGIQ/Yt7Juu01ovwA3/rT/dEvufA71CZPg5spXTS9lGBTqcBhjJ5uE9xrLcRj2vQWI5YH8WwoS9ZxPZ21iA4THULLb9KQ+vznGD4dC7mrAVwnXbUKG6JCfZnf1AyuLJ11km0eZvWHgQs8WJ/MtJeYginfaPeiNPTMOcYnGJZChUMPumCU/MUstXVPQTo9nBoMsquCAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SdhRWh7k3xNLlyD+HHTgoBv1iS6P3q5aSPf/cstv8hI=;
- b=l65FSyfi5xar0A56VvueqaGcPoKhK16/LiIEpLYy3H4nysE7e0U6QYjjImz439g+8RLpa2vPjjgGsovL2zvIkftxBpOXQGcCjr2Qt4YcUgnRaKIxxaZpOMXgAmcVO79jWkDB+Id5RYBVGMM1xi+2VwA6VqrEKpfbbOhkSfsaOMxQKUD5XV/2MQZg82W33qwfNZzcxBHTU/dyQySBb5KcCviS3IEr66boe9b42WKDmgw2kUSPEdKhyWVFtn6aBIsSGWtxdTImY7sDsJHBCD6dkNX3N3q67oZHharQPU3uKJU5aoqc2W5c3tAv3EN5NXnff587hi83hkIMRYyxkRwAYg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SdhRWh7k3xNLlyD+HHTgoBv1iS6P3q5aSPf/cstv8hI=;
- b=g4FUvZ34czqr0MEu/XOpdt241LSXkR2uNlthbiohrgXP8XbqcQzflFAnNlMWT7XU2reITmvy0BRix74aVOJgxr2OHYhrNG/XLhjAH+gkzkws1LHrq56/tnCOel0vI5kRohksJQr3aFoeB+mNfQGIOhufZiSvWTBpuUN14VLYfoc=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
- by LOBP265MB9156.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:483::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Wed, 11 Nov
- 2026 09:52:53 +0000
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0615.008; Wed, 11 Nov 2026
- 09:52:53 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 11 Nov 2026 09:52:52 +0000
-Message-Id: <DMSAFWOHB29R.3G082C94OM7AQ@garyguo.net>
-Cc: <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 6/7] rust: drm: return impl PinInit from
- DriverFile::open()
-From: "Gary Guo" <gary@garyguo.net>
-To: "Danilo Krummrich" <dakr@kernel.org>, <aliceryhl@google.com>,
- <acourbot@nvidia.com>, <daniel.almeida@collabora.com>, <ojeda@kernel.org>,
- <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
- <tamird@kernel.org>, <work@onurozkan.dev>, <brauner@kernel.org>,
- <lyude@redhat.com>, <j@jananu.net>, <alvin.sun@linux.dev>,
- <deborah.brouwer@collabora.com>, <laura.nao@collabora.com>,
- <beata.michalska@arm.com>
-X-Mailer: aerc 0.22.0
-References: <20261107021427.2105374-1-dakr@kernel.org>
- <20261107021427.2105374-7-dakr@kernel.org>
-In-Reply-To: <20261107021427.2105374-7-dakr@kernel.org>
-X-ClientProxiedBy: LO4P302CA0009.GBRP302.PROD.OUTLOOK.COM
- (2603:10a6:600:2c2::17) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:1cb::9)
+	dkim=pass (2048-bit key, unprotected) header.d=onurozkan.dev header.i=@onurozkan.dev header.a=rsa-sha256 header.s=protonmail2 header.b=WYrx19jn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail2; t=1794391671; x=1794650871;
+	bh=YeX7nxnzoiug76CLEvqV8toUAsSHur5IcXgBBibQZw0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=WYrx19jnMFiZZEJXDTwIdZY68t/mki1lmlJXKtLV7uFjodBwxl7MqOf9xDtGsV/no
+	 DH7KiCD8CM5Hw+5XqiB4I3m1fzX3nXV3IL5j9nZrmbVCl5w3D3BcGUWcUFEEB8AMrB
+	 P7vyIz4tYEKWLW7Cw1SMWxwW1r1PRP3cZJrJswBmBnmOBEHmX5GZh6ijbDMXSqc4lw
+	 zU9ygDJcwxzYWP2ZlmCg/a0/0SjTXL8ZZurckHd3mMQN/g0vUnerInHCjJmGPhZte7
+	 tdj3znZz6lMO7Ueo7EVjF8PMfZcZC9P6jfFlZXZbFij9qL7y3HPfviPX9c+ID2Cv62
+	 euImfCqWdIiFA==
+X-Pm-Submission-Id: 4jPfN422zNz1DDrn
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	dakr@kernel.org,
+	aliceryhl@google.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu
+Subject: Re: [PATCH v7 0/3] drm/tyr: GPU reset infrastructure
+Date: Wed, 11 Nov 2026 13:07:41 +0300
+Message-ID: <20261111100745.3929894-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <70AFEE33-C637-4D49-88F1-9DF3A9BBF097@collabora.com>
+References: <20260912-tyr-reset-impl-v7-0-077ce72084eb@onurozkan.dev> <70AFEE33-C637-4D49-88F1-9DF3A9BBF097@collabora.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -105,87 +76,115 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|LOBP265MB9156:EE_
-X-MS-Office365-Filtering-Correlation-Id: a48d2c6f-7acb-457a-f21f-08df3fd98dc0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|376014|7416014|1800799024|23010399003|366016|10067099003|261009223027099003|261021121427099003|261021123027099003|261102123227099003|56012099006|4143699003|22082099003|18002099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	T3tEAce0qjQXdMNN0Ivc1G/qXpMEwhNjtdZBPjjzBV2tihG/UXVM9I2/f3UYmhQAKhrF+2lK0N8t+c2VL32pXtggojSq2gAb3jR7+mXJTS9CWWiaj8KdxEjBePhc59g49zBnXksWZPf011lCZ0X9rCMjqKal5yGPhbd57vGku20APqi1p80gMltaIpaq8hzrod4gHUPtweOqW1Ti32wK6/AhVxWlvv/EatNVmEhA0CCVdki+c4cUvtiznZVIyv8KFBfPYrpjbu0VOP1YQqY/LiVyr2AUB4cgJiSorho21LfPBjwUwJpYkQs7xEekf6M3XmFPwOdji/jsFMF019Cip2tml2w/2ogWFNFmI5XmPTfP8hDaRz8vp9SdEXGyJEzrrCQ6qc6mvVoE05D/ZtMGc+WYtNftHpM47ws2qXLOvCT8GsmAo/kD9Nwdgt93eiy7UGo8N6lLlqi7y0IV7ZG93EAgxX0KI8FS38JZToRK9LtPoXqT04rRaGwMBM7q9OIgrkRpS4iMMmJpiBXoFEeDcreFAZW6r5tM0R2NagpH/zkNJ+x8ZYkBELvVCRygQDEuIqJVlHnTXkyO3S6Vb0zAK35JOtHFeogQ3lXtVorVGTEAfAWj4jjDaSZcuiVIABaWAun/XYmYjxC/OKgqjrXtU/EcfcqmkjeubX49uiJHwtkeXCA322cyAaGgqWEcawx3bBi0LnUP2k89asz75oOoVA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(1800799024)(23010399003)(366016)(10067099003)(261009223027099003)(261021121427099003)(261021123027099003)(261102123227099003)(56012099006)(4143699003)(22082099003)(18002099003)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?a1JXWmIrR1FmSGxzd0J5bEFmdkNReHFHMDUzaHJlZXo5cnUyVUlnNHlLL2N6?=
- =?utf-8?B?TDkvMXRhZVVUUDh1bDdKQnlDWnBBV0hYY3ZEak5oL2MxeE1STlc2a0VqbXR6?=
- =?utf-8?B?MlU4UUJGcmRMYm90anNQQTBGcjlJYmQ4WW5JSThmSVo5ZzJJTmN5SjArdm5w?=
- =?utf-8?B?bkRwOGlHZk1rcjV0dFdBWlRmbHBScjcvaWVkMWlRcG51d045V1hwVlF1SjVq?=
- =?utf-8?B?dTlRVjIvdFNEaUFDRzlYZXZsbEFsSWd5WFpYZGlnUjZjbWZPdzZ1Z2R1aEJI?=
- =?utf-8?B?bUxOZE43blhyNlNHMG1jVHVmQlBpRWRvMytUNDE2cDQwUmN4RDBvbEU0amJK?=
- =?utf-8?B?NjVjcS9FUlRZSHgzaFd2THZpS3ZsR0xvQ1loRUw4WnFGRndDVWQyekE3OEZO?=
- =?utf-8?B?UnREbE1iSUxsNkt5aTJNTnRwaC9PL0xmQ3BoUTYxWHAyajY2cHBQWDBHeWxQ?=
- =?utf-8?B?ZmhIZFJQSGlMUWNqYTZXaTQ0Y2VoQzhHSEZhRzFZWUlXUVZ3L2RLOGdZN3o2?=
- =?utf-8?B?Z3ZDaERkOUM2ZmdRSHMyaDluMFJ3bGt5WVJ5SmxJNGhtZ0cxalpuS3ROeC9P?=
- =?utf-8?B?RllJZXdCKyszTzBReVFTMlREOXV4L212UnNYLy9lMW5UU3E3Szdlb1RXNXcv?=
- =?utf-8?B?eUhLdDBhOG1uLzZTWFJYRTZmelFwVHVQUTgzSXc1cTlMcDJSd0FhNWNLUmFC?=
- =?utf-8?B?UDBJdXNOOER6a0h2VjFrZ1p4WG9RUWRNR1FhNEdhYlE0SGR3UVUvQ0pNNkZ0?=
- =?utf-8?B?cU1LNkNRTVRwQi9BdHhzOENWaGFEci9MTWlOZ1M3dGg5Sng4MXFDb294aHBQ?=
- =?utf-8?B?TENlQ1VOYytsWkFJNlhrNDEva003MWxUYWRtTWYvM2tDTUZ5K2U5R1V5Wmlx?=
- =?utf-8?B?VVl0MENxM3BJdE0rM0tuRkRuZmpXQzF5SGdqdDZUaERSY0pQRGUzNGtoUXox?=
- =?utf-8?B?TzF3VjJBdm1KNWMzbThqSkpkbzJ4NVVFMWRCVXJWYzk0bkdRcWlQNlplN0d4?=
- =?utf-8?B?N1FKTWZlbzZFd0lWc2llWVp1eURGcWVpZGlKYmZsaEtmZDRiOFFpaDJsaGZF?=
- =?utf-8?B?Y3ZBc1FKWW5aT3ZlZi9uZDRJWWJWTDZQSkFnYmJnUGlSL1VEeHBaMXA0M1Ax?=
- =?utf-8?B?K0x5VTZSUFBpbGd6c2N6blNHd1RLeUZkZEtCTmIvZjh0N2RSS2QxcGVwQmVG?=
- =?utf-8?B?SWdSYi9qcWxxVWVRVWkra1ZtTi91UGZsd0pnWVg2aFd6VkNqZ2t5VmZNN0Jk?=
- =?utf-8?B?M1VqODZIS05zaDk5MlplSXYyODM2czRrRERBQmQ4cXU2UkRBc3B2K0RHRURJ?=
- =?utf-8?B?U2x0STRDaUJoNHcwSlFDTFV5T0hMeEIzbkJmeUIzc0xRS0FyQkpLUjVQMnYz?=
- =?utf-8?B?Y3FCOWJML3RtYWZhaFQ2RjhiRVV2a0h5QURCTWY3aHdJaHlIdmlobGdOdGlO?=
- =?utf-8?B?VG9YMTdsVGl6alM1NUtROUMxc3BsYjJ6OUdpbERrdFVNNmw1OURId0R4d0lB?=
- =?utf-8?B?THZWUURBZEMzMW5NaERBSUNlemRzZHBOdXNOUHY3WmVNZk9PTWJYc1N3WU8r?=
- =?utf-8?B?NnZxcEJnSFRBTUZDUXNKT3JOUVBSR2ZmMjZsNkZkMkVhYjZXUkVBL0hGVE1n?=
- =?utf-8?B?WVQyRDUyanFVQVhaYko1ejM1ME5EMS82VExleXNPdUY3d1B6NzlCdlFsVFUr?=
- =?utf-8?B?QlIvOVFYQzFRQ2JnVXFhT1F4eW9MeE9DaVNRN0tXeEZrVHdtR2UyTEdLTVQv?=
- =?utf-8?B?ZTF5c0VoMFEwSU1WNGJTeUhwZGtqaE5YM1JDaTU5Qnk2VGVYdHl0R0hOejA4?=
- =?utf-8?B?c2Jxd1RUQmZUcm0vb1BXSW9YYWZoWE5VM2VLbmw5Sk5vNDB6UnJJc2ZLN3hQ?=
- =?utf-8?B?NzNqZHR6WWVEZStsYkoveUxROGc1K2taSktZdnR0R0ZQQ2VGQUUva1J0L01h?=
- =?utf-8?B?TkdieVNOOURSQ2g3MjExTXcySnYxdEhuT3MyaUpSMVd6TTYwWTZ2Wm1STVNJ?=
- =?utf-8?B?RFB5MVIyRmNBNlFMcGJtYjR0WU5RQm9JL2RkUjVMN0gxZk5aNnM5aWM5MGF0?=
- =?utf-8?B?UUIrYVZ1QlZJRVRzYzVORkdkUFozM2dPUjhPbmhXL1QreTYvakxPRktpTVZV?=
- =?utf-8?B?WmdzeDBHUHY0TTdocDJrOEFIWW9MWE5leXE5U21Za2NVb3B4Ri9oNzY1ZG81?=
- =?utf-8?B?MVF6bjVYSDE5dmZvS0JwZzdWaTl1ek9XVVhLa25iYXd2UklML1RTUEFFRFNO?=
- =?utf-8?B?NFVDdUR5NEo2RzhPd25ZMDg5MHBqYnJyenpxMy90RFhHbjd4N29uMzlaRGk1?=
- =?utf-8?B?c1ZHczVCZFV4VnNzenpVVTdidWk4cEp6cHprbmhna1lxaGliNjh2Zz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: a48d2c6f-7acb-457a-f21f-08df3fd98dc0
-X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 09:52:52.9824
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 03Cp5hXt1R1rF2VyxVc4q/mg+Ci69BmDbhL0b7L7o+flw0DnihuXevwX/me+llBYXdIL60UI7b1iA+sC5LHjQA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOBP265MB9156
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat Nov 7, 2026 at 2:03 AM GMT, Danilo Krummrich wrote:
-> Change DriverFile::open() to return impl PinInit<Self, Error> instead of
-> Result<Pin<KBox<Self>>>, consistent with how bus device private data
-> works.
->=20
-> Drivers no longer need to allocate a Pin<KBox<_>> themselves; they just
-> return an initializer and the subsystem takes care of the allocation.
->=20
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-
-Reviewed-by: Gary Guo <gary@garyguo.net>
-
-> ---
->  drivers/gpu/drm/nova/file.rs | 5 ++---
->  drivers/gpu/drm/tyr/file.rs  | 4 ++--
->  rust/kernel/drm/file.rs      | 5 +++--
->  rust/kernel/drm/gem/shmem.rs | 4 ++--
->  4 files changed, 9 insertions(+), 9 deletions(-)
-
+On Wed, 23 Sep 2026 10:56:48 -0300=0D
+Daniel Almeida <daniel.almeida@collabora.com> wrote:=0D
+=0D
+> =0D
+> =0D
+> > On 12 Sep 2026, at 07:39, Onur =C3=96zkan <work@onurozkan.dev> wrote:=0D
+> > =0D
+> > Add support for scheduling GPU resets on a dedicated workqueue. Track=0D
+> > the reset state to avoid queueing another reset while one is already=0D
+> > pending or in progress.=0D
+> > =0D
+> > Use an SRCU based gate with mutex-protected reader admission to block=0D
+> > hardware accesses while reset work runs and wait for current users=0D
+> > before resetting.=0D
+> > =0D
+> > Stop new reset requests during teardown and drain any queued or running=
+=0D
+> > reset work before releasing the device resources.=0D
+> > =0D
+> > This is the initial reset infrastructure only. It is not wired to a res=
+et=0D
+> > source yet as those will follow in separate work.=0D
+> > =0D
+> > Based on 'commit 53441a9cae3c ("drm/tyr: program CSF global interface")=
+'=0D
+> > from tyr-for-upstream with the following patch series on the ML:=0D
+> >  - rust: add SRCU abstraction [1]=0D
+> >  - rust: workqueue: add cancel_sync support [2]=0D
+> > =0D
+> > TODOs:=0D
+> >  - On reset failure, we don't do anything for now. We should unplug=0D
+> >    the GPU.=0D
+> >  - In schedule(), similar to panthor_device_schedule_reset(), we should=
+=0D
+> >    have a PM check but similar to the note above, we don't have the=0D
+> >    infrastructure for that yet.=0D
+> > =0D
+> > Changes since v6:=0D
+> >  - Acquire the hardware gate once per address-space operation and pass=
+=0D
+> >    the guarded iomem reference to helpers to avoid deadlocks.=0D
+> >  - Clone the gate Arc before acquiring a guard so mutating address-spac=
+e=0D
+> >    helpers can retain their &mut self receivers as suggested by Daniel.=
+=0D
+> > =0D
+> > Link: https://lore.kernel.org/all/20260613065348.96750-1-work@onurozkan=
+.dev [1]=0D
+> > Link: https://lore.kernel.org/all/20260807165252.3849875-1-dakr@kernel.=
+org [2]=0D
+> > Link: https://lore.kernel.org/all/20260708114358.957305-1-work@onurozka=
+n.dev=0D
+> > Link: https://gitlab.freedesktop.org/panfrost/linux/-/issues/28=0D
+> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
+> > ---=0D
+> > Onur =C3=96zkan (3):=0D
+> >      drm/tyr: clear stale IRQ state before soft reset=0D
+> >      drm/tyr: add GPU reset infrastructure=0D
+> >      drm/tyr: put iomem behind the hardware gate=0D
+> > =0D
+> > drivers/gpu/drm/tyr/driver.rs            |  65 ++++-----=0D
+> > drivers/gpu/drm/tyr/fw.rs                |  16 +-=0D
+> > drivers/gpu/drm/tyr/mmu.rs               |   9 +-=0D
+> > drivers/gpu/drm/tyr/mmu/address_space.rs |  90 +++++++-----=0D
+> > drivers/gpu/drm/tyr/reset.rs             | 242 ++++++++++++++++++++++++=
++++++++=0D
+> > drivers/gpu/drm/tyr/reset/hw_gate.rs     | 106 ++++++++++++++=0D
+> > drivers/gpu/drm/tyr/tyr.rs               |   1 +=0D
+> > 7 files changed, 436 insertions(+), 93 deletions(-)=0D
+> > ---=0D
+> > base-commit: 53441a9cae3c4be552fa8aefa6e61b0f1bceb8a5=0D
+> > change-id: 20260813-tyr-reset-impl-93e951f996b4=0D
+> > prerequisite-message-id: <20260807165252.3849875-1-dakr@kernel.org>=0D
+> > prerequisite-patch-id: 4275f7d6e3cf96d61221d47f2398ebfb896db0c7=0D
+> > prerequisite-patch-id: f5e24f7b3717f2ab0445b5395c7f12b554861d78=0D
+> > prerequisite-patch-id: 0bf6ae4abcef7090d0e48921d6ec627a59dc6a7a=0D
+> > prerequisite-patch-id: 8dc24064e858240a6bb5411a261a987a7eae3fad=0D
+> > prerequisite-patch-id: eefbd4a72ed6da0083e20811882738cc3b05604f=0D
+> > prerequisite-patch-id: 7502236d334b13c547a8b47f0be9bf7171b5ca6b=0D
+> > prerequisite-message-id: <20260613065348.96750-1-work@onurozkan.dev>=0D
+> > prerequisite-patch-id: 9e1efee190d212ba1b01cd0acb5a4357e0b4da42=0D
+> > prerequisite-patch-id: 26aba035f4d1e212fa6ea7078095febefff5c5ba=0D
+> > prerequisite-patch-id: ffa25d5aadec4c04589af2bdd59a9c022f0fc9b0=0D
+> > prerequisite-patch-id: c2e05a4ac9d665d331952b291a622df6be673e41=0D
+> > prerequisite-patch-id: c14a4bd8a68b045356d61f7fa94690bd037ad08b=0D
+> > =0D
+> > --  =0D
+> > =0D
+> =0D
+> =0D
+> Alice, if you are ok with this series, feel free to merge. At least from =
+my side it looks ok.=0D
+> =0D
+> =E2=80=94 Daniel=0D
+> =0D
+=0D
+Any updates on this? I am preparing v2 of the GPU unplug series [1] which=0D
+depends on this series. The reset patches need rebasing against current=0D
+drm-rust-next.=0D
+=0D
+Would you prefer me to send a rebased v8 and base unplug v2 on it or are=0D
+you planning to pick up v7 and handle the rebase?=0D
+=0D
+Thanks,=0D
+Onur=0D
+=0D
+[1]: https://lore.kernel.org/all/20260823-tyr-gpu-unplug-b4-v1-0-e99c07d4c7=
+85@onurozkan.dev=0D
+=0D
