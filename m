@@ -1,96 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794371945;
-	b=vBelab7YtP1j5bMk0KLDcWiT+3fIfe/GiUFl9KWq/gOy4blS7V8mRsNF15/gYTUAbc7S
-	 wD+QXvSFmHde7q67oEtvYAolvSJVAyeWsWOzqIjGAOoRUxsCVbEzFFDG/0kKQTKEltqfJ
-	 7Hvs4Y/lkZeBjbMBwhB1w9qGapC4ZfhXDA+J31vmOsGikTTlVefStIPqCoBjvfA0+Xboe
-	 jRpnPQbqQAC5IuHbBxStAUfmZYUL8vKBo3jF2Zo8tkUDUyc1Hs+Gh3yzycct9ulJlvr6j
-	 caOuPlwAEMwsKvcvfkOxu90S6ysw+7XKVfjayHZxesVrhshpaQBiRz8IJAg7ntEyqNA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794371945;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=siZmirI+f1Pyy8EXeDTuyyN9Ke8UwfOLkM0owVcLHTc=;
-	b=EY2GG1HlylUjcgKtqEi/XbIyeBPZAmxvz1BK4tYUNyzPr6nchaq9FukOn3PRvBgDJUDA
-	 zPjPJujCbuL03Xt6VjYCpABWDHikkTe/L6o+ZkxKYlzkW/YvJuMTrzWXwKeDCKzZaVdql
-	 VYRTER1j8t7MWAb5Vjirxs43U7yeGLjM9smgplYjaBhcLoGsoip8W+h8TuNEljKVYU6zC
-	 LT9lNgXGb3CZJITcPdQPh8kC/dvFxIZWSNg06VKZB/XW/vjoMN1XeWhHLEP3d2yC1LR0Z
-	 AU0UDjo1QMJVAVJX7sujJYlZK7Xc/4/ga6RC3McffVHfG3qU3VqTxSHdHTUykwm4+SQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ihi7Z3mW;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.10
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794373237;
+	b=34dzr+xBWiExDEsWFuzJpdHThDOfI7+5YSPcN8oIIKVanWUlZGX3O0dncY9uNCMlXn9Q
+	 TNO72l+WvKXAgIVq24x9P4DX/ynZD4rPKxF7HZrY9avzh2EV/Anj/2hB5Zy4pYm1Hn801
+	 709ramh2Q+JqZJxUHZgHX5DRe+e4jqt4rYVR96apRAmnTaZ7n+K1fYDxEZwXxZNWyISAE
+	 ywRCRpXGX8xdoQGGJlAvvoJzBvxoLZZDRqZ4/38G96URwo/BTFle74y48yS9nHHs36fPB
+	 JmM9XoKQVrD/fRSbm8bm5H/tpqhZ8xb2h6YACEKCc2G8PkaEbbfWvnwUCBRL1v5esZw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794373237;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
+	 From:To:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=Y/dIgHtnCTsZVliC1mpnuZIqg5Ysnqr5tN7l7hAzysI=;
+	b=tVGaCFom3NV3H3vZEOn1nXESt3ZjCUK3YMlA/Exomr00cilVTXOl/Xzx8/yZ0nZS5ubU
+	 72G4xB7VzJcf4pE3K/6YMR3dTWVrXdC4oU/JafKgzyzNbav9QNRRdJEGhKvjWV144DGV0
+	 4DVrtg1Xj9q+7hHnfIdycarGv5u9PFxW8Kq1fMChduFn0iWviZKLBngbcJOfoxOA2RJfQ
+	 uzCYMn+zmSpT2ShjBFD0cL1i4WHIFmfzZ2mpDUANDcQTjVGQmmtYjyikIirktTfqMdqfw
+	 MABRvGMacbo9Le/vqBOsxuMf6MKjMMvbkIexRc2sCSmju3B0395vu35ZY5jtNrgKatw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=HvF7sklR;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.10
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010010.outbound.protection.outlook.com [52.101.46.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF72606A321;
-	Wed, 11 Nov 2026 04:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A2F606A320;
+	Wed, 11 Nov 2026 05:00:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5A2F606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ihi7Z3mW
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B0221F0089F;
-	Wed, 11 Nov 2026 04:38:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794371945;
-	bh=siZmirI+f1Pyy8EXeDTuyyN9Ke8UwfOLkM0owVcLHTc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ihi7Z3mWuOUA+kXYCdelMQfc0wNHEyM63cO8JoyRFYBXxLRj8v9SXEXjRfpt4HZsv
-	 II8l7k07UN+GKvuGkYa8T9S1h38HBW19Rc0o9Hxs5BkXX0G2sL3QNUJqiwVXXT5ZSO
-	 41eAboMlgACcl6rcoxul6g6au1reU9+lgHoppdBVGDiUeRgoQeUpuPIInwj97STiaz
-	 qrj49xx01AHBcnRPjlhs2SzAiXgvOgz7ILb1AnMtBVoA0VaOOFVv0XcS/9vr86vOqh
-	 wVb5zsw2OiBPHuZn/vrAQEVMXB94uXx3SwfFKg4196+omMgSgdfscT1mCVx2pZ0y4o
-	 ip2vQIxoEvWbw==
-Date: Wed, 11 Nov 2026 12:18:36 +0800
-From: Jisheng Zhang <jszhang@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>, Gary Guo <gary@garyguo.net>,
-	Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Chao-ying Fu <chao-ying.fu@globalfoundries.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	torvalds@linux-foundation.org, olof@lixom.net,
-	aleksa.paunovic@htecgroup.com, arikalo@gmail.com,
-	Boqun Feng <boqun@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Luke Nelson <luke.r.nels@gmail.com>, Xi Wang <xi.wang@gmail.com>,
-	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
-	Pu Lehui <pulehui@huawei.com>, Puranjay Mohan <puranjay@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Charlie Jenkins <thecharlesjenkins@gmail.com>,
-	Nam Cao <namcao@linutronix.de>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v6 2/6] riscv: build kernel atomics from LR/SC when Zaamo
- is disabled
-Message-ID: <avPsnAlbfEsNa5zq@xhacker>
-References: <20261110-lrsc-only-v6-0-bafc3cc0fcae@mobileye.com>
- <20261110-lrsc-only-v6-2-bafc3cc0fcae@mobileye.com>
- <20261110-revivable-saint-9bcfaa2fd0e7@spud>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=HvF7sklR
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ffyTLCWk5ugq3rJLU10qm15cDX6AF4/iiuiLZ19hKkiNYM/AULX1ce0eflkbigw4jtV4OIVXVu0BjLaWRLXdrJ1ZSNXx9vW6ss6DnP9V/vWIRkvJOKWvaYfy2jTtwWn9L99RUQ5V0DgwbJpstg4E6BERsvdoDOVt/O0WqHO+UWTH178IR9+cpXStJNEd3tyJkPQXEXrNmRIdxk+xrGjvbtLiHUqAL33hKIDNxmYnFjkhLJt6uVg3sBny5sBJmWwCBi/3oRv5TWomumRI3jhcrjPgWubquWm7hm0SzEBaFyCyrIadoGxfYIEnGavjC/emNi0zuy/9ktruxT6/l4638Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Y/dIgHtnCTsZVliC1mpnuZIqg5Ysnqr5tN7l7hAzysI=;
+ b=FBeh24Vx3EdOsakEHUHEOLZuEMoxfKKj2jCadd/7c3u1IEVGA+IvDQ0nICcnORlFXkDXfnQ3+BV8HpUNZH/apJGQgIUol/R6fqekYxFBbsaTI2zSDIFBicKxCD+5K0JY+C/WAuMV0zH0m8LKBOZ4QY1HX+QvVZIK/cV1fNkECOvNTJwwGcH8FMtoW6CV2LSf/0jIz1zcpema2r9Xo4ZlJYm1oHWMxvs8z04JEVLlIDQWyoxFIg9HuGpSxSoWYDA8IL/VcToLUAuTgG2GOBBjNDupaVfnNA6f4Fm7e1euhkg64F50O9c+JBnt2wKgFAJ2YR+gclUZjYT5VnpTD/1JBw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Y/dIgHtnCTsZVliC1mpnuZIqg5Ysnqr5tN7l7hAzysI=;
+ b=HvF7sklR1T6oLcod8/2rwCkf2gYKaph9lAK+QPqIAvf+KJnOo/PLkc+tz6P2CcoK30lBlRaY1GoAX4kYpQSZ2YuMQEgWXC1ZTIfOFkqK6qcsDxrWY4bPjVQJexttv2T99/3bFmyUVCjG6SwK7P5iFHQi6OY7iaut3bDVimdGQWTah3EE4WrnxU9ayLDxKJypecf+cUJY1fr4KfQk556QBYEzuSRXFYsWURHw2CwXQKswItQoxVfmL8zP9xC7KfAYeydvv3FArCCwBVAlprt7D1/xnACW73axPJryiRw+HfDJo8FUn5qo9+silPYXYKSKauN2iGBReP3PdsU91/S3aQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
+ MN0PR12MB6247.namprd12.prod.outlook.com (2603:10b6:208:3c1::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Wed, 11 Nov
+ 2026 05:00:31 +0000
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa%5]) with mapi id 15.21.0592.010; Wed, 11 Nov 2026
+ 05:00:31 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 11 Nov 2026 14:00:28 +0900
+Message-Id: <DMS4810YPZUD.OWR39S5EZUNW@nvidia.com>
+Cc: <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH] gpu: nova-core: use pin-init self-referential support
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>, <acourbot@nvidia.com>,
+ <aliceryhl@google.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
+ <lossin@kernel.org>, <gary@garyguo.net>
+X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
+References: <20261110152746.140351-1-dakr@kernel.org>
+In-Reply-To: <20261110152746.140351-1-dakr@kernel.org>
+X-ClientProxiedBy: TYCP301CA0080.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:7b::9) To DS0PR12MB6413.namprd12.prod.outlook.com
+ (2603:10b6:8:ce::10)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -100,89 +100,110 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261110-revivable-saint-9bcfaa2fd0e7@spud>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|MN0PR12MB6247:EE_
+X-MS-Office365-Filtering-Correlation-Id: 814bea06-e25f-4a9b-232d-08df3fb0b636
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|10070799003|7416014|22082099003|18002099003|261026140227099003|10067099003|11063799006|261028144727099003|261102123227099003|56012099006|261021121427099003|261009223027099003|261021123027099003|261022105027099003;
+X-Microsoft-Antispam-Message-Info:
+	ueCo49U9XATZoFXXYr9reiUn4hVh81D6qU27WlQtOI3brBaqZgKNUX0GjnAunfy59KTszoztsE4aeqFnA9YMV+ZqKL46PzGNSyuXlkl8XIJYf8V/Q+H6HyGkTWUFI1uCscfFB/unz+HDX3aNVn07BO9nvraHfXbER3SOhallm3inM1AGu7/N7Ed+T5P0WhL+pr9Rzqret+x2J9BwJYXni+Lf0g5Wx4eU2oAe0f51WrpxyoDJJf35hgtv/SyCbUOue/3zyHF6UjJ1zoRHzDl4oKwlgYcfl4I2o5ApAeQXIiNYsLJeezos3M0OF9WkeLjkgLeVLi8GElVG1VNVPEmpwFXes/cqKBA+iuLGsRAsE87K8WZkl09uPrRiGdrBAVdVUQlDiCmxuWu6llxydbKRnP6tDVFbg/rIrwKwiFJAtCLF61DNJlDZ/aGOqzGaLhV5KSMJj3L8CnnC35iTvOZK/TSMByuUcN23AlNhBtB8nCnrg1pARx4/Ys6Epxjjo1HjaPas952DS6UvvweK/lyPRVB5YilkadrmcZMX/oV+3Pvp7RwGkP2mXHg8d2g1jGpOW2ZeA+SUEWK7pHRrsjopGGbOVrmNAoSkq61OLl5gQ0nDVkIveErwnQA2NPkymPmIQmaSsiFLzvK4dqtx3VJm66DteKq1BlRBwZdPih/0e2U=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(10070799003)(7416014)(22082099003)(18002099003)(261026140227099003)(10067099003)(11063799006)(261028144727099003)(261102123227099003)(56012099006)(261021121427099003)(261009223027099003)(261021123027099003)(261022105027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dkcwSDQvK2FZOENiM2NKVE0xZWN4SzVqNzc1UGVjUGN4S1R2MXhmUFlsZXNn?=
+ =?utf-8?B?TTkyWkdacWNSYkI4RWhRMEdhUEJtd050aUhlZ2FCaUVzNFRMS2NDWnJIb3Rp?=
+ =?utf-8?B?M1N3L1FNMmpweEdEcFlKRGJqd1pVUm1kVk9RaWRZTTFtNldsT1J0YVhRS0Nn?=
+ =?utf-8?B?MGlhd1BTcndjMGQrYThldVRlUkRzamxpQUlTRkcyOGdYaXMyOEs5UCs0TG9h?=
+ =?utf-8?B?aGlXdFlMTTZSdDZrbGpQUE9odEVRNFplZ3VxLzh2QzFWM2tuTElScmgwZkJ6?=
+ =?utf-8?B?Z1ZJM2FCbkp4M3VYMklaMzRlTkJLaGhETk51d0xEWGNIZlpQR2FVWHpPeHha?=
+ =?utf-8?B?TlRJekszZGgrSDhNSkk3YTJTakNwdy9OSkxmNG9IMTVvcUxnb2ptbXN6dm1s?=
+ =?utf-8?B?c09aNDZNeG9VS3JEdC9RVi94V1puVkY0T2d0UUJ6RFYzZ2xEbk1kV2ZPamRQ?=
+ =?utf-8?B?aHo3dFFVeFJybVJRcyswOGtCYTlENTdjRjE2dnhlVHBydExOYU05cHpLbS9C?=
+ =?utf-8?B?REszWk5sdTBJVTdHL1hmaGtvRXM1L3NERVk2cHhvK0c0MlRrUm11OVBBVzZr?=
+ =?utf-8?B?NVMvRHVWMFNNZW9kZXVDRW0weC94VXNoeGpsMzZyS3YvZnZTamh0eTdEc29r?=
+ =?utf-8?B?V2NSeFdReTBsN09UZTNJM3JURm1hNER6T0tHNWtNNUk3Q2ZkUjRwbFFTdmRD?=
+ =?utf-8?B?dFg1MStueEowMGtIb2hFZ281Y25SSnFlcWNsMThsWFZnSU40NzVvUUtLTFF6?=
+ =?utf-8?B?K2piWS9GT2Vob2drOFNCank4eVNmbUpQYXNTVUh4cTVERkxTblYwaVJBeUIw?=
+ =?utf-8?B?Wjc1U05NYTFwcmdRVi92bDlzQTBJWnc0amdCQ01ERkxydkp2WGlUa20rMEs0?=
+ =?utf-8?B?dGs5RmdQSHJzeTRhaUNzRXQwNnk3by9yc0xmVnZ0Y2lwZUpPS3g4bTlab3pC?=
+ =?utf-8?B?WXFkaHYrSHVLbDRzMXVxMDE2WmNnNkd2UTZ0ZVFDZmYzUU81RHlYMjFhWVA5?=
+ =?utf-8?B?S3BZVFNTMjJ0dDlhekEvUm9yLzgwbjhJSmFlZkNJcnJYdzVzVDJSTm5WQnJG?=
+ =?utf-8?B?N0xxZ2ZseUNIRFBjTmJLdmpsNnlobVVDK3BKS0hDRU9iWk5taEdsSmZPVVRV?=
+ =?utf-8?B?L1VtMzRLK0FUb1lxemZndlY1cVFmR0RndEZUN1lSUU0rd1dhYnQydWdTRWdq?=
+ =?utf-8?B?T3hmQUFpQ0xLSzBDenhoT2N1eFhudlJvUXlSV3ZZVHNEZ1pjL3lLTGhmNkZE?=
+ =?utf-8?B?dUp0Z0tJQ2xhTUlrSHRRUXowRVhBMGNxNmNiWjQyQkxkWC8wOGNsVHZFZXJ5?=
+ =?utf-8?B?ejMyWGN1Q3M0RmhSODY5S1dRSzBSQkRnY1pSS0FCQ09vd1RQU1ZyTUIrMnE0?=
+ =?utf-8?B?cGVsT2RiWEc1QVdTSDlKc3cwcnY1UGhUZGJveWEvYXd6VnUrTXYxbXlJZVBP?=
+ =?utf-8?B?UVlXSFV3bDduVWFVb0xnNmcvbWpqRk95Wk5TaisyQnBkNGNBSWQ5WkNuU1FG?=
+ =?utf-8?B?cGdoVzd1RmJwVVZlcC8rbWdYQUtHOWNLWDNCdzhJanllK1lCZTdWRkYyNXBz?=
+ =?utf-8?B?TXdEN0hsODlZRjhBNUNvTWJLelQ0ckRHWE9NL0xXNDZtZEc0Yk9UcDlTbko0?=
+ =?utf-8?B?aGRFTnNMeU9ReXlmZlJEVkJZUkxVRElXVUlqZlhRU21kMXpzMlYrU01iQXlu?=
+ =?utf-8?B?QjhLNm55eTIrZGpUMjkzdHhFcDMwVGZPbWp1QWc4dEUvNk9mMzQvOENYVWpR?=
+ =?utf-8?B?MHhJYXAwQ0h5ZytjV0R0L2g5ZnFiNmNteENVT0hDTzloYUZFUmM2azBBekZr?=
+ =?utf-8?B?S3RxSzU2TXM0R3lTeHlYWHlUUkJwYW5GUVpESzJ3dWFMZml5a1lHMjRoWkhp?=
+ =?utf-8?B?OFpTeUltdG9aYjlzd1AweGlIZDRSRW1vNHh4dzlWZ2RyenAySmJZb0tGWVpx?=
+ =?utf-8?B?RkN3YXBIVkkyTi9STXVuaHB1T2NFclQ4bnlmWmU4OEtJb1IreTcycjVYU3Nh?=
+ =?utf-8?B?VmJyZjBXZ3ZSWFNlNmN3VTJVOG0wQXdwM0lxQ2lWN0RVOEFxcnBRSFhDdkY5?=
+ =?utf-8?B?eUdjN3EwNVBXSGVZQ1ZLMDhZQ2pqTkV6QVBIdERkV01ESU1tS3N4Mm0wQUVr?=
+ =?utf-8?B?TEt3bXI4TjRrRWtPdndSUFJQc0hqeEdSdzZUNXZXcENYa01DaUR0Q2o5Q0hD?=
+ =?utf-8?B?NVNOMXhVS0pyNXl5UnRFMms3RnZSUCtpaEtaRnU5OHRlU2ZiU3J5VGFWa25t?=
+ =?utf-8?B?YmVEYUpuY1ArOEFyc1lwbDRkWm56b3BacmtLcDFxNkFFUjAxNTdRQUlmOHpr?=
+ =?utf-8?B?UmVaVDE0T1MyL0cvNDZKaEdUOEQ5YnVTY0RPSjJyVERuTmVvVlpENE9TWXE2?=
+ =?utf-8?Q?DQxSeVsY05B588DpAEozNgquUAV1FJDNprvdI7BhsKtPJ?=
+X-MS-Exchange-AntiSpam-MessageData-1: fH6yBotCD96cog==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 814bea06-e25f-4a9b-232d-08df3fb0b636
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 05:00:31.5624
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VikVYif0tt7LjuQ2lpcaCHr5uXYBmN/Xzst3Cweh7z8b1QiuE/FZRQn8yltYx+cDaAZrD4UjJUsM+Lj+MHCFyA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6247
 
-On Tue, Nov 10, 2026 at 07:02:48PM +0000, Conor Dooley wrote:
-> On Tue, Nov 10, 2026 at 03:20:59PM +0200, Vladimir Kondratiev wrote:
-> > The A extension is Zaamo plus Zalrsc. On some CPUs Zaamo is present
-> > only formally. MIPS P8700 traps every AMO instruction into M-mode and
-> > emulates it there, so the extension is supported but very slow. A
-> > typical uncontended atomic increment costs:
-> > 
-> >   native AMO                                     2..5 cycles
-> >   LR/SC, private L1 reservation monitor         6..12 cycles
-> >   LR/SC, PoC (L2) reservation monitor       about 40 cycles
-> >   AMO emulated by an M-mode trap           about 600 cycles
-> > 
-> > The last two were measured on the eyeq7h hardware. On such a CPU the
-> > kernel must use LR/SC for every atomic.
-> > 
-> > Add RISCV_ISA_ZAAMO, default y. The default keeps "a" in -march and
-> > the generated code unchanged. When it is disabled, -march carries
-> > _zalrsc instead of "a", and atomic_*, bitops, xchg, futex and the
-> > early boot code use LR/SC loops. The sequence is chosen with the
-> > preprocessor, on CONFIG_RISCV_ISA_ZAAMO like the other ISA options in
-> > the headers, because the assembler rejects AMO mnemonics once -march
-> > lacks Zaamo. A kernel built this way runs on any hart that implements
-> > A; it just does not use AMO. It is therefore a plain option, not a
-> > NONPORTABLE one, and the hart keeps advertising "a" to userspace,
-> > which is true.
-> > 
-> > The LR/SC loops follow the ordering convention of the existing ones
-> > in cmpxchg.h, from commit 5ce6c1f3535f ("riscv/atomic: Strengthen
-> > implementations with fences") and commit 1d84afaf0252 ("riscv: Fix
-> > fully ordered LR/SC xchg[8|16]() implementations"): a fully ordered
-> > operation is lr, sc.rl and a trailing fence rw,rw; acquire is lr.aq
-> > with a plain sc; release is a plain lr with sc.rl. The futex loop is
-> > bounded to 128 retries and returns -EAGAIN after that, as arm64 does,
-> > because userspace can keep the word changing from another thread and
-> > futex_wake_op() retries on -EAGAIN anyway.
-> > 
-> > Zabha, Zacas and the ssamoswap instruction of Zicfiss are AMO
-> > instructions, so RISCV_ISA_ZABHA, RISCV_ISA_ZACAS and RISCV_USER_CFI
-> > depend on RISCV_ISA_ZAAMO. The riscv64imac Rust target emits AMO too,
-> > so RUSTC_SUPPORTS_RISCV depends on it as well.
-> > 
-> > The choice is made at compile time rather than with alternatives.
-> > Nearly every CPU has a native A extension, and an alternative would
-> > inflate all those kernels with the nops needed to pad one AMO to the
-> > size of an LR/SC loop, at every atomic site, for the benefit of a few.
-> > 
-> > Turning Zaamo off needs a compiler that accepts _zaamo and _zalrsc in
-> > -march. GCC 15.1 is the first release that does.
-> > TOOLCHAIN_HAS_ZALRSC_ZAAMO checks for it; with an older compiler the
-> > option stays at y.
-> > 
-> > Three sets of extensions provide every atomic Linux needs. "a" is what
-> > the kernel supports today. Zalrsc plus Ziccrse is what this patch adds:
-> > every atomic is a constrained LR/SC loop, and Ziccrse is the
-> > forward-progress guarantee for such loops. Zaamo plus Zacas would do
-> > as well, with CAS loops in place of LR/SC as on x86, and is left for
-> > whoever has such hardware.
-> > 
-> > Suggested-by: Chao-ying Fu <chao-ying.fu@globalfoundries.com>
-> > Nacked-by: Conor Dooley <conor.dooley@microchip.com>
-> > Link: https://lore.kernel.org/linux-riscv/20261106-smock-headband-d6a7d568c228@spud/
-> 
-> I had a quick glance at this revision, and I think you've at least tried
-> to resolve the things I was pointing out. Did I miss something, or why
-> have you kept the NAK after having resolved the things that I was
-> objecting to?
-> 
+On Wed Nov 11, 2026 at 12:27 AM JST, Danilo Krummrich wrote:
+> Express all self-referential borrows through pin-init's self-referential
+> support [1], replacing unsafely derived references.
+>
+> Cc: Gary Guo <gary@garyguo.net>
+> Link: https://lore.kernel.org/all/20261008-dev-selfref-v2-0-e280b3c8fba5@=
+garyguo.net/ [1]
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  drivers/gpu/nova-core/api.rs     | 24 ++++++++++++---
+>  drivers/gpu/nova-core/driver.rs  | 53 +++++++++++---------------------
+>  drivers/gpu/nova-core/gpu.rs     | 32 ++++++++-----------
+>  drivers/gpu/nova-core/irq/gsp.rs | 17 +++++-----
+>  4 files changed, 59 insertions(+), 67 deletions(-)
+>
+> diff --git a/drivers/gpu/nova-core/api.rs b/drivers/gpu/nova-core/api.rs
+> index eec69aace3b2..94808af3886d 100644
+> --- a/drivers/gpu/nova-core/api.rs
+> +++ b/drivers/gpu/nova-core/api.rs
+> @@ -22,11 +22,27 @@
+>  };
+> =20
+>  /// API handle for the auxiliary bus child drivers to interact with nova=
+-core.
+> -pub struct NovaCoreApi<'bound> {
+> -    pub(crate) gpu: Pin<&'bound Gpu<'bound>>,
+> +#[pin_data]
+> +pub struct NovaCoreApi<'bound>
+> +where
+> +    // `Gpu` is invariant in its resource lifetime, which outlives this =
+API borrow.
+> +    exists<'gpu_resources>: 'bound,
+> +{
+> +    #[uses('gpu_resources: invariant)]
+> +    gpu: Pin<&'bound Gpu<'gpu_resources>>,
+>      pub(crate) pdev: &'bound pci::Device<Bound>,
 
-I searched the maillist for this errata, or workaround or downgrading 'A'
-or anything else it's named, found something interesting:
+nit: should we remove pub(crate) for `pdev` from here too?
 
-IIUC, Paul has rejected the series, at least call for "hold off on merging them"
-see
-https://lore.kernel.org/linux-riscv/8afa0702-4d30-86e2-5afb-a7c113a92dec@kernel.org/
+Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
 
-and 
-
-https://lore.kernel.org/linux-riscv/6201870b-b50d-f6e2-814b-7a1fdbf064db@kernel.org/
-
-But I'm not sure why the same series is still continuously sent out but
-in different titles. I think this series can be ignored until riscv
-maintainers agree to downgrade the 'A' to subset of 'A', I.E zalrsc
