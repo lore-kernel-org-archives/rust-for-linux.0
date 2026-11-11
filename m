@@ -1,96 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.46
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794405149;
-	b=d2EoAD+RNbbFO1kuel3bdytbI/H70Y9BKgNTSfAJLZn02HvSq1FNuj0yv2JZewBFmfNW
-	 Gdkkapa/wIWwVOBpYXbuJsY7LlRG1YUOT9fu842MXOmHLQAMpU8gwCB4kigy8Km5RQAWn
-	 XgLZpHjpcL18IaRvN4lPiRZCWLJRz6Eu8LWbD5vSsZbSBL3sZ3yQzTkFJCFvsxbVDJ2g4
-	 7CDOVGYvj4NHF8iPa/6qLr0NcAg7n9OgKQ+T4ctB9fPr3i4k3aU+o9Ub3zF7D+HJyW+4n
-	 dvDjE97OsFlNZ8xgL/h3MyBvUZdO2akRJ/3IESXd/+7fHiCi1lGSgD4qR5Ti3WfRZVA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794405149;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
-	bh=+2XFINlCbF1zth0AicmB99QJrW9ixPJECxXERtFRMTw=;
-	b=Dx0Mk1LbMRvUC+tt0IA0o2MSt64yhnRGG0+VdD6JLAwvpE6NPniEKQtel4WDrWjDMrTt
-	 X4fzhuFdoYQoAzIX2xXg0WwxDJYCIEEqTytyNzsc8xVPmBSLktjeD3x7Yf7hWYQrYWRv7
-	 Ga116UQu7Oe+g+BnIGicneoTZgh6RV2DLoVF6qgrwvqU+LS0cWCf6jAE+d8svaN/f/0lw
-	 MFZdJEfD6jCzX6CmmpIYmgZbm61DeiplZSmDHQv+Bx4kR3zjFebHoaSxY3uyhScCXdW9Y
-	 MhAnO/7aJCNeXuM0GBfmHRryv+yOHt7CxBVqT00uy+pGBcG6grcvxEn3OwHB7VJFGxQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hsiALXzn;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.46
-Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794405257;
+	b=ZLTdIz3wzbAPxFbawQneWFrtW4GcTYOODnOTrrkTRRi0IDeEbhS0IV8iFt8RnXIEYLHi
+	 ljmNrVbLAwlEWxesbiLjifkoV0hXnTZWEb+cravzgMDOnmKTbfS+9hHM3RY/iYVBR2OGt
+	 AQC31GqNQYrBeKv7C2HkU2PXyjeEh0to7O5NEUO8Xni9ZcwRgFFDF8/XOVx6wpmeY6yZy
+	 OWF6UcDVexJ7o3OctpOq6bIOxU4UzTwN2DqGl8UVHFooJaWKW5oyX7ArITa/HWXp0iSP1
+	 SiwKtrZow+Osht3PCvqNPug4u5453l+1qwqpuu2vmqBR6szUu9tKk56my8j6H3kbUDA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794405257;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=dLCsOhTudAlUPTNU0R3bdVAeTFalW+MHycbb2NS9OIE=;
+	b=OjqCHKYVNKIbab68flzLxCBgy/SBcllWEpFtkrO5zvH2skoFkgJ+uLAJ6uPc5Oubl4K+
+	 SF7focUZhsQ4MOluAnmMmLKr7rlmNoLXqISSjKxD5wRWyU1exRAAAiJyP2gwndlsgMTzH
+	 u6gdRYIE8f0PLlYoWlsgm1A1tBxuH5Jtw2coK/Rv/cgLIErpo2zN4xrQOpz76Ss234PHJ
+	 5X5Z4fGtyV/7XUc3mP98YXKHQToiLoHov4HvhaDu3XJQcGIYXip1vH5+wXiPn4VIGr5To
+	 p//fLfCjRAL+KLIBVct59wS9ZdBgQukA3QJ6IAROSde83sOduGfdaS5YMBUi/K4UcRA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M8ve62MO;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09AA606A31C
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Nov 2026 13:52:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F09AA606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574BE606A32A;
+	Wed, 11 Nov 2026 13:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hsiALXzn
-Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-677af43eed4so3593896d50.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Nov 2026 05:52:28 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794405148; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qlFHkZUUCiojR7TpkWtzzAvpvajEnRHCzMW293zhUo39xp66yZ8ICMMyB7Gl8xvIg4
-         dWoqUame4qw0RclVRVuuQP4JvXK3Dk7QNAzUQSpMqe+tGDxNZciCC8GzOaWRpBKoZgZv
-         Aqnwegk60kZ2rzBoty6EQ5i5sBzbbzMweOSFuui7BoqdjoIzQxZhRnAeRhx6RE0SoBnJ
-         rDdKHpZytCRxSunjAi1drLQTD+KedLvPOTupMYUunXMIrTnZFTRYOb3jjnJJC0+cmyoX
-         1orQYTGv4vf9v2AlEb5Zl80fSGMKWelLEWVnRtqte7lcvXzHwHb4bYTf/AsChC+x455k
-         D2ng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=+2XFINlCbF1zth0AicmB99QJrW9ixPJECxXERtFRMTw=;
-        fh=ORMnvbT8+1yxRkRoC+Tkhd9x/aaVx8NxBidEAMW1FAc=;
-        b=a9wNasfSv00er9AmWjlMfoWx7OarVRefe6ONzMgJCRLPze04ahrExhFoicA9xiL1s5
-         XjoxUCUo7PMlLNZ9z95g33yNuNt+nWGEzLxXIS31Wx6kRjsGb/hvB+7WqAa0nzpUGDPP
-         xEFLzIbgOgtGo3mlV9Q7nNzxdkoWuM7I2poyTFoxKvrgf+P1PzDL/QTAy0yU4nY5jJw/
-         jcTYxM8aXywCS3qV46aD2meTf9HdF+t5mbV7ns58B0H4g6mQeIKbas6IrsvecB8sGIfC
-         JikoB2YrMPb6w8p2wTW9b+Sgay9PYxlRUgGfHV/gNdSI9zSdev3/Ea4NaiiAGXCSaAIK
-         G44g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794405148; x=1795009948; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+2XFINlCbF1zth0AicmB99QJrW9ixPJECxXERtFRMTw=;
-        b=hsiALXznod0b7s4QqhpAJjyZ+kW2LE0KXzlepqzfI9y7GwtGewkdMgI018yzCQxUAJ
-         IoZLVto+BtzBeUtkMK0+NdxYu6h6R/IOS7gKE4YtTEVEz9WzgiWjim8RMsywJJZ/9A3a
-         w25/sU4o2g53eMwobHubnWtpbHqMzxf1sT6Gfd/RyctrSxm3x7I2J+INOYsqH98Q+dJO
-         S7kW5ScArQ4GmPXaw0Yk4m47MwbZRNel+T0YeslJj/3eZkUTVd4sYdXFkQRGVmEU6gp1
-         V2zMCNrNGIcEs/qT4V2aaJlHHiPEAasDOLlJIHPQb1sMsOKAyxy6FSPWph/eUKQHUKac
-         opig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794405148; x=1795009948;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=+2XFINlCbF1zth0AicmB99QJrW9ixPJECxXERtFRMTw=;
-        b=oSK2f/cmBfpQ6LBR6CO1JqL27CDIASZHmBvwha5CfN+0aSxyXJPMpvDrc2lPPp35KI
-         raLU4enIK9fu5LOZXO8D+u/CyjV0M3VUCPRfPMK2XAF7TbtGFPv/1yXxVc6grSIvcHEi
-         ZtCDCOgOARb7dIYA6C0r2/b/9d8zOStgWICM7vIS7ZGZcDvc1IG0Cto8jvVZXu929E+i
-         rsjNBdt/UsdPvg7q6tL/oGV10jGFnZMozUrxWgyvTU1MLA1yw8rYkg8l09HcJFiQUlTR
-         TrBfbTDUnfspfj/Xpb4iEubeQ3t4GPMHGrz1QI4OdJ9UoIuKzMlaSwjPL346VYVLvtq1
-         DFug==
-X-Gm-Message-State: APuU4Z8EMtwQG0BIvj2EkJYJt1upOuwtroAFhDe1hL9kScEgQ6EZ5Wf7
-	Pe8+eIlz3+0Q6eV6JYa5LoyBQe9rQMRTZV61KQnRpqJKyIPtDKybJ+TfmZAd2PVcoed88eVMXrv
-	UfLpKx1rR8LVYaFen6QAIgDRjpFBDQE95kyrvWHQ=
-X-Gm-Gg: AYBFou2XbvF0UR/eRnam27SxM8Gvol3Eh6TSmAqWPM6p3oOB74K4VqhqxbN6PvvPAFd
-	7RJZOH/qVbPf04PBPAZRAjqemuQPh/xeccrLRzfLq3HH5UahBISqBLRifft9c+sQZRCgEk0cEIr
-	WhMsZL8NFaBlxCeHQmiaS2fSTlD/cCVbStXlZKwdZdmYJrtmpZ8NGJMG11KTxamFZ2Q8942U9yD
-	Vb2tjExtS3/ccMDxv/shqeo3YDpvbDaJuKPeyWMFz5orG0MIRnMVFowx4wDxm3aLPbC80bXjqSQ
-	sSMODd0W2IDd6K7NYzRRl7inq3NDw1NmtE9b3UnsPi5CM3ibjzU3rmZt3uLfalumTRJudlnpbPC
-	v/J5WIWDQPDOkzNSCLqxtBfCeHgLIvL0VV3OyL7GdCNUM7r1n46bR9ylD4Ylk6Bbuls29g9GXax
-	kIg4auWDIQ8woT0HWxPbBXn6fagi3TWXaGmBei56r4O9nx+XPG
-X-Received: by 2002:a05:690e:130b:b0:677:dae6:51d4 with SMTP id
- 956f58d0204a3-67c6804b13bmr2026758d50.106.1794405147616; Wed, 11 Nov 2026
- 05:52:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M8ve62MO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439981F00A06;
+	Wed, 11 Nov 2026 13:54:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794405256;
+	bh=dLCsOhTudAlUPTNU0R3bdVAeTFalW+MHycbb2NS9OIE=;
+	h=From:Date:Subject:To:Cc;
+	b=M8ve62MOyP3NNSzIDuBUmNbyc+uf8zljbFd5IajHPI+Cru57NzSaFwsRksbsD9ylB
+	 ClW2Q7TT8957iWdUDWoCgsL/+sM1P/eLJZr6PYkYFit3t7cqur4E4iFnEoWAJarrRt
+	 xf1bqHrf13MzZkKA+lf1NOXfWLWTkIHhubBagJ/UDnYXwqBYWWZoIcsbOCYoFZT8o7
+	 b6Rs+fpqQYinlQLpJOian5A1HvESuqpMTnNRnbllmrV/Ak6iVbMaEgGCBuk8X9hwwf
+	 1Kl69JXfLk62qexpFVhaB2h3joh1F+Vg+tkmeCCPaq5/YgPx0euOP/EokNir9w1/sV
+	 9NAkWvVhmOUIA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Wed, 11 Nov 2026 14:53:52 +0100
+Subject: [PATCH v3] configfs: rust: add an API for adding default groups
+ from C
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -100,84 +53,405 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-From: Punnay Sharma <punnaysharma805@gmail.com>
-Date: Wed, 11 Nov 2026 19:22:16 +0530
-X-Gm-Features: AclHuK-8OQfKtr7kd2tK0-A81DqUvdX6w8JvvpM3cbih-ZSsSowvUkNCG9mmulM
-Message-ID: <CANw-i3nzboD-O6aKcLqtgCiY7quV2NbmzgO7wMbUKmETti1sEg@mail.gmail.com>
-Subject: [RFC] klint: generate FFI preempt_count data from C LLVM IR
-To: Gary Guo <gary@garyguo.net>
-Cc: rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261111-configfs-c-default-groups-v3-1-aec19389272e@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAG9z9GoC/43NTQ7CIBCG4as0rMXwJ6auvIdxQWGgxAYaaImm6
+ d2l3Rg3xuX7JfPMgjIkDxldmgUlKD77GGrwQ4N0r4ID7E1txAiThNET1jFY72zGGhuwah4m7FK
+ cx4w70xElhORcSVTvxwTWP3f7dq/d+zzF9NpfFbqt/6iFYoqhlWejwErN5fUBKcBwjMmhjS3sQ
+ 0nyk2KVYsBAtLQFQdgXta7rG5qZa9wOAQAA
+X-Change-ID: 20260215-configfs-c-default-groups-bdb0a44633a6
+To: Boqun Feng <boqun@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+ Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Breno Leitao <leitao@debian.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=15792;
+ i=a.hindborg@kernel.org; h=from:subject:message-id;
+ bh=M/dcZL/nm44/hZuDmi7hVupFoq3kXmerJ+/j5Q+G9nc=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq9HNxp9uQhGvTVvGMVyWPy/OqK3iqjU6bCfd9O
+ obB9VcTsc6JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCavRzcQAKCRD6UCkIqsW9
+ 0Gp0EACMQqUEoQ3bNAYwj/JeiIii3fdOFt55Kwl+2z7Ejv9yQ8UdQXAuPhniXHb5ROEHub1Y8d+
+ G/KhnLZnUYPoRl+nSLKbAgDjdc0yHWL3sLKOaIclgyZCrMaTAOWWwmENn9834WJfPVKFhfE50/1
+ 2rNhVXQfTsk1G9/CtIYxG6OzfyNXUtBgwBoeroEwonTNtXCHsPtIuk9PklO0d2r/roZTuE6ZXpI
+ CCBoCuMmztdrJqLx3LxIcIsluN/8XJ/7cxxDn9bXMLgz10Ehhpv8fUH8bsgpQSKUKsYtpAffkaZ
+ ERgmanJHu1aZP59JvbzztU1ApsRaX0HqcXOnEGjY0pq40ArjAZ+14PtQA6mrlfynz5BJwQ2P0Sr
+ c09Z9c57+HHnUX3uGLP+XYQf4NQulTeBcxl9ufeO/UeFzgQDbgUqU9fOtE3Xh4ng84nlyMdnQ56
+ irwe+x46uZR9CYHd/mwpspsJpRm40X4ecLSSJRjSBse4+aBQQFx4TrlAm5QtvfLaAUyukC+REBm
+ zPpm9biSf52TcbHEK2e6PAf4TEqPs7vn9M4Bzv7HKfha4RJQTjQIBDM8vF8bGplcHRaXozdESn+
+ ZXeDu5LS4Z7Ouuf9aANazM/lmzlcurg+nGhz9wCyUrp2wXjAO1amjW1oSbEWc8wtI06hq8QPbYy
+ 1oFCiwPzt/jocqw==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Hi Gary,
+Some C subsystems provide a feature to add configfs default groups to the
+configfs hierarchy of other drivers or subsystems. Rust abstractions for
+these subsystems will want a way to add these default groups via the
+configfs Rust API. So add infrastructure to make this possible.
 
-I want to write a tool that makes the FFI data for the klint
-atomic_context lint. Before I start, I want your comments on the
-design and on the output format.
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+Changes in v3:
+- Acquire a reference on each default group before adding it to its parent
+  group. `configfs_add_default_group` does not acquire one, but
+  `configfs_remove_default_groups` releases one, so a default group reached
+  a zero reference count when its parent was dropped, while the caller
+  still owned it.
+- Make `CDefaultGroup` an unsafe trait and document the requirements on
+  implementers.
+- Add `UnattachedGroup`, a token that grants permission to attach a group
+  as a default group exactly once, and take that in `Group::new` instead of
+  an `Arc`. A `struct config_group` is linked into its parent through a
+  single `group_entry` field, so attaching one group to two parents would
+  corrupt both lists. The token cannot be cloned and `Group::new` consumes
+  it, so this is now rejected at compile time rather than left to the
+  caller.
+- Allocate the group in `UnattachedGroup::new`, so that uniqueness follows
+  from construction. Obtain a handle to the group with `clone_arc` or
+  `into_arc`, named after the `ListArc` accessors.
+- Initialize `data` before `group` in `Group::new`, so that no fallible
+  step runs after the default groups have been attached.
+- Drop default groups from the list of unsupported features in the module
+  documentation.
+- Link to v2: https://msgid.link/20260605-configfs-c-default-groups-v2-1-2e2e4919e402@kernel.org
 
-Current state:
-I read ffi_property() in src/atomic_context.rs at commit
-898b14f358fa. The table is a manual list of approximately 230 C
-symbols. An unlisted symbol gets FFI_USE_DEFAULT (adjust 0,
-expect 0). A call to an unlisted symbol in atomic context therefore
-gives a warning. krealloc() is MIGHT_SLEEP for all GFP flags.
-In your January RFC, the atomic_context lint is not enabled [1].
+Changes in v2:
+- Drop the spurious `__` prefix on the symbol name of the
+  `configfs_remove_default_groups` Rust helper (Alice).
+- Wrap the body of `Group::new` in `pin_init::pin_init_scope` so that
+  allocation failure from `KVec::push` is propagated with `?` instead
+  of panicking via `unwrap` (Danilo).
+- Only build configfs rust helpers when configfs is enabled.
+- Link to v1: https://msgid.link/20260215-configfs-c-default-groups-v1-1-e967daef6c36@kernel.org
+---
+ drivers/block/rnull/configfs.rs |   1 +
+ rust/helpers/configfs.c         |  20 +++++
+ rust/helpers/helpers.c          |   1 +
+ rust/kernel/configfs.rs         | 184 +++++++++++++++++++++++++++++++++++++---
+ samples/rust/rust_configfs.rs   |   8 +-
+ 5 files changed, 200 insertions(+), 14 deletions(-)
 
-Design I propose:
-1. Input: an LLVM=1 build, a known .config, and
-   CONFIG_DEBUG_ATOMIC_SLEEP=y.
-2. Extraction: a Clang pass plugin, loaded with
-   KCFLAGS=-fpass-plugin=. The plugin runs at the pipeline start,
-   before the inliner. After inlining, preempt_disable() and
-   local_irq_disable() are inline asm on x86. Name-based seeds
-   then do not work. The plugin writes one facts file for each
-   object file.
-3. Solver (Rust): a whole-kernel call graph and a fixpoint for each
-   SCC. For each function, the solver records:
-   - the deltas for preempt, softirq, hardirq-disable and RCU
-     nesting
-   - may_sleep: Never, Always, Cond(param, mask) or Unknown
-   - an expect range, with the same semantics as klint
-   - the shortest call chain to a sleep primitive
-4. Cond(param, mask) comes from might_alloc(). There,
-   __might_sleep() is control-dependent on
-   (gfp & __GFP_DIRECT_RECLAIM) [2].
-5. Indirect calls go into a separate list. The solver does not
-   merge them into may_sleep.
-6. Output: a JSON database, the klint data, and a diff between two
-   git revisions.
-7. Evaluation: fix commits for "sleeping function called from
-   invalid context", Smatch, and DSAC [3].
+diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
+index 34ef96fa125f0..2f5b722927e0d 100644
+--- a/drivers/block/rnull/configfs.rs
++++ b/drivers/block/rnull/configfs.rs
+@@ -88,6 +88,7 @@ fn make_group(
+                     name: name.try_into()?,
+                 }),
+             }),
++            core::iter::empty(),
+         ))
+     }
+ }
+diff --git a/rust/helpers/configfs.c b/rust/helpers/configfs.c
+new file mode 100644
+index 0000000000000..4c71c33211bf7
+--- /dev/null
++++ b/rust/helpers/configfs.c
+@@ -0,0 +1,20 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/configfs.h>
++
++#ifdef CONFIG_CONFIGFS_FS
++
++__rust_helper void
++rust_helper_configfs_add_default_group(struct config_group *new_group,
++				       struct config_group *group)
++{
++	configfs_add_default_group(new_group, group);
++}
++
++__rust_helper void
++rust_helper_configfs_remove_default_groups(struct config_group *group)
++{
++	configfs_remove_default_groups(group);
++}
++
++#endif
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index d62c7be1ca7bd..ab8d38b431176 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -51,6 +51,7 @@
+ #include "build_bug.c"
+ #include "clk.c"
+ #include "completion.c"
++#include "configfs.c"
+ #include "cpu.c"
+ #include "cpufreq.c"
+ #include "cpumask.c"
+diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
+index dbed72844b31c..a434fc269ef7c 100644
+--- a/rust/kernel/configfs.rs
++++ b/rust/kernel/configfs.rs
+@@ -11,7 +11,8 @@
+ //! - Items. All group children are groups.
+ //! - Symlink support.
+ //! - `disconnect_notify` hook.
+-//! - Default groups.
++//! - Default groups, except for groups allocated and initialized by C code. See
++//!   [`CDefaultGroup`] and [`UnattachedGroup`].
+ //!
+ //! See the [`rust_configfs.rs`] sample for a full example use of this module.
+ //!
+@@ -110,6 +111,7 @@
+ //! [`rust_configfs.rs`]: srctree/samples/rust/rust_configfs.rs
+ 
+ use crate::alloc::flags;
++use crate::alloc::Flags;
+ use crate::container_of;
+ use crate::page::PAGE_SIZE;
+ use crate::prelude::*;
+@@ -242,12 +244,27 @@ unsafe fn container_of(group: *const bindings::config_group) -> *const Self {
+ ///
+ /// To add a subgroup to configfs, pass this type as `ctype` to
+ /// [`crate::configfs_attrs`] when creating a group in [`GroupOperations::make_group`].
+-#[pin_data]
++#[pin_data(PinnedDrop)]
+ pub struct Group<Data> {
+     #[pin]
+     group: Opaque<bindings::config_group>,
+     #[pin]
+     data: Data,
++    default_groups: KVec<Arc<dyn CDefaultGroup>>,
++}
++
++#[pinned_drop]
++impl<Data> PinnedDrop for Group<Data> {
++    fn drop(self: Pin<&mut Self>) {
++        // SAFETY: We have exclusive access to `self` and we know the default groups are alive
++        // because we reference them through `self.default_groups`.
++        //
++        // `configfs_remove_default_groups` releases one reference on each default group. That is
++        // the reference `Self::new` acquired before adding the group, so the references owned by
++        // the `Arc` values in `self.default_groups` are not affected. Those are released when the
++        // field is dropped, which happens after this function returns.
++        unsafe { bindings::configfs_remove_default_groups(self.group.get()) };
++    }
+ }
+ 
+ // SAFETY: We do not provide any operations on `Group`.
+@@ -262,26 +279,167 @@ impl<Data> Group<Data> {
+     ///
+     /// When instantiated, the group will appear as a directory with the name
+     /// given by `name` and it will contain attributes specified by `item_type`.
++    ///
++    /// Each element of `default_groups` is added as a default group of the new group and will
++    /// appear as a subdirectory of it.
+     pub fn new(
+         name: CString,
+         item_type: &'static ItemType<Group<Data>, Data>,
+         data: impl PinInit<Data, Error>,
++        default_groups: impl IntoIterator<Item = UnattachedGroup<dyn CDefaultGroup>>,
+     ) -> impl PinInit<Self, Error> {
+-        try_pin_init!(Self {
+-            group <- pin_init::init_zeroed().chain(|v: &mut Opaque<bindings::config_group>| {
+-                let place = v.get();
+-                let name = name.to_bytes_with_nul().as_ptr();
+-                // SAFETY: It is safe to initialize a group once it has been zeroed.
+-                unsafe {
+-                    bindings::config_group_init_type_name(place, name.cast(), item_type.as_ptr())
+-                };
+-                Ok(())
+-            }),
+-            data <- data,
++        pin_init::pin_init_scope(move || {
++            // Transition the permission tokens into `Arc`s.
++            let mut dg: KVec<Arc<dyn CDefaultGroup>> = KVec::new();
++            for group in default_groups {
++                dg.push(group.into_arc(), GFP_KERNEL)?;
++            }
++
++            Ok(try_pin_init!(Self {
++                // `data` is initialized first because it is the only fallible step. Nothing may
++                // fail after the default groups below have been added to `group`, because the
++                // references acquired for them are only released by the
++                // `configfs_remove_default_groups` call in `PinnedDrop`, which does not run if
++                // initialization fails.
++                data <- data,
++                group <- pin_init::init_zeroed().chain(|v: &mut Opaque<bindings::config_group>| {
++                    let place = v.get();
++                    let name = name.to_bytes_with_nul().as_ptr();
++                    // SAFETY: It is safe to initialize a group once it has been zeroed.
++                    unsafe {
++                        bindings::config_group_init_type_name(
++                            place,
++                            name.cast(),
++                            item_type.as_ptr(),
++                        )
++                    };
++
++                    for default_group in &dg {
++                        let child = default_group.group_ptr();
++
++                        // `configfs_add_default_group` does not acquire a reference on the group
++                        // it adds, but `configfs_remove_default_groups` releases one. Acquire the
++                        // reference that the removal in `PinnedDrop` will release, so that the
++                        // reference owned by `default_group` stays intact.
++                        //
++                        // SAFETY: By the safety requirements of `CDefaultGroup`, `child` points to
++                        // an initialized `struct config_group`, and it stays live because
++                        // `default_group` keeps it alive.
++                        unsafe { bindings::config_item_get(&raw mut (*child).cg_item) };
++
++                        // SAFETY: As above, `child` points to an initialized
++                        // `struct config_group` that stays live until `Self` is dropped, because
++                        // `dg` is a field of `Self`.
++                        //
++                        // `child` is not already a default group of any group: each element of
++                        // `dg` came from an `UnattachedGroup` consumed above, whose type
++                        // invariants say so, and the only way to attach a group is to pass such a
++                        // token to this function, so nothing can have attached it in between.
++                        unsafe { bindings::configfs_add_default_group(child, place) }
++                    }
++                    Ok(())
++                }),
++                default_groups: dg,
++            }))
+         })
+     }
+ }
+ 
++/// A trait for default configfs groups added by C code.
++///
++/// Rust abstractions that work with C code that creates configfs groups can implement this trait to
++/// add the groups as default groups via the Rust configfs API.
++///
++/// Note that implementing this trait is not by itself enough to add a group as a default group of a
++/// [`Group`]. Construct the implementer with [`UnattachedGroup::new`] and pass the resulting
++/// [`UnattachedGroup`] to [`Group::new`].
++///
++/// # Safety
++///
++/// Implementers must ensure that:
++///
++/// - [`CDefaultGroup::group_ptr`] returns a pointer to a `struct config_group` that has been
++///   initialized by `config_group_init_type_name`, or by a C function that calls it.
++/// - Every call to [`CDefaultGroup::group_ptr`] on the same value returns the same pointer.
++/// - The pointee stays live, initialized and in place for as long as `self` is live.
++/// - The reference on the embedded `struct config_item` that was acquired when the group was
++///   initialized is owned by `self` and is released when `self` is dropped.
++/// - The implementer never adds the group as a default group of any group itself. Only
++///   [`Group::new`] may do that.
++pub unsafe trait CDefaultGroup {
++    /// Return a raw pointer to the group definition.
++    fn group_ptr(&self) -> *mut bindings::config_group;
++}
++
++/// A group that is not yet attached as a default group of a [`Group`].
++///
++/// This type is a token that grants permission to attach a group once. It cannot be cloned, and
++/// [`Group::new`] consumes it, so a group cannot be attached twice. Use
++/// [`UnattachedGroup::clone_arc`] to obtain a handle to the group, which can be cloned freely but
++/// cannot be used to attach the group.
++///
++/// [`Group::new`] takes an `UnattachedGroup<dyn CDefaultGroup>`, so that one [`Group`] can have
++/// default groups of different types. An `UnattachedGroup<T>` coerces to that type.
++///
++/// # Invariants
++///
++/// The `struct config_group` returned by [`CDefaultGroup::group_ptr`] on `self.0` is not a default
++/// group of any group.
++#[repr(transparent)]
++#[derive(core::marker::CoercePointee)]
++pub struct UnattachedGroup<T: ?Sized>(Arc<T>);
++
++impl<T: CDefaultGroup + 'static> UnattachedGroup<T> {
++    /// Create a group that can be attached as a default group of a [`Group`].
++    ///
++    /// The returned value grants permission to attach the group to exactly one [`Group`] via
++    /// [`Group::new`]. Use [`UnattachedGroup::clone_arc`] to obtain a handle to the group itself.
++    pub fn new<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Self>
++    where
++        Error: From<E>,
++    {
++        let group = Arc::pin_init(init, flags)?;
++
++        // INVARIANT: `group` was just created and this function holds the only reference to it, so
++        // by the safety requirements of `CDefaultGroup` the group it wraps is not a default group
++        // of any group. The reference on the embedded `struct config_item` is owned by the group
++        // itself, also by the safety requirements of `CDefaultGroup`.
++        //
++        // SAFETY: Same as above.
++        Ok(unsafe { Self::from_arc(group) })
++    }
++
++    /// Create an [`UnattachedGroup`] from an existing [`Arc`].
++    ///
++    /// # Safety
++    ///
++    /// The `struct config_group` returned by `group.group_ptr()` must not be a default group of any
++    /// group.
++    unsafe fn from_arc(group: Arc<T>) -> Self {
++        // INVARIANT: By the safety requirements of this function, the group is not a default group
++        // of any group.
++        Self(group)
++    }
++}
++
++impl<T: CDefaultGroup + ?Sized> UnattachedGroup<T> {
++    /// Clone an [`UnattachedGroup`] into an [`Arc`].
++    ///
++    /// The returned [`Arc`] can be cloned, and it keeps the group alive independently of the
++    /// [`Group`] that the group is attached to. It cannot be used to attach the group.
++    pub fn clone_arc(&self) -> Arc<T> {
++        self.0.clone()
++    }
++
++    /// Convert an [`UnattachedGroup`] into an [`Arc`].
++    ///
++    /// This gives up the permission to attach the group, so the group can no longer be attached as
++    /// a default group of a [`Group`].
++    pub fn into_arc(self) -> Arc<T> {
++        self.0
++    }
++}
++
+ // SAFETY: `Group<Data>` embeds a field of type `bindings::config_group`
+ // within the `group` field.
+ unsafe impl<Data> HasGroup<Data> for Group<Data> {
+diff --git a/samples/rust/rust_configfs.rs b/samples/rust/rust_configfs.rs
+index a1bd9db6010da..ada378bc331b1 100644
+--- a/samples/rust/rust_configfs.rs
++++ b/samples/rust/rust_configfs.rs
+@@ -83,7 +83,12 @@ fn make_group(&self, name: &CStr) -> Result<impl PinInit<configfs::Group<Child>,
+             ],
+         };
+ 
+-        Ok(configfs::Group::new(name.try_into()?, tpe, Child::new()))
++        Ok(configfs::Group::new(
++            name.try_into()?,
++            tpe,
++            Child::new(),
++            core::iter::empty(),
++        ))
+     }
+ }
+ 
+@@ -152,6 +157,7 @@ fn make_group(&self, name: &CStr) -> Result<impl PinInit<configfs::Group<GrandCh
+             name.try_into()?,
+             tpe,
+             GrandChild::new(),
++            core::iter::empty(),
+         ))
+     }
+ }
 
-Questions
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20260215-configfs-c-default-groups-bdb0a44633a6
 
-1. Is FFI_USE_DEFAULT (adjust 0, expect 0) the long-term model for
-   unlisted C symbols?
-2. Which part of the current false positives comes from the FFI
-   table? Which part comes from the MIR analysis?
-3. Which format do you want in place of the match in
-   ffi_property()?
-   (a) A data file that klint reads, with the symbol name as the key.
-   (b) Generated Rust source for ffi_property().
-   (c) Other.
-4. Do you want conditional properties? There are two cases:
-   (a) Flag-dependent: krealloc() with GFP_ATOMIC. For this, klint
-       must read the constant argument in MIR.
-   (b) Return-dependent: the adjust of spin_trylock().
-5. Is data for the reverse direction useful? This is the context in
-   which C calls a function pointer field, for example an hrtimer
-   callback in Rust.
-6. Does another person work on this now? I do not want to do the
-   same work two times.
+Best regards,
+--  
+Andreas Hindborg <a.hindborg@kernel.org>
 
-If the answer to question 2 is "few", I will make the JSON and diff
-output first. The klint output will then come second.
 
-Thanks,
-Punnay Sharma
-
-[1] https://lore.kernel.org/r/20260127172330.1492107-1-gary@kernel.org/
-[2] include/linux/sched/mm.h, might_alloc()
-[3] J.-J. Bai, J. Lawall, S.-M. Hu, "Effective Detection of
-    Sleep-in-Atomic-Context Bugs in the Linux Kernel", ACM TOCS,
-    2020. https://doi.org/10.1145/3381990
