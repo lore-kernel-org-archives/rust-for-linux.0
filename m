@@ -1,74 +1,113 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.198
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794487121;
-	b=nhjOZJFpY407f0p0mkCcefzGQauSnZS5NAlylY/Er6J2YSUvWHQSWNK6xem9uUAltHKY
-	 Q05q2MkNMR2Bq04HOtN7A5uqAzamfHH77OBBaRKK+fS8tbHaWEQ3wNPMLlE5nd2q/40eE
-	 9ftLWoAw8lwS9OqzuvQaUPp/Raj+WdFOmEbJ7EJPrRrFsxpqVoRb79FY6vGSyG09yx23p
-	 MurZlsOeqzQbUwHVphLcSDNKceP4+LOIyqAbSkZjHHr6tZK43580crBLmj8HUadPPga9r
-	 dCn6D/5/f8E9KiKhJ0bqGK9A20LwyFnXYNUFQ5zUcABWZUcd4IWtSmR5apWLA89Qy+w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794487121;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=6UK6/KKi1vmJaH5c+RsMG+pBls/fTxRgXLxWMTuXdtA=;
-	b=U+DlKFqwCaVH1ZKdQqBMSAh9w6OKphImKg4lXqrqJK8Mw5yqxNvL/dcMgNSurmiIzY62
-	 GoizzM08fM44u7RbEYBy0l8TFX2k+IGr2h75QNcs+EPQvz4ybK8x5d6I5BPETXK8uNj4y
-	 mzYPZpI45I25I4ym6FuWxYk3aa4ntwPibBUhzb+vCwyv6FtIE26O3qTeK5hCBBMsJ6AXj
-	 i9EYQu1g4FrwmSnisvXfMkE82DiwjXC/rf5TG56lOc2YABuQvmDXpg9wZwfL98ZXr0g4+
-	 JqZmXgev7NMfFFrcoUbc6zXW43mLdA6xEZLHOU291X1+Ms9i/rHzKTD7yh1YIfTjRQQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--chriswiseman.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="K/XrF1+5";
-	arc=none smtp.remote-ip=74.125.82.198
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.69
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794487161;
+	b=hwc34k1dS+2Vj2Dp/FWSM6td4hbWTBFxpUiNmKQdckm4qcymU4BJzv9xt20eFDa4AZRm
+	 veMPYg1XCWwtK4exExlIMQvBslUt4mYKJpHB9zsEND+D7VqRJ4PxGcl+buRfiSRMBt9Mu
+	 K7c5NSvbB5vcioTcriG198OpG83xofAKGBnpQwW7Z8SSFXNU8VDmvO0joM66uReRuC0dA
+	 zfX1LX55AHqmBneSjN20ndu6SMwPyPtkt0wSTD4hpvyMAMyV27Pd5qWSyZ3IF/D+pNHE1
+	 Z1v4YKfRu3zl7/jVifmTIa98o6VNNGPNi3EzA4XXBMWQpgpng9Etj9HLjuSel3rWhhg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794487161;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:Subject:Date:
+	 Message-Id:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=nb6QrcO/RlQ6WQRO225cvrtn/AWlH7DyYCA+goldqD4=;
+	b=4G+zV2mTtHTQiHCCEVLUIJX2uEy/7VTSRW9jSVfmOyXC+UyqynWO2Sb8t5V9S4xWusmZ
+	 7fZDLF863G8z4cLux6LASN6bUDUUsriGfXbVPWM6i1Ic6yk45Gl/BxfQNX4NaP5AlMZlo
+	 JxxhYSHPa0WAVQbDr5V/GTfcXpZ1laQ9I8LKrymPx/ipOdmXMXavQTx0e3fZ61MHKAyWB
+	 bHuylGeAjR9WLKVp86gsRPfZU3Ff+JeoXSvuEvBmxnuu0O88vpxpgYpOr/JUjU/NM8JeC
+	 N2t6owzaRwPBbn+vLimW6TbCE77IAaUIjWTIy7Pc4Cekrm9fJylJpwId0/KbEbk2krw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=F8ZSwxMh;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.69
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010069.outbound.protection.outlook.com [52.101.61.69])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA14606A321
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Nov 2026 12:38:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9BA14606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--chriswiseman.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59203606A32E;
+	Thu, 12 Nov 2026 12:39:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 59203606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=K/XrF1+5
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-37549877380so4150548eec.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Nov 2026 04:38:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794487120; x=1795091920; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6UK6/KKi1vmJaH5c+RsMG+pBls/fTxRgXLxWMTuXdtA=;
-        b=K/XrF1+5uQeap9pI44P2RPX4tS2GuaNG9a3B4XiYyNz2g5kYkyS1mb6fEnQnNet0/r
-         8Hdb1SoLF9wDC9aBHqNWb+evQNYbf9k/eOZmSo6tZ8evUUZnWi2e0Xn6l0CqYgFyierW
-         dTkswGclAbjt/UzUwT5OUOLwjJhg2O2Pg7K+GOdO6pciJPqXixIPbzVOPaFNVYBNUt2p
-         /8aJJ8i7jPVea41VNU2UVSyiVszV/UHnVXNVHfT0bMbgJHME8xFBCytunzLSl+XGW/uT
-         qENQCu3U9Dz151E2bpyakraQOj21EMCH/RLVb85kJ1EQsNIU9yrhxvBwSlJVvUrIfyr/
-         t+bQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794487120; x=1795091920;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6UK6/KKi1vmJaH5c+RsMG+pBls/fTxRgXLxWMTuXdtA=;
-        b=dLqKMGPBQoP8dQv3Lool5bjSXLpVXrnGGK5OJThLfad7UkuYTG6X7qVCIqQfGkWesf
-         VP2Vb0FM/cwNMxWLbbonktNYlC37YmWpE0f+W2FdysBej7/kc9eN+M9M3vdQOXMccFf+
-         Ab0AAdfqXi/2aIIq9rNGtE4s1nv1Jxp42SrIwvsC4f20cRBXPcLYban7qvu/cp4SK2PO
-         ripDZc8/itaG0E+43HRDRs7sWm4xxt8TtAnTtoVJ6AzVblkfJpb12Fba4ULdSkmnN40o
-         uC5HiwTBOkmRaEAKHpfcMIHuy8/IK6dcVyqSvkxncEif8T7jaVV7QjrQFXcZxO17N1L2
-         yy1Q==
-X-Forwarded-Encrypted: i=1; AL+hErEqWW/dYDwT4WyJ6+9njlx3FapDk5Ye8kHFpmgF+ojF5Jgoes8danOyKJp/pFRbInSrLdGkEHnquL6PGsCP3Q==@vger.kernel.org
-X-Gm-Message-State: APuU4Z95voufJjiFiuuOyf+IYlBIGqPIVAGFl2JoqTgbgMl2cQv3J8Zk
-	HzYHapjMNvtBpay45RVL2EQSEDT1fiXZXjubmMKe1D+hs4In6S/3RmxHd9F3KuRdsvld4Kt4XcV
-	44uIDV1DopGMm95XuPzdmFXzN1Bz7Lg==
-X-Received: from dybcr35.prod.google.com ([2002:a05:7300:aca3:b0:36e:b3e6:ebe2])
- (user=chriswiseman job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:693c:65cd:b0:36a:1807:75a4 with SMTP id 5a478bee46e88-37686176002mr6158828eec.20.1794487119392;
- Thu, 12 Nov 2026 04:38:39 -0800 (PST)
-Date: Thu, 12 Nov 2026 12:38:38 GMT
-In-Reply-To: <2026111212-unearned-strike-a7a3@gregkh>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=F8ZSwxMh
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KBxNvPieoA2FegSKt3D1KSNoTYI99KGaHHboPpCFJZwchMoKG7WCPtb6t3AYCAB6mYQ23PCy3oqU4FoxQJ+FL2sNE7biAaP4cU0D1aDdwEnuQ06liuGhfaIKOnoUBNIbDVWhWIMXDt5Y87TjrLSetztZdSfNO4EeanxtQNV5GHqSq1OTA0fugtwb8d9XADs3InbNBJU5LQ8QuVVCxT2BlfP1onmPLaphJVaY1Mt3Cvch6SFHUhFHY8u4DCV4F0iT+TAnwizbX6uzbeVyUxaYsweWkTQ7f/23LPIQp1f47xYlOmTANut6dpaMs9rJi2JK9zh8pISgnnvOiGXukpMkMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nb6QrcO/RlQ6WQRO225cvrtn/AWlH7DyYCA+goldqD4=;
+ b=HwUACP82/IWJOjQt9OQfjrj5neaxpTEWqENK0nkTJhPkaukeoXX+0LBnEqZwqIiYK5wePtboQcDRklBP5fYl9T+INDEtWrCh+BIuqVZCC0N4ll2HumYvnQP0Fw/mfUjCbxkC95H55Pd+vXmj06B0BtZVkEWk7ga1y6+okvTLKsegLUFvVEul2nYlrkKo3CSlFk9WA0kS4QoXxAlrULn67DoDzue7MhRO20f7+ysLSHjm5xcgV1GjbhMwZF6ySZ8HiwmPWRBxi2AzxOKRR2fEdyC7b/qEc6CgqmdNRH8XqwM4+2wCPurua2l7TnFDY3UO+cExWcRwz9cH8QLYmnSFbg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nb6QrcO/RlQ6WQRO225cvrtn/AWlH7DyYCA+goldqD4=;
+ b=F8ZSwxMhq5hPEp9m7iCiskb1SMJGLMPr36U+HmolDKfKmf9Ddhx2tZG9Jq14Wn/GukIGIztFvlYnB/QuWv155ftW0Se2HgETAIG70iCsQ9jcd5ahvjatyIkfI3cF18scsxRbP/aGnH/W7GXFJmlKV+EtjVV2igW5/YeUWA5mQZUidxyogz6tjNWYsGvOETaJaBVKIDnTVEpHT0MHNWSuvqE9JKI2AkefVcYcFXbFXocj/T2E/svCG5GLSeFiLTFjJnM1O1Z/o+JfRuSQvUmoYLzo6FHh6t8MpyzvKeuXRkzrXp/PHX1L6AiviDMBSugqym7MMHK86JvrDqxFRNYkrA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
+ SA5PPFD911547FB.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8e4) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Thu, 12 Nov
+ 2026 12:38:44 +0000
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa%5]) with mapi id 15.21.0615.009; Thu, 12 Nov 2026
+ 12:38:44 +0000
+From: Eliot Courtney <ecourtney@nvidia.com>
+Subject: [PATCH v12 0/2] rust: Add support for reserving of ranges of IDs
+Date: Thu, 12 Nov 2026 21:37:11 +0900
+Message-Id: <20261112-chid-v12-0-49ad43286dad@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23SzU7DMAwH8FeZeqbI+U448R6IQ+I4LEis0G4Va
+ Nq7k67tVhSOqfyzG+d/bgbqMw3N0+7c9DTmIXeHcmD8Ydfg3h/eqM2xfGg4cA0abIv7HFtmk3d
+ SoI4am1L62VPK39c+L6/zeTiFd8LjZKeKfR6OXf9zHTSyqW5uaUDMLUfWQmtlIsuVI6np+TDmm
+ P0jdh/N1HPkG8VXxYtCoUiRS0FEVymxVW5RoigOiGBB8BCwUvKuLINFyWmWSxx0ihicqZTaKr4
+ oVZRGo40xEESSldJbtd5LF8U0BFIxBRVipcxWmUWZoryyhpOW0f4zy24UX5UtKqCRaEwEzmrl7
+ sqJdRuuKCjvj14YjSlVisGNMWDr6ss2yz5MJMcsBEn1zdg9HozBzU35KD/tvQtJecf+uMscup6
+ +TiXDxyWJl8svWUX3CuECAAA=
+X-Change-ID: 20260608-chid-18fa943c6d6c
+To: Alice Ryhl <aliceryhl@google.com>, Burak Emir <burak.emir@gmail.com>, 
+ Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>, 
+ Timur Tabi <ttabi@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+ Eliot Courtney <ecourtney@nvidia.com>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: TYWPR01CA0015.jpnprd01.prod.outlook.com
+ (2603:1096:400:a9::20) To DS0PR12MB6413.namprd12.prod.outlook.com
+ (2603:10b6:8:ce::10)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -77,33 +116,206 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <18e70d7c82c722e3.3137322e32332e3235332e313736.191fb9.0000sendgmr@google.com>
- <18e70d7cbc2831c0.3137322e32332e3235332e313736.1920de.0000sendgmr@google.com> <2026111212-unearned-strike-a7a3@gregkh>
-Message-ID: <18e74c87090a4d29.3137322e32332e3235332e313736.1e2278.0000sendgmr@google.com>
-Subject: Re: [PATCH v3 2/2] rust_binder: account for deferred work size in Thread::read()
-From: Chris Wiseman <chriswiseman@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Carlos Llamas <cmllamas@google.com>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Chris Wiseman <chriswiseman@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|SA5PPFD911547FB:EE_
+X-MS-Office365-Filtering-Correlation-Id: 304eb5cb-78d2-484a-7623-08df40b9e3b5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|376014|7416014|366016|23010399003|1800799024|56012099006|11063799006|921020|18002099003|10067099003|261102123227099003|261022105027099003|261022113327099003|261021121427099003|261022075727099003|261021123027099003|261028144727099003|261026140227099003|261026121527099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	hy5Aa2ChTVvb4EyT37R6GT8f8VSD1iph51UXguhHjt6iL5liWSmVePmv0AMatODhbngZdsFApHdshV/Yz6iQAeVtwXFNaWWKB4pHvfh9xMBb5Zx5Bf5BI2SF8l2/tAsfXZozlpNYwlzqWkoF2Q2P+p0vHs3312QZooikWGxwTFGcJBxk+aiS5/GECPngecbSd6XaDVVajur1KW00XS9DrQUaBf+keJsr7v92mJS9eZbFwvlDwtzio+Z2R9r62u1EWBAGLc3vo1ANt0GlDD7/q5gqs8PEiJDOiMxqAVBsIMNjNDpPYqX/NmHEMASTX+9olNwZqbchWGHJ4RZdE7coru0+ZfF7Qzx/BngfhS+TkOv0s1LJTxtdcP4yq6Mk6QLA4CWxYYNlVqjJJHfMmDxN1MZm4g64eEdNs0ikdhPts4Lf+4jhKDB3Q7K7qR1TY2g1/c4enGv9om2jskpWMyVY6Pso/0tiaUHZQbD3+bCQtn9Ft6YxZHZSt0ve+/kbRvnvxbk5cejQrsWutbul/Z9dh0NWxqecqWZ5Wmot5HqDAzhZh8JCRj5Re/k0IwxYJgOYi6gSpjO6c69CTIscij/+hRgqKgv8xcRTld+XTQ8Dp4U7yeUvTY7S+GT8H52FxzYcEBpIPB44zwp+dVVNheDXgLiOAM1116Ay2nmURSsxGQU/UEP7eV794UdiLnViEJTMh/kuiNRdKvDfnMK3HCfQ5w==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(366016)(23010399003)(1800799024)(56012099006)(11063799006)(921020)(18002099003)(10067099003)(261102123227099003)(261022105027099003)(261022113327099003)(261021121427099003)(261022075727099003)(261021123027099003)(261028144727099003)(261026140227099003)(261026121527099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?T1BSa2VHR0hmNytJWFFwTTA0WVZtWlI3bzVpMEg4NXdEYzVsOC8rdVhHMFUy?=
+ =?utf-8?B?R2NUK0VINjRHRDd0ZXlRL0ovNkorenliOERqVjBvalFrbGR3YTNtbSt2Sm9P?=
+ =?utf-8?B?K0hEb29uVUFyRHVQZ0xtbTRzempIblRZbThtU2R0NXhWcE5vMVVaNEUzamdy?=
+ =?utf-8?B?MUdwNk9hVUpQZTMrVnFhYThFelg4U21MVXZiMm9aN1hLdGtrODgzb293Q0xp?=
+ =?utf-8?B?N0RtNHYzSFQ1WVNZQm5wcXZ5MExHcndZNkRJRHhwODdzRm12dFlia3h2Tlg2?=
+ =?utf-8?B?eFpObFVWQ05kZi9xRWxyUitkQjdhcVozZUh5S29DU0kyWllWdEE5T3JmT000?=
+ =?utf-8?B?TUhmNDNyZ20xdTRoaTF0OFM3ajl1VDhwNmI1WGtrSTFQQWwrbzB0cEprbTRn?=
+ =?utf-8?B?OXZLNHF4dHdPUGhmR3JiR2dydTd5encyNnRTekc1NUp1Q3QraU9oWDdBK0tT?=
+ =?utf-8?B?Uk80YXpzM1Nudk9VT2ZINlF4R2p2MWRYUFdFM3BjMmtWTUF0ZVh2M3Vhd1Fa?=
+ =?utf-8?B?Y0lNdHI2WG1pY00vL0k1VEhYRmhXWUZPa0dQUTA1Z1d4aHJBc1NrS0VQWlA3?=
+ =?utf-8?B?eU9HSGluK0k2YnU1U0xIc2NvVCtESmZsYmVsNFZHVG1ZMkkyeU1pMU5Rdis2?=
+ =?utf-8?B?WWRqaGRuTi9PN2tDUjhML0t5d3Y2Skl4N0tXczlXdFUxUy9iQ0lKVEZjN2c2?=
+ =?utf-8?B?VFVtOFd3VzM4WjZuVXJpU0RqTkRWSDhuc043WlZSY1B5MXZPU1RaNlFQcE1w?=
+ =?utf-8?B?elN3eW1jZGhVQk50QkRLS3E0R0R4V1hCdFNGS2hGUXA1N2E2TXdYdGxlTmJW?=
+ =?utf-8?B?Y2p5VjhaTURhNmgxcHJ1NjFtT1plNWZoZkZ0MS8wS2J2YWhYWXluV0doZ0tI?=
+ =?utf-8?B?NlVKOFk3RjhjMDBlZW9Ldmp2NDdEaGFuWVVrNVVJb1hSZzAxWEZzbksvazBl?=
+ =?utf-8?B?bWh6aVhCZDNseTMyaXBydk92VWIwVS9NU09ENzdmNGJyMHNvNDBudDAyTVRK?=
+ =?utf-8?B?U1dXR2IrOGhSbUZLc1BQV2dBTnpLWEluNnQzMzc3TVRJWkM5b2VLQ1A5Y2Yy?=
+ =?utf-8?B?c1VtR2ZxZlBVaDRwQXRoYWdZRlp1ZEswcGtCU0lOcTA3Nk1IRDF3NDNmNlU0?=
+ =?utf-8?B?dGQrMEI4NFdscEhBbjhxUmRmdENFcUR0eDNCVDY0UEliTjE4WnU3NXp4Y1Bm?=
+ =?utf-8?B?ZkFLNEhya3Z3bGJnN280WkFQdlBGazU3M0lyMVJRaTVrbFQ3cnJyZzhZVmZr?=
+ =?utf-8?B?bTd0dEw2RzZ0T0NsdUZYWlVJbVBnVU1iMFo3dW1GVGZXc2VZeFdSTjJpOTlX?=
+ =?utf-8?B?QjhocU1JdWk2SVBzbm1rTitPQ00wTk56ay9qS3BIZWQ2QUVzb2phbVpUY0xT?=
+ =?utf-8?B?K1N3WWdsWjM2RzZLTC8vais5bVF1cnJtalZsRy9KZG5oNFAyVFQveDVlOE1V?=
+ =?utf-8?B?dnQ2QVoxcDlZeU5DOXExcVVvVWpsSnBUVDNINExqcm1ja0FIUU5MSW1XMFJk?=
+ =?utf-8?B?d1lFb0ZxYUt2eHFIanp0VHVoSG5pOHRvUVBjeTNsS3VQbUx4Q1ZlL2srWUky?=
+ =?utf-8?B?YUQ5Ky9hY1pjTWJpRkUvOERhQm9QR0FZZytrV1JXUkZtUzNxSWdlV1c1d2tI?=
+ =?utf-8?B?VGlFeWVIZWhJaGRscjVnVjZCdXY2ckpBaGppeE1HdmhpdS8xSi9PYUxpZUZi?=
+ =?utf-8?B?dENlTTh5eWVpWFJQVkpWWDZtYWFuaHRGcjUya1ZmOHZRdUNlN3M0b2phTWRq?=
+ =?utf-8?B?UkJqR3h5VUUrSWNybnVvSTZ5VFB6QmYzUmNUaE10NWgrYTd0VlFCak9zRUlD?=
+ =?utf-8?B?MGV5dDlDUkFPQXhEeitWMWpkOHgzckdZRkFtYnkzdGdpNFk4cnJFT2JEbnlu?=
+ =?utf-8?B?RHFSV2FvUHd6L1luOGdEb0R3NlFSNzFXODE3UCtpRjNPeFpTZFNCMnZ5SkhC?=
+ =?utf-8?B?WXJiYTI1NTRVbHpqb0l1YjNMTDRjaHdWNXVBYlR1TjBPb0FWVVM3N2pFbmxl?=
+ =?utf-8?B?dE5Hc3pVVzRRc21WbFZIMEU4M3I2ZFBuL0swMktLeHBlSG1PblUzQWxEM2tQ?=
+ =?utf-8?B?UVBHVmpBNWtKcUgwc2FjSC9oVDVKZCswQXRYeCt4dU52VWIyZHFqZ2NBU3FG?=
+ =?utf-8?B?NTdOd2tnNXVaQWxsY1BYUjQ4bmZUL0V4YURCT0dUVkJaNEQzMHZwRzRQUzJy?=
+ =?utf-8?B?QklDV2ZCcnVCS2tOM0hydGhYRkpkTktGNUNDcy9tWDZhcVZOblFwNi9EUjZt?=
+ =?utf-8?B?a1EyTnFxN2pER09KZVlRWmxVZlFzZ01ab2ZqK1RPL1pBOXJYVkx1NUNPTzFv?=
+ =?utf-8?B?QXdreDA1ZkpXYUJFazQ4K2RRVCswclA0SW90a25DdkExdzlrN1hhU2NSTmo1?=
+ =?utf-8?Q?0GjK7wFa502evCMAqteQ3mDUnGSprevoi/KZ5kqOPcfkQ?=
+X-MS-Exchange-AntiSpam-MessageData-1: R/t+MGPCi9OBEw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 304eb5cb-78d2-484a-7623-08df40b9e3b5
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 12:38:44.5799
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nOsnouK7GZErzWS3nNLeM8ac1vUcZzOPmpPn4c/aM9U5KMW8NP2fEX4K+6dTwt8xJCS4tBC23hun4LOYDaQZQw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPFD911547FB
 
-On Thu, Nov 12, 2026 at 07:26:30AM -0500, Greg Kroah-Hartman wrote:
-> These patches are not "threaded", what went wrong?
+Add support for reserving of ranges of IDs, with a usage in nova-core
+for channel IDs.
 
-My wrapper script around our internal sendgmr mailer failed to capture
-the Message-ID of patch 1/2 and stamped an empty In-Reply-To: <> header
-into patch 2/2.  I fixed the script so it fails closed on missing
-Message-IDs going forward.
+The bitmap and `IdPool` parts from earlier versions are in v7.4-rc1
+now, and this version has the remaining patches: exact `IdPool`
+capacities and `ChannelIdPool`.
 
-Patch 1/2 is here on Lore:
-https://lore.kernel.org/r/18e70d7c82c722e3.3137322e32332e3235332e313736.191fb9.0000sendgmr@google.com
+Channel ID tracking is needed for allotting ranges of channel IDs to
+vGPU guests, and later for regular host channel ID reservation.
+nova-core needs allocation of a contiguous sequence of IDs with a
+specific length and sometimes a specific alignment [1].
 
-Let me know if you would like me to resend the pair properly threaded
-as v4.
+About the tradeoffs between different data structures:
+- IDA/xarray do not support allocating a contiguous sequence of IDs
+  (ida_alloc_range() allocates a single ID within a range, not a contiguous
+  sequence).
+- A maple tree works, but is not as good a fit. The ID space is small
+  (limited to 2048) and aligned allocation needs an alloc_range()+erase() retry
+  loop (plus a Mutex around it, or new mas_empty_area() bindings) that
+  essentially reimplements bitmap_find_next_zero_area(). See the maple tree
+  version at [2]. For 2048 IDs a bitmap is also considerably faster and smaller
+  [3].
+- The bitmap API natively supports aligned contiguous area allocation
+  (bitmap_find_next_zero_area()).
 
-thanks,
-chris
+This is based on drm-rust-next.
+
+[1]: https://lore.kernel.org/all/84bc8bd2-e292-4b84-9580-a1b5df4c5bdc@nvidia.com/
+[2]: https://lore.kernel.org/all/20260710-chid-maple-v1-1-4ee869055268@nvidia.com/
+[3]: https://lore.kernel.org/all/20260717053241.916441-1-ynorov@nvidia.com/
+
+Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+---
+Changes in v12:
+- Drop the patches that were applied to drm-rust-next and driver-core
+- Rebase on drm-rust-next
+- Drop the zero capacity part of the patch #1 commit message (Yury)
+- Add reviewed-by tags
+- Link to v11: https://patch.msgid.link/20261109-chid-v11-0-082aa9bf5a91@nvidia.com
+
+Changes in v11:
+- Rebase on drm-rust-next (pre-reqs are merged now)
+- Split patch #1 by subsystem (Danilo). Just splitting with no actual
+  changes, so I kept the reviewed-by tags on the new patches
+- Add reviewed-by tags
+- Link to v10: https://patch.msgid.link/20261019-chid-v10-0-67de9180b4ed@nvidia.com
+
+Changes in v10:
+- Drop the patches that were applied to rust-next
+- Rebase on drm-rust-next (plus pre-reqs)
+- Use a capacity of 1 instead of 0 in the grow_request() example in
+  patch #2 (Yury)
+- Convert the remaining Alignment::new() users in nova-core in patch #1
+- Link to v9: https://patch.msgid.link/20260930-chid-v9-0-0d6cca376cff@nvidia.com
+
+Changes in v9:
+- Rebase on drm-rust-next
+- Moved cv! to a separate series which this now depends on
+- Reference Link: tag from the text + indent code in patch #4 commit
+  message (Miguel)
+- Add reviewed-by tags
+- Link to v8: https://patch.msgid.link/20260827-chid-v8-0-bc74c77d0214@nvidia.com
+
+Changes in v8:
+- Clarify overflow cases in patch #2 (Alex)
+- Replace nz! with generalized cv! macro (Gary)
+- Add cv! macro to prelude
+- Split SizeConstants and adding new constants patch (Alex)
+- Move alignment size constants conersions patch (Alex)
+- Drop NonZero on IdPool, fix grow_request instead (Alice, Alex)
+- Add shrink/grow doctests (Burak)
+- Link to v7: https://patch.msgid.link/20260817-chid-v7-0-a5872e64d8f4@nvidia.com
+
+Changes in v7:
+- Add nz! macro for compile time NonZero
+- Implement SizeConstants for Alignment + add sub 1k size constants
+- Use Alignment constants + nz! in this series
+- Add final patch converting existing callers to use Alignment constants
+- Rename alloc_area/release_area -> reserve_ids / release_ids
+- Link to v6: https://patch.msgid.link/20260813-chid-v6-0-160be5dfb5bd@nvidia.com
+
+Changes in v6:
+- Take a NonZero nbits in `next_zero_area_off`, `set` and `clear` (Yury)
+- Remove `UnusedArea`, `IdPool::alloc_area` now allocates directly (Yury)
+- Add patch: take a NonZero capacity in `IdPool::with_capacity()`
+- Add patch: do not round the capacity up to `BitmapVec::MAX_INLINE_LEN`,
+  which also removes the bounds check in `ChannelIdPool::alloc_area`
+- Add more testing of Drop for `ChannelIdPool` (Yury)
+- Link to v5: https://patch.msgid.link/20260812-chid-v5-0-6c767770b3f4@nvidia.com
+
+Changes in v5:
+- `bitmap_assert!` i32::MAX length for Bitmap::from_raw* (Yury)
+- Only run overflow check on 32-bit (Yury)
+- Link to v4: https://patch.msgid.link/20260810-chid-v4-0-c9f206fdcb97@nvidia.com
+
+Changes in v4:
+- Add `next_zero_area_off` to match C code (Yury)
+- Replace overflow checks to match C code in bitmap-for-next.
+- Tighten `Bitmap` unsafe contract to disallow Bitmaps larger than i32::MAX
+- Link to v3: https://patch.msgid.link/20260729-chid-v3-0-20cc08032bbc@nvidia.com
+
+Changes in v3:
+- Use `Alignment` type in id_pool and bitmap (Alice)
+- Remove hang check on the basis that it's extraordinarily rare.
+- Link to v2: https://patch.msgid.link/20260723-chid-v2-0-c35e5e9fb3d9@nvidia.com
+
+Changes in v2:
+- Collected Alice's Reviewed-by on patch 1.
+- Address Yury's comments w.r.t. using __bitmap_set etc directly.
+- Address Yury's comments w.r.t. following the C names
+- Additionally check for an overflow case that causes a hang
+- Added more info to cover letter + patch 4 w.r.t. channel ID allottment
+  requirements
+- Add align parameter to ChannelIdPool::alloc_area() plus an aligned
+  allocation test
+- Add missing INVARIANT comment when constructing UnusedArea
+- Link to v1:
+  https://patch.msgid.link/20260703-chid-v1-0-84fe8259e46e@nvidia.com
+
+---
+Eliot Courtney (2):
+      rust: id_pool: do not round capacity up to BitmapVec::MAX_INLINE_LEN
+      gpu: nova-core: add ChannelIdPool
+
+ drivers/gpu/nova-core/gpu.rs         |   2 +
+ drivers/gpu/nova-core/gpu/channel.rs | 198 +++++++++++++++++++++++++++++++++++
+ rust/kernel/id_pool.rs               |  38 +++++--
+ 3 files changed, 232 insertions(+), 6 deletions(-)
+---
+base-commit: 6e557330b874b0e1fdd03e8fe4c438f36c93eefa
+change-id: 20260608-chid-18fa943c6d6c
+
+Best regards,
+--  
+Eliot Courtney <ecourtney@nvidia.com>
+
