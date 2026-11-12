@@ -1,74 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794509895;
-	b=KyWaMHzUvtkyVpRv/NN/OgPUIjglqzviAH9MvDo116Efw71EcbEP+sU8GjjdCJwt0VyO
-	 OEQ99XLzMTJeFl6G0M9oSSvaAAarRJ2+vihsrC3EyFec2rwxEqBWiPhOEgbsvivaZIWAN
-	 +CUz+6Ak93REbiDRwbqh8hXBK8ypfwaAtXWyxLmRfTzCX3KgHA7QBlhCZuvO92xFzExS2
-	 MkXIhMzRfuM3j2Ic7WtnLl7pZjw0zAYDAWyto212Hd433NLr97wUa1x64f7loEW3ODiCu
-	 mKq1OF5ydGEJ57petbLUMB0+3dHF6MH9Z0wkOdVO4B/1WDaPsy6fJL9r/J5oS742UzQ==
+	t=1794511868;
+	b=CzpTxUoghLIG32IBPWz9nbBS0DviH7M3ypR27sBkZhv+Jltyu8janeycUFQeChy4hk1I
+	 vp1NGQduy7CzLzH+GEzOfQY8ia4d/JfwGU+qbhODAULMazWIWllo5HN1T+LHkeHY7P4on
+	 OfFDfxzlyhqHwIbGNVk2Vger910Rbz1VBJafC7EoVdPmjf1TVr1C/jpmukBdADpxAgc9B
+	 zlbNiS2yIQzDJxTApRRXL2yGfxl8uXVR6YX9T1jWX/E/Ggk+tBburITAYoo3lgqApz8CW
+	 Jk3GHiNeuvJdHWWPMwDYBZjV5K4T3Z2oOjJ2VEDuInziawGogNI9pb6Rb6XX73LzpDQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794509895;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=elwXiRCfgreMBRymobwx3IbDMUTz5KC/o5TzRKRmPAk=;
-	b=0vXwOGuo+kTO6+ULT5wxFHRZfEeH4awjOgAhIK4zApa1z7VebvUqOt4P9z+ooa/MilrW
-	 mYh5D5RRwR6wIqLCPxBUpMhNJ20uUl65lgBMcx7T8mUPwo+oRBceuRPow9QC60bqs6Uok
-	 XK2Kj2GxM14oQBTI08chrCm2nBB6eYliQir4JfF2l1z4vfBh1O0xN/XdZUdWB5+YU388C
-	 vhko0xPplzAJcwuSXdzb+2vTkBOhYWILgmMH0lI6Fv+qz8PlkNaLg96lJNi+P53pEVjZ7
-	 7dUf1iZPjM8rkBT0tqqOX05+yZBCbz3BEH4MElJvVc6neG54sqYSYB6g4C3+6LD63VA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794511868;
+	h=Received:DKIM-Signature:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
+	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=hOGCv8DFCDG4oqORRcTq2k8xm+GYXpzMleKYWoWudVM=;
+	b=LvR/Rgt2fSXKJgWZaG5ZofPy+usyeoKeMgLIwTetPcQ7P6nAnCFa/f2SWgX78YqjZ/Kq
+	 XU6J5GF+HSDBGEiPSTZ4+Rj0w44l3BVKGKMtGRuPWnKtBTojbnXJBZnIeZCYGlVBM5Yb/
+	 5qjdeL9DosZA30K7V0PO7T52vv/KRDx2lY1njj3AKUaOycOStwlAdU2/Kud/L/uQQWVD7
+	 MLMNi65cYFV0yS9d3JActXeKUqM0OxkAo95LrarEcpFK3vC13vjSa7yp1HZB+vdDcsmKv
+	 bkeQxDuVaTcwyGA+VjCTytg1tVpCImFbUpIsVzUO+Ce5pXyklYb8SHdXMO6KiQPQ15Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KC+yUsDl;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PudDZdk4;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73102606A31C;
-	Thu, 12 Nov 2026 18:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0368606A31C;
+	Thu, 12 Nov 2026 19:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KC+yUsDl
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CEB41F000C4;
-	Thu, 12 Nov 2026 18:58:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PudDZdk4
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF25E1F000C4;
+	Thu, 12 Nov 2026 19:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794509895;
-	bh=elwXiRCfgreMBRymobwx3IbDMUTz5KC/o5TzRKRmPAk=;
-	h=From:To:Cc:Subject:Date;
-	b=KC+yUsDlDrOUZnIP1c9RvMynURJqoWO6B6KAUPOiDK5SQnFLN9x2aiGnfR68DTvYH
-	 F89dXdqnJyLAPkOBRAlhhQfE3om4e5dFexkJ4zLBfAphUW3lkLAVkDpkKe473wYZyg
-	 VFHHum6zxzRbdyZNgRNqq8KsOkEU+A3XQ+BL6v4pVv5eFaJhC7H0ebExtWrf3bSuAy
-	 wCpPqcjsJjU9/nh4YTLsIH6LMm9OOmbw/7NkGPdKK9lqD0KoJ9NxP2m7hr8upDhaTS
-	 36KNyQpre3MPyxT9eRAAt8d9UrY1MRwxGfqVoKypQKi+UQlR5hggg9McMpUIo16E/I
-	 cGXJbKCzDTmmQ==
-From: Daniel Gomez <da.gomez@kernel.org>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Daniel Gomez <da.gomez@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Julia Lawall <Julia.Lawall@inria.fr>,
-	Corinn Tiffany <corinn.tiffany@inria.fr>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Philipp Stanner <pstanner@redhat.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Samsung GOST <gost.dev@samsung.com>
-Subject: [GIT PULL] Rust XArray for v7.5
-Date: Thu, 12 Nov 2026 19:57:45 +0100
-Message-ID: <20261112185748.8877-1-da.gomez@kernel.org>
-X-Mailer: git-send-email 2.56.0
+	s=k20260515; t=1794511868;
+	bh=hOGCv8DFCDG4oqORRcTq2k8xm+GYXpzMleKYWoWudVM=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=PudDZdk4CfTO9cAwPUXP3k5bcLpcc55Zj6ASERF65bNN9VVfLtVi3DU1t85bP3T4h
+	 5KZR2ziBCAnyMZMl7MWVr/QXBwgcE6XtDmiIvcb92k+ZtmanX3A3RfcIRJSpHCOJqZ
+	 s6plIbsY6VmWb5DspidZg1bzzbbC82RPqIpInht4lMLhLW1F/T/tx5+htrUDolMWtx
+	 ik26fCWfufImXfXMptZ9hxKrtllmeKwgE58y1RhtlxpDyB4jIf8Ccr5CxX6CTgZDWA
+	 gqhOzMViCnpB6tTXJmx07v1/mrJOM69ZlxKF4LrzB0a08zeY8oWvPw2suCK1n+tFQu
+	 /w7ljLzbKLSsw==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -78,72 +49,47 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v6 2/3] rust: spi: add SPI driver abstractions
+From: Mark Brown <broonie@kernel.org>
+To: Shuai Liu <847807867@qq.com>
+Cc: linux-spi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ broonie@kernel.org, ojeda@kernel.org, dakr@kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <tencent_C5AC68A2C63D42DA8E8547FEA38904F74D05@qq.com>
+References: <20261027054209.904654-1-847807867@qq.com>
+ <tencent_C5AC68A2C63D42DA8E8547FEA38904F74D05@qq.com>
+Date: Thu, 12 Nov 2026 19:30:59 +0000
+Message-Id: <179451185979.339049.12323339081307899766.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1137; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=L6uOFQoDghj3iOooCMMgHHNF8Uh+zPJyo9fZA01cBlQ=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLK+Cf/UbOaMePxxI4f65EV+a1+waYmt67TRndG7+KleV
+ tCL/lsWHaUsDGJcDLJiiixxWdwv60ter+E7uLANZg4rE8gQBi5OAZjIUkuGv0KSZQFzst/y8kxf
+ s6i1x9s+6ULAijPsRu4blqxQXfHs20NGhqY8+4XOmu6usz5PPG3B9EvlQLjb0omJf+aHph0qeHp
+ 4AwsA
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Hi Matthew,
+> The `write()` and `read()` methods copy the data into DMA-safe bounce
+> buffers before transferring, as the SPI core requires transfer buffers
+> to be DMA-safe and the caller-provided slices may be located anywhere
+> (e.g. on the stack). `write_then_read()` does not need this, since the
+> C core's spi_write_then_read() already copies both buffers into
+> internal DMA-safe bounce buffers. `write_then_read()` additionally
+> validates that the sum of the two buffer lengths fits in `u32`, as the
+> C core sums the two lengths as `unsigned int` when sizing its bounce
+> buffer.
 
-As mentioned in [1], this replaces the earlier v7.4 PULL, which missed
-the merge window. This PR is rebased onto v7.4-rc2 (no changes), for the
-next merge window (v7.5). It has been in linux-next since next-20261102.
+I do wonder if it's more sensible to go straight to the
+spi_sync()/spi_async() APIs - these APIs you're implementing are all
+convenience wrappers at the C level, I don't know how idiomatic they are
+in Rust but if there's a more Rust native way of doing this stuff it
+might be better to go with that and then arrange to map it onto the
+lower level C APIs rather than deal with the C wrappers.  Of course if
+this is actually fairly sensible for Rust then leveraging the existing
+wrappers makes sense.
 
-Could you let me know by v7.4-rc5 whether you can pick it up?
-
-[1] https://lore.kernel.org/all/20261030101626.0-da.gomez@kernel.org/
-
-Thanks
-
-The following changes since commit 7475ea8b58616b33c04afb976cf0fbaad9dd63fb:
-
-  Linux 7.4-rc2 (2026-11-08 16:22:20 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/da.gomez/linux.git tags/rxarray-v7.5
-
-for you to fetch changes up to 29f1617aa1dbd0803736403cd63c4965873fa621:
-
-  rust: rxarray: add rust xarray support (2026-11-12 10:14:36 +0100)
-
-----------------------------------------------------------------
-Rust XArray for v7.5
-
-Add a Rust implementation of the XArray (rust/kernel/rxarray.rs),
-introduced as an experimental Rust reference implementation [1] of
-lib/xarray.c, as discussed at LPC26 [2]. This lets Rust users, such as
-the null block driver and possibly Tyr (under evaluation), experiment
-with and evaluate both implementations.
-
-The goal is to evaluate whether Rust helps with the most common class of
-XArray bugs, misuse of the API by its callers, such as the long-dormant
-page cache corruption that almost blocked the LBS work [3]. The RFC v1
-cover letter has the full motivation, benchmark baseline and
-roadmap [4].
-
-This initial version supports store, load, load_mut and erase. It has
-been tested with the included KUnit tests and doctests on v7.4-rc2, and
-has been in linux-next since next-20261102.
-
-Outside of rust/kernel/rxarray.rs, this touches:
- - MAINTAINERS: new XARRAY [RUST] entry, maintained by Daniel Gomez and
-   Matthew Wilcox, with Andreas Hindborg as reviewer.
- - lib/Kconfig: new XARRAY_RUST option.
- - rust/kernel/lib.rs: register the rxarray module.
-The C XArray implementation is unchanged.
-
-Link: https://rust-for-linux.com/rust-reference-drivers/ [1]
-Link: https://lore.kernel.org/all/20261009212431.0-da.gomez@kernel.org/ [2]
-Link: https://lore.kernel.org/all/A5A976CB-DB57-4513-A700-656580488AB6@flyingcircus.io/ [3]
-Link: https://lore.kernel.org/all/20260923-rxarray-next-v1-0-92eedf185649@samsung.com/ [4]
-
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
-
-----------------------------------------------------------------
-Daniel Gomez (1):
-      rust: rxarray: add rust xarray support
-
- MAINTAINERS            |   12 +
- lib/Kconfig            |   11 +
- rust/kernel/lib.rs     |    2 +
- rust/kernel/rxarray.rs | 1407 ++++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 1432 insertions(+)
- create mode 100644 rust/kernel/rxarray.rs
+-- 
+Mark Brown <broonie@kernel.org>
