@@ -1,57 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794487728;
-	b=nnTV1mmFuvz6+ynS3AoSt4AsqS09pdSANXogICr5toJuHV+WvK5uqBilGIZ3XyCQBl45
-	 mvhQv/aFQ7rcCHHMLj/aQELtuii4lWAnLuq29NUfe0IOe0ytrsRFK9O1eQRwEigbzT5Ku
-	 KKK9K8hoiiDQswZm3gUncNGopRIlwWWyW4GIKsKOa1xEd8B7WaLv0atIG/6STgT6JC/Mn
-	 tIUMWa/cf/fjWxUuDLx7oA2ehC82BH9AFp1mngK80wcV7FP2iTWWS+SWYFecD8tgh3a1R
-	 8kPx3ZNmTok7fJVwQE8n0Z7lZmlmkZK/0hVdVfW1vI+xxxCueH+e6vqIxGoR19HEJNQ==
+	t=1794487723;
+	b=1Hty2yJ7BUZcWnqtZ2yNXNEkoc0HIoxxiO6p+VYY+A6gYQiAWJXh7uVA7FKm3tzrXifq
+	 NgF5Qh7keBWNdapmHX8xPAnVrCc+8TqL/T+TKCgDMTZSrIfKGNTEoaq/N3mARbxAxSbEb
+	 e4wTKhOygOQzBXAI3gl6ZH7pbwP7XuXRUdFmZAG6Vzgg6vV4EbMRRMjjZC7blvZCpMGjd
+	 /1B7Ui0AkmbceYb16hXZe7pQjOWbNqW/Z7rarH796U6ucEHD5BcfYIfq3tQ7G1uTkx01r
+	 oOuAjoj8YSDBN+I0Y/jsRwKRzrlDI5lOBh0s1JtQ6/UJaEPMRdIfqw7rCvM/Ck7EM/Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794487728;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794487723;
 	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
 	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 X-Mailer;
-	bh=iaCiw9km+X2FYgMmAETwu1fup6e4I8afcx7maRDDRZ0=;
-	b=a+uoH3nBE7GOcsjRvyo66NefydDb9U9uZXHV0Iiqni4O6j8cj32u+HRCS5JHKe3Jw/vO
-	 cBDZk3SBlyeD95nQKIkJVwP/go/yvEecQO2vMxj5p9mIBlz5oKMGukNsRMNN0C9PQ/Y0m
-	 aFdaBv49uLz4QMM84vxyx//x6rX3NouCqI3gyvy8+lSPcHzQg8O1NAs8sx7RWyCQjkSh8
-	 GeNyR7jWyHm6QZdyy1wfZNlAKE8nPB2qmSRILaQ7z/knDkJIPyoh+m39H4LMAuVZdhoSy
-	 e3SyVglbyOaeEfO7sOEier6g/PjYslVeTzeRbtexfKiEWezIXBcBi4KX4XAnOGbeKqQ==
+	bh=iD2v8LFpijzdR6UQCJt3wzQ3jGAzsvzALIpq+aTHu5M=;
+	b=GlQL3QJelEF3kJ6dehyQceJA3uFLhJkjr4nuO+uySqwMIJgFlLKLVWlj6XfmqSBrYcQ+
+	 +9+XFNl2sPuwypERsUFzbtDhgL861mQoQ+8VkQD9NYbQCRsDmWFQqQwj48umzSwM7avKx
+	 a7It2vBlOTL8bZWySSwlohp6h9V4LTBVVodKsn8jlNAQ8LlMC2bP/SRUNvqHOURjZ7PjU
+	 m8Yy8B/kP1kuP49+72xwxVXxJi3a9+tUeamEPzftXEZHOoIWCHp2zp/sfGgEikngz6DD6
+	 7xASwUA0H88sIf4xeQw1Tro2ey53XfcO1nMa5GhBrTVeYz7xHBl3aoC8TJ9pzijwfrw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JLEFUdC6;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MGhRnxNw;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEED8606A321
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Nov 2026 12:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DE9606A31C;
+	Thu, 12 Nov 2026 12:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JLEFUdC6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D3C1F00A07;
-	Thu, 12 Nov 2026 12:48:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MGhRnxNw
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B31D1F00A05;
+	Thu, 12 Nov 2026 12:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794487728;
-	bh=iaCiw9km+X2FYgMmAETwu1fup6e4I8afcx7maRDDRZ0=;
+	s=k20260515; t=1794487723;
+	bh=iD2v8LFpijzdR6UQCJt3wzQ3jGAzsvzALIpq+aTHu5M=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=JLEFUdC6NwX9YXhg0oBygnYusvwfBdDpwKsiz4Ixxj5C92sf7OmIszJqauIVV4HqD
-	 CwyxRSG8bVYUZOpYCkOmbAvh+ROTPlHgcuf+R5rJ8sLnkZxAeDHf4W3J8EMlEKnJpT
-	 +FNumngBnWymHPaC7Ufu3EuVz1m9EdRl+laQ0ZGtLWBfDkA6alLsWh4w1LxqlQfSbX
-	 h3kwiUk2sVdY0CAe1MkOOi6NaK570wHWDIrLnfDIjqa3TB3g3QLOy5tDmjuAf3J9Lb
-	 n6mbjPXcq4mXiOuLcn8/kNlDREJSKn1VkJYFtBYWwrsvaYN6V3SuGcuuQueQaV+yqd
-	 dodc+0wVLUP8Q==
+	b=MGhRnxNwRb0jD61vrB02phe4zRP2HYnICokBHiDVki8T9kI2gn2kSBC74mGemF+wE
+	 TwOCjgOfQ1DV66eZGiFOwlEc6hJvTxFReMtaPkHBXQ0r//8rRoVbj00yOyTO+DkcGv
+	 lTca/+2t34loqt+KulTKWAgKLK4JDWoc4dyj5PIbFJgPgOGn74+1pQvFzL/TgTFne0
+	 LsQqe/ONnEnV4fT7H7sk4ukToC/4anO4HZr5273g7Yv6SWKqvW7TJ3LrfoDRYcfIkl
+	 tuvbPGkITxl5b01o+thP2U5kJZ8EU/te6cboWNVUP3rhY1XNF0ttClfw7XF+MC7dYh
+	 YiAUF6nrJG9HQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: boqun@kernel.org, ojeda@kernel.org, FUJITA Tomonori <tomo@flapping.org>
-Cc: acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de, 
- bjorn3_gh@protonmail.com, dakr@kernel.org, daniel.almeida@collabora.com, 
- frederic@kernel.org, gary@garyguo.net, jstultz@google.com, 
- lossin@kernel.org, lyude@redhat.com, mike@fireburn.co.uk, sboyd@kernel.org, 
- tamird@kernel.org, tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
- rust-for-linux@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20261031003334.4161188-1-tomo@flapping.org>
-References: <20261031003334.4161188-1-tomo@flapping.org>
-Subject: Re: [PATCH v1 0/2] rust: time: seconds based Instant
-Message-Id: <179448764508.621816.5100401862628319827.b4-ty@b4>
+To: anna-maria@linutronix.de, frederic@kernel.org, gary@garyguo.net, 
+ ojeda@kernel.org, tglx@kernel.org, FUJITA Tomonori <tomo@flapping.org>
+Cc: acourbot@nvidia.com, aliceryhl@google.com, bjorn3_gh@protonmail.com, 
+ boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com, 
+ jstultz@google.com, lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, 
+ tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20261101232829.593680-1-tomo@flapping.org>
+References: <20261101232829.593680-1-tomo@flapping.org>
+Subject: Re: [PATCH v1 0/2] hrtimer: Add
+ hrtimer_forward_safe_from_callback()
+Message-Id: <179448764514.621816.7867597254215777373.b4-ty@b4>
 Date: Thu, 12 Nov 2026 13:47:25 +0100
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -67,26 +69,25 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16-dev
 
 
-On Sat, 31 Oct 2026 09:33:32 +0900, FUJITA Tomonori wrote:
+On Mon, 02 Nov 2026 08:28:27 +0900, FUJITA Tomonori wrote:
 > From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 > 
-> Mike's series added a free function `ktime_get_real_seconds()` [1].
-> Andreas and Boqun preferred a seconds based `Instant` instead. This
-> series does that.
+> Safe Rust code can arm a timer while its callback is running, so the
+> Rust abstraction cannot offer hrtimer_forward() from the callback as a
+> safe API.
 > 
-> 1/2 adds a unit type parameter to `Instant`, with no functional change.
-> 2/2 adds the `Sec` unit and `ClockId::ktime_get_seconds()`.
-> `Instant<C, Sec>` has only `now()` and `as_secs()`; there is no
-> `Delta<Sec>`.
+> Thomas suggested a helper that does the check and the update with the
+> base lock held [1]. Patch 1 adds it. Patch 2 makes the Rust callback
+> context use it.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/2] rust: time: make Instant generic over the time unit
-      commit: 52e953331adb68ea0f8173eacd421f8f88843c36
-[2/2] rust: time: add Instant in seconds
-      commit: 093d14cf49d4f33466ec41f6e7b28f365c75624a
+[1/2] hrtimer: Add hrtimer_forward_safe_from_callback()
+      commit: 66efde7e1d5dfd16516715ddad21422df91d001b
+[2/2] rust: hrtimer: Use hrtimer_forward_safe_from_callback()
+      commit: 52d29a55b2c7400445a37dfe444ec89841089df8
 
 Best regards,
 -- 
