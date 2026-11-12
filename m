@@ -1,58 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794487734;
-	b=E/V1B7OeUcKaTgLTja5+VZyJgU7hAlpTWRmnWP93ZujQkCseH1iy6CdGH5WjJzcHztnC
-	 EpZsPAr3CKrFD5m7Ho4XE6hDir3UFL2kpwedtn+1YGKMF/uFK7wOtlDEA12OOWqBTJww3
-	 25QV1TsH0H8iwfNp7JkwqSXcutc7iKYSlJwFb+igsqda182v5oA/MZd3iZsG51+5E0noU
-	 0RxYeoruy9crZpGAfnlw2nXP8e3SnPnjolwLe/nh188c1A/RcOal3qMRjmbjZtRp6zAqK
-	 S35wHafT/9TgHNwUI5CE6CnWkfQVc0DHwVr2G1lAd7/fNmhdKp+zav9zow+YPk7FAAQ==
+	t=1794487739;
+	b=xpJEAARj3se6uPKiEbfipqwIT1sUJM2ItFzj22LhDbWauSS29wC/Q251eRGkZweVQNvR
+	 iCc/nW8y5B02l8Q341orxU3DHh6366pIx6pz/Oz9sF+spGL945rDgpzhZtya5AxET07E+
+	 lfgBT6UxM96ArLqlAo+AikY2KIEHoWyxQo1lsyP0j3YA/x/VrS15skuDqvffcn2Y3DBGY
+	 UBQECPAHm0BCHP2Q2kwv+cxLfPkAU8eBk5Gu3uT6VZXC74AFbBhE0zGlekdoRJosYbaFy
+	 bVjkQTXsnUFrzuIPrK3WWXeoGZGq1B0PrJOvZc3ZSEsDP8eorRlFnE4ljRICEDIwbow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794487734;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794487739;
 	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
 	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 X-Mailer;
-	bh=KpTLclEcFCIMvdo+hdA2NeaNnjk3CbC/MSnVhaYm/Nw=;
-	b=Q+gI3FRZ6rr/QqcJXW+ZGB7+tUBv6VaY7Zi+JnfAF4KrPvVy9CLIA4goNznP63Rhcov1
-	 7AFUfUIS20fksiH4o/b9ESBfMYnUwIZScprT4Zukt9XHJMnDCA4OHDEMFJ8a8vJGGO3Q0
-	 3qb3SNeLv1TlYVp3lpnDQKdqPqDYmfDK7XwkaixIcqD0i+V5ILWtoENcc5a2u6XnSU4bI
-	 MEp1zgE4paHFH0Kopjr2khTgbpv/2wI8JKD4NYHQsdyJ1WLzZSUG5ZF1OP/9tqtfmD1YG
-	 01tRGg8j0QxkPhh8vUsYR2+2BH9CSCDAXEIiriWBqeqaAt8i4PHv8ucVxylPSX68K1A==
+	bh=WNjSPI9i0E18hyAz79IHT35Q9bphYXezxWEHllFLAWY=;
+	b=dn5cOu5gvlELQT2emNj6QTtXBw8xN5ir+dDAcq90fcNOdz5W9E2onV7KlOGn2wvy10kG
+	 DKkLGzeLUvA1dDp9SRrI/meeFP9lnvVf0Sq1wGgBLp5fIjNwIz8DdEJYoHz59i2MsM0CS
+	 abtWBv2PGs/OyF1mY6iHqDyqF2y1K6RFgJs1JxHuf6paImX46ri2IxiuxmowLLQJrCkUP
+	 IXJSr7rOVDX6kqRHHMj+rcwsn8ab9pXGMbGKsVls7ok0Cy5yK6WiCT5P8Zsck9PgbMw1+
+	 snrjhRb1TZVJJKtOoPPXHBld/xA7GDUaU5RbIB34CHH6wbBsC+SL5D4cLay+AxEc74A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="iLlW76L/";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BXlf6O8a;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1240606A331;
-	Thu, 12 Nov 2026 12:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA90606A33D;
+	Thu, 12 Nov 2026 12:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iLlW76L/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8371F00A07;
-	Thu, 12 Nov 2026 12:48:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BXlf6O8a
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 182EF1F00A07;
+	Thu, 12 Nov 2026 12:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794487733;
-	bh=KpTLclEcFCIMvdo+hdA2NeaNnjk3CbC/MSnVhaYm/Nw=;
+	s=k20260515; t=1794487739;
+	bh=WNjSPI9i0E18hyAz79IHT35Q9bphYXezxWEHllFLAWY=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=iLlW76L/KPQ8InlR/LCWAUEV5s1sI18kR0rGl+n5OsZuUj9ToSUeG3dgpW30VhWRQ
-	 0AVCgkOzEZVKOaFn3uC+lCnJ51PFFoI960zA7VD6962Y470OwRSoWGwhJD/GmEnI7w
-	 wD4GPId+iojAHAWu5S9Wm6/AZqIdgIirGrJK9Rqbg2nvEuP74iQb/tnpV4adTW5uQh
-	 tTtpln5M5hB9axwSjP2rTNBP4fgYFeSeWB1ZLZUWEKe72XCCOMMgFMTxPZPd3w+klA
-	 AsYuZAHpCXhv/bEYD6lTr5JXLoa7RbKTRCzweZVQd+tR9DsNnWj2rDPq0FQgxUJGkv
-	 r31ykT4RRko/Q==
+	b=BXlf6O8acfLBiqc68Kp6LNTKQs6a83pBYz57Sod4IW0xUkaXP7D2l5EwWDGGVVXJx
+	 1acFzjbbPO+or7iweUmDv7NQs4I6tfG+UfA7oRIkboiVX/J2oMHvSDGK0QIO4Z9zsq
+	 1kyOszMBVRAykDsro6JwXbu81DFpViGVTP0FEgQ+a6DWLRZ/dyyMZOVmGk40MI5nAl
+	 cOTWbhkLQL8hryuGEcMvNsNunFO8TX2Avy9+2Y1wntlNResmzPZyWFn+zR0iTGwLMG
+	 +YeJfcNP9QGUYgDiehE0FtFzRbth4rLTnoFd4v0SMrsTZBc1N30RUjv5iaxl5KtH2O
+	 CdF3zzbLVnybg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: ojeda@kernel.org, FUJITA Tomonori <tomo@flapping.org>
-Cc: acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de, 
- bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org, 
- daniel.almeida@collabora.com, frederic@kernel.org, gary@garyguo.net, 
- jstultz@google.com, lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, 
- tamird@kernel.org, tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20261102000102.603124-1-tomo@flapping.org>
-References: <20261102000102.603124-1-tomo@flapping.org>
-Subject: Re: [PATCH v1] rust: hrtimer: Remove HrTimer::expires()
-Message-Id: <179448764515.621816.8279390929279988225.b4-ty@b4>
+To: rust-for-linux@vger.kernel.org, chenhan <chenhan0017.work@gmail.com>
+Cc: boqun@kernel.org, fujita.tomonori@gmail.com, frederic@kernel.org, 
+ lyude@redhat.com, tglx@kernel.org, anna-maria@linutronix.de, 
+ jstultz@google.com, sboyd@kernel.org, ojeda@kernel.org, gary@garyguo.net, 
+ bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com, 
+ tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com, 
+ tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, 
+ tomo@flapping.org, georgeandrout13@gmail.com, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>
+In-Reply-To: <20261031103206.24051-3-chenhan0017.work@gmail.com>
+References: <20261031103206.24051-3-chenhan0017.work@gmail.com>
+Subject: Re: [PATCH v5 2/3] rust: time: make Delta division and remainder
+ fail consistently
+Message-Id: <179448764512.621816.4917112282648020557.b4-ty@b4>
 Date: Thu, 12 Nov 2026 13:47:25 +0100
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -68,20 +70,24 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16-dev
 
 
-On Mon, 02 Nov 2026 09:01:02 +0900, FUJITA Tomonori wrote:
-> HrTimer::expires() reads node.expires without the base lock. The
-> hrtimer core writes node.expires in hrtimer_start() and
-> hrtimer_forward(). A timer started through Arc<T> or Pin<&T> can be
-> started or forwarded while expires() runs. The read then races with
-> the write. That is a data race, which is undefined behavior in Rust.
-> The volatile read does not help.
+On Sat, 31 Oct 2026 18:32:05 +0800, chenhan wrote:
+> Delta's division and rem_nanos() use Rust operators on 64-bit and C
+> helpers on 32-bit. The report shows that rem_nanos(0) can return 10 for
+> a 10 ns dividend on ARMv7, while the same call panics on x86-64. The
+> i64::MIN / -1 case also differs, and neither API documents these inputs.
+> 
+> Check for zero divisors and i64::MIN with -1 before the architecture-
+> specific code, and document the panic conditions on each method. This
+> matches Rust's signed division and remainder operators, including when
+> overflow checks are disabled. Valid-input results and API signatures
+> are unchanged; invalid inputs now panic on 32-bit too.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] rust: hrtimer: Remove HrTimer::expires()
-      commit: 6b391eec2ddeb3ab2681cc5dee16d29e00202438
+[2/3] rust: time: make Delta division and remainder fail consistently
+      commit: 9687257afe8c2c2c257e2168bc6c44e5145dc73a
 
 Best regards,
 -- 
