@@ -1,72 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794485719;
-	b=17kjvVk4Jsk0+YM4t9S+bTSnWIufe0oBWD9hmzT/OzWnoFHnwTPVZGefwZaXhzvl6XBl
-	 m0irp+M4Ggx0kX0mcf227erdEVi/Qg8p0PO2QgW/vnB7iNnDzMct7duzPnMDAyr59+3vV
-	 OHYoKw8dmAxzIlHVBegm5nclEUe7Zqbc8FxKpDNM6BcFAJEs2ioqdIHM2VUh+00U7HBtF
-	 hYptto8zISzi+iErwMmbnMJ1vuCVYwgfSU4UcXCaIYBEO5UHNVq9qwMHbHijyCP7/vsJ1
-	 PLyYOsT9Zwl5m2W/4o3c13scV+lI562wVp5rj4x4YNYgCwpUMFpr4wOEoePRG4kaFlQ==
+	t=1794485721;
+	b=B4yxAStcV8acw7SBW4koM6mg8iRHh+mK+c+N4fTcJJMUt5/Ja+j4JC+5s14NTblYxXyu
+	 55Riqyb66KGl7ZwvZCJXIwdj9AD4oPC8ejTYP2xE5bvMYS6yTxnKABUfJwz71SQf1sy1I
+	 pNy/VsYn4XgwV1k0kpFlpqbzgpkiY55QcNSovhT55aUa7T0F01XCsqe0R3fpLWY43M5dG
+	 CoSTWnoCTkPFgGhguUQZhoDCEJ6BQQwqydSDM6R/WdE82E+dPgYewyyM2RUtnlZfJUA83
+	 qj7Pqno8CXJbc1/k0xEWxpGwsuhPKjyQOX5vLMhhyV9UGb9/7tEvq9RJl1Q0c+tBEfA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794485719;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794485721;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=w8vKr7ISurIa66CKb2bSb0lWJTyTbVCUKm48dux1Buw=;
-	b=vd4qjuEjDG2FC6G+CBZsaGQ62h7zercrY44oF/9gLJQ3YG3MV+deOCBfne+wx/r0hneM
-	 TusXgVf89oeqfEfx2YGk4eaAzvjGK0/PPEVIts9Ntw7M1vpIhGd46DNge1CGLvK1v5prZ
-	 hgsraySghcZhbU6PMnzYSvuGrlEUC7Z6/Q2pTNUUdOGVQ3dXOeEdRboU/5SOkHld7IEbb
-	 KF5xPZcIA4WaVWyCnrWge2ZRD0ADQjbCdYv9mIKduAo+DCPbqDZSx+uwVzgP/B6M0duyu
-	 uZVOZKI3zNhOlbecDRtU70iAIy7JvtFV07njX9+VOWLOj51rIRLqTof/DpN477wUz9A==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=792bh/Up9G16rEbI9KHRJopjEWEttOYtK+WiqlBfpvE=;
+	b=G4mBD9PmPRJBYYJoefA3ZPkg6NheUMR+TfT06tuY2lAcO7Ho6uYFvfGNr0dgwAu9EMQo
+	 j48LgrmREQM6xc1NzCKMEfIAjjCeUrNjNk2YTw9ENhgl9NjB6WSVUqeWrk0Tq8lmv5b68
+	 Wgll67NoJ9uu6/R0Fl26BiiUpsgK8L2rDyd/SvBQJin/9I9XlR830VkUQLTwiLdpadd71
+	 Stbj7vMDqsyJUPttovw0pmvOE3f45uvjDWTTRvx+uTnbDbps6SX4ZYU9oaKgYZmC+fJg5
+	 VCqYWWZZ4gwlNRqveVaGu+dkGZbbsC7/mT6mbv+wpDTxxCfzRGYT60LIWQk5EcK7MdQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--gprocida.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CyLQtps9;
-	arc=none smtp.remote-ip=209.85.221.72
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jdgZmgc+;
+	arc=none smtp.remote-ip=209.85.128.72
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA48606A32D
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Nov 2026 12:15:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7BA48606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20556606A32E
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Nov 2026 12:15:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 20556606A32E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--gprocida.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CyLQtps9
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-490c1867460so3121262f8f.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Nov 2026 04:15:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jdgZmgc+
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4ba078abd70so16027655e9.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Nov 2026 04:15:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794485717; x=1795090517; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=w8vKr7ISurIa66CKb2bSb0lWJTyTbVCUKm48dux1Buw=;
-        b=CyLQtps9UupiTq6Oyph34jI/sl0YD7FgTwqNaa/INSZs87ZFaAYcf2O0E6XvG1/jwp
-         C75DCPwoJq2vlOD7u2gYNgNiGHeiVy3b3CvCNZLexjOtzj0y7qe8mmjV5Ljplzf7F8l+
-         8A7scmBG/ekrQ/z0NrHniU1sxw1I6Khw4KAgnR7uaZmyun8Aiw/9uOTUCFW1/D+DpOWO
-         GO+eHF+vQsPxGfnEOgycWzLm9vEV7kSftzxSuq0mf1TfAtMcW4H0gA2Zd2GmvoMLleqZ
-         dnBLfw7SkukSgaovDXjVVaod+HR5CZvb/IfWxND0klKLZOyu3dP3n5M5STlLYsVgHXrL
-         Jqiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794485717; x=1795090517;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1794485719; x=1795090519; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=w8vKr7ISurIa66CKb2bSb0lWJTyTbVCUKm48dux1Buw=;
-        b=IZ8wav6Q9oukKZe3OiwqtePSxVYxik6UYBzLby4cqshTGUhKqtfbRvWz24HNjMnhTG
-         L5sTp9v28tL5qZCsPirhXln4zRYmrH0N/Zvk5XE6iM5wgo+hZJkwZ+uhkSRG7pGm+yRg
-         MkGNhuy5LFpcaHlYUP/7TWOI8q3I+MdAQsxgmvRndm3Q02plDsJN+qLyPn6uFfnECiSo
-         EggVzXFPm3bMS3Dt/yFEa4P04NojeyeNlFxAk0bXVRf+Hvbi1jet3zhnIpYfJ/YTbfWf
-         ueTeh07iV290FhGfBdRYgZY8P23DaQm8HAn3GWuM9DAKehY0vHA8uE36Pl9MTo4dzl1c
-         uNrw==
-X-Forwarded-Encrypted: i=1; AL+hErEOyqpxlnLS5RMkIQe0SCEqMWW8YTyLY023Fj9M7MMxH10H54BC9aHQi1JBnqR+MyzNh5+Cih6Mxcsj/0nVNA==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+18DYmaqc9GO+8OcYq7o/FGfwNEfLkVH6Pw1YgmlPbMtCurl+B
-	uh65FmJRONK+qNlVOr9TiWhL7NxQl9BzJzXTQVLuYtdziGG+tcBdQFPRHjRP8V0Qp/Msetp2nSd
-	xHxZNdMFHdSLbAw==
-X-Received: from wrbdz14.prod.google.com ([2002:a05:6000:e8e:b0:493:1636:8f53])
+        bh=792bh/Up9G16rEbI9KHRJopjEWEttOYtK+WiqlBfpvE=;
+        b=jdgZmgc+cFIs1nJDNmHtEbdC7Q0MPUykRgvtyJyqbSmOYZeYTnM3mIoRsyR0ReTv8U
+         cytSWkTuSlVAE6Cojp8xdcrBe0fuzkXg9JlqSlRdJc4sZQveqm5oiPIOXfxoUf04zT4H
+         eTvPAvVyxiHFvj7Xd7GWa3R7T33nA3sqTlobR/eDlve0pNioGwxc6GevCm43/G88DTwK
+         M5IjhrE/plEKd29oAJ2wWy9XaJ2T6x2Kg2wjQEmrUCjRCFLk9dFYEtKljAyNmdwUHzyI
+         emhIEgEbyqjnb2/Lybaom6LpHj0fq5ENVsBOsWlCcnEwPNxcJ0xEOsBZhWlMvmpLnH4Z
+         yqTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794485719; x=1795090519;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=792bh/Up9G16rEbI9KHRJopjEWEttOYtK+WiqlBfpvE=;
+        b=pIMwY6GB4+bRKEZzyWTRaQwBfP35/NyhMYN/omwI2Xi/5KoKKOk1tPgSmnXYLAW28t
+         JZu0FTlf0Brwh8HcaUSvjxwEHCnFbhN+5jz1NJR69gMs07wXSDLg5L4f39vWmvPXCydS
+         PqErznTD/ge90qI2xzQxyVf2KxYx5yFF5HlZsWDSbhD2xkYps7M8IYhpjskVHDGjVoVU
+         8/xJtZMGm7M48+RMHea9X0hgABkpkWEQ7BJe+pf93N6g9Q/E5dDRK0mcVDr+C89GcsRH
+         wyE4PuvItvmvWyDVcEEwbHtkGvXFog33xI/sjU+euGyeLxTeYmLnsr64VYfnsc1tO/qd
+         i+Uw==
+X-Forwarded-Encrypted: i=1; AL+hErHrvMNq1uL46KG99Yxi28Q9gSpxwSYqXjyPYDwvjixmCs8nQbHM2cYzWwMvf7zp1MmZpEKeav1900v1zkd4jg==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9c+wC/izZd/njXMPiOK82SxXOOqjD/hypuDq1wGzaFiAPaMYdd
+	qgvIlRW56kGv9u+/lKlK/UiJNZap8MAGYFnXieqQ/CLUEFqcg51Fyc1GGTFxO1TcRFhNswsRLBa
+	X07POe0nQqBvmsA==
+X-Received: from wmbz23.prod.google.com ([2002:a05:600c:c097:b0:4bb:52ec:7054])
  (user=gprocida job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4e8f:b0:4a1:f90d:6f4c with SMTP id 5b1f17b1804b1-4ba0935826dmr100851375e9.7.1794485716683;
- Thu, 12 Nov 2026 04:15:16 -0800 (PST)
-Date: Thu, 12 Nov 2026 12:15:08 +0000
+ 2002:a05:600c:4e0e:b0:4a6:eca1:7d5c with SMTP id 5b1f17b1804b1-4ba093ac8f6mr98156255e9.32.1794485719173;
+ Thu, 12 Nov 2026 04:15:19 -0800 (PST)
+Date: Thu, 12 Nov 2026 12:15:09 +0000
+In-Reply-To: <20261112121512.1670347-1-gprocida@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -76,9 +79,10 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
+References: <20261112121512.1670347-1-gprocida@google.com>
 X-Mailer: git-send-email 2.56.0.567.gdb80ae8cd5-goog
-Message-ID: <20261112121512.1670347-1-gprocida@google.com>
-Subject: [PATCH v5 0/4] clean up EXPORT_SYMBOL_RUST_GPL
+Message-ID: <20261112121512.1670347-2-gprocida@google.com>
+Subject: [PATCH v5 1/4] kbuild: respect skip_gendwarfksyms in cmd_gensymtypes_S
 From: Giuliano Procida <gprocida@google.com>
 To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
@@ -93,33 +97,42 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
 	Aaron Tomlin <atomlin@atomlin.com>, Giuliano Procida <gprocida@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-This is a complete rework of the previous series to switch to assembly
-as suggested by Gary Guo <gary@garyguo.net> in a review comment.
+Commit 9c3681f9b9fd ("kbuild: Add gendwarfksyms as an alternative to
+genksyms") added `skip_gendwarfksyms` handling to `cmd_gensymtypes_c` so
+that `rust/exports.o` could skip symbol version generation, as CRCs are
+computed directly from the defining Rust and helper object files.
 
-The first change in this series is a miniscule safety fix that will be
-obsoleted once the Nova driver Rust symbol handling is itself cleaned
-up.
+`cmd_gensymtypes_S` is meant to mirror `cmd_gensymtypes_c`, as noted in
+the comments above both definitions, but omitted the
+`skip_gendwarfksyms` check. Respect `skip_gendwarfksyms` in
+`cmd_gensymtypes_S` as well so that `rust/exports.c` can be converted to
+assembly without `getasmexports` attempting to compile undeclared Rust
+and helper symbols against `<asm/asm-prototypes.h>` when
+`CONFIG_MODVERSIONS` is enabled.
 
-The second and third changes switch symbol export to assembly.
+Signed-off-by: Giuliano Procida <gprocida@google.com>
+---
+ scripts/Makefile.build | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-The fourth change tweaks a related test file.
-
-Giuliano Procida (4):
-  kbuild: respect skip_gendwarfksyms in cmd_gensymtypes_S
-  rust: convert exports.c to assembly
-  gpu: nova-core: convert nova_core_exports.c to assembly
-  scripts/sbom: update rust export macro in nm parser test
-
- drivers/gpu/Makefile                                 | 11 ++++++-----
- .../{nova_core_exports.c => nova_core_exports.S}     |  8 +++-----
- rust/Makefile                                        |  2 +-
- rust/{exports.c => exports.S}                        | 12 +++++-------
- scripts/Makefile.build                               |  4 ++--
- scripts/sbom/tests/cmd_graph/test_savedcmd_parser.py |  2 +-
- 6 files changed, 18 insertions(+), 21 deletions(-)
- rename drivers/gpu/nova-core/{nova_core_exports.c => nova_core_exports.S} (62%)
- rename rust/{exports.c => exports.S} (72%)
-
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 6127feb970c6..873a9ed62a18 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -428,11 +428,11 @@ getasmexports =								\
+      $(call getexportsymbols,EXPORT_SYMBOL(\1);) ; }
+ 
+ ifdef CONFIG_GENDWARFKSYMS
+-cmd_gensymtypes_S =							\
++cmd_gensymtypes_S = $(if $(skip_gendwarfksyms),,			\
+ 	$(getasmexports) |						\
+ 	$(CC) $(c_flags) -c -o $(@:.o=.gendwarfksyms.o) -xc -;		\
+ 	$(call getexportsymbols,\1) |					\
+-	$(gendwarfksyms) $(@:.o=.gendwarfksyms.o)
++	$(gendwarfksyms) $(@:.o=.gendwarfksyms.o))
+ else
+ cmd_gensymtypes_S =							\
+ 	$(getasmexports) |						\
 -- 
 2.56.0.567.gdb80ae8cd5-goog
 
