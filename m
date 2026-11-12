@@ -1,74 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.11
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794497838;
-	b=eTMbrVGLW6IUAeUW4BmU8IN7+Vf+qvZffBlL6FevSssc9dmBvwNqkGBYSpoZQAT4qTb7
-	 /qsQ2g+8+zL/vrOIcF1hkw9CUwqouLlQ5JBI1u2g5Gt/Fmp++DUTIaT5/16OKL4zFjuFS
-	 W/g0MktvmRXM7fFH3AL9LxsJ6zf7A12D3gAdqDzZm1fNndMJ17B6AxfdwlrZ76YbhuoXn
-	 HzCd8XgyVKyTOEcscaHUCJ3uOeDS5Rnet57ixGJsiN5YG8F+AGZfQnrvdbxaslCahyMW7
-	 rP57udkgoMcYd5xIRQls+MGcfMzi9x6gwj3pDNJEiluSJgeMjN53ZYmLQEF+OrbVmPg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794497838;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:MIME-Version:Content-Type:Content-Disposition:
-	 Organization;
-	bh=i58snUFxY9yTSGS+iItFZzR/U5IATL55FOLI2eUySOM=;
-	b=3poF5uFkqFWAQeVhia4Ah+dtQZDuL9e3QsYEjSrxGXHnizqzpN8IBGrCs46Hl5UsUJA6
-	 rSLWY6vjsNeLiDBquhe+FIAycB7e1pCkHo9W+47t/QuTMPQFVtU31aChTFXHzwQI91aTz
-	 nWRNRCFIRjVwkspm2e/jnTYH0+OHe6VEg/joA9nBReKCTzX7/2iCFcA51T+X3pHuBE6A2
-	 Y5A9vn6MMngJSmJLJV9GGzrYSDqECPIdSJciCH2h4usHJqLSlu0PdXYYPJN1ZDvHdQFPs
-	 Umy4sXaQh7z5B4vkCzH760d9kuykwu77WPrMaTUKLB5ECHj2vnqJfv40GQSJw6Khm4A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Yn3CRDrw;
-	arc=none smtp.remote-ip=198.175.65.11
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794502872;
+	b=YbqQFKe3pPip5TXzX+V2NSqjlsewppAFyfzSuZpSXxFcyBeSLV0p59DFz/f6UsqlBTwX
+	 VbdiNbgNWvw2VQILV1AyT42LnU+QyXaJpp4ulL9CbWDPnDvBmmq6R/vS4cNA4mXmaxDnx
+	 A9jBB7dV9QPvURppDL+Mze69pefQv9hTwvbWtN5v+ouKWj/BkjANbjGnCBwSt1cruo7Uj
+	 BLEK9EF2RHfb4QqAlhyr8h0DjMbqf9m4Y6ifF0S6VvPRb4o07Q9Hd+oLnA0eajOdhZyEH
+	 ZEsSBxasK0xWXIIjDjta/5BdkxE5tRi8djsBICu/edpJMy0EBdEfg8bFdGOK05Rv1tg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794502872;
+	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-ZohoMailClient;
+	bh=OEbtzU9uwmtl0K0JSe5qb3/CsbblUiOI+QqP89nwPNM=;
+	b=Qzem+Rt6GpQDR3RGLLf3xvi6zpE6vyBoiqOFEtvyvr2vfzlRHfX+XCh3zIp+3dY9nOOR
+	 7ZEmShRZXluCBLDcU/aT4sQW+9hTMkmG0Lk3ig4DqmaW+ImKaJoR/iOFqWRJGK/zxUSIQ
+	 BIPstuixT2ZUs9zLiCLN4BbkdpMglmhr35dvhp0gwDnvfz3FTmnRqTLB9XwfEoGaMM3xv
+	 2s8xGYTaavjQpr5bI/TPXBAXyD1bw+z0JKrtu2yv1BjBSL63pCe2RTzoX4S+CHjVhmmPs
+	 OVkIy6m3BzSnwAMhFicG44Ew1Oo6ynDK33JNAfJQYhgGsuyp8OrSbfJKGystxgxYj3g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=FaCgRDER;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33B1606A32A;
-	Thu, 12 Nov 2026 15:37:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B33B1606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2444F606A32A;
+	Thu, 12 Nov 2026 17:01:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2444F606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Yn3CRDrw
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794497836; x=1826033836;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=u2UAqCB8nx4y6B7lDfmLv273jy8Kj4aMY6RjCrvO1NM=;
-  b=Yn3CRDrwPwQWtOj2CZNp0Gc9SXjBlHuwMZrRf470oeDFe03oGmVyjNCt
-   L7yCeuigXd1Xc+vTS7+zqjhFUO01PrIE5sQ70jB01z8wXm8X5d9THic/r
-   abawsBn71QvCkIdEIIDxt084PpPxEtWJt9srmSmzq+iRt49UM/Jz/4kui
-   rqDBvpjbvWi2RnDzFhS6kbpChbectRWje6RpkltBlo1LAHw/iUUv6Hd7x
-   8JfKKWwWBlX4siRas8Y9ABuaPGwB9QZfHNGjecK3cp79baCl2l3UtdmfB
-   ArtTBCGlLn6WJdgZzUay6ThUaeJmvWuVvOSEGAkhqLFiazgnFHLPAtLwt
-   w==;
-X-CSE-ConnectionGUID: TRVRuWkiTVq6/FxUff7t+A==
-X-CSE-MsgGUID: BtqSalOZRMilbNfyM0G88g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11964"; a="3185047"
-X-IronPort-AV: E=Sophos;i="6.27,209,1787036400"; 
-   d="scan'208";a="3185047"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 07:37:15 -0800
-X-CSE-ConnectionGUID: rdxpa9b5QY2f3AzeS6lN0Q==
-X-CSE-MsgGUID: aQRVT6NLT9CdDCb68OE+Cw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,209,1787036400"; 
-   d="scan'208";a="8783083"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.6])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 07:37:13 -0800
-Date: Thu, 12 Nov 2026 17:37:11 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
-	". Boqun Feng" <boqun@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org
-Subject: rant on Rust in kernel
-Message-ID: <avXdJyqNNqopuH2_@ashevche-desk.local>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=FaCgRDER
+ARC-Seal: i=1; a=rsa-sha256; t=1794502845; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=naELY/sGfNqfN0+4LrmZM5yu9ttDQOK7XzPmaCEruZF3mWlnVDY51JjQR8inlHsSn5Eqvib8/KVcQg0vhLqHlrysyRNPBlz9VAtzizLYZFbDC0W2H2k6qxSG3BioxO8hr9slidZBhRinQGm1B3GoUpdnlTu4Jawukntg6siYBys=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1794502845; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=OEbtzU9uwmtl0K0JSe5qb3/CsbblUiOI+QqP89nwPNM=; 
+	b=PN3DwRAKT7RSbm1Ww+XqW41GpkOYgTwnMHplYwEOoC7PwmKczBeHOwAguKP4BVQ9hgsajQLnHI3CYje8j/fvLExTdZn4MrMUOxuVXvMJxrKZrX7MKHJZ0Z0qmuY2scaOT9m23vbqgi0pvJbVHq4byqeHU20jRIUEE/XDU6G8sxU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=FaCgRDERCBbXzy6c/UzYrzS+EGGeX7XhEeR5kVYvNrj3FxrV0Ka0kKvgukpq12ANyP4EoA+JPxWlKsw1XvniQPGD/q5t26sFrkZQV0Q/pSRzVsl69JAkcgzcUnJV2qqf0Rn/5wqthaOsMAUrBYDQQbUZxsMG9iuLppdNttGjeDM=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=OEbtzU9uwmtl0K0JSe5qb3/CsbblUiOI+QqP89nwPNM=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1794502843756120.57863446500517;
+	Thu, 12 Nov 2026 09:00:43 -0800 (PST)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Date: Thu, 12 Nov 2026 14:00:08 -0300
+Subject: [PATCH 1/6] rust: iommu: move the protection flags to the module
+ root
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -78,48 +60,95 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261112-b4-iommu-domain-v1-1-c29e86788dda@collabora.com>
+References: <20261112-b4-iommu-domain-v1-0-c29e86788dda@collabora.com>
+In-Reply-To: <20261112-b4-iommu-domain-v1-0-c29e86788dda@collabora.com>
+To: "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+ Robin Murphy <robin.murphy@arm.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Cc: iommu@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, 
+ Detlev Casanova <detlev.casanova@collabora.com>, 
+ Nicolas Dufresne <nicolas.dufresne@collabora.com>
+X-Mailer: b4 0.15.2
+X-ZohoMailClient: External
 
-Hi!
+The protection flags are the IOMMU_* flags from include/linux/iommu.h,
+and are not specific to io-pgtable. Domain::map(), added later in this
+series, takes them too.
 
-(Cc'ed to Rust and Kbuild people)
+Move them to kernel::iommu and re-export them from the pgtable module,
+so that existing users do not need to change.
 
-I have two quite annoying things that lately Rust brought to kernel
-(in some way).
+Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+---
+ rust/kernel/iommu/mod.rs     | 16 ++++++++++++++++
+ rust/kernel/iommu/pgtable.rs | 16 +---------------
+ 2 files changed, 17 insertions(+), 15 deletions(-)
 
-First of all, it broke the old and nice kernel feature to build a subset with
-allmodconfig or allyesconfig. For instance,
-
-  make LLVM=-22 O=... W=1 C=1 CF=-D__CHECK_ENDIAN__ -j64 allyesconfig -- fs/pstore/
-
-Now this makes a very good fireworks out of some rust.
-
-Ex.:
-
-error[E0609]: no field `disconnect` on type `usb_driver`
-  --> .../rust/kernel/usb.rs:57:27
-   |
-57 |             (*udrv.get()).disconnect = Some(Self::disconnect_callback);
-   |                           ^^^^^^^^^^ unknown field
-   |
-   = note: available field is: `_address`
-
-Second one, is that now with the above feature the build is finished like
-a minute (sic!) later than it was before on a good server with 24 modern
-CPU cores. It started happening somewhat a release ago.
-
-I have no clue what is there, but I will appreciate if it gets fixed ASAP!
-I rely on the above feature to save my time when doing test builds.
-
-My repo is Linux Next based, the compilers are standard to what Debian unstable
-provides. Ask me any details or help with testing any proposed patches. I'm
-really disappointed of having these issues.
+diff --git a/rust/kernel/iommu/mod.rs b/rust/kernel/iommu/mod.rs
+index 1423d7b19b57..afc9cfffb656 100644
+--- a/rust/kernel/iommu/mod.rs
++++ b/rust/kernel/iommu/mod.rs
+@@ -3,3 +3,19 @@
+ //! Rust support related to IOMMU.
+ 
+ pub mod pgtable;
++
++/// Protection flags used with IOMMU mappings.
++pub mod prot {
++    /// Read access.
++    pub const READ: u32 = bindings::IOMMU_READ;
++    /// Write access.
++    pub const WRITE: u32 = bindings::IOMMU_WRITE;
++    /// Request cache coherency.
++    pub const CACHE: u32 = bindings::IOMMU_CACHE;
++    /// Request no-execute permission.
++    pub const NOEXEC: u32 = bindings::IOMMU_NOEXEC;
++    /// MMIO peripheral mapping.
++    pub const MMIO: u32 = bindings::IOMMU_MMIO;
++    /// Privileged mapping.
++    pub const PRIVILEGED: u32 = bindings::IOMMU_PRIV;
++}
+diff --git a/rust/kernel/iommu/pgtable.rs b/rust/kernel/iommu/pgtable.rs
+index 5f9b42ca92c2..695b62eb4835 100644
+--- a/rust/kernel/iommu/pgtable.rs
++++ b/rust/kernel/iommu/pgtable.rs
+@@ -23,21 +23,7 @@
+ 
+ use bindings::io_pgtable_fmt;
+ 
+-/// Protection flags used with IOMMU mappings.
+-pub mod prot {
+-    /// Read access.
+-    pub const READ: u32 = bindings::IOMMU_READ;
+-    /// Write access.
+-    pub const WRITE: u32 = bindings::IOMMU_WRITE;
+-    /// Request cache coherency.
+-    pub const CACHE: u32 = bindings::IOMMU_CACHE;
+-    /// Request no-execute permission.
+-    pub const NOEXEC: u32 = bindings::IOMMU_NOEXEC;
+-    /// MMIO peripheral mapping.
+-    pub const MMIO: u32 = bindings::IOMMU_MMIO;
+-    /// Privileged mapping.
+-    pub const PRIVILEGED: u32 = bindings::IOMMU_PRIV;
+-}
++pub use super::prot;
+ 
+ /// Represents a requested `io_pgtable` configuration.
+ pub struct Config {
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.56.0
 
