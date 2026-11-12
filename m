@@ -1,87 +1,87 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794514918;
-	b=J6LBdj5hPi4v55gfttoxzl+TLa7mVnICT4QLoroqZbgZaRZQvvHJH6oRUty3RDWumxC4
-	 cHEGFbr6njTIN8uu7K+DEtDdds6sQo26see7UxDeZYv3LW4cEJbLNqVtlulgr9LuFVRQ2
-	 aaTaQVucjImmsP7HqkQbYKilemNOSWoN8l78Bmb4Z3QYJnMOksiIqFrqG/viaxHOJQ1yQ
-	 TyTC2tOl8mfPrVltmHIV/tFOsNhizhLFz0KqrN7nxI33dyoyFkHYyxP4fb67Z7RCs5rpv
-	 WBfyxrCT0SxRCKy8LVJaULNBQ3bhWGFPVjFxHOUOe8QpagkZ/BSt0MhynecMx0LYo0w==
+	t=1794514989;
+	b=Xs9LHGQWBw5Fh7xWJpgpWM+se8EKy1KxZ20eg0hRz2CMDHECrI6PE8qpCS20SU2V4c9o
+	 Yy/8e16IhziWCNf+C1jPfma75MR0FlFAqnspeGSrZm/vw1NMb5VSxiFb7oj8BkaoGSki8
+	 y1pCkqu0VI1WTOpCnskCF9Q7yxudwt+QHoVptC2FiimHdrnWazOeVb1/i/RdTAaN7xuVW
+	 FdAMlaLVbGjblcDwf+rlzXrGKV8I6vY554hqdC5Z8qYa+xWT0D/MEJZcFVb3koqEh/E32
+	 unePwc2cCtwEob2xiiVkIGQuUwrX7/5hsl77BQ0Rp+kNxGqxp9Au0LLV6+Ka39v9e7g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794514918;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794514989;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=HLVKQ5q/RC7N1G6VFkxAy6YbPfLl1hH8SPJjv+91rpU=;
-	b=5D5BUyDs16gS81dClRwFCByGZ2k2KaieRY2QOU60PKTxIzyHQn05bmI4bJkruBfXfGSd
-	 mmyey+Tu+934xO0qBvyfB2FRTNXRimLoJsgXq4ZbkHorSheh9B7KhXgBTzSESt3nOTNWx
-	 cv88CurHv6Fi/x5Zq5O7NzOzGaZ2QWAGvqj5u5G0aMkWScJU8geaL7I+0rHouyZtvPWp7
-	 W29GyV5+bVbeGOMfOytEWNd+b7tsG4KDR6td9twBuY2Cq5Ox7ILBp7fmzAl+ADDgMf6ud
-	 RJyskIKTldmKLpUlMynsVS2FB76l81RzjC382iVWOzZJpesiNL33dWcH7mX+v2yefUA==
+	bh=oDkF+EHNknttvr/pyjYehgB7V21ORBFZrQ57TwACNvA=;
+	b=ymPp8JPTWYtn/BfKuXMYvPlmPRpUOf6G6PEoGkFdqRptkwfN3yuA5qF+w5v0S6X7FvPX
+	 F9o4jPRt3yrvrF05RSjcqtK/IakA0ssSTzLBtaVLMI3PyWLEyg07QvBbtkKPej0NZlMcV
+	 eNvnWHrJr0RvepWLjsY/RwYWilmmtfdFQ4NG2uExj2RVuX2HTRycZXbwgp13lQwe67D/N
+	 /a4zQrDhBhcA2x6L917t0ucKGPuyc5zgj2rTL3N/W5Mlm44yvgPARmZ49KxCGjz86+dBO
+	 /7W98OPcAoHPC70h0nOhVOgn4M3fY32y/PP37Tm8C0AY1EVFaPZ4vAi/wK8X4I0rAAA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QHu2CNIq;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=VxOYMEa7;
 	arc=none smtp.remote-ip=209.85.214.171
 Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4443D606A321
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Nov 2026 20:21:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4443D606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7449C606A323
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Nov 2026 20:23:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7449C606A323
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QHu2CNIq
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2e9f6a16afcso22295ad.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Nov 2026 12:21:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=VxOYMEa7
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2e8d6fcbba0so25205ad.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Nov 2026 12:23:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794514917; x=1795119717; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794514989; x=1795119789; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=HLVKQ5q/RC7N1G6VFkxAy6YbPfLl1hH8SPJjv+91rpU=;
-        b=QHu2CNIqST2nEYggP6ih40MK9P1PuDGS206mM+0PL3apX84hoqBNgLDi3Jw6FO3Rgd
-         kZqoY35q0bwhxdt+Yw6Su0gbjn6teoE+Fc/8EjRRbF/qouzl/EZDYc/ipqz9ISA5R37k
-         RpdfzbrE+4sEGl8p90XD754lUx7ohx3J5QCi7Y2OdU3F1qgyQe254//j2I/TxmYFYHjH
-         8cOEDXY7yz2kJHa5+w9LBgkqpNj7Zg1evC3KHU/ntsm646f3SbPYO/tiol92QXWoNUm7
-         Bkz1IEd6Zt66EjtSwvvsG+R1R0LjMgTzBSJFUKLtUr5LKR3fI0B1GdZYiuccBCivZZw0
-         qltw==
+        bh=oDkF+EHNknttvr/pyjYehgB7V21ORBFZrQ57TwACNvA=;
+        b=VxOYMEa7WN5hU3s2AL0gTAK4CGvO8PTwMETyXLtJjhfb1RoqrwwSsIreAjmEhNNqHp
+         mpHOwQsZ3SnU+oqT2m2FizVk/fAFNAsBVCXr3c1X4oL51td54ly5w5hv1/mfk6ZUhtlk
+         3UHK97m66K71g61Mw8fYqxMI5ekb3IXKdjZwzbXdTI4FgqEocNXlVk2WAy4Rb478ZXX6
+         GPqKBs5apfaDV5AyW+X5GEn9eztVMp1jdyrz8OZyYqiuSFB0b/Ti4RuhZsaKqg1LbR+H
+         Gvt1Crpc5zalvK0/B6N8w5Jkr6CMkjWRuqtMxUyy571iVEhEEUkJ8u02iAzP21OyGiYm
+         91dQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794514917; x=1795119717;
+        d=1e100.net; s=20260707; t=1794514989; x=1795119789;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=HLVKQ5q/RC7N1G6VFkxAy6YbPfLl1hH8SPJjv+91rpU=;
-        b=XcOrr2HcNb50s/u3ZgNdeyNstGmO9WQANge2JiQsfeKaQ0mtVRGFrM1CcYXDVLKm3S
-         NrnG9yDtwLBPthgx7lPbxmA2rSDTXTjRIyKDZF9gFTF447NWdhfwY7tLAkxjAM6yO0sP
-         kDH5lc66uYw/M2mfc+Yjj/x43rMKFdjNQBPRee2QQVqCi0o/+BBb6RTtbzSL4pXlXTPi
-         7n6QDWWmx1xOp4aQM3EtJkBPFlad20k1t+BAJoaNIfNl98OZBjNuE9Z+ueivMKqsG8SQ
-         QaP3aiS1ufcQLMEMmF238hfbjLmqtXYj76CD3S9KAs1yPhl78Q4hwpCRsImjHjy9vqQd
-         ajiQ==
-X-Forwarded-Encrypted: i=1; AL+hErEyMzyKDjpaMFbCPLXuHP+u0IMdgp3+yL6d21qfhhYozahFhEN+oB/V5I43uXFDmQxoXw0pO5sTQIVIXom9Rw==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8eBF5ZDYyDAfgvx9JKpBdwctXS5wVEYX405GvVkbqrgZD4ISC2
-	Tx5NQAeQh0KYO9SRgoqpkCQ7q6UCK7cCeoDgq3Vo6auyrocmPgJKJfu/hkU4WgU0nw==
-X-Gm-Gg: AYBFou0FpecWZqivVO75X5HnxsAfLvV6fYsKetRGeUMBpqvRpBwbGZHVJu6STzuMDgi
-	yz9rEQPu3AmVHxU4+rzgn9LitaomLldo5Yxg76u2f9G8WWSy2YNC8520jVpuGLaDI6pK4VeLiV2
-	2cc6WDhATztdRb5uNYx2Xpio1pBylo/2R8tRtuOcXBN6zqPpeN/RL9fRLBuaLLD0mQA94YqcuKh
-	dpaVYUh5YKPfh4M6LLcKcUVIQWXizkUU4RDAZ2+ev+LC0vYQA30KMQsrA5a47X8u44N418w2XRz
-	dgz68n4H2jfykO3G2caY+I6OMZqcGoTHSV3dYzxIRWbzDsHQ4ecSGmql/AKbc3/EUin4JfOhlvS
-	g1YJ+psVGrkrOcvuQfRAYjkXLGFPlRl7EdAeRJ4GKEQF0r3cGs2gXGPo8jq1XpvNPgNN2rNVvWk
-	56SJTeOsByG8sOZi4iQa0GoJde+1B/oN41qO/dp/Uh4QCXL/PJUuwISIs0obR6790WIXVzNBuaa
-	5aGXAUsyHAyckSGXvI2okye0iVeUph7IZcksWr/N2v9/MId6kYjzvuemKtqaUgiUM+MD7L5w9ft
-	0W1NnEFVvX1hC27ZJsR9mQPMr02Xbj+AYjhs8aO+SDSNrohWmXpHdjqjrFvH/EkAQH5vze+bqnb
-	dwM4PE2hjzH93ZkCriThKwhbAzgW6IjxmiycQCI5bam0bQ/TC0tahEvJzf0WaSMYeqoJmsGXjTi
-	MtVRidd9x1fMWvVSnPgIJ/WnP7fg3ZLYrH6IbrDuJsNeH0ZLq9cc1BZxMLTIN938/jprYh
-X-Received: by 2002:a17:903:2f91:b0:2d5:db38:8010 with SMTP id d9443c01a7336-2edf6d2417cmr6462905ad.15.1794514916908;
-        Thu, 12 Nov 2026 12:21:56 -0800 (PST)
+        bh=oDkF+EHNknttvr/pyjYehgB7V21ORBFZrQ57TwACNvA=;
+        b=H5s8MSwL+jm3UGjpZr67+QpL2Fpq9lmFJ0byFCPhrDmlpfnZz+XqL+J3sHn8ckP9tC
+         W14yIsbZniG42GayH1fo7UyV/V4yrsB5rr+7sCHsLOaMCEx/MI6x1T5gHA21FJD0MCIk
+         AjI95c7GdnCQDDGM/wbMi+pmZ2Mi3giTaek9p5lhErw0nl+HocBzD9n/KgCTjBuOH2Io
+         DflRI4931jjPl/E8jDjrYtAoBpIw0ow0Xhfn8rk5kFTUq03HYoDc/7HPiImeTweOkLry
+         fvw9iFLF9/bOQZsRHccaHn5ZanFFvwYKGeW5RqPFJ57a8ULnkc+q5EFRbdK8aOo5s2Py
+         YZEw==
+X-Forwarded-Encrypted: i=1; AL+hErFjXy/WiHNDPYaGFxbUCqEDYoL27KTGBaTVwX/pDI5Yjgpy0QuWdug9efkcvejVLvo79WxZASm4IXr74Zotqw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/23xxoNRuGsxT/xBqDTQfV8z+PC9yowh4n5LUVwNPAMbamzyU1
+	WjBsGTN2ru0wBtBWttpQoMs1RykW1OiTaxLzluyI3ep34bBlnQONCVi1LC7VaVFO/g==
+X-Gm-Gg: AYBFou29yk7Sd38z4L2hnLYZjgc2We+3/UFAA7XO8LrFXuhgltqB0OKfPx1sgkYyfwR
+	/01q8REnFbM36jPKReCEb5DBQwD6ZRgKLS2Xnc0zNNtKmKCEIzyZllM5Bobj66ew2cH9+yFd+nR
+	a5pSVNo6BwMir7/nR63hfYa4eDBUyVTWflaeybmw21iZKbCJpEdJgjA6wLa6AYfCYnUz+QH9CT8
+	2oanqcGOs6DBmicxGiakwXdFSfVvmVnmXq3jUhR9WJt5oL5qug6IlMGm5eq2MltSo9NyfFtv5+B
+	Rv5Ei+rsTwdGr6+IJStgMIXNm6tg6iNTOVwxGIbgyNHyf91ZD8TMFdsl6WQrOi236/Okx+2HbD5
+	+Y067XedEUpSoBdsO9wgO/ebzZaUuIzTwrHmM6WfxTY2wA/sY/kmORwf1kna9J+Ql63ZZNgksYS
+	0jO++89jCYLOdCjUgabRWaKDF8rXoO0/GXpAcKYQVqxOX9sI3lZiLVxXbCwKdmK56a6GOLn/CM4
+	g0I+9hvqV7A5b7SsohwKYWchvwAaWeH9A5s398zlhDrmDS1b3ILU87gXZl1Td0h1pl0ffmNewNi
+	baWEa0BWihdzUhM+7NQdRszRWRUm95UYrzE/3BIxUoJz6vHiBRjdinNuvRwHsjV3dYrXCpZjPk9
+	PoysjXA3LjTuwANXZO+KutzAHEGRpOiUCQhDPZwWD1RCv/ou27VLllouw5lRB6ubUaKALEFT2NC
+	aWHuCJyUUdS+PqJnJtdbuQw5kBY+yeAxpvPq3sw0r1BcbeKWqzSqhQ0SPMzG8WA1nnKzzE
+X-Received: by 2002:a17:902:ce02:b0:2df:42af:2f9f with SMTP id d9443c01a7336-2ee0f0e1667mr1068475ad.1.1794514988112;
+        Thu, 12 Nov 2026 12:23:08 -0800 (PST)
 Received: from google.com (130.155.125.34.bc.googleusercontent.com. [34.125.155.130])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cddc1889960sm227016a12.15.2026.11.12.12.21.55
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1aeb18b73sm874147a91.3.2026.11.12.12.23.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 12:21:55 -0800 (PST)
-Date: Thu, 12 Nov 2026 20:21:51 +0000
+        Thu, 12 Nov 2026 12:23:07 -0800 (PST)
+Date: Thu, 12 Nov 2026 20:23:03 +0000
 From: Carlos Llamas <cmllamas@google.com>
 To: Chris Wiseman <chriswiseman@google.com>
 Cc: Alice Ryhl <aliceryhl@google.com>,
@@ -91,10 +91,11 @@ Cc: Alice Ryhl <aliceryhl@google.com>,
 	Christian Brauner <brauner@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] rust_binder: reject sync transaction with pending
- sync work
-Message-ID: <avYf351-Z3Q2Cd9-@google.com>
-References: <18e70d7c82c722e3.3137322e32332e3235332e313736.191fb9.0000sendgmr@google.com>
+Subject: Re: [PATCH v3 2/2] rust_binder: account for deferred work size in
+ Thread::read()
+Message-ID: <avYgJ8wIbY9-gFi-@google.com>
+References: <>
+ <18e70d7cbc2831c0.3137322e32332e3235332e313736.1920de.0000sendgmr@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -106,42 +107,39 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <18e70d7c82c722e3.3137322e32332e3235332e313736.191fb9.0000sendgmr@google.com>
+In-Reply-To: <18e70d7cbc2831c0.3137322e32332e3235332e313736.1920de.0000sendgmr@google.com>
 
 On Wed, Nov 11, 2026 at 05:23:24PM +0000, Chris Wiseman wrote:
-> When a thread replies to a transaction with TF_DEFER_COMPLETE, its
-> BR_TRANSACTION_COMPLETE work item stays in inner.work_list while the
-> next blocking read waits in Process.ready_threads. A new incoming
-> synchronous transaction can then be queued behind that deferred
-> completion in inner.work_list. If the thread's read buffer only has
-> room for the deferred completion, the ioctl returns to userspace with
-> inner.current_transaction cleared while the incoming synchronous
-> transaction remains queued in inner.work_list.
+> When a looper thread replies with TF_DEFER_COMPLETE, its 4-byte
+> BR_TRANSACTION_COMPLETE work item is queued via push_work_deferred() in
+> inner.work_list without setting inner.process_work_list. On the next
+> blocking BINDER_WRITE_READ ioctl, inner.should_use_process_work_queue()
+> returns true and Thread::read() checks only whether the remaining output
+> buffer can fit a single transaction (4-byte command code plus
+> size_of::<uapi::binder_transaction_data_secctx>()).
 > 
-> If that thread sends an outgoing synchronous BC_TRANSACTION before
-> draining its work queue, Thread::transaction_inner sets
-> inner.current_transaction to Some(t_out), and the read phase of the
-> same BINDER_WRITE_READ ioctl pops the pending incoming transaction and
-> overwrites inner.current_transaction with Some(t_in). This orphans
-> t_out from the sender's transaction stack so
-> Thread::unwind_transaction_stack aborts on exit, leaving a permanent
-> Arc<Thread> <-> DArc<Transaction> reference cycle that pins both
-> Arc<Process> instances and their mapped ShrinkablePageRange pages
-> after the processes exit.
+> If userspace provides a read buffer with 76 bytes remaining after the
+> initial 4-byte BR_NOOP placeholder (read_size = 80), Thread::read()
+> calls Self::get_work(), sleeps in Process.ready_threads, and receives an
+> incoming synchronous transaction queued behind the deferred
+> BR_TRANSACTION_COMPLETE in inner.work_list. Iteration 1 of the loop
+> writes the 4-byte BR_TRANSACTION_COMPLETE, reducing writer.len() to 72
+> bytes, and iteration 2 exits the loop without delivering the incoming
+> transaction, leaving it stranded in the thread-local work_list.
 > 
-> Resolve the TODO in Thread::transaction_inner by rejecting outgoing
-> synchronous transactions with EINVAL in Thread::top_of_transaction_stack
-> when inner.work_list contains any item where
-> DeliverToRead::should_sync_wakeup() is true. Checking
-> should_sync_wakeup() in top_of_transaction_stack() fails fast before
-> Transaction::new() allocates the target buffer or translates flat
-> binder objects, and ignores non-transaction work items in
-> inner.work_list.
+> Add a size(&self) -> usize method to DeliverToRead returning the maximum
+> number of bytes that do_work() may write to the user read buffer, and
+> add InnerThread::pop_deferred_work() and Thread::pop_deferred_work() to
+> drain deferred items from inner.work_list before entering the main work
+> loop in Thread::read() when the remaining buffer is at least 76 bytes
+> but cannot fit both the queued deferred items and an incoming
+> transaction. If any deferred item writes bytes to the buffer, skip the
+> main work loop and return the drained deferred items immediately without
+> mutating inner.process_work_list or waiting for new work.
 > 
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
 > Fixes: 8eb05e8e47f1 ("rust_binder: add TF_DEFER_COMPLETE flag for avoiding userspace roundtrip")
 > Cc: stable@vger.kernel.org
-> Reviewed-by: Carlos Llamas <cmllamas@google.com>
 > Signed-off-by: Chris Wiseman <chriswiseman@google.com>
 > ---
 
