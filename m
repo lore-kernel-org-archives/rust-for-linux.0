@@ -1,48 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794580426;
-	b=zR9lqm34ynenqEg1kAe9dZnTnhJRxWlAeAzJ5jZ9XefjHn5YobFF5dF90j+L1pnluu2S
-	 7ulf1ptV8eS73cZAZFm0KbuiSMNc95fqZDgl2NCaOct9inyJE7IRjk5KXtDBYHNN5BI+i
-	 KFokYO7f2J5sdClVrxJxEWjbHRnFiKAxvAW3xD++LR9qhaS3cX7zSFKl5x3MjwGmcgGHp
-	 MUYLQ7MnE1XmJWHlUAQFVIbsPDDWrmJlRi4bZTOUxLzoZoaO6V+nTT/tGlZvZW/rqShAR
-	 GGuofMtHrSVopVmEH9FNieF+2kO9v56gQ/cBWwo6f9PV9EGR7dby4NH/aIB/GbwpPaA==
+	t=1794587824;
+	b=4LdRP5jy7VA+5/VKa3C0v1fnCM7t5DxJTZ6lLHOKRWAOcmvFSIcgAEsE3TMfnaBuLxae
+	 CJJgq6HVL1YNiKXg0wXE0b6BReyRYHuyFaLaQTJiqVIyxRSv0rYuAocecGamq1fL8d/D3
+	 kFeABI6AOah0fIY7qFJ9mz4Y6D+Nx8WfmsyIA0ArfF8CKVs6Wp7N+tLzjvIo8PvOrPwi4
+	 WYOMQOVno++DXIpL8AKqQWZAWy2ESCBbWji/iCcbhUop/f5/xv82P5BiHUGp3MNM1tX9c
+	 kwR9kWIrrwxLPNAu2nUS6fWJYeLASr9kgZp9rhciG6I8RxQE1HYeUeuuL81QrU/ngjw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794580426;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=k0T2Lc6Sr5hzKs1mLEzVbNR2mHsTP4yzCdeEAUV8XqM=;
-	b=TUeCz6FRIIv6etABIaXxODgQUiZ9bgByMv95f0OBy8yxeE+YrAwSdL/GNodri62gGVHP
-	 dz7vMk1u/TAB6E4I9iEKSJMQ7LuVrsY+Ref/tOVKwEhuynHh5IHIKJmftT6lawH8QRkLD
-	 IV1zg0txtt5HU9E4p1yZfFYZ8cheZqbagZR0OHCBrqMcj29A7ODj5S2a4trcRdP2yQQNm
-	 85J3yQmzxhMPnZDMGeerwo2vU0FM+uUqZxr5HchEPGtmNufA+/WKSutkjQ5SMlNe2YWnL
-	 p0BD9WGHqkjSxJwLGhV9FbRuJJekuZmOF9ghsA2a2sb3ykbBpaL14a4Q5tr7yY7GEww==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794587824;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:Organization;
+	bh=gBy9A8CXbQpral/EbSsaLlYPBMxysRiyGlfRbALVuP8=;
+	b=ggOvCJKtFrjN2IF9yVRHx8o44FZbfHWhHe4ZIQvMdKj/2nPmLRSkJBvd+FT45IzRffVK
+	 ykx5YaOH3zVHmhhr+YY912zyPD+H18fdtynxVUE8yvt4azbX09Gi6tSpjZGiSedWr0NqC
+	 1PMRmnjdOkFwvYnFpaWIviCE2HBRyjuI9qISSHaTsTyq+Bz7RQIe6vOnrOhhAT+nr82yS
+	 vtioBk0SaTDqxRYK7DT05z7A8yHkN2pheZiEEUGikseDDhvJkyCae7fDAXRw6U3bpLLuB
+	 4KX8QTEPKPyKb8i/PYBdDG7XxrXZl5SyOC+vysXaWw9BeP9c2p1TvnnA68ECEG1vl+Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fCoxRQ4u;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fqgq2jxx;
+	arc=none smtp.remote-ip=192.198.163.12
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D3460A3814;
-	Fri, 13 Nov 2026 14:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7FA606A323;
+	Fri, 13 Nov 2026 16:37:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F7FA606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fCoxRQ4u
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB221F000C4;
-	Fri, 13 Nov 2026 14:33:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794580425;
-	bh=k0T2Lc6Sr5hzKs1mLEzVbNR2mHsTP4yzCdeEAUV8XqM=;
-	h=From:Date:Subject:To:Cc;
-	b=fCoxRQ4ufHptrQ6sZINRlRspiLS7xO9UtBVzT7naiKzhMzDvG2SwDBnFNhu7ZZjYk
-	 l/qRtL6itj1P+e+AdkSQ+rrVkXssxC6lGJ8q6hNJVRISHMYzR0W5mQpstPsCf5gOeD
-	 NzLz36moX4UVlxtQmWQ7OzVhWnFltzb42dKG2LUQ4bI74J/8hYQhjCp58E/BqLAeGu
-	 fIhFCPudbMsUZ+PIwMQy1usCwZNXH4W0Kowl/wvaPEEN05m+bGrfMCL/cbe31akzaO
-	 CivSd7Mo5/97xwUQKw+HEVB4rTB3enxx6TxJtvcZ0BRIkGWgJ0lD1ogwibQ9B1jZgp
-	 0n+YAwSyAI/bw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 13 Nov 2026 15:33:20 +0100
-Subject: [PATCH v3] fault-inject: rust: add a Rust API for fault-injection
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fqgq2jxx
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794587824; x=1826123824;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8gDAZ18rPNXLCmzOarBPnGCqfpqUBUhx4FE/88BdXiY=;
+  b=fqgq2jxxExYiJAXzn0x6LWTBbi9gmxyIYZ/ojIRQi8/1LZBL9OLaIcwP
+   GhScbmQvIWNbWcdJ0+2s4eSs1gXRRxbzipPoMXSz8h67WmVUo3zovBcR0
+   Yc/6kJZxrvkqkF2ORL6y2NCXi17T19mYBjacCgJzCND9rUg585TRx9jj0
+   eLepopokri6ZPEeZ3Sghh5nmS4WZZUyxc8TLAPWb8nCQ8/aof1LYCx04/
+   aFVdtkPZAzNdz8jay+ernYI5Q6X8KsKMDB92fgs60kvkn1RAANsGviRBX
+   ygmwemrjJHE33rK4W3Ny7kp+kjCznFKl+xj3ohcu2gK6aVgp6GFp+1cL5
+   Q==;
+X-CSE-ConnectionGUID: ii9rT6p4T6i8uoHuVIPsgQ==
+X-CSE-MsgGUID: xAlHpV/eSw+AGHF1O15N4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11965"; a="3300384"
+X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
+   d="scan'208";a="3300384"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 08:37:04 -0800
+X-CSE-ConnectionGUID: Uoqo+KSRROq1g8vy+27/ow==
+X-CSE-MsgGUID: ZOkGohn7RcaLvgUvXp2DVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
+   d="scan'208";a="10866458"
+Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.148])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 08:37:02 -0800
+Date: Fri, 13 Nov 2026 18:36:59 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	". Boqun Feng" <boqun@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org
+Subject: Re: rant on Rust in kernel
+Message-ID: <avc8q6zydMFgDiy0@ashevche-desk.local>
+References: <avXdJyqNNqopuH2_@ashevche-desk.local>
+ <20261112214240.GF4107043@ax162>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -52,277 +80,80 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-rust-fault-inject-v3-1-d8bd240f22dc@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAK8f92oC/32PQW7DIBBFr2Kx7kQYY+J4lXtUWcB4cGgTkwJGq
- SLfvS6WUlWquvxf+u/NPFik4CiyvnqwQNlF56c1NC8Vw7OeRgI3rJkJLhQXdQthjgmsni8J3PR
- GmMCgErbmXdNywdbdLZB198J8PW050Me8otNWMqMjAfrr1aW+yvudhIBl+lT21VOIfrJutBEQB
- trEY/DzLYIZDNdSqqbRqs+SfcvOLiYfPss/uS62f07PNdSgCGV7QNMimuM7hYkuOx/GgsviB6H
- 4nwixIrS2h33XdQ2i+IVYluULV9fyLGMBAAA=
-X-Change-ID: 20260215-rust-fault-inject-bc62f1083502
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Akinobu Mita <akinobu.mita@gmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10673;
- i=a.hindborg@kernel.org; h=from:subject:message-id;
- bh=sJoapAZau0HZb8zEeaYt2COHHQ3lrbJIF2CsHwFvMUM=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq9x+xkXO2QETVczxS1475tcq9x1rDmbGWIzDgL
- NnB7mAlGK6JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCavcfsQAKCRD6UCkIqsW9
- 0NRrD/4y0B/o4HzQ3gss4CDP5zpQ1J3assh1i7HkQ6s8e1YbnvaoQfsHaKQDPYzfNYoB5z62dOS
- fZPlEvdKOOlshKRguJND1yebdn6tQeleuHOqzR3WAogfMYAdod96kke5mVaw+FCjswXnmRMPuVc
- t17hzlNvMKE7JaGiLlvqDO3ajHPkPN6LJr1JtuxRj8sTVaO+8GQvU7vhWYCcGQjIuFqS8Nqx0WT
- sdLgonnrCs+LOR6D38vyPLq4gPFeexi/gR5WWZqypMgPP6OOAGqFsSifjwnZWWIs1HZbqe+M3EH
- FTOe7YDtdT6rm//rn8eTr6tavv1r1Dmu94VjD8ATHHMLdVQ0q37/EtzBqPlWnyBbg+6LsQLX+GD
- bFyvWl2UjZPNNAw1QnpCRojRXk/G+h1jzkSoVr2D2UdyPd0I+1mM45rbOcPcb9ob19J00A2ieK1
- gVRJbJaGaKHBxLVrt8ZXKxZy4Hb+MB0HhWCVh9fIppccO5UuppTIvZNky6dcV6K7Ya/kItqrjfq
- ZqzNKOv+Dy4ceggki48TA60wthnP2/FI37kSPsmldKmHHIJQVX7kF5nyweU2BNuvbnZ95xOQPdT
- zSOzsMsuYzGY5ybNHDsMkmFf429G/nLXyq5iNVuuSDWjqILXajFWXCeKUM5qNVnj+YvRK60eW3d
- NAAr+ltKALUYvqQ==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112214240.GF4107043@ax162>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Add a way for Rust code to create fault-injection control points. The
-control points can be attached to a configfs tree as default groups and
-controlled from user space. On the kernel side, provide a `should_fail`
-method to query if an operation should fail.
+On Thu, Nov 12, 2026 at 02:42:40PM -0700, Nathan Chancellor wrote:
+> On Thu, Nov 12, 2026 at 05:37:11PM +0200, Andy Shevchenko wrote:
+> > (Cc'ed to Rust and Kbuild people)
+> > 
+> > I have two quite annoying things that lately Rust brought to kernel
+> > (in some way).
+> > 
+> > First of all, it broke the old and nice kernel feature to build a subset with
+> > allmodconfig or allyesconfig. For instance,
+> > 
+> >   make LLVM=-22 O=... W=1 C=1 CF=-D__CHECK_ENDIAN__ -j64 allyesconfig -- fs/pstore/
+> > 
+> > Now this makes a very good fireworks out of some rust.
+> > 
+> > Ex.:
+> > 
+> > error[E0609]: no field `disconnect` on type `usb_driver`
+> >   --> .../rust/kernel/usb.rs:57:27
+> >    |
+> > 57 |             (*udrv.get()).disconnect = Some(Self::disconnect_callback);
+> >    |                           ^^^^^^^^^^ unknown field
+> >    |
+> >    = note: available field is: `_address`
+> > 
+> > Second one, is that now with the above feature the build is finished like
+> > a minute (sic!) later than it was before on a good server with 24 modern
+> > CPU cores. It started happening somewhat a release ago.
+> 
+> You are probably seeing this behavior within the last release or so
+> because of
+> 
+>   2625480a1bf7 ("hardening: Default randstruct off with rust for better allmodconfig support")
+> 
+> which allows Rust to be enabled with all{mod,yes}config to make -next
+> testing easier.
+> 
+> As for that particular error, is it a -next regression?
 
-Cc: Akinobu Mita <akinobu.mita@gmail.com>
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
-This patch is a dependency for the rust null block driver fault
-injection feature.
----
-Changes in v3:
-- Sort the `fault-inject.h` include in `bindings_helper.h` (Miguel).
-- Use backticks for `FaultConfig` and `self` in code comments (Miguel).
-- Link to [`true`] in the `should_fail` rustdoc (Miguel).
-- Replace the stale `INVARIANT` comment that referred to a no longer
-  existing `ffi_init` call (Miguel).
-- Add a `PinnedDrop` for `FaultConfig` that releases the reference on the
-  embedded `struct config_item` acquired by `fault_config_init`. Nothing
-  released it before, so creating a `FaultConfig` and dropping it leaked
-  the resources configfs associated with the item, including the name
-  allocation for names of 20 bytes or more.
-- Implement `CDefaultGroup` as an unsafe trait, following the configfs
-  change, and document why `FaultConfig` meets the requirements.
-- Document the remaining `CDefaultGroup` safety requirement, that
-  the implementer never attaches the group itself.
-- Say what the `Send` and `Sync` impls rely on instead of claiming
-  that `struct fault_attr` applies internal synchronization.
-- Add an example for the module.
-- Link the module documentation to `UnattachedGroup` and
-  `Group::new`.
-- Gate the module on `FAULT_INJECTION_CONFIGFS` alone, merge the
-  two `impl FaultConfig` blocks and drop a `cast_mut`.
-- Link to v2: https://msgid.link/20260605-rust-fault-inject-v2-1-aaf978883cc2@kernel.org
+No, I can easily reproduce that on v7.4-rcX.
 
-Changes in v2:
-- Mark `should_fail` as `#[inline]` (Gary).
-- Expand `should_fail` rustdoc to describe the `size` parameter,
-  including the negative-`size` replenish semantics, and link to the
-  fault injection documentation (Gary).
-- Link to v1: https://msgid.link/20260215-rust-fault-inject-v1-1-6ec459cb5ccb@kernel.org
----
- rust/bindings/bindings_helper.h |   1 +
- rust/kernel/fault_injection.rs  | 144 ++++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs              |   2 +
- 3 files changed, 147 insertions(+)
+> > I have no clue what is there, but I will appreciate if it gets fixed ASAP!
+> > I rely on the above feature to save my time when doing test builds.
+> 
+> Note: The following is my understanding, Miguel or other Rust folks
+> might correct me.
+> 
+> You are noticing the face that certain Rust crates like kernel are built
+> in the prepare target, which will run for pretty much every build; it
+> has been this way since Rust has been merged, you are just noticing it
+> now because Rust is enabled in your configuration. I believe this was
+> done to ensure the kernel crate is built and available before drivers
+> were built via recursive make since they consume it. However, as you
+> have noticed, this implementation bogs down the build and the same
+> problem exists for Rust drivers that depend on other Rust abstractions
+> and such.
+> 
+> Miguel and I chatted about this at Plumbers and we absolutely want to
+> get it resolved but I am just not sure how quickly that will happen. In
+> the meantime, you could just use KCONFIG_ALLCONFIG to disable
+> CONFIG_RUST during configuration time so you can still use a single
+> command:
+> 
+>   make ... KCONFIG_ALLCONFIG=<(echo CONFIG_RUST=n) allyesconfig -- ...
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 3791af0aadc7..08a10a7214b0 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -58,6 +58,7 @@
- #include <linux/dma-resv.h>
- #include <linux/errname.h>
- #include <linux/ethtool.h>
-+#include <linux/fault-inject.h>
- #include <linux/fdtable.h>
- #include <linux/file.h>
- #include <linux/firmware.h>
-diff --git a/rust/kernel/fault_injection.rs b/rust/kernel/fault_injection.rs
-new file mode 100644
-index 000000000000..a7d30451fd71
---- /dev/null
-+++ b/rust/kernel/fault_injection.rs
-@@ -0,0 +1,144 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Fault injection capabilities infrastructure.
-+//!
-+//! This module provides a Rust API for the kernel fault injection framework. Fault injection allows
-+//! simulation of failures in kernel code paths to test error handling.
-+//!
-+//! [`FaultConfig`] represents a fault injection control point that can be:
-+//!
-+//! - Attached to a configfs tree as a default group, allowing userspace control of fault injection
-+//!   parameters. Wrap it in an [`UnattachedGroup`] and pass that to [`Group::new`].
-+//! - Queried via [`FaultConfig::should_fail`] to determine if an operation should be simulated as
-+//!   failing.
-+//!
-+//! Please see the [fault injection documentation] for details on configuring and using fault
-+//! injection from userspace.
-+//!
-+//! C header: [`include/linux/fault-inject.h`](srctree/include/linux/fault-inject.h)
-+//!
-+//! # Examples
-+//!
-+//! ```
-+//! use kernel::configfs::UnattachedGroup;
-+//! use kernel::fault_injection::FaultConfig;
-+//!
-+//! // The token grants permission to attach the control point to a `configfs::Group` as a
-+//! // default group. Pass it to `configfs::Group::new`.
-+//! let control_point = UnattachedGroup::new(FaultConfig::new(c"timeout_inject"), GFP_KERNEL)?;
-+//!
-+//! // Keep a handle for querying the control point from the code path under test.
-+//! let timeout_inject = control_point.clone_arc();
-+//!
-+//! // A control point does not inject failures until userspace sets a non-zero probability.
-+//! assert!(!timeout_inject.should_fail(1));
-+//! # Ok::<(), Error>(())
-+//! ```
-+//!
-+//! [fault injection documentation]: srctree/Documentation/fault-injection/fault-injection.rst
-+//! [`UnattachedGroup`]: kernel::configfs::UnattachedGroup
-+//! [`Group::new`]: kernel::configfs::Group::new
-+
-+use crate::{prelude::*, types::Opaque};
-+
-+/// A fault injection control point.
-+///
-+/// This type wraps a `struct fault_config` from the C fault injection framework. It provides a way
-+/// to create controllable fault injection points that can be configured via configfs.
-+///
-+/// When attached to a configfs subsystem as a default group, userspace can configure fault
-+/// injection parameters through the configfs interface. The kernel code can then query
-+/// [`FaultConfig::should_fail`] to determine whether to simulate a failure.
-+///
-+/// # Invariants
-+///
-+/// - `self.inner` is always a valid `struct fault_config`.
-+/// - `self` owns the reference on the `struct config_item` embedded in `self.inner.group` that
-+///   `fault_config_init` acquired.
-+#[pin_data(PinnedDrop)]
-+pub struct FaultConfig {
-+    #[pin]
-+    inner: Opaque<bindings::fault_config>,
-+}
-+
-+#[pinned_drop]
-+impl PinnedDrop for FaultConfig {
-+    fn drop(self: Pin<&mut Self>) {
-+        // SAFETY: By type invariant, `self.inner` is a valid `struct fault_config`, so the embedded
-+        // `struct config_item` is initialized, and `self` owns the reference that
-+        // `fault_config_init` acquired on it.
-+        //
-+        // `fault_config_type` does not install a `release` operation, so this does not free the
-+        // allocation backing `self`. It only releases the resources that configfs associated with
-+        // the item.
-+        unsafe { bindings::config_item_put(&raw mut (*self.inner.get()).group.cg_item) };
-+    }
-+}
-+
-+impl FaultConfig {
-+    /// Create a new [`FaultConfig`].
-+    ///
-+    /// If attached to a configfs group, this [`FaultConfig`] will appear as a directory named
-+    /// `name`.
-+    pub fn new(name: &CStr) -> impl PinInit<Self> + use<'_> {
-+        pin_init!(Self {
-+            // INVARIANT: The allocation is zeroed and `fault_config_init` initializes the
-+            // embedded `struct config_group`, so `self.inner` is a valid `struct fault_config`.
-+            inner <- Opaque::zeroed().chain(|inner| {
-+                let ptr = inner.get();
-+                // SAFETY: `ptr` points to a zeroed allocation and the second argument is null
-+                // terminated string.
-+                unsafe { bindings::fault_config_init(ptr, name.as_char_ptr()) };
-+                Ok(())
-+            }),
-+        })
-+    }
-+
-+    /// Query for failure.
-+    ///
-+    /// Returns [`true`] if the operation should fail.
-+    ///
-+    /// `size` is the amount of the resource consumed by the operation. It is subtracted from the
-+    /// configured `space` budget on each call, and failure injection is suppressed while `space` is
-+    /// greater than `size`. For allocation-style users this is typically the number of bytes; users
-+    /// that inject based on the number of operations performed pass `1`. A negative `size`
-+    /// replenishes the `space` budget by `-size` (i.e. grows the budget) and suppresses the failure
-+    /// for that call.
-+    ///
-+    /// See the `space` field in the [fault injection documentation] for
-+    /// details.
-+    ///
-+    /// [fault injection documentation]: srctree/Documentation/fault-injection/fault-injection.rst
-+    #[inline]
-+    pub fn should_fail(&self, size: isize) -> bool {
-+        // SAFETY: By type invariant, `self` is always valid.
-+        let attr = unsafe { &raw mut (*self.inner.get()).attr };
-+
-+        // SAFETY: By type invariant, `self` is always valid.
-+        unsafe { bindings::should_fail(attr, size) }
-+    }
-+}
-+
-+// SAFETY: `fault_config_init` initializes the embedded `struct config_group` with
-+// `config_group_init_type_name`, and by type invariant `self.inner` stays a valid `struct
-+// fault_config` in place for as long as `self` is live. `group_ptr` returns a pointer to a field of
-+// `self.inner`, so it returns the same pointer on every call. By type invariant, `self` owns the
-+// reference on the embedded `struct config_item` and releases it when dropped. No method of
-+// `FaultConfig` adds the group as a default group of any group.
-+unsafe impl kernel::configfs::CDefaultGroup for FaultConfig {
-+    fn group_ptr(&self) -> *mut bindings::config_group {
-+        // SAFETY: By type invariant, `self.inner` is valid.
-+        unsafe { &raw mut (*self.inner.get()).group }
-+    }
-+}
-+
-+// SAFETY: `FaultConfig` has no task affinity. The only operation it performs outside of
-+// `should_fail` is the `config_item_put` in `PinnedDrop`, which may run in any task.
-+unsafe impl Send for FaultConfig {}
-+
-+// SAFETY: The only method taking `&self` is `should_fail`, which the C fault injection framework
-+// supports calling concurrently from any task. The `times` and `space` counters it updates are
-+// atomics, and the verbose reporting path is serialized by `attr.ratelimit_state`. The remaining
-+// fields of `struct fault_attr` are plain integers that C races against concurrent configfs
-+// stores by design: they are statistical knobs and an inexact call counter.
-+unsafe impl Sync for FaultConfig {}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 1ab41129d557..156074709ed1 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -73,6 +73,8 @@
- #[cfg(CONFIG_DRM = "y")]
- pub mod drm;
- pub mod error;
-+#[cfg(CONFIG_FAULT_INJECTION_CONFIGFS)]
-+pub mod fault_injection;
- pub mod faux;
- #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
- pub mod firmware;
+Thanks, this indeed helps. But I prefer not to remember this type of hacks.
 
----
-base-commit: fd9230005e85472b81c1c7c16afe93dd878996b1
-change-id: 20260215-rust-fault-inject-bc62f1083502
-prerequisite-change-id: 20260215-configfs-c-default-groups-bdb0a44633a6:v4
-prerequisite-patch-id: 54d13c089786f6c33633e3df846ae2a573542dd6
-
-Best regards,
---  
-Andreas Hindborg <a.hindborg@kernel.org>
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
