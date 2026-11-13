@@ -1,112 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.181
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794601539;
-	b=RhNOMt9ESmqE3ryIpozl7OlZ9465CoNN6AsPCyHmq/bDSAspcAER/8YCH5MNc5/+C3aN
-	 PtOZc8/sLHi7/vvz8VLHgVe/PuF6FqSH33W1b5vAcp4o3BkIxFmJq3d3ZoywwFP81zbTs
-	 KCpzaQx22JBcUg8RXxiOBzxDLQWeU7ew1Ky79WBBh9LwXTjhEzPKP5qcb3aew+tkemfJW
-	 u8omdNrg6byG1gv3AVLmbgNqMybgAnnFgncg6aX47cMB2IOgT+dS+FjnXJpU3qgOyYb0p
-	 1YGBFHPvIfn0p+1NKmJlSkGpU88eJV6ProUG2tfHNS1GnaS6T+f/bwwohoWK3DcXdlA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794601539;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.181
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794601581;
+	b=kqEQ2h5K22b+LXKSGuVZUMgKDE0zlE0Sf1/VmEs+xDClAqqrNuSpuZWu59g6Rpa+0MGq
+	 VWLVrnPM8D+Q7dNdsHZMUwfoO6CFgc8AJsP8lGXIZEE/oAfjsuizhAlLr7IAEZb5zKp/m
+	 8DgCk3AlCQN4rSFNA4zBfrzCRPp7l4pqV7CwmLJMDdSj1M1AsliGFtInDzJCVG1X5MRmw
+	 xsGma+MOPrPSHdZ9HpU7CE9nRE0xMWHjwQUMQTLBB8LE5RXiUmgc8vrP+afoi251ZC+Sc
+	 czqOZSgURI3IrCLg+osTEeENeDbFLo0utf65olLeTY8Im+C6nC5y1IndlTdYSiu6RUA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794601581;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=vm1IGuKTaqbaumPmtsc+rwOgJW2SVoe9zBDKiHFpTCo=;
-	b=cvxQYOb5S98AsKyhvdOWQibhuawTG9rUDSxyiW2cbN93yiOnckcoCqv8+8+q94YxZbo3
-	 FXG3TopfbRIuNvF+wzpPDuUcGzNciNrOcCMxFe1tDqYppFNcCIJxUg8aI6B/DR3kejbDg
-	 eeTPwpKzlMv7aYuL9fpsvdLV3gBlYa/2rF+MhX5zX4RwefDjHtWiKruORa+l1N4ICE3kw
-	 ycxu1brZSvMj1aVjAqGD2IZsynL3ws9Ia1rcF71IgncvZduxL95hNreTLcxnun3uumdM9
-	 ehBjx4w6DdNsxv/MycNMah55iXoROBKN1tkqpvZUBsgkiDNmJ8YID8PQHl4L9lr3KDg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=uci.edu;
-	spf=pass smtp.mailfrom=uci.edu;
-	dkim=pass header.d=uci.edu header.i=@uci.edu header.a=rsa-sha256 header.s=google header.b=OPvtwYSH;
-	arc=none smtp.remote-ip=74.125.82.181
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=BmaNayS+Wbe5Uay0lJ3vEuq20YAhkZy/1G9M7ssRoVg=;
+	b=fJLO86+w25W93yjlX1W6I12BCy5QurnzLdyOmNzR7UaBfI7YVpbX8vcRVfNxtBQyg3+p
+	 TugnSisXe3Cfp6GpPZYlml810PzZEA3plTnIcPHl7lhzpJiXcxBnqVT/fP27FqWgkNlH8
+	 Ru4tncB0Kg1Fa0edVCMElL6sLnu/Folmj/SyyHZE7/GfkXn6K4l5FtFxpLJ8UcuSEQbQZ
+	 a/M6LphCP/246amoGaXR7WWc8dsqBKu/X5bJto/KAoAHW8F70294QHYEFFPkk2Qz7Jeyf
+	 T4entWBu+40m7Gp3C4nnLNVls1qCUKU9t6xqziCjkqcm5DDhDYheCQ2wXGic8tPTeyQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xAWZhUlj;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.181
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7CB606A331
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Nov 2026 20:25:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B7CB606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uci.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A7F606A330
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Nov 2026 20:26:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63A7F606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.a=rsa-sha256 header.s=google header.b=OPvtwYSH
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-372bdb942dbso1585539eec.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 13 Nov 2026 12:25:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xAWZhUlj
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-93f22a8515eso198643185a.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Nov 2026 12:26:21 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794601580; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JFTWePJRf7BOkJWJZ7gVwKBlUTD1uj4dv52TxCIgzCASWTsoWdmGgyi7uUu3a5xeXT
+         HN+xLdAZwMDCQHiYUHBPO79VwGhBTREMAHg3/+A0mJJTZodfnIW3uzAI0Y9wqfJOjdFK
+         N1AYIntBWT818WEFB98o8Jl5oTIijqisxs2DjeuucLFsqKZYTkK70fWt+Jo8+SdndTRU
+         +alNABxS9bPoasOcnuuOlgOl8kIKFBusDbdBR/GVEnKLBDHErrLcYKjMpgjZpM1sl7pw
+         SKOBdXRDMVPKS5Lx4ea3+G+nC1eq4L8035v8rDz6buZBox+QSuMztpvQjNkmTKKuN9XI
+         fNtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=BmaNayS+Wbe5Uay0lJ3vEuq20YAhkZy/1G9M7ssRoVg=;
+        fh=bPZKp4+be9raxpgjJr5Z1w3upNIacUrCExtZb5M9b+g=;
+        b=WL70gw0gHl3FtTdfpgOTa60UNIeo3c8RiMKZzLWEVbrmcWn96Hf+09HMZokxc6raaZ
+         5wk/PsjwHTYYkWJexKCyUzsPs3bG4JfXd43Rs0SKndr7jNs/HZWGcaZer7cJSli90r6n
+         9mAbUX1o3HT2dZpWV2phuCH9FUS+xXMNo7FDv/Ff6UCZF7vF0rK1ikXTtFeRGgoaA4Bb
+         B+nMVEhjxyWkWRWhMx4BCMXbbKWFkMzg0TvmF5Kgx4SiJyM/7qerFPuXvjoyCUbNVeYB
+         QATsPe8/ghw3xLAhuqQDry92S25hNtwWBCFqzafEJcygIiS+XaPDKFnzI78wolLoi/Qn
+         hGOg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=uci.edu; s=google; t=1794601538; x=1795206338; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=vm1IGuKTaqbaumPmtsc+rwOgJW2SVoe9zBDKiHFpTCo=;
-        b=OPvtwYSHaSQxsfyMQrbBFYQdkcJBWZSKX2S13grdyzcxQgX5GformHiRgI86lYCCpv
-         Jg6jHuYfTe/mgnDGn2b5USX+FmKyXx85WnMdlPYspJks9IJbX+MNeVPqXgiliV1ApQXM
-         cFE2mk6sGp5YR4WX3JBa2mMHHaXN1AwvLO+YgN1wc/JEGiS587MHwp+lYF34YgpPhVgK
-         QKouQ7KkKQoANxjauV9ktKfKx9XCC6ViibiAxo3Rk6sLiyJBoVG4qQLvJPKtwFB2K/dQ
-         bff33pupwTNOaXKqdTWOF6xHaYlT209ehYBdsW6EMu5PG8gPtWFTbIDLFNi1XnUp1QfP
-         yuQg==
+        d=gmail.com; s=20260707; t=1794601580; x=1795206380; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BmaNayS+Wbe5Uay0lJ3vEuq20YAhkZy/1G9M7ssRoVg=;
+        b=xAWZhUljpSj4GwEG5edXxo6lINEjsx85vjIUzWJhw/LQW+vjQFg+VQZpnvBlLnAT0K
+         7t3cmzjH5jUHNzUfWx4PDsIwPZpYxYCA5w1os/pb5TNthu8XeIB0xjgf3B7ZhI5ReVH2
+         bOPigVWTzSjcjbnh/6w2cBFJIdF+tp64QXr9nPDhy/rhIAYlpzNo7oc0HRCGEzg86v3/
+         qxB+Te0DMVATtMQzWt/dJ71BmmiA0GOF072vtHmRm6ujw/2T9eyf8mKPT9EZt4wDhW82
+         /61/dguUNKOHnb5rEdnRfzzyumKudLkEaH90yzaKusaIQYnQzBQC7awjusAsdK9kcM3z
+         7nmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794601538; x=1795206338;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=vm1IGuKTaqbaumPmtsc+rwOgJW2SVoe9zBDKiHFpTCo=;
-        b=h93unMASC8FPJqu0r9NRHMdTiJadRSv+WcFSGlY3KqDfNrpDzdj8pxRwiDTu/7Hx9z
-         fBHlx9fs+4i+Drng2dF0bYyfx6+SILfjuY9JxUIQLSTZE8ZBU0Y+OF69dMjOGw/fG1gh
-         Nzuicokxzdq7xI1ophWst7lF0lEpGkEoTkWQi/QW5/GDEnGsmLMDjpjiA9uYXWkrNda8
-         fyDim3t98MpeXYPhHDhOGmbYAvOq3++9oRYvszedDHWn+FfRkJ5SexSfzXi7G9cq/No6
-         DF9jEdfprXe32UB92bWft0zfuDg3d5QmZv2IOnT82Zde2wCENQ7TB8UawxlR/P2LZJ12
-         IALQ==
-X-Forwarded-Encrypted: i=1; AL+hErFp/m6sIJGxnnmMfvWI4rboILmtroUk5/jfnwjpxwT+suWq1uSGO9bCGsFQ3Q5aVidS9oBRZqz0JcGs6VAdMA==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+7Xoh12DZfZhF/XKNzNSiZnF76ajRNHCKN5+K9WEPx6RwGXKQT
-	/WD522Ym/GUbr9LPgtp3EufHzBT1WyhRRXqGzylpCBh2QbbhOK2JG2EGO4nZ8QQMMAk=
-X-Gm-Gg: AYBFou1Rief7GgcuyokZ4lD9FsiTm0zID8rDdgteolBbZayNGin7CiyHcPhnD0BXyrf
-	BqvWt/D1Vk1NRt3nK+px4ncTIMsQfYNm165CyrvHsN5NjZtdDIP5JrH/OTnlptFhR1O2+yLN9zd
-	pTLQ1i32vw6m9+Za3huiBdJIHroYiyv6EPqFlPax0kJrKVRp6AeSmF6AAZR3GfbnCuxl+t8W5Oj
-	kSAt7yHchDnh0KPzaaqQtAdQ1W5clOjLhbU1I/NRXha0MEXy3wzRsfG5sYZKxFu19rP0/1quz8q
-	RwgEthNFyVUBS2aZjoaZHER+2lcpXhAKv1Xn+scxYxlfPfDjUcZ9EfuNXuOLI/rYrV0tM915AsW
-	ayV4fe5xphBW95Pbu07bq11BlBF8FOSfZIhvb3xvuVEmFAQDyM2bU55bsSy2YjjIs4NJybS2EcP
-	pGHQYeT80Cp02Hze84jnEcE5EKeDt2MUwLXV5LlINyIla/JhWn4uhkZXIKgGuiQsuUWJQTuilGA
-	mChhjfITG7HKcW0bssiTJXOM1gzipegR3FCaQc6dskmmaYfI40IyHs0Hc85WoqWxYIo6yMtj0eb
-	dm0FqvqMyplQLTLVnwQZ0T+TTUb/gQKX4HHYy20y+DOWts9cjllljed9o03eqlIbfZ2w
-X-Received: by 2002:a05:7300:e9c5:20b0:361:167c:2364 with SMTP id 5a478bee46e88-37966e3ab7cmr3493290eec.8.1794601537810;
-        Fri, 13 Nov 2026 12:25:37 -0800 (PST)
-Received: from guest1.. (charm.ics.uci.edu. [128.195.4.118])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-37956bad134sm11725372eec.27.2026.11.13.12.25.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 12:25:37 -0800 (PST)
-From: Priya Bala Govindasamy <pgovind2@uci.edu>
-To: m.wilczynski@samsung.com,
-	ojeda@kernel.org,
-	ukleinek@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	elle@weathered-steel.dev,
-	linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	ardalan@uci.edu,
-	zhiyunq@cs.ucr.edu,
-	dzueck@uci.edu,
-	pgovind2@uci.edu
-Subject: [PATCH 1/1] rust: pwm: reject over-aligned driver data in `Chip::new()`
-Date: Fri, 13 Nov 2026 20:25:34 +0000
-Message-Id: <caddec5478a0d39a73152247a60bc21b3c609cc7.1794600927.git.pgovind2@uci.edu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1794600927.git.pgovind2@uci.edu>
-References: <cover.1794600927.git.pgovind2@uci.edu>
+        d=1e100.net; s=20260707; t=1794601580; x=1795206380;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BmaNayS+Wbe5Uay0lJ3vEuq20YAhkZy/1G9M7ssRoVg=;
+        b=2NP7QDWn/lKXO6OVfriF3kSmCFFKK41m1PWN+B6yrLqLcYZIXOLqLsQkOIKQUcAgrN
+         jFugNO8vYEyDF1QMiD27URP0IlYDNalIoMY8L+7ZO8eRhJ1nwpgar3nH1XzsoQAo2NRP
+         jPsyjDcMvlVec+9Bexd4oVSACAtIATOnbIQXbmAKng4APAfzJfTgWeMVXvQPCVYURK7E
+         lemJSfA3XFGvRikRvGs8IFh33Dr5V6//7rV73NCI56XpunR/Eh+0kFxKfA/sMZ66JDt8
+         +79dPIcI0e6Y38HIc3E7ie7gSlBJ4V8NiWes1gujk+GFqdZ5G9J7j4nrPUfU4PDBIVT1
+         aESA==
+X-Forwarded-Encrypted: i=1; AL+hErEWbY11r1nvWRPq8GnS01xQ+pbwI+CQaPOgVxLEtyVlgltZzGeMUq4U3yZ4WbzYzHLzDNTdeTOlMmOvLWphjA==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/lBWVaCokKNXy19il9eoSJ63/3mheuqmhjo+DWWp7Nmom2/TC0
+	O1wxwj0lVB2hAoFi25SlrQH/4VPc2NKBrWw3GfrZ4rCu0STOWCWl8FoemWhpuX1RoOE3cYICRPI
+	LLlFXK8bTK524qSUaM6kNKXzD3Bxtekw=
+X-Gm-Gg: AYBFou1BeMrFWYR+ks6vI5G8OVQznh4zSklB0TuCfsKLngj0AzSpt2SZfkiS91el+hk
+	dYTGi7MAzaQAr7mfc+kTZjPhQ5KPweUpR32aUfWHG508+KzJgm+T6TYfkigaTm445ga2MDqKoMD
+	7OiLM7/ZDzZzQAcvquYBsV0mBIYzhHp87t67WjtaVVxD6RNP/AcikmJgnoPxFukRbN9G4cjhXFA
+	aXLXTkUMUF31iOiq3z47VmA54o/fjI5K/irf2vrd6eVocEa/Roa2AMt6kqp4NpuETCCmR/+H4fO
+	zlNFFileEe1rpPDjEPklfaz5CXhZuEHwTgSqe5W3AR039DBxutrs4jn93P8VoWJUAOwo7Fv4v43
+	qEl+tyo7K2ZUf5C4xuaKVOaHH4GOtsV4+iUe2
+X-Received: by 2002:a05:620a:450b:b0:93c:5f3c:f485 with SMTP id
+ af79cd13be357-9494bc63eabmr628029685a.53.1794601580206; Fri, 13 Nov 2026
+ 12:26:20 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -116,82 +104,83 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261028155005.174417-1-mbkchelofficialdev@gmail.com> <CA+YDrKBAPZ9MHB46wVSsD4Vd-R8L1Kkz=Vp-F32+WyfJ5FDaoQ@mail.gmail.com>
+In-Reply-To: <CA+YDrKBAPZ9MHB46wVSsD4Vd-R8L1Kkz=Vp-F32+WyfJ5FDaoQ@mail.gmail.com>
+From: MBKCHEL <mbkchelofficialdev@gmail.com>
+Date: Fri, 13 Nov 2026 22:26:08 +0200
+X-Gm-Features: AclHuK-nt_pkf71fgXmv9aasF6EhY7Hz67dSrcbsHeSkY4RsXRic0A5k2swbL1c
+Message-ID: <CA+YDrKDyME4fAYMCRvz2Nau78nKJp1H8W4C0yLFp550GwRjvSw@mail.gmail.com>
+Subject: Re: [PATCH] rust: macros: document emit_base in ModInfoBuilder
+To: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-`Chip::new()` does not check the alignment of the driver data type `T`.
-This allows a Rust kernel module to choose an arbitrary alignment for `T`.
+Hi,
 
-`pwmchip_alloc()` reserves `size_of::<T>()` bytes for the driver's
-private data. `pwmchip_priv()` aligns this storage to `PWMCHIP_ALIGN`,
-which is defined as `ARCH_DMA_MINALIGN`. But, `PwmOps` does not restrict
-the alignment of `T`, so a caller may provide a `T` whose required
-alignment is greater than `ARCH_DMA_MINALIGN`.
+Friendly ping on this patch.
 
-This can result in `drvdata_ptr` pointing to misaligned storage for `T`
-in the underlying C allocation.
-If `drvdata_ptr` is misaligned for `T`, that breaks the safety
-requirements of `pin_init::raw_try_init()` which requires a valid,
-aligned pointer as an argument. This is undefined behavior.
+Thanks,
+Ivan
 
-Additionally, `Chip::drvdata()` can be called using the `Chip` produced by
-`Chip::new()`. It creates a reference to `T` from the misaligned storage
-which is also undefined behavior.
-
-Reject over-aligned types at compile time by asserting that T's alignment
-does not exceed ARCH_DMA_MINALIGN.
-
-This issue was detected by FerroLens, an LLM-assisted analysis tool, and
-was then manually analyzed and reproduced.
-
-Fixes: d8046cd50879 ("rust: pwm: Add complete abstraction layer")
-Reported-by: Dylan Zueck <dzueck@uci.edu>
-Signed-off-by: Priya Bala Govindasamy <pgovind2@uci.edu>
----
- rust/bindgen_parameters         | 1 +
- rust/bindings/bindings_helper.h | 1 +
- rust/kernel/pwm.rs              | 5 +++++
- 3 files changed, 7 insertions(+)
-
-diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
-index 5bab3cf06336..59d0a6518032 100644
---- a/rust/bindgen_parameters
-+++ b/rust/bindgen_parameters
-@@ -49,6 +49,7 @@
- # We use const helpers to aid bindgen, to avoid conflicts when constants are
- # recognized, block generation of the non-helper constants.
- --blocklist-item ARCH_SLAB_MINALIGN
-+--blocklist-item ARCH_DMA_MINALIGN
- --blocklist-item ARCH_KMALLOC_MINALIGN
- --blocklist-item VM_MERGEABLE
- --blocklist-item VM_READ
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 3791af0aadc7..4ffd714f9229 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -113,6 +113,7 @@
- 
- /* `bindgen` gets confused at certain things. */
- const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
-+const size_t RUST_CONST_HELPER_ARCH_DMA_MINALIGN = ARCH_DMA_MINALIGN;
- const size_t RUST_CONST_HELPER_ARCH_KMALLOC_MINALIGN = ARCH_KMALLOC_MINALIGN;
- const size_t RUST_CONST_HELPER_PAGE_SIZE = PAGE_SIZE;
- const size_t RUST_CONST_HELPER_GENLMSG_DEFAULT_SIZE = GENLMSG_DEFAULT_SIZE;
-diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
-index 8aa47304bec3..7823bb56d17a 100644
---- a/rust/kernel/pwm.rs
-+++ b/rust/kernel/pwm.rs
-@@ -587,6 +587,11 @@ pub fn new<'a>(
-         data: impl pin_init::PinInit<T, Error>,
-     ) -> Result<UnregisteredChip<'a, T>> {
-         let sizeof_priv = core::mem::size_of::<T>();
-+        const_assert!(
-+            core::mem::align_of::<T>() <= bindings::ARCH_DMA_MINALIGN,
-+            "PWM driver data is over-aligned"
-+        );
-+
-         // SAFETY: `pwmchip_alloc` allocates memory for the C struct and our private data.
-         let c_chip_ptr_raw =
-             unsafe { bindings::pwmchip_alloc(parent_dev.as_raw(), num_channels, sizeof_priv) };
--- 
-2.34.1
-
+=D1=87=D1=82, 29 =D0=BE=D0=BA=D1=82. 2026=E2=80=AF=D0=B3. =D0=B2 15:33, MBK=
+CHEL <mbkchelofficialdev@gmail.com>:
+>
+> Hi,
+>
+> Please note that I made a typo in my last name in the "From" and
+> "Signed-off-by" lines. My correct name is "Ivan Tverdokhleb".
+>
+> If the patch is accepted, could you please apply it with the corrected na=
+me?
+>
+> Thanks,
+> Ivan
+>
+> =D1=81=D1=80, 28 =D0=BE=D0=BA=D1=82. 2026=E2=80=AF=D0=B3. =D0=B2 17:50, I=
+van Tverdohleb <mbkchelofficialdev@gmail.com>:
+> >
+> > Add documentation for the emit_base method within the ModInfoBuilder
+> > struct. Explain its role in formatting metadata strings, handling the
+> > differentiation between built-in and loadable modules, and managing
+> > linker sections and conditional compilation.
+> >
+> > Signed-off-by: Ivan Tverdohleb <mbkchelofficialdev@gmail.com>
+> > ---
+> >  rust/macros/module.rs | 10 ++++++++++
+> >  1 file changed, 10 insertions(+)
+> >
+> > diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+> > index 0a7b9e24c..6f361013f 100644
+> > --- a/rust/macros/module.rs
+> > +++ b/rust/macros/module.rs
+> > @@ -49,6 +49,16 @@ fn new(module: &'a str) -> Self {
+> >          }
+> >      }
+> >
+> > +    /// Emits a single metadata entry into the module information tabl=
+e.
+> > +    ///
+> > +    /// This method formats a `field=3Dcontent\0` byte string and plac=
+es it into the
+> > +    /// `.modinfo` linker section. For built-in modules (`builtin =3D=
+=3D true`), the string
+> > +    /// is prefixed with the module name (`module.field=3Dcontent\0`) =
+to avoid naming
+> > +    /// collisions in the final monolithic kernel binary.
+> > +    ///
+> > +    /// It automatically generates a unique static identifier using an=
+ internal counter
+> > +    /// and applies appropriate conditional compilation attributes (`#=
+[cfg(MODULE)]` or
+> > +    /// `#[cfg(not(MODULE))]`) based on the target type.
+> >      fn emit_base(&mut self, field: &str, content: &str, builtin: bool,=
+ param: bool) {
+> >          let string =3D if builtin {
+> >              // Built-in modules prefix their modinfo strings by `modul=
+e.`.
+> > --
+> > 2.56.0
+> >
