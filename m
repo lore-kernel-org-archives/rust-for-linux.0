@@ -1,101 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794550216;
-	b=ERY35HjZHjcGuHVLXCRQy4tVaPTCtHdGC4+NX8qAqa7F2MW/6PIkLiN5+N7pa+VnGFPc
-	 V7OjXijEgxhJ8mVLYAa9nXjKTJIfR2r+myYB9fiutFc/7LGq2KTIM0XMNTm+viJZWiV6+
-	 Uo0ojbAvMVSyhRrTyOvr0h3xg0dU4qRqNyFZhsqrg7AmQKuVhe5/KIKFQOKyjAqBZ3Sri
-	 0emixq8//81wFzq0qxuHhxn+aytbs/LH65vQeHtFfvd2A7n31Yw8wmvxlPZDtycaNbNkF
-	 4ZpwUnIknHVbK3tZl0VPSfR0YydTx2H84diHTSK2MQngfHTC13Fw9ohR4G0gSb6pzEQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794550216;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794558521;
+	b=aggOzsn6s2kOQj4NlleTr38TzdMDtUjdAGwdqBL/fVoB4bvYn9Ju2uggKKctAWkRtQEA
+	 k67hRyTTcXhjzVOwgr1j6xKx4zELOhCDDjVroC5/zKaOrNKmrPIPhCLJA325c4O2zA+r5
+	 JZ5Oq+TYsOX0rGdixILaOZbR1Vj3XXv5823lf/4k//3r5eBW6lWs68ymHYVYNFT7o301F
+	 9Wiysa2ahApZbk5ntoOtNagIAnZ9cqKkWf1TpgrMFsHq3/0iuRvbqC9Ick49i+OUjSvz3
+	 Jfu/lOFmbrbpaf+1unjCd5p+TXvN6g1dMLhkQKtt1Ww1ggtkWW3cEaVFPCViELY/Kmg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794558521;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=3cQxNlYjkxquFu1pWFdcxgvYVr86+DzpHkUj/AQLnyU=;
-	b=0BrNMy5eUqNaUw+v7SEUD3ejMIV2pfo0bheMbZxS9eUglTE03TDGmOXbolF4pNK35ztX
-	 bUHnxGSNW2IWaIjseo0lZXPKJN/kvt5a5CoD3XuV85KjzVvWcbz5nTk+rfPLdB5Aovane
-	 rX8EVfOhszFXvso41GsPvPDS+9FE/BcTUfykQe9ngi5jo/GygtMX1FEZEsJJd9MEC44/r
-	 y5Ezf3oT/9Gsppw1PfFg0iUyNOCsQKtKNtYeZTO5LCa2rjstVsVNRCo/uoNKsTOCLmzai
-	 cLvjRFJHc5h8fLF6KR5V6hEqjvj72F9yf2hJ579dQuTSnlBcpJp/T+naWTpO4IJsrWw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="WA6G/ruV";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.50
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=nrmFebnjevEyXDZoOWfiZZaPcF3U9vlhmYY98rYqI7g=;
+	b=GRtZsI8/BVFDfGTqy+H3TdkjQy+YioSdGEzcBCs0G6kElBI87QW4qtDNiM1RKnOgQEkg
+	 NofsVI4eAcT+ZTs+J8efaJHc/4W4JOMisPoAgMM8LVlR4TWZ5jw8Uin6dX9j3clW1CVvX
+	 owg+rNPT3s1/bJXT+hDI21q+n/Rgv+IEReGxR8jAsT02xybzDn92yB2rc2NXgzVIsMEzz
+	 +PHT0N5wYfhUXVH2gKjPchncMzVJUFdf9iZ30w8aQEQskicMfCyECZZLHuc4L8NnhDajl
+	 +0AwE3m00AG5Hndung0XWK5S0IfxvH6dWdDQtqgvL4wivpeVMwN90ToTAdxvcDQ0/DQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--jenhaochen.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hOulv2aG;
+	arc=none smtp.remote-ip=209.85.216.69
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F8A606A327
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Nov 2026 06:10:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03F8A606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03283606BDF3
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Nov 2026 08:28:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03283606BDF3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jenhaochen.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WA6G/ruV
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-6deb848ddd7so776997eaf.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Nov 2026 22:10:15 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794550215; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XhXyHd+B53SlkNARHVnzNBPGo70gCRQDOLhuvVNH3aVPL9ZCUaghJ3XjYA9r2gfIma
-         lLc0x4eIL+VnsWuHeNwO+RLBhTdKxgIacAhQuI8d3tBjsbgrojCa51U1Rsqq61W+DSUW
-         yWQ662ltXHMnk9+Q2E3tTBL7aQRkvm0qGpLKUD9lvD2T6pxM3l0YbObEopcMDwS3f8rR
-         dJ4YTKlZUq8Sbcd4rXfLPPHv0Hd98JyiotYXD9FTIwOt9nEQ5fm8nDA0OxeD3T2Iq5tF
-         qlfU4yUWEay2COuoFQRsiWylYSdZF7vJbr3I0wECZv3/2hyxhS1pHQpcw1iZ9XumIraq
-         0Z7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=3cQxNlYjkxquFu1pWFdcxgvYVr86+DzpHkUj/AQLnyU=;
-        fh=wromvxSmWrcvauJJeoMbiJdclZJ0m4fJrwd1i01GMCk=;
-        b=Q+tygn7g3koGWvolYAy3TW7xqjRBOhznicLooi0pYYsZZ+Qn50oc05tcOOtWn1/q4m
-         HiN/xC4Xg7rbkRralZnLKtou3DE3y3bN0WwlqU8xp+N9uvvi4k++ZU9MvFnqNmq/dWgC
-         azi2bg0oaHvYei4bXHh+maMICwIdJ5CJv7MikpkCEH9gnzqDvA1djwKLGObcvTfdhnPE
-         UnUkGabO5GJG3pPiJYdVmPBLPYSj0mcHJaTsTsjv11JatP9W9WaWPPmnc+1vit/p2GjN
-         rEMlN4cDB6Sh3cQil5CTAACUCqIdaPf3Q2L+eplbVcbCy0pj+RWlacJw7F9HropA0sfP
-         KY4g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hOulv2aG
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3b18165dc53so1034275a91.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Nov 2026 00:28:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794550215; x=1795155015; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1794558520; x=1795163320; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3cQxNlYjkxquFu1pWFdcxgvYVr86+DzpHkUj/AQLnyU=;
-        b=WA6G/ruVj33Xcc8MAVixoMTzolifZQDlrHnLE0EvgGR+xSkc9Y8YbDgO0rKh1Fqh/a
-         nQ26saUTpi3TU2Y+uu5kYKO6kqdni7y2mwPZQeCm68OzvoE3xZz4iJeHgyJMaUUnJtId
-         mB6udLTCkyP9lpyoR+jXswiXRXEd9xptiTLbuIAKfrj0oFwcOoqbq2VsO6fNDnUOpid5
-         jc8UAxFazsIf0JfbbGXGv+uvt67C3FoOZDsmnsPDBM8rUfaI+ju3pyweh39gzMt81fA5
-         q01req8w+i/UdPTWOC9iqP/lhDcj+9Pn9ESfbzsb4tgq+m92A9qiv62eSd3TH1aj1+UC
-         aOmg==
+        bh=nrmFebnjevEyXDZoOWfiZZaPcF3U9vlhmYY98rYqI7g=;
+        b=hOulv2aGaS9ZeYnKvdMh6U1l4N+M1moW7Kq+ZGF+AV8yNfLpmz1l/YjkfZD+2q1O3W
+         vOzcRXS090dMSTIT6ABgDWNRiQNm2rE2Nt15iV1NZr7LyEZ3Si02OiNVzVyNdbANYNWS
+         jwweszeCZfe+J6GH7eD/5rQBCOzgueHigErCyhFdE48sdajr2sDn0KhDPYP9ls9Isvk0
+         n1lnuFKtsZumrpxUeYPLR/TScqxjbzGJ8oMycyJReOI8ALgf1cGSLMcspEcWGk7i3SRW
+         3MvDpqdZwGMumpG0XjIyKcDBS5eIjfL2CLMvQkSay6LsuQcH9Qk/R1HFRs6gf2bBNR0X
+         GMIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794550215; x=1795155015;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=3cQxNlYjkxquFu1pWFdcxgvYVr86+DzpHkUj/AQLnyU=;
-        b=egNX2POkGWbqyLRWKOGH9r7YT952yNSmJhvGWttBXwfmzvOX9GI20aAthki+H84vrc
-         HmkTy2SEnmP4Z0krywv7HsoJ6nYhkGaGJLg7d6+lFUKnPYWhy4s+cGZJOhzqiHjf7Jpx
-         vT6j9U3ffqcllNGQt/tdFpud1WSOCZQydUBU8YYLWcQgVslZxqkCWXnKBUx5MSpzkYzF
-         zVLljlu09s8WPZin6p5oiazjgKNowsklfZ2jr3ZW/MVBv0zMgV2f8GzU0PtLgg0b6qL6
-         mo0HhzrVP77XLCLZ88rXN6TFIMJC4mG220/nqU8gH19dj5HnYNnUnn6O+hZ4RwnO+w9T
-         l8ng==
-X-Forwarded-Encrypted: i=1; AL+hErHgELqSifWOLjG65fIGsPIVTon0yxau2SDSF/JPyefymr04P9sbUeQnT/J74i3qCoCQ6WmMBgt8XSt0Af5ORw==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/rPgfjUH2Yx8cCTjB1+5iedYgjllt1C+rZNkLAnxdqRRw3DBOA
-	lMTLlUUpOu8NeAwuF9K9iQumfdLcsqbUO+HOYllZvKSFh7Z81CTdH04n2Owby5jKsIikenQH1So
-	uqugibI/t659bcXxSuMj7E9Ozc1L8VOQQv4z9
-X-Gm-Gg: AYBFou1K/UGdDax3rgYsMM2ZLZbBOmi5wBgLYKRU9k9NheQvH1ATgS451RKmtLz8gn3
-	uAvf1BIUHb0j5HDXGuvLLI6dVbPESccXB4SaK38P04CB3XQb8TsL4fNoKDeIG7apqm4yfGI31b4
-	JTjx8vDauVO/IjMCJzrgLJJuif8ukhBJeD6jOm2uC2ZYWewxZzbMBmRNA0fWxmtZD91cFO81K6a
-	vPjlGODXyLV6UmElaa4DfxhTOpv/jFpKd7D0p4cG1gHi+SGmoYiNykUvsxxg7ieFe1bMRqAuJuw
-	mtkHxdQqL86xZZF7Dg/1W02KB4j3Dpb3F4S5cesw18lnpMxYqXDi9ZcNhMd/YltOZ6AZ7eO9jix
-	/bre4OMxT/SKXCvnvUKQM82BPrlWs1rleB3gM0yM8CrFYiFianDOVFHzZjZYwdDEVfKa/wRrowJ
-	5uUmkHjTKsZXBVsGwudniMXiYk61FqiRlrKXOIs2tYLps7l7Wdkk8xJBGP0W9lOCNVN4g3dCr+x
-	ObuPA==
-X-Received: by 2002:a05:6820:c0cf:20b0:6f6:1e3a:6fc with SMTP id
- 006d021491bc7-71ab51a2d59mr713841eaf.79.1794550214796; Thu, 12 Nov 2026
- 22:10:14 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794558520; x=1795163320;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=nrmFebnjevEyXDZoOWfiZZaPcF3U9vlhmYY98rYqI7g=;
+        b=qppl9xjILKPmoAsA8jlBx90CZx1LQEc0gwwUCuYScdSITvAL7Ly8tz1HcnKt3aVtTE
+         2Wkm3hX/SHxx8rNyyKJxcIphvicnvJY9/XzWdVadtxW6GezmVZsKI9E42Ys+nloSfwNR
+         CH2t3tEu5zdIIYp6auq1RpInrA+Vq44Cy9ODmwNhsMjxqHDXRlpfwqoRT7flFQEzOQdo
+         hEC2W0SxWW3WrEHoA/7htjh40wCrsiL65X6KT+ydncvX0VRp/mAQewbpkf2ClELe2RKM
+         7nLZsp5hemJl+Qeewf4kmQEEViRSWmX2Ky7OFde0rEyTzH5+FeNdM+S0A4zL8Mh0ndcG
+         KjpQ==
+X-Forwarded-Encrypted: i=1; AL+hErHrxHJYIt1AiR8JzubaqwrcJOVFwiclf41VatelkObRqNln90rCN+QQ0i0T0S6KJdiw9SvjwuGifLiCNH2zkA==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/Ty2GhXMyOTPqfHgZOHVXrE+qp4mvB9ncRNQfMzw5eH/U/FYiz
+	dUDKQjZcW4tQk2V9GibUYcyxLtRKK/SRukq+OmmUXq423HMvS53s+2A+zPo3K1DBkbpasFlVxGt
+	O87Ivsivo6tFOAlmGRWtGDQ==
+X-Received: from pjvd14.prod.google.com ([2002:a17:90a:d98e:b0:3b0:9569:4e9a])
+ (user=jenhaochen job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:3d87:b0:3ab:2737:3395 with SMTP id 98e67ed59e1d1-3b1b0a3a2f9mr1460229a91.42.1794558520120;
+ Fri, 13 Nov 2026 00:28:40 -0800 (PST)
+Date: Fri, 13 Nov 2026 08:28:37 +0000
+In-Reply-To: <CANiq72=zg8WeupV5TPTr2tUxAt7imSZXacw=CBf75MdfcAv-rA@mail.gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -104,79 +78,95 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261110-exp-phy-rs-maybelocked-v1-2-3023cc9055e9@gmail.com> <179454612500.2199510.688554972467066283@kernel.org>
-In-Reply-To: <179454612500.2199510.688554972467066283@kernel.org>
-From: SeungJong Ha <engineer.jjhama@gmail.com>
-Date: Fri, 13 Nov 2026 15:10:03 +0900
-X-Gm-Features: AclHuK8K7LUv1bQRf5-U0TPkDoWKhawhWDsTrvclohqGU442XIPQ2sC58L1Zn6c
-Message-ID: <CAGAB665d+tpGT34GPD6TAjc_Pn225afYw2ebLb12ZFnUXZoW6Q@mail.gmail.com>
-Subject: Re: [PATCH net-next 2/2] rust: net: phy: pass a MaybeLocked device to
- soft_reset and match_phy_device
-To: netdev-bot+sashiko@kernel.org
-Cc: fujita.tomonori@gmail.com, tmgross@umich.edu, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, dakr@kernel.org, daniel.almeida@collabora.com, 
-	tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, andrew@lunn.ch, 
-	hkallweit1@gmail.com, linux@armlinux.org.uk, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Mime-Version: 1.0
+References: <20261031030807.4101384-1-jenhaochen@google.com> <CANiq72=zg8WeupV5TPTr2tUxAt7imSZXacw=CBf75MdfcAv-rA@mail.gmail.com>
+X-Mailer: git-send-email 2.56.0.611.g1030f0b940-goog
+Message-ID: <20261113082837.4011638-1-jenhaochen@google.com>
+Subject: Re: [PATCH] kbuild: rust: pass AutoFDO flags to Clang with inline helpers
+From: Jenhao Chen <jenhaochen@google.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Rong Xu <xur@google.com>, 
+	Han Shen <shenhan@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Qais Yousef <qyousef@google.com>, Ben Wei <benwei@google.com>, 
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Jenhao Chen <jenhaochen@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Nov 13, 2026 at 2:02 PM <netdev-bot+sashiko@kernel.org> wrote:
-
-> [Severity: High]
-> Is this conversion complete? read_mmd_callback() and write_mmd_callback()
-> in rust/kernel/net/phy.rs still say "This callback is called only in
-> contexts where we hold phy_device->lock", and they still build a Locked
-> device:
-
-No. This series does not touch read_mmd_callback() and
-write_mmd_callback(); their SAFETY claim predates it and is wrong in the
-same way, since they run under the MDIO bus lock instead.
-
-> No in-tree Rust PHY driver implements read_mmd or write_mmd today, so
-> nothing triggers this yet.
-
-Since nothing uses them and the abstraction cannot express the MDIO bus
-lock yet, I would drop them from the Driver trait in v2.
-
-> [Severity: High]
-> Can safe code in a Rust match_phy_device dereference a NULL phydev->drv
-> here? Device::read_paged() is now a &self method for every context, so a
-> match_phy_device implementation can call it on &Device<MaybeLocked>:
-
-> So for an unbound PHY, this would oops with the MDIO bus mdio_lock held.
-> Every other PHY on that bus would then hang.
+On Wed, Nov 11, 2026 at 7:48 PM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> This wasn't reachable before the series: read_paged() took &mut self, and
-> match_phy_device only got &Device. The previous patch, "rust: net: phy:
-> make Device generic over a lock context", made read_paged() a &self method
-> for all contexts, and this patch makes MaybeLocked the match_phy_device
-> context.
+> This sounds reasonable, but my LLM spotted that Clang will run
+> `AddDiscriminatorsPass`  again, i.e. on the optimized bitcode that
+> `rustc` produced. So the profile ends up indexed by Clang's renumbered
+> discriminators, and then the build that uses the profile will not find
+> a match for some code (depending on inlining decisions), i.e. that
+> part of the profile is silently dropped.
+>
+> It proposes `-mllvm -no-discriminators` in
+> `CC_FLAGS_RUST_INLINE_HELPERS` so that Clang doesn't add them, i.e.
+> using the `rustc` ones.
+>
+> Rong, Han: is that expected?
 
-> Should read_paged() be limited to contexts where phydev->drv is known to
-> be set, or should match_phy_device get a narrower context?
+Hi Miguel,
 
-Neither. match_phy_device should not get the register accessors at all,
-as before this series. The patch 1 findings about genphy_soft_reset() and
-register writes from match_phy_device have the same root cause. Patch 1 makes
-the register accessors &self, which hands them to match_phy_device even though
-it can run on an unbound device or one bound to another driver. That was not
-possible before, since they took &mut self.
+Nice catch -- I tested this on drivers/android/binder/rust_binder_main.o
+(arm64, Clang 22 + rustc 1.91) and confirmed that the duplicate
+AddDiscriminatorsPass run is real and that passing
+`-mllvm -no-discriminators` to the post-llvm-link $(CC) step improves
+profile matching in both stages:
 
-For v2 I plan to keep &mut self on the moved methods, so match_phy_device
-stays as it is, and give only soft_reset a &mut Device<MaybeLocked>.
+1. Why the second AddDiscriminatorsPass renumbers discriminators:
+   In Stage 1, rustc runs AddDiscriminatorsPass on pre-inlining IR and
+   then runs its optimization/inlining pipeline before emitting .bc.
+   When post-llvm-link $(CC) runs AddDiscriminatorsPass again on the
+   already-inlined .m.bc, llvm/lib/Transforms/Utils/AddDiscriminators.cpp
+   keys blocks by (filename, line) without checking inlinedAt and
+   overwrites existing base discriminators via
+   cloneWithBaseDiscriminator(). On rust_binder_main.o, that second pass
+   increases non-zero DWARF .debug_line discriminator rows from 6,245 to
+   9,313 (+3,068 rows, +49%).
 
+   In the profile-use build, rustc's SampleProfileLoaderPass runs before
+   rustc's inliner (against pre-inlining discriminators), while Stage 3
+   sees a different post-inlining CFG once Stage 1 has applied the
+   profile.
 
-match_phy_device is more about binding than locking. I think it belongs
-with moving phy::Device onto device::DeviceContext, as pci::Device does,
-rather than in this series.
+2. Measured round-trip impact (42 sampled functions in
+   rust_binder_main.o):
+   - Stage 1 (rustc -Zprofile-sample-use): annotated branch_weights
+     increase from 454 to 490 (+7.9%) when the profile is generated and
+     used with `-mllvm -no-discriminators` in Stage 3.
+   - Stage 3 ($(CC) -fprofile-sample-use): SampleProfileLoader record
+     coverage increases from 39.3% (2,832 / 7,205) to 54.0%
+     (3,707 / 6,860, +14.7 percentage points), and sample coverage
+     increases from 42.9% (757.8K / 1,767.6K) to 56.4%
+     (989.6K / 1,753.4K, +13.6 percentage points; 969 -> 1,035
+     branch_weights). Against a hardware ETM profile, Stage 3 matched
+     function entry counts also increase by +33.9%.
 
+3. Side-effect checks:
+   - C helpers: rust/helpers/helpers*.bc is compiled separately via
+     cmd_rust_helper (without CC_FLAGS_RUST_INLINE_HELPERS), so C
+     helpers still get their pre-inlining base discriminators before
+     llvm-link.
+   - Flow-sensitive discriminators: MIRAddFSDiscriminators in
+     llvm/lib/CodeGen/MIRFSDiscriminator.cpp checks
+     EnableFSDiscriminator and shouldEmitDebugInfoForProfiling() rather
+     than NoDiscriminators, so post-link FS discriminators remain
+     enabled.
 
-Fujita, does that split make sense? And is this worth doing now, given
-that no in-tree driver is affected, or would you rather wait for a real
-user?
+Rong, Han, Miguel, Nathan: would you prefer adding
+`-mllvm -no-discriminators` directly to `CC_FLAGS_RUST_INLINE_HELPERS`
+in the top-level Makefile, or appending it in scripts/Makefile.autofdo
+under `ifdef CONFIG_RUST_INLINE_HELPERS`? Happy to send v2 once we align
+on the preferred spot.
 
-pw-bot: cr
+Thanks,
+Jenhao
