@@ -1,126 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794663983;
-	b=46ncAIt0qNoPuc2QARo1VPWVEa0vFXMSVWA9TMSihVdukGCVvqvi2JQc49yeTZkQQ9Eu
-	 iKSDs1sCX/RZE8OmqmmF9yyzn5hd7qLdycNQNPKpLelSFAR/6tEPkhrxmwmtuyg/1gZgg
-	 gJtgYHDWGqtWCYF349/LzR2ZD32BvUoo79DbOSWqDUBprJADV2i/lh/AGkIg+ww+2g/MV
-	 A8qz5kkFl8N2+xRT96oGDnAj83+bpbPqS7qwC9NIX2Zrc4ahASpb0v5o2M9X84lP2gHeB
-	 oinMvbI4zBvu5xx20w71U6UrfoAipHQMQiJwTcsIAL8u8KxC1ZW3bUshMJaT/TKv0DQ==
+	t=1794673664;
+	b=Zaw7q8SbFD5XEdEcO5lOvXXsXC4t2M2NQR1hk2TTbngWMv+9X/azKV/6FleuMdnb6WEW
+	 HFj9lQd9VEoc0ZgwqL0YegR+GiTI26n2bFzLsJmqpk0ObmyvzuTJy9tF3Nb1Xzeyay6/Z
+	 N1x16/qyGil3LMwz72akMHA8IGXztnWRsHuEnSuvZrGQzXq6tGXTY+okHOUmw37zFtQMF
+	 n6oI4bFKxwKIzda/d3fTBhG65kE+TlfaAaxVR1jDCxxSvBBDh4fWXOo2GRFEx9Nx+iWqv
+	 qAlolB1QupICG5b1DHx7s4nmxfSBIScOhOwaBu6WQQYvBH0rNNiiAYkTSxndGhXGvWg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794663983;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding;
-	bh=hxhKKH7II1y8GERDF5iah/4uc1VaD2sdq/KeGrQB7zM=;
-	b=DGMC84UnAQy+Ex6bSNbkwhTJ3u9K6PB9/1Mdc/qzWhTduhdxpLuUNA7tB3j1hvlrUjfA
-	 fiyISlwFf+qs0e1arkLGZTOxR+Q48R7oKIEfAujfmWRqVphwqND+g3oeirjgR3zzO6ijb
-	 fchaoCq8LBe4+359KaQwOg3T+0O2HPz6P1lXMxRigmmlR7VHveRqGvzvVS1eeqmLRib7g
-	 UIix+Z/PPzq5WR1j7GM6hdpYpizUGI9R/RIDX0OV+Xe8YIFZG3XiNx84RWbKnEuQz9clU
-	 UYHPYybNi7mYFjQm65xnLRNWN54vJU+OqYTyGVKkvj3nK5EhSJIH1jcwNfScoG8Dn/A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794673664;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=cKsXMJm7qHtIeItOHanqHmAChvQOpfvaDdCmiUL5Dq4=;
+	b=H+eAlqmCQb7rYHlgMMPLQvGsyK9jPsBGdlqWoADJ+CFtV3BYmWL1Qt7fhuBsPtTM3OZO
+	 RBmuoj0LnxPXLNTs3armEivWkzXTRmre9j65v6RtlYjIrhThPqwrRUakxcb++oB5Beees
+	 /YebkfcTtG3u3eUxJem3EiT7LGyJ/iM49ZkHwy+2r09/+ynOyjOLPHAX3RTQ9l8hgo+sv
+	 PBvahcRdnoAa569pN28urC6mWcQexUgAQuPq8oCkjM/xWTrJAsr8Or9jT7ojMpl2f02lb
+	 HVRaJoQxvCkR7kkb9E3OEY4WEWjBPMT1ANBuKtNMt7m0bV3CYmTwBL70mibotLKwiPw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=flapping.org;
-	spf=pass smtp.mailfrom=flapping.org;
-	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=KyzszYdF;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=TgfhIzt+;
-	arc=none smtp.remote-ip=103.168.172.150
-Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EkLeA9CX;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25749606A32E
-	for <rust-for-linux@vger.kernel.org>; Sat, 14 Nov 2026 13:46:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25749606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889CF606A32E;
+	Sat, 14 Nov 2026 16:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=KyzszYdF;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=TgfhIzt+
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.phl.internal (Postfix) with ESMTP id DCC33EC0193
-	for <rust-for-linux@vger.kernel.org>; Sat, 14 Nov 2026 08:46:20 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Sat, 14 Nov 2026 08:46:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1794663980;
-	 x=1794750380; bh=hxhKKH7II1y8GERDF5iah/4uc1VaD2sdq/KeGrQB7zM=; b=
-	KyzszYdF00F/c0LxZZ3Y15eS1Z5M9hGilrb6G9zQkelrC99UIPiXh9Y+8waRZmDg
-	ks3cdwtIG/m9vuur8eITFNrVRBzX59YkamS2EzUsBqbQpxm6lCNhK/994DwifXcz
-	uoTOuMJlHtJWamPUNtnQn3TRYM+yk6c4Dr5+VSO6hQ6UsmHjfePG3AspBBGvYH8T
-	XFmcCR5ud8uWGzCJ0NnQpPoQfQ6TL9tlrRrBMu8gU70OAAgEb9cLhuRJao1lhcg5
-	ug4a0v7QpXWqfBtusNjGN/dU8+MV3rXmWycWbN6eEJGavcrrGeCpG/BZIhwQibwj
-	85DB58xP8mo59ibYq4hFrA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794663980; x=
-	1794750380; bh=hxhKKH7II1y8GERDF5iah/4uc1VaD2sdq/KeGrQB7zM=; b=T
-	gfhIzt+kwtUME3A5jpJ/pnxEE6yi44aKMcGMY9cYEGXaquuwy5VDYGk5OkcaCXK6
-	snM5tLj+Ws9t1CKzFet+Yb/Pq9EXgmv3PTTi+sP/nVQgKameVrnFMoD04BI0MYlZ
-	G1Hy3Xolwff6RKrFwBCzPCDLZuMjbpEfB04pw47RhcTfuTXohQk92Fea5WjttFTv
-	DlnCirVFyRe01aXfWpVJAUBDGBTfXngOOq8QIgTN9GpHnFcFTPPadoBIBYUq8IIH
-	AtFlvSmJlhJNvCGU8E213NyNHzmaVcONurl586lUEvVtbEwIFvk9tTZdzbSE2n3A
-	mgwQPRtmWLM7epgPSxiRA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794663980; d=flapping.org;
-	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
-	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm2:rsa-sha256:B5dfamY/e8QOsoNKJWfVVl+cf/uj/xXn4Q7ZHBmsPAqu2Sn
-	MbKq/lLrA7Y7cSqJ42YL/WpWOVJyhyN0gOaje9gAb4IWk41j/zqUH8nV60HcWMAH
-	SQIQnguov9YLXkhhWvttPMm5a8wZKuN2sk7YDKwt7wkfnveAO7U3jn4BB2a5hXYz
-	arlTwSuX9iNGN7veMSJLZYg2LJ7viUM6UKGyta7m1bkNN9uLxTKujGe9FTNTbTkb
-	Iv0l0m1/NrFGnwU79Od1avaBshkIRz7FyUurLnrmP6CzYtx/9/ChnPA6RBuFO4g3
-	GPsRMJE77tbn/g2obrVpYzUMu9Yiv+vM5hAlXmw==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:snB4EXilH1Gf6GI5LPdyrG0HIWBFLR5A9TIZbIeREqY=:j+eEPBMHstwFyCQ5gSQRfcc2+DkJ95TFBdMoixoDrOs=;
-X-ME-Sender: <xms:LGb4au3Qx9YUsVpypEOKJ2aBHeUpkRBLlXy8E42aU4qJUkStwGRMzA>
-    <xme:LGb4aivqDS9FcEOkaFHw5JXQU36IxU270ZgXCM1qNcXCMvbAT4jmHuWu2jNlcYiwr
-    POkcogoz8jsVJQ9_nkvhoNvhR_Fl6vdAdyO4WxCriBd2hr6xaKoy5Cr>
-X-ME-Received: <xmr:LGb4aq87tRmiJ1_gXvFoTwtTlEk6qQngB0lH82WKSG4mQ1LKKoNK9_2Gdjb4440XQcgMXup2ra85k9kSrdwwz68n>
-X-ME-Proxy-Cause: dmFkZTGPyd099gFp6IoEh+SqiSCQACv4zvizj1DwHPte5hKiSVJP1TnbPevudWmZd0JrDK
-    CLlS8AEAuLK3z+Qa1AJDYWjuRBzbzzZ/QZmHlUgX5lmtCvtDkEJvtBhp+/FLYTf5W1KrPG
-    /w3ywMgpPLA/Skddnq+qp43vlsitQt9dd/uiru0XSnI069mVHDuVXZRp33P3x1O3hqq4R3
-    2odw9rdPyqcWQQk6/BZEHKXRHOPrV3p1Hg9TxYf27qml3azOJyrSJ2ZMY+5KjZhBCab7OC
-    eF9nUNaLHnQ1xpyuN0kJ3UR/Jl5FJxCKGoj1vhXsGIK+v/b/DKbEZH/AwrWSeISaUeN7WX
-    VMUZdUfY9AYg++q7hsHGO2vDyTVvqjDFR/ynYjP70kW2SD4lpfQ5BPTKLYaTTKDhUAXaUZ
-    QzLWepMTF6nE3aF8lmjoBZOOSiheU+Sx7dOuKRy+jyF1bIvwtauPjWcD7ECtQ9ZoeLoMh7
-    uiuNZUn0rGJH45lWAwe3zTKhCnV1vjatV7mx5YM+DaVGqQ8yHn8ArXUcnNVT9zjE5N/yh5
-    amebZ8HocGz9XOHrRdkIe53LMjX38CQd96uFiQzF1IoCKRSxKwuQ0GyMm/ly5+SmjFw5oH
-    NUfN4ffFsnhl7/tV+UHx9f13dpWKWNobdooaCqSxbIAzgx4MiuXHGj0NNcwA
-X-ME-Proxy: <xmx:LGb4amRKL1NMjOylVW704EulToRDB5S4gPt06T3Mu1mbFvhYH6jKxw>
-    <xmx:LGb4agAhIwKMTed3wsMCRfq4i7rN6vb0qU-5Z8BAKXYPmTrTctFrzQ>
-    <xmx:LGb4anYA7OaLb6abg9cH746HGeu0mUpj6au2bjix0ggKpn_FoUSFlg>
-    <xmx:LGb4ahJH2nMVrND9HkJ0iwOhLr-DaXjPkOo-hdeNcUXzrzlcK1mPEg>
-    <xmx:LGb4asy8VY94PhwJz1CEzUeMKD-6_80kNHtkbWnxHGjoYK_z44eNttjw>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 14 Nov 2026 08:46:14 -0500 (EST)
-Date: Sat, 14 Nov 2026 22:46:12 +0900 (JST)
-Message-Id: <20261114.224612.1895277862836640234.tomo@flapping.org>
-To: ukleinek@kernel.org
-Cc: fustini@kernel.org, guoren@kernel.org, ojeda@kernel.org,
- wefu@redhat.com, a.hindborg@kernel.org, acourbot@nvidia.com,
- aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun@kernel.org,
- chenhan0017.work@gmail.com, dakr@kernel.org, daniel.almeida@collabora.com,
- gary@garyguo.net, linux-riscv@lists.infradead.org, lossin@kernel.org,
- m.wilczynski@samsung.com, tamird@kernel.org, tmgross@umich.edu,
- work@onurozkan.dev, linux-pwm@vger.kernel.org,
- rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Subject: Re: [PATCH v3 0/2] pwm: th1520: Fix 32-bit build with COMPILE_TEST
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <20261030020209.3833766-1-tomo@flapping.org>
-References: <20261030020209.3833766-1-tomo@flapping.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EkLeA9CX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F7A1F000C4;
+	Sat, 14 Nov 2026 16:27:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794673664;
+	bh=cKsXMJm7qHtIeItOHanqHmAChvQOpfvaDdCmiUL5Dq4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=EkLeA9CX02WM39SMgF/N3Oz2x4QDhvIf/Xh8J5fgM+MViwUbmldevE7jXqe0i91Kl
+	 WpQtdQE5/wH3ANkfWDd4j/ybNMP6Rh8cXxxk18FGJBjnQoeJ7qfJ7iWiDegIV9+jox
+	 5g07Itqy86vPq38ln/rwd6P2XwSHa7C4d9cyRmVZur12AofoTLSXRSvIzzdnSwWhHg
+	 ysj1PT380/TDbcvefZOpQJbXFv2A21u73yUpDV+JUXEU7Ma8XjjtcTi1DPOWAGVkpF
+	 Pch/VQTyiGA5CR4g4I3zPRQPdF1yHeNLL//+q/2xmHAxXQEzyrYjVefDfw4jVqkoU/
+	 BPS6NMjJR4HXQ==
+Message-ID: <4a5157e7-2261-49cd-80ef-38dcc2699741@kernel.org>
+Date: Sat, 14 Nov 2026 16:27:41 +0000
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -129,59 +50,71 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH dwarves v2 0/2] dwarf_loader: Fix --lang_exclude on merged
+ CUs
+To: Alan Derk <linux@alanderk.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Alan Maguire <alan.maguire@oracle.com>, bpf@vger.kernel.org,
+ dwarves@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20261010005227.976-1-linux@alanderk.com>
+ <87dfc1f8-6ef4-424c-a48d-62e935eeeb28@kernel.org>
+ <CAPLSpGbV5RTSuMZPX=UgzniPtoT7jup7pCGw_Rt2tqiejKXmng@mail.gmail.com>
+Content-Language: en-GB
+From: Alan Maguire <almagui@kernel.org>
+In-Reply-To: <CAPLSpGbV5RTSuMZPX=UgzniPtoT7jup7pCGw_Rt2tqiejKXmng@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Uwe,
+On 11/5/26 4:48 PM, Alan Derk wrote:
+> On Wed, Nov 4, 2026 at 7:38 AM Alan Maguire wrote:
+>> Thanks for doing this work! Sorry for the delay in getting to it, I'm
+>> looking at the patches now.
+> 
+> Of course. Please take your time on the review. And thanks for the
+> background on the Rust BTF work.
+>
 
-On Fri, 30 Oct 2026 11:02:07 +0900
-FUJITA Tomonori <tomo@flapping.org> wrote:
+Changes are applied, thanks for fixing these issues! I'm thinking we should
+probably add a CI job that builds an LTO vmlinux; I'll look at doing that
+shortly.
+ 
+>> We've been working on a solution; essentially, the idea is to detect
+>> such cases and fix up the type graph in pahole using a new
+>> "rust_bindgen_replace" feature so that the final BTF does not have to
+>> carry such duplicates. It will only run for Rust CUs, [...]
+> 
+> Patches 1-2 are general --lang_exclude fixes (both reproducers are
+> C++/C). The Kconfig follow-up keeps --lang_exclude=rust, so it is a
+> stopgap: Rust stays out of BTF, as it does without LTO, until
+> rust_bindgen_replace brings Rust types in. I realize it may not be
+> worth it, though it would -- if I understand correctly -- unblock RUST with
+> LTO and BTF in the meantime.
+> 
+> To check how this series of patches fits with your branch, I applied it on
+> top of pahole-next-btf-rust (b5e46f8; it applies cleanly) and tried both on
+> the 7.2.9 kernels I tested the series on (x86_64 ThinLTO, full LTO
+> and distributed ThinLTO, arm64 ThinLTO) and a non-LTO x86_64 build,
+> booting each in qemu and loading rust_minimal, rust_print and
+> kobject-example:
+> 
+> - With kbuild's flags (--lang_exclude=rust), the branch alone fails to
+>   build the Rust sample modules on the LTO kernels, as patch 1
+>   describes. With the series on top, all five kernels build, boot and
+>   load the three modules with BTF.
+> - With rust_bindgen_replace and nothing excluded, the series changes
+>   nothing: vmlinux and module BTF are byte-identical with and without
+>   it.
+> 
+> One thing I noticed along the way, since it's the merged-CU language
+> that patch 1 deals with: under LTO the merged CU has one language,
+> taken from its first CU (a C or asm file for vmlinux), so
+> cu__is_rust() is false and rust_bindgen_replace doesn't run on
+> vmlinux. Without LTO it replaced 564 types as expected.
+> 
 
-> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> 
-> This series fixes the 32-bit build of the TH1520 PWM driver with
-> COMPILE_TEST. v2 limited COMPILE_TEST to 64BIT. Uwe asked to use the
-> div helpers instead, so v3 does that.
-> 
-> Patch 1 adds a math module to the kernel crate with Rust versions of
-> div64_u64() and DIV64_U64_ROUND_UP(). Patch 2 uses them in the driver.
-> 
-> The driver only needs u64 by u64 division. It does not need a 128-bit
-> intermediate value like mul_u64_u64_div_u64().
-> 
-> Uwe, are you OK with this series going through the Rust tree?
-> 
-> chenhan's series [1] also adds rust/kernel/math.rs, with signed
-> division helpers. Both series use the same module header, so whichever
-> is applied later needs only a small rebase.
-> 
-> Tested with the doctests on x86_64 and 32-bit ARM QEMU.
-> 
-> [1] https://lore.kernel.org/rust-for-linux/20261023130413.178487-1-chenhan0017.work@gmail.com/
-> 
-> v3:
-> - Use div helpers instead of limiting COMPILE_TEST to 64BIT (Uwe)
-> - Add a math module with div64_u64() and div64_u64_round_up()
-> - Drop Cc: stable and the Reviewed-by tags, since the change is different
-> v2: https://lore.kernel.org/rust-for-linux/20260930101257.1649945-1-tomo@flapping.org/
-> - Fix a typo in the commit message
-> - Add Cc: stable, Reported-by and Closes tags
-> - Add Reviewed-by tags from Andreas and Gary
-> - Rebase on v7.3-rc5
-> v1: https://lore.kernel.org/all/20260929095612.1072417-1-tomo@flapping.org/
-> 
-> FUJITA Tomonori (2):
->   rust: math: add div64_u64() and div64_u64_round_up()
->   pwm: th1520: Fix 32-bit build with COMPILE_TEST
-> 
->  drivers/pwm/pwm_th1520.rs |  8 +++--
->  rust/kernel/lib.rs        |  1 +
->  rust/kernel/math.rs       | 71 +++++++++++++++++++++++++++++++++++++++
->  3 files changed, 78 insertions(+), 2 deletions(-)
->  create mode 100644 rust/kernel/math.rs
+Ah, that's a great point. May have to rethink that part. Thanks again
+for giving the changes a try!
 
-Gentle ping.
-
-Could you take a look at patch 2? Are you OK with this series going
-through the Rust tree?
+Alan
