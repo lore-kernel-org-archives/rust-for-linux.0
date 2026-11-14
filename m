@@ -1,129 +1,126 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.155
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.150
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794663511;
-	b=lurrUWoxRicwhw+1N/jSzIavP3Y+FZE913NI2YmYPH2ttAGguCDYTs2CWIQom79cS/Wt
-	 6v+qr1uFyPGof+amu4RGh6bGt9GzGok/eGN3g5DM6BL8238/bALsiDyhMqQ3LYL2P2A96
-	 iG2VPGRE81Tlg3QoC7/a/i3+lE7hYbRDAgu0T+egZlVDUt+2UKd4XC1BPGH2UJ+Qr+n0D
-	 YeqjcrYfadgS8FpdsJTkGhBMxLOln8eZ22lIXS8kGklFMa6xMEfzNVTK13aNn8t3lagbB
-	 DfRYbLk+rv0xYu2ZmwIJvw1qdnLG6gNgBCuJrSRlqvIBc8HX3gbbIufx/fozHk0f47g==
+	t=1794663983;
+	b=46ncAIt0qNoPuc2QARo1VPWVEa0vFXMSVWA9TMSihVdukGCVvqvi2JQc49yeTZkQQ9Eu
+	 iKSDs1sCX/RZE8OmqmmF9yyzn5hd7qLdycNQNPKpLelSFAR/6tEPkhrxmwmtuyg/1gZgg
+	 gJtgYHDWGqtWCYF349/LzR2ZD32BvUoo79DbOSWqDUBprJADV2i/lh/AGkIg+ww+2g/MV
+	 A8qz5kkFl8N2+xRT96oGDnAj83+bpbPqS7qwC9NIX2Zrc4ahASpb0v5o2M9X84lP2gHeB
+	 oinMvbI4zBvu5xx20w71U6UrfoAipHQMQiJwTcsIAL8u8KxC1ZW3bUshMJaT/TKv0DQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794663511;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794663983;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
 	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
 	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
 	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
 	 Mime-Version:Content-Type:Content-Transfer-Encoding;
-	bh=SNG1HRb8nHFIie74LXwMhLAKLST7T7jquSoOJxOlEK0=;
-	b=ybVlaCll4JXvIxDWdT9WZb0xZkYmL/XkrRW20BWf2BO9WTOMYFTQmgqQCcwfl8mvHIOZ
-	 VceLTzuy0XneICSyiFOwQi9afyT4oPOP1xzAvKd2djqA6eugUtAje6FYSuVGk71sAfGOc
-	 HBKC+hS6ohmn6SQhX8MlH3TO5YsJdPaBup6VLHq+XDSvo2iYESU7aJLbtJ1J1Dx17qrDK
-	 Unq9d82moGplvBkONb7CbBl6vTN1GHWaC13jduPAeDhicDWvIzTCUIpoo9r6o1SyZzDsb
-	 yvTLCXe1LmW5Rs4FiogwcaTE/8peKkkaeSMoLAKHVS7iWK9VBfX0n5lzJ24i2vRMv+g==
+	bh=hxhKKH7II1y8GERDF5iah/4uc1VaD2sdq/KeGrQB7zM=;
+	b=DGMC84UnAQy+Ex6bSNbkwhTJ3u9K6PB9/1Mdc/qzWhTduhdxpLuUNA7tB3j1hvlrUjfA
+	 fiyISlwFf+qs0e1arkLGZTOxR+Q48R7oKIEfAujfmWRqVphwqND+g3oeirjgR3zzO6ijb
+	 fchaoCq8LBe4+359KaQwOg3T+0O2HPz6P1lXMxRigmmlR7VHveRqGvzvVS1eeqmLRib7g
+	 UIix+Z/PPzq5WR1j7GM6hdpYpizUGI9R/RIDX0OV+Xe8YIFZG3XiNx84RWbKnEuQz9clU
+	 UYHPYybNi7mYFjQm65xnLRNWN54vJU+OqYTyGVKkvj3nK5EhSJIH1jcwNfScoG8Dn/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=flapping.org;
 	spf=pass smtp.mailfrom=flapping.org;
-	dkim=temperror header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=kjDDMOtI;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=ZXkXzX04;
-	arc=none smtp.remote-ip=103.168.172.155
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
+	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=KyzszYdF;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=TgfhIzt+;
+	arc=none smtp.remote-ip=103.168.172.150
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B926606A329
-	for <rust-for-linux@vger.kernel.org>; Sat, 14 Nov 2026 13:38:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B926606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25749606A32E
+	for <rust-for-linux@vger.kernel.org>; Sat, 14 Nov 2026 13:46:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25749606A32E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=kjDDMOtI;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=ZXkXzX04
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 6930D14000A2
-	for <rust-for-linux@vger.kernel.org>; Sat, 14 Nov 2026 08:38:25 -0500 (EST)
+	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=KyzszYdF;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=TgfhIzt+
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.phl.internal (Postfix) with ESMTP id DCC33EC0193
+	for <rust-for-linux@vger.kernel.org>; Sat, 14 Nov 2026 08:46:20 -0500 (EST)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Sat, 14 Nov 2026 08:38:25 -0500
+  by phl-compute-03.internal (MEProxy); Sat, 14 Nov 2026 08:46:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1794663505;
-	 x=1794749905; bh=SNG1HRb8nHFIie74LXwMhLAKLST7T7jquSoOJxOlEK0=; b=
-	kjDDMOtIsUw7bSdWWMIMxExjuwJMfM6fUrRhZ/kFv1JsJBLXywr9mHhX+SQDzzKL
-	rKTLGR37Le4FAOmgLPO0KiDyAVR3YCYNb0KVZG5JNRvkJIO4s6Kdh5y5z4gvHxuD
-	YoBd6lFVs/24bKmI9bnee/fjcTf4jdUZ+ubQCVjr9Lk3RlKwIswN7V5hHEdKM3Ws
-	KUZXeEUA5otuYK85n6SwzwHm9Z+/QFhWWw5YLxnlJRvuW+b680eNQbJhAtk/X0ru
-	K/d/r1qWZ7kseS+YbngpiXfIL7iYYXQccr7Cq6Cs+vYUOXmgSmNDVZtljBk7/6WN
-	t0VXWL1hN7FszJUBrep20Q==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1794663980;
+	 x=1794750380; bh=hxhKKH7II1y8GERDF5iah/4uc1VaD2sdq/KeGrQB7zM=; b=
+	KyzszYdF00F/c0LxZZ3Y15eS1Z5M9hGilrb6G9zQkelrC99UIPiXh9Y+8waRZmDg
+	ks3cdwtIG/m9vuur8eITFNrVRBzX59YkamS2EzUsBqbQpxm6lCNhK/994DwifXcz
+	uoTOuMJlHtJWamPUNtnQn3TRYM+yk6c4Dr5+VSO6hQ6UsmHjfePG3AspBBGvYH8T
+	XFmcCR5ud8uWGzCJ0NnQpPoQfQ6TL9tlrRrBMu8gU70OAAgEb9cLhuRJao1lhcg5
+	ug4a0v7QpXWqfBtusNjGN/dU8+MV3rXmWycWbN6eEJGavcrrGeCpG/BZIhwQibwj
+	85DB58xP8mo59ibYq4hFrA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794663505; x=
-	1794749905; bh=SNG1HRb8nHFIie74LXwMhLAKLST7T7jquSoOJxOlEK0=; b=Z
-	XkXzX04q4UyVz+lf8NtnAgfAHirWryfPU5tFvaA69SsZe0EW7fjK87bBsFggvRpW
-	J2f+3lARbnoLTkqwtl35LjIb0iUpLtmCwrnrBYEikvU0Jwcgavp8aFLkSnylEuam
-	lV5ex/fR1r5uzupd6qCJaJOQKGlfAXcZQXmQ5YSydfcL2DTX5HHcIHvHF76i+7aQ
-	fhxuq5ksXHxYucjDpTQRgYVe6LfDuMiBo8HKNPI8zj7pJ6XxBOd/QJSq9udXruZs
-	KTXMSrxV3OuCOJs0AyyWvDGaSvumSOXPhBONC3zy39O6Eg2ZZR6AcwKFGeD9EMuO
-	BhlEvcRK48YyymFm4jqjw==
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794663980; x=
+	1794750380; bh=hxhKKH7II1y8GERDF5iah/4uc1VaD2sdq/KeGrQB7zM=; b=T
+	gfhIzt+kwtUME3A5jpJ/pnxEE6yi44aKMcGMY9cYEGXaquuwy5VDYGk5OkcaCXK6
+	snM5tLj+Ws9t1CKzFet+Yb/Pq9EXgmv3PTTi+sP/nVQgKameVrnFMoD04BI0MYlZ
+	G1Hy3Xolwff6RKrFwBCzPCDLZuMjbpEfB04pw47RhcTfuTXohQk92Fea5WjttFTv
+	DlnCirVFyRe01aXfWpVJAUBDGBTfXngOOq8QIgTN9GpHnFcFTPPadoBIBYUq8IIH
+	AtFlvSmJlhJNvCGU8E213NyNHzmaVcONurl586lUEvVtbEwIFvk9tTZdzbSE2n3A
+	mgwQPRtmWLM7epgPSxiRA==
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
 	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
 	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794663505; d=flapping.org;
+DKIM2-Signature: i=1; m=1; t=1794663980; d=flapping.org;
 	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
 	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm2:rsa-sha256:uJd9bOewLjzqdtHSuxEqTatTddKxIojXhH2RtawCSoA2HlA
-	eOiPf5+A3YgE2jQG5bBTqb4KoHRjqizHgleRZrFROkCZojpJ9EDIZfmoe2GOTkZQ
-	lNTPI6ReZOPEu2Go1sNum7hX6UJB6/SWaFJTwt+HrJDCeEA1Pk52/gUX/B0h7UZz
-	rPWP74MgGia4NXL4Vn7ou/rRnPaRwRX7xCR6jisXxOpg+VoON5WEp61sg91gNC6v
-	YZPZAJtwwGXpYOro7x6Xe1wH7VaEz2eTHqD+AYmk1tS/uASy/ZOyOcG3kjMZGBF2
-	cMlN6UWxwas1phSKeGGPkcsrIjU6dgOjmxZP3ng==;
+	s=fm2:rsa-sha256:B5dfamY/e8QOsoNKJWfVVl+cf/uj/xXn4Q7ZHBmsPAqu2Sn
+	MbKq/lLrA7Y7cSqJ42YL/WpWOVJyhyN0gOaje9gAb4IWk41j/zqUH8nV60HcWMAH
+	SQIQnguov9YLXkhhWvttPMm5a8wZKuN2sk7YDKwt7wkfnveAO7U3jn4BB2a5hXYz
+	arlTwSuX9iNGN7veMSJLZYg2LJ7viUM6UKGyta7m1bkNN9uLxTKujGe9FTNTbTkb
+	Iv0l0m1/NrFGnwU79Od1avaBshkIRz7FyUurLnrmP6CzYtx/9/ChnPA6RBuFO4g3
+	GPsRMJE77tbn/g2obrVpYzUMu9Yiv+vM5hAlXmw==;
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
 	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
 	action=mi-m=1; hc=12;
 	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
 	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:f9opZpIyqagmduFeeGp+xKUJT++WTJdd2E/jjBkBYfo=:lU5PHoFLOrW5W3SGXZtCpCZosecH1DWsdh966u97RCw=;
-X-ME-Sender: <xms:UGT4agKAWa5ySOtc97TQISMy-97FHL2OfzX4uSuKWCjKjS1-qIU2BA>
-    <xme:UGT4atWjLXkvN2rwfSSzfQ5RsUvoMnhL0nkz4wTXfoBK8IEIg-YzKxB-urofSq_81
-    S88oAytwY2-srH-PjH8_0i8fJiTU9mwDAzM1QBjnqod2DOyW2T4I9s>
-X-ME-Received: <xmr:UGT4alOYs099Ivx7PoBIhrdjgUoi_H9LMpqmJbh-FSMQUlJgnlxCm9ae7k9o2eSPuQlj7aLuo8OpjI8Vinlrs76B>
-X-ME-Proxy-Cause: dmFkZTGP3BUWlQUihCukVcPKcTSgRT44A4NtkjyCSrpXOA/rwXWHPdz16CsJwJJyEfGatL
-    lN7ru0/bjWuVwus+qg8IqcETdlNBpF48fef4z6tyHamWyDNIIzYe03ACQowYrwSJHAZ8Vo
-    lvfypnf3SveEnc3NnZR4xRbeVLvsA/FkY75IBy+dYZd6B7umcwKRfgMYFd/WK5QM57Vnj9
-    BmeVgMpoO/QOvVLovaVWsh8nVgQuZu4003ZqUiazRIRGRLF3S70i9QhkTtXD9RzX7Czkmn
-    MgWG+ZxTViB8Xw02wyuvpZ45gFna4jOQNaOt1JFnvKw+0f8ie4mpP7NZIWqxFpdmlz1kKe
-    y6mh+4B83bYFIJ0yFcWsfd1rFn5SmSEnudjOYZK7gYqCCwbMuhnMpexVFxv9ob9ECe4I67
-    by5e77wcZfvni8QYKNOaKXwrl2jxeEbJOIR1pNN3PB3KVKRXCoOmlm6V6Me+St6KWuc06J
-    xPt1KCwstHXAvPslZk0UMcWTc9ubQcq8uJAYSywQHe0VwHvctj4Vdl7z4KQdJ9uM/25bhJ
-    XXQCdN1KprZ+6AE5H2qB0zIpkeCXi829c66eEWFkab/pH680qxI+BuVSZxBUl6vkFZ10Fy
-    llHgiwxI+0uxLOI67X1HIa+ljQs19jVFyJOuUYlCGKfjNDFicbB4MA7kV9vg
-X-ME-Proxy: <xmx:UGT4apl0n8bbnI0VZnG8vgM23u56GC-tSbvAkf2oazmZhu2zYMcnfA>
-    <xmx:UGT4aoUAdGYNJXWIuqt-sf5wY7IDdoZCFKyAeGoI7PrqT2BcodgtVQ>
-    <xmx:UGT4aoJdiW5JK61Ond5x6dJoQpUc0dJ6LS9xEMJ8OqI6qsuvUOZk8w>
-    <xmx:UGT4asY4Ujiow9_baoCz-AyZMP2tdtO_uR2T4Vlt3pOFv0T67ss44g>
-    <xmx:UWT4auPybT4Cfr1pYKtDssyRL9DWsNAIDtacQe3SZir_YQbu25i7Xauv>
+Message-Instance: m=1; h=sha256:snB4EXilH1Gf6GI5LPdyrG0HIWBFLR5A9TIZbIeREqY=:j+eEPBMHstwFyCQ5gSQRfcc2+DkJ95TFBdMoixoDrOs=;
+X-ME-Sender: <xms:LGb4au3Qx9YUsVpypEOKJ2aBHeUpkRBLlXy8E42aU4qJUkStwGRMzA>
+    <xme:LGb4aivqDS9FcEOkaFHw5JXQU36IxU270ZgXCM1qNcXCMvbAT4jmHuWu2jNlcYiwr
+    POkcogoz8jsVJQ9_nkvhoNvhR_Fl6vdAdyO4WxCriBd2hr6xaKoy5Cr>
+X-ME-Received: <xmr:LGb4aq87tRmiJ1_gXvFoTwtTlEk6qQngB0lH82WKSG4mQ1LKKoNK9_2Gdjb4440XQcgMXup2ra85k9kSrdwwz68n>
+X-ME-Proxy-Cause: dmFkZTGPyd099gFp6IoEh+SqiSCQACv4zvizj1DwHPte5hKiSVJP1TnbPevudWmZd0JrDK
+    CLlS8AEAuLK3z+Qa1AJDYWjuRBzbzzZ/QZmHlUgX5lmtCvtDkEJvtBhp+/FLYTf5W1KrPG
+    /w3ywMgpPLA/Skddnq+qp43vlsitQt9dd/uiru0XSnI069mVHDuVXZRp33P3x1O3hqq4R3
+    2odw9rdPyqcWQQk6/BZEHKXRHOPrV3p1Hg9TxYf27qml3azOJyrSJ2ZMY+5KjZhBCab7OC
+    eF9nUNaLHnQ1xpyuN0kJ3UR/Jl5FJxCKGoj1vhXsGIK+v/b/DKbEZH/AwrWSeISaUeN7WX
+    VMUZdUfY9AYg++q7hsHGO2vDyTVvqjDFR/ynYjP70kW2SD4lpfQ5BPTKLYaTTKDhUAXaUZ
+    QzLWepMTF6nE3aF8lmjoBZOOSiheU+Sx7dOuKRy+jyF1bIvwtauPjWcD7ECtQ9ZoeLoMh7
+    uiuNZUn0rGJH45lWAwe3zTKhCnV1vjatV7mx5YM+DaVGqQ8yHn8ArXUcnNVT9zjE5N/yh5
+    amebZ8HocGz9XOHrRdkIe53LMjX38CQd96uFiQzF1IoCKRSxKwuQ0GyMm/ly5+SmjFw5oH
+    NUfN4ffFsnhl7/tV+UHx9f13dpWKWNobdooaCqSxbIAzgx4MiuXHGj0NNcwA
+X-ME-Proxy: <xmx:LGb4amRKL1NMjOylVW704EulToRDB5S4gPt06T3Mu1mbFvhYH6jKxw>
+    <xmx:LGb4agAhIwKMTed3wsMCRfq4i7rN6vb0qU-5Z8BAKXYPmTrTctFrzQ>
+    <xmx:LGb4anYA7OaLb6abg9cH746HGeu0mUpj6au2bjix0ggKpn_FoUSFlg>
+    <xmx:LGb4ahJH2nMVrND9HkJ0iwOhLr-DaXjPkOo-hdeNcUXzrzlcK1mPEg>
+    <xmx:LGb4asy8VY94PhwJz1CEzUeMKD-6_80kNHtkbWnxHGjoYK_z44eNttjw>
 Feedback-ID: i51fe4b43:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 14 Nov 2026 08:38:19 -0500 (EST)
-Date: Sat, 14 Nov 2026 22:38:16 +0900 (JST)
-Message-Id: <20261114.223816.1091200428221776094.tomo@flapping.org>
-To: a.hindborg@kernel.org
-Cc: tomo@flapping.org, boqun@kernel.org, fujita.tomonori@gmail.com,
- frederic@kernel.org, lyude@redhat.com, tglx@kernel.org,
- anna-maria@linutronix.de, jstultz@google.com, sboyd@kernel.org,
- ojeda@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org,
- acourbot@nvidia.com, work@onurozkan.dev, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: hrtimer: add active() method to query timer
- state
+ 14 Nov 2026 08:46:14 -0500 (EST)
+Date: Sat, 14 Nov 2026 22:46:12 +0900 (JST)
+Message-Id: <20261114.224612.1895277862836640234.tomo@flapping.org>
+To: ukleinek@kernel.org
+Cc: fustini@kernel.org, guoren@kernel.org, ojeda@kernel.org,
+ wefu@redhat.com, a.hindborg@kernel.org, acourbot@nvidia.com,
+ aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun@kernel.org,
+ chenhan0017.work@gmail.com, dakr@kernel.org, daniel.almeida@collabora.com,
+ gary@garyguo.net, linux-riscv@lists.infradead.org, lossin@kernel.org,
+ m.wilczynski@samsung.com, tamird@kernel.org, tmgross@umich.edu,
+ work@onurozkan.dev, linux-pwm@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Subject: Re: [PATCH v3 0/2] pwm: th1520: Fix 32-bit build with COMPILE_TEST
 From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <87wlqiv386.fsf@t14s.mail-host-address-is-not-set>
-References: <20261105-hrtimer-active-v3-1-52636808ccda@kernel.org>
-	<20261105.201145.828445900027892304.tomo@flapping.org>
-	<87wlqiv386.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <20261030020209.3833766-1-tomo@flapping.org>
+References: <20261030020209.3833766-1-tomo@flapping.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -136,42 +133,55 @@ Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On Thu, 12 Nov 2026 09:55:05 +0100
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
+Hi Uwe,
 
-> FUJITA Tomonori <tomo@flapping.org> writes:
->
->>> +    /// Query the state of the timer.
->>> +    ///
->>> +    /// Returns [`true`] if the timer is in the started or running states.
->>> +    ///
->>> +    /// This method synchronizes internally and does not require exclusive access to the timer.
->>> +    ///
->>> +    /// The returned value is a snapshot. A concurrent start or expiry can change the state of the
->>> +    /// timer right after this method returns, so callers that need the state to be stable must
->>> +    /// serialize against those operations by other means.
->>
->> Does "expiry" here mean that the callback returns HrTimerRestart::NoRestart
->> on another CPU? An expiry alone moves the timer from started to running, so
->> active() still returns true. If so, I think it is clearer to write this case
->> directly, and to add the case where the timer is canceled on another CPU.
->>
->> The same sentence is in the commit message, so please update it too.
+On Fri, 30 Oct 2026 11:02:07 +0900
+FUJITA Tomonori <tomo@flapping.org> wrote:
+
+> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 > 
-> Right. How about this:
+> This series fixes the 32-bit build of the TH1520 PWM driver with
+> COMPILE_TEST. v2 limited COMPILE_TEST to 64BIT. Uwe asked to use the
+> div helpers instead, so v3 does that.
 > 
->   The returned value is a snapshot. A concurrent evnet can change the state of the
->   timer right after this method returns, so callers that need the state to be stable must
->   serialize against those operations by other means.
+> Patch 1 adds a math module to the kernel crate with Rust versions of
+> div64_u64() and DIV64_U64_ROUND_UP(). Patch 2 uses them in the driver.
 > 
-> The intention is not to reiterate the state machine, but to indicate
-> that things might changes.
+> The driver only needs u64 by u64 division. It does not need a 128-bit
+> intermediate value like mul_u64_u64_div_u64().
+> 
+> Uwe, are you OK with this series going through the Rust tree?
+> 
+> chenhan's series [1] also adds rust/kernel/math.rs, with signed
+> division helpers. Both series use the same module header, so whichever
+> is applied later needs only a small rebase.
+> 
+> Tested with the doctests on x86_64 and 32-bit ARM QEMU.
+> 
+> [1] https://lore.kernel.org/rust-for-linux/20261023130413.178487-1-chenhan0017.work@gmail.com/
+> 
+> v3:
+> - Use div helpers instead of limiting COMPILE_TEST to 64BIT (Uwe)
+> - Add a math module with div64_u64() and div64_u64_round_up()
+> - Drop Cc: stable and the Reviewed-by tags, since the change is different
+> v2: https://lore.kernel.org/rust-for-linux/20260930101257.1649945-1-tomo@flapping.org/
+> - Fix a typo in the commit message
+> - Add Cc: stable, Reported-by and Closes tags
+> - Add Reviewed-by tags from Andreas and Gary
+> - Rebase on v7.3-rc5
+> v1: https://lore.kernel.org/all/20260929095612.1072417-1-tomo@flapping.org/
+> 
+> FUJITA Tomonori (2):
+>   rust: math: add div64_u64() and div64_u64_round_up()
+>   pwm: th1520: Fix 32-bit build with COMPILE_TEST
+> 
+>  drivers/pwm/pwm_th1520.rs |  8 +++--
+>  rust/kernel/lib.rs        |  1 +
+>  rust/kernel/math.rs       | 71 +++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 78 insertions(+), 2 deletions(-)
+>  create mode 100644 rust/kernel/math.rs
 
-Looks good to me, except for one small point. Since "start or expiry"
-was removed, it's not clear what "those operations" refers to. How
-about something like:
+Gentle ping.
 
-  must serialize against such events by other means.
-
-Also typo: evnet -> event
-
+Could you take a look at patch 2? Are you OK with this series going
+through the Rust tree?
