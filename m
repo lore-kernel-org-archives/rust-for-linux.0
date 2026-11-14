@@ -1,103 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.171
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794655175;
-	b=p2ctzocnrfo9groz6kkLx+aZVSph8arz07wvbECnaYfU1BLMUX6K+0IGroN4/S9VxeWQ
-	 jR7gJSGDOPOZFLPOIu6GqiGzxsBaTdk+Fkwon37hiZixXKvysj/kaPxmXl1l3+MzaPxnB
-	 KCKHwSjkuTgqa1iGf0wKJk36zdoPC5LInFLcSdsGPh5H5C85Ts4iULgOXgowBo13EYQRk
-	 UqTNcCCzwz3cWI8DWxOQRaqOj2foXg/hMg+Tv7ZJGaSf71an8SI7w9VK2FDxeWWTTX7ZI
-	 ICC3fKrRJ47iq+fcx3m67bsaEUUgcZOU5WSxRx90LK9O+EN6rtiIXVjGDtga68J6aHQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794655175;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.174
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794658726;
+	b=uTXm8PvfbXcjuPp3w022mD+900wzSVlcrBl3O5AcwpwPFAB4xG5Dnp3rGFIuZm6jce6/
+	 J4OxQehT/dR6X+fb8hEdHrTEEkZe5l79qOQCYKQIYp/XL32mxA+qDwtCmaSK6ixSen22E
+	 iMXpC8Z9w6Cwto1UOJa/W7Md665JdyYD8OLFmCU4ilLVE9IbSQxwY4LhBMkEkriTSZagY
+	 Vt028hnlQ4pDqegldxbjIFyJ3p+xIw6D+YkjYTg4IkYkPaAS8mbc3Y9sAp0eI2IemGyE2
+	 yAKwBaVKHTe+eHB5YSdN/2dEQOiKkBvWuQvNOJ05XUvaegxGCFAIJMPtZHHkgaAdnWQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794658726;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=0Z5JD+mSTk7fL2vKpKccwS3nlZFZlVqY7nVXFAi5UXE=;
-	b=s3iiM00ww1A02zFgJs7ZHp3BcVI2JdIuGH8EUKeX7pRuQG7DWFPF9tjAy2W4S6XwFB2y
-	 gD3I+C3r40A3pg5rf+4Hx3HU7D4Ajye2OMfu3gslwwP+i0WU6cZm+GyMya6bsqZrTIMJI
-	 8bOBzwWJzMpkdkdOP7pKsd128PL0UXujIjMSoJwLpg8mupt9e8Kor6TP6iI14WMmqMFG/
-	 /IqVo7v5K40QtOYpP6hRGqaGOj2yNQIt88ordgHzx1rCYOoBnF9TJNeiF/mh/r1MmEJ0q
-	 sEPthV7Td8edvS9GmK4uW0Dvd1Ey303ktmdJsyb4iOytjH/X/o4He5Lk4eedz9Dcl2A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
+	bh=8NrM0xFPX4px6sKB2nNjTHnyc3ev7qGMfm1STuc51nU=;
+	b=W9qFboY49MbP5hyYrbj8Orzg4nc/B9Q9HOW9n4oebiLnbXDx8KS4ejs0fG6lKABawbuk
+	 y8R8WEyfPS5uBqtOr4EQ5gunFey3Ss4F+Dxs4huOox8ujvRRFFCQ+D33Shv9CxO0sro2S
+	 7ljKRzK+202x96Cz3tXwV3FnzBs9OxC2hxxUXBCTkTo2cEW/nSn3inpOHA57EtKQFWhSL
+	 pDN2ZLSehvYntlS0w0EN+o7D7yAFRVLIt7l4Rr8wZ1cggVkG0b9IdIejbgS5MRRxXJYPs
+	 GEv+QfHRLAM9FCxPRcy+spYIrCriIKzheIw1HAfldPeU4PjD5xceoL39ftqGkkQAU5g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YDyqq8w+;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.171
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=myHe1jKa;
+	arc=none smtp.remote-ip=209.85.210.174
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BEF606A32E
-	for <rust-for-linux@vger.kernel.org>; Sat, 14 Nov 2026 11:19:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06BEF606A32E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C07606A332
+	for <rust-for-linux@vger.kernel.org>; Sat, 14 Nov 2026 12:18:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03C07606A332
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YDyqq8w+
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-36d1b3b9974so156952eec.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 14 Nov 2026 03:19:34 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794655174; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lYJTWug6NOczuQMHezZthNmO2f5W52m64u/h0lUJxxSpRZ6rsyCmPAe0ezC2Mu6tzx
-         WWOF6VqAI+cpe8nmA9t47hFq4jFuMeSbBUYJpGEuUiGcyR9h0qeYlpslw4W8One5rvkU
-         RvWVrW+8zEQOg4RRh4e7veTaRavWv46bSwx8JIWvd7gwmNXmyJ4c+d+qzfrg94IRwnGN
-         Mkc+g+T4Dxdz14JrbnqMa4mLXRHRE2jzkljSfVkgft6lIUeJIH7rkhu7U8tQc9L+8iMj
-         nHMOXenJDkMju9GDPZmy8BtTu6PusFmJDWkihfv/VEIQcPsaZt+JprGEOm5P1DinkW5B
-         8+zw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0Z5JD+mSTk7fL2vKpKccwS3nlZFZlVqY7nVXFAi5UXE=;
-        fh=CnpVUCTbCqXK3DceRlm3Sx8stYJ9KCHl2jUhjMLD6SQ=;
-        b=oDYZxqtB2v5NfCsr5t3qd/BUbYOQjASRuIppS+1B9opSje6Ijx9JPFnYsvIFVZsEuM
-         i3XV6P+Laar0TIjbNq0X9JXHEKN+oeYvuQ/tdgls0/oDF1P5tyncH+Gux/z1zc58dSGH
-         73uvwLPxESfX/Sf55ZRXRgrwY6eJOHz3+2/H9JLc4ZYJDPiF7Wwyzn4rKPrkBoc363vL
-         55kjKqPQYv0LM35foZ2zjfm6Qvm677ay4TRdHHDFFNIB1b1p/edDEw/K0eTd75kyzmG9
-         Zp7XaRmD+4wtTxzswYfWrlzzbv0Vb3cWZplNTNd1snhFxKwododXtFgthnLx7cVVfse5
-         W+Yw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=myHe1jKa
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8a07078200fso822039b3a.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 14 Nov 2026 04:18:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794655174; x=1795259974; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0Z5JD+mSTk7fL2vKpKccwS3nlZFZlVqY7nVXFAi5UXE=;
-        b=YDyqq8w+qGAgC+SMwmW6ynm9wNLeSfpV8KZTdvS+BZyswTje9buIfCYxflNvLpQD2A
-         aquMfZAcuQv7mfikovnbWwLUFAQR6ndmyTgYCBgoj5oOQwYyYX2S+Lw2K8wMH8sapVtu
-         Ql5rgCIFVATueyG32bUPo0IQyQHViw9F2kcWa8R5APVHc3HjGPBAcx5ASgsDPoB8l1n3
-         ax1acDazxb7WO1QZEGHf90B6a90oQVVtsyJ3nbhQt3meWlX+OyAvRtsnbUmWtq+cNsSI
-         LhZjlzJdZUFD+h/H75c2H6Ynzjqk3G0AF8xm4xLPiipTWF2C8CYK5bwkWL+0w/d9p+6m
-         9tlQ==
+        d=gmail.com; s=20260707; t=1794658725; x=1795263525; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=8NrM0xFPX4px6sKB2nNjTHnyc3ev7qGMfm1STuc51nU=;
+        b=myHe1jKawmPJVBFYBlRZoyr12FwQ2uXBiQFKGIDQLzObXAC1i6zVlqBg7D7UC88BA6
+         v8XNB+/oX3t9euHqJvEQK/XBkobPxXtJ6T7CbvR79lMscA9yCvuRLPMBtEgCWOvXq3dL
+         AjLm8rlI7L88Ju049KX1UcKSpHfuJF3yCpqIdTKFpa11CY1X9AZCYizyAvLCcnL9mSvo
+         i4IS0sxNw10sml92RygzlGxkPZjcJ0vL1zsXsLGqWHee+/ciRdqoOwM7yR17zTWPEs9d
+         xZdGNukqiiabx25VHjbLENPANUrjW5OISBk6Qi7WZ/5kVTJcIQ+PuWfzvSMuR2sl7x9g
+         Ffdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794655174; x=1795259974;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0Z5JD+mSTk7fL2vKpKccwS3nlZFZlVqY7nVXFAi5UXE=;
-        b=oEUED/rYDXDSqlDklhpRpN0hZCPQ87iPyCJNWP5kQ+ruUcWKCr5UsxDQtuWThMwekG
-         N7ySWH4w43jr0h90Pua5Xr9ueHqLq4Av1dtgvOE9CRd581SkqUo5vFzzRN1nx8zHDGkm
-         RUWv19tW1VMkTZ3XwnBB1hsaV0VNqKmSgthuSaoi85+T8cA+8Z0N4mJt5tuMOemnngIN
-         +kbG0yARGRVYOWFA/W7clamF6iS7h7mRompqZa8AaxwjcB0/tpaH+z8vanTAoeqfa4ud
-         ndfSe+6IUC+u+3iO0a/w2r9VEPnmjb1CIQvy2b8zkGhrm/dZAzZ/mJAILkUE9RoY+1xx
-         23OQ==
-X-Forwarded-Encrypted: i=1; AL+hErHZflxHH/QLpFEqcLR2iMdyYxI62Wxv05/bauiFS3CqY/e/1NEfgRinUwJRWWCoKvZQGQcT/pSZVFfBjb0Ldw==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+qp2VYhEZ1eodWY4PxhlNjBXp9a2XRbGt5e5nFQDGXJqcHQBsN
-	K5U37w/KQmgvAnANnhqqpAGUyKyBWaSOdQ8QA4Pya6rZAvs2g598MceNFcgAD1vZ8p1EpNlPGsx
-	tlK6H86O2vOK9cYcgmmrk036vQSH0hSo=
-X-Gm-Gg: AYBFou3b2nPqB/56kr96TT1kAtdeyoeqHEFaS/A3E9UX03nhBqd6VHwprMbvg3Y2GAt
-	9oyCNYg3Kdd5bJnIllfd89htPJ4Pr3xIzptVfmqBUcADe2Jf9QAGygJjRFGSwbK0sg7s9A8t8gF
-	TlU4iZeZg4K0WafMdJF4GrNNlKX378ZG3qMq+SELssRATD4s0eqLkV0Cq1mGUiKWkdhMwt+yDlP
-	lNeuU4cTI6f8gZRHKyFBgrtrPskZlRe4JaXR5Y+ens+oN7MVwZkyajH4qw1j25cAro0RibV8NIU
-	ZY/XSg8aS6U7calg8x4yNPX3aMvllOnBKRC+CVOongWdhxWl9pDutTtbKa9GAZnEdQSc2dd0Iw3
-	WCCdhuioM6oSpr4bM5jPUEsPsmGnIhYtls2tUo3TpkdJ67Y/hGdSzA9cqmDR5Ulv5X8cx5hgKRy
-	SvzD26iCI9WlUUmmpWI+XRL05fqrJGP3mKAzV9EKhwcHB06jNEal7fj1af9wsSfooFBa0P/nOs6
-	5B4G9Ra/1akVlAgTyWijuoZgzGQUB+wCmnylymE7RUFeUR8sFAhx3JXwDou819IbU8nqjfdh935
-	FTdi/YbkMyK98DbEGg==
-X-Received: by 2002:a05:7301:a0a:b0:375:f846:5b3f with SMTP id
- 5a478bee46e88-3796057e734mr6645905eec.0.1794655174058; Sat, 14 Nov 2026
- 03:19:34 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794658725; x=1795263525;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=8NrM0xFPX4px6sKB2nNjTHnyc3ev7qGMfm1STuc51nU=;
+        b=CIwMEnJRkwlf3yTIRXLwEuFaEWxqQV+Z1MVz1MwRJ+mW/ydL+xb0NfiBOuUTqBajXV
+         sui5n2G935boKXLOmc4dBE+cE0bxRfzXilepr3DfzzVw0a+Y75x5DVBsubM0OCl0yB+0
+         eUPR5M9oO38sVyoX75yFe4VmfXs8kidLoYp/a/FBrCMPcViXVrNEf2dbZGjcWLgl/WPa
+         uPXCdvkJg0lEvtAlO6u6iJ7rRbMuqWnaO9iJ90Y5N1N4HX22mC9eO3idnwlGhnZuV4pL
+         HCARD0ikYwLx//UhcuIZX+tOU4wiP6KW0jtHuzgRam6KwyEL0T3LhPLt/VPQLIAHL01t
+         iOmQ==
+X-Forwarded-Encrypted: i=1; AL+hErHpAPNWQt7TzojcKqVu8WjZmecZTG//k/pf86sH0GvS/+Us/NdqrbPArde01g0YpX8VfZL2XAfQsKJQU9k2ag==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+Pbdt3HmJUjDt4HB1v+nlkrXu59bnMZ2DN7KTgYd8ILWpr7H0j
+	uXerKMb/o6szRv1Xj7RdzoyxKeQVxjya98NJpyxx2Jg107YQFrC+Lfyv
+X-Gm-Gg: AYBFou0NUflo+lxsB2ED/qtmq5Tz5I5qlHb4uON86ZB5ed4CR/wxLjNbD7ZqE+LeR67
+	QfqeixT2UqjVrOWgft6tsCNPI9Gr8yNKzVWaToUzyQ9Yl/v86831Xc+vqrLpv1uf3Y6dB3LHNbu
+	spM/XsuNulX1b5Z/nUkft3tcvSxjygHbJDxO29pcTyyywyrLXzf5FQdW3SfZMYE2juXJJOfKKEZ
+	E9n3yMFe/NiPlI70vaWDSqNk/i6LtxIHLtJFXcAhjMGVQpjaA+l9xctuxMgAY+tGthzyAzMUfrk
+	S1VWgXBkU0sN4xUp8KSmickVGc7Cp2xfmxmHDMunU90qGhurkXDjxq/j3djPXtWNFAZPedDyncc
+	MGvGjSh2ndX/hxemfBsJ18WYvH9SzejizegTVCvsNOZ0zvJucL70WndXas204glLuhrveRq/UwS
+	uL9dqJAdspEkT3OZLZBREUWeVWUUPh7Q2Wjle9Fw++xp9XadEr4voLOtCQEqHMEtAC/mvaN7Dua
+	9stPa7Yi8hYAT5F1G3ELW42+7Gc2LwhZBCJ5TXSCls7Bzs7SM65ttUQ5ytmvpJhbCnHh/dd7B/6
+	19MDaR0tzqpFhzH6dD/o+8nzbdSNmyyMVHawlTJFImau8NwRC6DMsaakZhPvHfqAqEdUBe2aUQJ
+	7xjDOc2e/m4comtM8ePaqPomTGjP4jQLDwf3I2ADdJtTC+M1OAg00jNgN
+X-Received: by 2002:a05:6a21:66c4:b0:3fa:ab6:387a with SMTP id adf61e73a8af0-3fa0ab63ff3mr129233637.43.1794658725241;
+        Sat, 14 Nov 2026 04:18:45 -0800 (PST)
+Received: from [169.254.3.1] ([143.248.188.96])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8bececcca19sm2094389b3a.4.2026.11.14.04.18.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Nov 2026 04:18:44 -0800 (PST)
+From: SeungJong Ha <engineer.jjhama@gmail.com>
+Subject: [PATCH net-next v2 0/3] rust: net: phy: soft_reset may run without
+ phy_device->lock
+Date: Sat, 14 Nov 2026 21:18:22 +0900
+Message-Id: <20261114-exp-phy-rs-maybelocked-v2-0-19a4dd658b6b@gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -107,44 +93,87 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261114024515.1000882-1-marawanzein222@gmail.com> <CANiq72ntx7OypsqD3QmeMiYOJpqRBgzDJv17grZQA-M5J_r8mA@mail.gmail.com>
-In-Reply-To: <CANiq72ntx7OypsqD3QmeMiYOJpqRBgzDJv17grZQA-M5J_r8mA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 14 Nov 2026 12:19:19 +0100
-X-Gm-Features: AclHuK_0MvsnItj1pJwqNHFtVxjXYjavsbTC3ITqF5Wwivku2HdK4fwZxJBltrk
-Message-ID: <CANiq72mnB8cMmaMWaC-7pJj29JqqumBOSygnM9zA+8eHikm1Kg@mail.gmail.com>
-Subject: Re: [PATCH] rust: kernel: fix lifetime of copy_from_iter_raw
-To: Marwan Mohamed Zein <marawanzein222@gmail.com>
-Cc: ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, boqun@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
-	daniel.almeida@collabora.com, acourbot@nvidia.com, work@onurozkan.dev, 
-	spidermana <xuyiwen14@gmail.com>, Tamir Duberstein <tamird@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAI5R+GoC/4WOQQ6DIBREr2L+ur8BjE3oqvdoXCB8lVaBADUa4
+ 92r9gBdTmbezKyQKFpKcC9WiDTZZL3bhbgUoHvlOkJrdg2CiRvnnCHNAUO/YEw4qqWhwes3GTR
+ GV1LKktpGwQ6HSK2dz+InOMroaM5Q/5z0aV6k89F7ZHubso/L+WHiJ/FvbuLIsGSi1FqyqiL56
+ EZlh6v2I9Tbtn0B2MjwSdgAAAA=
+X-Change-ID: 20261110-exp-phy-rs-maybelocked-ddc59993efba
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Trevor Gross <tmgross@umich.edu>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, SeungJong Ha <engineer.jjhama@gmail.com>
+X-Mailer: b4 0.15.2
 
-On Sat, Nov 14, 2026 at 12:16=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> Thanks for the patch!
->
-> On top of what Alexandre said, for fixes, please try to find which
-> commit introduced the issue and then add a Fixes tag to it. Then,
-> please consider if it is something that may need to be backported:
->
->   https://docs.kernel.org/process/submitting-patches.html#describe-your-c=
-hanges
->   https://docs.kernel.org/process/stable-kernel-rules.html
->
-> So we would have written:
->
-> Cc: stable@vger.kernel.org
-> Fixes: 06cb58b310ea ("rust: iov: add iov_iter abstractions for ITER_SOURC=
-E")
+The Rust PHY abstraction tells `soft_reset` that PHYLIB holds
+`phy_device->lock`, but phy_init_hw() calls it both with and without the
+lock. This was found while auditing the SAFETY comments of Rust
+abstractions against their C callers, and confirmed with Clang's context
+analysis [1].
 
-By the way, Tamir's email address in the Cc list has a typo --
-correcting it here in case it helps.
+Patch 1 drops `read_mmd` and `write_mmd`, which make the same claim, run
+under the MDIO bus lock instead, and have no users. Patch 2 makes
+`Device` generic over a lock context, and patch 3 gives `soft_reset` the
+`MaybeLocked` one.
 
-Cheers,
-Miguel
+`match_phy_device` is left as it is. It runs on devices that may be
+unbound or bound to another driver, which is a binding question rather
+than a locking one; I think it fits better with moving `phy::Device`
+onto `device::DeviceContext`, as `pci::Device` does.
+
+No in-tree driver is affected, so if this is not worth doing before
+there is a real user, I am happy to drop it.
+
+The audit, the patches and their changelogs were done with an AI coding
+assistant (Claude Code, Claude Opus 5.5) and reviewed line by line by
+me. Compile-tested only.
+
+Changes in v2:
+- Keep `&mut self` on the moved methods, so that `match_phy_device` does
+  not gain register access (netdev AI review)
+- Give only `soft_reset` the `MaybeLocked` context
+- Drop `read_mmd` and `write_mmd` instead of leaving them `Locked`
+- Document how PHYLIB calls the `Locked` callbacks, and fix the
+  `from_raw()`, `phy_id()` and `genphy_soft_reset()` SAFETY comments
+- Link to v1: https://lore.kernel.org/r/20261110-exp-phy-rs-maybelocked-v1-0-3023cc9055e9@gmail.com
+
+[1] https://docs.kernel.org/dev-tools/context-analysis.html
+
+---
+Changes in v2:
+- EDITME: describe what is new in this series revision.
+- EDITME: use bulletpoints and terse descriptions.
+- Link to v1: https://patch.msgid.link/20261110-exp-phy-rs-maybelocked-v1-0-3023cc9055e9@gmail.com
+
+---
+SeungJong Ha (3):
+      rust: net: phy: drop read_mmd and write_mmd from Driver
+      rust: net: phy: make Device generic over a lock context
+      rust: net: phy: pass a MaybeLocked device to soft_reset
+
+ drivers/net/phy/ax88796b_rust.rs |   8 +-
+ rust/kernel/net/phy.rs           | 206 +++++++++++++++++++--------------------
+ rust/kernel/net/phy/reg.rs       |  17 ++--
+ 3 files changed, 112 insertions(+), 119 deletions(-)
+---
+base-commit: 573af801552999954caa8347e4490b04cf4763f0
+change-id: 20261110-exp-phy-rs-maybelocked-ddc59993efba
+
+Best regards,
+--  
+SeungJong Ha <engineer.jjhama@gmail.com>
+
