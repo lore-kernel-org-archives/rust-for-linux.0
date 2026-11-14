@@ -1,119 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794604476;
-	b=MQTZZ0cKaf1Ndk+pKg8R0JIboYiBHIElPxeTxoICWNq9ZwrN1W7snQKlkkvinnjUkGmt
-	 zROsX2I8oj0TbNulYBCCYwsRBeP8TjCUYSkXX5F30osZ2RMgY+GQIwLYTSO/xpMMWVN3Y
-	 qblAZq4HBD3xdf5oM4E9dMcSglmBxYLXSfUwbZuDXoYKZE+tkIoocZMP0zBHYkhRcT53i
-	 SrUj3ISmkiHKtHPlsPTJceLv9YM+y61l0Ces8+EtOEX15MBc9biBUAO9ifnOtOlFL4fpa
-	 15KSU9v0kLiq5fFfF1HAm/2HucROk/Z1xBajyKCBF0vEiVCJOWJ7FaKWOvmvmZV1GzA==
+	t=1794615447;
+	b=GhYb0W+DdPWa8z8MliWmnLFCBCst/QUyAPCZRTatZvcmEq8r81rM2djced/fjQEMzjeX
+	 MEMeY6wrruHdjG3+KZ+kWBz8ERZfz5emllVjpx6GpnqQlkF9zBFVRAP8SlFfHUBTOsTW0
+	 IS13YzMM0NOw9TjWWuGDH6GfLfxyDTN19Ar5CT7Lh0XdCV2AjSMX3nL9y3iqwzH2f4vMo
+	 iCbCzGlYRSSKUIMifeRtWWj0EPbT47ry90Gaq/vYY/jIhHLQ5k+r3j0E4mgsQf9P8Z1/m
+	 n7pegjx7EWZhB8v8sOFLX8ABt6MaXXFGRiZHGJJ9ZX2sM4r3wsDQtsm8UyLbYGWDRbA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794604476;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Message-ID:Subject:
-	 From:To:Cc:Date:In-Reply-To:References:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP;
-	bh=bi+qbuXC7Kr0qdcc2OWqT62yrf9jqwzAVB3DjteEz/8=;
-	b=aVQS3DuzhuulT6tuSZp4NFt3fDWZs/Ifw6u4Dt99TDYzd+VpFP6gzC48gShFCtGnyXuQ
-	 wt1g7FKDKbjUuUUz+i9UK1uM3gcu2Fv9gZlD+5zmdU9y/EDeiCrt+FxTUI1mVFMmA80AU
-	 DR702nz2OP+91n2mjgeUT3bmDogusZfuxfzT8jqzxD5tBRqB7KFh6yW+65WVEVIzW3iQC
-	 4etgmTAx+3sGJLMknUgXFBK4DvCU/GMYv20loK3Hv5xAFv2o2Zv2DclWsaNieiKPfxP+c
-	 BuWbTHBxFVaeYDZDtsQ1ZLxGSOueVPPQNCKkB79CwaXG7/tvaeBaXTSh0wky/WYBb2g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794615447;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=1wMRhrbmTEii9sWHb6CHYzvkuAeKaItkXANbq2kqpCs=;
+	b=GjekHdY8ZwgR4y6U9mqfnkYn1BUSQgAm6Opaed17Xv3H3ANIek+RsarImZMQzV+VOWRr
+	 gw4G3DZWFrfGQvowfSvX5bfdDzkKSrN9hOfdRJywMPCSllk9k4AXvSQMr+nmwJPE2W8IV
+	 QFEnqMRouLnnC4k/aphZ9KJ0EnZWdhnqPkSu1D69lXoU/GLOBPEIO5MKDUL4gdnToUgZp
+	 M9V2JE0q4X1+xsFFT8G3FlftzNcnHk3NJdHFJzC4j0r1S84kzHfAXTscA6tCj3vXJJX7z
+	 fhpBi5lh/9t+u/YPrNlOuXugO3ouynr7KzHV0jxgDnyM5HIq72L/yx6qmreTb4sFISQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=posteo.de;
-	spf=pass smtp.mailfrom=posteo.de;
-	dkim=pass header.d=posteo.de header.i=@posteo.de header.a=rsa-sha256 header.s=1984.8680eb header.b="V9uk/ydU";
-	arc=none smtp.remote-ip=185.67.36.66
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="dai8/6zz";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33B5606A335
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Nov 2026 21:14:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F33B5606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C9C606A337;
+	Sat, 14 Nov 2026 00:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.a=rsa-sha256 header.s=1984.8680eb header.b=V9uk/ydU
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 06165240101
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Nov 2026 22:14:27 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1794604467;
-	bh=bi+qbuXC7Kr0qdcc2OWqT62yrf9jqwzAVB3DjteEz/8=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=V9uk/ydUGiRpCAmNs9UBqXwaoPGGUPZCYdDLs5zjvX+t2vAuT7Tt1gjbtPZaIcyeP
-	 pBgqkhq2iG05NsEgEeMKQOmkRzKY+baSwBRIdVxaJqmSXdB5R75zGSsIY9MvAwbzm6
-	 xtJrDjx83GXP2/yfwHabVZ1zRWa31VYRk2c5DSMG13s4l9nSeIS9X97qQp/KFMdYRc
-	 DL1I4cqY9ZQbEZWwf5A8zYIXaAYZUHhb+BCLW27uVXz/hqtM2rv6/OofsSqiLgy8zF
-	 qYHU0ygro2O8GED7Xfzf4evF/YLdGeR12tDRw3MGabSJTk1DLWZUwr2W0FGJK3b2EB
-	 903mN7tKldShQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4jR94H1xfCz9rxD;
-	Fri, 13 Nov 2026 22:14:23 +0100 (CET)
-Message-ID: <3e4aafb4c2dab636e9f113199d4cb95e0af9c6bb.camel@posteo.de>
-Subject: Re: [PATCH 4/7] rust: serdev: remove the unbind() callback
-From: Markus Probst <markus.probst@posteo.de>
-To: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org, 
-	rafael@kernel.org, johan@kernel.org, david.m.ertman@intel.com,
- iweiny@kernel.org, 	leon@kernel.org, ojeda@kernel.org, boqun@kernel.org,
- gary@garyguo.net, 	bjorn3_gh@protonmail.com, lossin@kernel.org,
- a.hindborg@kernel.org, 	aliceryhl@google.com, tmgross@umich.edu,
- daniel.almeida@collabora.com, 	tamird@kernel.org, acourbot@nvidia.com,
- work@onurozkan.dev, igor.korotin@linux.dev, 	bhelgaas@google.com,
- kwilczynski@kernel.org
-Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org
-Date: Fri, 13 Nov 2026 21:14:25 +0000
-In-Reply-To: <20261112005455.1224352-5-dakr@kernel.org>
-References: <20261112005455.1224352-1-dakr@kernel.org>
-	 <20261112005455.1224352-5-dakr@kernel.org>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-EDAa2rzL4vfrR9iRkevA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dai8/6zz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF0E1F000C4;
+	Sat, 14 Nov 2026 00:17:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794615446;
+	bh=1wMRhrbmTEii9sWHb6CHYzvkuAeKaItkXANbq2kqpCs=;
+	h=From:To:Cc:Subject:Date;
+	b=dai8/6zz0cTDL1TkjO87VVScrWrM6nmnquvJWJ3p53QPTCbwsbc8NAxFu5E2u4vln
+	 /hFVpL4zm0WvPhkRTraVpGkmBSqjJLSCndlEvDDjsgK28PosRpZEB3YHZQFYClToue
+	 h15LFbhZb2/O8m8VDcL36VzLXQJbHqvzldg6yRjhXmQrYyKCdWouNpac8YMpa/9yUI
+	 M6ielT+NAmAw9jJP+6ILn4Xdeq+WpCGE5apG0WjXY7eh9C9FVoqGt+Fjc6VjjPioY5
+	 nD5nfk0kD6veVFw3x+33MmpJ5Qo7rMbpHk6JoZYKlM2Uk8g7/MRrGDJNzAUYcaal7U
+	 Y0sbNpLxhGwUA==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] objtool/rust: add more `noreturn` Rust functions for Rust 1.101.0
+Date: Sat, 14 Nov 2026 01:17:08 +0100
+Message-ID: <20261114001708.80599-1-ojeda@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -123,143 +69,64 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+Content-Transfer-Encoding: 8bit
 
+Starting with Rust 1.101.0 (expected 2026-12-24), `objtool` may report:
 
---=-EDAa2rzL4vfrR9iRkevA
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+    rust/kernel.o: warning: objtool: _R..._6kernel3pci2ioINtB7_6DeviceNtNtB9_6device5BoundE8cfg_size()
+    falls through to next function _R..._6kernel3oppNtB5_3OPP18from_raw_opp_owned()
 
-On Thu, 2026-11-12 at 01:52 +0100, Danilo Krummrich wrote:
-> The driver model uses native Rust lifetimes to let driver data retain
-> device resources and a Device<Bound> reference for the duration of the
-> binding. Both remain accessible from the destructor, so a separate
-> unbind() callback is no longer needed.
->=20
-> Remove serdev::Driver::unbind() and the adapter's remove callback and
-> document that device teardown belongs in Drop or PinnedDrop.
->=20
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/kernel/serdev.rs | 41 ++++-------------------------------------
->  1 file changed, 4 insertions(+), 37 deletions(-)
->=20
-> diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
-> index 17ca504b7f8d..fd998b68b74f 100644
-> --- a/rust/kernel/serdev.rs
-> +++ b/rust/kernel/serdev.rs
-> @@ -81,7 +81,6 @@ unsafe fn register(
->          unsafe {
->              (*sdrv.get()).driver.name =3D name.as_char_ptr();
->              (*sdrv.get()).probe =3D Some(Self::probe_callback);
-> -            (*sdrv.get()).remove =3D Some(Self::remove_callback);
->              (*sdrv.get()).driver.of_match_table =3D of_table;
->              (*sdrv.get()).driver.acpi_match_table =3D acpi_table;
->          }
-> @@ -210,29 +209,6 @@ extern "C" fn probe_callback(sdev: *mut bindings::se=
-rdev_device) -> kernel::ffi:
->          })
->      }
-> =20
-> -    extern "C" fn remove_callback(sdev: *mut bindings::serdev_device) {
-> -        // SAFETY: The serial device bus only ever calls the remove call=
-back with a valid pointer
-> -        // to a `struct serdev_device`.
-> -        //
-> -        // INVARIANT: `sdev` is valid for the duration of `remove_callba=
-ck()`.
-> -        let sdev =3D unsafe { &*sdev.cast::<Device<device::CoreInternal<=
-'_>>>() };
-> -
-> -        // SAFETY: `remove_callback` is only ever called after a success=
-ful call to
-> -        // `probe_callback`, hence it's guaranteed that `Device::set_drv=
-data()` has been called
-> -        // and stored a `Pin<KBox<PrivateData<'_, T>>>`.
-> -        let private_data =3D unsafe { sdev.as_ref().drvdata_borrow::<Pri=
-vateData<'_, T>>() };
-> -
-> -        // SAFETY: No one has exclusive access to `private_data.driver`.
-> -        let data =3D unsafe { &*private_data.driver.get() };
-> -        // SAFETY:
-> -        // - `private_data.driver` is pinned.
-> -        // - `remove_callback` is only ever called after a successful ca=
-ll to `probe_callback`,
-> -        //   hence it's guaranteed that `private_data.driver` was initia=
-lized.
-> -        let data_pinned =3D unsafe { Pin::new_unchecked(data.assume_init=
-_ref()) };
-> -
-> -        T::unbind(sdev, data_pinned);
-> -    }
-> -
->      extern "C" fn receive_buf_callback(
->          sdev: *mut bindings::serdev_device,
->          buf: *const u8,
-> @@ -365,6 +341,10 @@ pub trait Driver {
->      type IdInfo: 'static;
-> =20
->      /// The type of the driver's bus device private data.
-> +    ///
-> +    /// Device teardown should be performed in [`Drop`] or [`PinnedDrop`=
-](pin_init::PinnedDrop)
-> +    /// for this type. The `'bound` lifetime allows the data to retain d=
-evice resources and a
-> +    /// [`Device<device::Bound>`] reference for use during teardown.
->      type Data<'bound>: Send + Sync + 'bound;
-> =20
->      /// The table of OF device ids supported by the driver.
-> @@ -382,19 +362,6 @@ fn probe<'bound>(
->          id_info: Option<&'bound Self::IdInfo>,
->      ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound;
-> =20
-> -    /// Serial device bus device driver unbind.
-> -    ///
-> -    /// Called when a [`Device`] is unbound from its bound [`Driver`]. I=
-mplementing this callback
-> -    /// is optional.
-> -    ///
-> -    /// This callback serves as a place for drivers to perform teardown =
-operations that require a
-> -    /// `&Device<Core>` or `&Device<Bound>` reference. For instance.
-> -    ///
-> -    /// Otherwise, release operations for driver resources should be per=
-formed in `Drop`.
-> -    fn unbind<'bound>(sdev: &'bound Device<device::Core<'_>>, this: Pin<=
-&Self::Data<'bound>>) {
-> -        let _ =3D (sdev, this);
-> -    }
-> -
->      /// Serial device bus device data receive callback.
->      ///
->      /// Called when data got received from device.
+(and others) due to calls to the `noreturn` symbol:
 
-Reviewed-by: Markus Probst <markus.probst@posteo.de>
+    core::panicking::unreachable_default_msg
 
-Thanks
-- Markus Probst
+Rust now outlines the constant messages of the panicking macros [1],
+thus `unreachable!()` (i.e. without arguments) calls that new function
+instead of `core::panicking::panic`, which is already in the list.
 
+The same change introduced the equivalent `noreturn` functions for
+`panic!()`, `todo!()` and `unimplemented!()`, which lead to the same
+warning when those are used:
 
---=-EDAa2rzL4vfrR9iRkevA
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+    core::panicking::panic_default_msg
+    core::panicking::todo_default_msg
+    core::panicking::unimplemented_default_msg
 
------BEGIN PGP SIGNATURE-----
+Thus add the mangled ones to the list so that `objtool` knows they are
+actually `noreturn`.
 
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmr3fakbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPS9NAQAJz35dn34vwO1cHY+moo
-kIjIgv5XKwFm73AdFdW7aqUO9XCW9TQqd4JCG8Sg8++Jq6vkXd+GnrO4jHcuhoAU
-n6+/uv0aG5iH2FF2UbfA7BA0VY5ZTL1wI5WFrpXpsJGPoe2E4NCeNvhkF3PvkDqy
-CSKx5R3xkGoA2v/HB1nEcmkh1s9/qa3gTS6f+vaE/M5XXogmYcX424ktnA42jUdR
-joohrncC/wHKQhShQWNjOhYJh8oPHPZLKJhXq3rtiT1GNNmiijrnK/RhJZbCWwBT
-tVTIkVfmaZxdQ8weTr0FB8OhOyao0NMmrNZvAhv4xuTGx1KHCb267y/35iR7Mg6i
-Fjy9YWiOEboK+fBTIAOtGuAm2XrLtT54KV1u+0R8CoMwsUgcBjZ7F+1hPBiEpkME
-PJhRPSXwYA913kusT3+m8HWlbuObBNyD8kOTyVD44bxYB3C5y6yOxfp+P+J/Ax5x
-qWLXbLRuOGOTzgj6cyluHPbjcsoDewsAFUkvBbk5huHHTGom8LjhAEiHqnajmm4k
-m7ItRvbrxPl+sy6/JTXu/45vZh2xblT7AC8rGvRNZHoErdeY56KVEEio9td08FJE
-qPlLHfuuo/Jy52qpiIlM7ue5VkA/tkGZri/I0krHiTkvRMfTgIoP8ZMt8JOkPqdE
-Zxou2D0rXcA8KBONQi+Nwbxv
-=mwoh
------END PGP SIGNATURE-----
+See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
+for more details.
 
---=-EDAa2rzL4vfrR9iRkevA--
+Cc: stable@vger.kernel.org # 6.12.x (Rust is pinned in older LTSs)
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://github.com/rust-lang/rust/pull/163766 [1]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ tools/objtool/check.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 931c5c412f15..4ef5bf97d333 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -206,9 +206,13 @@ static bool is_rust_noreturn(const struct symbol *func)
+ 	       str_ends_with(func->name, "_4core9panicking9panic_fmt")					||
+ 	       str_ends_with(func->name, "_4core9panicking14panic_explicit")				||
+ 	       str_ends_with(func->name, "_4core9panicking14panic_nounwind")				||
++	       str_ends_with(func->name, "_4core9panicking16todo_default_msg")				||
++	       str_ends_with(func->name, "_4core9panicking17panic_default_msg")				||
+ 	       str_ends_with(func->name, "_4core9panicking18panic_bounds_check")			||
+ 	       str_ends_with(func->name, "_4core9panicking18panic_nounwind_fmt")			||
+ 	       str_ends_with(func->name, "_4core9panicking19assert_failed_inner")			||
++	       str_ends_with(func->name, "_4core9panicking23unreachable_default_msg")			||
++	       str_ends_with(func->name, "_4core9panicking25unimplemented_default_msg")			||
+ 	       str_ends_with(func->name, "_4core9panicking30panic_null_pointer_dereference")		||
+ 	       str_ends_with(func->name, "_4core9panicking32panic_null_reference_constructed")		||
+ 	       str_ends_with(func->name, "_4core9panicking36panic_misaligned_pointer_dereference")	||
+
+base-commit: ee83899302a0457a3ba47464a13e8682bd7ba27d
+-- 
+2.56.0
+
