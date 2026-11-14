@@ -1,81 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.235
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794618474;
-	b=s+CLXqJQfsHAsLhHILRUKtBYoXytoNaixIAUWM15WcpWiDHKjPsTiwfZfrYKCkSUpQK/
-	 +qAfDtFYQqlUBAN/FbFBD8kkmyHK9Wkzsw789GZd+968/04gLxtnCdMfUUAwM5kg8W6Jh
-	 z9VFhEx8jnY6i9k6X9dY9GB8G9R33hduJZYxUBsGxXRd5oOjB1v31pGpEwu4Et+ER1GUd
-	 MMxlhzgWlcOHRktF6TVLDkC6FdKFtETrOfVAy+7oFkB5h4nJwQ+WozmtyOrrimnuizY85
-	 y1kKZ98GBzAEWu8e9AsVnaHDdVSDvpHe22TCnO9kBzadbavNl4vyqF6G8VU8FwoLFXw==
+	t=1794624323;
+	b=Amq0rJ+hqL8b8R8Z06SRGyo8yYnrGWnJDsKjri7iK+SHmbBobaQ2A0Vj+omCQo7E2MoM
+	 EKurKYTjypI6aFtCMIy0OazeFKt52Pp3t8rPOiRODWH8HFfA+J8/p+3HK9iB5mnHr/HqT
+	 5rP+uNmVaUY0pS9eGiR+8kHfDK/T4DbDFIUdWrOYdMoz4fRxKLastP+AymA4A9auuPgCu
+	 Zzu+Qec704xob2WXelj8n8UrOLjqqv5v+i2yqLJkf1jzksxoQmYJnMP2l3exjFg9ZAi4U
+	 ZX8wWP2lvwnJDBYgI3kZE7vdFYOYJFyjNTKnXsxR+V7wTCx6g8N0EtF48824h9RfZVQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794618474;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=adgGF6Y+EY3ng5J3ZlI+WZuzQBE8vUwfEB8/besoPZ4=;
-	b=frZoGETVEb250bZnbgvB1qj6u+fdOWJe896imQAJIVE0n+anBL24XYFfX794oEvaTs6l
-	 xf7cIZbF9YMiUkA2TtDf9+d71DdGCWWmo3Z63IgtSTare9acGqdyqogkMAd6fLFeTQo1v
-	 FlNcfos1mnQ5aGAPl91Ai2zBqzMYJmbFr3QTJBkB1vWb3msE5ovkA2DTBpHY3rV5syI4A
-	 AzMoN3/IpFWcuV+DzbxuT1gjKPzMqZOqkO3wlRBtFPlKVigO+SonKDhETWQ2CmN/3Ypbq
-	 js274wKlPJBpj56SyNHa0sK+WobX8EYcXeZlUZVU29Wzx64EW34H5n+zDef83vXaVMg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794624323;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=h48qZYbCl3W7+4kKVvK+3RKM1GhCKZGVnH2TB53H7Ok=;
+	b=WbigzR1eIiWHbdQmnePTLUO31BqyHyMShbK9vzBpNRjHsAjthj8A1+Um63CfqHnyO4V3
+	 2zW20/72WDtKsEJDiYF1tYP+9gP65XUmTU3Lh+JBZRivmM/f6VLPD1YH5OcgvrCiw1usF
+	 zmMWO73KLav2Vx4RkQ9/Q46w6UbkdYOeTdTfla9rOiAGdNG8rTATkkR7OI7FVDR2/2oBH
+	 fQVz06F+6Ht+G3CtlLm1BRg2CrGkM1yGhDTSM5sRj7ErqKWjp2QI/GsxVDGKtjmNry+6j
+	 N+4t2d+cFb1kut8LROF8g04i7VxBBMBQaCSodpFamtgrRnomFiV58khDwO4I/L1RWNQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=l5rFfQGe;
-	arc=none smtp.remote-ip=203.205.221.235
-Received: from out203-205-221-235.mail.qq.com (out203-205-221-235.mail.qq.com [203.205.221.235])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gPwQl0P4;
+	arc=none smtp.remote-ip=209.85.128.48
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEF5606A329;
-	Sat, 14 Nov 2026 01:07:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BEEF5606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6756606A330
+	for <rust-for-linux@vger.kernel.org>; Sat, 14 Nov 2026 02:45:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6756606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=l5rFfQGe
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1794618470; bh=adgGF6Y+EY3ng5J3ZlI+WZuzQBE8vUwfEB8/besoPZ4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l5rFfQGezJgUnMEFMtKhnPo4DHriawD/RJODPWF5yplUE1E2Iz70Xh3AfOqqWeBix
-	 ul0D9yU1nk+wog/KgpgIs93/viC0aC4ZQb/9Q3wyQ89qioTBkvHoXR8SnDgRsaKEi3
-	 lvF6WrI3yfa9gPIgjVPxIuI5YXflLlk8HTp74T5A=
-Received: from shuai-VMware-Virtual-Platform.. ([117.158.156.198])
-	by newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP
-	id 1EE0C051; Sat, 14 Nov 2026 09:07:46 +0800
-X-QQ-mid: xmsmtpt1794618468tnd51rlub
-Message-ID: <tencent_680CDC69A5435998E4719B6A703BC5642609@qq.com>
-X-QQ-XMAILINFO: NnYhxYSyuBnL1Z87h18sMZq0bBCUkQExEEnScCwaGf0corEwkj50uT7kLFjLro
-	 lBQ2Cer9TfBCWLP9TzIBLzi1xEG+BF9n6pK7oSipBLItfB88/iClrYKxLiXiJdtpLtrIbeGwGx9s
-	 baWlHtnuxdeELqCb7d8HFp7Cp+zPkICPF00zPcoWveisTVR2NOuk5zP8JXGQhw8Z0rSVGxM2hwUa
-	 +u0afhsyNkjvMTB2fV3vP30qUYz95sNktBkZtxusGcRGqoy95iL0DBMA2RGGbUbvHDf6Pc3pPhfp
-	 cAtU1bW7OFhziLyG4cTtqaYfsxUrLQaXngMsFP4C8UsFXU0sHWsxoSSWJ7vEEeCMBdNBFdoIpLz1
-	 0kv33kAa+N+YGWwN8AZVUATOCHczYBtU2sREaCNYuLHK2uN8VMSBbz2k6P9OJR8v63HpwprWI3Y7
-	 Chu71dC13887vynVt2lug5JgrBijDjKTUGpgG1yDMFzYJ0WiQlGasXv3osAfIB91c+WbOFzmzcAh
-	 g/7z6azSkUI9anAnybNoxI0/46MlzylV29mSCCReIQVcyM/RfgYPyWg5vSTTZR9Gy+1G7OTiKq2J
-	 0YguEhB4tRgLKpCKL/ElQ5my3v/2G9mDdWm2mWbYyPno19t8SGCrq8KsYTugbtZdZap/UdJT3Hul
-	 23QGqeN6TuNQAPs49+K4vUJHQhZWqwD/gLGdIF5YutC6HsW+dYSiZeJJhq7OuvXHkTImcDuh+4sC
-	 EsT3cQTm3RrAkGcrQBAo1/oKn6/YApTbiUGkqZbTHP5opJXWXn4r5sBaYRmWgoCBYFUTfQUX4IvA
-	 5XfQSz7Pt1mnF+KLBiBG4ZsNCYY5jo7ojHSgEo973DUr14OyYtMd8Bt4WbAwjn/69B0azlPmwu3S
-	 VHqxexuK2b6qo/TEhDpB/u/IynHdFGXc4SiKba19Q2xdH0OK1LK6BmuhTtVSVmKWeqWR/SQvPhcF
-	 C3w1LxjRGdPQ3pETwEQkZEdnPXfaif7dRXHgxSvVuqPewAG3x1WvSpUyQuzWR4dOK3w6c5SsL8z4
-	 KchNfNHp73ZM3+KJMcf8yXeJ8eiV20e/oDeiCj44GF9ZmikPiPRQcnRBkotIq/9HEDXsnQ9npWMf
-	 ErO+HBFOiRQFtOFZSOVcSrYJx7SGHa6gb+6MKU
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-From: Shuai Liu <847807867@qq.com>
-To: linux-spi@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gPwQl0P4
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a2153c8525so10080395e9.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Nov 2026 18:45:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794624321; x=1795229121; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=h48qZYbCl3W7+4kKVvK+3RKM1GhCKZGVnH2TB53H7Ok=;
+        b=gPwQl0P4iPKFNkXXe9HUrsnBEx7x40xFM51ar4QB4iFjpTfG5DVZDXByaVcWSCxZUr
+         YaxWnMjxP1mOdIZ1vYrZ6QZQmXOQtGljigPQTM5d1Yl2k7T2Ytu3spr7tCb9Gl8FO3UC
+         wJnjq3WCBSjIu3OxUsUs0+gzOuys91c7nV6+vyM2ygwWKeX0CCLepCUyD7NsG8e/c2HM
+         U/W7yIqmIav/+HpO9cFl5/79NqJ6P32a/vGekM9M2UGaYZS17AnJtr7hmmqi9NHl+wg4
+         85S4yVZ+3EGMAy+/5R8jvYMap3YAyK135atQRnyXfsK2H9WhLJAXdLB6XE3/PmpBaAVb
+         lqoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794624321; x=1795229121;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=h48qZYbCl3W7+4kKVvK+3RKM1GhCKZGVnH2TB53H7Ok=;
+        b=Yvai2PpSMyLb+XKGLebPkrCnj8oUfPMP9Y7Q8mYRacUrujAk8RYuQIgPAAnTe8baLb
+         veloP1digi3txiQjMoy9s1y95EV8I4t+FLerXPQI9hrt+oytneSj8mrhMemXLTcZMd1E
+         d8l5H61Ko8GYxYEUUUzeqK5RupIOtN4CeQ0HsCoABuJI4tFLotbej8nKv/MdlArC/rGk
+         5g2QBEnZIRc0QrltnBdisn7yfNUn7qx2EGRLVQ2JK24f9aAgpzmD8YG8xRduNLxYamZa
+         un2KyVbfbmnMMzvxAyYRIhoRMBtzL78yE6MO1TIu3U+w+DJC2zVORrqqqU+C1coSclhv
+         sbmg==
+X-Gm-Message-State: APuU4Z/jbunh76WNddlgF0eOQ+VzhBSc8a845y69NhnCd7qsRajH6DTb
+	jWJOkBnntXxsNBgewpUS5gy6HKu8N41Wpm5FMsX46VK9DxLXag6g9CTV
+X-Gm-Gg: AYBFou29ktXJkiftd+Fpc8sx9BWnTAXUsHCpHAA1srWaxG7K9pi7Vk+7M9yojBZ5v0Q
+	4n61ECf5of5Q8ByNTfZd5ZdQJpASL/C0kaes7jsPIbIhJNIA9sy9hFJkqN3Dy9R0PQEx1jnQAG4
+	ML71yZI/fTBjdkODHvW0Kjs7yjAkA1wtBeXxTQsF92AAIhK9rTC4z2IYLTldAXRU9ygqhqBINcH
+	UqG2plYf3+Y7LnaMiOPCNgkQuQyblNh0RhcFNa6I8aAtMC0tquP6FcSnJuNobqbAupybIOgv8zF
+	1hF8avlIA/lPkd5m6ZOO/4o5IF/+xV44qJVI7LTZrm3OzC9GyFV4JeLCf3tFPpv8Dd1vx5jk1qB
+	TlZ7Rp65vzRIydq5Wg5MZXLwiHhfb8ByOGAGKXCBrYIt9yWUEjmJb+oiMC6YqHRX/yAXQN9n/GT
+	+L0/4ysNBqH0OQ0QAaU+MxDt4mcI7QSDlalpynkL+CU5e8OxwIavNzPVghVdmbsl3VXwOK75OnN
+	wOVTBSZtsS+PBvsVmlcJxelq/5NFcQAildQk9pyavZqu/AFsDI+Yw5G1Md9awbFcYmN65XEH4O5
+	TDelqSQboXloBnxIoQhMXcODZOp3MSrq/SRm0CzeG7soWVGFmNlePAulXFIPKT1V8eVR8fPLLie
+	y+3OFhmBuP0mFpt1GQdE0RwGzi06r7N0ZWbSl4+pjhwUbWCTgJCkYjAeOHz5fEx/MEfWqMxq5hU
+	HogMJy7AqbDqZC6cPZxvOhcrSIWm0Zeri2TuO2Imu8b/gJGjmZLKSxFCP/OuGlSu2ygeEaO/8D1
+	rZb
+X-Received: by 2002:a05:600c:512:b0:4a2:1a:a120 with SMTP id 5b1f17b1804b1-4bb55a5d7bamr69903025e9.6.1794624320958;
+        Fri, 13 Nov 2026 18:45:20 -0800 (PST)
+Received: from martell.martell0x1 ([41.239.125.42])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c69406640sm8198455f8f.12.2026.11.13.18.45.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2026 18:45:20 -0800 (PST)
+From: Marwan Mohamed Zein <marawanzein222@gmail.com>
+To: ojeda@kernel.org
 Cc: rust-for-linux@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>,
-	ojeda@kernel.org,
-	dakr@kernel.org,
 	linux-kernel@vger.kernel.org,
-	847807867@qq.com
-Subject: [PATCH v8 3/3] samples: rust: add SPI driver sample
-Date: Sat, 14 Nov 2026 09:07:45 +0800
-X-OQ-MSGID: <20261114010745.82389-3-847807867@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261114010745.82389-1-847807867@qq.com>
-References: <tencent_5FBF490F375F4C66A2C8DD421A8E8542FE05@qq.com>
- <20261114010745.82389-1-847807867@qq.com>
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	tamir@kernel.org,
+	acourbot@nvidia.com,
+	work@onurozkan.dev,
+	martell0x1 <marawanzein222@gmail.com>,
+	spidermana <xuyiwen14@gmail.com>
+Subject: [PATCH] rust: kernel: fix lifetime of copy_from_iter_raw
+Date: Sat, 14 Nov 2026 04:45:15 +0200
+Message-ID: <20261114024515.1000882-1-marawanzein222@gmail.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -87,123 +111,35 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a sample driver for the Rust SPI abstractions to demonstrate their
-usage.
+From: martell0x1 <marawanzein222@gmail.com>
 
-Signed-off-by: Shuai Liu <847807867@qq.com>
+The returned slice is derived from `out`, but lifetime elision
+ties it to `self` because this is a method. Explicitly bind the
+return lifetime to `out` so the returned slice cannot outlive
+its backing buffer.
+
+Reported-by: spidermana <xuyiwen14@gmail.com>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1265
+Signed-off-by: martell0x1 <marawanzein222@gmail.com>
 ---
- samples/rust/Kconfig            | 11 ++++++
- samples/rust/Makefile           |  1 +
- samples/rust/rust_driver_spi.rs | 66 +++++++++++++++++++++++++++++++++
- 3 files changed, 78 insertions(+)
- create mode 100644 samples/rust/rust_driver_spi.rs
+ rust/kernel/iov.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index 31d62533ef25f..f99bf52654a15 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -84,6 +84,17 @@ config SAMPLE_RUST_DEBUGFS_SCOPED
+diff --git a/rust/kernel/iov.rs b/rust/kernel/iov.rs
+index 43bae8923..8caf04518 100644
+--- a/rust/kernel/iov.rs
++++ b/rust/kernel/iov.rs
+@@ -161,7 +161,7 @@ pub fn copy_from_iter_vec<A: Allocator>(
+     ///
+     /// This will never write uninitialized bytes to the provided buffer.
+     #[inline]
+-    pub fn copy_from_iter_raw(&mut self, out: &mut [MaybeUninit<u8>]) -> &mut [u8] {
++    pub fn copy_from_iter_raw<'a>(&mut self, out: &'a mut [MaybeUninit<u8>]) -> &'a mut [u8] {
+         let capacity = out.len();
+         let out = out.as_mut_ptr().cast::<u8>();
  
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_DRIVER_SPI
-+	tristate "SPI Driver"
-+	depends on SPI=y
-+	help
-+	  This option builds the Rust SPI driver sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_driver_spi.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_DRIVER_I2C
- 	tristate "I2C Driver"
- 	depends on I2C=y
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index b986b681cde5a..efe04638a990b 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -8,6 +8,7 @@ obj-$(CONFIG_SAMPLE_RUST_DEBUGFS)		+= rust_debugfs.o
- obj-$(CONFIG_SAMPLE_RUST_DEBUGFS_SCOPED)	+= rust_debugfs_scoped.o
- obj-$(CONFIG_SAMPLE_RUST_DMA)			+= rust_dma.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_I2C)		+= rust_driver_i2c.o
-+obj-$(CONFIG_SAMPLE_RUST_DRIVER_SPI)		+= rust_driver_spi.o
- obj-$(CONFIG_SAMPLE_RUST_I2C_CLIENT)		+= rust_i2c_client.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
-diff --git a/samples/rust/rust_driver_spi.rs b/samples/rust/rust_driver_spi.rs
-new file mode 100644
-index 0000000000000..7eee7b7357947
---- /dev/null
-+++ b/samples/rust/rust_driver_spi.rs
-@@ -0,0 +1,66 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust SPI driver sample.
-+
-+use kernel::{
-+    device::Core,
-+    of,
-+    prelude::*,
-+    spi, //
-+};
-+
-+struct SampleDriver;
-+
-+kernel::spi_device_table! {
-+    SPI_TABLE,
-+    <SampleDriver as spi::Driver>::IdInfo,
-+    [(spi::DeviceId::new(c"rust_driver_spi"), 0)]
-+}
-+
-+kernel::of_device_table! {
-+    OF_TABLE,
-+    <SampleDriver as spi::Driver>::IdInfo,
-+    [(of::DeviceId::new(c"test,rust_driver_spi"), 0)]
-+}
-+
-+impl spi::Driver for SampleDriver {
-+    type IdInfo = u32;
-+    type Data<'bound> = Self;
-+
-+    const SPI_ID_TABLE: Option<spi::IdTable<Self::IdInfo>> = Some(&SPI_TABLE);
-+    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+
-+    fn probe<'bound>(
-+        sdev: &'bound spi::SpiDevice<Core<'_>>,
-+        info: Option<&'bound Self::IdInfo>,
-+    ) -> impl PinInit<Self, Error> + 'bound {
-+        let dev = sdev.as_ref();
-+
-+        dev_info!(dev, "Probe Rust SPI driver sample.\n");
-+        dev_info!(dev, "max_speed_hz: {}.\n", sdev.max_speed_hz());
-+        dev_info!(dev, "bits_per_word: {}.\n", sdev.bits_per_word());
-+        dev_info!(dev, "mode: {:#x}.\n", sdev.mode());
-+
-+        if let Some(info) = info {
-+            dev_info!(dev, "Probed with info: '{}'.\n", info);
-+        }
-+
-+        Ok(Self)
-+    }
-+
-+    fn shutdown<'bound>(sdev: &'bound spi::SpiDevice<Core<'_>>, _this: Pin<&Self>) {
-+        dev_info!(sdev.as_ref(), "Shutdown Rust SPI driver sample.\n");
-+    }
-+
-+    fn unbind<'bound>(sdev: &'bound spi::SpiDevice<Core<'_>>, _this: Pin<&Self>) {
-+        dev_info!(sdev.as_ref(), "Unbind Rust SPI driver sample.\n");
-+    }
-+}
-+
-+kernel::module_spi_driver! {
-+    type: SampleDriver,
-+    name: "rust_driver_spi",
-+    authors: ["Shuai Liu"],
-+    description: "Rust SPI driver",
-+    license: "GPL v2",
-+}
+
+base-commit: ee83899302a0457a3ba47464a13e8682bd7ba27d
 -- 
-2.43.0
+2.47.3
 
