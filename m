@@ -1,90 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794725276;
-	b=Exw927mbgjTeDYS3GUCH0/i3aYI9MZA8E4mHpeIrRqnusaFKw98tCyJXsn5MuPjuL3Q3
-	 FJ8G0LZmwCmtcgy/qBeXrJ5lVbHSQn4dUiwNnQa91hWWNsJV6x0lOrVhi/i7LvImhXbd5
-	 DdyF4evmlcbFW+8v+/pw4rdy/xurSk3xo8S+eNq/U9YLOjJ20hmkwWgEIc2658j0NzSgc
-	 Vi2GIQuHIRqusKN42g6tIoWtZhY69VdGUuczcRUUt5DyRujwtCcMlGJ/6/WOG8BaDCi8q
-	 SOmVlEe42Tcx7hxX3SCqmINSJxhrPXdCPUoDY3smn+QaL+kqo72X2lrN9kQ+aW+AkJA==
+	t=1794725282;
+	b=295vjYIkhCloL2AdIFN+465USmfUMRbXmtdPURwaZsu2lUIhkD9Cxz5+hww1t7U0wRG9
+	 FmDa0aJeiwMlIPFCfNmfXRdEAd/B2AuVAoaACGHw59RYzDvm6aOGhvpqRUCg10Y1BO07Y
+	 HsKKERWQ7seTzDI2B+WMHkz+bRo1jlHo09HNfudFvqSW1nR5cjkU60ZF1+6WgAfL+Bczj
+	 pk9WCdEJtf3wGa1rSsaEwE59cz4QVl3pX47Y7MNv9qlB+G3Bpq80iteFT/LaMFhPcdty1
+	 +52OKaBQRoudSCTUwn6HaRvsiNSFk6oa6+chdLmLLQ+IzYQ4DFhS1YgQcKybu3b1kfg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794725276;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794725282;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:To:Cc:X-Mailer;
-	bh=tCOuiXg8kpPxflANatAGCcoqQ3Bqdp5UPGwZfT0KsEg=;
-	b=MlhP9eYrGqAo0VeZsBAsPOb6z1LZVA5fuACyxCioZ31Zd/jiDhyo5dkdLgNRVd0OBQDk
-	 Y7av9XmUUqbnAGRduXoHJTVckPMtM/lsIoV35PFaH+Oxa7ocMt/XD12yebYrw/niveiFB
-	 nwW8dgePoCOm1bmyK8Pt7zkwaHMeLfIBO0v9pQ/EllQrTTjBcyEoPEVV9C9OvQZ7RyXfy
-	 HbG8dKxnU/YSPO6yXWl5/SYZasctEMedWdQ1poe2OlhLbizIcmgwbZlPbhrSycEApv6zD
-	 SB1KwO9sch9ebiDdwpdQDk5ChJkmWeM5Apd2kDfoNNwYld767Bjjcp5qnxfwfBMX8GQ==
+	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
+	bh=8aCyDVugFTgDmxcEvIKcJWse+PFQb7Di/86YRfNsvCI=;
+	b=q1wc9eCVk8oD4qkIV8PTT3BJbcKzRtilooQyNx6yn2mkKwUUPUyk0jwPssYQXKCIGir+
+	 BhLxh6gEpLHG1pr88tPu/PlIdYay+TXHPgE2PsWsghi2Nuq3G31ESI2OMW+WPZ4zgItod
+	 ndqAry5jXsQ0nckCNFjeW6JtG/wGDIAaqwZb8m2gc0WRp6RwQIwaFdR1x9cIAi3HVLHQr
+	 V5/pg3F+48YaDf+1GvyWaW9ySTiqzFST/WO86dXDlMmqJ8kkrOuz74Y2/RbVOLiZO0Ta5
+	 U1g3EnnIZcDOy5qMWR1asKv/W/DwglquYQuX961kNomOhyyDOgz1xVAAq7QDsrpjIWg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oJz2hC3C;
-	arc=none smtp.remote-ip=209.85.216.54
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=B3GWvUEM;
+	arc=none smtp.remote-ip=209.85.216.50
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE41606A329
-	for <rust-for-linux@vger.kernel.org>; Sun, 15 Nov 2026 06:47:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DDE41606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BF2606A32C
+	for <rust-for-linux@vger.kernel.org>; Sun, 15 Nov 2026 06:48:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 98BF2606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oJz2hC3C
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3b15e46698aso2044166a91.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 14 Nov 2026 22:47:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=B3GWvUEM
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3adac5c10e3so1328801a91.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 14 Nov 2026 22:48:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794725274; x=1795330074; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=tCOuiXg8kpPxflANatAGCcoqQ3Bqdp5UPGwZfT0KsEg=;
-        b=oJz2hC3ClvJrfhKNgz2wQryvBei6eSKNVOTwRwIrluYR/TalqWb8P0ajRdbbki1okt
-         7/mhDKKbseYy7ovi8vY5DAOsNoE0GiFVY2PF4YmfAfSb1MdwAEe4I0pvuvF2wEiVQ23i
-         5nVELoisMLrVlGv+K6fVFmUiCRv33Zi4GOkvJMqf2Wie7FstaCerZX1Mf6tDYkA5HkUV
-         Klr0tccU6VrlHU6rs9XUX05jHZ12cNDMrB7KA0rXj8h6PFghS19tXeJ6I4HsiHuh3ld9
-         Y/ZWkdTEZPCJkpvu31RUmCLrgVIquGTCfyM8LWN9sJBR3mT9yVECKwbs9LT6/Sq77jok
-         8MUQ==
+        d=gmail.com; s=20260707; t=1794725281; x=1795330081; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8aCyDVugFTgDmxcEvIKcJWse+PFQb7Di/86YRfNsvCI=;
+        b=B3GWvUEMoHdmiTkYjZmsLjMMR19mRPYxAeCW8d7JxN51JEh4ylSSFq5sOIsnjlI03l
+         H4q3ff5MpjrWWGAvc4KDXmsZchRylu75+EZ5vUnexjuXm45OuG0eXe55ymUzmrUKMNfd
+         kL5fUAlyDP62rMCFg7JuZcKWC6ru5T2G3TKIEa498hiCE9JPN36nmPgSkOWpFF7Puovz
+         O+1bHxr5W+ymyR/BfRLraz+Qvzm14L/3mO9zYWfX2px8gllNtszznoGVB7UDs+spKXGu
+         halR+HiKpE5QBwpMBXyCELw6TPde/hOlCp6N5c+0oU9un65Zg4TthGNArwNxmM5984/M
+         bALg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794725274; x=1795330074;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=tCOuiXg8kpPxflANatAGCcoqQ3Bqdp5UPGwZfT0KsEg=;
-        b=ZhcYa8qpAUg8bkbBP0CDDOdO/+VXKZPS52jDMjvPHm2XgBCGzsMK/cCDur+Ag148ul
-         H5ri6ZBG/Uem9zp+PJlIzx8SC8KNLSZLDNSL30b1MRYHf3s9hMfx/QIiymfWZx5o1+27
-         dfffbbgQjPp2Hh2KOVF544nMWxM8nruPi940T8Fm5byPr1S8BgFqPwRXOzyG+GPN1tLU
-         3+Bh4Gc9KtwlKkmSF3pdewY3O8BxGa/LqEINqpFno805/s8Yl0foMBJJUUro0M2SI1OM
-         Vyfx+Vut8R7eO7i5XVp+8CKgQclGlnCWxIqkTtbMX8k2b6fXsxSMTt90lnP/t3m6afEy
-         mMhQ==
-X-Forwarded-Encrypted: i=1; AL+hErG41i4ddaK+yuGMp0LnrxK20FQxp2jdGLjVnWkwkVe2gGXnUVSZCpQOmJRVvpt6YPtzHJTGm7/HMVL09/hwLg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z9xVTa1U0Yr79qo0NKh7jDGJ4J4Yp97xXOugg8/YjKePtc/nRDA
-	F2zjQ62/8LOdhzS7vR2dBRNx85WWLOI3WyoljwWdSOggpsdlBNGZaeYt
-X-Gm-Gg: AYBFou0e8g7s6hqFYv2eqz/Ivun65sCJds+atZhCFIO5w37etuwseHi53CRQ8rD8CEz
-	8eXY+Y9+GZvfOZM2AHRYFwMPgV7cIL9Wh7dkowzGDFguOgmfVL3z4DwC8GS9klxRkP9h95UET6g
-	2YHFZFVicbhEh1LwP+BXMQVSdOyLCY3gcHkOdEWlp1yjAduieIeD0eYDqO/KsSNhXJQ+Ug7Q2Te
-	PAETG0JNnZesiT94SRgyZ9HQqBsX2pLybfKhhg3vl20jvhvL1Ve62eAgTpajyDdxen8ylVeXH2+
-	x6phnT+BKGAQe13BGw+DbWSq2V9XxguuExSGkiW86hVHxkLq1QAHKVFSVF1jOwVMV+wycwc+vC/
-	KaauUhmAAnoh6VaZnmzayBdZ4ozOaDNT/pO1jCQHen57elJK0STJyGNbedvK1QqeQIvUe1MgKcZ
-	E/LTLoeYZ8Kj/RlPiEQtDGsdUVrafeZmdsIuN07T0OWlgCuaky9GTIiTGVlo+PpNsvyEh8OLpUG
-	3jxz4OBMK3n64X7PCRCl9JTr/g8peCB0VGFm/B9CVwvPf+LBiFey2S+q4NORv6bWg9+5JuHEDL6
-	d1U73PJzqRsOdnoa+kcS//c3XUlnJEncWRlxFUDRXSvagNCqoHa69fVTOHkjhGIYPmfNC5oR1Gs
-	Nn7MNIMlj9HWGcoBNFOXkT04jr/Iz31msgk1GSoyt2FTca+k1nyE9f6VnPg/NkxhErTKACP1HPF
-	3Sxg==
-X-Received: by 2002:a17:90b:54cb:b0:3b0:ac2c:1619 with SMTP id 98e67ed59e1d1-3b1b0a5064cmr6609898a91.39.1794725274127;
-        Sat, 14 Nov 2026 22:47:54 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794725281; x=1795330081;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8aCyDVugFTgDmxcEvIKcJWse+PFQb7Di/86YRfNsvCI=;
+        b=WJQxAKOomeVfb2R/FiibuWFyY8B20A9x4m4iU8U+CSSOA+5ymSrxHZgfcH+I/QY7Kl
+         p5bodi43oG4pFB+UU7S8wsrfjgF9xjiSK/fFYqwcNYqZXAIsjVFEeqpwKlAMLNdIvanG
+         9eV6a0BgtbupMHiN8TOUsTReJuJY2fDoHUdgfEv3SW7eF9z0PNvtQ8R/q6lh17uL07EQ
+         DKp85BeyyjTWtAgtmfN/tsfBOYwgahVs5tWX4h/WiGHWJXKYySS4c1Arqi/o+E2yp46i
+         xjiu15qn+Dh9nR0z4ZBEzxiWJg3wzSAOuHsmWqtms4XQCvYQ3wsutNdGlov3il3JvkUi
+         IGdw==
+X-Forwarded-Encrypted: i=1; AL+hErFHTmdQAiwa2N3vHsp/TXG6Qr5GuzSTnzPpn/s+5imPiFEVmwbMxLZebfT9CzSq8PCnqs1Mfp459JCdrgqcTQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9sRHbKeDDsLPb9XLNWWxwKHYcHUyUiC2SI0sMvR+foAZgsIyCX
+	RjeHRWUupfOgd8oGt0gqD9K1uxPQPA3jzC8HftONC5dER10vAiOnx8Tn
+X-Gm-Gg: AYBFou0riJr9qHo75Y//lFYPjUfCyo3sjwC+/+kaUCnfwj72oWJAB+wBQgP+ONaAXBS
+	jRzAEDEDg/ZnhIGAiyht9pTcv/q+XdB+MhwgIUglEFFxtiEBgwxxpKyjfE+GrwKj9s6KQUSf+kI
+	NjOuWC6Gwcm13nkjaUsmye0eGLW92WJ+qRYlni8i82GnRNuiy3nSAEOjwoPjNjAJOyDrklFLX7D
+	SUL1tbSk3WX2PHLEi/Z0SvwPLt+tmOMe4NSeETZT1Jsb0+/Lj41DocdFt8Ze5+P+q93DfgDaCUr
+	DaGARXEh91VvuPzRriABUtc4yUNoLssYx4M5eUlVGbOb4Yffdz8xNSFgirX/LHkY5pEjoPK6FJn
+	rUv1Xdxk70EHRKdBSBqoq1uJw0yv/o7N8UlEgbWp+jyl76+Qmg8DeFrChimnfa8jvDCdQ0aXOse
+	Fa8A7yQoTQKQyKiUkbKymUaw5LUcPAAYPWCYdDXYyjh2LGy0bfAJDs3x+MDXgpdHrBYJ0KDZaSe
+	7/QnEmAehe71LSw70Tycqj9norm/Fyfid9SAjWrGCZ4JzesRDRfJuxuEy+atjxsyF+dHPMHgzFb
+	NAi9kZLw/wNb5q590DB1UKWlUhG1vB2N4GIGAV+N9X0O75BdTioeAGAQLAcvVLOhdwY8dZj/GVr
+	bMNgdzVBSJr/3o1giAgpauor5lJ6HpkRmMq7FuAzjWa0YVFHLeo8psN9x
+X-Received: by 2002:a17:90b:2783:b0:3b0:af68:77a with SMTP id 98e67ed59e1d1-3b1b07ef475mr6799366a91.6.1794725280970;
+        Sat, 14 Nov 2026 22:48:00 -0800 (PST)
 Received: from [169.254.3.1] ([143.248.188.96])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d27d26sm16136309a91.13.2026.11.14.22.47.47
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d27d26sm16136309a91.13.2026.11.14.22.47.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Nov 2026 22:47:53 -0800 (PST)
+        Sat, 14 Nov 2026 22:48:00 -0800 (PST)
 From: SeungJong Ha <engineer.jjhama@gmail.com>
-Subject: [net-next PATCH RESEND v2 0/3] rust: net: phy: soft_reset may run
- without phy_device->lock
-Date: Sun, 15 Nov 2026 15:47:35 +0900
-Message-Id: <20261115-exp-phy-rs-maybelocked-v2-0-8fa7897a0352@gmail.com>
+Date: Sun, 15 Nov 2026 15:47:36 +0900
+Subject: [PATCH RESEND net-next v2 1/3] rust: net: phy: drop read_mmd and
+ write_mmd from Driver
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -96,6 +95,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20261115-exp-phy-rs-maybelocked-v2-1-8fa7897a0352@gmail.com>
+References: <20261115-exp-phy-rs-maybelocked-v2-0-8fa7897a0352@gmail.com>
+In-Reply-To: <20261115-exp-phy-rs-maybelocked-v2-0-8fa7897a0352@gmail.com>
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>, 
  Trevor Gross <tmgross@umich.edu>, "David S. Miller" <davem@davemloft.net>, 
  Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
@@ -115,63 +117,106 @@ Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, SeungJong Ha <engineer.jjhama@gmail.com>
 X-Mailer: b4 0.15.2
 
-The Rust PHY abstraction tells `soft_reset` that PHYLIB holds
-`phy_device->lock`, but phy_init_hw() calls it both with and without the
-lock. This was found while auditing the SAFETY comments of Rust
-abstractions against their C callers, and confirmed with Clang's context
-analysis [1].
+The read_mmd and write_mmd callbacks hand the driver a `&mut Device`
+whose SAFETY comment says PHYLIB holds `phy_device->lock`. It does not
+have to: __phy_read_mmd() and __phy_write_mmd() call them with the MDIO
+bus lock held but not necessarily `phy_device->lock`, e.g. from
+phy_read_mmd() in a hwmon read. The register accessors on `Device` take
+the bus lock again, so using them there would deadlock.
 
-Patch 1 drops `read_mmd` and `write_mmd`, which make the same claim, run
-under the MDIO bus lock instead, and have no users. Patch 2 makes
-`Device` generic over a lock context, and patch 3 gives `soft_reset` the
-`MaybeLocked` one.
+No Rust driver implements these callbacks, and none has since they were
+added with the abstraction. Drop them until there is a user and a way to
+express the MDIO bus lock context.
 
-`match_phy_device` is left as it is. It runs on devices that may be
-unbound or bound to another driver, which is a binding question rather
-than a locking one; I think it fits better with moving `phy::Device`
-onto `device::DeviceContext`, as `pci::Device` does.
-
-No in-tree driver is affected, so if this is not worth doing before
-there is a real user, I am happy to drop it.
-
-The audit, the patches and their changelogs were done with an AI coding
-assistant (Claude Code, Claude Opus 5.5) and reviewed line by line by
-me. Compile-tested only.
-
-Changes in v2:
-- Keep `&mut self` on the moved methods, so that `match_phy_device` does
-  not gain register access (netdev AI review)
-- Give only `soft_reset` the `MaybeLocked` context
-- Drop `read_mmd` and `write_mmd` instead of leaving them `Locked`
-- Document how PHYLIB calls the `Locked` callbacks, and fix the
-  `from_raw()`, `phy_id()` and `genphy_soft_reset()` SAFETY comments
-- Link to v1: https://lore.kernel.org/r/20261110-exp-phy-rs-maybelocked-v1-0-3023cc9055e9@gmail.com
-
-[1] https://docs.kernel.org/dev-tools/context-analysis.html
-
+Signed-off-by: SeungJong Ha <engineer.jjhama@gmail.com>
 ---
-Changes in v2:
-- EDITME: describe what is new in this series revision.
-- EDITME: use bulletpoints and terse descriptions.
-- Link to v1: https://patch.msgid.link/20261110-exp-phy-rs-maybelocked-v1-0-3023cc9055e9@gmail.com
+ rust/kernel/net/phy.rs | 58 --------------------------------------------------
+ 1 file changed, 58 deletions(-)
 
----
-SeungJong Ha (3):
-      rust: net: phy: drop read_mmd and write_mmd from Driver
-      rust: net: phy: make Device generic over a lock context
-      rust: net: phy: pass a MaybeLocked device to soft_reset
+diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+index c4e7b1d6c6f4..7ca3f2329e6a 100644
+--- a/rust/kernel/net/phy.rs
++++ b/rust/kernel/net/phy.rs
+@@ -417,44 +417,6 @@ impl<T: Driver> Adapter<T> {
+         T::match_phy_device(dev).into()
+     }
+ 
+-    /// # Safety
+-    ///
+-    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
+-    unsafe extern "C" fn read_mmd_callback(
+-        phydev: *mut bindings::phy_device,
+-        devnum: i32,
+-        regnum: u16,
+-    ) -> i32 {
+-        from_result(|| {
+-            // SAFETY: This callback is called only in contexts
+-            // where we hold `phy_device->lock`, so the accessors on
+-            // `Device` are okay to call.
+-            let dev = unsafe { Device::from_raw(phydev) };
+-            // CAST: the C side verifies devnum < 32.
+-            let ret = T::read_mmd(dev, devnum as u8, regnum)?;
+-            Ok(ret.into())
+-        })
+-    }
+-
+-    /// # Safety
+-    ///
+-    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
+-    unsafe extern "C" fn write_mmd_callback(
+-        phydev: *mut bindings::phy_device,
+-        devnum: i32,
+-        regnum: u16,
+-        val: u16,
+-    ) -> i32 {
+-        from_result(|| {
+-            // SAFETY: This callback is called only in contexts
+-            // where we hold `phy_device->lock`, so the accessors on
+-            // `Device` are okay to call.
+-            let dev = unsafe { Device::from_raw(phydev) };
+-            T::write_mmd(dev, devnum as u8, regnum, val)?;
+-            Ok(0)
+-        })
+-    }
+-
+     /// # Safety
+     ///
+     /// `phydev` must be passed by the corresponding callback in `phy_driver`.
+@@ -536,16 +498,6 @@ pub const fn create_phy_driver<T: Driver>() -> DriverVTable {
+         } else {
+             None
+         },
+-        read_mmd: if T::HAS_READ_MMD {
+-            Some(Adapter::<T>::read_mmd_callback)
+-        } else {
+-            None
+-        },
+-        write_mmd: if T::HAS_WRITE_MMD {
+-            Some(Adapter::<T>::write_mmd_callback)
+-        } else {
+-            None
+-        },
+         link_change_notify: if T::HAS_LINK_CHANGE_NOTIFY {
+             Some(Adapter::<T>::link_change_notify_callback)
+         } else {
+@@ -615,16 +567,6 @@ fn resume(_dev: &mut Device) -> Result {
+         build_error!(VTABLE_DEFAULT_ERROR)
+     }
+ 
+-    /// Overrides the default MMD read function for reading a MMD register.
+-    fn read_mmd(_dev: &mut Device, _devnum: u8, _regnum: u16) -> Result<u16> {
+-        build_error!(VTABLE_DEFAULT_ERROR)
+-    }
+-
+-    /// Overrides the default MMD write function for writing a MMD register.
+-    fn write_mmd(_dev: &mut Device, _devnum: u8, _regnum: u16, _val: u16) -> Result {
+-        build_error!(VTABLE_DEFAULT_ERROR)
+-    }
+-
+     /// Callback for notification of link change.
+     fn link_change_notify(_dev: &mut Device) {}
+ }
 
- drivers/net/phy/ax88796b_rust.rs |   8 +-
- rust/kernel/net/phy.rs           | 206 +++++++++++++++++++--------------------
- rust/kernel/net/phy/reg.rs       |  17 ++--
- 3 files changed, 112 insertions(+), 119 deletions(-)
----
-base-commit: 573af801552999954caa8347e4490b04cf4763f0
-change-id: 20261110-exp-phy-rs-maybelocked-ddc59993efba
-
-Best regards,
---
-SeungJong Ha <engineer.jjhama@gmail.com>
 -- 
-SeungJong Ha <engineer.jjhama@gmail.com>
+2.54.0
 
