@@ -1,64 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794814417;
-	b=QbsomK9sLp9cYV9O/Vdgu4a51fBxSBCYDepHaYYrWtDdCKYq3jcXRXsqY7HLGnQj6yc3
-	 ld4tRpinsATs+YhYeU0+kn3S9LpSQOEqydsH+MQtoDAduC2d3vg3+xve739jJDIqbLrwH
-	 ZNn7LX9wXrzetsbWtuCpAnaDO/pImzT9YGEBTi+pdJ56O4/YumLTDlEi+6CXK0sSx67Fk
-	 xXkFN7Rg5sfwDuy0hrOAz5b1pnTpQif3bR0yA6N4wCL3gQ09zs5lj5B6+NCtdRTtII5W+
-	 9WwfFXL5kXEncCdUHhsxBQNgAhNpRVLpuZ+yGfwI0VdoCiZ46GKltqh4vzTlWtO3Iww==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794814417;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=/XC/Q1Mv6Gwi8+0irBqNo8aBwyEMA9qX9K4d8AdjCV8=;
-	b=LhdjBZwfr5i/HScce08uNn2u6ExdCg+xm9zADZ5GtWlb7o3CsEALfth+CCCpsbzGBWlJ
-	 l/zJmd0mpcpXjwVz4ZmDXFwP98KtIs0EW0NVKpmrGR1gIp/D2Qr86gVlojSFq3DNWt8Bf
-	 /uzNJA0MPtHStUVMA16Zw1luG3EUl8FLNvrL0b1roIVzWKnbI2K4edZBLJZuVZ6GXG93f
-	 O0teVoFUEy3HrQLtokYTlqe0Pjiu3etkCr1XBETLF4WyngTVP9LHbEVFtdP6pWQkkZ9Mm
-	 ++b03JyuSyB5wxClt/5es9lUrbd+1l/MbSNKCiu6/k/Av9oJ4U+Ia6Pf2KUVuzkNZiw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hf+eFbnz;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.58
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794814884;
+	b=a+tFRPRhBdItjJuKqtY/OjIqNkY+0DUdyp0bYO+CF0uiSr49EGu1oF+gQhghnO+B6GQ5
+	 Zut9rUFT6WCcQzczFz/m0StKn7+j2eN6SG4Kbz8nYE26zWslvyYkUES0HyLr42rwE4kpB
+	 Gj3JdDufzS+EmOLZVO/vY7z/GZFh1bMozvtYGN8E7ouQVM4wMik3TNARkzTeCfv+QAYNX
+	 DBNMcpJVY1nLNa/Q/s4F4PRck1VjTvvLWMrX7BEL7XeO0Cky7ZphyepR9eJE4BNOzQHoo
+	 15R1XQd3/cM+OI7S410C5KSHf3dsql+cFlAbKFKn+pXt+5uShl3XJ/2wQvck1+U9TdQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794814884;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
+	 From:To:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=6+LrmTd72zFIAfpf4ElzHhGmwkfe4EkEqYG+C++9+RU=;
+	b=S+6bTFmjmT181i4bTMfAU1oi5yqiyxK138e6tcPiRI/iRwbOmrDfqzlof99pSPkZhVoO
+	 RpRXkniAS3YSdDubsTes6kwZttCecioWYJSyiM0kXMJl4n2e6zPUzJRnI1QVV7svGvfgx
+	 SAL+dnA+p4co7zT8KqdAfHz9bUS5itb33vWPWc4HOQgWIJIhUcwmbUYKAtA/qc1+oe5xu
+	 2t1ZcCoJ/Or2tJVO87QqhUBvx6kbjbSNHxMpbr8kmaqWfq2p/bL40pjUxdf7PXR9fzYVO
+	 FaKpd2WGazTNzSwP+KwUhBY4/ABOhb53nXlMUfaHFMxhezHISpxud4MY9By1xkgRtKw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=YolNKwAf;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.58
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011058.outbound.protection.outlook.com [52.101.62.58])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBA6606A33F;
-	Mon, 16 Nov 2026 07:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5DA606A323;
+	Mon, 16 Nov 2026 07:41:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD5DA606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hf+eFbnz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B741F000C4;
-	Mon, 16 Nov 2026 07:33:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794814416;
-	bh=/XC/Q1Mv6Gwi8+0irBqNo8aBwyEMA9qX9K4d8AdjCV8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Hf+eFbnzWzP7jSJkU9fhUICakc7Oae3Zg0gj00F8L9z4UdA6VQISyy6zPZtD1kPGZ
-	 0GyYaktnIPN98Z9WMvfF0ZdCVWVoVcCfLMieTglqQZIYVa8FTy+NbVmynY0IkMGOHQ
-	 PWHJJ1za5APXeyaolV/7CGP0nbLEBn+lt2QHCfTA0CDMxPtMnNfuTZ5og7iy9rFCQf
-	 ayWjn0DDIOrUdvIiyfvciI0JzeND0FvQV3Yu5BokTKEymFZvedJaVXYl2VUSx15sZd
-	 E9mhN7nhDISULSoVWKXmpycvbtuzg7mAmSFlcs5AtyknQJlb80fBfVjTaYxz29EGBv
-	 Fpepz2nQTzaww==
-Subject: Re: [PATCH RESEND net-next v2 3/3] rust: net: phy: pass a MaybeLocked
- device to soft_reset
-From: netdev-bot+sashiko@kernel.org
-To: engineer.jjhama@gmail.com
-Cc: fujita.tomonori@gmail.com, tmgross@umich.edu, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, dakr@kernel.org, daniel.almeida@collabora.com,
- tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, andrew@lunn.ch,
- hkallweit1@gmail.com, linux@armlinux.org.uk, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 16 Nov 2026 07:33:34 +0000
-Message-ID: <179481441455.3136.11985756118593625944@kernel.org>
-In-Reply-To: <20261115-exp-phy-rs-maybelocked-v2-3-8fa7897a0352@gmail.com>
-References: <20261115-exp-phy-rs-maybelocked-v2-3-8fa7897a0352@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=YolNKwAf
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MzWA2FyXEqXNJKqPlIiIdii4sK3ZrOB5fo7D5L9DWMmJyCtTX8rsRJVbyUj1V2FmMR73tR6k7VxZg1XsMYrrUf1b/MnBw21bfWjDPb4OVYP9TgROWwi3PQYFWbHgpD/UiObZB3zPYoZdVEkPVbdOBVPB+t5+LeJJHKl+oWR7RmyHDFmdRbZJ9HCHQ8cmKGLrot6Ly3yx2Tv8S0A6acwcPXDFS5tN9sUqfX6d5dBb+8q4fXCGtQDn+YHFd22riS55DQpgNCg2s2QTP7NtAheHi+0zDD7/521NVSsVXHUz5AnOlyPy+UJvZ8Ae2BQI1XcLO/VLT8s2wZkdWbsSraC2/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6+LrmTd72zFIAfpf4ElzHhGmwkfe4EkEqYG+C++9+RU=;
+ b=AO7+KZsxI3tp4Xk8p892sEyRYo3/BGceV2SOwWSilLwmgN7Aq+Jcdd6ez2w4iOrtCQuhuCAkjGAlnSvL+xC95HPXIj7DhCsFra9L4BP5aa9y6InoxTGf51CM/9A+KTGUUN2EIdgu+IFSjXRTf2/rrXsFfQMHLGDwlfoIG47SdNEFFzgMu6r+J2ajqrk+9GxOKm2GM88WrAeAEEHsNNzcjraUGtdEHfEs9EHdc6bdTn/qtg0I4D1Bm6y191BKopaf/xrcowBXFgCyj8PGu7hP0SnJQ5WEf2JgFEGlc6GZKu2kmRXhQraYbKPiMopBwyXxNUKvpN+EmC+ufLk8SnA5cA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6+LrmTd72zFIAfpf4ElzHhGmwkfe4EkEqYG+C++9+RU=;
+ b=YolNKwAfsBcx7wxDGaVad8ckgD5+QFqG8WU7Pinn2F/qfjFh+VsTWok0aIpbN19p1EIW8jq1obqzBVRUxjFYt04DigG0JtjMkgIZKyUGWOk/jB1KxX4HtwraeBwcG5PQwn/90WjKwhSKne1/+hBvVjS7/z+NHiBz8JtR1MS1cwUKlLaLDDk3QaZYHrzfvWZZenpzUIx5lIF6YZz3Ygr3smEh4dv3XUu9pAQaj+yWojy99QyvGIP1emALXgOFaBlvzb+39TtpMWqNFeLMbF5fYAVvzvyu+aXKuBD9L2k03xT2gI+mFudE8D74gvx3r5/UW7oqaj4EDlKCcdFK03WW8A==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by DS8PR12MB712524.namprd12.prod.outlook.com (2603:10b6:8:449::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Mon, 16 Nov
+ 2026 07:41:13 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0615.012; Mon, 16 Nov 2026
+ 07:41:13 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 16 Nov 2026 16:41:09 +0900
+Message-Id: <DMWGRSF4RALG.3RFZEROU4AYOK@nvidia.com>
+Cc: <aliceryhl@google.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
+ <lossin@kernel.org>, <gary@garyguo.net>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] gpu: nova-core: minor NovaCoreApi cleanup
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
+References: <20261111161935.750047-1-dakr@kernel.org>
+In-Reply-To: <20261111161935.750047-1-dakr@kernel.org>
+X-ClientProxiedBy: OS7PR01CA0110.jpnprd01.prod.outlook.com
+ (2603:1096:604:258::16) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -68,164 +98,81 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|DS8PR12MB712524:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6636e529-fed3-42d2-742f-08df43b4fd40
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|10070799003|366016|22082099003|18002099003|11063799006|56012099006|10067099003|261028144727099003|261026140227099003|261022105027099003|261021135927099003;
+X-Microsoft-Antispam-Message-Info:
+	GZikN9ZWvA5jgm1ead3mL4e63391ZX1UbfhRKupv2nMoOJQO8YO8HJqRoV/fhZYYVOsnrLEZrDR4Cl2pN9JUR2WOhzcn4BzC28/ZuI4vF6deMCor0F8J0NP02R89cnzMWPFGsTR6PL3oadx7d9dD09fZHjraln52HKfLo25yIR80hQKUFF7UlN4OYBt8yXfhfIVhGo0vZJfJCFfrECwuQkEr/vhWDjbJqOhy5JmouScRADyyjqkLy2ZK+k4vLnrbD/p1aiW6uRUnQSzI0+4MQQlM2KwPCrnX2YMWlotHM52wuKONlKNfwzFQ20eJ7T6FhTdn90nqefpB4KJrUg67zJzTLhIgeMfcdDyC/Ho9kdU5HIpG4swLL06Qauzgt7hG0BOeu0gbkFtxSFa8A4QXDMKtdN9SVNsa6qsRKrKkL5BA/F0IyLSY6jdVdlFnwMq3EY4H5tygBphj8O3VN/6u2UekCBIC+OuDZe0L16D738gplmQuKlDuvBoE6ccRXJdK+dPkoF+5cCkjlSj0CCY8zUQwpFBqowizoTQOLaa1EYlxoyyhP5VhqSFp0Csw6+2SLzjDOj7hFiasxo+hFIXPmLdrnLINhQ9mMzl/2B+gHTbekoAroqlqjxvJgzLoItwE0bOhsGrjUbVJrar1WSeSEtiWh6jhckl/QpwW52m3Wcc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(10070799003)(366016)(22082099003)(18002099003)(11063799006)(56012099006)(10067099003)(261028144727099003)(261026140227099003)(261022105027099003)(261021135927099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OVk1RFl5ZUszTWQ2YW0zWW1pckRkYWhCYStNWkZ6WTdJOUNPZ0NQZzMrLzNK?=
+ =?utf-8?B?bW5TQmZVeHBMQWFXMVQ4MWVKeWYwbFFDUzBUT3o1N3FlQWxEbEFkUlZ5QnBh?=
+ =?utf-8?B?VGZ3c1lMSzBBcVlFT0VoemtMbnp0Z25PWVpjLytJcjNMdUZUUjFYckJhZW1o?=
+ =?utf-8?B?aDNQdGp0NVI0YXR6NUQ5aVNibmlWTUkwTUZyTHQvWDlvZ0NzSXZySnFIbEoy?=
+ =?utf-8?B?VS9vUkoybUNxVDJMK2JTcTFFQ1U1TWR4SHJndi9ua2p1UEtZNGtveHBLcGxs?=
+ =?utf-8?B?SXhMc2d6bTFrcVpoaER3MU9mU05iZWJ3a2QrWmMrbWpWMDl6cENuVVgrK0Za?=
+ =?utf-8?B?ZWM3dVE3djlsMmgxdlMxZmFBSzZ4ZWxqa1lDM3lYNFlST0NWcTRPbWplTkd5?=
+ =?utf-8?B?UFl4T0xvNVdUbXQ2NFBFMmY2UXA5eE5DT3ZNaFJlQ1NKNklyRzJ3VzFrMGt0?=
+ =?utf-8?B?OVpxV0N0bkxsUEJlZGl5by9IUkxIOUkxS1RzRmJLMEpUak8yYXpnRmxORFdK?=
+ =?utf-8?B?TWR5WllOYWoyZjMzUzJKUHRKa3JjT1J3YUp6NXA2U3ZLdXdzN3A0VUxwbER2?=
+ =?utf-8?B?NXZEcnkrSzB3SVkrbnNBYmNZMTVuVFJmRWpNQkR2ZmhWbzR1UHRKZnFUUnp5?=
+ =?utf-8?B?djFsWEtwMkxZay9JSFdYczZVWVJHL1ZtSkRTNXM1THFsdkZtNWhTRSsvMzVk?=
+ =?utf-8?B?UEIyU0ZQV0dscktkZ0ZsSVJCRXVsdVpRSDZleXg5dEI0YUJ2dEJuLzJwenhR?=
+ =?utf-8?B?dTVKMXNRM0o0ZnUza0pka3VML0xlUytxUVczN05aeEZZam1TQ1JHQ2dzcTFP?=
+ =?utf-8?B?NEhlSm9nR093S1h0Q1JXdzhMaWQ4bWFoaktmTktMaksvVFdvcEFPallLQVhJ?=
+ =?utf-8?B?QmsrRDlqME4xUEx4TXhmRXV0bUViR3FTZ3FJUU04MEhmVVpabHhBaUZCQXJ2?=
+ =?utf-8?B?TnFZYk9KZ0NpaWd2cVBuS2gvZXdyRzRTUVpyaU9KQmxlRytoM1lMSDZ3T29Q?=
+ =?utf-8?B?RTVwRllaZXVZakxzQUtTMjdrQW5BaGpJUUNkOEJTaDVmREtqZnMrWFBsbVlr?=
+ =?utf-8?B?cUZGYXNoL3ZnZGtrQzNDUDB5TGt4VmJ2RGh6SGZtcFNzSTJEa25PTlJmZnlW?=
+ =?utf-8?B?aE5BU052SlBvUVZKcWo5bHAwaHRUcWtyTkRHeThGcm9TdlBnOHU3WGJDNy9q?=
+ =?utf-8?B?dm0rQ2V1TDhzWkFERXc2THc3MzlNUEFVMkRlRCt5anFuK0pNWjVOeEszNWht?=
+ =?utf-8?B?SlpCSEd0M1NvTFNHRWZZY1dCdjNtdGlFS1Vha00yWWtuNk9QSndncEorc1hz?=
+ =?utf-8?B?TXRQQXNMZzdDOUo3NFZPUFA0NjFwQ294N1ZPcnA5TmNJNjJiWlJoc1k2VzZ1?=
+ =?utf-8?B?NkliNGs1dDA0ZGt1Z0REZ05UUllNVUxycHNobHdaNXJFa2JlbzVZdkd1TjUz?=
+ =?utf-8?B?bE1MQnJGeDd1QmRUQktTZk4yZGxucTJ3V213enRscllTQkdOVnB6RnFrbEM1?=
+ =?utf-8?B?Y0VhSFQyZkE3YVlJVmtrQUNpQldjUUlhTVk4Y0tIVWVFMEZXdDQrenlUZkFV?=
+ =?utf-8?B?RmhWeC9tb1puaThzS2hVU2lRK2xLY2ZGcmcwWnNHY01rOXV4ajh6N0IvbWNK?=
+ =?utf-8?B?Q1pHYVJhcHlBaWJFODFLYWJsT1F3RjlPL2tjL2lFdFkyK01UK2FjSThMOFBP?=
+ =?utf-8?B?dkorN0JwWVo0WWp6L3RKazh6eXRJbk5nKzJmSW05SStyWTdweXZSaUxlYWRP?=
+ =?utf-8?B?dUZCaGI0S2RxS2F3bkJiY3lVVVZRVjVPN2xLOFNpUE1mRlUyaEdLS21WdEdG?=
+ =?utf-8?B?YkhTalNWQXZtOEJUWWR5cmJUeWkvNWpVVkM3RDY5UHJrcU96Q2x2VUFXUnBh?=
+ =?utf-8?B?bVRrdW11QUh4dHQ3UW1rZGxYZE9IcW10UFpQdUZiNGxHU0t5dVpLUkFIQ3lF?=
+ =?utf-8?B?QjZFVG5hTURPbjc3SXBFaWEvOThjUlVwT0I1dWxmMWxaWTc3OThyZnZlUC9L?=
+ =?utf-8?B?bUl3emovOXptR05FWURocm8zK3RDWVlHY1IrN1FCc05oT2JOWEhsV0pHTzV4?=
+ =?utf-8?B?Y0I3V2gzZ05wenVjU2RzQkNLY2E4bWFtMWplL1IyS3RxQ21ycFR6aW5neFFD?=
+ =?utf-8?B?WVpZbmN5SjVZZStnSFQyaWNib2F0NFY0Lzk3c2ozN2NwYjBqRlg3eFlkRGZJ?=
+ =?utf-8?B?d3RLSjZVQTJtVU5hWUtHMnFodEEwcTdPWEVoemNqN0o0OHFhY3FacVRZLy8w?=
+ =?utf-8?B?bHBrVGNhOEY0VHNCSEVFaTgwcXlHU3FReDFROE8vdEVOMVNjS0pzV1lFSlNB?=
+ =?utf-8?B?bFYwTmVFbG1nZVk1OTU1YTBMR1NEaEdHcU5KbGJxQTZuQzJJVjh4UUQyRSti?=
+ =?utf-8?Q?nGGqjs0WGHFnxmcuiFzGGFGIrMoy84sGa6BZtAYyBffgL?=
+X-MS-Exchange-AntiSpam-MessageData-1: QNC87dLJ1sat6A==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6636e529-fed3-42d2-742f-08df43b4fd40
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 07:41:13.4170
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kSAgClxGp+SIF4v6CL360/ocvVT/63XnuL2+GmPQ1KRfg15+pSkCAc9305OYZeKNzEG3Fb1LG6jAfe9eo0KJng==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS8PR12MB712524
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Thu Nov 12, 2026 at 1:19 AM JST, Danilo Krummrich wrote:
+> Add a constructor for NovaCoreApi and use it when registering the
+> auxiliary device, allowing the gpu and pdev fields to become private.
+>
+> While at it,
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+... should technically have been a different patch; some lines now have
+two changes occuring at the same time.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+The logic is simple to follow though, so
 
-- [Medium] The new SAFETY reasoning for the MaybeLocked soft_reset path
-  misses the phy_mii_ioctl() path, where soft_reset runs at the same…
-- [Low] Two sibling callbacks in rust/kernel/net/phy.rs still carry the
-  false lock-held SAFETY comment that this patch removes from…
-
---
-
-rust: net: phy: pass a MaybeLocked device to soft_reset
-
-This changes the Rust PHY abstraction so that Driver::soft_reset gets a
-Device<MaybeLocked> rather than a Locked device. The reason is that
-phy_init_hw() calls soft_reset both with and without phydev->lock. The
-SAFETY comment in soft_reset_callback is updated to match, and
-ax88796b_rust is converted to the new signature.
-
-> diff --git a/drivers/net/phy/ax88796b_rust.rs b/drivers/net/phy/ax88796b_rust.rs
-> index 2d24628a4e581..88e6e3c88b448 100644
-> --- a/drivers/net/phy/ax88796b_rust.rs
-> +++ b/drivers/net/phy/ax88796b_rust.rs
-> @@ -30,7 +30,7 @@
->  // BMCR_RESET bit and poll for the reset bit to be cleared.
->  // Toggle BMCR_RESET bit off to accommodate broken AX8796B PHY implementation
->  // such as used on the Individual Computers' X-Surf 100 Zorro card.
-> -fn asix_soft_reset(dev: &mut phy::Device) -> Result {
-> +fn asix_soft_reset(dev: &mut phy::Device<phy::MaybeLocked>) -> Result {
->      dev.write(C22::BMCR, 0)?;
->      dev.genphy_soft_reset()
->  }
-
-[Severity: Medium]
-Is it sound to call genphy_soft_reset() on a Device<MaybeLocked> when the
-caller is phy_mii_ioctl()?
-
-When SIOCSMIIREG writes BMCR_RESET to MII_BMCR, phy_mii_ioctl() calls
-phy_init_hw() with only RTNL held. phydev->lock is not taken:
-
-phy_mii_ioctl()
-  phy_init_hw()
-    phydev->drv->soft_reset()
-      Adapter::soft_reset_callback()
-        asix_soft_reset()
-          genphy_soft_reset()
-
-The C genphy_soft_reset() reads phydev->autoneg and writes
-phydev->suspended. If autoneg is disabled it also calls
-genphy_setup_forced(), which writes pause and asym_pause. After that,
-phy_init_hw() writes phydev->suspended = 0 itself.
-
-In struct phy_device, suspended, autoneg, link, autoneg_complete, pause
-and asym_pause are bitfields in the same block. A write to suspended is
-therefore a read-modify-write of the storage that also holds link and
-autoneg_complete.
-
-phy_state_machine() takes only phydev->lock, not RTNL:
-
-    mutex_lock(&phydev->lock);
-    state_work = _phy_state_machine(phydev);
-    mutex_unlock(&phydev->lock);
-
-Under that lock it runs Locked callbacks such as read_status and
-config_aneg, and it updates link. __phy_resume() also writes suspended
-under lockdep_assert_held(&phydev->lock).
-
-Nothing keeps the ioctl path and the state machine from running at the
-same time. Could a link or pause update be lost here?
-
-This seems to contradict a few statements in the series:
-
-- The Locked invariant says that while a &mut Device<Locked> is alive, no
-  other thread touches the state that phy_device->lock protects.
-
-- The SAFETY comment in Device::genphy_soft_reset says the C function
-  does not need phy_device->lock because PHYLIB itself calls it without
-  the lock. The unlocked PHYLIB callers, phy_attach_direct() and
-  mdio_bus_phy_resume(), rely on the state machine not running. The ioctl
-  caller has no such exclusion.
-
-- The MaybeLocked documentation gives no invariants beyond those of
-  Device, yet genphy_soft_reset() is available in every context.
-
-The race itself is older than this series. C drivers that use
-genphy_soft_reset() have it too, and phy_mii_ioctl() is documented as
-incompatible with the PHYCONTROL layer. However, this patch is the first
-to call genphy_soft_reset() on a MaybeLocked device based on the new
-soundness claims.
-
-Would it make sense to take genphy_soft_reset() out of the generic impl?
-Alternatively, the MaybeLocked/Locked docs could describe the exclusion
-that the unlocked callers rely on, and note that the phy_mii_ioctl() path
-breaks it.
-
-[ ... ]
-
-> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> index 105a1b727a088..46602798e8aca 100644
-> --- a/rust/kernel/net/phy.rs
-> +++ b/rust/kernel/net/phy.rs
-> @@ -358,9 +358,8 @@ impl<T: Driver> Adapter<T> {
->      /// `phydev` must be passed by the corresponding callback in `phy_driver`.
->      unsafe extern "C" fn soft_reset_callback(phydev: *mut bindings::phy_device) -> c_int {
->          from_result(|| {
-> -            // SAFETY: This callback is called only in contexts
-> -            // where we hold `phy_device->lock`, so the accessors on
-> -            // `Device` are okay to call.
-> +            // SAFETY: `phydev` is valid for the callback. `phy_init_hw()` calls `soft_reset` both
-> +            // with and without `phy_device->lock`, which is the `MaybeLocked` context.
->              let dev = unsafe { Device::from_raw(phydev) };
->              T::soft_reset(dev)?;
->              Ok(0)
-
-[Severity: Low]
-This fixes the lock-held SAFETY comment in soft_reset_callback(). Two
-other callbacks in the same file, get_features_callback() and
-match_phy_device_callback(), still have the same text:
-
-    // SAFETY: This callback is called only in contexts
-    // where we hold `phy_device->lock`, so the accessors on
-    // `Device` are okay to call.
-    let dev = unsafe { Device::from_raw(phydev) };
-
-Is that still accurate for either of them? phy_probe() calls
-get_features without taking phydev->lock:
-
-    else if (phydrv->get_features)
-        err = phydrv->get_features(phydev);
-
-phy_bus_match() calls match_phy_device during driver-core matching. It
-also runs without the lock, and the device may be unbound or bound to
-another driver:
-
-    if (phydrv->match_phy_device)
-        return phydrv->match_phy_device(phydev, phydrv);
-
-The Locked documentation added earlier in this series already says that
-both callbacks run without the lock, so the file now contradicts itself.
-The earlier commit "rust: net: phy: make Device generic over a lock
-context" also says it will "Update the documentation and SAFETY comments
-to match".
-
-match_phy_device_callback() also still creates a &mut Device<Locked>,
-which is only coerced to &Device when it is passed to
-T::match_phy_device(). The Locked invariant cannot hold for a device that
-is bound to another driver.
-
-Could that SAFETY comment explain why the short-lived exclusive reference
-is acceptable, rather than saying the lock is held?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261115-exp-phy-rs-maybelocked-v2-0-8fa7897a0352%40gmail.com
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
