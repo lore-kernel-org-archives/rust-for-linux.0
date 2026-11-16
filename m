@@ -1,101 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.196.101
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794861902;
-	b=Eo9cAskQrnEiOAqW+RVXC7C3hQBnMgVT5pl8DjWUC5HUen/4VMVKLZ4YbYLVQcwZZ6fn
-	 2YuNHt2iO/WNWWnJpDz1Bx+ZvfbmF014iWeyHu1CBK3cUQHOFZ021WmfgBM/XAAyNOkAZ
-	 srNeF0dCI1NW32S5Ze+/AMd5ktspCEQi2oG9e7pogkcoBK9bWZQWAEKqYNoCb6Txrd9lp
-	 Kx57S+ep4mx3axhQQiVqgBWU062aat3Vr9wBJI+HgHsHDZTmr8kpnjQf2PFAQMgvoV29i
-	 olhzCn34B0PDQzADt+WvU8+de6Qc/D2gfh71g7+tZht5IbOqKK3wbW7zCKF8Xvf/WFA==
+	t=1794866106;
+	b=ln2EUICxHZHjG9Pm+XKar/ayabv3UIFRbHww84EKcHHO4VkUpcb7d5FF0PP+S864I8y7
+	 cWYbelUW1uqgV9FFF8/eigRTasWeexuOT8yrpNgkTv7jeFR/tvc2PbDVtyabC894UQc/g
+	 818oLW4HMmjCFYA9DNgpL5LgCIlVB1ddu50xaBemab7KzGXl3uSxndaQibv9TNY4/o9gp
+	 zVda6HFz91ccDjerBKq2yJv2vPps0atMqyw/+DHIE/gqu0kLgvbkfJ8ivCwhEvu+uLyA3
+	 wV8Rd1Go1FSRB/cFnnGeoWAjXnH/7LvZSvkNmsvKV1bN/8hEN7Xtch2rJ2t5N9Aw/1w==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794861902;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:From:To:Cc:
-	 Subject:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
-	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=3J8dm3+9EEvG6cz1MmZihFTVWyAoYeeI2dUSBOJ11RQ=;
-	b=ZMCMsz9bLgFVeBC3paP5Kq1msHceSRYWqhZjwtPx8gDTSeBnEI7gV1QI2gj2fOj1iOgR
-	 4uNyTPYvMMf8UvL77Lv7PU6xFOXUsZm88+DKjg+pbo53XNyVTqh+6aFrKUCU87D7OX7bX
-	 xeYG+P/B1BBfuZN24KBAUsqNRSisPHkM/1M355Jtrg1XKWyLiVWDi0hVBsprE9W00RPOB
-	 hdpBT4SKdWJfzhyoSBz8BsSKlcx9MHy7DyI6rbDTxQdy3uUDPmASKIreLPsYhRqqWX8rl
-	 GCes8S0gaYTSJuvPMFPXbwimffnQjeyhNSK5MkAra2HCn1m6OoKO84N+pc9HY6puciw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794866106;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-ZohoMailClient;
+	bh=dfvy7wSiuAwFa7w0F1KM93+WCu7GdYO/v/QrAqXAXtA=;
+	b=NabSyha5hgYX2uhF5ihCY8FnLStFWWcPTINz227IRooNeu8NSZkx+Lh8jAxwYxpnm+TA
+	 BxN7UDERSz6K+GUpDj0CAB1lqPgD6Q58Wlhq4onrFwdCfQ15o68iaxGyF9RGPmpbUV4jl
+	 +FaIoBUhBPuKwvm6Bd2zahb7il89x0VErg7c3nss+3ro+jTn4nSz9ZG7Se/KRoGXauCFt
+	 Vrz+i/Y8azMJi+VXi0J5zw2Gtp/UIEeASTyuzHJDxF1N+eEPG60juA895DALu7Gt2pT9X
+	 8b5zrHrEmaOlFLCaL90D57zQHb3L/jsFomycvj1j5L+AANutjmm7sNFpsefaR7ZdStw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=garyguo.net;
-	spf=pass smtp.mailfrom=garyguo.net;
-	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=wQNB1mBI;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.196.101
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020101.outbound.protection.outlook.com [52.101.196.101])
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=XfKSKxnh;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20F0606A335;
-	Mon, 16 Nov 2026 20:45:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D20F0606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41961606A322;
+	Mon, 16 Nov 2026 21:55:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41961606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=wQNB1mBI
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g74Qpewb3MlSSl/k6abp/CTHV90Gbl/cbul1OKhzGJ3Odi6S4cA5X0M9yZiE3dhg3kfDdEpHjQh1sW6SPob0iQJgf9/qhD73d08sj7ij7SxNo8ZJHfB0MZ+6p4RKoql0Rd4TIziJWRi1BoU4vTwu3dg0+GY7sqCBGRshJ+cvmThbp2+nZHcPuBsXkb3nYnqmDkC2ZOYEtMZPahF1K7lkquuoQVGMp6SQWwVcM22sXiZBzpXWympU4EKlxKOQyI4ThUQ3IvZgPNZMzweLsl8mDn1neb8G0Q9XCKD8hwbYnwfTK+Giirc6Qz9fSATt0a3J1WKwhMHD4CHTYeLonDKcjQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3J8dm3+9EEvG6cz1MmZihFTVWyAoYeeI2dUSBOJ11RQ=;
- b=ZKU1Jxh6goZz4ka7+1q+iOcLP5wwu98/4fsomLpGZ147M2VISXBpHOiYjRtCv/TyxiqtkoWdkz3x9/S+tn+pgFJVrwuyKzmtardRJkjKbitnoxsiLvQUGEHhg+3R1+xRsHl45gm95PhwME9sa/4W7UGXTnvXIc/Qbmj8MBpAU/L/oLdMXCVnjdeTVB+VcmwTOhsP0zfmj40lahGxU0iKrfaQgaAKZU3EWLsS/VMjlNybbj6Not1Alb2eaLHeB+MHQ6C1nPp4EWXiY4fkyoFr2R6MSgNCJKwdSmTI1i6KUx0AOYnuOXLLvYUhAz+0AdCmnNidLPgVp/tWHU+z0RY0hg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3J8dm3+9EEvG6cz1MmZihFTVWyAoYeeI2dUSBOJ11RQ=;
- b=wQNB1mBIs+rM2OhSwJpseq4JFepuLIWLApSY1rreuhKOl49ZPlD/weYS0kW/jnkPSwsQSWpqWp6KWc6R0d+RC1HTj8zpTnf0gcUz4XAnWSymeF3TqjZPuOn5TSQcUtGlg8hr3Gx2VjiOCQhNV2ggvo7VzGOlkYI9DDLhe1ecRkk=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
- by LODP265MB577040.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4de::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Mon, 16 Nov
- 2026 20:44:58 +0000
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0615.013; Mon, 16 Nov 2026
- 20:44:58 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 16 Nov 2026 20:44:57 +0000
-Message-Id: <DMWXFWMTEWTQ.2UMH7J6HAX3OR@garyguo.net>
-From: "Gary Guo" <gary@garyguo.net>
-To: "Miguel Ojeda" <ojeda@kernel.org>, "Josh Poimboeuf"
- <jpoimboe@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>
-Cc: "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, <rust-for-linux@vger.kernel.org>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH] objtool/rust: add more `noreturn` Rust functions for
- Rust 1.101.0
-X-Mailer: aerc 0.22.0
-References: <20261114001708.80599-1-ojeda@kernel.org>
-In-Reply-To: <20261114001708.80599-1-ojeda@kernel.org>
-X-ClientProxiedBy: LO4P123CA0219.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a6::8) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:1cb::9)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=XfKSKxnh
+ARC-Seal: i=1; a=rsa-sha256; t=1794866077; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=WYpb/ZRvGP05Bq0/3L9kgmxuOTUvUuOdguZvow4yvH/Kgo0kWWwWl2kdI9MPLJifKhpGJfU1m6sZiO/561vuuoNmyTx03j24RbCBbH35YjktzgUsECRHtoYWM0KF51gtGJ0gJHUgu56LMK8a+5dH7/D0DbL+ZwScz53/0WPDdjw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1794866077; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=dfvy7wSiuAwFa7w0F1KM93+WCu7GdYO/v/QrAqXAXtA=; 
+	b=DrUilEdI2C516cDoikg2fomPfsm5yTm4mIobJERlTt6FfGncAGrW7AuiZEiP7IxDxOvKk/dEQ/dhTMJNKj8jg+DCiC5uGt/0EYH3R9/1mKn1i5dwV+pV6dHIBNspxSHY3z36BZ38dt0VZaMORxqeYNq3RoYg4Z+ZHg/YpJBsVOM=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=detlev.casanova@collabora.com;
+	dmarc=pass header.from=<detlev.casanova@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=XfKSKxnhJiPi6lAbogYeZjGrelM6+M7Vgo5t49NXpgOas9kuAONHjhkXKaseJA+MzVenSFir5JkAXVYskI4c2fPL+Ex3rIIbIW/6Wzg3ihQJ/36RZRkqtkQmQUkcxNKBZCtYYh3jQO3BIZfoPAp31El5nzEbvzX3jJi/PEsqXKM=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=dfvy7wSiuAwFa7w0F1KM93+WCu7GdYO/v/QrAqXAXtA=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1794866075582154.15241391048926;
+	Mon, 16 Nov 2026 13:54:35 -0800 (PST)
+From: Detlev Casanova <detlev.casanova@collabora.com>
+To: "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>
+Cc: iommu@lists.linux.dev, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
+ Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Subject: Re: [PATCH 0/6] rust: iommu: add a paging domain abstraction
+Date: Mon, 16 Nov 2026 16:54:32 -0500
+Message-ID: <iSL9q6tCTCC93Iglr5SH1w@collabora.com>
+In-Reply-To: <20261112-b4-iommu-domain-v1-0-c29e86788dda@collabora.com>
+References: <20261112-b4-iommu-domain-v1-0-c29e86788dda@collabora.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -105,109 +78,100 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|LODP265MB577040:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4c992cba-ed03-41ca-cd89-08df44227a3c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|10070799003|1800799024|376014|7416014|10067099003|56012099006|261026121527099003|261026140227099003|261028144727099003|261021135927099003|261022075727099003|261021121427099003|261022105027099003|261102123227099003|261009223027099003|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	MGWAXp2PlNIX2a4Gm6RhkHKY7WG+MWW0pe+fEItNa5zummj8k7DJ0S2kq7Ss96N8voW4P6umtOzsxRzjotIZqaRtfNVfgbBOC/oRblWYZXe/LYJJ/4bIf8mOJkKq1DZ8I4tJH4sQnm9dLq/v1UubtXEcb5ART1NsJAsOy31L1VQI8yTlPyEZGqsSyfwZXT7OjP7kz+tc6+0pY6nWR/6E1Wr7epKagCyFoiRnThq9U9J+f3JY2mQGoESk2eKwApZjjnTnkarpMRETsAEkXlMuxfkqxQg/vRmYeTNVqaK3xmlO/gWa+01HBiyvBTub5sj/Lv87NW85EAyui2qz1ew+Rb3ajjJQMIBsgeKtOYFCQblv6lTV0pj/Aby2bPT3xGk0+brreCLyyzFs0wGd8i/jw8JLSwZHq1cXQhHwS2+3FPwHYmiqlIMJ48E75qDF4tVFbV+9s4FzsXmnInRSRD2ra5y7dIlOdMddsSwDEM2bPDSvoc6HUgv4UOkjhbIdLN5yEfm/JZSzdO9prNBBMxZpBECyTlEcSZlmWqnPzirxDr+Ab8c9xcBLsiVL1iFaO4RrGikAfgKD9A6A/6J5xUdyAJSt3JL/GQXUZpg1EmxdfHrcCVl+Q/cpRcEcY8Dt590zADiDvIeuk8RTHwa1/nTf3weEIPfERCj07ICCVk1PQzU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(10070799003)(1800799024)(376014)(7416014)(10067099003)(56012099006)(261026121527099003)(261026140227099003)(261028144727099003)(261021135927099003)(261022075727099003)(261021121427099003)(261022105027099003)(261102123227099003)(261009223027099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SjRMSDdEb0lUMWFWdDJtL1I0bFhUTTdneEhXRnRjSHh4UGxjQXNEZ29GMWVt?=
- =?utf-8?B?ZzBaM21wczkwRGVJczkrYi91RHEzRlBxeXJCc2MrNEhHcHl6dXFvZ0VKWEdY?=
- =?utf-8?B?bUdmcEEyWWQybWN0R0wyVGhOS1JLZVJuV0J6Y0VTWURjbENERFd4aUFCeExB?=
- =?utf-8?B?OGpiUFpCMXFVc09GVW5IaENES3NSSGZqazZBb3FFSTYydWU0dGxPeEJrQ2JX?=
- =?utf-8?B?UzNnb2U0K2FlcU96dDdSYnVEVjJwT2NGRnoxWG9GUWhMRzF4d2tZcUMycHZx?=
- =?utf-8?B?dHRTYThDWGxZQnJJVGsxcnowNWcxb3RJUFk0eVZXb3RscUNuaGw4WVQraElN?=
- =?utf-8?B?ckNVdWFwclE5c2FRTHExWUVIb2E0bnJaR29PN0VRcGxLQ2FpM01ScDdVU3VX?=
- =?utf-8?B?MHdmNlFjZm5haXI5MjFHQjd6S0toTzhSbDg4Mk5Hckl2VHlFWEppRDlOYmpX?=
- =?utf-8?B?dFlTOUJEcTRnaTI2aStEUVBwM0M3OXNqZjF0Z2hPN3lHUkJ0Z2hhclRSa2Y3?=
- =?utf-8?B?a0NjMFBvVUc1ZjRGcGx2WXNFZmVIbStmUGZYMTlCbHRvK21uUCt0RGtnWDZl?=
- =?utf-8?B?SElmaElTYVY5ek40aCtqZU8xKytONFp0MmsxRUlMV0VhU09GVGIrWXNTV0ZC?=
- =?utf-8?B?UVcrUms5NlBNS3Mwb05MSEpLVTFCQVladHgzRzhxd01Yb0F3eDFnbzZheDJH?=
- =?utf-8?B?TldkUmxYYXVSMkxnZCtmU2ROVTJwNEUzZ2JPNXNUNWI3WCtCV2RDeTFzTWp4?=
- =?utf-8?B?T3pTZlNZdjkrNjVVNjJMNnFWMUR4Mi9iUXhYV0JZSUMwUUVMQ0hzOEdwYjdB?=
- =?utf-8?B?bW9neHAwUFE1UHF1TkpKaFg3bWdPUllXb1pYcTNtbWZNWlNERE95Zk0zUzV2?=
- =?utf-8?B?Vm1WaG1lcjhYK0lJMHQ0aFNhV21USVprS1JOb09VclhkbW9idW5MMHEyT010?=
- =?utf-8?B?VFZZRVFTcDdNdTdBKzhKRlBrUjVoMkJmZjRGazlvSzNrbDZGOEptM1V3cFdu?=
- =?utf-8?B?NmJYM3NZNGlsTXN5aVl6R0pqM2dSbk82ZnQ0bDVKVjBSamNjNE9nb3RWTktr?=
- =?utf-8?B?eHRFeFplVEFidkEvMXluTy9pL2d1UlZvT2tsZUtDRzlhakJob0FFVVFYcmtD?=
- =?utf-8?B?Nnp0OWczeVNuUGg2Z1VBemFvT1VZaXNiU2tSN2N6dFhSUTA2Z0U4WENKeUJU?=
- =?utf-8?B?T1hvV0dGMlFUY2ZjN01LdGZGRkhhVXFwNFhWbm1nVGxaUnJ4cjBLS3RZTGto?=
- =?utf-8?B?SUl6V1dETTdOV3lubEM0dmc4bGlvSlRERFBJM3BUYXJvQXZSZGFhbXhlSGpT?=
- =?utf-8?B?clNsK0RsZ01WWWlxeHo3eXJodTV2Wi9ZT0prMU9SRTI2Y1I5clM5aDJnYWVP?=
- =?utf-8?B?NU5xWGtWMVFYMnZ4SXBCcGNKNDlIY0thZm5OZGtCcjVFczdHZ1hqK0k3NU5J?=
- =?utf-8?B?MGdIMGlVK3U4ckFZc0xNYXFrNjI4cHI1Z1lWS0FFTVUzOE12WVdZTXNtdk1P?=
- =?utf-8?B?RlJFYzdUMEs3ejErSzFIeVdQNmVOK0pNaGx1QTNjRDNWcGsvaDdKS2g4bFBk?=
- =?utf-8?B?Q0dkVE5TazI1UWM0dFU0cHdPb2loemovZnE1VWNHUEJITG00bFZzbm53OGJ1?=
- =?utf-8?B?ZW5uYTJQc3J5U3Y1RENhcFdTRmVkOVl5WUtuV0tEYU42aGwvOGppVkFLekd1?=
- =?utf-8?B?VVc4Y1dwYWZqdnAvTzJsYW0xNjhoT2pUSDN4dU5DNFBIMmY0b3VXWWkxR0lD?=
- =?utf-8?B?UjNKZ3JXTVlBbkNpQWszeTlYYXNjZkFvYndXR25IZnpnWXlMSGtpd1NMTGhO?=
- =?utf-8?B?b2lSZjUwQnJueWRZc2N3d2hlcG93bTB4N01YUC82M3dhNlBJZGJUUVpxT09K?=
- =?utf-8?B?V3ZFQzRPMzNVbGNpbFdjTnY3YkFWSkkvbnh6MjNkMUV4U3MremIvQzRIeDV6?=
- =?utf-8?B?L1QyZUJlTHBmZUZOVjF1eWFxT2RNMjNHTSt4TFdBZEZxdTdZaU9oNkRpSHE0?=
- =?utf-8?B?b0NacVdqNTgyMWhQM0VUaDl4V2Ezak1wVjVsanFZcGZ5TE5Zek1sU21XWnIz?=
- =?utf-8?B?blp2UHJ0UXkwSlNWYWgvQzl1bCtxWVJiMkw4dDhXVHRZNVVEaU9RV2xuSjha?=
- =?utf-8?B?M1VHT2pQZDVOYUtWMnFIaDMvSEw2ajBySUE2bU83REkzcndKMDFxcitCa2lh?=
- =?utf-8?B?SVNVWlFaZFdlblZlR0pyWXVqVTd2TGV4SGdGNGthYk5DQ0NtdFBsWkxKdm5u?=
- =?utf-8?B?Q202TjNReDR5L0Eza1cwS0xhZllPNEdKOFRDbWowWnU4dG5XaXpMd1hIaFd1?=
- =?utf-8?B?MEpLZU9LZzJpYjR5RDdZV0IwY3JBV2xWbWZ2Z1ZkRCtKZHdtaXB6dz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4c992cba-ed03-41ca-cd89-08df44227a3c
-X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 20:44:58.2453
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uklwEX4pT2KC4z4En1Awbg8RGBs9sIzJ5Z++O1havFoB4LGXudD9MAfcfr7k4+fIFyT3Kvez2YP0tmAzgdGTrg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LODP265MB577040
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
+X-ZohoMailClient: External
 
-On Sat Nov 14, 2026 at 12:17 AM GMT, Miguel Ojeda wrote:
-> Starting with Rust 1.101.0 (expected 2026-12-24), `objtool` may report:
->=20
->     rust/kernel.o: warning: objtool: _R..._6kernel3pci2ioINtB7_6DeviceNtN=
-tB9_6device5BoundE8cfg_size()
->     falls through to next function _R..._6kernel3oppNtB5_3OPP18from_raw_o=
-pp_owned()
->=20
-> (and others) due to calls to the `noreturn` symbol:
->=20
->     core::panicking::unreachable_default_msg
->=20
-> Rust now outlines the constant messages of the panicking macros [1],
-> thus `unreachable!()` (i.e. without arguments) calls that new function
-> instead of `core::panicking::panic`, which is already in the list.
->=20
-> The same change introduced the equivalent `noreturn` functions for
-> `panic!()`, `todo!()` and `unimplemented!()`, which lead to the same
-> warning when those are used:
->=20
->     core::panicking::panic_default_msg
->     core::panicking::todo_default_msg
->     core::panicking::unimplemented_default_msg
->=20
-> Thus add the mangled ones to the list so that `objtool` knows they are
-> actually `noreturn`.
->=20
-> See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-> for more details.
->=20
-> Cc: stable@vger.kernel.org # 6.12.x (Rust is pinned in older LTSs)
-> Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Link: https://github.com/rust-lang/rust/pull/163766 [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Hi !
+On Thursday, 12 November 2026 12:00:07 EST Daniel Almeida wrote:
+> This series adds a Rust abstraction for IOMMU paging domains. A driver
+> can allocate a domain, attach it to its device, map pages into it, and
+> install a handler for its faults.
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+Note that a domain is not attached to a device, but rather a device is 
+attached to a domain.
 
+Small difference but it influences how domains are applied to devices and what 
+happens when a devices is detached from its domain.
+
+A device must always be attached to a domain, so when the device is detached 
+from a domain, it will be reattached to its default domain.
+
+IIRC, you cannot detach the default domain (it returns an error).
+
+Of course this doesn't prevent us to use domains for the encoder the core we 
+want to use can be attached to the client-specific domain before starting a 
+job. When idle, it goes back to its default domain (most likely empty).
+
+I also belive the patchset still works, but I'll have a deeper look into 
+Attachment and some rewording might be necessary to avoid being misleading.
+
+Detlev.
+
+> This will be used by the upcoming rkvenc driver that my colleagues
+> Detlev Casanova, Nicolas Dufresne and I are working on. More details on
+> this driver can be found by watching Nicolas Dufresne's talk at LPC 2026
+> [0].
+> 
+> As part of the security model, each client will have its own IOMMU
+> domain. This is needed as the submission model will let userspace set
+> most of the encoder's registers directly, so the kernel cannot check
+> every memory access that a job makes the encoder do. With a single
+> domain, one client could make the encoder read or write the memory of
+> another client.
+> 
+> With a domain per client, the encoder can only reach the memory of the
+> client whose job it is running, and any other access faults. The fault
+> handler added in patch 6 lets the driver identify the faulting client
+> and terminate its session.
+> 
+> Patches 1 and 2 prepare for Domain::map(). Patch 1 moves the protection
+> flags from the io-pgtable module to kernel::iommu, and patch 2 makes
+> SGTable::as_raw() visible to the crate.
+> 
+> Patch 3 adds Domain, a paging domain that is allocated for a bound
+> device and freed on drop. Domain::new() is unsafe: the caller must
+> ensure that the IOMMU driver behind its device sets a domain up fully
+> when it is allocated and allows concurrent use of it.
+> 
+> Patch 4 adds Domain::attach(), which returns an Attachment that
+> detaches the domain on drop. Devices that share their IOMMU group with
+> other devices are not supported.
+> 
+> Patch 5 adds Domain::map(), which maps pages at an IOVA chosen by the
+> caller and returns a Mapping that unmaps them on drop. The pages come
+> from a MapSource, initially a boxed SGTable that owns its pages.
+> 
+> Patch 6 adds Domain::with_fault_handler(), which allocates a domain
+> with a FaultHandler installed. One handler can serve several domains.
+> 
+> This is based on v7.4-rc1.
+> 
+> [0]: https://www.youtube.com/watch?v=75E15eHY7ac
+> 
 > ---
->  tools/objtool/check.c | 4 ++++
->  1 file changed, 4 insertions(+)
+> Daniel Almeida (6):
+>       rust: iommu: move the protection flags to the module root
+>       rust: scatterlist: make SGTable::as_raw() visible to the crate
+>       rust: iommu: add the paging domain abstraction
+>       rust: iommu: add Domain::attach()
+>       rust: iommu: add Domain::map()
+>       rust: iommu: add Domain::with_fault_handler()
+> 
+>  rust/kernel/iommu/domain.rs  | 425
+> +++++++++++++++++++++++++++++++++++++++++++ rust/kernel/iommu/mod.rs     | 
+> 18 ++
+>  rust/kernel/iommu/pgtable.rs |  16 +-
+>  rust/kernel/scatterlist.rs   |   3 +-
+>  4 files changed, 446 insertions(+), 16 deletions(-)
+> ---
+> base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+> change-id: 20261111-b4-iommu-domain-f46a6e450c0d
+> 
+> Best regards,
+> --
+> Daniel Almeida <daniel.almeida@collabora.com>
+
+
+
 
