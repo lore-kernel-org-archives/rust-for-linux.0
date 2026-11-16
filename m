@@ -1,101 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.127.86
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794808725;
-	b=Xn/yxU5DI4C1vkIH1vpxtrwcDfhyYa8eRrXKskP6lTrhm0qoGD3I5DB/7IzGefVpcJjz
-	 k2SgjFjyzEfX4aA34iyMnMtwTZo1j0p8jcp6m9jwsXbp/br0YA9uZ0C8RrYyxfBGUhvLo
-	 0lXSqG3Z46Cfx1ECypiQ5rWrJ00LXEtyin4aTO+B7+KaFb5QMG8DIl7w0D/upklMFJafj
-	 GmSHlkmjaZO+N9NBmw76Ds6VBaZV+GHDHjwLEYbKbm7bH2NxBvUizlQvmDHn0BOToH/Bl
-	 AhuD/KZ4BmwRXf9FeIa8l6DVl5BOaeAMq8LHi2Ni1toxhXR/Aiz7yIRvP7tf/ENuxYw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794808725;
-	h=DMARC-Filter:Received:Received:X-MS-Exchange-Authentication-Results:
-	 Received-SPF:Received:Received:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=qnnYjSElROxlLYRKcwdsAyizSYiPkxc0w3EtC8UVORU=;
-	b=U9A2N58tB1/tWQKo2kdJE46nLotgee21OSMnfmC1c+Tn6/fo1Xe1tnBwMteRxDj6s2Hu
-	 pXBiEukAGxqG9/+93vrqr7TNcKrrng8A6Ll8tIuxgtuc093irxvjx155y3dqZzIzA267b
-	 ZiOIX3X6AwdpMCiqyOeasPxJLBo65zZQpbtKWCsD2V9WFDI+fwSL1N198o8g8oRNldWL1
-	 t21MvBvM4Llo1liLisfbC6aN0PdVgCuROfjs6SzngBKLOWr0R3Ur+hE+O7UCrciB5UgXO
-	 lab50EKXGDgmsHbi0pRt3oPC5MgUWUfM09juebpbGP9P40RSqvShYS5L/Wjj4d4FYLw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=cixtech.com;
-	spf=pass smtp.mailfrom=cixtech.com;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.127.86
-Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazon11023086.outbound.protection.outlook.com [52.101.127.86])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794814414;
+	b=T3jlVdBjuJMqxdlPT5pCw5p59pLlmkbkF12N53Jo3ummQFeob8ByVNjhaKtA3Ci4guLa
+	 hHzCtip3zU9hJ3F1tHiQImuCtU8Y7rQb5Xf1i5Scg3jqOTj6E3d+pTnD/J3bFl/UYkese
+	 nam8SRk507YOL1swDKCpk/NPYCwtfZ6dm49RzK+JHRGjeJvxMG98SZcZ1+Jfw9J10vunu
+	 YB3ygk1bnLHHE8arxgUYcvFCaIKeVu/ViAMC8AZ/m0yXE2nIQtrZKdF8tFFujtD0iYqr+
+	 iPq99FEmH287QYTOw3uXIANz3eyQfn4JILrzgrhhpUO2Dgm6x7t2ryGlvcmXo/aRtfg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794814414;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=ZSfgqdGwCAZSv33LraZUlvda7VWvNJ3OL164hELpjTU=;
+	b=rWfNnDq+/of0+1eLG9d092WFWWmkdRRlCXIDm1JHCV3LjHdJiSqattsqGhyt2RdoEksd
+	 LQbhdDl6t1W8fNOwQ6Izy+CWL4CiR1AutbfSErebvxYI/muCpUB2lMjpqadW32kXSmouA
+	 kIeieoRU4xxQOa9Pu+xI4n66d8q5EvozDqg3tcYTSNwgozNBXpMm4KoS3GFxj986LIQLW
+	 GhkhT8DlJEQ76gIbJoADK8NGoBZ23C03/tUr1ZrhbnrFW23HtvDyI1t6wylpCpa+acRP3
+	 wfsArn0ta7jQVtNYl8SWecNja7rujWcgIGahUwVxbRxpVS2y9vTEb2dGP54MU2uOwbA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iPZpNxaD;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B47606A331;
-	Mon, 16 Nov 2026 05:58:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53B47606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cixtech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cixtech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ho6lKtos4lBY2LweR+Gi5xaqlz4O2O54HfXRCsCFLNMWZxGgdMsQbB4+ld3iZgqGo7uga1zCC8mrvBEqBd+M7StI6jmAH9Lte6K7sD+FNgJlmI2JTrWI0EVjm5S1Qi0NV4ugiQlPZAw+J3hGvmjK7PllXcok6RYyVbc2m/yP1KnSqWfIqdTeY6B4l/rdLkxjc70bnOPlRbcA0iiYuw/8dLPvds0y1nH13kfTEU3Z87uVdJLqYxHfDbVwy+uxobk786JzR2TPrzd62JeecrALmxcbAdnTmlmhSEF60oypjxZCvmXDdC73fyoz+kH+lm59QjB4l1ThFGcKKtm7gurgkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qnnYjSElROxlLYRKcwdsAyizSYiPkxc0w3EtC8UVORU=;
- b=WHlECzlgEToJvdHbHQQaRm3vQ6ZUrwt4AhmIyLhrfy0XJ3JHxYdi5yJH8RTBBj6scRcoweuRPILxrmM0bDO5U/GVD+51cGyY4ySPrEeeBXp7KOGL7l3WIgRXKt7cRrOzN9ex1pxgHEd5U1rifgxfKL4x57c4tKq9xo9gdio5iOs6t4nUO4KveJFb0VBlweYMnt5PYL3oWJafQ3Q6o2AnG3DtleIpACTvWS7oweY1n0mAbM5si0xmYUXWvELSTvf1PZszEQ9pKe6FpcdLuCDrDst3HbR/suRla2WN/BYlQaAyDiEWhkxooOl08wkJuxHgNgylqpsEUyqXlpiFVpahLw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 222.71.101.198) smtp.rcpttodomain=arm.com smtp.mailfrom=cixtech.com;
- dmarc=bestguesspass action=none header.from=cixtech.com; dkim=none (message
- not signed); arc=none (0)
-Received: from TY6PR01CA0018.jpnprd01.prod.outlook.com (2603:1096:405:3bb::16)
- by SEYPR06MB8193.apcprd06.prod.outlook.com (2603:1096:101:2f4::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.7; Mon, 16 Nov
- 2026 05:58:41 +0000
-Received: from TY2PEPF0000AB86.apcprd03.prod.outlook.com
- (2603:1096:405:3bb:cafe::a6) by TY6PR01CA0018.outlook.office365.com
- (2603:1096:405:3bb::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.14 via Frontend Transport; Mon,
- 16 Nov 2026 05:58:41 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 222.71.101.198) smtp.mailfrom=cixtech.com; dkim=none (message not signed)
- header.d=none;dmarc=bestguesspass action=none header.from=cixtech.com;
-Received-SPF: Pass (protection.outlook.com: domain of cixtech.com designates
- 222.71.101.198 as permitted sender) receiver=protection.outlook.com;
- client-ip=222.71.101.198; helo=smtprelay.cixcomputing.com; pr=C
-Received: from smtprelay.cixcomputing.com (222.71.101.198) by
- TY2PEPF0000AB86.mail.protection.outlook.com (10.167.253.10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.639.5 via Frontend Transport; Mon, 16 Nov 2026 05:58:40 +0000
-Received: from cix (unknown [172.16.64.42])
-	by smtprelay.cixcomputing.com (Postfix) with ESMTPSA id 71C2E427EFC7;
-	Mon, 16 Nov 2026 13:58:39 +0800 (CST)
-Date: Mon, 16 Nov 2026 13:58:38 +0800
-From: Cunyuan Liu <cunyuan.liu@cixtech.com>
-To: Daniel Stone <daniel@fooishbar.org>
-Cc: Liviu Dudau <liviu.dudau@arm.com>, boris.brezillon@collabora.com,
-	steven.price@arm.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, gary.yang@cixtech.com, fugang.duan@cixtech.com,
-	daniel.almeida@collabora.com, aliceryhl@google.com,
-	p.zabel@pengutronix.de, dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	cix-kernel-upstream@cixtech.com, robin.wang@cixtech.com
-Subject: Re: [PATCH v2 2/3] drm/panthor: Add initial support for CIX Sky1
-Message-ID: <avqbjnqaU1kdxDzK@cix>
-References: <20261109120902.125242-1-cunyuan.liu@cixtech.com>
- <20261109120902.125242-3-cunyuan.liu@cixtech.com>
- <avLsAlL048MtIX4x@e142607>
- <avRm82TLBe6I6LAD@cix>
- <CAPj87rOi0+T7E7Kge4z-8L9FuCSTt6dCqT+9+YtF3wDkd4vRVg@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50E1606A31C;
+	Mon, 16 Nov 2026 07:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iPZpNxaD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB7B1F000C4;
+	Mon, 16 Nov 2026 07:33:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794814414;
+	bh=ZSfgqdGwCAZSv33LraZUlvda7VWvNJ3OL164hELpjTU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=iPZpNxaDvQ+0/44LrEVn/j2ewesqjChof0LJDrrbjdye8nTpw8rgGyPVReIp1aEW0
+	 iY5r9fRLZ6y1UsmC7p03+4PRX8WZzDvZjKt9Cst41L/PhfTFjO/UnXCAcO3rvJwkEE
+	 4P4g6/nk6jIV6Jur0uMMIyRQPQvsW+UCYnNcd+gp2Rsc0VLB5YNNaCNiliqwQYRd84
+	 o4NwBrXInPq5sREFgzrs7R7WFmzDlJ+RE8PiC9+dTl+iGNgfv5yQ3Sm6DY4wpLO1QG
+	 7Q7FI1iw8eUJ+bC7ZdWjHf9oog1O9SCWyoGtob+3Vmuk8oi/boXG9iVrt6aUkg+pYA
+	 bp0dwhzFI/S0A==
+Subject: Re: [PATCH RESEND net-next v2 2/3] rust: net: phy: make Device
+ generic over a lock context
+From: netdev-bot+sashiko@kernel.org
+To: engineer.jjhama@gmail.com
+Cc: fujita.tomonori@gmail.com, tmgross@umich.edu, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, dakr@kernel.org, daniel.almeida@collabora.com,
+ tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, andrew@lunn.ch,
+ hkallweit1@gmail.com, linux@armlinux.org.uk, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 16 Nov 2026 07:33:32 +0000
+Message-ID: <179481441244.3136.17001607410238147789@kernel.org>
+In-Reply-To: <20261115-exp-phy-rs-maybelocked-v2-2-8fa7897a0352@gmail.com>
+References: <20261115-exp-phy-rs-maybelocked-v2-2-8fa7897a0352@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -105,90 +68,220 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPj87rOi0+T7E7Kge4z-8L9FuCSTt6dCqT+9+YtF3wDkd4vRVg@mail.gmail.com>
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY2PEPF0000AB86:EE_|SEYPR06MB8193:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0080510e-87e7-4a5d-27be-08df43a6aa25
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|82310400026|36860700016|10067099003|4143699003|56012099006|261026121527099003|261026140227099003|261028144727099003|261022105027099003|261022075727099003|261021121427099003|261102123227099003|22082099003|18002099003|6133799003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	YpDBwB5DlkefatVpzQ+qadK4hnJdlc6j6Rg2IQx42cIbALXr5raredX+zXysn0y65GWLBwHfWgRg9g2/TakKvFjIt2PAwGLtmTeulq9YCXsS7N1NDAPijcGl7J7GZRN6qM/gzSFg60fBD1goW5eBu+SRxKdDwb/v44X8XXXWlqiywxZaOfNP2TFNdMoNmHAhnjTC6hHGqQujO1FpWPGeFTcLa0aQxtZGFbXjujAB2XIhU9gdfHH0QUvyYDLc64+FyGbgNRjddGpUznpyAMS3U/Yz5v/CKlNK7DiqIffQhEubBTOV30CEGHEGx1n1SFmy3tczC/73awd8VhMbyqrkBsB8yLP40PknX/JFzSLl8VgYfCImLK/EXg2MX7pxxUIwcLrLCo326+nHZcqpu6zvnXHMJTQItyY39SS3Fxo35GarnJzKTdsd9xdTQOfbF+k3mOUC5UE7CFq5uaUAWM5YNIyXCLdpDXKFX3sdurxIgkbegML/66KvPy2YH06edMKqiQ4ODWyYsRkxzeCWZokGeeML4iB+49Uk+vwpO1ND5XjpQkZ+BUy6nsSkyenZOA2Y9tzxxB0Bz6bBlV+pX/UzXyM99Rd+BU9Q2R0ekjeOqkCk09x5Q+lJqmGRh0HJAuY9WKCzf7NYgizIGlfLPBjYYpIv2DKQFbwbeUgxL/r7RSGUh5sHd5kx/Vo3PzHrV2HU1uHEz4Sev9T0ZaashOSwEQ==
-X-Forefront-Antispam-Report:
-	CIP:222.71.101.198;CTRY:CN;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:smtprelay.cixcomputing.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(82310400026)(36860700016)(10067099003)(4143699003)(56012099006)(261026121527099003)(261026140227099003)(261028144727099003)(261022105027099003)(261022075727099003)(261021121427099003)(261102123227099003)(22082099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	SStTx4UDK6IeYH/rKABHvNJ1whRkL6bbFvSADNCGeXcQpVsucT9eaj/aOEwLGLgTVo4q4N0KGRPFwD8uyA6J0sa03iyi/LY+MHoaefKhbIc5dzSMxQEOGuAf5+Ki6JDzmYRe0bpS/eU9WPQueVHm6JgKeWMEljnes+cUJTpaClffZd4ZJPZ0FJZ1qg+Jch9GnSP+mkRe4di2aH1mb57rIkhgvrhepJTMopbtBfztzCvGB18FkXza0S2F4qePpyzSTrpABGrLvmjXbXg/DQBXe8OcuIfb7sjDYKxJmAKkG8HoLJa4fGZREGJrEVDwN/rMTJgwbaJkr6HioK/kvS+EY6YiMnFX0jrWJ6HKqj19Dru2y1v7lMhKlWihplgKf6EqUgkLtTPg3FP1wtdXxIHpiGbp6jKTH91cWBAu53v4pRfaZuuonhulxBFiFXmhMECP
-X-OriginatorOrg: cixtech.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 05:58:40.2741
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0080510e-87e7-4a5d-27be-08df43a6aa25
-X-MS-Exchange-CrossTenant-Id: 0409f77a-e53d-4d23-943e-ccade7cb4811
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0409f77a-e53d-4d23-943e-ccade7cb4811;Ip=[222.71.101.198];Helo=[smtprelay.cixcomputing.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	TY2PEPF0000AB86.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR06MB8193
 
-Hi Daniel,
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-Thanks, this is a good suggestion. Separate read and write policies
-make the configuration much easier to understand.
+Critical: 0 · High: 0 · Medium: 2 · Low: 2
 
-On 2026-11-13 12:24:18 +0000, Daniel Stone wrote:
-> > > > +static const struct panthor_sysc_config sysc_config_cix_sky1 = {
-> > > > +     /* Sky1 needs these SYSC_ALLOC policies for correct display of GPU output. */
-> > > > +     .alloc = {
-> > > > +             0x00230000, 0x00000023, 0x00000000, 0x00000000,
-> > > > +             0x00523222, 0x00523200, 0x00000022, 0x00000032,
-> > > > +     },
-> > > > +};
-> > >
-> > > These should not be in the driver but in the device tree bindings. If you extract
-> > > the system cache code into a separate patch we can have a proper discussion there.
-> >
-> > I will move the eight SYSC_ALLOC values into a DT property, such as
-> > arm,sysc-alloc, and submit the system-cache support as a separate patch.
-> 
-> Whilst doing this, please break the properties out. At the moment,
-> it's written as 32-bit groups of 4 source+RW pairs. I would much
-> prefer to have groups of [<sourceR, sourceW>, <sourceR, sourceW>, ...]
-> than just the raw register values to be dumped into SYSC_ALLOC*.
-> 
-> FWIW, I agree with everything else Liviu said. I don't have a strong
-> opinion on skipping out devfreq if OPPs are not present vs. exposing a
-> single fixed OPP from the clock provider, but the former does seem
-> better for me.
->
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-I will change the DT property to use <source-id read-policy write-policy>
-entries. I will add an explicit source ID so that the DT only needs to list
-sources with nonzero policies. The Sky1 configuration would look like this:
+- [Medium] `match_phy_device` is still given a `Device<Locked>` even
+  though, as the new docs themselves say, it runs without…
+- [Medium] The new `Locked` doc (rust/kernel/net/phy.rs:66-68) puts
+  `Driver::suspend` under "Without the lock, but where PHYLIB ensures by…
+- [Low] The commit message says "Update the documentation and SAFETY
+  comments to match", but the callback SAFETY comments in `Adapter<T>`…
+- [Low] The new `Locked` doc (rust/kernel/net/phy.rs:66-68) lists
+  `Driver::resume` among callbacks PHYLIB calls "Without the lock".
 
-  arm,sysc-alloc = <2 3 2>, <4 3 0>, <16 2 2>,
-       <17 2 3>, <18 2 5>, <21 2 3>,
-       <22 0 5>, <24 2 0>, <28 2 3>;
+--
 
-When this property is present, the driver will start with all source
-policies set to 0 (L2 allocation), then apply the entries from DT. Sources
-not listed will keep policy 0. If the property is absent, the driver will
-leave the SYSC_ALLOC registers unchanged.
+rust: net: phy: make Device generic over a lock context
 
-I will also add checks for the GPU architecture and supported read/write
-directions. Unsupported directions will have to use 0. Duplicate source
-IDs, out-of-range IDs and invalid policies will be rejected.
+This commit makes the Rust PHY Device type generic over a lock context,
+Locked (the default) or MaybeLocked. It moves phy_id(), read(), write()
+and genphy_soft_reset() into an impl block that covers both contexts, and
+documents which PHYLIB callbacks run with or without phy_device->lock.
 
-Would this format, with an explicit source ID added to the read/write
-pair, be suitable? I will submit the system-cache support as a separate
-patch, as Liviu suggested.
+> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+> index 7ca3f2329e6a2..105a1b727a088 100644
+> --- a/rust/kernel/net/phy.rs
+> +++ b/rust/kernel/net/phy.rs
+> @@ -50,6 +50,51 @@ pub enum DuplexMode {
+>      Unknown,
+>  }
+>  
 
-Thanks also for your feedback on devfreq. I plan to use the generic
-no-OPP approach based on Panfrost, unless there are further concerns.
+[ ... ]
 
-Best regards,
-Cunyuan
+> +/// The [`Device`] context of every [`Driver`] callback that does not take a
+> +/// [`Device<MaybeLocked>`].
+> +///
+> +/// PHYLIB calls these callbacks in one of three ways:
+> +///
+> +/// - With `phy_device->lock` held: every callback not listed below.
+> +/// - Without the lock, but where PHYLIB ensures by other means that no other path accesses the
+> +///   instance: [`Driver::probe`] and [`Driver::get_features`], which are called from
+> +///   `phy_probe()`, and [`Driver::suspend`] and [`Driver::resume`].
+
+[Severity: Medium]
+Does PHYLIB really guarantee exclusive access for Driver::suspend?
+
+phy_state_machine() releases the lock before the post-work step:
+
+drivers/net/phy/phy.c:phy_state_machine() {
+    ...
+	mutex_lock(&phydev->lock);
+	state_work = _phy_state_machine(phydev);
+	mutex_unlock(&phydev->lock);
+
+	_phy_state_machine_post_work(phydev, state_work);
+    ...
+}
+
+For PHY_HALTED or PHY_ERROR, _phy_state_machine() returns
+PHY_STATE_WORK_SUSPEND. The unlocked part then calls:
+
+_phy_state_machine_post_work()
+    phy_suspend()
+        phydrv->suspend(phydev)
+
+and no lock is held during that call.
+
+Meanwhile, phy_ethtool_ksettings_set() or phy_start_aneg() can take
+phydev->lock, write phydev->autoneg, speed and duplex, and call
+_phy_start_aneg()->config_aneg. A halted PHY doesn't count as started, so
+that path is reachable.
+
+In that case suspend_callback() and config_aneg_callback() each hold a
+&mut Device<Locked> for the same phy_device, on different CPUs. Safe code
+in the suspend callback (set_speed(), set_duplex(), genphy_update_link()
+and so on) would then race with the lock holder.
+
+Wouldn't that break the new Locked invariant further down, which says no
+other thread touches the lock-protected state while a &mut Device<Locked>
+exists?
+
+The old struct comment made a similar claim. This patch turns it into a
+formal invariant, though, and suspend still gets a type that says the
+lock is held.
+
+[Severity: Low]
+Is Driver::resume actually called without the lock? The only call site of
+phydrv->resume seems to be __phy_resume(), and it asserts that the lock is
+held:
+
+drivers/net/phy/phy_device.c:__phy_resume() {
+    ...
+	lockdep_assert_held(&phydev->lock);
+
+	if (!phydrv || !phydrv->resume)
+		return 0;
+
+	ret = phydrv->resume(phydev);
+    ...
+}
+
+phy_resume() also takes phydev->lock around that call. The SAFETY comment
+in resume_callback(), which this patch leaves unchanged, says the lock
+"might not be held", so it has the same inaccuracy.
+
+> +/// - Without the lock, possibly on an unbound device or one bound to another driver:
+> +///   [`Driver::match_phy_device`], which therefore only gets a shared reference.
+> +///
+> +/// # Invariants
+> +///
+> +/// For the lifetime of a `&mut Device<Locked>`, no other thread accesses the state of the
+> +/// `phy_device` that `phy_device->lock` protects.
+> +pub struct Locked;
+
+[Severity: Medium]
+Does a shared reference give match_phy_device any protection here? The
+invariant only covers &mut Device<Locked>. match_phy_device_callback()
+still creates one through from_raw() and passes a &Device<Locked> to
+T::match_phy_device():
+
+rust/kernel/net/phy.rs:Adapter::match_phy_device_callback() {
+    ...
+        let dev = unsafe { Device::from_raw(phydev) };
+        T::match_phy_device(dev).into()
+}
+
+phy_bus_match() calls phydrv->match_phy_device() without the lock.
+__driver_attach() calls driver_match_device() on every device on the bus
+before it checks dev->driver, so this includes PHYs already bound to
+other drivers.
+
+So when a Rust PHY driver that implements match_phy_device is loaded:
+
+phy_drivers_register()
+  driver_register()
+    bus_add_driver()
+      __driver_attach()
+        phy_bus_match()
+          match_phy_device_callback()
+
+safe code can call state(), is_link_up(), is_autoneg_enabled() or
+is_autoneg_completed() on a PHY whose phy_state_machine() is running
+under phydev->lock for another driver. Those accessors do plain reads,
+justified by "there is no concurrent write to this field". At the same
+time, _phy_state_machine() writes fields such as phydev->link.
+
+Isn't this still a callback that runs without the lock but gets a Device
+whose type says the lock is held? The commit message gives that as the
+problem to fix, and it still applies at the end of the series.
+
+[ ... ]
+
+> @@ -276,7 +280,52 @@ pub fn genphy_read_abilities(&mut self) -> Result {
+>      }
+>  }
+>  
+> -impl AsRef<kernel::device::Device> for Device {
+> +impl<Ctx: PhyContext> Device<Ctx> {
+> +    /// Creates a new [`Device`] instance from a raw pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// For the duration of `'a`,
+> +    /// - the pointer must point at a valid `phy_device`, and the caller
+> +    ///   must be in the `Ctx` context, see [`Locked`] and [`MaybeLocked`].
+> +    /// - `(*ptr).mdio.dev` must be a valid.
+> +    unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
+
+[Severity: Low]
+The commit message says:
+
+    Update the documentation and SAFETY comments to match.
+
+The from_raw() callers in Adapter<T> weren't updated, though. None of
+them says which context it is in or why; they all get Ctx = Locked by
+inference.
+
+Some of those comments now contradict the new Locked docs.
+get_features_callback() still says:
+
+            // SAFETY: This callback is called only in contexts
+            // where we hold `phy_device->lock`, so the accessors on
+            // `Device` are okay to call.
+            let dev = unsafe { Device::from_raw(phydev) };
+
+The Locked docs say get_features is called from phy_probe() without the
+lock, and the C code agrees:
+
+drivers/net/phy/phy_device.c:phy_probe() {
+    ...
+	else if (phydrv->get_features)
+		err = phydrv->get_features(phydev);
+    ...
+}
+
+match_phy_device_callback() has the same comment, while the Locked docs
+say match_phy_device runs without the lock.
+
+The invariant on struct Device ("a context where all methods defined on
+this struct are safe to call") still describes the old single-context
+model. So does the comment block above the struct definition.
+
+A later patch in the series, "rust: net: phy: pass a MaybeLocked device
+to soft_reset", updates only the soft_reset_callback() comment. The
+get_features and match_phy_device comments are still out of date at the
+end of the series.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261115-exp-phy-rs-maybelocked-v2-0-8fa7897a0352%40gmail.com
