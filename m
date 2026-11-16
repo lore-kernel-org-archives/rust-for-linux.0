@@ -1,59 +1,96 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794841069;
-	b=IF2KivCScJINIzKnE2dQ5hpvNIZUoM426M8KDW+w1RDfZtoMn9KUK7hyR1I4Hu6GTtmI
-	 HANhgfzdjCTc/Xq2CwPxW8hM1tCc1bNHrmx6922MgUO2GK2eXtH0hkB4QzQm+jgsFX/Ou
-	 BqVECxyrHttaMz3DyKfWKY0UxLMeGbh86kBaUhXwYQyGocEunjFdGIlX0FkAGSwsj2Ats
-	 QAFCYPB1Jbs54iPs+yzOC2EcU3O0T/7dB8+ie5yEtQAF+H27vDlSkgUqsYLaGOk1vpgGJ
-	 UgEpCWMb9seiCWLOUVHJhnVD2uy8wcufvrAEmRKlsgMgg5bv4d8SvT2S/AWifkJ36wg==
+	t=1794849295;
+	b=QVwP4tgnSTIOF1UsUJsY7CqlAaaom2El7xPV+h1qeEuMiawzTE/xrfM+FoqyJJN58f1a
+	 +ikX1yfAHIpxWuCL4JWY19jzW/6D+U3lRD3Zntv+X6WMXZK0Yu/wxVP16TNCf6ddGVbMo
+	 Wc6sh+ntHXzd5sqLf6+GFRFJoViFcbf5dpRoGSnmR5GnM+ARHU0WOKtb6cohOEaAaAhcJ
+	 lShbPS1PpJ3klFMWt7aa7Q5gzbGD5U+yB6rkDl7m91ORVRdo8WZr62MU/1n9C0vQOrHoW
+	 mmYZ3ldklYWlh+JM/tmAP6R0otcRCGwNgylcyIWwRgtXxaVlQUlkW71jomHw20qzOyA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794841069;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794849295;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=sWhxqk4MyTmV2zxNqrN/BVQOIcVMMLVIl275tsyfp4E=;
-	b=dyy8G5MDYrmhufM7OWNHM103QpYMP3CfsdALL8kTZ08GgdaACNpgeyCrXrHEaEaEYNKX
-	 lL+WICrPburu1Zl4kwOgpjyULMatpGPMbGeuiwJA3dKIYrJC0XtiYvcQ3thpYXrSXy7OQ
-	 hiEK4YnfI3MoLFLDhPU3V7PB66aca9RHa1Nv/YPfcNGCXAWFsgX7csS0dpKHgEQ+B0awC
-	 4YXYbhfwLxfJZx8rYxLc0SNoaa+G06IKMfj6ReHQ2gg/ikNnzGpzre+yu3MouHBIwSIM5
-	 4ddWUaru3SuyS64Oohji4c1rpjdjtEF3mr3T1W0rs6ZR+lsp1cI71ZllrYN7pM/Hk2w==
+	bh=R3AayEltuaPaSc8ERAQfW5YeyfzxTpEYZhzgv4GQkHY=;
+	b=SS+ZxP0PaJwui4VmlimUJK4zzXQYRSCrIcNjrVoHpnbYrSJTJ+VbCdgBIDPux5jxPyyi
+	 W7u8Inrf2bIPaR8FpP6fWChibGva1N4KbjCu5b3hQMu7dajDLBl2fi0SFK3VLhFwgyk6+
+	 YiP2b1GGoEc3j0nKiMGC48ySFHSrFRH8sYoKbh5nl5Cjp6VLmOPQmxHKFeopzHvUsDvLs
+	 RRtTVGXiN2q71uYj+jprDGUDmDMKY1OYeEu7vxJAPzbROvox7JXRox2GL8zdLDwQDanqp
+	 7KeAoZqvpeoLF3Na+K//vALcVGpiHWogdjJDWBNfhyoRNAA94+/D8uCEu0yCFPIFkFQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GvLDnJ7t;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="ToaMIdu/";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id A152E606A323;
-	Mon, 16 Nov 2026 14:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1DD606A329;
+	Mon, 16 Nov 2026 17:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GvLDnJ7t
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id A8D4C1F000C4;
-	Mon, 16 Nov 2026 14:57:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ToaMIdu/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB661F000C4;
+	Mon, 16 Nov 2026 17:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794841069;
-	bh=sWhxqk4MyTmV2zxNqrN/BVQOIcVMMLVIl275tsyfp4E=;
+	s=k20260515; t=1794849294;
+	bh=R3AayEltuaPaSc8ERAQfW5YeyfzxTpEYZhzgv4GQkHY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GvLDnJ7tqn7SWEhm8067ZOt2cIfSr5mt0Ly5WIf70koqp1MUQWj2ztrY0Em6BMg51
-	 QFJxDphZ91Qg9A3yY8zHEXF/0jmvgtyQ+JaFN0yk4zQxBb4BTXJGDVqs/AG4Gv+Jdv
-	 C78u7Izi1V/9N3M6ogeEuYQ4pDFSnn+Svh2LeWlcBm1C2ONomCwakgauB04lGi6UpN
-	 iIdcfIataY5uTKGnE78qxVCfE9Tg78kCu8rL9b7YQEW/5kB1tY5diw4zrTMR34g9CY
-	 2Vj9ngBIK6Q0qGXe1vM/AvtaLkdPwEvEFuF0bu4g4HEe1lEkHRYVMbrnaEPGsAldFe
-	 SWV/OR8P2jKxQ==
-Date: Mon, 16 Nov 2026 15:57:46 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: FUJITA Tomonori <tomo@flapping.org>, 
-	Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: fustini@kernel.org, guoren@kernel.org, ojeda@kernel.org, 
-	wefu@redhat.com, a.hindborg@kernel.org, acourbot@nvidia.com, aliceryhl@google.com, 
-	bjorn3_gh@protonmail.com, boqun@kernel.org, chenhan0017.work@gmail.com, dakr@kernel.org, 
-	daniel.almeida@collabora.com, gary@garyguo.net, linux-riscv@lists.infradead.org, 
-	lossin@kernel.org, tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: Re: [PATCH v3 2/2] pwm: th1520: Fix 32-bit build with COMPILE_TEST
-Message-ID: <avsZPKgzc9DIIsh8@monoceros>
-References: <20261030020209.3833766-1-tomo@flapping.org>
- <20261030020209.3833766-3-tomo@flapping.org>
+	b=ToaMIdu/5Nw6gYTd8dKnI+IbBbxNZgnb4fzduNfFHN9sWkkaCbz70GToCW+nEDm4Z
+	 9uF7aB4TmCTaZug50b7ulcfEcxnEmVk2y6hiNSjA7jeGkGkT/ShZXqpwy4hLr9/aj2
+	 6NNvcIDIQJyhn921LolKVZXRXN1h4Ga0LhQtINeSDy8hIqBMGS+mkousnN6WdK46gS
+	 HsC7Ssh/0Iajvpgfbo3BwuIO222ho/1CZeWVo1XVKShBg67CwppzE5LJyhKkteezT9
+	 hDnjr1Y0MiqO1CP017SxVisOiKTO0ep8ghfKbj8w4YBnPbOdKVd/ClnQqPqoHRyDb7
+	 tFmEJTYAzrZ/Q==
+Date: Mon, 16 Nov 2026 17:14:42 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Vladimir Kondratiev <Vladimir.Kondratiev@mobileye.com>
+Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>, Gary Guo <gary@garyguo.net>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Chao-ying Fu <chao-ying.fu@globalfoundries.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	torvalds@linux-foundation.org, olof@lixom.net,
+	aleksa.paunovic@htecgroup.com, arikalo@gmail.com,
+	Boqun Feng <boqun@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Luke Nelson <luke.r.nels@gmail.com>, Xi Wang <xi.wang@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Pu Lehui <pulehui@huawei.com>, Puranjay Mohan <puranjay@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	Charlie Jenkins <thecharlesjenkins@gmail.com>,
+	Nam Cao <namcao@linutronix.de>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v6 2/6] riscv: build kernel atomics from LR/SC when Zaamo
+ is disabled
+Message-ID: <20261116-manifesto-edginess-7f1663f9a76b@spud>
+References: <20261110-lrsc-only-v6-0-bafc3cc0fcae@mobileye.com>
+ <20261110-lrsc-only-v6-2-bafc3cc0fcae@mobileye.com>
+ <20261110-revivable-saint-9bcfaa2fd0e7@spud>
+ <3308062b-9d0f-436f-a22a-217cc1c59aed@mobileye.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -64,103 +101,39 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="tbxmqwzfkfcttcdq"
+	protocol="application/pgp-signature"; boundary="Y+J9n/Hla/zwW0HU"
 Content-Disposition: inline
-In-Reply-To: <20261030020209.3833766-3-tomo@flapping.org>
+In-Reply-To: <3308062b-9d0f-436f-a22a-217cc1c59aed@mobileye.com>
 
-
---tbxmqwzfkfcttcdq
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+--Y+J9n/Hla/zwW0HU
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v3 2/2] pwm: th1520: Fix 32-bit build with COMPILE_TEST
-MIME-Version: 1.0
 
-Hello,
-
-On Fri, Oct 30, 2026 at 11:02:09AM +0900, FUJITA Tomonori wrote:
-> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Wed, Nov 11, 2026 at 08:37:23AM +0200, Vladimir Kondratiev wrote:
+> On 11/10/26 21:02, Conor Dooley wrote:
+> > I had a quick glance at this revision, and I think you've at least tried
+> > to resolve the things I was pointing out. Did I miss something, or why
+> > have you kept the NAK after having resolved the things that I was
+> > objecting to?
 >=20
-> Fix the following build error on 32-bit ARM with COMPILE_TEST:
->=20
->   ERROR: modpost: drivers/pwm/pwm_th1520.ko: symbol '__aeabi_uldivmod' un=
-defined!
->=20
-> The driver divides u64 values when it converts between nanoseconds and
-> clock cycles. On 32-bit ARM, these divisions are compiled to calls to
-> __aeabi_uldivmod, which the kernel does not provide.
->=20
-> Use div64_u64() and div64_u64_round_up() for these divisions, in the
-> same way as C drivers use div64_u64() and DIV64_U64_ROUND_UP(). The
-> results do not change.
->=20
-> Fixes: 3c180003dffb ("pwm: th1520: Fix missing Kconfig dependencies")
-> Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/=
-topic/64bit.20division.20in.20.60pwm_th1520.2Ers.60/near/626825599
-> Suggested-by: Uwe Kleine-K=F6nig <ukleinek@kernel.org>
-> Assisted-by: LLM
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  drivers/pwm/pwm_th1520.rs | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
-> index 728993998446..bd05fe49650e 100644
-> --- a/drivers/pwm/pwm_th1520.rs
-> +++ b/drivers/pwm/pwm_th1520.rs
-> @@ -31,6 +31,10 @@
->          mem::DevresIoMem,
->          Io, //
->      },
-> +    math::{
-> +        div64_u64,
-> +        div64_u64_round_up, //
-> +    },
->      of,
->      platform,
->      prelude::*,
-> @@ -68,13 +72,13 @@ const fn th1520_pwm_fp(n: u32) -> usize {
->  fn ns_to_cycles(ns: u64, rate_hz: u64) -> u64 {
->      const NSEC_PER_SEC_U64: u64 =3D time::NSEC_PER_SEC as u64;
-> =20
-> -    ns.saturating_mul(rate_hz) / NSEC_PER_SEC_U64
-> +    div64_u64(ns.saturating_mul(rate_hz), NSEC_PER_SEC_U64)
->  }
-> =20
->  fn cycles_to_ns(cycles: u32, rate_hz: u64) -> u64 {
->      const NSEC_PER_SEC_U64: u64 =3D time::NSEC_PER_SEC as u64;
-> =20
-> -    (u64::from(cycles) * NSEC_PER_SEC_U64).div_ceil(rate_hz)
-> +    div64_u64_round_up(u64::from(cycles) * NSEC_PER_SEC_U64, rate_hz)
->  }
-> =20
->  /// Hardware-specific waveform representation for TH1520.
+> I'll be happy to remove it. Was not feeling right to do this without
+> your permission.
 
-For me (being at most half-literate in Rust) it looks ok, and I'm fine
-to let this patch go in together with the first patch of this series via
-the Rust tree.
+IMO, if you sort out what the NAK was complaining about, you can drop it
+without permission. Worth calling out in the cover maybe.
 
-@Michal: If you have objections speak up quick!
+I'll take another look at this later in the week..
 
-Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
-
-Best regards
-Uwe
-
---tbxmqwzfkfcttcdq
-Content-Type: application/pgp-signature; name="signature.asc"
+--Y+J9n/Hla/zwW0HU
+Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmr7Gd8ACgkQj4D7WH0S
-/k7jwwgApmKdGIB2twgVr/wJDmt0FgXcvfoRPfuzeIYwDKDRWsY5ot//hqEcmyth
-Aae4eMor0twnfU/jai/yFCiXQAACMZT1EmKCB3CLWHrjyUYYOkvHDOxZs8PYFyyG
-dn178AwEVuyzov3nDye9+lKK+ADuchzyw91n02z501wQbIOj0RVQf7iHOSRlGRmn
-kHKztPxlt4uCIOz7/cRgrB2jC4ifcGwFG2w7TGn9x2D/h+WJV/AhYQMWP537z1kb
-55Wwc9p7Si/Q0+GYFMk00/I+4DbLK8QB9pXHLmiEuf+wCr3FyZVnN03bfAs1iu5r
-xWayczrwFNyU9lyhNv7ZTx0ob5qjew==
-=aLxg
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCavs5/gAKCRB4tDGHoIJi
+0kGoAQCWFf5JHxUi2KeNm9DOhemQnYUrlSxe7T4A8/hbZExUSQEA9loerGhdWm8V
+n/SfaKiJfp1FHsN6OT9U8lG0cS4ZPwA=
+=yrBS
 -----END PGP SIGNATURE-----
 
---tbxmqwzfkfcttcdq--
+--Y+J9n/Hla/zwW0HU--
