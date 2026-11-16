@@ -1,99 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.37
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794837556;
-	b=xHDEjoP4aLUqR/bowcDFiq+K4Q2rprhrI3aD5v/DgjLpRzLq7VuHyBUMbM5TFQ1O5Xej
-	 56jae29iAfu3O7MqSVtGpDsgYIKVUunb41PjVHYXkqhbUpoocoh1ra9SEmSYRl3AGO0/t
-	 HtOcHX3MPiXqWEnDb4CSs2HqW5lB+K69MvOQD3aOSGjcb3v/Wl+rWYF0j4vmi3bcj6GWv
-	 wwovlqf3/awXT4elAOJkgjzqXtOVg+5CbAWSLYGxOyvkNgMdr7vM8fVQsK2aPNmGZSkWc
-	 UgYW8vC8j0n+XqT0x+aGgoqmObphv7eu88cXfLm6r5uU0+WVnbsiev70SCAfDmNGvsA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794837556;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
-	 From:To:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:
-	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=1TexCL98d8syyucLMDMKp/F1oiNWlvQpNweM5cB0/3M=;
-	b=islKZ74T1wtNpQpaWrMKWiH62xlYBNMAnpxpmrn4FQ8hwcctMo5+SS0R7jAIQWyQ+gZG
-	 YJkiliJ8pS39iXoL6vwnO7kf6+sne/Mk/aKGW1laT71sWek0Th3dD05hYFRnA6fpoNlvR
-	 oCpEo6LNeyXqWIJmo0sgRUA+YeOdi7axhveEwDBy/XY+Ho5WRhiIhreQ/mtSXyesPeEU8
-	 h7N4BWhwk5t4xQ0Xd9a8TNoNnUqDojPrPnn9yK46Ek2va85DZHmNZ69PnjzHjRzOUWQKk
-	 +qBTxGFQdan9tsHAiRJ9jMicOvAeEUv2aHRHaTK1JPsfWkiU8gxKUp5q1gcu9ugmp2A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=NLAdGMi2;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.37
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012037.outbound.protection.outlook.com [40.93.195.37])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794838896;
+	b=1T1JqLXIiaTlgMoAolrGF6kQy1JF0qMbo0wXihpDwNhDJMFzETfPE6cSqI18RDh/yQSn
+	 7loKAqr8llufmAxIPZl09xhqAJcSo7hN+a0zIEOFW+f6RB4Lsnj+W338U2R8n0xTgqYXm
+	 DYD/bCZmBGKTbJ6+KEudQNddJjM1wJKASzsiuEVm+ITiWDXPeqQEDFTWiW/Mgoudie0/O
+	 6jZC9ccopP1tfzwhiQmg537VO0/3sYZRpgAcb50nbzkTEwrHYeoVqSb3ouIYg0z/WD4OM
+	 u/A8q27nXVIozRu2+uYndY1JdJZ8EuFaQFYUe51nxkVfq25YT1u3R+SuPI7sfRC4oIA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794838896;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=avroJVXI7FYPP9BX1mpXsZCBZ9F8Uq429Emp0GZBvxk=;
+	b=ameqZ8NH880NrTIpqBG5WzWhx7kfBLWv5F16oK+qprArPu4bw9ctv7l4O+UUg2u/GJei
+	 NmxsVaWOXVSW0JApTYlAqHk9ZftjbB52x3HQ1lCiwbwn7uLEwJA+dEfBqwkR67EBxbr4S
+	 n4b6Pnm4fsq7QCc33+KCiwGkrT9sabfoHV+24kyW1hccUE/1QRds9vxnooCkIz7XxAonN
+	 dhW5C3xxRJoh/vFMZ34W00O7a5tBTR2EYEwhaC06Za7Clf9dQdhUGdKhUEk+E/ObuBiTU
+	 Cuisrwmmq5/KMyyAFVPHxm+eJUhJGWg82ZgiSoKvg3b3iSdpq3+YzeEUMe+OslivN0Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YU0t6OjF;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092D6606A887;
-	Mon, 16 Nov 2026 13:59:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 092D6606A887
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C950606A31C;
+	Mon, 16 Nov 2026 14:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=NLAdGMi2
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KpkAJPiuXWZZAE18LjAPUbTQthibgaR/4kCCXkBXtA90S6g1+t8oacKOwL/LB3kymZDU80I3AFw17Sc8siOswvLRrFTiVCYLVzUOVeSVo+OTfayiGKKSufpjp5LyujK80ZT/Hc1ilDlK0fpR+EjfjL5cVTUVIFTY7XLEKOfOauX13pLQCZFEq8oWPyRzYzDBw/9t2mL4347Wydf90sCtyd7lutx+1EE6tySFaXSBgLfpmvpUn0vp7vFAzJF0UESd8yxmJCWyKqaTs4QE93bJdgjs9Pzh/b5cKhGkFrZegPmadAI+TRm2UAhTyexYbBRhzGxM0biZbwKJFt7vUOe8eQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1TexCL98d8syyucLMDMKp/F1oiNWlvQpNweM5cB0/3M=;
- b=cd+VUDF6chXn3rPHzc3/WKJj3M23MLRAcpO33x8ZoJCwwPikrNpV33Iy5aEinODyfC0DNBPs9vxPLZWMb/tLR0oV9Ry0EJFynfgTVd4kOms4/cABrm7r7Hp0UHFCA5zSb/0ZWMBl4SwW0lFYxFgadcwDtSMMWmckzBPakEpAKKvzUNVkPD5TV81RIwTjqOnHxVSUX7ijJ9JLLwis+9UP6IygezcfNGZc4x3N/1GoOE8r7q+V/qBqCr/8ZWWXZcJFiaJIWoYr3He2kcypuBBV1NS6mjmkbwEu1KtxhXrLL15WG/9E57/e0ZC4rfiQnCLkcTWEwvgFIO5S3feyFbFTiw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1TexCL98d8syyucLMDMKp/F1oiNWlvQpNweM5cB0/3M=;
- b=NLAdGMi2IQqFOJINENpGVQzNCf49Ynyn2UzjDLgUxt1aK+I3I3W3Z1ANIjh/D6IpzryNNdk4tve+1NLSLpMqSEc9hyRvrETuLawCjlzVBw4BSZxuDZ5oWoB5J72lmvZwhdYdBZPzDnWyw3q3nnAE9Y26MzgoWIg7rnoscOlhk9h5k+2jokVhieQ0tERHoYNh6Nm9EpxlTVQDJARSSE9RiAmwOPvLMAhfKIn81UcGdOncI09HSScPdWLqwcGrOdgirkeFBy9zOCHw8iL6nWNbjx3V3OPCp6+tEEd2nBY+fmNPSg0KmFYAr6CBiumFggsBvrjpH5NLWVmNX8uvQolbBA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by IA0PR12MB7649.namprd12.prod.outlook.com (2603:10b6:208:437::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Mon, 16 Nov
- 2026 13:59:12 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0615.012; Mon, 16 Nov 2026
- 13:59:12 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 16 Nov 2026 22:59:08 +0900
-Message-Id: <DMWOT6PLCRCS.APUPR6L0XX3M@nvidia.com>
-Cc: "Gary Guo" <gary@garyguo.net>, <aliceryhl@google.com>,
- <airlied@gmail.com>, <simona@ffwll.ch>, <lossin@kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] gpu: nova-core: use pin-init self-referential
- support
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-References: <20261111161935.750047-1-dakr@kernel.org>
- <20261111161935.750047-2-dakr@kernel.org>
- <DMWH39UWW4KZ.1C5B2M4W1V3CF@nvidia.com>
- <DMWM4KAYL7PT.2ECY3BSNIA2P@garyguo.net>
- <DMWNA84XI432.TJG95PPPMGPR@kernel.org>
-In-Reply-To: <DMWNA84XI432.TJG95PPPMGPR@kernel.org>
-X-ClientProxiedBy: OS7PR01CA0086.jpnprd01.prod.outlook.com
- (2603:1096:604:25b::19) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YU0t6OjF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7252A1F000C4;
+	Mon, 16 Nov 2026 14:21:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794838895;
+	bh=avroJVXI7FYPP9BX1mpXsZCBZ9F8Uq429Emp0GZBvxk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=YU0t6OjFrvjgkDDvOuuKnQWnjekr+xxSg16q9vPrkImGDCbn83dqyPNqFv3qxxNR5
+	 PqGdB4hyPeN8vKZM9TMClVa9zrVFeVMdStgn/w6FsWiFsYEtwvas/FpLblwu6NjmJV
+	 deO7Kzzs4mspJZo+TFxUHMy9EmBcQYPpTBv3ixAq15LH2YKdp3KlQMOSf9t7QofZtK
+	 a8c1VfGYV5BYm03eznfItWSdAbeampwj6gSVV6gDC9C4eQ+Z2je8dhxtp/q9VE9F9a
+	 UNxy4wOW4nK4zjryOzmqYBDmc99ysNZI4gRC90BtHx9DP8Fo/Fblf4P7wX3xv3c1PA
+	 05TY6YhW2AAUQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Mon, 16 Nov 2026 15:21:00 +0100
+Subject: [PATCH v22 3/5] rust: implement `ForeignOwnable` for `Owned`
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -103,99 +52,156 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|IA0PR12MB7649:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5176153b-5ea5-4b11-216f-08df43e9ca9e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|10070799003|1800799024|376014|7416014|10067099003|56012099006|11063799006|4143699003|261021135927099003|261022075727099003|261009223027099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	guMq1ElUNuUOMcbnV0qnix+VAJMo2+rbIHQegT0P6ublzBReQDfEQL2XdT9g21kPs4WhOkxVLsl1NWMr2qcliLJ+Qu6Ccgp0lWjXLAroU7SAHAHx9eBATHges3iGvmntMa1OkMKoqpfpXl7LT7htozObV31MAgasLlA8sXTebVGz3N/QtVHN6Sx5qpKE7XCHQc2YfD9Hf5HNzyu+O1ElP1xE4w5ICkwCs6Iop8uHjXn95V6+9lyJve96Sc/O7QUyvae1V/J3CC6xPndGo15E5V+bZHpdqixuGw0kjjDAE3sX1gpXZx86UxFkg+Ko0dXCM28c77Ig5fpCHwNdoQAmMOiW4WUbUE5lODbwqMj0I3wD9Uv9gC8idFP+GEPcsU9reX9D+L9JIBsiFuwj/oBshLem7XKQyrG9O2Fm5qpAkPe+SMY6PZbZopIYt5C6GJ8d5g1ei4XIPUjenKRqfYoHYcbqssH8HU0GsjuH2twWJSMzyXjW4Ii1LRpr1K+TwFb/W1Ci8viKCqr+a+TJVD0uDgxURyfkPoQZjrlCS1KjuanPuYIT8oR262Cu2xQxsVHH3/xMqbTjcw46GupLMOVxAnnWo6SI7ePJneAM2St55ralg3ujTRS68162Fxx76aWfVQ1a4LMc/pq4pZIVHvsXLGTRxC9oXpk597aVy46Gykg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(10070799003)(1800799024)(376014)(7416014)(10067099003)(56012099006)(11063799006)(4143699003)(261021135927099003)(261022075727099003)(261009223027099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NUw0NUdHUDAwVDExdzV6ZWU0Nkp3VEhkYWFOTldyUUYwRk5WYjZ0ZHdCOVBJ?=
- =?utf-8?B?UGlqeVRMM3N0Skp3cDlGYlk0ZGZ5alVWTXNKUEhiOVVaaXkrWkZrTCsrYkhU?=
- =?utf-8?B?K0FFNjZhWXRTRW44NUx5c3R6N2JXc1NzejhwWW1IZUJJVlNFd1Zvbnlxbloy?=
- =?utf-8?B?Q3pCWWRZVVA1S094am9iTlJ5VWhNRzdMeW92cEUxK0xzYXpjU1ZZSjNKdlpn?=
- =?utf-8?B?dkVMWmJDVnQyTVJxemhSQ1NTR3V5eWZGUW5lUmxjMlRiRDdiYm85MThRKzEw?=
- =?utf-8?B?ZFZnbGdzNVFQeFpJM1JVMW5BcVZ1eUpva0FVbjRaSm5iTS9wM2ZKNHg5MG1P?=
- =?utf-8?B?TkUxdDhDUVluYkVmd0xZSjRkbjRiVUFWY3d2QmlQbUtXdlM5TUpkS0M0V2F1?=
- =?utf-8?B?VTMyeGxNYlpyR2J6dTFReWdpZ1BVTy9VYm9pNkFWR0MvTHdwc2JUbmpiV1hl?=
- =?utf-8?B?aXVZaHl1ZmluUmo2KzNJSC9nZFNRbHlWeGo2K2wrQXNXRXM4NVBtMUk2WVFn?=
- =?utf-8?B?ZDZSNU4xNGVqWHlLMHRuR1AxbWYwOVpGdzFoWFNYbnBvVHhWTDBVbTJPUDlB?=
- =?utf-8?B?U3FYNUh1dlAwWS94VFpkZjF4bUdDVzduME9ZMG9xVGFaemJ5cUVseDZoSURI?=
- =?utf-8?B?anFDZ3BOQ1M0NTNkT0cyamsvTkZMalVRNGtGaVVtL0YwaCsrVkFjbGZHMnRD?=
- =?utf-8?B?K09LMnhxWERXUHB2SkNlSHdXNWY5NDE1cmtxTFFXb3NWZTBpOEdLOUhlU0dx?=
- =?utf-8?B?TFJrcm03djJmUU54cUx2NXRxNkhBSTZ6ZVJUbDZyaks3ekdUeWx2Q1VHVGtm?=
- =?utf-8?B?aktLOGUwOHRqbktFTzBGRHdsbXJtdCtjOGdMU0hSeWJzWFo0YkJxZlZQdEZv?=
- =?utf-8?B?blo3Qmt5Slk0QjRncXRPZ1ZWMGQxRmRVRmdNRkFaa201UzZZb1l5SElRZ2ty?=
- =?utf-8?B?WTRWSERCeXpEbStGMkRlNW00dzNYZVQ1NEwzOWV3UGNpRzd2U0JtMVJtS01N?=
- =?utf-8?B?TTFBUnluTjZYSTJXV25CRGw5Uk4rdU4zeXg3WklBZmJHZkozOU1Db0RVRzRB?=
- =?utf-8?B?Q0ppTCtlbllFYm1QRFFBVTZGT3V6MkY1M21hblQ4VlFaaGdDNERVRmI1Yll2?=
- =?utf-8?B?ZlZYWGVDemlwWnh6US9XSlZIelBoQU1vN0h6NTRLV2NNK0VqODRRSlhkYVVm?=
- =?utf-8?B?dWpDdWNEdFhRTDVaQnVlaUVPelZRTWRoRGRwTlJDQ3RnWlY5WVJjc3Z1citT?=
- =?utf-8?B?QXAwNXlmQlBGRzFEbzBETGV1VkI3R0Y0aTRoN3p6RUlaN2hSUlg4NlZnd2l2?=
- =?utf-8?B?STAwOFd1dkx2UnJHZGhDUkhZNFhTelE1WGo4R2ZFM0JaajVManU3UVZRQVBn?=
- =?utf-8?B?VWgyemUxdWJNNkJuRmg3RjRvd3hOY0tIKzB0VGx3RFE0UUVma3paVUxSakFT?=
- =?utf-8?B?eEsyaWNjcDNXbW1zUExXbGM2RUo1ZUNrT0lSUE5QRDBCQkJ3MVROU2cvSjJ6?=
- =?utf-8?B?bE9acXlxR2VSVGNyWkMyd1lDRUFvcEVqc2xqZFJMekxBOUprdVNYMzd1V0pu?=
- =?utf-8?B?cjUrR0JKc0JKdVB3TEVydnNFWVJjeVVQNndldTQzL3MzZmxraHgzMTJPYjVw?=
- =?utf-8?B?eldLaW0reHhjei9pSDNleDhtamxIckIxRVRXa0lSVzhiektKQ3k1dkxOZVQw?=
- =?utf-8?B?U244Vm94SGJ6MnIySk1KSXBXclFPekVUK0licitwMHRBTm1PeWlxYmhSVTgx?=
- =?utf-8?B?ZVNJTHJjK2V0OWUzcGdqb0ZxN3hEL1dOWnJ5UVdwUUJwcHY0ZXNOUG5nandz?=
- =?utf-8?B?UFBGbW1GNSs3VzBRRjBhTTZ3QVo3Z29FQ2lGRjVNSit4YmhlVjNYd3NhaWg5?=
- =?utf-8?B?SWJVZERtRnJhLzBxYUVzT0VudWdmNGlGTnVQVXBHVTVtaWtmc3B1UkU2dFdl?=
- =?utf-8?B?L2xJSHBPb2h2MVptMFZsQ29mZ3J0dmtJa2tHUFdDUlJWczRCMVhwTzNDSGdx?=
- =?utf-8?B?SEhadjg4SGFJYmJzVy9UbUpXYmE5RXoxVFRIMXBST0FzcER0R1Z4K2dZeXQz?=
- =?utf-8?B?a3NHL2FxVW5CMHJHWmxRcGZaSVcwNXd3WmZHUGtIZlg3TzZEYUk5cWNBSE5n?=
- =?utf-8?B?OXprUFBHRG1ob1RJL2c3TEdDQTFDQWlGZHRvWDdQYXVpeFRlRTc3dUhhc2lM?=
- =?utf-8?B?Q1lOY0UrOHl3cmVKVi9sVGVvY1Nnc2R4NEtma2tTbCtFUndFekFqTjNKRGNZ?=
- =?utf-8?B?Qk1GYTNKT0dwNnZERHRpWkVhVHR2eW5NR0RzbVFzb1JibzhuckpSazdET25o?=
- =?utf-8?B?WlJzNGR3cnBhU2FON1dLT1F0UWpIdUdNT2s3V2tZeG5UakJrVUZITlc1bGFo?=
- =?utf-8?Q?LeYdMIm2C9A9fF2F/vIukPDVo49mSVHQ/jEEefyVKisxF?=
-X-MS-Exchange-AntiSpam-MessageData-1: L761wtWtakK+kw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5176153b-5ea5-4b11-216f-08df43e9ca9e
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 13:59:12.0225
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: I1eYRurS794gXpyz7QPIpwroXBQ/5YRTu9y/NN8NPlNN4L+Pa3yoM8BiJ/6jpPHsj9pguHxzFHSLKgHo6RQ2+A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7649
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261116-unique-ref-v22-3-12029383206d@kernel.org>
+References: <20261116-unique-ref-v22-0-12029383206d@kernel.org>
+In-Reply-To: <20261116-unique-ref-v22-0-12029383206d@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Lyude Paul <lyude@redhat.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Christian Brauner <brauner@kernel.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
+ Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+ Igor Korotin <igor.korotin@linux.dev>, Viresh Kumar <vireshk@kernel.org>, 
+ Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, 
+ Michal Wilczynski <m.wilczynski@samsung.com>, Ira Weiny <iweiny@kernel.org>, 
+ Matthew Brost <matthew.brost@intel.com>, 
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+ Johan Hovold <johan@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Dave Jiang <dave.jiang@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ Saeed Mahameed <saeedm@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ Markus Probst <markus.probst@posteo.de>, Ira Weiny <iweiny@kernel.org>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, 
+ Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ driver-core@lists.linux.dev, linux-block@vger.kernel.org, 
+ linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-fsdevel@vger.kernel.org, linux-pm@vger.kernel.org, 
+ linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org, 
+ linux-usb@vger.kernel.org, linux-media@vger.kernel.org, 
+ linaro-mm-sig@lists.linaro.org, linux-serial@vger.kernel.org
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3413; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=yxSwAMf1WCPKfeJBxmCTAk/DQrKQubqT1B9hug50/gI=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq+xFS+9cTttA9+oADXGC7GEWmmDosjg6s4Ao7a
+ qKVHkrzi2yJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCavsRUgAKCRD6UCkIqsW9
+ 0O3jD/49Splh6UzX1b0EokN7/Bp9lpjcX/DWmN5abF8blBytH3yV6+s4lAYrTuN4IbwrH6lGWP+
+ G0TE5WjwSJMFPIGikWQ+VuqTHmrYBgy34ckfY3sgSCgpLZe1Ulq4aeRUqc6LPTBcW/PcxZzctJc
+ SMWpuB9vMTCEX7wCDBCFIGA0I7XZKRZ+sT2eSleHRevwnmQ5qG/k7uG6qot2gWi5xWFi67AH29M
+ 39V8/VIFeNaKaGWj5FcEUAYL0i/c3GHNiDONnKhPkzRsBspNENw1A1ljRP1a/aP6vCE1yaIOxWF
+ u/eWmPlBAvD1DN3JxG2QHn89Lb3tvpETyGuXRfp/vExtaQhPcK6hhjI8glNSy+taBQUhUciaZ7o
+ HbMhLvYLOZ+DI187LcoitByoRm7L5ZpQZxwB6mmIvcrL2kBLNVD3WueR9xrMAGTmBItRXInawml
+ lVoE/5RXApo+8R3y903FvVcx1P79l9P/KRf+DEmo/S1yyd84RPEvWjD6rBnZDZ2atX8zB/AhAw4
+ Lv4hSHlmrR//tO9SiqOnLgWhiw0S8YrY502KaW0j7zpyoGvQzn6cJq1dsO7xsw1KockvDh597lr
+ xBMInACeni6dtSLhueSr4IqgRIC9vD9lUhfcvQNA0/JX3iA2+U0UpmEc3526Y2BUhOsLgth0g+Y
+ FZT/S29GIWWp2GQ==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Mon Nov 16, 2026 at 9:47 PM JST, Danilo Krummrich wrote:
-> On Mon Nov 16, 2026 at 12:52 PM CET, Gary Guo wrote:
->> On Mon Nov 16, 2026 at 7:56 AM GMT, Alexandre Courbot wrote:
->>> On Thu Nov 12, 2026 at 1:19 AM JST, Danilo Krummrich wrote:
->>> <...>
->>>>  drivers/gpu/nova-core/gsp/cmdq.rs     | 16 ++++++--
->>>>  drivers/gpu/nova-core/gsp/cmdq/gmc.rs |  9 +++--
->>>>  drivers/gpu/nova-core/gsp/cmdq/rpc.rs | 11 +++---
->>>
->>> The changes to these files look like they are a change on their own;
->>> they are not using the self-referential support but rather change how
->>> the queue lock is acquired. It should probably be a separate patch
->>> before the rest (which would be the last patch of the series).
->>
->> This is actually integral due to variances, as the existing code more or=
- less
->> relies on cmdq being covariant unsafely. Pin-init is going to enforce th=
-at so it
->> needs to be updated to use existential lifetime to make cmdq actually co=
-variant.
->
-> Yes, those changes are related to the use of self-referential pin-init. W=
-e could
-> technically introduce the with_inner_locked() helper separately, but that=
- seems
-> excessive and creates unnecessary churn.
+Implement `ForeignOwnable` for `Owned<T>`. This allows use of `Owned<T>` in
+places such as the `XArray`.
 
-Indeed, thanks for the clarification. With that cleared,
+Note that `T` does not need to implement `ForeignOwnable` for `Owned<T>` to
+implement `ForeignOwnable`.
 
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ rust/kernel/owned.rs | 57 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 57 insertions(+)
+
+diff --git a/rust/kernel/owned.rs b/rust/kernel/owned.rs
+index 51da9bc7e1f4..c255420f8383 100644
+--- a/rust/kernel/owned.rs
++++ b/rust/kernel/owned.rs
+@@ -15,6 +15,8 @@
+     ptr::NonNull, //
+ };
+ 
++use kernel::types::ForeignOwnable;
++
+ /// Types that specify their own way of performing allocation and destruction. Typically, this trait
+ /// is implemented on types from the C side.
+ ///
+@@ -272,3 +274,58 @@ fn drop(&mut self) {
+         unsafe { T::release(self.ptr) };
+     }
+ }
++
++// SAFETY: We derive the pointer to `T` from a valid `T`, so the returned
++// pointer satisfy alignment requirements of `T`.
++unsafe impl<T: Ownable> ForeignOwnable for Owned<T> {
++    const FOREIGN_ALIGN: usize = core::mem::align_of::<T>();
++
++    type Borrowed<'a>
++        = &'a T
++    where
++        Self: 'a;
++    type BorrowedMut<'a>
++        = Pin<&'a mut T>
++    where
++        Self: 'a;
++
++    #[inline]
++    fn into_foreign(self) -> *mut kernel::ffi::c_void {
++        Owned::into_raw(self).as_ptr().cast()
++    }
++
++    #[inline]
++    unsafe fn from_foreign(ptr: *mut kernel::ffi::c_void) -> Self {
++        // SAFETY: By function safety contract, `ptr` came from `into_foreign` and cannot be null.
++        let ptr = unsafe { NonNull::new_unchecked(ptr.cast()) };
++
++        // SAFETY: By the function safety contract, `ptr` was returned by `into_foreign`, which
++        // consumed an `Owned<T>` without calling `T::release`. The requirements that were upheld
++        // for that `Owned<T>` are still upheld, as the ownership it represented was only held by
++        // the foreign pointer in the meantime. We retake that ownership here.
++        unsafe { Owned::from_raw(ptr) }
++    }
++
++    #[inline]
++    unsafe fn borrow<'a>(ptr: *mut kernel::ffi::c_void) -> Self::Borrowed<'a> {
++        // SAFETY: By function safety requirements, `ptr` came from `into_foreign` and the
++        // `Owned<T>` it was created from is not reconstructed or mutably borrowed during `'a`. By
++        // the type invariants of that `Owned<T>`, `ptr` points to a valid `T` and it is sound to
++        // create a shared reference to the `T` for `'a`.
++        unsafe { &*ptr.cast() }
++    }
++
++    #[inline]
++    unsafe fn borrow_mut<'a>(ptr: *mut kernel::ffi::c_void) -> Self::BorrowedMut<'a> {
++        // SAFETY: By function safety requirements, `ptr` came from `into_foreign` and the
++        // `Owned<T>` it was created from is not reconstructed or otherwise borrowed during `'a`. By
++        // the type invariants of that `Owned<T>`, `ptr` points to a valid `T` and it is sound to
++        // create a mutable reference to the `T` for `'a`, given that we only hand it out as a
++        // `Pin<&mut T>` below.
++        let inner = unsafe { &mut *ptr.cast() };
++
++        // SAFETY: We never move out of inner, and we do not hand out mutable
++        // references when `T: !Unpin`.
++        unsafe { Pin::new_unchecked(inner) }
++    }
++}
+
+-- 
+2.54.0
+
+
