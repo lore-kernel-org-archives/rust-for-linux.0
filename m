@@ -1,46 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794828383;
-	b=AEl49HZDfBCaV96i485Pc5kPqn1LNXaOkw2OhJc2CTtuwD/8Yeu9FiuvAFS1s5jXxqI7
-	 w/ixE22Y6I9fJW/xjK1kiYhdiUwHWRfYGVQq2nKtrczKNW8Gwx4fa/z97COYPc2WfD0AB
-	 LrwHst5hVhb9veuUAfsWn5JZi5TSglSrB2NC3YmCzQoWff8/Bb2PL/QyR/wLoyy16XZIN
-	 SzL5Aw7Lks2n6nLFk0JlP1TXQuP6LB9fVT157/CNix21ovB5qSdLGmctef6+tTQL8Uc/D
-	 qtVe/rBV9khVfOjCZzPbaSpWO5VG47LX3RtFY/u3P0ilimWBFco750nK0/RnGP4uLDA==
+	t=1794828386;
+	b=mA5M9ctytZdpAKwilnonD3ZqL8dksqOC+E9ce7hcCqp2qLkLL/9tp06E/5A9SFPmtu8T
+	 GfzoSs2/4djRkf4F2+b2NdwTh+UJIsRGMdsesBQNRuLr/L88jRWgY6d7gO3FQ0CXEOb5c
+	 BDN7r6s1F6rS4UJdLb6HBfq3ETqMbtfM7hU33BS86bQnxL19ywi8eipBlr7sL5n8Ahs+A
+	 jbsprmoNvyQpTZcoorWtIVXxj7mFjEaR9qtPSSQ8jztqMw8hrswLJNGTfTM9kx+95ILln
+	 YfAF7VR+I94eyJt8Gvs9vSSnVp3dg9p6fZI3SyZMgPORowRrsEJMzp9LGTw0NK3CdsQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794828383;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794828386;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=erPqvfMkF12qX1OD9Ld8k+GHRcROaJq3YFf9CiEDZlM=;
-	b=de6TYbhciaF14rkpaIacIGzZFdQawkITgR61BZKdmMkM8b8o/bGrNqsMeZvoadv0VJI2
-	 k3pHdbQMRiNEjr4A6LVpi2EnsAHMUfdqevdi4x91XkcXYMQNkIf4j4b2viatPUx9iTeLy
-	 LcL8poV40aDhjCw9UnepWuoZq/6vHAQgz860srPTUJvBhwPFxuKeOvcW1duWIKP4GzsFk
-	 BvA916KUbL5e6ixxOqADtBuonUO/VCo+VB+xAGMxZMHSGwGR07P1J3nEYqgnVzaEg+HhL
-	 toV3+iaEzvCyScQd3bAcQkLROhlXOgqy2C8MXq2VD30EfhjXB7jFOJp3xUIlRzwvfbA==
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=Wyefxa4+TSlF7paSardcp8WRUJVTac2CKSbIHJILBvM=;
+	b=HoZxs51VBY83gLuhwpBKyrTbIhN5MmQ8/q26VkPlJTltRuXBR72m1wB+u+BQcIsNCWOU
+	 Jh7I1WdJPbqt1KCecghW1keuUL+KcboTO8/5M7qZceDLf8Yw10toqd+XWWYTtXuSjIsQm
+	 s7GYiF59+Ur1W52VcebDCpoF40XDKqMfRnKyGk3tURaeEkVOSAlKeJqwAkD3p3w3lr9nl
+	 zew1MdwDB2UuScCIBIJ1y7CAe3sh0MNbcjDMAJldb/Rwt92yplBckMxhQOg87MEg5WZok
+	 wWL36QWk0/odZDMZsc2Gje5X4upb1kx3Pb+NlpBtTw+kb7vRBSqajSc26ZTyN0gOpMw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=bkM+TK2t;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=JSw1Yqns;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E1B606A78C;
-	Mon, 16 Nov 2026 11:26:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79E1B606A78C
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B7D606A7A3;
+	Mon, 16 Nov 2026 11:26:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6B7D606A7A3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=bkM+TK2t
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=JSw1Yqns
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 721951713;
-	Mon, 16 Nov 2026 03:26:18 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3AC2D1A25;
+	Mon, 16 Nov 2026 03:26:22 -0800 (PST)
 Received: from e120398-lin.trondheim.arm.com (e120398-lin.trondheim.arm.com [10.42.46.160])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1263C3F632;
-	Mon, 16 Nov 2026 03:26:17 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D06AE3F632;
+	Mon, 16 Nov 2026 03:26:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794828381; bh=iB0d6tgW3I2e5iitol76b342HkezV3YpGx343zM0/zM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=bkM+TK2tJdavJuFwKlvA3OTO5Z7WFJZ2Ry/hovLMoG4/7WB6qd6OJWj9Kr85r2H5I
-	 //LtvIcHtqD8/sYEz1+1XlQfr7pIzO4UTSARsJksEiw7nurMGivn1OhtcI6PId5ZAN
-	 ULJRWKwh9gx/Kh0day3tZN8qI3KwfEtFRWCNxkJY=
+	t=1794828385; bh=wBxz/8n5MK3qDyvxqWMMzlq8uuej1c5mv+pdu52hbHc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JSw1Yqnsgq0WMqFlUnuSGWFAKINKzEYExy+nL0w54O0x5a8jodK1KKvcuTczIGe3Y
+	 SuMSg/pfSiMilOlTj8ocmFKviDXFeHThZgH4tLcRk+EDCREomd1xw/VK+boircm/vV
+	 l3NHcnSZb9tKBFxvyNKpgQg7CEtR9mG5liMz64Gs=
 From: Ketil Johnsen <ketil.johnsen@arm.com>
 To: Boris Brezillon <boris.brezillon@collabora.com>,
 	Steven Price <steven.price@arm.com>,
@@ -60,10 +61,12 @@ Cc: dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	Ketil Johnsen <ketil.johnsen@arm.com>
-Subject: [PATCH v5 00/13] drm/panthor: Protected mode support for Mali CSF GPUs
-Date: Mon, 16 Nov 2026 12:25:48 +0100
-Message-ID: <20261116112601.3483649-1-ketil.johnsen@arm.com>
+Subject: [PATCH v5 01/13] drm/panthor: De-duplicate FW memory section sync
+Date: Mon, 16 Nov 2026 12:25:49 +0100
+Message-ID: <20261116112601.3483649-2-ketil.johnsen@arm.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261116112601.3483649-1-ketil.johnsen@arm.com>
+References: <20261116112601.3483649-1-ketil.johnsen@arm.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -75,189 +78,87 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+Handle the sync to device of FW memory sections inside
+panthor_fw_init_section_mem() so that the callers do not have to.
 
-This is a patch series covering the support for protected mode execution in
-Mali Panthor CSF kernel driver.
+This small improvement is also critical for protected FW sections,
+so we avoid issuing memory transactions to protected memory from
+CPU running in normal mode.
 
-It builds on the initial RFC posted by Florent Tomasin back in January of 2025.
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Ketil Johnsen <ketil.johnsen@arm.com>
+---
+ drivers/gpu/drm/panthor/panthor_fw.c | 23 +++++++----------------
+ 1 file changed, 7 insertions(+), 16 deletions(-)
 
-The initial RFC can be found here:
-https://lore.kernel.org/lkml/cover.1738228114.git.florent.tomasin@arm.com/
-
-The Mali CSF GPUs come with the support for protected mode execution at the
-HW level. This feature requires two main changes in the kernel driver:
-
-1) Configure the GPU with a protected buffer. The system must provide a DMA
-   heap from which the driver can get protected buffers.
-   It can be a carved-out memory or dynamically allocated protected memory region.
-   Some system includes a trusted FW which is in charge of the protected memory.
-   This problem is integration specific and the responsibility to allocate the
-   required protected memory from the correct and system specific DMA heap is
-   left to user space (Mesa). Panthor CSF driver must be handed the needed
-   buffers via new IOCTLs.
-
-2) Handle enter and exit of the GPU HW from normal to protected mode of execution.
-   FW sends a request for protected mode entry to the kernel driver.
-   The acknowledgment of that request is a scheduling decision. Effectively,
-   protected mode execution should not overrule normal mode of execution.
-   A fair distribution of execution time will guaranty the overall performance
-   of the device, including the UI (usually executing in normal mode),
-   will not regress when a protected mode job is submitted by an application.
-
-
-Background
-----------
-
-Current Mali Panthor CSF driver does not allow a user space application to
-execute protected jobs on the GPU. This use case is quite common on end-user-device.
-A user may want to watch a video or render content that is under a "Digital Right
-Management" protection, or launch an application with user private data.
-
-1) User-space:
-
-   In order for an application to execute protected jobs on a Mali CSF GPU the
-   user space application must submit jobs to the GPU within a "protected regions"
-   (range of commands to execute in protected mode).
-
-   Find here an example of a command buffer that contains protected commands:
-
-```
-          <--- Normal mode ---><--- Protected mode ---><--- Normal mode --->
-   +-------------------------------------------------------------------------+
-   | ... | CMD_0 | ... | CMD_N | PROT_REGION | CMD_N+1 | ... | CMD_N+M | ... |
-   +-------------------------------------------------------------------------+
-```
-
-   The PROT_REGION command acts as a barrier to notify the HW of upcoming
-   protected jobs. It also defines the number of commands to execute in protected
-   mode.
-
-   The Mesa definition of the opcode can be found here:
-
-     https://gitlab.freedesktop.org/mesa/mesa/-/blob/main/src/panfrost/lib/genxml/v10.xml?ref_type=heads#L763
-
-2) Kernel-space:
-
-   When loading the FW image, the Kernel driver must also load the data section
-   of CSF FW that comes from the protected memory, in order to allow FW to
-   execute in protected mode.
-
-   The FW uses the same protected memory buffer to execute protected jobs from
-   all processes on the system. Note: This buffer must be provided by a user
-   space process with CAP_SYS_MODULE though.
-
-   In addition, when a CSG (group) is created, it must have a protected suspend
-   buffer. User space must provide this buffer on group creation if it want to
-   execute protected jobs.
-
-   The required size of both these buffer types can be queried. See
-   query type DRM_PANTHOR_DEV_QUERY_PROTM_INFO.
-
-Design decisions
-----------------
-
-The earlier versions (RFC and v1) relied on in-kernel allocation of protected
-DMA-bufs, both for the required FW memory (system wide), and per group
-suspend buffers (per process). This is no longer needed.
-Starting with v2, this is now changed and it is user space which is responsible
-for supplying these buffers.
-Only a user space processes with elevated privileges (CAP_SYS_MODULE) is trusted
-to provide the system wide protected FW memory. This only needs to happen once
-per boot, and is needed before any non-privileged processes can make use of
-protected rendering.
-
-The Mali Panthor CSF kernel driver will handle enter/exit of protected
-mode with a fair consideration of the job scheduling.
-
-If the system integrator does not provide a protected DMA heap, the driver
-will not allow any protected mode execution.
-
-Testing
--------
-
-1) Platform and development environment
-
-   Any platform containing a Mali CSF type of GPU and a protected memory allocator
-   that is based on DMA Heap can be used. For example, it can be a physical platform
-   or a simulator such as Arm Total Compute FVPs platforms. Reference to the latter:
-
-     https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms/Total%20Compute%20FVPs
-
-2) Mesa:
-
-PanVK support can be found here:
-https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/40044
-
-
-Previous versions
------------------
-v4: https://lore.kernel.org/lkml/20261012125940.3291951-1-ketil.johnsen@arm.com/
-v3: https://lkml.org/lkml/2026/9/11/1187
-v2: https://lkml.org/lkml/2026/7/12/369
-v1: https://lkml.org/lkml/2026/5/5/1523
-
-
-Highlevel changes
------------------
-
-Changes in v5:
-- Main changes are to the "drm/panthor: Add support for entering and exiting protected mode" patch.
-  Use an empty transtab for VMs requesting updates when in protected mode.
-  This allows us to keep non-protected groups on slot for immediate resume on protm exit.
-- See each patch for detailed changes
-
-Changes in v4:
-- Main changes are to the "drm/panthor: Add support for entering and exiting protected mode" patch.
-  A new approach to avoid uneccesary protm premption by non-running VMs.
-  This patch do need some splitting before final version. Will do that if
-  this approach gets the general approval.
-- Split the old patch "drm/panthor: Expose protected rendering features" into
-  multiple smaller patches.
-- See each patch for detailed changes
-
-Changes in v3:
-- Dropped patch "drm/panthor: Explicit expansion of locked VM region"
-- See each patch for detailed changes
-
-Changes in v2:
-- Conceptually similar to v1, but heavily reworked to address fault handling
-- User space provides all protected memory buffers (no in-kernel dmabuf alloc)
-
-Boris Brezillon (7):
-  drm/panthor: Pass drm_file instead of panthor_file
-  drm/panthor: New function for FW section map flags
-  drm/panthor: Keep size and VA in FW section obj
-  drm/panthor: Refactor GEM usage flags assignment
-  drm/panthor: Create kernel BO from existing GEM
-  drm/panthor: Support FW init of protm
-  drm/panthor: Protm support for groups
-
-Florent Tomasin (2):
-  drm/panthor: Minor scheduler refactoring
-  drm/panthor: Add support for entering and exiting protected mode
-
-Ketil Johnsen (4):
-  drm/panthor: De-duplicate FW memory section sync
-  drm/panthor: Don't allocate protm_suspend_buf
-  drm/panthor: Use a copy of suspend buffer sizes
-  drm/panthor: Bump version to expose protm feature
-
- drivers/gpu/drm/panthor/panthor_device.h |   8 +
- drivers/gpu/drm/panthor/panthor_drv.c    |  64 ++-
- drivers/gpu/drm/panthor/panthor_fw.c     | 347 ++++++++++--
- drivers/gpu/drm/panthor/panthor_fw.h     |  12 +
- drivers/gpu/drm/panthor/panthor_gem.c    | 111 ++--
- drivers/gpu/drm/panthor/panthor_gem.h    |   9 +-
- drivers/gpu/drm/panthor/panthor_gpu.c    |  49 +-
- drivers/gpu/drm/panthor/panthor_gpu.h    |   4 +
- drivers/gpu/drm/panthor/panthor_mmu.c    | 368 +++++++++----
- drivers/gpu/drm/panthor/panthor_mmu.h    |  11 +-
- drivers/gpu/drm/panthor/panthor_sched.c  | 672 +++++++++++++++++++----
- drivers/gpu/drm/panthor/panthor_sched.h  |  39 +-
- include/uapi/drm/panthor_drm.h           |  85 ++-
- 13 files changed, 1441 insertions(+), 338 deletions(-)
-
+diff --git a/drivers/gpu/drm/panthor/panthor_fw.c b/drivers/gpu/drm/panthor/panthor_fw.c
+index 4f1fab66a13bf..5f9f7a92c56a8 100644
+--- a/drivers/gpu/drm/panthor/panthor_fw.c
++++ b/drivers/gpu/drm/panthor/panthor_fw.c
+@@ -449,6 +449,7 @@ static void panthor_fw_init_section_mem(struct panthor_device *ptdev,
+ 					struct panthor_fw_section *section)
+ {
+ 	bool was_mapped = !!section->mem->kmap;
++	struct sg_table *sgt;
+ 	int ret;
+ 
+ 	if (!section->data.size &&
+@@ -467,6 +468,12 @@ static void panthor_fw_init_section_mem(struct panthor_device *ptdev,
+ 
+ 	if (!was_mapped)
+ 		panthor_kernel_bo_vunmap(section->mem);
++
++	/* An sgt should have been requested when the kernel BO was GPU-mapped. */
++	sgt = to_panthor_bo(section->mem->obj)->dmap.sgt;
++	if (!drm_WARN_ON_ONCE(&ptdev->base, !sgt))
++		dma_sync_sgtable_for_device(ptdev->base.dev, sgt,
++					    DMA_TO_DEVICE);
+ }
+ 
+ /**
+@@ -639,7 +646,6 @@ static int panthor_fw_load_section_entry(struct panthor_device *ptdev,
+ 
+ 	if (section_size) {
+ 		u32 cache_mode = hdr.flags & CSF_FW_BINARY_IFACE_ENTRY_CACHE_MODE_MASK;
+-		struct panthor_gem_object *bo;
+ 		u32 vm_map_flags = 0;
+ 		u64 va = hdr.va.start;
+ 
+@@ -676,14 +682,6 @@ static int panthor_fw_load_section_entry(struct panthor_device *ptdev,
+ 		}
+ 
+ 		panthor_fw_init_section_mem(ptdev, section);
+-
+-		bo = to_panthor_bo(section->mem->obj);
+-
+-		/* An sgt should have been requested when the kernel BO was GPU-mapped. */
+-		if (drm_WARN_ON_ONCE(&ptdev->base, !bo->dmap.sgt))
+-			return -EINVAL;
+-
+-		dma_sync_sgtable_for_device(ptdev->base.dev, bo->dmap.sgt, DMA_TO_DEVICE);
+ 	}
+ 
+ 	if (hdr.va.start == CSF_MCU_SHARED_REGION_START)
+@@ -738,17 +736,10 @@ panthor_reload_fw_sections(struct panthor_device *ptdev, bool full_reload)
+ 	struct panthor_fw_section *section;
+ 
+ 	list_for_each_entry(section, &ptdev->fw->sections, node) {
+-		struct sg_table *sgt;
+-
+ 		if (!full_reload && !(section->flags & CSF_FW_BINARY_IFACE_ENTRY_WR))
+ 			continue;
+ 
+ 		panthor_fw_init_section_mem(ptdev, section);
+-
+-		/* An sgt should have been requested when the kernel BO was GPU-mapped. */
+-		sgt = to_panthor_bo(section->mem->obj)->dmap.sgt;
+-		if (!drm_WARN_ON_ONCE(&ptdev->base, !sgt))
+-			dma_sync_sgtable_for_device(ptdev->base.dev, sgt, DMA_TO_DEVICE);
+ 	}
+ }
+ 
 -- 
 2.43.0
 
