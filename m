@@ -1,96 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.16
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794849295;
-	b=QVwP4tgnSTIOF1UsUJsY7CqlAaaom2El7xPV+h1qeEuMiawzTE/xrfM+FoqyJJN58f1a
-	 +ikX1yfAHIpxWuCL4JWY19jzW/6D+U3lRD3Zntv+X6WMXZK0Yu/wxVP16TNCf6ddGVbMo
-	 Wc6sh+ntHXzd5sqLf6+GFRFJoViFcbf5dpRoGSnmR5GnM+ARHU0WOKtb6cohOEaAaAhcJ
-	 lShbPS1PpJ3klFMWt7aa7Q5gzbGD5U+yB6rkDl7m91ORVRdo8WZr62MU/1n9C0vQOrHoW
-	 mmYZ3ldklYWlh+JM/tmAP6R0otcRCGwNgylcyIWwRgtXxaVlQUlkW71jomHw20qzOyA==
+	t=1794852040;
+	b=aEbovmDzUooZRhB1//0tjoWKHNOJ2leE/v5BJor9GjCyVYqwyF+K+ILST5CK+Coj6DSX
+	 w89Z4KPEOJ1VIs67+y5ZFQVONBoi7aHPPBAGFyx0YcTPM232J3SSIIGrdnJCn9JpRkcge
+	 fu6vvj4CyFsRI28rqoOcmX8YDTS8ccq9GjvL5dXknPULF7fg36VuLzCjrOUQIkR+ceXXl
+	 txvGRWGgNqGdR5NHOYsH8W/U5bUTXqf6hypSZKMqzeG6U/BKDb8Zh0Wx7+9vRf8/J362U
+	 lSmTVRWbxop9XuzCMpDa64AQFOhNi+NHmI6HpFnoDOuNLtEjQjOvKECRDeZkVD00AUw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794849295;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=R3AayEltuaPaSc8ERAQfW5YeyfzxTpEYZhzgv4GQkHY=;
-	b=SS+ZxP0PaJwui4VmlimUJK4zzXQYRSCrIcNjrVoHpnbYrSJTJ+VbCdgBIDPux5jxPyyi
-	 W7u8Inrf2bIPaR8FpP6fWChibGva1N4KbjCu5b3hQMu7dajDLBl2fi0SFK3VLhFwgyk6+
-	 YiP2b1GGoEc3j0nKiMGC48ySFHSrFRH8sYoKbh5nl5Cjp6VLmOPQmxHKFeopzHvUsDvLs
-	 RRtTVGXiN2q71uYj+jprDGUDmDMKY1OYeEu7vxJAPzbROvox7JXRox2GL8zdLDwQDanqp
-	 7KeAoZqvpeoLF3Na+K//vALcVGpiHWogdjJDWBNfhyoRNAA94+/D8uCEu0yCFPIFkFQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794852040;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=AGMTwFfs53sTPCTAbdlxmCJ8hYeb9iUmlEmcpKGM0Ow=;
+	b=kvXL8kXHes0x93z+IQsGOeU+QGXrgPB26+GzdyPNo5HPN1uGWAqpBEwBDfbi3zEm4eJ0
+	 EIv5FwzVHkGsIEHWRdotXsIe8PdZVhec5+ul8An2uKMaZfu2Nlr0wnlHoXflKIqg7BMiE
+	 2bI+jIQYD57Swuyj+WcYn/DwZOwNGIWd49jWa28p9B+PDlAgS6GfHgX3CD+cj7+S2TDgL
+	 h2uwIJKgs206pGAh0poSfc1yMX0l8ckEtCd9p9GPTEebTlzA3V1kcYk9Nj71yDPhhCjQt
+	 JJYTVKilMnhiyB37804Zbfi5Nd3wCEADBrxgQLr1Ab7QVwMzpes3dZL4P9lysY/uX3w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="ToaMIdu/";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=czzKdeD5;
+	arc=none smtp.remote-ip=192.198.163.16
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1DD606A329;
-	Mon, 16 Nov 2026 17:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB358606A881;
+	Mon, 16 Nov 2026 18:00:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EB358606A881
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ToaMIdu/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB661F000C4;
-	Mon, 16 Nov 2026 17:14:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794849294;
-	bh=R3AayEltuaPaSc8ERAQfW5YeyfzxTpEYZhzgv4GQkHY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ToaMIdu/5Nw6gYTd8dKnI+IbBbxNZgnb4fzduNfFHN9sWkkaCbz70GToCW+nEDm4Z
-	 9uF7aB4TmCTaZug50b7ulcfEcxnEmVk2y6hiNSjA7jeGkGkT/ShZXqpwy4hLr9/aj2
-	 6NNvcIDIQJyhn921LolKVZXRXN1h4Ga0LhQtINeSDy8hIqBMGS+mkousnN6WdK46gS
-	 HsC7Ssh/0Iajvpgfbo3BwuIO222ho/1CZeWVo1XVKShBg67CwppzE5LJyhKkteezT9
-	 hDnjr1Y0MiqO1CP017SxVisOiKTO0ep8ghfKbj8w4YBnPbOdKVd/ClnQqPqoHRyDb7
-	 tFmEJTYAzrZ/Q==
-Date: Mon, 16 Nov 2026 17:14:42 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Vladimir Kondratiev <Vladimir.Kondratiev@mobileye.com>
-Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>, Gary Guo <gary@garyguo.net>,
-	Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Chao-ying Fu <chao-ying.fu@globalfoundries.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	torvalds@linux-foundation.org, olof@lixom.net,
-	aleksa.paunovic@htecgroup.com, arikalo@gmail.com,
-	Boqun Feng <boqun@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Luke Nelson <luke.r.nels@gmail.com>, Xi Wang <xi.wang@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Pu Lehui <pulehui@huawei.com>, Puranjay Mohan <puranjay@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=czzKdeD5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794852039; x=1826388039;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wWTaX5iA12+M0wZvVENhAikZT3twTo+LW7rgrLUSPGY=;
+  b=czzKdeD5M0VQO/XLCplAUBt5kG6UTfNZAHDTc2cz0yCI3u0+CL5tG04V
+   5sps0E3mUUYovZhtmiX5uRJpw/tbTenewKzM9T48fD1zkdDmsShyrgrGq
+   /nU+js8h+5xqu/wvI7dUrLtZfzWDMfyCNWO9wVJX1rdYwrn2w5X/KXvCy
+   6ICDeS6no7jIfC2xPDV2rMU8XlY0pizIVdYYaMtt3QuMLPCT9oG3i0WVi
+   nsdpBpQAhnarZ/M8VkG9mSXahpIGWeZ7iqjHIkE4I6uAhd0vVOOhDKrf5
+   t7uLxMsw8O32IUZT64R4Z7aQReydrPlOJ4bhFZ0XKk7Hz/1fMFJXjqaez
+   w==;
+X-CSE-ConnectionGUID: LB1K4VAWSdGMzmxc0ZmCdg==
+X-CSE-MsgGUID: 0sFN+zHqTBaqd9IZ1ZQyLQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11968"; a="3632816"
+X-IronPort-AV: E=Sophos;i="6.27,217,1787036400"; 
+   d="scan'208";a="3632816"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 10:00:39 -0800
+X-CSE-ConnectionGUID: RV4zCj+tTT6w/vcjLZb1Bw==
+X-CSE-MsgGUID: r6GgFtjpRX2f2sT+idN6jA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,217,1787036400"; 
+   d="scan'208";a="9591695"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 16 Nov 2026 10:00:34 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xT10J-000000019Bc-1yxt;
+	Mon, 16 Nov 2026 18:00:31 +0000
+Date: Tue, 17 Nov 2026 02:00:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ketil Johnsen <ketil.johnsen@arm.com>,
+	Boris Brezillon <bbrezillon@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>, Akash Goel <akash.goel@arm.com>,
+	Karunika Choo <karunika.choo@arm.com>,
+	Lukas Zapolskas <lukas.zapolskas@arm.com>,
+	Chris Diamand <chris.diamand@arm.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Charlie Jenkins <thecharlesjenkins@gmail.com>,
-	Nam Cao <namcao@linutronix.de>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v6 2/6] riscv: build kernel atomics from LR/SC when Zaamo
- is disabled
-Message-ID: <20261116-manifesto-edginess-7f1663f9a76b@spud>
-References: <20261110-lrsc-only-v6-0-bafc3cc0fcae@mobileye.com>
- <20261110-lrsc-only-v6-2-bafc3cc0fcae@mobileye.com>
- <20261110-revivable-saint-9bcfaa2fd0e7@spud>
- <3308062b-9d0f-436f-a22a-217cc1c59aed@mobileye.com>
+	Alice Ryhl <aliceryhl@google.com>
+Cc: oe-kbuild-all@lists.linux.dev, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Ketil Johnsen <ketil.johnsen@arm.com>
+Subject: Re: [PATCH v5 11/13] drm/panthor: Support FW init of protm
+Message-ID: <202611170131.5ommYcYW-lkp@intel.com>
+References: <20261116112601.3483649-12-ketil.johnsen@arm.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -100,40 +95,47 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Y+J9n/Hla/zwW0HU"
-Content-Disposition: inline
-In-Reply-To: <3308062b-9d0f-436f-a22a-217cc1c59aed@mobileye.com>
-
---Y+J9n/Hla/zwW0HU
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20261116112601.3483649-12-ketil.johnsen@arm.com>
 
-On Wed, Nov 11, 2026 at 08:37:23AM +0200, Vladimir Kondratiev wrote:
-> On 11/10/26 21:02, Conor Dooley wrote:
-> > I had a quick glance at this revision, and I think you've at least tried
-> > to resolve the things I was pointing out. Did I miss something, or why
-> > have you kept the NAK after having resolved the things that I was
-> > objecting to?
->=20
-> I'll be happy to remove it. Was not feeling right to do this without
-> your permission.
+Hi Ketil,
 
-IMO, if you sort out what the NAK was complaining about, you can drop it
-without permission. Worth calling out in the cover maybe.
+kernel test robot noticed the following build warnings:
 
-I'll take another look at this later in the week..
+[auto build test WARNING on drm-misc/drm-misc-next]
+[also build test WARNING on next-20261113]
+[cannot apply to linux-review/Ketil-Johnsen/drm-panthor-De-duplicate-FW-memory-section-sync/20261012-145929 linus/master v7.4-rc3]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
---Y+J9n/Hla/zwW0HU
-Content-Type: application/pgp-signature; name=signature.asc
+url:    https://github.com/intel-lab-lkp/linux/commits/Ketil-Johnsen/drm-panthor-De-duplicate-FW-memory-section-sync/20261116-122549
+base:   https://gitlab.freedesktop.org/drm/misc/kernel.git drm-misc-next
+patch link:    https://lore.kernel.org/r/20261116112601.3483649-12-ketil.johnsen%40arm.com
+patch subject: [PATCH v5 11/13] drm/panthor: Support FW init of protm
+config: sparc64-randconfig-1000-20261116 (https://download.01.org/0day-ci/archive/20261117/202611170131.5ommYcYW-lkp@intel.com/config)
+compiler: sparc64-linux-gcc (GCC) 15.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261117/202611170131.5ommYcYW-lkp@intel.com/reproduce)
 
------BEGIN PGP SIGNATURE-----
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611170131.5ommYcYW-lkp@intel.com/
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCavs5/gAKCRB4tDGHoIJi
-0kGoAQCWFf5JHxUi2KeNm9DOhemQnYUrlSxe7T4A8/hbZExUSQEA9loerGhdWm8V
-n/SfaKiJfp1FHsN6OT9U8lG0cS4ZPwA=
-=yrBS
------END PGP SIGNATURE-----
+All warnings (new ones prefixed by >>):
 
---Y+J9n/Hla/zwW0HU--
+   Warning: drivers/gpu/drm/panthor/panthor_fw.c:145 Excess struct member 'start' description in 'panthor_fw_binary_section_entry_hdr' (did you mean one of: 'va.start', 'data.start')
+   Warning: drivers/gpu/drm/panthor/panthor_fw.c:145 Excess struct member 'end' description in 'panthor_fw_binary_section_entry_hdr' (did you mean one of: 'va.end', 'data.end')
+   Warning: drivers/gpu/drm/panthor/panthor_fw.c:208 Excess struct member 'buf' description in 'panthor_fw_section' (did you mean one of: 'data.buf')
+>> Warning: drivers/gpu/drm/panthor/panthor_fw.c:299 struct member 'protm' not described in 'panthor_fw'
+   Warning: drivers/gpu/drm/panthor/panthor_fw.c:299 Excess struct member 'ping_work' description in 'panthor_fw' (did you mean one of: 'watchdog.ping_work')
+   Warning: drivers/gpu/drm/panthor/panthor_fw.c:145 Excess struct member 'start' description in 'panthor_fw_binary_section_entry_hdr' (did you mean one of: 'va.start', 'data.start')
+   Warning: drivers/gpu/drm/panthor/panthor_fw.c:145 Excess struct member 'end' description in 'panthor_fw_binary_section_entry_hdr' (did you mean one of: 'va.end', 'data.end')
+   Warning: drivers/gpu/drm/panthor/panthor_fw.c:208 Excess struct member 'buf' description in 'panthor_fw_section' (did you mean one of: 'data.buf')
+>> Warning: drivers/gpu/drm/panthor/panthor_fw.c:299 struct member 'protm' not described in 'panthor_fw'
+   Warning: drivers/gpu/drm/panthor/panthor_fw.c:299 Excess struct member 'ping_work' description in 'panthor_fw' (did you mean one of: 'watchdog.ping_work')
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
