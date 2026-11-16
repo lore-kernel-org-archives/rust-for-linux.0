@@ -1,91 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.45
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794795946;
-	b=FyH4W46Fi47GjMvEIzBb/Mlxj99LGZK8rRChEjNo5d9PGJDLikxsK1lBp7qbSVdnXoNh
-	 8Sg7v9WM5kpSEMhq/Er6qkXEFbM0g6c0wVhtyC9+od41ESYEkf53ZDZt7EQhruE1wKVfR
-	 j9i5BozYZR1ARF1r4DLb1Op7lKdMXIIDAnGUJODnHBNibPv9ul5qJQyw0nCfWQI3H8t/x
-	 MCb/McGxAqnYGA1ktntZBmG0grTdIMV/CrKNevX23cN71Bokg2cr8hkORzevdqFSBknMQ
-	 hs6+FkeNtuNSSnjRjXxMbNzJaiRw8OfYsMIPDYLCUvVCKZGTxStsGN9oL+4PpG0sdew==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794795946;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=t+3HLoSfDTzBHdPUkFEUcxcgDRzkje+Mp5l9yEgsZbw=;
-	b=z29Cwn5fwC6k3qpb4Or683oVT5mzc/XhixoZRtWcq4x9nocvqWvXqnAyx15A02y+wLOz
-	 D8DPlPGWKIB+upp1Oaa6DrJgmHSJvs8tA9C6aEyrDHltFE7wKRbIJLx7iOGjbT7EvleCY
-	 VbAH4TXDR6Z7y6MTBlCOVGyCPeEP/YAV8X1aI1IgSQGhcPlZq+NqUmSFCWBHCNDuguSml
-	 VzJvC3t31SI26yJr4wCyugcmE5g7QB/44GqGjQ4P/nhfA+pfFu8fgGM1PdasH2PGMUhcP
-	 pgy3cG+rqRdiph6aGGcxHZzZha/VxJ6y2kVbm+mLF4TU2638UHBlrozga9T71PaHl3g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yYE0g55a;
-	arc=none smtp.remote-ip=209.85.216.45
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.46
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794801789;
+	b=0LhWMFUnMjOjyoU+jNQe4Hdk1lBnVelix+vn9krlV4SSaStyKZsxQ0dJIUEJ06uX4H10
+	 eajb3bQmDcFugyYoEEzakj5AwUVAss6KgZ6EBAAwb7oAjrqHBn4NTC8qzaZFOsHxCrGXQ
+	 mDBTut7+ugRT9qdEKrrCVOi6H369xbIGGIoZUAC6DDHy897XpxkGOvHd0AI2Zz054WH0/
+	 3nG0wKPtYyMlnLiZPH7L11KdusROYldZiG9z+8Q5Bz4Raq5mxUosL9dSbUIy82CR5+Nhj
+	 tW1nlCgv160wQcCardjNdHxE61B4VCDTrXTSaCKOoSesf756hAQxeASuectl9pgUq9g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794801789;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:To:Cc:Subject:
+	 From:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=txdxShazMCeZ+97jCCVZjbVKT3ItALb5i0Swrs2NoTY=;
+	b=PyYu7uKSbYqgGL1yaRoInbhmmVuJPqi0QN40j3V0/0ztEAPP0MENRWLWNpCHraZtRn/Y
+	 36R1yvUVRaCBs3KNYMOsH21/H02PkkyaSqUlBPUB7+FiTIVXuyy5LfFLWtH209QI2F8mK
+	 xUeFF489YWsxvD4wghVqSwrDYYbyGgXuj8PAyb8iPKumb1G6qZgC69oDc+eyH1iLHkyDF
+	 oHLeIok6FoozcIIT715CUvRHqWb+0Yy/jdbMymFHCb4b6hWoGuyRMPjb5yhvn+Epj95ea
+	 FOhincw2j+gKweTat4EJUGgtZhoGOIot0HLTw8X7fPP4t6ut28eSqEnOJ4MbKKv+3xA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=SFyQGTX1;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.46
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010046.outbound.protection.outlook.com [52.101.56.46])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699D9606A31C
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Nov 2026 02:25:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 699D9606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAECB606A32F;
+	Mon, 16 Nov 2026 04:03:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BAECB606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yYE0g55a
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3ac91ac8924so1500800a91.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 15 Nov 2026 18:25:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794795946; x=1795400746; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=t+3HLoSfDTzBHdPUkFEUcxcgDRzkje+Mp5l9yEgsZbw=;
-        b=yYE0g55abMUNWqblV4JV7J7pCPUW1u6cYwKKSsTM+jpfCbguIdA4OhsS99C08pkALT
-         DbLaOe22nEnzuKj56BPNEyWcL7mszdjNaDllKoBezunLJspGMBhYq6tiXfXaEB+dEotr
-         gagzM/minMaGXXcINCBsIYh5KWimi2ubgTlwL8jn0nWRHTM87dFSpbL4xnQ7dWL7DB9D
-         4vF/6FVIsoycAne4TkguOTsoBoyeLlfPMVTs4FdQNL1sZz+riheWTDTzwkrpzUeaUo3L
-         nEuh2ZUlATF928+4P3wBm6Wu6pEzmuz1SXB5fTxXy4+6iP9djxEu4wzdq4RvNuk5Lelc
-         G9pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794795946; x=1795400746;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=t+3HLoSfDTzBHdPUkFEUcxcgDRzkje+Mp5l9yEgsZbw=;
-        b=QBgPR0LGzhcs6RBBBRIcGM7SvSO8QahzK2D7wSpJL08ZkR2y+jyqq4G1v1OZm7fW3q
-         FHUM5eKFWRgvX4w3SGXYd/2uGgigt2z8Iy3W4WmPZUCQZ9Hd1BQlyxJ0lBmxExc4Lr0q
-         rd86w9to+cdbDAWMs1ZFg2HT1uJ+LG6FA/4pppEGRVQcC8LKCzN+vUoELlGkPqDtQung
-         SkkkpVrkrvA8O1xytepvtn6zv8dVHPRI8hetd/cB8HlgGS9Mnz6RjRfbf1O9/VenUSVb
-         3CHW0oaSlpLQbDYkjwxCPMeDjhQ/X+MYavxBlspPiueOLk64XvkHgCJ+TSppbVqYkgXO
-         dzlA==
-X-Gm-Message-State: APuU4Z9FXKBc5jSYqank/ZjErnfe4WjIbOL7VW36KMQTU4xLkYPN6oS0
-	6xynZVQaCh7hKtudB10ZYpVerqhCqHscDETOkgcSANfIDa/CzAK+pHDs
-X-Gm-Gg: AYBFou3TWwHGBX2mVPKxQ9x9hQSBWrSm74/BSq99P+J8TwRJoi1v3EMxH5W773hqW4S
-	SfVoDw5kDSGUod43cW+c5aLMUhDjt21nrVICQ/X0ymQ5FiydlB+neRAVgL6LPuXrQmFY4iO0VN8
-	hJsm+tAOW5R5kIsLlBrfWOraaNRe8EHos/S2AQnUrQYOso2cTovIc/qbPf95MjNej+gw58s97yj
-	9GwX5pQE9gVhTKLPOg2xNJdCRvdQ/2qHx5HkODEoEqM0TlIkSYuGLzrxUQpB3K+D01OqJ0qfvhD
-	LI/DikSZCxSOUtzyYeTHm//Q9tlBlO33kmP2DQhIIEKmvxtRDoRKxd32IrhBZZYG2XsSzAzL9Uc
-	Srqg8rwjRIFu0AzWw4sz+zqmh8Ny3s+qUyTTYCBXnkvReOgNxaTZJfRteWToNivqOGgbPgJov3D
-	gXTXh+9ApdwXTK1i2nu90sXzmMfkDHX9X7jO0L7UHEOV5S7//B2lE8EnqWSgtNsN/CM3JS2/2Os
-	H+DUDpSeuL49HgPI1FihlksbQybiVsWiU3JjR8lFqj6Zf2iIQLaobo5FF6K2AJ+utIKWjChm91E
-	DhiWkWZ6VxrjThM1q0a2rRNUeivmlAqQDoyIYk3+kjBk5qKUcALBtuEFm9lahP0ZxPFz6SY=
-X-Received: by 2002:a17:90b:1846:b0:3a4:6f38:f2a2 with SMTP id 98e67ed59e1d1-3b1b0a3e7bemr8165137a91.25.1794795945569;
-        Sun, 15 Nov 2026 18:25:45 -0800 (PST)
-Received: from localhost ([2401:4900:1c71:dee7:a061:51ca:fe42:bde1])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1b2133c5dsm7062396a91.0.2026.11.15.18.25.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Nov 2026 18:25:44 -0800 (PST)
-From: Punnay Sharma <punnaysharma805@gmail.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: rust-for-linux@vger.kernel.org
-Subject: Re: [RFC] klint: generate FFI preempt_count data from C LLVM IR
-Date: Mon, 16 Nov 2026 07:54:40 +0530
-Message-ID: <20261116022440.460064-1-punnaysharma805@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <DMSFW4SCHFGN.2551XSD4E2Q69@garyguo.net>
-References: <DMSFW4SCHFGN.2551XSD4E2Q69@garyguo.net>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=SFyQGTX1
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ISBOX894efrK2z6cPPpCJDeoetFIzzoOD44Ta9Lhe9GvKWaO7BKU21pxriOPyMEu8gfvAdjxnmo073gEBR8WrXm3wMOvScFmr5I88bRTR+q1zWfBQKpd55seZkFW0T1jdikT/cCTlpNzNxmxsu0CKJvaVD9XtkeIODZ2SluaxMUqNagMW9zSxBtkLhzqea2P8/Idv3rOxXXKZG+4ZtGDwWgZBKni0Sjb1tNB7wtYLesPtwAWadZsu2uN1ghVfxV2xf7d0hD28fPzvhDZbaUaHwLL5hZ6vhycfjiHMKr4t07IR3fK0tmoSMXhvXyW8vXMOc9MnBCswitUbL76PxoEtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=txdxShazMCeZ+97jCCVZjbVKT3ItALb5i0Swrs2NoTY=;
+ b=MH6vsf8gxXrb7sqIN50HpuWgxR/XQ4UYANvv8wdBA5d2T7T07RaTtdKKALLWRSDi9Tw2iFLEAjtAdHZdi7iA11xpTF1/gvphtV4MM1D3j3iqAB+18JHh9uSVXCEqeuVshrF8X+acG/21glttv490Mp/QcFDSyLPaq7BkFPnqcPnzfyB5EESgEmLTk1uwr0XqCExbae08OpP6pOB6Yqz6svhUjs5ewvLqJUcRBSadnd6znxE/KfsjorAZwK3dSVng1wOGS/tcvKGvN4gnBMnDqfpgLJURajZXv3VTPz9fVWr34htmgyZR8N9SGiB3R+jNRAdmE0wTYCvFFyW98UACpw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=txdxShazMCeZ+97jCCVZjbVKT3ItALb5i0Swrs2NoTY=;
+ b=SFyQGTX1wispHDvlOJvizpWRTJKUAkzletKSfWLCtqqESEL4X3eEL/X0ogyZxZWmRvUhubnG9TeFMSPYCw8zTNdi+kc016SKg4+eI9Ed85BZTgAH7yZ19IK2rtKPEjJwV3JeK10Ej4u1l+fqoJyr8CAWpj5CBwnHYBKUkwJhWCJqAaBXTBnn1xk576JqnmmjKTs2Y4QWywcRNdcpc6BCyoh+QVKgYzgwtN+xUVL95Ic8b+xYgMXJ4Hg/CVkOLVtu4xdzt1tbu0lWJkJ3t3Ue5PUlb2xIz2+mdvr/e8ZCheh+oLVP06yYyTOBIihUHJT6QWMB9+7KjcRxP0Q301XjDw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH7PR12MB6858.namprd12.prod.outlook.com (2603:10b6:510:1b4::20)
+ by CHBPR12MB497579.namprd12.prod.outlook.com (2603:10b6:610:33d::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Mon, 16 Nov
+ 2026 04:03:03 +0000
+Received: from PH7PR12MB6858.namprd12.prod.outlook.com
+ ([fe80::a550:dbcf:2fcf:463d]) by PH7PR12MB6858.namprd12.prod.outlook.com
+ ([fe80::a550:dbcf:2fcf:463d%6]) with mapi id 15.21.0615.012; Mon, 16 Nov 2026
+ 04:03:03 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 16 Nov 2026 13:02:13 +0900
+Message-Id: <DMWC45NN5L9I.2NUG81ETBC84L@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Cc: <aliceryhl@google.com>, <abdiel.janulgue@gmail.com>,
+ <daniel.almeida@collabora.com>, <robin.murphy@arm.com>,
+ <a.hindborg@kernel.org>, <ojeda@kernel.org>, <boqun@kernel.org>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <tmgross@umich.edu>, <tamird@kernel.org>, <work@onurozkan.dev>,
+ <driver-core@lists.linux.dev>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 1/2] rust: scatterlist: tie owned tables to the device's
+ bound lifetime
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+References: <20261114234324.82387-1-dakr@kernel.org>
+In-Reply-To: <20261114234324.82387-1-dakr@kernel.org>
+X-ClientProxiedBy: OS7PR01CA0302.jpnprd01.prod.outlook.com
+ (2603:1096:604:26f::12) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -95,44 +103,330 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB6858:EE_|CHBPR12MB497579:EE_
+X-MS-Office365-Filtering-Correlation-Id: 231770a1-dcb3-44e1-b1f8-08df439671bf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|10070799003|1800799024|366016|376014|7416014|261028144727099003|261102123227099003|261022075727099003|261022105027099003|261021121427099003|261026121527099003|261026140227099003|11063799006|56012099006|10067099003|18002099003|22082099003|6133799003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	RP4jQLtU/l8vi12lskFLG6OO7DBwICyM5gQvydc4KHyFJ63elyDoF6U9+tMYwMWK04N0wiZNrvaHLN3PbC0J5Nn/AmtzucgnkXupuIV62reKkIQuXu2m/JrGF3lO6Ako32d6ZZ4YH5v9HgY+H3g828c5H4/UzPtBhRubz0AMefZfZf0dhgtGnMr7Jwv9gO0dT28+NAKKJvsUjKirhEsQ/YXziJdZgTohp5atSQLpEK/pURwNzdb58g7tCjpNbnrl81g8spueDy6EjpWiLYBz0ATVFA3TAb3YDOLqT9hYpFqIj83AblIlLjHCwg9Z3xfjlDlz22EGGwHJd9CP4ZS93zVxa0TbZYvR+3mhSdWX8TDoK+wHClpV6JmbQ2n/EEAznjtlQlyCu8qsoFKuCkSIRTzTis0fnUvfnyZZtsPEjwujnuO2SM6TLVkX7zOtHktH0EZh0ZSDkXvX+Vf9TLF30az7kDmEsXvhNFJTovyHnqd3O2niQMUi1HmZTSF0pp3vmzGmRfmwvf7Tv0o8ja+li8/2u/T2ZUFE5d3oaKuHj5CJDiEaKlyg1rauXV241Mc0K74Pja31uFMZ2GzrO7YCv+8A5OoNYoZw3QxcXtUpe3OOvVxViAgMZRuSTYjp5Zmo6vtiuzoT6hG+0DsZDKMuVX7fPVSx9TSnV5bPqDlVI0c=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB6858.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(1800799024)(366016)(376014)(7416014)(261028144727099003)(261102123227099003)(261022075727099003)(261022105027099003)(261021121427099003)(261026121527099003)(261026140227099003)(11063799006)(56012099006)(10067099003)(18002099003)(22082099003)(6133799003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?V0FGWmI0U2NkL3cwQ2dyL3B3MTNDSGg0d2xwM21abGoyK09JWUNSSHNvZGVU?=
+ =?utf-8?B?ZmNZdXdIVUEzbHdGdUl6WnpQTnA5MzV0eDRReUNaMVBzRlZoRWlSRzVNSFhF?=
+ =?utf-8?B?Wi9iWUgyY21pQm11dWs5UG52TjhCRTNaYVhQRnhEVGlzM3hRRk1tanVkMTAz?=
+ =?utf-8?B?RmJHQkU1NEwrUXZYM1hwVTBUV1YxNjZYd0c3alZXd2JwL1dCN3pxTDgveGU3?=
+ =?utf-8?B?elBWL1RndGEzc2thdFY4UXRibG8vVEVwZzI0UHdnZ3R5Rld6TzZSOFlFbDFn?=
+ =?utf-8?B?b0JXRmViSDdFVFEycGNlVkFCZHFTaUpCUmk4dnd5RUNkdkNtYWlGQnFtWHR0?=
+ =?utf-8?B?bEdwYlVmM2dhRGprRXFYUDYvZ1M1bVJYbTNja2FzTnUvQ0NDbTVGd2NKbUx0?=
+ =?utf-8?B?eEgrOFFMeFA1K2tJVENNbWZoNGpmK2tGZDBIKzZUZTBid2RuMzVXRjF4azZL?=
+ =?utf-8?B?VXg5a3p4R2ZuRE9SZitJTldJanFQdlpKN1hkdUVvckZ3V1RDR3VXU0xUWjBl?=
+ =?utf-8?B?YjlRYzJ5YzJCZGtsWHp1ZmJFOERtdEJYMXljUEgyKzM2TlZ5c3FWYlBZcGNG?=
+ =?utf-8?B?ZzU0ZVJVQzgzcUFHUkVublVzcngreDN0REdNeFdFdW45NFIzZU94TXQvRUxF?=
+ =?utf-8?B?SHpOU2xPTi8wOUFSdkIvbm1qY1NYYzRaa2I1enl0ck56aThNcnhTVnIwWHpW?=
+ =?utf-8?B?cjZobXhCZVo2WFBEdDJtMHROMVZxMDZtVUJsSlRXS2NzdkQ1OTZ2b3g0WG8v?=
+ =?utf-8?B?bjZvbmtPalN1S1NtcnVRUlF2U0VHYmM0emY0RURMWkltNmp0S0tqRTkyaEtG?=
+ =?utf-8?B?bVUybmJWVDZCcTJmQjBtWkxsM1JaNEwyaktSSlhKeU1iTDB3cTJKOHVScWtG?=
+ =?utf-8?B?ZjMzVjBPRGhOU1B3ZmowaTR5TGlCZGlGazlqSkwrWnNnM20waGJyNWVXejVp?=
+ =?utf-8?B?SlJNamlyRzhsUjZCZllqUUVFR0R6emlOOFQyUlZmZ2hUbTB3bWdqUjJwcFN2?=
+ =?utf-8?B?cWNRZC8yMFk2YmlwKzFPV2RYUGlWMSs4MGRLbTBnSEhkQTBqOWVDYzFjbkps?=
+ =?utf-8?B?SFJHVjhRRGtLMThncnQ1VWgyMVdKRkNXdmhMS2xGaUJCakNWMFdDSnFNYmFF?=
+ =?utf-8?B?ZVdLdEFGUmE3eHRmRUlNcm9taHo1a1FYVnhJYS84SUJVbW4rS2JkdmxzWnNY?=
+ =?utf-8?B?NVdFVjBDaElCdVRMd3YzR2R1S2JPMzIrVjRvR1VGUytCaTJVMEN5ZmdoZkw3?=
+ =?utf-8?B?M2E2U2xtb2p5T0ZyNFYwZlJvbm5FQVp0YVZ5R0tvc0lvck9TZmdDN3lSWk14?=
+ =?utf-8?B?clVjZzlsTDRkL2daTzg5WEVUazlPa2c2WFpDRFd5NUEzdFVwNlJHMHBxL0lL?=
+ =?utf-8?B?em1iRktLcnRSVmQ2dzVubStuN0s1aFUwaXN4bDM1dlQrOGhEQXZHUVdzZEpY?=
+ =?utf-8?B?YnU2MVFZak1JK2RWemZqczB5ZUlteVVLMTB0OG05U1d6OHJ0YTIrZWJrczZW?=
+ =?utf-8?B?Q1F6bWdLN2Y5dkhkOWlzT0NZN2M4dkpvbmV2SU4zYThvdHJSeEJVZGcrL3FB?=
+ =?utf-8?B?ekJWNGxBNWQ4bHRjVk1KZm9ReHd6b3l4SWIzVVR6S0wwT3dlSjZPY0cxVHVH?=
+ =?utf-8?B?SnVKMjdQalhYSyt0U09HVXc3MEF1QUM2MlR4Z0ZyVk5HQlcxQkxmbzlOb2JI?=
+ =?utf-8?B?SGFzN0dLRmU0WFBHZDNyRjdtRzJzK1EzOWtEdkxZL2o1WWVRWWJjMGRWVmI3?=
+ =?utf-8?B?Wk03OVh1bEIwWi9xQUF6TXhHKy9CRGFDckJRU2VFclVaOTRKQmVGbVZCT0Zx?=
+ =?utf-8?B?UGU3UXNpRmhiR0crNjU2d1FETVI5bllzRkNmVUp4eGhZdHViSkM4RTl5T1pO?=
+ =?utf-8?B?RDhITDBMMW80VHhZVnhxbXlUVE5Ib29aRHNINVhnZ2ZrVTgvczZJZnozTy9H?=
+ =?utf-8?B?OUJkRkw2cGtpVFd3U3Z0U0dRb21sZ2p3eFJDeVdLWmZHZDcvMjhCZXV3Vlh6?=
+ =?utf-8?B?MmlkVGE2b3lKRHMrNVJnRFo2NDFlSzBMa2pmbzNBekJ5MSs3OEtER2ZLeFFt?=
+ =?utf-8?B?QjhoMUZGSDBtMnVjWWt4ek1CamhOQUY3Wm1HWDBhbys5bWhGdXRkZHVRQUdy?=
+ =?utf-8?B?bGY2RE1jelNOOFYxSUtlQUQ2SlNZVDduVTZ2TlQyY0I0SGFlekpxYkhRdFo1?=
+ =?utf-8?B?aVVHZ0x0YkhyaS9SR0ZJeWFvYVh3R0c3ZG1wUlNGczd3TTIrK3NzZGZ4WGZD?=
+ =?utf-8?B?TEJnN2lXczgzNmJsdDFZdHZzeTk3eGorcDk3cmZRaDFZcVJrWVhuZXFEWGV0?=
+ =?utf-8?B?d2tlaEh1emJDYnNWOEJZL3RMdTN1Q3VNVWwwK1QrOU14TUh4U0V0aTU3MHIw?=
+ =?utf-8?Q?liW6oClAy/a6O3EUcsj0VDhpNnWAIZSu4fz0I9xa/3+Bm?=
+X-MS-Exchange-AntiSpam-MessageData-1: Ow3QwEemCjjKjw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 231770a1-dcb3-44e1-b1f8-08df439671bf
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 04:03:02.9372
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0yn+nY2MFtzuMLs/PukL6VgqUnnae/LRT4/jj61R/HXdAAoS1UzILOt890OoFF32ZwMQ+U65djScMfC9+UGAJw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CHBPR12MB497579
 
-Hi Gary,
+On Sun Nov 15, 2026 at 8:42 AM JST, Danilo Krummrich wrote:
+<...>
+> diff --git a/drivers/gpu/nova-core/firmware/radix3.rs b/drivers/gpu/nova-=
+core/firmware/radix3.rs
+> index 94235bd1209d..a3e43fc8ec86 100644
+> --- a/drivers/gpu/nova-core/firmware/radix3.rs
+> +++ b/drivers/gpu/nova-core/firmware/radix3.rs
+> @@ -35,14 +35,11 @@
+>  #[pin_data]
+>  pub(crate) struct Radix3<'a> {
+>      /// The mapped data.
+> -    #[pin]
+> -    data: SGTable<Owned<VVec<u8>>>,
+> +    data: SGTable<Owned<'a, VVec<u8>>>,
+>      /// Level 2: one entry per page of `data`.
+> -    #[pin]
+> -    level2: SGTable<Owned<VVec<u8>>>,
+> +    level2: SGTable<Owned<'a, VVec<u8>>>,
+>      /// Level 1: one entry per page of `level2`.
+> -    #[pin]
+> -    level1: SGTable<Owned<VVec<u8>>>,
+> +    level1: SGTable<Owned<'a, VVec<u8>>>,
+>      /// Level 0: one page, whose single entry is the DMA address of the =
+first `level1` page.
+>      level0: Coherent<'a, [u64]>,
+>      /// Length of `data`, in bytes.
+> @@ -59,14 +56,14 @@ pub(crate) fn new(
+> =20
+>          pin_init::pin_init_scope(move || {
+>              Ok(try_pin_init!(Self {
+> -                data <- SGTable::new(dev, data, DataDirection::ToDevice,=
+ GFP_KERNEL),
+> -                level2 <- {
+> -                    build_lvl(&data)
+> -                        .map(|l2| SGTable::new(dev, l2, DataDirection::T=
+oDevice, GFP_KERNEL))?
+> +                data: SGTable::new(dev, data, DataDirection::ToDevice, G=
+FP_KERNEL)?,
+> +                level2: {
+> +                    let l2 =3D build_lvl(data)?;
+> +                    SGTable::new(dev, l2, DataDirection::ToDevice, GFP_K=
+ERNEL)?
+>                  },
+> -                level1 <- {
+> -                    build_lvl(&level2)
+> -                        .map(|l1| SGTable::new(dev, l1, DataDirection::T=
+oDevice, GFP_KERNEL))?
+> +                level1: {
+> +                    let l1 =3D build_lvl(level2)?;
+> +                    SGTable::new(dev, l1, DataDirection::ToDevice, GFP_K=
+ERNEL)?
+>                  },
+>                  level0: {
+>                      // Allocate the level 0 page table as a device-visib=
+le DMA object, and map the
+> @@ -81,7 +78,7 @@ pub(crate) fn new(
+>                      let mut level0 =3D CoherentBox::<'_, [u64]>::zeroed_=
+slice(
+>                          dev,
+>                          GSP_PAGE_SIZE / size_of::<u64>(),
+> -                        GFP_KERNEL
+> +                        GFP_KERNEL,
 
-Sorry, my last mail was confusing. This one's just numbers and one
-question. Thread for reference:
-https://lore.kernel.org/r/DMSFW4SCHFGN.2551XSD4E2Q69@garyguo.net/
+Stray hunk? Maybe we can move it to patch 2 since it reformats that part
+anyway.
 
-I ran klint a564b2a on v7.3-rc5-577-g6addb4f38557, x86_64 defconfig +
-rust.config, LLVM=1. I had to port doc/kernel.patch, and klint panics
-on bindings (compat_ptr_ioctl), so I built that one with the lint off.
+>                      )?;
+>                      level0[0] =3D level1_entry_addr.to_le();
+> =20
+> @@ -105,7 +102,7 @@ pub(crate) fn size(&self) -> usize {
+> =20
+>  /// Returns the size of the level that maps `sg_table`: one `u64` entry =
+per [`GSP_PAGE_SIZE`]
+>  /// page of each DMA-mapped region, rounded up to whole pages.
+> -fn lvl_size(sg_table: &SGTable<Owned<VVec<u8>>>) -> usize {
+> +fn lvl_size(sg_table: &SGTable<Owned<'_, VVec<u8>>>) -> usize {
+>      let entries: usize =3D sg_table
+>          .iter()
+>          .map(|sg_entry| usize::from_safe_cast(sg_entry.dma_len()).div_ce=
+il(GSP_PAGE_SIZE))
+> @@ -122,7 +119,7 @@ fn lvl_size(sg_table: &SGTable<Owned<VVec<u8>>>) -> u=
+size {
+>  ///
+>  /// - `ENOMEM` if the level cannot be allocated.
+>  /// - `EINVAL` if `sg_table` yields more entries than [`lvl_size`] sized=
+ the level for.
+> -fn build_lvl(sg_table: &SGTable<Owned<VVec<u8>>>) -> Result<VVec<u8>> {
+> +fn build_lvl(sg_table: &SGTable<Owned<'_, VVec<u8>>>) -> Result<VVec<u8>=
+> {
+>      let mut dst =3D VVec::<u8>::zeroed(lvl_size(sg_table), GFP_KERNEL).m=
+ap_err(|_| ENOMEM)?;
+>      let mut entries =3D dst.chunks_exact_mut(size_of::<u64>());
+> =20
+> diff --git a/rust/kernel/scatterlist.rs b/rust/kernel/scatterlist.rs
+> index 6379a8748117..93f431d7f548 100644
+> --- a/rust/kernel/scatterlist.rs
+> +++ b/rust/kernel/scatterlist.rs
+> @@ -19,7 +19,8 @@
+>  //! The main entry point is the [`SGTable`] type, which represents a com=
+plete scatter-gather table.
+>  //! It can be either:
+>  //!
+> -//! - An owned table ([`SGTable<Owned<P>>`]), created from a Rust memory=
+ buffer (e.g., [`VVec`]).
+> +//! - An owned table ([`SGTable<Owned<'a, P>>`]), created from a Rust me=
+mory buffer (e.g.,
+> +//!   [`VVec`]) and tied to the [`Device<Bound>`] lifetime.
+>  //!   This type manages the allocation of the `struct sg_table`, the DMA=
+ mapping of the buffer, and
+>  //!   the automatic cleanup of all resources.
+>  //! - A borrowed reference (&[`SGTable`]), which provides safe, read-onl=
+y access to a table that was
+> @@ -33,15 +34,13 @@
+>      alloc::allocator::VmallocPageIter,
+>      bindings,
+>      device::{Bound, Device},
+> -    devres::Devres,
+>      dma,
+>      error,
+>      page,
+>      prelude::*,
+> -    sync::aref::ARef,
+>      types::Opaque, //
+>  };
+> -use core::{ops::Deref, ptr::NonNull};
+> +use core::ops::Deref;
+> =20
+>  /// A single entry in a scatter-gather list.
+>  ///
+> @@ -123,9 +122,7 @@ unsafe impl Sync for Borrowed {}
+>  ///
+>  /// All [`SGTable`] variants can be iterated over the individual [`SGEnt=
+ry`]s.
+>  #[repr(transparent)]
+> -#[pin_data]
+>  pub struct SGTable<T: private::Sealed =3D Borrowed> {
+> -    #[pin]
+>      inner: T,
+>  }
+> =20
+> @@ -177,63 +174,41 @@ pub fn iter(&self) -> SGTableIter<'_> {
+>  ///
+>  /// # Invariants
+>  ///
+> -/// - `sgt` is a valid pointer to a `struct sg_table` for the entire lif=
+etime of the
+> -///   [`DmaMappedSgt`].
+>  /// - `sgt` is always DMA mapped.
+> -struct DmaMappedSgt {
+> -    sgt: NonNull<bindings::sg_table>,
+> -    dev: ARef<Device>,
+> +struct DmaMappedSgt<'a> {
+> +    dev: &'a Device<Bound>,
+> +    sgt: RawSGTable,
 
-The bindings declare 8385 C functions. The Rust code in that build
-refers to 281 of them (klint's "Unable to determine property" log,
-plus nm -u on the Rust objects):
+The `RawSGTable` documentation still mentions `Owned`. We could adapt it
+or (maybe better) just drop that sentence.
 
-  281 in total, 236 of them with no entry in ffi_property()
-  138 are linked by a Rust object, 93 of those with no entry
+>      dir: dma::DataDirection,
+>  }
+> =20
+> -// SAFETY: `DmaMappedSgt` can be sent to any task.
+> -unsafe impl Send for DmaMappedSgt {}
+> -
+> -// SAFETY: `DmaMappedSgt` has no interior mutability and can be accessed=
+ concurrently.
+> -unsafe impl Sync for DmaMappedSgt {}
+> -
+> -impl DmaMappedSgt {
+> -    /// # Safety
+> -    ///
+> -    /// - `sgt` must be a valid pointer to a `struct sg_table` for the e=
+ntire lifetime of the
+> -    ///   returned [`DmaMappedSgt`].
+> -    /// - The caller must guarantee that `sgt` remains DMA mapped for th=
+e entire lifetime of
+> -    ///   [`DmaMappedSgt`].
+> -    unsafe fn new(
+> -        sgt: NonNull<bindings::sg_table>,
+> -        dev: &Device<Bound>,
+> -        dir: dma::DataDirection,
+> -    ) -> Result<Self> {
+> +impl<'a> DmaMappedSgt<'a> {
+> +    /// Takes ownership of `sgt` and maps it for DMA.
+> +    fn new(dev: &'a Device<Bound>, sgt: RawSGTable, dir: dma::DataDirect=
+ion) -> Result<Self> {
+>          // SAFETY:
+>          // - `dev.as_raw()` is a valid pointer to a `struct device`, whi=
+ch is guaranteed to be
+>          //   bound to a driver for the duration of this call.
+> -        // - `sgt` is a valid pointer to a `struct sg_table`.
+> +        // - `sgt.as_raw()` is a valid pointer to a `struct sg_table`.
+>          error::to_result(unsafe {
+> -            bindings::dma_map_sgtable(dev.as_raw(), sgt.as_ptr(), dir.in=
+to(), 0)
+> +            bindings::dma_map_sgtable(dev.as_raw(), sgt.as_raw(), dir.in=
+to(), 0)
+>          })?;
+> =20
+> -        // INVARIANT: By the safety requirements of this function it is =
+guaranteed that `sgt` is
+> -        // valid for the entire lifetime of this object instance.
+> -        Ok(Self {
+> -            sgt,
+> -            dev: dev.into(),
+> -            dir,
+> -        })
+> +        // INVARIANT: `sgt` was successfully DMA mapped and is owned by =
+this object until drop.
+> +        Ok(Self { dev, sgt, dir })
+>      }
+>  }
+> =20
+> -impl Drop for DmaMappedSgt {
+> +impl Drop for DmaMappedSgt<'_> {
+>      #[inline]
+>      fn drop(&mut self) {
+>          // SAFETY:
+>          // - `self.dev.as_raw()` is a pointer to a valid `struct device`=
+.
+>          // - `self.dev` is the same device the mapping has been created =
+for in `Self::new()`.
+> -        // - `self.sgt.as_ptr()` is a valid pointer to a `struct sg_tabl=
+e` by the type invariants
+> -        //   of `Self`.
+> +        // - `self.sgt.as_raw()` is a valid pointer to a `struct sg_tabl=
+e` for the lifetime of
+> +        //   `self`.
+>          // - `self.dir` is the same `dma::DataDirection` the mapping has=
+ been created with in
+>          //   `Self::new()`.
+>          unsafe {
+> -            bindings::dma_unmap_sgtable(self.dev.as_raw(), self.sgt.as_p=
+tr(), self.dir.into(), 0)
+> +            bindings::dma_unmap_sgtable(self.dev.as_raw(), self.sgt.as_r=
+aw(), self.dir.into(), 0)
+>          };
+>      }
+>  }
+> @@ -308,38 +283,27 @@ fn drop(&mut self) {
+>  ///
+>  /// - The backing memory pages.
+>  /// - The `struct sg_table` allocation (`sgt`).
 
-Reports with -Wklint::atomic_context:
-  - That config builds no Rust driver: 2 reports, both in the kernel
-    crate, neither about a C call.
-  - With the Rust samples and drivers on: 23 reports. 2 come from a
-    C call with no entry (scnprintf, page_to_nid), 1 from mutex_lock,
-    3 I couldn't trace, and 17 aren't about C calls.
+`sgt` is removed by this patch.
 
-So you were right, most of it isn't FFI. The 23 isn't a full count
-though: a report is a hard error, so I rebuilt failing crates with the
-lint off, and crates using "kernel" then had no klint data for it.
+<...>
+> diff --git a/samples/rust/rust_dma.rs b/samples/rust/rust_dma.rs
+> index ffb693544673..844e137cddc8 100644
+> --- a/samples/rust/rust_dma.rs
+> +++ b/samples/rust/rust_dma.rs
+> @@ -35,8 +35,7 @@
+>  struct DmaSampleData<'bound> {
+>      pdev: &'bound pci::Device<Bound>,
+>      ca: Coherent<'bound, [MyStruct]>,
+> -    #[pin]
+> -    sgt: SGTable<Owned<VVec<u8>>>,
+> +    sgt: SGTable<Owned<'bound, VVec<u8>>>,
 
-I'm thinking of making a tool that reads the C side of a kernel build
-and works out which of those functions can never sleep, but I'm not
-sure it's worth it. "Seeds" was my word for a short hand-written list
-of kernel functions whose effect we just state, like __might_sleep()
-or __preempt_count_add(). Everything else is worked out from which of
-those it can reach. klint stays per-crate and only reads the list.
-
-With these numbers, would a list like that be worth your review time?
-
-Thanks,
-Punnay
+Since there is no more `pin` in `DmaSampleData`, can we also remove its
+`pinned_drop` attribute?
