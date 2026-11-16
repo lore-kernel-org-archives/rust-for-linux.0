@@ -1,48 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794838925;
-	b=M/ymBt2aCD6kRnaY6XWf8SFmTYsuu0gZ6TXG8bUQiDiHcQia7+j4EWYSTmdBmWm2QWQN
-	 dXqlP42LoJQglVYsFl4cebpx36AS0VOCo3I91Mh73PRdAeFGH4TTqPbky72HGmCRLueDc
-	 0BAPI17Sh/HyRCX7RLk/CqFxORBsRIH/OxXTq7RJ2qAtYDUmW5OF2jpsyUFm1BwysZdp7
-	 fI+nk11fNzkzY3NgE8nwZA57fi3ouXhc5FHty0Wt6nDdQqGlaIX0Gu+BXl99zmunaMiho
-	 XzypsA6smm/8OcY2CAjnWEtp4Xc2qqUuI+AIorlHWYL3IgUVm0a34LaTSM5W+qfoo4Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794838925;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=9998Op+ciK4KzNkfg/cHkmiaE6KVNwv+CiIQ7yuk35I=;
-	b=1sHXSlHpkZ4iarG0zRtvM7z7VU5kKr7xHXxNvoeZt+b0tVV7rfUiyhiS8rfJvt9TPROF
-	 Db1dqcDsIzQB5da0hDf+k3GIASEPOGV4xIHa39iEah1lIDGz4EqbKv1rpufMJmoAlmBZQ
-	 tqKYjFjglStqUBoJh/k8fK/B8lzHebiQPBH4F8MlDi5nTOdAKL7Y4DvJayKQ7jijTaxx0
-	 H7Qnq5xHQ+Aw2TgtAn022q7uLMO2DkMFoEuq4OMnZ0PuF83lKlDCs9EKfaBqkAfusAQtX
-	 1jxk/1Mrd8C3BVVzzDaXXm9lDyju+rfKwEJiv8qI8T6+HMJuGEKop8GHjX9q/K7PK6w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U6YGkIo6;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.174
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794838944;
+	b=f9bRzBdRi2v4iBPXRERQUHIN7lnMcj69JELn7N53Y3IDIkXrIVC/qPNLUMqdYVXLeiFk
+	 XVMFEXOUpQGT5dNJgaKdcQVtwFjRbRV+ynDzf02rvB/md6xd4I9uqsnFrmOep7VqMJ11X
+	 iTCo81bT4hPWpVzC7ruk2dHL4f0NwbVXHcdohXVP8+qDSuvK+jg73oUWpe353KmMtFjkq
+	 r6Ch88aaiVt745RIvtZSUXM9g8eUGM+a7s7MLmZTquyj8m4o9+0i4+RSScfIxJZL5h2cQ
+	 BvlxSozUhwbiwYangwJGwzQsTQPbV3qNpCAv1VHPrsy6iX9IHQATTY2xxJ9tCFKfCoQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794838944;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=whWJsRn/1UObkhQ6vFbtYGotnDXUyjncCuIw3+hU87g=;
+	b=eVi0PmpxgpsRkzvAUgDInxm6H9G5bGEyHk4/CQ5TMiXrIp182yohY8r2Z1aK7eAHCSxH
+	 TdW4H6wRaibB2h4Y8Tcu4Zygils8Fzaxs4SwXLCp9eXzlMpuIH/xW7wDD8kjCZC0AV4fc
+	 NrPXa75S2WmGI5PU25uivuv6fm5EsACZLxpri8ndpYhetBIPRMHU65YRws6jjM1r5dcib
+	 2qaBJs/2zJoxY4aBY0wX9JOyOBoxfXEKucIfT3vwZ3IAPFsZFswkHxwCo9CDBohkTtiCb
+	 4EKJjoY9ks5BrNqmGJJROlwHWBW3QTFIgbabCAZGmuekgDtJ+xOvuWL8r+cadFEtkFg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EbKEu8PE;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.174
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D268606A323;
-	Mon, 16 Nov 2026 14:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EEB9606A33B
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Nov 2026 14:22:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4EEB9606A33B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U6YGkIo6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35181F000C6;
-	Mon, 16 Nov 2026 14:21:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794838924;
-	bh=9998Op+ciK4KzNkfg/cHkmiaE6KVNwv+CiIQ7yuk35I=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=U6YGkIo6jSIx0cKZbIhjwuEgIIlJTCZggyc7Z8QV1XUlyRujA+fOfTj05QIdFvjmc
-	 1GPlHh0WYwXiceAt5e+EOb4TWlJ+ekRtWUEIYD37Ry4cG1eM3BBsusAQmgNbH/nwwg
-	 J/pDQnGW6254ZHslJYec2SF27t3v0Zu3mhyEkgA/Fj+QnlisuY9EZqeFnEhdKqqEUD
-	 0HdO6MGaCIEyx7ukZYHcJ7spKtuVXByl9n84BG0R98l2e8HuWNmtkQ+Vl4IgfLdUWQ
-	 YGpwfzqTqS6+oPT6wB/Kg6uws6N87/tmxHVLz/vMiKNzHHdYnFIi9Pgs3kQ6f2gjXt
-	 Ez1w8IoBWY5ng==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Nov 2026 15:20:58 +0100
-Subject: [PATCH v22 1/5] rust: alloc: add `KBox::into_non_null`
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EbKEu8PE
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-949680e6d82so167481985a.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Nov 2026 06:22:24 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794838943; cv=none;
+        d=google.com; s=arc-20260327;
+        b=aHiPLH3fA0FZz5TIM0QS+ZoIcz8ho3ol1fTOmIQ9YqMLHwkClQBGiGQQh2iwu725em
+         7kKErowvElp2JOZgwi49fqC8aCb+r1A3eRvRnMEeQPmYUw24Rb/3kZyLqjO8gESk63wj
+         ckz/86S7KZGUdZL/QCqhvzncKMIYcoTOaxWeMrUX8wwbd0E9y8wWRM0WzbEkm8aeF4Ok
+         qAiRsipBqCCaPAw4lKQdoEcxKt+rlEPoUTPBuFOhWZ1EzNaKqJZCoRVZN86szXlBh7ut
+         x+2H0oPuj1AbBt7Lq/9tR0z015lHX7ktW0ZWEeD3gy+XN4gH9C9xmfk9S57v1gfSzeGl
+         BEfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=whWJsRn/1UObkhQ6vFbtYGotnDXUyjncCuIw3+hU87g=;
+        fh=2e2WKYe6HQB7IYAEsSnXkTNioMfWYM+RdWjR/nv+89o=;
+        b=BaSqm3HPDAyv40zyrHV9pz1QhrjZsbECU5a8hwl4QnkC3cKfqsuMu2LBa5aAyu5SW9
+         y2BXeeJ5iiHnSsV4rh4HPe4KqUxU1eisjATZ6WOa1wxVVmneSOdBRtwycw/7kCuqsd3M
+         a7tykxFdLg71EZG9OF7rD3w6g9s3i9U/F/TcHEvFzZVcG0lLNqewtm2Dh29D1gLVLgky
+         dlpLpwd/BxefiYL+P7H/4hCL5FprHX5v2roDFBuWAI1BB/LZgctwNVBDNqjSqPe6QZS3
+         TFa6LyoNTlcA4TgI8SJAiCPrYFpy+bQLg0k5UwpbwyL+s2o90Y7YB5osqlVmbIdMDxis
+         00mg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794838943; x=1795443743; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=whWJsRn/1UObkhQ6vFbtYGotnDXUyjncCuIw3+hU87g=;
+        b=EbKEu8PEVyxZpvcV8E8o8s9RtLWPNC55zu7a8fDADbC9Qtok+mA5D2Hmu3/yKIPklP
+         N5xe1Gr6y/kmZM9MlRy+0wk+5TKAgA/e/XOfEj89PP42HU4Cy41ngVQWRpWacjsHvLkg
+         TSpsYAcI2DIss4ePq6B8twl2HIq/V7b6yzsIwPMkPIoi3gh/lKpDsl5OpKaalWCooAnE
+         o7gKkHDDG16mb5yt6jLIFQ8ImWdnBYGaOrYF+Vtx/6CEABrzEEClVmwTMZJToFfYc7dM
+         pFwlAiLfKTPgM2nX72hL1QwhvkEyiHr+7SiVvkSMfhxjTmz0v9pe5QW6DooX2f4yr2s/
+         00ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794838943; x=1795443743;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=whWJsRn/1UObkhQ6vFbtYGotnDXUyjncCuIw3+hU87g=;
+        b=1gUaSaqBdh0tLpL1tW/dfZRC9ie8s2j4Y4hsnWQ3RbdvhJfyJ13mF2in1CL91npJdD
+         yj/wkMBjjA8DqL+8bXJecQrAwN4YipmbHsO7dCWXBMrlThWb1HTJUo75bWW8y4RvuFym
+         XImeCSuyeRlya/ZB0rSAGiFY6DboPZyQQdasgrjR5xULjq5uDNRcBYTMCf5m8TR51RK8
+         9iefcz2grXBG2cOe015A487xzRQZpf5yaM31INLzULyHiClJ8acLFDEt6uj2W2EJz+w+
+         2ohgApTIkdJgUcm9dx6o9g1iPe/VA/mXEQuM/iMCH29qcieOR4bq/qSmGRhbkmRJPPz1
+         q6BA==
+X-Gm-Message-State: APuU4Z8QAyIaWvAG6LkY9OlsypvTkfqCLwhXnJie6LJ+C3m2ZuDJI/ao
+	q2edIF4/gcbKEmjJ2hE2RrHu7GRBYnc0rQzfXsuMJSIutt0nW3zIJ/CBSM7P95VHxyMoJou0Asv
+	13gakvo/i3yuEyPbp6Hmn6+1Iyu6dvJs=
+X-Gm-Gg: AYBFou1QWiy4zNtV4czLyXyXyeauXTE4fGb2vl2QcJKmHNm71L57NAj7MriWuLT5q1v
+	G4gE5wjxLuikpbjxt6EFRwf5dTupM/Vf3WufHbFy45XOBH5UH/SRNQR9jgwv54R2iWbPJO796Mt
+	f+fZeseXorGl9rDYguqijpZc+HjaoIif9TfUoYi/7Cv+g0BoKFBQtltjDS4rJ8E2lF+/PoOUIt/
+	HuYnzumSGvm/xRwesvmbTh1Z39YiWpZQOHgh7r+EUfkWYzjeW/R83avBzt5/63kJ/rMpynEaJHv
+	YqxI0TFhzYou6Y2Q1dnJjrKREhNQef7bIEmJ12XgdNys+/kuQ2dg95SPTtaGCM17IrMQDLsuBpe
+	/x+Igg1TR0FWDNMxW0gmj7ue9H/xLsKNcp4ly
+X-Received: by 2002:a05:620a:6497:b0:93f:2aa8:c550 with SMTP id
+ af79cd13be357-9494ba7e95fmr1498779385a.26.1794838943170; Mon, 16 Nov 2026
+ 06:22:23 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -52,105 +103,99 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261116-unique-ref-v22-1-12029383206d@kernel.org>
-References: <20261116-unique-ref-v22-0-12029383206d@kernel.org>
-In-Reply-To: <20261116-unique-ref-v22-0-12029383206d@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Lyude Paul <lyude@redhat.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Christian Brauner <brauner@kernel.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
- Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
- Igor Korotin <igor.korotin@linux.dev>, Viresh Kumar <vireshk@kernel.org>, 
- Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, 
- Michal Wilczynski <m.wilczynski@samsung.com>, Ira Weiny <iweiny@kernel.org>, 
- Matthew Brost <matthew.brost@intel.com>, 
- =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
- Johan Hovold <johan@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Dave Jiang <dave.jiang@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
- Saeed Mahameed <saeedm@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
- Jonathan Cameron <jic23@kernel.org>, 
- Markus Probst <markus.probst@posteo.de>, Ira Weiny <iweiny@kernel.org>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, 
- Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- driver-core@lists.linux.dev, linux-block@vger.kernel.org, 
- linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-fsdevel@vger.kernel.org, linux-pm@vger.kernel.org, 
- linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org, 
- linux-usb@vger.kernel.org, linux-media@vger.kernel.org, 
- linaro-mm-sig@lists.linaro.org, linux-serial@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1214; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=nnq/EApvqpnDipb7ZMMGHyUc30IDlzBw/XCY2d2nR2I=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq+xFRqMYICGBG+ejnnQrHCo2Qiew0xJ4tKwFW5
- FAStlInHLGJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCavsRUQAKCRD6UCkIqsW9
- 0MiMD/9Q8HebKQyWtVT3j+58+5Dz3Y1m3kT35wm3KPbPB7t0UAJ7ogziU0L97LGVruRRB34TcTu
- 1CXyHSibnht9sqUnd3frpfwAILOszsx3O5g92cMyi6dAOnpfwgYfsJrgS76YDxIMSs6hzhbW0b0
- ZdTb2ogrtqwYoTSFPq9Yq8Y6Aae/klTsQZ+5zhYq9x/i6eeksYBRrAAthMHU38+eNUbptna92Fg
- EzSDCS1x4Lh0+8XysAAabbtvDCcs0rppOnCBCF99huGij8Uru81TKzD5FSbmYo2OinEXo6ctGxq
- +E7p7ZXvkQgf86OcwY6ZIgpDBHrtcE9x0rFxcIptzBzj0JJOEzWA8iRUoQrzBgdNXbE2PeEe9Vi
- ZpClcdgUNxB23pKbt8fj1tC/ohlfz563sEfVMmOBFp9z+4GLRtI1e3iQur4L+mDabf6kJPtfUHb
- EHJvSgpc+mdZAv0AXN0TE6romZIfZzrcJNDWVgOrEBEXYh20BpHI1Vyr6KM+eDa/u7fWNkhfKAF
- 2X+DzyfE/T9n55HpdJUdtE7HxKbJ6oMkeTRrviQjc6Qfd02CAM+g/mAybG5yMMJrCGm4hCC1AGr
- gWM3HjZl5l241jl1zkJkDbw2N1pUvs2AavWjD34YQP7A+Bw2GSakJGIeQgVdVGd4rK9bU3AeBbU
- hfprB7+xbLZOC0A==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+References: <20261114200703.33229-1-mbkchelofficialdev@gmail.com>
+ <20261114200703.33229-2-mbkchelofficialdev@gmail.com> <DMWMG16XGPYB.W659Q8DBV6F4@garyguo.net>
+In-Reply-To: <DMWMG16XGPYB.W659Q8DBV6F4@garyguo.net>
+From: MBKCHEL <mbkchelofficialdev@gmail.com>
+Date: Mon, 16 Nov 2026 16:22:12 +0200
+X-Gm-Features: AclHuK8fns1-r926XfwgL2WRc_EEssCxZIC_o5cjkaSCMh-o-Y6f2l6EEQJ4o9U
+Message-ID: <CA+YDrKAM1-Jx+WH+ewzFuU9SzF=Ef=QYs-stgDNHC=7t84cCFg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: sync: lock: allow fallible initializers in Lock::new
+To: Gary Guo <gary@garyguo.net>
+Cc: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Matthew Auld <matthew.auld@intel.com>, 
+	Arun Pravin <arunpravin.paneerselvam@amd.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
+	Waiman Long <longman@redhat.com>, Lyude Paul <lyude@redhat.com>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a method to consume a `Box<T, A>` and return a `NonNull<T>`. This
-is a convenience wrapper around `Self::into_raw` for callers that need
-a `NonNull` pointer rather than a raw pointer.
+Hi Gary,
 
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Acked-by: Danilo Krummrich <dakr@kernel.org>
----
- rust/kernel/alloc/kbox.rs | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Thanks for the pointer, I missed Philipp's series. Please disregard
+patch 1/2.
 
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index 2c929eb1c3d6..7e8ce3b36673 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -211,6 +211,15 @@ pub fn leak<'a>(b: Self) -> &'a mut T {
-         // which points to an initialized instance of `T`.
-         unsafe { &mut *Box::into_raw(b) }
-     }
-+
-+    /// Consumes the `Box<T, A>` and returns a `NonNull<T>`.
-+    ///
-+    /// Like [`Self::into_raw`], but returns a `NonNull`.
-+    #[inline]
-+    pub fn into_non_null(b: Self) -> NonNull<T> {
-+        // SAFETY: `Box::into_raw` returns a valid pointer.
-+        unsafe { NonNull::new_unchecked(Self::into_raw(b)) }
-+    }
- }
- 
- impl<T, A> Box<MaybeUninit<T>, A>
+Patch 2/2 (rust: gpu: buddy: store the allocator inside the Mutex)
+depends on the Lock::new change. Which tree would you like me to base
+it on? I can rebase it and resend it as a standalone patch.
 
--- 
-2.54.0
+Best,
+Ivan
 
-
+=D0=BF=D0=BD, 16 =D0=BD=D0=BE=D1=8F=D0=B1. 2026=E2=80=AF=D0=B3. =D0=B2 14:0=
+8, Gary Guo <gary@garyguo.net>:
+>
+> On Sat Nov 14, 2026 at 8:07 PM GMT, Ivan Tverdokhleb wrote:
+> > Currently Lock::new() only accepts an infallible initializer for the
+> > protected data, because impl PinInit<T> defaults the error type to
+> > Infallible. This prevents wrapping a fallible initializer, such as
+> > Opaque::try_ffi_init(), in a Mutex or SpinLock.
+> >
+> > Make Lock::new() generic over the error type E, so that it accepts any
+> > impl PinInit<T, E> and returns impl PinInit<Self, E>. E must implement
+> > From<Infallible>, since initializing the lock state itself cannot fail.
+> >
+> > This is needed, for example, by the GPU buddy allocator, which has a
+> > TODO to move its gpu_buddy structure inside the mutex.
+> >
+> > Signed-off-by: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
+>
+> See https://lore.kernel.org/rust-for-linux/20261022160725.2215244-2-phast=
+a@kernel.org/
+> which is already in linux-next.
+>
+> Best,
+> Gary
+>
+> > ---
+> >  rust/kernel/sync/lock.rs | 8 ++++----
+> >  1 file changed, 4 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> > index 10b6b5e9b024..26c071088b02 100644
+> > --- a/rust/kernel/sync/lock.rs
+> > +++ b/rust/kernel/sync/lock.rs
+> > @@ -128,11 +128,11 @@ unsafe impl<T: ?Sized + Send, B: Backend> Sync fo=
+r Lock<T, B> {}
+> >
+> >  impl<T, B: Backend> Lock<T, B> {
+> >      /// Constructs a new lock initialiser.
+> > -    pub fn new(
+> > -        t: impl PinInit<T>,
+> > +    pub fn new<E: core::convert::From<core::convert::Infallible>>(
+> > +        t: impl PinInit<T, E>,
+> >          name: &'static CStr,
+> >          key: Pin<&'static LockClassKey>,
+> > -    ) -> impl PinInit<Self> {
+> > +    ) -> impl PinInit<Self, E> {
+> >          pin_init!(Self {
+> >              data <- UnsafeCell::pin_init(t),
+> >              _pin: PhantomPinned,
+> > @@ -141,7 +141,7 @@ pub fn new(
+> >              state <- Opaque::ffi_init(|slot| unsafe {
+> >                  B::init(slot, name.as_char_ptr(), key.as_ptr())
+> >              }),
+> > -        })
+> > +        }? E)
+> >      }
+> >  }
+> >
+>
+>
