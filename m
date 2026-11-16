@@ -1,103 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.169
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794853536;
-	b=k8yfaiUaNJ1wVGOBx6iW5VgCgYtYixad41UFyj8S+fcMLc3gA+00AYGaFCxHPpEShxTw
-	 4grS0nH8q3UbhQ8Xh/I974os6Je+ATErz62hDKIT3dLIdsNaqHeSsbAHNO4We2w4AdO2d
-	 MlBq7bEJ9AWY3orZetVe6kn43mcO87yDiJvQpQI6tpJyKglxxb1ssBBeIWgLZrfGtx8Sr
-	 gL2eLlezSKLeOqR4VJrZ8t+QrfqpAqUa8JFz3KLLWFOgHaGdKEUu5tnsotGd4CJ5pSskF
-	 9gcIbNqML7BuwSQgwbMQIfhB7K/3j5gEroxFe12f6J90OWYFbDO7lQe8+1QhDXLybWQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794853536;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.170
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794857904;
+	b=AY60hhLE5qvZsHH1kmEul9/ocIw+3oZGiyy+7UhImT0W1Hr6VGeSzowMet0hxGzP3fGL
+	 yf1Nv3CjHIbi8cvo8wZ/70RILaK/j2qVRXqCQ2IbewMS2NE7x07cWvh+aZMuZvQB1j+Ak
+	 +QNOEz2zaUSVlVXnZzokMeUXMApUJ2HVWMJZN/0T3kaik9acuKnKpKnbYU6OEqkArqDv9
+	 5AGeToUWkDdeqs83bariyr88aa1+U76QKga8SvCwFOJr4xZYDqtJ/k0x1NgWyzZcgqxr0
+	 BfwVpilLUUtiZi50+xxdlUxtnFTBN80G0Tio4cmMj/BiV9IDZtJuIQZkyEPDrDGDcsA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794857904;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=MmvRB3XET/e4SxvoROlmDCe5qG23SqnwRokKlHMZoeQ=;
-	b=vItjschfuTd2XUWPwwnFNPkLC0lk/Ma2CvLl+b6tCV0eMS/lgLPNuGrVXUrcEryuwPZh
-	 hE4CpcpDtRWNyLkm+NU9sPpMN2m7uL/KGZ3CN+h3TY6uJCp4HoUvrqI2XNz3SnHsyMkn1
-	 1Ywrb0000JRqyA3WMX3gPKA7bD54ZXdjkemtWwsbJQf2W5ntDjkHWU/8ll2npS2s/PGZo
-	 yXtV0HrKJa6kh7j+HWOQOwnLKTROptGNmYD2NGn+kqsIXRS5yL0g5qB7o3CxBnk1xRjNT
-	 LuKvw8c3SA+BkzVUrDcJQfrS89j/+7fv8WMOL1yCMFKot88+j3iL0cudBpZ4U2/HWaw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lV49A7wz;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.169
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=xatal/xzM8Wu83lbCyLkMOJwyZhivB3yqJ6pyXmU5Uk=;
+	b=bfqAw1glG/QAz+vUoIFiJnbstAGQ74nA/AeLln3jkwo2BF6QN2NyZ/+yHLfeeeBlerlJ
+	 TB/RX3N53D7wz05pYHcCl2VCjWP/2MPd0z/gvbYn4VUzRwxuGSbBpxKSiJn8DpvtWgiGM
+	 88nJBqkMnVz3s4i7MjxtWHuK/XwDgurGJtEkUSZu2y4kzcWJ7gxN0EmkHeHqH1wKyBDFS
+	 3FR4JDtGjsZx97OtvBfxS3mjGtLlNuJw8MmDb48Gu5vyH+ha0AFMpkHgYD8/oFnkuE5E9
+	 K2H0uZ6ZzqVsaUBw17bTQJOGsP/U/BNypq2MbcpgQetFCSKpSwwl1biBruQnoRqU6EQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=UP7tqSIg;
+	arc=none smtp.remote-ip=209.85.160.170
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF949606A31C
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Nov 2026 18:25:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF949606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3252606A31C
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Nov 2026 19:38:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3252606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lV49A7wz
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-3adf04a55f5so4090211fa.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Nov 2026 10:25:35 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794853534; cv=none;
-        d=google.com; s=arc-20260327;
-        b=jTUjQmqL8CMUAqjNnwRL4aQxduNRLHboAjc/QA4XPWQk1jUtW7xoLD+U27h3cA9n8h
-         TmiiD6TvuZx5uV/+k+I+GRguJzU6nyEVIE0iM5XgZdZn+HWobMSSVbJIrYH/KDs/wW62
-         /oLWZI09foU3NLWzsyYSmg5wvV0Hfl90EkKzN1J4uhIdfVqPsxOEIY6uS4Ncyb39y1Rd
-         Z8AzQLEbGksQi2dD2RhuFv3uZCwizYH3eQFaxCCuookTLA4OwmrAXmTNz5/x0qyZ5Mm7
-         a5LxZUWDB20+K9GkLrPPNvtqOFgJCsjBhBSGDaySnrzAUGD6Mx7CN1RzZtLzN6AHkdo9
-         tFaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MmvRB3XET/e4SxvoROlmDCe5qG23SqnwRokKlHMZoeQ=;
-        fh=0p45U+EO2UlIffLtNdHxn6E3e7l3k3MkHW3EXBofm88=;
-        b=W84wlSK2qthEvTKsAiE/qNWnPU+qP9hNUvD5URktY0CmJq5fq1j9T8kddkhPg5P28L
-         GKz1f4uL7peOeaLnKXNwCujaWA45hnMOUu53NVPJeojsVsDbJD3IJ5nEr1eirWe3cIOl
-         SoMLspIgTl/uBNYMUdiUU8XW2xrsOG3IwXTmQ6a7rbFkaxE2DGeUU2vk5nRq7zzumD/e
-         TivQFB/Cg1pDVXx70jDPLIAUFvuRH2+OEgjn/2YDmMIC0/o2KI0Drf+KPV12YI4rqKY1
-         jHtBtq8kCjDTX0NnZAxdFcI0ELcXWJDZbkUX7nZ36TI+nbss3gK/ngk6WZ6N3CUUaF+K
-         Usdg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=UP7tqSIg
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-5365d725440so42019581cf.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Nov 2026 11:38:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794853534; x=1795458334; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=ziepe.ca; s=google; t=1794857903; x=1795462703; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=MmvRB3XET/e4SxvoROlmDCe5qG23SqnwRokKlHMZoeQ=;
-        b=lV49A7wzomsZqR8kiAhUUO4KY4cqfBghHi42jDCtjLcwddNEXzn3+we0WVIyLa6NaM
-         rEDvFzIWrRI2EyUL/1o0NkWi3J0I/p+1J2TBujOoaCJUN8rl+D0d2O9hfhf5jmEM6mYL
-         UZq3v2IMxgOMAKYJuy/HcP2nEtUJ4O9Rcc3RzZ+Z2ZWcCmDqPbpldH6xI81uZAm+bL2+
-         OEzheyX2lOblF/iXoDIEj5mk0IG2eLCxXJEL6IFYaBMResQ9FFej3cKhX5uTPvIbrQOb
-         NpfyZVdr+i4exhyG0A425X+83YzxPpbTlLmUI7gvjyXN4BmWCl01eI5DrD5m6+StZzqf
-         7Amg==
+        bh=xatal/xzM8Wu83lbCyLkMOJwyZhivB3yqJ6pyXmU5Uk=;
+        b=UP7tqSIg+Zq7+LwHBwpTHoLbN3LwuEyc94bwjDub/kzmA0gGs0fz7b/MTO1qulRMm4
+         z6aZmiuXiuWs7PrvYN9s7AD8FGW6PzS5VAu8NKi3Hogxa+vDE6+MnJdS/r3I8/6CtALU
+         pjzzc369dq0nGNUuMu4UBd5ig/bpJIOKOLpuJZ84CBV0FFdOqzt3TuhP8/5cclRXMyZL
+         jHDEo7Lf08rka0zDNQ2Ao9QogTC5TAdtyslpzbaM6/EOiCUa42r+wBxysBUaTM2UeIBf
+         kQ34MT9B0u2/17/9VdIuXNGcf5LXeoyUsISgFKQpTmoGF++cfuUfL7IEWHipaMSGrHOm
+         zyiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794853534; x=1795458334;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1794857903; x=1795462703;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=MmvRB3XET/e4SxvoROlmDCe5qG23SqnwRokKlHMZoeQ=;
-        b=sRUd6pxbZ/WXhgvqyLJgGlZc5vwoukvsw9ZNuEnNnWTJ07iY3FA9GqZjkYtdbhVhcc
-         uJziXlVlGC+f7bZtppW/joXNxVY6MMO/wcU6+L17gURzAFYDyy+xzzq3V275bMQNIme6
-         DSdYHbZPk4N/ocq+6vDFOnGSwbdDh+edpJFZ0cR6Qeo/8y5tfpFp5x7MWM2anyIqi+OE
-         TaavuUb+H7CV3d525E4+7NZrG+uvAiutUgXTNhtUB+UQChg2E9BNaa+aDbXMZgwfATEH
-         8Dn7NULpz+SbMf+HxhB19obhPgPG4yYCGfYZVe9p85d+obVKw2gf/5+qKcBPr74+3nzc
-         mARA==
-X-Forwarded-Encrypted: i=1; AL+hErH6YGAL3BRsSWtBo5zf8IkjEcKmburc9DZZcNpyK6PHF1ro84FAXDQEiJ1eahX6zHV+8umuXYVjmTKXYpLkIQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/rV2HVOIK5UxjUirJWX2d/YUuPV9LXOyyZ8Dwi/xvh2GeeucxP
-	+Qo8BaJFfpJdwYZjb/pLdMNBC6YfxYgeUK5qmwLDIlh99/L4M+J2ZuE5Z/poPy4Q53kBoF8YomU
-	5r8LpobaDpdJetjJ/i8slh6ByYtWVAq0=
-X-Gm-Gg: AYBFou2NDe6rix5Hq0xMxVLl2gIOzjdNEQH3enFz2y0mcgtxeU+ceu+te14oXIOhx/D
-	arzBfX/3nnbcPj12IwLryUREHPNaN5Ne66AH/ZuhjnRpP/wA4UI8gzLOw+jp4MDh57Zz7O32wPZ
-	/2QSYy6qZPDU00wiJg43IdFRk4PH4nVvLn4y2UQF+FbL4jfOMK+DQGmgUod5aGkxzcC88ejtSqD
-	7MBqVmIHk40mFvUcr8SHlmT9lWxC8pTC7o5bFPisQF9ZtrT9JCLIu8+rZLiop453oUeXSDPCJ7p
-	wxHeRa1KbJI0gXUto1A3MdcTJ1bPbk9G0o1taD/LZbzH7tEkizLMzVm6TV3X/BJ8hoBHCeuEbUE
-	OPCg7pNv+7P3m0M1+M5YDtSl2Km7q86oyEN6MuufK88S+R78kSQF26NZbELDEwCQ7wAG0eNhKrz
-	MwRnvChudSLdqqeU4hkUDg1MoQvdU0cJgxkkeloLM6K7Po9+XpEZMa4SFHjlM1dgydocGa4UkPW
-	lst7Zt27TDAXJJ9vZ/ZEsuuotj+lvckra+OXJIKMyrshvJr4n2/7OI2WY/NQGFOJxsNZfQvvvX7
-	I/fDSO48b9dzRewneEA=
-X-Received: by 2002:a05:6512:3d20:b0:5c1:4a47:b86b with SMTP id
- 2adb3069b0e04-5c1709e0a05mr4430696e87.3.1794853533682; Mon, 16 Nov 2026
- 10:25:33 -0800 (PST)
+        bh=xatal/xzM8Wu83lbCyLkMOJwyZhivB3yqJ6pyXmU5Uk=;
+        b=bzKVEbsKQxYfeXO0BnJk7YvHESlp0WfUcxsaW8WcZ+1GbyJvVxE4x9GmYer+bmEcJq
+         D5gVNuIaQg11BzH5hAe2lxY15a6s3KLwFPxu6ZPfEFu/Aze1paA1EmT0kkq5RmTLKMUp
+         /yyLACcA+S2StFMMfAYtIR7s7jf8vQl1XlirwELtsZV05TT5nEkZBJv5ARQt/8oS71UK
+         os6YuZ01gK5oHxYgiaBZ5SmBbmY6ZSF0cRVD8A0FIvO+KJUkDT9ieIQgRu67YSB+RJw/
+         vXUbH8YWk7Kl2DbUIUX9vRWmSSWrYU8CjwuC7xeEVVSaV0EkmfhILNP1rFwfrIgPMSfk
+         Hprw==
+X-Forwarded-Encrypted: i=1; AL+hErF2btvRo8HFVmcJ4aQsqtLuYmTAg31206HL/TpVT8upQeTNsximTrL15/7KchxoGo7p8t0VLBZiI6FhvziqNQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/x7MYHiF/zOJTrDcy38RGuHjLPxqZ9917l6e2aoX7bqTr/L/ld
+	U6r/RyWKN0/p8jXje8p0R0B5A+HY2aSCgcUgpc6cMKU4NtVrFZ4Iui3ElJ7JBwIS3hE=
+X-Gm-Gg: AYBFou2Ywrg9xmkeLn4brWl+LKjlS0bvLd8LdWiXsw5Nl3qd0uoqKm+67r6MIGoILrW
+	t6sYxubXEEeYUaMe8IwxjNnqSG5WGpgFKNLIQgcmIg/k4hSc0XLF9SRVcFaeElUM4zetJYzsvHy
+	VKib/1S6MZxBqdfD/4AZs79aN3i9oB1g1MlmY+2jqE1olMiTuLk+J+G0czOp9e+eG+9pmB6c4rR
+	SHrI9rF/7YV/kGsaRxzxv9oIu5X2Mk5k84ibe9l7viUF9Vtd46X/HjHkb6nK3Aw+miC1AVw1mwg
+	t5xOBnq83276o50mmtOuyj2xeO5Ejc2f5lyxdL5Ggbbv5RDqe/l6cVRZX+1rbJBcP2iONu2QKvP
+	vavgT4Xd8ZxAHaW4oCMZYRMApRPuYmerRfXqdpOQa1J9syNLrWY5GNZzY6pH7R2HfaBXR/m1wJ9
+	tPX11WPeSCqmQciXrWokW/wRoWk8tECBfSCaDyiY4iDZD5n1nEEV2S58GGExQhKN0s0uHNsFUe9
+	EIQa4YLy+zMcIcUNC5wC/mqVOcIbX7P3yPJ6kQcRoXkV+2p+v+0m7aHIQ2ijkBBRs0Uhm/NWJ5q
+	2waTDA==
+X-Received: by 2002:a05:622a:1f94:b0:53f:8b7e:c0e with SMTP id d75a77b69052e-55ac755ea54mr198728171cf.24.1794857902540;
+        Mon, 16 Nov 2026 11:38:22 -0800 (PST)
+Received: from ziepe.ca ([142.166.156.71])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d3610521csm36870131cf.23.2026.11.16.11.38.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Nov 2026 11:38:21 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xT2Wz-0000000AK3c-0tcq;
+	Mon, 16 Nov 2026 15:38:21 -0400
+Date: Mon, 16 Nov 2026 15:38:21 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>, iommu@lists.linux.dev,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Subject: Re: [PATCH 0/6] rust: iommu: add a paging domain abstraction
+Message-ID: <20261116193821.GC2452510@ziepe.ca>
+References: <20261112-b4-iommu-domain-v1-0-c29e86788dda@collabora.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -107,41 +115,39 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261111205204.481923-1-afd@ti.com> <20261111231053.529616-1-afd@ti.com>
-In-Reply-To: <20261111231053.529616-1-afd@ti.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 16 Nov 2026 19:25:22 +0100
-X-Gm-Features: Aa3M54rVRyf4es6TqziTYOUJHmL_VeIv9Dh3QTOWmj0uc-rB_srLGsXruXgTUXQ
-Message-ID: <CANiq72my47EZMwqQ7+esPjYv4rcuawhXJVuptPUF-SOWWe5c6g@mail.gmail.com>
-Subject: Re: [RFC PATCH v2] rust: i2c: Remove use of bindings::i2c_match_id
-To: Andrew Davis <afd@ti.com>
-Cc: Igor Korotin <igor.korotin@linux.dev>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112-b4-iommu-domain-v1-0-c29e86788dda@collabora.com>
 
-On Thu, Nov 12, 2026 at 12:11=E2=80=AFAM Andrew Davis <afd@ti.com> wrote:
->
-> Well Sashiko suggested I take the easy way and just re-use a different C
-> function instead of trying to open-code the loop in Rust. The C function
+On Thu, Nov 12, 2026 at 02:00:07PM -0300, Daniel Almeida wrote:
+> This series adds a Rust abstraction for IOMMU paging domains. A driver
+> can allocate a domain, attach it to its device, map pages into it, and
+> install a handler for its faults.
+> 
+> This will be used by the upcoming rkvenc driver that my colleagues
+> Detlev Casanova, Nicolas Dufresne and I are working on. More details on
+> this driver can be found by watching Nicolas Dufresne's talk at LPC 2026
+> [0].
+> 
+> As part of the security model, each client will have its own IOMMU
+> domain. This is needed as the submission model will let userspace set
+> most of the encoder's registers directly, so the kernel cannot check
+> every memory access that a job makes the encoder do. With a single
+> domain, one client could make the encoder read or write the memory of
+> another client.
 
-I noticed this series while going through Lore threads, and yeah, it
-is generally better to avoid re-implementing logic in Rust if a
-suitable function already exists in C in the subsystem (unless there
-is a good reason to not do so, of course).
+How do you plan to get the paging domain in the first place?
 
-By the way, while the maintainers may already know about the removal,
-I would suggest adding a Link: or commit reference to the patch
-removing that C function, i.e. to give context for others.
+Using paging domains directly is very complicated, I'm not excite d to
+see DRM trying to do this at all. IMHO there are many unanswered
+questions how it could even do this safely.
 
-I hope that helps!
+It would be better to come with a user so we can try to understand
+what you are even planning.
 
-Cheers,
-Miguel
+> Patch 6 adds Domain::with_fault_handler(), which allocates a domain
+> with a FaultHandler installed. One handler can serve several domains.
+
+You intend to use fault handler?? That's even more esoteric.
+
+Jason
