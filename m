@@ -1,102 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794821305;
-	b=E0GljROnQxUqcSu9xKix+lExfz/Ofxa4GBCQeAW5cBs8HHMgpBXeKF6B+eJqh9S2HtVH
-	 g4tGMrxqozA5GkYWf+lIBcj9VDtXht8nlUUbFp7/lNNe+O3NdpAK8T/gr+hgtIvxMe5oi
-	 fALW2Lm1Vx8SlP65YFny12QjQsIpyWWygiDQaWuRnOh/BKFEO+78DHhgOj1aXR+4ev+rw
-	 sdXnjCN8C1jeVkSS/aLjwAUfIuoWYDNTcZFqiLAI5IyhBJyt5j1BqsuWSrXKjTKNHtxwF
-	 xP5bxK4zpiDixYDvQLCTqKjt0HLdMPImTocllU2Dkziw3UsoAVi+2uPf/IN818hgpdg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794821305;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=ck90Ja76i/8lWIveQHIjZjSAi6Th5hdRNv6kbv7cOjM=;
-	b=3+MjuJkqPjcOqx5hXxYOD0sV9Uis+3hx3AKRKNtTq2Jie3SHAm+Cxn/qtWMHz3/N2uSZ
-	 Z/wZmTj2BirRxW1faZ/oR9waDlbMs6TmNyH4dSxzwycgmpqAZtTi73rh11sMejD+IL2kv
-	 +mCPadiwpVq3OZPWTfZluILEm+QC15j/crGXUa/rfeeyE5S8WL8H3kVXIe89jgD0UTo/i
-	 OZHkWsR5KdLtWSXrpdzAetKwDVMIKb4v0+Hnzd8GcDIvIIcE4PeV+GHC7CUmWQq5GtMXB
-	 UyXIuDBBmS0Rt/59iTPvUXOnJPDaH8BoxikVfv6x8RVhr2pRdthe7K1dA0k/ewLqMMQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AIlnNq3s;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.41
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88919606A32A
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Nov 2026 09:28:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88919606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794828383;
+	b=AEl49HZDfBCaV96i485Pc5kPqn1LNXaOkw2OhJc2CTtuwD/8Yeu9FiuvAFS1s5jXxqI7
+	 w/ixE22Y6I9fJW/xjK1kiYhdiUwHWRfYGVQq2nKtrczKNW8Gwx4fa/z97COYPc2WfD0AB
+	 LrwHst5hVhb9veuUAfsWn5JZi5TSglSrB2NC3YmCzQoWff8/Bb2PL/QyR/wLoyy16XZIN
+	 SzL5Aw7Lks2n6nLFk0JlP1TXQuP6LB9fVT157/CNix21ovB5qSdLGmctef6+tTQL8Uc/D
+	 qtVe/rBV9khVfOjCZzPbaSpWO5VG47LX3RtFY/u3P0ilimWBFco750nK0/RnGP4uLDA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794828383;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=erPqvfMkF12qX1OD9Ld8k+GHRcROaJq3YFf9CiEDZlM=;
+	b=de6TYbhciaF14rkpaIacIGzZFdQawkITgR61BZKdmMkM8b8o/bGrNqsMeZvoadv0VJI2
+	 k3pHdbQMRiNEjr4A6LVpi2EnsAHMUfdqevdi4x91XkcXYMQNkIf4j4b2viatPUx9iTeLy
+	 LcL8poV40aDhjCw9UnepWuoZq/6vHAQgz860srPTUJvBhwPFxuKeOvcW1duWIKP4GzsFk
+	 BvA916KUbL5e6ixxOqADtBuonUO/VCo+VB+xAGMxZMHSGwGR07P1J3nEYqgnVzaEg+HhL
+	 toV3+iaEzvCyScQd3bAcQkLROhlXOgqy2C8MXq2VD30EfhjXB7jFOJp3xUIlRzwvfbA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=bkM+TK2t;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E1B606A78C;
+	Mon, 16 Nov 2026 11:26:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79E1B606A78C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AIlnNq3s
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5c00c727a21so210645e87.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Nov 2026 01:28:25 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794821303; cv=none;
-        d=google.com; s=arc-20260327;
-        b=R3JlRSofoAPHWQLRJRUk6DT5c5yRGLH+AKT1CtglHngHOiM5QBFYMs9CB5h8OKSQBd
-         ihxMdIkku+Cc87SRa4+ETiAfhsjUROc2AHt16LIRqVnTW9QHkUa0WUVPFXMkD7X2k1pu
-         yrC1fYkf4CksAU1z6Pj8MWC1dc9n2VMBGaRG8etCeY/GVxZMBHyslOElNcOFtzl+YL0B
-         e2mOTgg3yUle+Rx+FkGjMhKKGEiPpdj2CSwqCPAvXLEd2jMGbEgo39iQJWQrj2kMdZb+
-         EjOisOfnMHHGmbw582sAHDMSwoNHWz7RPJ7M2fUoXxazWU6Y9HmBFVS82pyND+yPtDmb
-         vMGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ck90Ja76i/8lWIveQHIjZjSAi6Th5hdRNv6kbv7cOjM=;
-        fh=QzCopjGs0B8xRBVIi7d6KcgEMEd9yHFbuJO9yMXy5dY=;
-        b=UfVseYG8qULfZk3ZB4msKELvkWSYZ5RXcelvTuGm5dfSdXucYQ/8/YS8Y2bLlyYLFW
-         LjZtwWWKosCUS6AGT5IXA+rcZspqlVCf+4DPIrektNGwlzwxJW9G9UpNWAZA8KB3bkbC
-         m7M62mTpdbuDz5/jTy+awjxVMxtVAlNdvbwy5qFQMCRIm79D9XirfuGWju4iquM2DLdP
-         y52x49lOmapkXCvj9nPJWdm0r8FLRGNLEZmam4DJhuG/+kCgKjVuqKGT7tpuH+NVXYXT
-         WKHZkZfAzUGaxQfNptF7+PukSxnVfzz1h5IWyb/6llJ0wRw68mDagJVazo7nwyhG21H/
-         UqVQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794821303; x=1795426103; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ck90Ja76i/8lWIveQHIjZjSAi6Th5hdRNv6kbv7cOjM=;
-        b=AIlnNq3sWtmeGAfjFpzBQFpa0xHgKF71/0tJ6OC1UiXLm167IjJ1qN1Sv6o3v5l4dl
-         Brk38APQ5UkqTOX+jcBHmmN+M11prghglr708nx3aQvU6P69rmWfoc7EvAWe1M+FJ1Yj
-         GAMioZ1Xno0vHQFE/deUYiXuRdjcCBhm0kUmIeR5WW9e9Iz1/hpcfu+Y8naAsd05eQLP
-         tPLjTGmO8vB+WmzutBP6n4l4GJIJcVnzLzWRl/9cOMLdXE0YtDjQeXkfRHsOAEZLN8if
-         rt/+uhNEQAinHeee2B7+daV4dyMX0h97RFhhSall+MGuDKYLGlv+9Ugh6OHLmfBqTQLe
-         Gukw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794821303; x=1795426103;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ck90Ja76i/8lWIveQHIjZjSAi6Th5hdRNv6kbv7cOjM=;
-        b=PsqxyAR8JJ0ruC2hNuPNmMAgVlO5WMhzl4bi/1C+5KEuZpfZS7pLhzmSrIHSd0LvS0
-         SdPZ9jgHh/s+eF80Rtp1W11uNggUB+d1K4xMUWpB0q0N4Wnf7rzjMUvi1xf9CCGnJonp
-         JagTF0c6emIR2vhsGsnAZ/+7si6Og2SWXdzFrFrhmvTNQnKEbhA2jz8tpYQRL1Y7u+nY
-         xkgOxEQNa+wftpiHaukxyulkWeC6YCl1F3ho0WKoBM2n+P3mya/4uekEtkPvQTKsm8rv
-         a6+QG+5RdnYw/vDdznD7e427M7+daLSDjxl277SY7vu/+1EJXcCEsxC1ih8CcYGqYvJ8
-         eabQ==
-X-Forwarded-Encrypted: i=1; AL+hErH+Z0IoszXzV+9LsZ5BvZOkf8gkh2QkZ1xSIdTD3TI5lGZq0XQeNimE0VFdBXTQgY0yjofDHhk8BF/SgE5+mg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+/jadde4MZcai5uoghvGfeZVSj6l6r0AONSO1yxIeb2lJIJGNr
-	q75Zql62qxLYJbuwdTB4vkPd3Tlk5A7nKkLeRg6MsGxCRURQeq5H/3OR+TFr7rPPsdf7AJjFi02
-	uyQQ7aFA5XBGWfNqhZOHWWkJoFlkrrb0=
-X-Gm-Gg: AYBFou3pVpFMmqjqIDtFPqcf8oEJnZNUn4eMPSkTI3HPw7QTQkacgxHdK8u4KrkoMvh
-	ngiGvu+HKQIBc1WpxIekbjsvJozlmZmSKE5R6+gXLUK9bF/tSsUopIHBQ2nGfJUeGlHssNslTeV
-	b6EujHks+lIAQ0Ett9J0ylCFuzrKlygldYjwrr+CApC57iUwT4fxFeTlo59ktBSD+7/WJBPz9Of
-	TPKkiyHu/3jXH4UNTb5dFCSCj7OaWPMAaDyfs6aPDg7si2IFP/fXRUFXIgiBjT5uEeJREPmgkRE
-	Z60D69tFmFwLi70vgWMvmYxSXnawMFedVURIZtPKwj1h0EOhe1e+ilXEkVkcb96GBm5iZU6xZvi
-	8Oiru1s3Be6sUjHR5yw+z1YuqGSQzqlGtZkWGiN+odS3K/2werIqJvsJqxUxsb1cP2q+PqQKo6b
-	2af/iKmgwb/9g6I4cM/O012tDXWB0CCwEFtaFmPyf7EepJLEoH6H3Vzuhx7YH9l0lX3Ujo9qIkp
-	uiICCMq6owsUuSSY67mG6LSoKMkk8AwaXv3xjPQL8Hbgcaylt9ijPpmmXHEhUWLkziC7C4gJFs=
-X-Received: by 2002:a05:6512:108a:b0:5c0:b5c:4084 with SMTP id
- 2adb3069b0e04-5c1705d663fmr4451137e87.1.1794821303323; Mon, 16 Nov 2026
- 01:28:23 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=bkM+TK2t
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 721951713;
+	Mon, 16 Nov 2026 03:26:18 -0800 (PST)
+Received: from e120398-lin.trondheim.arm.com (e120398-lin.trondheim.arm.com [10.42.46.160])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1263C3F632;
+	Mon, 16 Nov 2026 03:26:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794828381; bh=iB0d6tgW3I2e5iitol76b342HkezV3YpGx343zM0/zM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=bkM+TK2tJdavJuFwKlvA3OTO5Z7WFJZ2Ry/hovLMoG4/7WB6qd6OJWj9Kr85r2H5I
+	 //LtvIcHtqD8/sYEz1+1XlQfr7pIzO4UTSARsJksEiw7nurMGivn1OhtcI6PId5ZAN
+	 ULJRWKwh9gx/Kh0day3tZN8qI3KwfEtFRWCNxkJY=
+From: Ketil Johnsen <ketil.johnsen@arm.com>
+To: Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Akash Goel <akash.goel@arm.com>,
+	Karunika Choo <karunika.choo@arm.com>,
+	Lukas Zapolskas <lukas.zapolskas@arm.com>,
+	Chris Diamand <chris.diamand@arm.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Cc: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Ketil Johnsen <ketil.johnsen@arm.com>
+Subject: [PATCH v5 00/13] drm/panthor: Protected mode support for Mali CSF GPUs
+Date: Mon, 16 Nov 2026 12:25:48 +0100
+Message-ID: <20261116112601.3483649-1-ketil.johnsen@arm.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -106,33 +73,191 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <avXdJyqNNqopuH2_@ashevche-desk.local> <CANiq72nw+g=RTvR-zZh29D0=MOwNYboNSeKkNr_Z4v74Q4hn1w@mail.gmail.com>
- <avc-fQWSvmtHhtCO@ashevche-desk.local> <CANiq72=RbzZHgZEMfLkDRQx-_PoxEfgL_Ar8figchde5u5qc=Q@mail.gmail.com>
- <avq_fOVO4dina23a@ashevche-desk.local>
-In-Reply-To: <avq_fOVO4dina23a@ashevche-desk.local>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 16 Nov 2026 10:28:12 +0100
-X-Gm-Features: Aa3M54r8jDUBL9-W_6ysQ9RsXI7srtGqUzJ6kqt-NYARrfePXpS4XD1GBsJdusg
-Message-ID: <CANiq72mWNJ6qpxUrsGHGiRHeqb=uHMzqEuYLOkK50i40T=yHNw@mail.gmail.com>
-Subject: Re: rant on Rust in kernel
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>, ". Boqun Feng" <boqun@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 16, 2026 at 9:32=E2=80=AFAM Andy Shevchenko
-<andriy.shevchenko@intel.com> wrote:
->
-> You mean for the in-kernel builds or in general? If you are talking for
-> the former, this needs to be fixed as the version  we supply via LLVM mak=
-e
-> parameter (as you can see in my command line examples). Another story if
-> this is broken on the clang level (but then how kernel is built?).
+Hi,
 
-Hmm... I don't understand what you are asking, sorry. Can you please clarif=
-y?
+This is a patch series covering the support for protected mode execution in
+Mali Panthor CSF kernel driver.
 
-Cheers,
-Miguel
+It builds on the initial RFC posted by Florent Tomasin back in January of 2025.
+
+The initial RFC can be found here:
+https://lore.kernel.org/lkml/cover.1738228114.git.florent.tomasin@arm.com/
+
+The Mali CSF GPUs come with the support for protected mode execution at the
+HW level. This feature requires two main changes in the kernel driver:
+
+1) Configure the GPU with a protected buffer. The system must provide a DMA
+   heap from which the driver can get protected buffers.
+   It can be a carved-out memory or dynamically allocated protected memory region.
+   Some system includes a trusted FW which is in charge of the protected memory.
+   This problem is integration specific and the responsibility to allocate the
+   required protected memory from the correct and system specific DMA heap is
+   left to user space (Mesa). Panthor CSF driver must be handed the needed
+   buffers via new IOCTLs.
+
+2) Handle enter and exit of the GPU HW from normal to protected mode of execution.
+   FW sends a request for protected mode entry to the kernel driver.
+   The acknowledgment of that request is a scheduling decision. Effectively,
+   protected mode execution should not overrule normal mode of execution.
+   A fair distribution of execution time will guaranty the overall performance
+   of the device, including the UI (usually executing in normal mode),
+   will not regress when a protected mode job is submitted by an application.
+
+
+Background
+----------
+
+Current Mali Panthor CSF driver does not allow a user space application to
+execute protected jobs on the GPU. This use case is quite common on end-user-device.
+A user may want to watch a video or render content that is under a "Digital Right
+Management" protection, or launch an application with user private data.
+
+1) User-space:
+
+   In order for an application to execute protected jobs on a Mali CSF GPU the
+   user space application must submit jobs to the GPU within a "protected regions"
+   (range of commands to execute in protected mode).
+
+   Find here an example of a command buffer that contains protected commands:
+
+```
+          <--- Normal mode ---><--- Protected mode ---><--- Normal mode --->
+   +-------------------------------------------------------------------------+
+   | ... | CMD_0 | ... | CMD_N | PROT_REGION | CMD_N+1 | ... | CMD_N+M | ... |
+   +-------------------------------------------------------------------------+
+```
+
+   The PROT_REGION command acts as a barrier to notify the HW of upcoming
+   protected jobs. It also defines the number of commands to execute in protected
+   mode.
+
+   The Mesa definition of the opcode can be found here:
+
+     https://gitlab.freedesktop.org/mesa/mesa/-/blob/main/src/panfrost/lib/genxml/v10.xml?ref_type=heads#L763
+
+2) Kernel-space:
+
+   When loading the FW image, the Kernel driver must also load the data section
+   of CSF FW that comes from the protected memory, in order to allow FW to
+   execute in protected mode.
+
+   The FW uses the same protected memory buffer to execute protected jobs from
+   all processes on the system. Note: This buffer must be provided by a user
+   space process with CAP_SYS_MODULE though.
+
+   In addition, when a CSG (group) is created, it must have a protected suspend
+   buffer. User space must provide this buffer on group creation if it want to
+   execute protected jobs.
+
+   The required size of both these buffer types can be queried. See
+   query type DRM_PANTHOR_DEV_QUERY_PROTM_INFO.
+
+Design decisions
+----------------
+
+The earlier versions (RFC and v1) relied on in-kernel allocation of protected
+DMA-bufs, both for the required FW memory (system wide), and per group
+suspend buffers (per process). This is no longer needed.
+Starting with v2, this is now changed and it is user space which is responsible
+for supplying these buffers.
+Only a user space processes with elevated privileges (CAP_SYS_MODULE) is trusted
+to provide the system wide protected FW memory. This only needs to happen once
+per boot, and is needed before any non-privileged processes can make use of
+protected rendering.
+
+The Mali Panthor CSF kernel driver will handle enter/exit of protected
+mode with a fair consideration of the job scheduling.
+
+If the system integrator does not provide a protected DMA heap, the driver
+will not allow any protected mode execution.
+
+Testing
+-------
+
+1) Platform and development environment
+
+   Any platform containing a Mali CSF type of GPU and a protected memory allocator
+   that is based on DMA Heap can be used. For example, it can be a physical platform
+   or a simulator such as Arm Total Compute FVPs platforms. Reference to the latter:
+
+     https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms/Total%20Compute%20FVPs
+
+2) Mesa:
+
+PanVK support can be found here:
+https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/40044
+
+
+Previous versions
+-----------------
+v4: https://lore.kernel.org/lkml/20261012125940.3291951-1-ketil.johnsen@arm.com/
+v3: https://lkml.org/lkml/2026/9/11/1187
+v2: https://lkml.org/lkml/2026/7/12/369
+v1: https://lkml.org/lkml/2026/5/5/1523
+
+
+Highlevel changes
+-----------------
+
+Changes in v5:
+- Main changes are to the "drm/panthor: Add support for entering and exiting protected mode" patch.
+  Use an empty transtab for VMs requesting updates when in protected mode.
+  This allows us to keep non-protected groups on slot for immediate resume on protm exit.
+- See each patch for detailed changes
+
+Changes in v4:
+- Main changes are to the "drm/panthor: Add support for entering and exiting protected mode" patch.
+  A new approach to avoid uneccesary protm premption by non-running VMs.
+  This patch do need some splitting before final version. Will do that if
+  this approach gets the general approval.
+- Split the old patch "drm/panthor: Expose protected rendering features" into
+  multiple smaller patches.
+- See each patch for detailed changes
+
+Changes in v3:
+- Dropped patch "drm/panthor: Explicit expansion of locked VM region"
+- See each patch for detailed changes
+
+Changes in v2:
+- Conceptually similar to v1, but heavily reworked to address fault handling
+- User space provides all protected memory buffers (no in-kernel dmabuf alloc)
+
+Boris Brezillon (7):
+  drm/panthor: Pass drm_file instead of panthor_file
+  drm/panthor: New function for FW section map flags
+  drm/panthor: Keep size and VA in FW section obj
+  drm/panthor: Refactor GEM usage flags assignment
+  drm/panthor: Create kernel BO from existing GEM
+  drm/panthor: Support FW init of protm
+  drm/panthor: Protm support for groups
+
+Florent Tomasin (2):
+  drm/panthor: Minor scheduler refactoring
+  drm/panthor: Add support for entering and exiting protected mode
+
+Ketil Johnsen (4):
+  drm/panthor: De-duplicate FW memory section sync
+  drm/panthor: Don't allocate protm_suspend_buf
+  drm/panthor: Use a copy of suspend buffer sizes
+  drm/panthor: Bump version to expose protm feature
+
+ drivers/gpu/drm/panthor/panthor_device.h |   8 +
+ drivers/gpu/drm/panthor/panthor_drv.c    |  64 ++-
+ drivers/gpu/drm/panthor/panthor_fw.c     | 347 ++++++++++--
+ drivers/gpu/drm/panthor/panthor_fw.h     |  12 +
+ drivers/gpu/drm/panthor/panthor_gem.c    | 111 ++--
+ drivers/gpu/drm/panthor/panthor_gem.h    |   9 +-
+ drivers/gpu/drm/panthor/panthor_gpu.c    |  49 +-
+ drivers/gpu/drm/panthor/panthor_gpu.h    |   4 +
+ drivers/gpu/drm/panthor/panthor_mmu.c    | 368 +++++++++----
+ drivers/gpu/drm/panthor/panthor_mmu.h    |  11 +-
+ drivers/gpu/drm/panthor/panthor_sched.c  | 672 +++++++++++++++++++----
+ drivers/gpu/drm/panthor/panthor_sched.h  |  39 +-
+ include/uapi/drm/panthor_drm.h           |  85 ++-
+ 13 files changed, 1441 insertions(+), 338 deletions(-)
+
+-- 
+2.43.0
+
