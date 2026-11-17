@@ -1,102 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.182
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794897477;
-	b=fCdTfmz/cW9o6gd7wQMg1MtLE92hD8hbozzoFzDCHYpJ35kUg1uNo9ogivG4eA5KOpHF
-	 6Pm5YR24Wle9YiYq9J6brf8wIKPayBlTWkYFPnVOFL8PdssyltRFskffq6qzVsjJh00BK
-	 YrEn7HKACd+aWy1lQ+WhhGzkvQNDyskbi4Fu/TOe2AlGbkQcCvAp76dmABA6uJl/338NU
-	 KNik+T5dSYIq1hRwFzzoOBpQvb4nOjh4ZSSxrIxxiLu3UscUo36WddfHV1Tw4NXTq1eYT
-	 b2fru78GlZMfpDXNwBa0GUWWZmtAWJtn2DJOdNkfVnqmoMqRWknfI97BJz2P+8Gi5nA==
+	t=1794897629;
+	b=NhHAzaZYihelJXwYG1ZWy4objgrm1wsrzhQC2gIUVOHEBFm6cds/mRtU8pOKYsObtvl0
+	 PdNWkUsNa/fe2Cv79mdotUJbg9dT3TvpgOR7U9p5xrci9BSsRzjh+slIzZMNBga/kym+A
+	 E2o7/e3t8MvK4XVq7Y+5XiHxHOI4aGat4TTXpwJpbuVaovYgfRq5JMJ7mQu1cv/qSP4Jy
+	 BUx5BC1+OKUUXRWoEqVK1j/D5LWG0hrgWNlS1xWotGn1Gvfq/TS9fZaCBk1zojNye4h+u
+	 FimR4Aerg0EhW+IQ99GJwzGFcgwBd51pnQCdvWknfipU+VYM60ukW7Cx2qv+00+oGlQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794897477;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794897629;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=8/vn2gJipiD85BsJ1Ku8SNmRl9thwiwlJMFECHzYcD0=;
-	b=NUZptZo5MKJ6DLq4U3POEqEl/nvennbn7/KqsPLAnYF/ujTlqEEzGTN5jhKvXuTHkF0Y
-	 vSt5jskdtAuOTARYvVi29ePxvAR4VG2Q/NH+vCIBSm85vOvQyFHcnNaUiEThCCLEJs8to
-	 OhSpkZkGg65bxS4YZwV8+f52iJnWDcmD/JKj7qJyc8uf3PXDUbuXMLr1CktTMYQ9FeWmx
-	 5TM/Qf6TNK0BZUFyu/Qe8/GSOwu4EkooRFvejIP/8dnlBc8Zx8Qmh0E8g8eC5UJIqiCBq
-	 MxL6WWdiJs2zpgrw7dP8sHZOLAZ1Xxm3Z7w+xKUxzCJWyY+D2EByyfsD6pMQdAjdLbQ==
+	bh=v1qDtE1UkI1Z3ZIzAl9oangANFq3PebjU3wsoGmWws4=;
+	b=lE9whOoU3bYwfQRD1IMV5hFtMr629QT/B5xxw4KLgNzNqDFX9x1IOLsINyMObcJnrXCk
+	 wnUEEBQF50QEfXOtKlpyS4ylSNo7cVgPmDQOdNAMBOof0Qc+75aLQkKRt+SBIyHK8Dqn6
+	 /YdCVzoiFTug2hwnzxxBSU0liB4XxwSIuGPLeHmkgQw1u9jXsqnMvXRewroJC8eUSGEas
+	 mW9o8bjih8PhOCYGGaKsVk9e7/UM0XJ7Ap4iEGJJbio1HlUJjF42FCUHL1KevBm46a99o
+	 mNrz08KJNe7VP4yMnajdtVAi+QFu0q6EaHamieuOAg/8hSFVtIOPN+jH0SLARWvomNw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fZw3HLQ0;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.178
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pIRFwOCY;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.182
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3A5606A32C
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 06:37:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1C3A5606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D9D606A329
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 06:40:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 80D9D606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fZw3HLQ0
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-3adf04a55f5so4372731fa.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Nov 2026 22:37:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794897475; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pIRFwOCY
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-3adfe7a31dfso5329401fa.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Nov 2026 22:40:28 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794897627; cv=none;
         d=google.com; s=arc-20260327;
-        b=k/CnHawaYIZoWtlJ+fkz9eaxJ8T+bwOBXLyJLpxdHsA8vIGjyaeGQmD+Wi+dG5N1RT
-         TYyUi8oSRaLKXHfLZADvvgj2neRQwEZ9ZcsCQBjcKXT1Q4Krme30YrO+PHYq6I3TUygd
-         Fo/NSQ7WrJ4YEviWPgsGkUbQgnpyOkKqfbGwJjFDs1hDTINcYjVbLPE4qV+3KvLjTtox
-         B2tkwiONZ104zkrhCL9nmZ7TNNnvdp5U7N6NMVWA+y+uz9vnZc9niun6zg6tulS3r8fN
-         By85Mb38/hDyjwj8mQBnfMnNSTrh0wvIqrzigPhhdm6D2PVzsmeIbtAl2/LBZTyZn1Cj
-         6gkg==
+        b=j50fRhfgOvkNrD/8KemxBVDjL+Sed41e8U6+TuQvi4rDH2dh9gl5qrqF1lP6BvGiBI
+         60O8V2OSYhN91K50aKNh/HZaV+VjZpd4/iq1dV2mexMb63HR+KuTcAYg6hVd4SGitqab
+         ihwczQAOSWujsoCm5fGZszwX3Chbnxh2nRUvKV3Pi9Q2saCAqYL6dtltxGeWY0WgeunH
+         PmjtAnceMWgnWC67v7XF8U3IN3JzqaiYVqKWO3wDaKsEErV2mffzh5nPZpjpLAszX1Jo
+         KPMSd1Qko2nl9KJ5Dh0wj+LdgT2UK8noeHXP6oiZpVaQgC02P3k0JkL0XStAMlWgGcWe
+         ZfVA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=8/vn2gJipiD85BsJ1Ku8SNmRl9thwiwlJMFECHzYcD0=;
-        fh=x/vFr+aCtLY4/pM1xQyal+mHwRehyu2t2zCRZfmgjx8=;
-        b=crGi+pIg6A2MGDwN+ES35p2Whd2Uu9W06UtV6sV4IwxYEcQkvHmMNQQqjmmzHFEFe1
-         FITIvhDd9X9NdUQES87Mo5yt1RuYyPSb3sOOGYbKkkwAsPBV4UYiVorZB97S/Eml5cwD
-         UGMQR/agX6/GWRADBCsUqPh4I0cy9gJpWMLm6aR6Wg6OH4RznxjLaeeQiaqUcjtUz8Ay
-         n2UKzev6M9Yn1Kqq8hDcmycsIs2nYlBaIht2QKzk3jHRu5LjXRi+o8IfsNm/XfHrRu3F
-         n33D7o46xmCFYNdDQ1s61KgxqZVIvQunzo+W1D9jo7XaPYfLEKKL91ZnNMCAL6Et7rMY
-         x9gw==;
+        bh=v1qDtE1UkI1Z3ZIzAl9oangANFq3PebjU3wsoGmWws4=;
+        fh=1bd73SW74JbTnHC3t2ldZNurfuqFQUuAvVfmssGDH4I=;
+        b=EayIHkImlIqUzujJJcpKto0dcXw/4vwwYKsMn5ig41MH5QgaahNG0CDys6s6dkbUSS
+         2iX5Oad+9Hvc1bRI6Q2s0lBwW5zo1GaFqS3cu0JHD5F2Ihde3R2Vh/swrY2+OZnp8tUS
+         Q/jQaPfjJ/5WV2L4d/Ldlk/EazmZFJKGlK/e8YyD7GfTcOQKGJr7opJr6QdRTezx7i2B
+         dUzVrzaYZs8A1f9uu/v+//Dvoyc2x8uAUFbkA7s1R1JIwk9JA2jF+8SkdvHEFoLVhbVl
+         3yADgNx6A2qB0cwwcreZFIH2qc4USQVLylktlmup8lF2RE04mC9S2ZIwJnUzYwGV5sIc
+         Jscg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794897475; x=1795502275; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794897627; x=1795502427; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=8/vn2gJipiD85BsJ1Ku8SNmRl9thwiwlJMFECHzYcD0=;
-        b=fZw3HLQ0nzuknu6xZZPoDZvl/L7k7TrZwsx5O6x0BB261gDfe1j2et0Foeg5z5mrdz
-         pdov38qEG4e1cj1Xgv+BF7QG8EpS3uTPToJ/cPxM2P3pBo1pKt88mp1j6l8Lr9opRwrT
-         UQol3T/ikaaqCg/kx4o+Pd7HKYdjzlhzq7ad2AaU1FYx4ATArJAAzvoJ61gTlvmuHGY0
-         O6JvkVZ1OeI8Wuw/z/I9wPty9+oUFsd5ZIVwdZbnK2TVy5pfasGtQ3u+l7nglYvngY15
-         oFQLd6ZP6sSDU4BH7A31BLLxMC5vw8UQ7K+BTZZJadCh3+IJ+RKhSEbeZVDIcTdJoU7H
-         innQ==
+        bh=v1qDtE1UkI1Z3ZIzAl9oangANFq3PebjU3wsoGmWws4=;
+        b=pIRFwOCYQRg6aJGJnOiyKnNG9c6YYSN6o85ZYYxXAIBG+nkneS57BTLS0ZMhGdx7gt
+         73Pq8Jq1zMZq4BGnCGApMta46cRhvKL6hZ7GMCFL1ffulVvZGT6ZBw6pIE5aUhsdRlZL
+         OEcXNdqV+A8SKlHD7NA+p4PqnharGSeqxPddVFJsiemwD+c01kHRki8Io/3Nujn4rPIk
+         3N+tSkGGsatVDuNCgallXLT0T4kowy0ldDFrPVxbONr+LrPuZuo1p4IAubjb7JrpzLEc
+         rlUWAI+7x0KhGGY6xxKjbvUTHCyYVjJST58F877wciel9dPplKwDTy85ZzsuvJJlA4y2
+         61Ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794897475; x=1795502275;
+        d=1e100.net; s=20260707; t=1794897627; x=1795502427;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8/vn2gJipiD85BsJ1Ku8SNmRl9thwiwlJMFECHzYcD0=;
-        b=UfNZTNS+XfD3XBvl1WfnKMFXYMsd8QFQAA8dvPADA4IQYLJQ+OWWME5Ah06F3F4mi4
-         KURwTBAi3j87Xu0/duTv3WM+JJ2T4HfeNMagI1drvIGEvrYDNGAD7DtsfMG+iQiaKN6H
-         ti7atjxGkHY6X+CSGiY6rd3ezNaHgCrh8bdaQuvKRWCH3AiYdp1nGCJ83axlsdaBj22h
-         TDbLjZBRhENmVhpAi02m5wKNoe2cbKJwVwVW75Z5O4Pp9IdHRIQaNQGIAP2tx2+Vx3wv
-         meAD1My0PdjmnOOUka+HQI3gWmsNHaAQXV1JmbdHO1Ui4Hf8NBprXxoeYgb4gBEsf5ub
-         jLew==
-X-Forwarded-Encrypted: i=1; AL+hErE4nzS3GXxAXNixVsODYprwW9uOAFBsA5KAp0qgC3T+Sgf+qVPhkrSkGprxmC7i2L/xoxeIPrt+CCD8k8jsvQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8/z7LACGUTR4mGzWQwW915ck0OxsmbGYcGkYXuUMQP4V34pQEs
-	97GEHYgXJjvwrXWv0dDfT2QXfTotuHUo9RBb10QzkcmW0ihvIW8aVEzoYQp2uFqZFvywDrijEzp
-	o3mlkcG3OnxDhdG4y904BS6UzmLxzfjQ=
-X-Gm-Gg: AYBFou3HQN07YCKRus3QYBDwFAMzjyHtIq9Da2FmWc1D52bhe+BytuEWYG4Mmzq/o4O
-	4+fl5n+B3Hu+E107XG1gPF7RGhr8yeym58k2R9UdhDBO+jw2wUtrCwfgWmFFCAsWt7ORsEmrp+4
-	O0JZck2nU45KVaR/x2b8msr5P2Z3YuUQaHlhyloLcw8X9PRKrpfAaf/RNTx2M3guzbkghoL+lFm
-	9pJGMyR232M9PY+GiNFhI0NeEBwVmjM6kjN0LKiJcrzqvWIJOahOCU2rQ2SrE04rhJxFCe6E9W9
-	fxgdopSsz6GsKX0diadgXFGNCLaBB5M86HmPJott1gY2bkm3yv//cRw6sn0SRiLupjicBfJVorE
-	tZogBvSWZvbqpwFATPuc4atC5MzyPD0s7T8/UxIq2CPsKY2lMDhT/qDgRzMC3Bm4gb0Q3SUdbw9
-	l86TxU4YiDupG5m1xcQLP8QDc4lnbW8YsatP1kg/2i8KL3o5qjhDTdQiV3L3tWVJntiICSwKU8p
-	qEK5A6MJWCa1OrQJ/s3razFzut4uF81a4eMf4BF2XG0QnW699aepzDxeYFwLwVdHp31cW7WaQ==
-X-Received: by 2002:a05:6512:3e0d:b0:5bf:a66f:e5e with SMTP id
- 2adb3069b0e04-5c17058b108mr5667796e87.0.1794897475024; Mon, 16 Nov 2026
- 22:37:55 -0800 (PST)
+        bh=v1qDtE1UkI1Z3ZIzAl9oangANFq3PebjU3wsoGmWws4=;
+        b=fEpYtsI/B8rzkT/Yf6pjUMPElHwjzBcE+8GzMgVIq3WeKeEV9SgvZ87h8Pb+1kETeA
+         Z9bLyQK8O+IzPzX9sHKeb8KbHiGWoBuus3Sjc50zZ0aEwdW682gwrtaaDgh6tpcycRmw
+         FwSEboblIIONot94VKlq623s6RYdtlVDnZ4PpcaGAhA7C9V2Eq6Y9dJM4mic6TDLxFEN
+         p1oK84W8unzzUSweLluVOa+ZBRXEWfEV5ZFO33523Kk+sm0fs5gCdzciX+NeA2Ry0sg7
+         I0Xmh56Q17CJclbn7uJG3VcpvzUbJ49dnymQ/gBU47LUpGrEFM438FDcYu3wi2YQE+Yj
+         7lOA==
+X-Forwarded-Encrypted: i=1; AL+hErEhGC6+88befQkAXFAtDsSg0qBr6Kcit2puVVLQ1TWmiT0iATb4OqxNtNIz7OZh9+A5mbDhzhLtVv2dRRz6HA==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8YtBnxG6ZBOVkFybM7zeCB8u6feAa1XXGoA6mLmUJ6e5EIso2L
+	pXB9/hljxwXCyWJKdJvRI6e4FFjVIcJcDQJr5rSiIY3Sen3mC5/FXYUefSHZvrZmsbcBkVIcFhQ
+	K8EbbB1hpNFSeWWvuCUmvw17ZwWTU1G8=
+X-Gm-Gg: AYBFou0cJu0Ldu3fMvVz2uZQuCt7kPAm6j4z9k+oViapK4JISqRxJ0zKypZO/oGhxgX
+	AkdKyyXH3y2y+cfFrHYn1SmMkBuTTfY9WgQJsZKIT0PzGNLFChVED3+j4LEvRDpk7KDbQKyCcwY
+	AvG2d7mkHqz42AZWnsY9+YC4Hu2eX7ZLr623odpGqGHAyrWfo+XJ+Z/89YVm/bAXYx826zK7s8w
+	x2CuJbEFRHzml7sE++XngNw1IZyzHcKkydoSYlvxEwWEbtxovGir5Az0+lPJJWiPbG+8A9eU/z4
+	SdWSugTwLFhKyy3tw2vfWrLtA178ooYhhK9AN+PvGshxXOuGgUtU9cUcTJhPd8ieEiLDHsgCSLC
+	7AfsGXve90nD4f6IpoD/TTMcI8VoVP2NvQgWP9vf9CbZbIcoAljAcg+0FLN6XfIUfy1xnwLbkR1
+	qng+1YpN6pZ+hvrFoePleS+H3HHyzTt/uLkx9rdY+orwHGV4hVl1qKURpQY8hYd63vSwEVzXha7
+	bgtYDr6+F35E1wOSUpFJJhMv6LTCjUPSdfRjzVOypaEO5EDJq9V3aKGM4UppYhXQxTR2pZKZg==
+X-Received: by 2002:a05:6512:3d0f:b0:5bf:e6a1:3115 with SMTP id
+ 2adb3069b0e04-5c170771fabmr5745484e87.2.1794897627214; Mon, 16 Nov 2026
+ 22:40:27 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -106,113 +106,42 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261018175457.87803-1-ojeda@kernel.org>
-In-Reply-To: <20261018175457.87803-1-ojeda@kernel.org>
+References: <CANiq72mnB8cMmaMWaC-7pJj29JqqumBOSygnM9zA+8eHikm1Kg@mail.gmail.com>
+ <20261114132156.49243-1-marawanzein222@gmail.com>
+In-Reply-To: <20261114132156.49243-1-marawanzein222@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 17 Nov 2026 07:37:43 +0100
-X-Gm-Features: Aa3M54p7eBlg9yL8nKjCRYF_cKn6fvAcKLXbakSS16n9mf6XS8H5ekFNr6S-Wr4
-Message-ID: <CANiq72mrpgxyb4d9C5p1KS0n87GmYTXcyUX+dhZ39T2vRtOQwA@mail.gmail.com>
-Subject: Re: [PATCH] x86/rust: use `-Zindirect-branch-cs-prefix` for RETPOLINE builds
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	stable@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>
+Date: Tue, 17 Nov 2026 07:40:14 +0100
+X-Gm-Features: Aa3M54oHxETgvJbOaBj3UfHn1YJEXV_kuITRJF35qSCPKbs92-uDgz2TS-kt2rE
+Message-ID: <CANiq72knPfBVzEA3kiHOWXuDo0QAUh0mWQnWR6og0hqYwK2PNQ@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: kernel: fix lifetime of copy_from_iter_raw
+To: Marwan Mohamed Zein <marawanzein222@gmail.com>
+Cc: ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, boqun@kernel.org, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	dakr@kernel.org, daniel.almeida@collabora.com, tamir@kernel.org, 
+	acourbot@nvidia.com, work@onurozkan.dev, spidermana <xuyiwen14@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 18, 2026 at 7:55=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Sat, Nov 14, 2026 at 2:22=E2=80=AFPM Marwan Mohamed Zein
+<marawanzein222@gmail.com> wrote:
 >
-> The C compiler is asked to add a `cs` prefix to the `call` and `jmp`
-> instructions that go through the indirect thunks for the `r8`-`r15`
-> registers, which makes them 6 bytes long instead of 5. That gives
-> `patch_retpoline()` enough room to inline them, e.g. as `lfence; call
-> *%r11` for `spectre_v2=3Dretpoline,lfence`.
+> The returned slice is derived from `out`, but lifetime elision
+> ties it to `self` because this is a method. Explicitly bind the
+> return lifetime to `out` so the returned slice cannot outlive
+> its backing buffer.
 >
-> However, Rust code does not get the prefix, e.g. for a
-> `CONFIG_MITIGATION_RETPOLINE=3Dy` build:
->
->     $ objdump -dr rust/kernel.o
->     ...
->       e2b: e8 00 00 00 00        call   e30 <...>
->                 e2c: R_X86_64_PLT32  __x86_indirect_thunk_r11-0x4
->
-> Moreover, since commit 4a1e02b15ac1 ("x86,retpoline: Optimize
-> patch_retpoline()"), `emit_indirect()` assumes there is enough room
-> for the inlined sequence -- e.g. with `spectre_v2=3Dretpoline,lfence`,
-> the kernel warns and dies while patching a site inside `core`:
->
->     WARNING: arch/x86/kernel/alternative.c:736 at apply_retpolines+0x2ee/=
-0x400, CPU#0: swapper/0/0
->     ...
->     Call Trace:
->      <TASK>
->      ? _RNvMs6_NtNtCshS2CUL9MEDn_4core3fmt8buildersNtB5_9DebugList21finis=
-h_non_exhaustive+0x5b/0xd0
->      ...
->      alternative_instructions+0x1d/0x60
->      arch_cpu_finalize_init+0x5a/0xb0
->      start_kernel+0x1f4/0x280
->
-> Similarly, paranoid FineIBT rewrites each kCFI call site into a fixed
-> 20-byte sequence, i.e. the 14 bytes of the kCFI check plus a 6-byte
-> call. For a 5-byte call, that overwrites the first byte of the next
-> instruction, corrupting Rust code:
->
->     SMP alternatives: Using paranoid FineIBT CFI
->     ...
->     Oops: double fault: 0000 [#1]
->     ...
->     RIP: 0010:_RNvNtCsdVypMZsLRAh_4core3fmt5write+0x1e9/0x210
->     Code: ... b8 68 81 16 9f 41 3b 43 f5 2e 4d 8d 5b f0 75 fd 41 ff e3 <c=
-c> c0 eb 02 b0 01 ...
->     ...
->     Kernel panic - not syncing: Fatal exception in interrupt
->
-> Non-paranoid FineIBT is not affected, since it only rewrites the kCFI
-> check and leaves the call itself to `apply_retpolines()`.
->
-> We added support for `-Zindirect-branch-cs-prefix` [1][2] in Rust 1.91.0
-> [3]. Thus pass it for `RETPOLINE` builds when possible, which makes all
-> sites indeed get the prefix:
->
->       e3c: 2e e8 00 00 00 00     cs call e42 <...>
->                 e3e: R_X86_64_PLT32  __x86_indirect_thunk_r11-0x4
->
-> The kernel above boots fine with `spectre_v2=3Dretpoline,lfence`, inlinin=
-g
-> the Rust sites as well.
->
-> For older Rust compilers, set the LLVM module flag instead, which
-> has the same code-generation effect. This means that every Rust version
-> that the kernel supports gets the prefix, that the kernel boots fine with
-> `spectre_v2=3Dretpoline,lfence`, and that paranoid FineIBT no longer
-> corrupts.
->
-> In addition, add it to our target modifier workaround for `rustdoc`.
->
-> Cc: stable@vger.kernel.org # 6.18.y+
-> Link: https://github.com/rust-lang/rust/issues/116852 [1]
-> Link: https://github.com/rust-lang/compiler-team/issues/899 [2]
-> Link: https://github.com/rust-lang/rust/pull/140740 [3]
-> Reported-by: Kent Overstreet <kent.overstreet@linux.dev>
-> Assisted-by: LLM
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Fixes: 06cb58b310ea ("rust: iov: add iov_iter abstractions for ITER_SOURC=
+E")
+> Cc: stable@vger.kernel.org
+> Reported-by: spidermana <xuyiwen14@gmail.com>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1265
+> Signed-off-by: Marwan Mohamed Zein <marawanzein222@gmail.com>
 
-Applied to `rust-fixes` -- thanks everyone!
+Applied to `rust-fixes` -- tags still welcome for a day or so!
+
+[ Reworded title. - Miguel ]
 
 Cheers,
 Miguel
