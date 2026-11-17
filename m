@@ -1,75 +1,101 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794944429;
-	b=UCmuV+FimdxHnIGUoM1xcxgz0BvN93B21AtxamCkZ1dedPIPYlg6qoOkTAUHEN2Q9rd/
-	 k/gk9GWVWqa6V6+EW0mwbbyHM6Pjg3d7dMLXclYDG2vVJQ1yfq+IL+HP5y+M+O0VizfAL
-	 BURdU2YontzYoJlWdpxZa+Wdd+KR9hWBchN5PTSeoRNYaLqxMovn18VfiigCCDRDZljKK
-	 4BLiNFfRktJXodU0Ozf2KZCYg4Vk9uAGDYtiOpksq9BTSCtJhef5uIm5Y/uB0625D0KZc
-	 qgWGk/Y4B/b/ma2OhOfJ163Qs7NToyE0M2lv2UAvXRfcsHh3PPn2sODx/KrPNjgp6EQ==
+	t=1794944778;
+	b=BJpnO9YNjrm/Owqta0jM1yh7mE7sVv78uDATh+ZtDIuNOcIO+FXrzFRnIOzdCNNKGvUL
+	 DzlKye9KgwgZg1Np+BPy/Wi1h9xYvXCi4GGzZWaxF/n9QTR9U3ftrI3xScX9m79/gAt2n
+	 fEmfaGWrN/s2bzpZ3JJPJccFLTKboGHFVvAhYEPrA/bDtOsVflWq/ZEBD3jfyTD3GDgDC
+	 pIg42XkqovEN/6f+yI3jRyr8ZXuXKQVBPyIdzGR6xQawc4uLLBWRysKNVaWw3G/XnbDT9
+	 Sp3HBsab4v7PS5mQgZD9Ebl784szFJVrDsx2DBjzKW33nj5DDLVuORP9prYozw7sjTA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794944429;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=AOjEhOx7nc0rqRDX2rEwBPS9rvUhLYdv9/828tsqc4A=;
-	b=ij/0Y/tthwXc8IsYPfb750M3RM7F0625QD4jIqbYmnJrbmkEam456EXgUYGbZhzHoGGL
-	 P03uxriMQMSF2vikRUpNPF4x0TrbSAkSE9nXFDxSzc77qDdu3l/K6V39qwxHm5frfMiiB
-	 W668DUOt9cAeA7yGqAuEXYYN22L+S1AxcDNAzdr286H7Mgi8hkMwzVWJNS39k4OdlNKB+
-	 ZO+nRz7coDMUwXarJJfk5UPo1aoMcykcrEjXUgi4MT7PSnpB3RUwb6Rc+MDQwJMgiy+ZO
-	 z8Yvsz652yx2UUrBqsPMgDnb99TlaD5qdeJbH8MiLPdWAC5PDf3B8T7tf3+4J4ox79Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794944778;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:X-Patch-Reply:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=ExUxqEZt6CeU083ngWOHRCSyuGGcbWbRoHP3g8HyKtM=;
+	b=aj0Xad4Bl6OL+UYi77Ihuydr9BRB17zDic86nbjunxuQoKruUCe/1wht8BL9rdAtQJw+
+	 NlZYVFIJVElMWlmSign8yFMMGoPRp90qL+Lvbb99+u7eyZFEAPZiWY7aUSDKnMR63NIO6
+	 KCYNP/PHQTDBLjwlmHfqPTsZpLTGbOn5k8LmMbXeqqgQ5S6iPUvGUtiITvFgR+QddXCuo
+	 mZKvpj8jrhKt1GyJTVBsEl5hI8+V6D//wJ4chKmK+2tleuMDrAfkvseR+w/rQAAoS3iNb
+	 rHkvxQoK7Ydd6rpnOH2x/CRqIiPswyK7dACT9FAaN0G2SBi211Tj3woPOxMqDnjqBxQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HiUx6s2w;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LmM2Fw9g;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49F8606A31C;
-	Tue, 17 Nov 2026 19:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAC7606A31C;
+	Tue, 17 Nov 2026 19:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HiUx6s2w
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F7E1F000C6;
-	Tue, 17 Nov 2026 19:40:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LmM2Fw9g
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2031F000C4;
+	Tue, 17 Nov 2026 19:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794944429;
-	bh=AOjEhOx7nc0rqRDX2rEwBPS9rvUhLYdv9/828tsqc4A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HiUx6s2wFOwyt9W0rl5rOyylKedCpT4P2lG8rfsAAe6eq2hPXaOtiAMRdxjzgKOr2
-	 ittIsh9sgbgiL4uUdmFCgaa7/reTxEqx/tG8IkJj6DOyvX0fKDxQByOPxFpNIg61FG
-	 xn4cHzR62VLHfKcd2oMIvcb+dei8PaboG/eAZ3vsnDUwShkVnr3vRCyXJDdpmgGsvJ
-	 1/zujI1EXIw0xNg8zDJFxGikrHx0q3S/cXK1w1Bh1GQopqqbPJz3lrGljZd4gFnU/j
-	 iFpTPds4Mi/Nux3BRE9Nz8X8+3OCAc3T1LFqz8uepCBx+yNF/TQ533Ol7Nvhps4uX1
-	 SZSpCeRf74sxQ==
-Received: from ams-compute-01.internal (ams-compute-01.internal [10.64.2.61])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 14028198003A;
-	Tue, 17 Nov 2026 14:40:26 -0500 (EST)
-Received: from ams-frontend-01 ([10.64.2.36])
-  by ams-compute-01.internal (MEProxy); Tue, 17 Nov 2026 14:40:26 -0500
-X-ME-Sender: <xms:qa38ak2l1VHLI0YjrkJ7yIDHaDvb6Umqk-AwnQ6qP9O5XwK_ITDkUA>
-    <xme:qa38aqGgUmX-I6UAQqiyENe6ODIrETKYqGMkaTBLRlaj9JxFLb6Mcdc6oC5IYf6B7
-    yICAo17ni_HBEu7PSwbBi7NI842BSJM604T9beT-oXt3CGA4BjVqLs>
-X-ME-Received: <xmr:qa38ajhds-GI7AczEaBnMFKXeNbpcm0Cha7a2R-6GxMvhQUVPTiAKJ1R2YDaRsvxvg>
-X-ME-Proxy-Cause: dmFkZTFsrfDeQ92qWVnVmv/A03PGHmgqhc+/VThcWI16PXDaqJEpPWMO/+iSRVlTIUIgeQ
-    4UN4PEubZ/GbB0VxltHySxCGYpIwIJZh7tBpboDS27htJYCHkFY3YAsMwqF/FLnrwW9vre
-    N0gz4IpdKEL2lQvFBb5QWAXkT6xNCFM12Ly1YGRP3yX/LgNVblCS3bWyoyj+M3+6UUnf+q
-    owuSwdxA34D1vsEHC6QWUkQfRBnjeDd7Rau67zBDB6mDV+TmbKaS1FOYh4RkGQaodea0uq
-    m5oYNwq/9EX4gLzM8slcZoAqBg3WwBmWaldbXOJlysT7VKdK026GF1279mOECcDhhLsRha
-    YVnYOwEeUM4byvgXMx867f+fgVn1vHF0lM7iaHyBf+CmUisddvhPVr5NvKih1gUR8JaTWx
-    2o0wur1GMX3A7a1kTypFPmA5RXjGA2tf9r7abOpaD0ch6ZBDVYoWUdrvAWetftF8U6MzPs
-    y/SvdVu5WXjqWho9f5xCNj44szlPlaM3AiCXJKsDpYhTg/SXROIaIA8F7hWAw5iBY0z6+9
-    G0zhmyax4l9LBTbWN682qWUDdrA8FgjKY/MatvOQxZ+GgKFSfgV5SrSnmIcjlED/nMHHxB
-    x6bMlQOmlbHK8XkZzXOYe2Nw/AG6eZartAdwZQs6o2TZJiaazinPTjm6++LQ
-X-ME-Proxy: <xmx:qq38arcSCL55LZZUuCVmjZCcHKgtDJQ7muAlpws1s6fRphm2AFPbaw>
-    <xmx:qq38ahyI5WwkKXNtf6Ny5yg-O3AWLZSco8OeSZBwjMorO9NkRmJVZQ>
-    <xmx:qq38atZKdrBWMl7p-2XnFjz-9MT0E75JkgX9cDxUkcNCef8DVfXLPQ>
-    <xmx:qq38anJtLCPY-GQJJ6JPkOTEggK8NfIW0IP4a673UU6eBt1I5CFwIg>
-    <xmx:qq38as2gszjwSBCUBDRIqunl6sqkTQZ8KZZC_WlxbF6t_Ficb2agyuJs>
-Feedback-ID: i78584a88:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Nov 2026 14:40:21 -0500 (EST)
-Message-ID: <0d26baaa-92ae-43ff-9a76-a81cad624dcf@kernel.org>
-Date: Tue, 17 Nov 2026 20:40:20 +0100
+	s=k20260515; t=1794944778;
+	bh=ExUxqEZt6CeU083ngWOHRCSyuGGcbWbRoHP3g8HyKtM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=LmM2Fw9gfbDi+AVGhDZOn7ni51zlC4OkduYjfN3OBYRvdmfWDKkYPZ/YqivYYyoVB
+	 CPf2z2Kj/kRf6q3kLA8XGFBtr9+0qUQ7N6QBOKcni0jUtLOTVjlnax82oAHDwjWu4Y
+	 Wb/G/WW/jrS4grELIH7dPPX8KpI4RSnenwJ2u0vE1UMJbXLlfbrq3lsTTF8/u/aQaP
+	 py54S1IeA7dJ9DDvZVOHfdEFotBHUh3P15g7p+6QfaC8hZOljl4qxGzF3SnwRoxEAw
+	 a3WHCXcVXjBDOwKAyeOJdMeQpeaFQxF+dvYI0bItFrVlWpjOm3fNdphqpArg4MrbaF
+	 sFIqZRxnLbXMw==
+From: Danilo Krummrich <dakr@kernel.org>
+To: Simon Song <xinmengs@nvidia.com>
+Cc: dakr@kernel.org,
+	acourbot@nvidia.com,
+	kvm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	nova-gpu@lists.linux.dev,
+	linux-pci@vger.kernel.org,
+	alex@shazbot.org,
+	jgg@nvidia.com,
+	yishaih@nvidia.com,
+	skolothumtho@nvidia.com,
+	kevin.tian@intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	markus.probst@posteo.de,
+	jhubbard@nvidia.com,
+	apopple@nvidia.com,
+	joelagnelf@nvidia.com,
+	ecourtney@nvidia.com,
+	cjia@nvidia.com,
+	smitra@nvidia.com,
+	kjaju@nvidia.com,
+	alkumar@nvidia.com,
+	ankita@nvidia.com,
+	aniketa@nvidia.com,
+	kwankhede@nvidia.com,
+	targupta@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	zhiwang@kernel.org,
+	zhiw@nvidia.com,
+	boqun@kernel.org,
+	daniel.almeida@collabora.com,
+	tamird@kernel.org,
+	work@onurozkan.dev,
+	jgg@ziepe.ca,
+	bhelgaas@google.com,
+	kwilczynski@kernel.org,
+	dri-devel@lists.freedesktop.org,
+	peter@colberg.org
+Subject: Re: (subset) [PATCH v6 00/11] Add Rust PCI SR-IOV support
+Date: Tue, 17 Nov 2026 20:46:06 +0100
+Message-ID: <20261117194606.1892840-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.56.1
+In-Reply-To: <20261111223337.508989-1-xinmengs@nvidia.com>
+References: <20261111223337.508989-1-xinmengs@nvidia.com>
+X-Patch-Reply: applied
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -79,65 +105,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] rust: drm/gpuvm: add GpuVa::data_ref accessor
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
- Deborah Brouwer <deborah.brouwer@collabora.com>,
- Sami Tolvanen <samitolvanen@google.com>,
- Matthew Brost <matthew.brost@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, iommu@lists.linux.dev
-References: <20261117-tyr-remap-2mb-v1-0-2a8efd4c8180@google.com>
- <20261117-tyr-remap-2mb-v1-1-2a8efd4c8180@google.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20261117-tyr-remap-2mb-v1-1-2a8efd4c8180@google.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/17/26 8:32 PM, Alice Ryhl wrote:
-> From: Sami Tolvanen <samitolvanen@google.com>
-> 
-> Tyr's VM_BIND remap path rebuilds page-table mappings for the fragments
-> that survive a split, and those fragments must keep the protection flags
-> of the original mapping. Add GpuVa::data_ref() so the remap step can
-> read the VaData of an existing mapping.
-> 
-> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-> [aliceryhl: split into separate gpuvm and iommu commits]
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Wed, 11 Nov 2026 14:33:25 -0800, Simon Song wrote:
+> [PATCH v6 00/11] Add Rust PCI SR-IOV support
 
-One question below, otherwise:
+Applied, thanks!
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
+  Branch: driver-core-testing
+  Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git
 
-> ---
->  rust/kernel/drm/gpuvm/va.rs | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/rust/kernel/drm/gpuvm/va.rs b/rust/kernel/drm/gpuvm/va.rs
-> index 46493f0ec5a6..f81302faba61 100644
-> --- a/rust/kernel/drm/gpuvm/va.rs
-> +++ b/rust/kernel/drm/gpuvm/va.rs
-> @@ -87,6 +87,12 @@ pub fn obj(&self) -> &T::Object {
->          unsafe { <T::Object as IntoGEMObject>::from_raw((*self.as_raw()).gem.obj) }
->      }
->  
-> +    /// Access the driver-private [`VaData`](DriverGpuVm::VaData) associated with this mapping.
-> +    #[inline]
-> +    pub fn data_ref(&self) -> &T::VaData {
-> +        &self.data
-> +    }
-> +
-Why data_ref() instead of just data() or a Deref impl?
+[5/11] rust: device: clarify the drvdata_borrow() safety requirement
+      commit: d66d8bbb0316
+
+The patch will appear in the next linux-next integration (typically within 24
+hours on weekdays).
+
+The patch is in the driver-core-testing branch and will be promoted to
+driver-core-next after validation.
