@@ -1,102 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.11
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794909111;
-	b=5nYXry+VXz/82dn8uPvL9W1Ika5xeELbasitEzS+qLxY6kN2A/rvOiwUwaWBIV2QsWjx
-	 yCUwQvKbesA8TsBCLzZxJxAuklmEYhvCVdk9JwMDJlhpcfHY29TokpXh0YqdfhEwJI2/T
-	 rQAy4Y6AcEdITEOZG17EUZ8nJjNQGmkkoTh9dnXoZpmNk4pU9ADfeRFfZFZkCnzAxiae4
-	 D+pWA6iV+/hJNBAAWWiA6+at+T09k5803+2NlXtnf9Ya+EaquvCGx+QENFPowb1D1YrKH
-	 XPyqfOKm1AoNeB1nDf9kM1XoJyfrB8lTHStyJFtg3qU+rLQFZbhY67kRHj2suJKnSLQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794909111;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=YatWmxCzLmAK7/g0QUUCrNjCZH5YtwoxdmfOVdakz00=;
-	b=S7tA2dPZUZ52usoOsstb0v6dkpqUCDLJnRSWbMIZVq5+abzZluyRkTfhe1sXw8W6wMZ8
-	 P6I9ZzZ7d9iJCBSi9QUus0gyBU6Z2O/6TuNupfk8gy+Tc7/nSRQSxMBF4T8VUEV2is1YN
-	 rd2HHMUX9Xt3V/mUvGx1FWqdFKPkiIxRzTFBHgjAnOlst9yJ00lFYlQ20E0ad12NXKYk5
-	 L94GSKCi3cHndarLy95KYjFkdtGIVzCrvmIv2ofeuZhpHQQ3aq15WiuFl3u/wvuF8YvNu
-	 rYD+YunvGRx3IIWdCmwZ19mWGknalLZiTKS0aH4ajkf+2TccVhY3lyip7OcdZfMO4Hw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b="VIzqBc/k";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.11
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010011.outbound.protection.outlook.com [52.101.201.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.170
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794911789;
+	b=fEop4lJpQ0t/k6CnNm5ZGfkLq3D5Fy0vLAhQNNOol1bPfah7k+ZFBSf3qDkVX75cFReX
+	 S/FPa8eCKU0mf3hdr2CL1UT86FsxFdiy6J6s3UXffK61PB6JkuM1zc/r4pKczaAdHTWLk
+	 HxB1OBIsddMznI6LpnJ+nGuRYDvnIjPImDqo+Wjw5U+6WKw/qizQ99FV+mrmgbbsqgKmR
+	 i8ITU0NDM0vtCnfW88l4sThmwbYoKr2o11dU6O2vBLuA0Wuad20OSgaCluAYv3D6cQTqm
+	 JtY4BWyJQ7p4S95BxPwJ/Hxy+M7DUH9quutaH56TA71KcBV3WpPZpqCdpMSL5FWK5ew==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794911789;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
+	bh=dVsMMxnk5C2hLXw6Cp+8gHfJckxJ7C3h8A+Jqq/uxAU=;
+	b=jGNnEjVuQBGx9pGH2lbpvE1wDJXjj2jovRqZUITS/T9zMS6mJ/E/CInB2/uHtOGEpjcG
+	 JrTR4tRMec6B/qHbmRxC+cQiTNyKnrjD1w9YI8BHDBA2bE2O76v1BER9N2VFqs+FW/AI2
+	 BUWRovmzat/JNgXAdt0WbyK36vTBoJt0MkuO6uatQ5wMqi0ReoGXcUTQ4bDTl/+Bokq05
+	 bjROXUkafJ78h/8nE2Hz4VHk7sV6k9svN5UhcPY8lgmRv4+hTF40GWDdzPJ6YLmDA4bVB
+	 6qSD8FjsbO9eNIwd/cEteja60hdkH5PND9IhjUl3oKb1hvT/OO5KoNnDZ8qTQ1gd5IA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Z1SpCXml;
+	arc=none smtp.remote-ip=209.85.214.170
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA99606A329;
-	Tue, 17 Nov 2026 09:51:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ABA99606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E86606A32A
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 10:36:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06E86606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=VIzqBc/k
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KOWGi+SotPsVpJqssA+TG1RsRqYS6zFwX51Re+LU64p+EUMSGYJU/n31rHPdy2dJ17gIWpcezZ12cJG9h1L2ERdGqa5l3aLIxR/GegPDj/55zxW91DhbzZfHSBevs6oHp4HoVNQlvwze1Nhx4WTlZ3EEtkYwoA9s0PtfuL8lqMqf7wmCJFIveVPY5SAdNSqQURB+gs2SF905yuSgqzi8A8MW3cvSQbQHExILi50G3v0yruMIskK6kYFAK/J1qdgUrPamjfqTzJh6TeZdEBnf6mid9BEkamOmJ8lTKgn22ud73kwne0vrWO3rBkTm6dARp67ILOvbLPpURjkcLAIM7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YatWmxCzLmAK7/g0QUUCrNjCZH5YtwoxdmfOVdakz00=;
- b=MJGZwwSKgr9Q2+wDeFIG2qAXBQmFqTc1y4vEkDWGSRS8ECeNurtzF4iHHfwl/jHv/tIw2alI+9bu1BVzg/+NijAU11CbmSe6TeAOg/iRNJ0Zg/og0YbKS6rHTEoSsdD8Ee56IptY4cA0BXhDaozNGl8fUNuLD9teOgB4p5ZEmRsb60fCZR+McghX22/0DpYFbF8DrWaeMKGZ3XUYnP6MnvpcGez3otq4sbaKSmZyJi67i/E4RUdVSqMF3OfIbpkvzz9HPg8NoJPVlJBqy34nNt0FMG7ZtXxHtSmOeT+pCfCt3+1xWvhu+VXBhtSJzIl5cR4OupSJZW0SirzjNodVjg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YatWmxCzLmAK7/g0QUUCrNjCZH5YtwoxdmfOVdakz00=;
- b=VIzqBc/kIYdqdf4/MasnxgE2kIbfNjjWiK/x59AcJxUIF7KQd+cegfU4VN2RXLz0q7vuREdfl1ZrWtRbgRbsLT8hEGKQvUTS5VMz70azBD5WYsFgd1tRpqYQcCRe04GwM0lm2+qJImgWvONnGzNG4q2G3/Hr+LmcZPwz5ghPdfM=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by MW4PR12MB7119.namprd12.prod.outlook.com (2603:10b6:303:220::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.13; Tue, 17 Nov
- 2026 09:51:45 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%3]) with mapi id 15.21.0615.013; Tue, 17 Nov 2026
- 09:51:45 +0000
-Message-ID: <e2ec8a39-56c3-4274-91ce-60c273904877@amd.com>
-Date: Tue, 17 Nov 2026 10:51:38 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: DamFence: Remove warning about unsignaled drop
-To: phasta@kernel.org, Sumit Semwal <sumit.semwal@linaro.org>,
- Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261112101015.528127-2-phasta@kernel.org>
- <5d466f7c-2e70-4011-be04-9ffdf877b915@amd.com>
- <49298d3a328c1695ea27993f714c20b8a1c05f32.camel@mailbox.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <49298d3a328c1695ea27993f714c20b8a1c05f32.camel@mailbox.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BN9PR03CA0691.namprd03.prod.outlook.com
- (2603:10b6:408:ef::6) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Z1SpCXml
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2efe591a1f6so1236375ad.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 02:36:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794911788; x=1795516588; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=dVsMMxnk5C2hLXw6Cp+8gHfJckxJ7C3h8A+Jqq/uxAU=;
+        b=Z1SpCXmlYQlLPR8Osm1Ibu44+bpd2wZezOrB/tbGkBrxWRb37aEq9G3cUx/KlkNJce
+         7n0kyoHmAKDG1RHOvOaEuyrDGetF8IARZQ7GIqH+YkqnSxpdtLAxJjjA9sX3f+NXuGD0
+         SRrWstDUmMqUZuVziQwFYMqfI8CzMmZrftlUESydVlvrW70wnq/VlDml1jcmVOXf01bO
+         gSA+PicsO5Uf8gVm3KAswe9l178IwdxwoSXsJ1ByQz9gUArsQWEy3K2pmlXhvVqYJo3T
+         vyrgoDNZD7xOQTK6kiVThBlB2/582umMpiWjOct2AM7huOmIyWHWxA4YnHDwQuLFE/mP
+         NjaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794911788; x=1795516588;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=dVsMMxnk5C2hLXw6Cp+8gHfJckxJ7C3h8A+Jqq/uxAU=;
+        b=a5fihe1+FBT4m12FP3HKa7AWxRebbOjiR9hiLWF/ATgFgYxa1V1g7DxBZ15ep4FQym
+         XQXldQOY5DXBZUy4qD50b8fihb518BzHyu4Bj0oZMBP57Uxme/0jVkgMzCRmVBXuXZIT
+         magz9vC7ylKygFAyLYEo1b+ontSRZX53mcT2jiH2Ybki+iRmZxmi+iW98ypf1uqZjXWw
+         vNPQ4GdbA/P+dW8ze4lwSlz6duoHp0ue+xJwnVZ9I1wcw9yJ2ETFPgN2PiaYuvuf/KfV
+         He2L73NoAY5MmBF8hr6t2O7s0sSAADN+wwF0geR+NM5xD1w0P0ZXcKIKysA+pdpJv7Bz
+         MEvw==
+X-Forwarded-Encrypted: i=1; AL+hErERpHS8pT8m/4fZVGR3Ye3DpK6/EKylPskoaqdwjl4Nw18MqFbCWFMmEAIdu7L0FmM8ZwDpjJSnD1DuhUfoAw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/YSbYcRSG32P4p/pwEtbTxfTYfiRX6+/3xW6PZAm9FTKolMKQG
+	DNunSIjDX0s1xqyK84pz5xATb/eEtMM774uxHRKmGNTXHMtbVgWlJTYJ
+X-Gm-Gg: AZFdTZeafeEvQqIrEckAcnMbDIPzNcYb6dPUnA7zvzxqoqokEzNMUG+vYHSuKEz4LCq
+	pPjXv6kmMCw9EquCjVq3t0Se+zUOv8Ec/clcg54mCWIM7PYwDwvxNKPT59Ap8Rj5cnguG/ccUV+
+	BjmIILzrh0tmt7Ri8jm4LYmph3sdxi7pBW16ThegkMnwh+zZUunCXAQtT3h3ZFb3YanHKyhAt6Z
+	lxwJNVClEiKVaunx7wfWVQyABpDt+J3yqMmQclaNKxFnO83V/hr/hnAN7A1m6JmRNCMZtWef1sJ
+	bQly+kwnuk8TyMzic96v9XHGXAFn9dFxYPUPiAOzSCCY6VOjiyWY4rKUImaoqlMd6uFoPaEhL/K
+	ffuWQN4Rqy3faZW4dc5v+m2ao+PwTtxLdhY1AER3waXZVuCEBZnzjiX/yFWsaSRBgIuDLr4zPKE
+	XQCPtq8sOfhhMT6ADcZc3yTipcg/Fzbuk+FhCRHxzizcfEYpRquZNVp9b3KUQXSQL6Lg6eqOPhZ
+	IAjcARaVFvVyl6WRvwMJNJsBQX94HTtU3aZE489faoXfxY6Gp/x+AcuK5loHpjRh+VA09djPsLZ
+	HH+J6qG3xuauKy26wwAtchdO8BDX/Xrnv3MQdpdvSkZqZhRGRAuU+ye5LDhzv/yicBu/1pT1KDD
+	78Y9Cy8Ylkm37FgVkKQWnWj+8+Yxqji8IRLG61D5YaBvUInOe8SqNRUEeFyq9t4JoT436vt8lQa
+	nLeHg=
+X-Received: by 2002:a17:903:1905:b0:2ed:2176:2452 with SMTP id d9443c01a7336-2ee0da7c0f7mr125573235ad.18.1794911788247;
+        Tue, 17 Nov 2026 02:36:28 -0800 (PST)
+Received: from [169.254.3.1] ([143.248.188.96])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2efd76d8f08sm13094805ad.4.2026.11.17.02.36.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 02:36:27 -0800 (PST)
+From: SeungJong Ha <engineer.jjhama@gmail.com>
+Subject: [PATCH net-next v3 0/3] rust: net: phy: suspend may run without
+ phy_device->lock
+Date: Tue, 17 Nov 2026 19:36:18 +0900
+Message-Id: <20261117-exp-phy-rs-maybelocked-v3-0-4e183a7366a7@gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -106,131 +94,92 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|MW4PR12MB7119:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2b21791f-a8bb-4cad-0980-08df449063dc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|7416014|376014|1800799024|921020|10067099003|56012099006|4143699003|11063799006|261026121527099003|261026140227099003|261028144727099003|261021135927099003|261021123027099003|261021121427099003|261022105027099003|261102123227099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	QgeW299KMZr0/nUiX/RQm9EGrReckxliuvC96K6/ndCf48iGSW154gAcZTrtPF003OXWqx2K/bEvJkctVccUhPztEaKRZWB7+sMUFBrWzfYGmHjkYG81G9Cvbh2xtlF5DS1hgBsApYRZiY0xJyFVrFv6WsrkolHr33DGejDzr0kogVUR0FkFCHmAmqe1MvhHsk51a1TMlk2+DfHm14mUgxRMN3xdxETb433/RftaTVjNKDKmM+X+eFLD4oiyexFTilx+GdZqdE+cc6Q+iFie40hyI5W/lVSEfRVDcNe+Tlh50zPN06F81VIAKhURJgXUpE1rzJ7bjqd7u+HaIzsJuf0xV7CSPln3WzNU8UwRCMAcc2oH5Z4qfAEt1E4og8TxqD4SHieEPxxpIiQLjiwJ9HqzL0YP4UtpUNN0oo9ynpCGza20O+Mw6qJ4AKJx7SSXPKJDXH6BuyvKhBcDzooUTU5Tm8m3jWz6DcIMhIoAufvt76ABeQ8QaKQE9iv/4XVyoFVYsg7HdzDU9UOwza+53RoVm6LrI0Um8OvHGBjCdoWCKdHABXcQLt7/C8gsA+RgApVZIq1Bj1J/ulJ5SicFxIQA9xajKMa1Fi4pZ1xftwgNUSffomvHBEF/nKYcENnaYN7Mg+FiUUBBE5HlLBMABUmNYQdWGHguasslzUN1MsZO3JnoBv6piz6oj+G4cwfrN62/vYVLQOIxqfYt4Xxy/w==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(1800799024)(921020)(10067099003)(56012099006)(4143699003)(11063799006)(261026121527099003)(261026140227099003)(261028144727099003)(261021135927099003)(261021123027099003)(261021121427099003)(261022105027099003)(261102123227099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?T3ppaDNXRWNzY2N0MXNDWUZPMTZxUjFTWk1vV3UvYmlzNFl6T0wvbjFHRW9h?=
- =?utf-8?B?SXF2QkdJV29PU0FkcFA5cmlqb3JOdkhzWHkwUEUyc21EcUdzbytaMUsyMnlq?=
- =?utf-8?B?Q1pWbmZjRlpWQ0V2UWozekhCOGNSRGtUMjVRcjlmTGdCOGtONnJleVNOZVhE?=
- =?utf-8?B?ZGNaYVgwdGNXNzBieEdBOVQ1VDhnUnlhZGVzQnBSWTlxNC8yb3REMUxyVXpz?=
- =?utf-8?B?bzhscC9LekY4N0RQbFR5RENCMVpZZnovS3NOVmFDRHkxYStpcEJVOHZ1eHJD?=
- =?utf-8?B?cm5MbTBaaVR6RlYvSHdoNnFGTEVvTkY0eTlQc3h3WHI5eTZvNEp0R0VlWmZM?=
- =?utf-8?B?N1pXUzViVEtqbkJ2TEcwTUhnMkxjTllybUdMdUdqOEY0TGluMzgrSUVrTktN?=
- =?utf-8?B?VURJc2dCNDVMSDlURlZES3psTmZEUit0MlloWkFwYUpyQ0ppODY2eWtuTldt?=
- =?utf-8?B?UnY5UE9nb2MvZ2JUTE1rQzVQVGo0SUdmNkZkQVlpck9vcTRTWjNBWVo1UzZi?=
- =?utf-8?B?QnJmOTY1NWtZUi9mZnJ2YnRUbGFQb1lsMkJJbHo3MHdGZzNaV3hJOUlhSWlG?=
- =?utf-8?B?Vm5HcXJnWFpRa2lIMXVtUE5Ibmh6Mnc3Tkp0SjRtNStnSDhtdjZwVzFDbTIx?=
- =?utf-8?B?YnV6b1V1RlQvZ2VXQStrdWV6alBHNWFkcGtxeEY0SjBrV1Erc084d1l2MGJ4?=
- =?utf-8?B?ZFlqRWFuMGJtUktGaHBqQ3kzY0NnWWRaelNHaTVVYjYwcjBWVUhXVkpxcDBi?=
- =?utf-8?B?YmJ1SlFwL0dHcGpWeHlOTWJ1dzlSTHYvdFQ0d1pEUVNmbkJuNUplUmdaNVVO?=
- =?utf-8?B?ejFBSE1yb1ZOT3VSYzFVMlhnTHZOVHA4SEJnQTM3WkcwNGJTRkRSWXNoQU5L?=
- =?utf-8?B?SHdSNlBpYWdDWU5uUnM1R2ZkK0ZTL1VzdUNMTndnMXNSNk1HUStBd29kR1hN?=
- =?utf-8?B?N1gzbi92UXJ3T2h5S3phSEp0bnpENVRYQ3I4ZVVjbm01bUM0ZWw4VU96WS9C?=
- =?utf-8?B?QklrNmJJV21rOUlUMXRxQmh0TW51UnRrdTU1NHRnQ2JaSWVlSE1xUEwxSkFT?=
- =?utf-8?B?TmJQT00remNiY3MxUThDVnpmRWVrSlYxQjY2NkpIakcyZjcrM1lLY0VFZE1E?=
- =?utf-8?B?KzFuMnNxYUQvSXBOS2NMc1dDR3NXbzVJYkQvMlg3bGw0bVcxS3FGRlZIazBC?=
- =?utf-8?B?NXVITEkreVRzd2lrQXU3aVg2VTJJWldFQmVZdnpHYVBRSkZhMWM3WjFSbHIw?=
- =?utf-8?B?NW0wb2htVTdxZTdMbjNSRUlNRUIrQnNzR1B1aHdPNjBQcm9kdUtnNXlNQS9X?=
- =?utf-8?B?MlB0cFFDeWpPQXdUSFFwNm9YeGJ1WlBwKzd0bXh3S1NteGR1RnZHOVlzM1Qx?=
- =?utf-8?B?MzZOWVovYTAzOHU5V1NEV09rRVZXamlLY1JiSlEzQkhjUURmUGZKVFNCWVo0?=
- =?utf-8?B?NUExV211K3d1OTNzK05nR0VwOW93T3FzVHVicWV6RUcwdEtVVXdQdW1yeEJY?=
- =?utf-8?B?cjNWVVowS3ZoM3dQRHEvWVBmbDZQZmxpMlJNNWZidUU5TU81Z3ZhaysrcGNC?=
- =?utf-8?B?S1JFZVR5WVBlU3hvQXNHc000WEdqU0RxQ0hhMVdhZnQ5QXY4cXBXaWp6OFVE?=
- =?utf-8?B?bGdKTGFLSjNOcHNEZnQvZDV6cVd5WkdqQk5TbC9zblVzSDlwbldVYjEwdml5?=
- =?utf-8?B?MDZzdVRaUC91RU1rUGZwZ1NMWGV3clNXSWkya3VKRG5HdXltdnRaWGtTblFz?=
- =?utf-8?B?V204Z2Q4ZVIxc3hZRng5Z0kzLzdRaTd6QVFWb25MSjlpQlJ5OU9DcEhaWTV6?=
- =?utf-8?B?Nmt0SUJpeVZaNmRrWGRUODlKbEgrempIbFNZbjlmMWNwWFlsQ3lGNDBSaGJm?=
- =?utf-8?B?ZHBPcm1OUjg5QnZPUUFGZU9qYnFmOGpHWlN4QjJKaXZ4eXNnaXJlSXRvQ1l2?=
- =?utf-8?B?ZkVPZ3FSTWVob0FrcFBtQ1huYVJXTW9ybXRMVzVxR1ZscmVxZjgxQzRzM1M4?=
- =?utf-8?B?ZGF1ZjZmUE93K3hOVksxZEYrM3RFd2FNV0RHeXIyM09jTXdiY202Wi9IcWpL?=
- =?utf-8?B?QUN1TnRTWFZGaG5vc09EbzY2S3RodXJpTDkyM2JlMmlXekJZeUczR0hsSm54?=
- =?utf-8?B?WURCZHJkekl5TkRIK1NNMDd4UlpGTzRZbVZEK1VwVXVTZ0F1TEFvREM5SVNl?=
- =?utf-8?B?RXFGS2VyTlUzR0VNNTF4NmZ2SGlJc3I4OFRFMFkrOFd2cnZTaThYb3lWWWFZ?=
- =?utf-8?B?dnJqVGNvQ2RWR0I4ekZTOHpicDA3a2pOSmRCeG83TVJOdkc4VklPV0NPK0Z1?=
- =?utf-8?Q?2MtPbhZH59QLWaJ5ZF?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2b21791f-a8bb-4cad-0980-08df449063dc
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 09:51:45.3152
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dEht/ckkP8ppmzv3t7+s2NWAe4mb7Jan7+Byb4DUEEnIXJAwQdKPF/uFR0JuO+0y
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7119
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACIu/GoC/4XOyw6CMBAF0F8hXTumD0qsK//DuOhjgCqvtEggh
+ H8XcMPGuLyZuWdmJhGDx0iuyUwCDj76tlmDOCXElropELxbM+GUZ4wxCjh20JUThAi1ngxWrX2
+ hA+esVEoJzI0ma7kLmPtxh++kwR4aHHvy+E7i2zzR9pu77ZY+9m2Y9h8Gtjf+nRsYUBCUC2sVl
+ RLVrai1r862rfcjAz8y6U+GrwxTOnUukxeTmSOzLMsHd0UN5R8BAAA=
+X-Change-ID: 20261110-exp-phy-rs-maybelocked-ddc59993efba
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Trevor Gross <tmgross@umich.edu>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, SeungJong Ha <engineer.jjhama@gmail.com>
+X-Mailer: b4 0.15.2
 
-On 11/17/26 09:24, Philipp Stanner wrote:
-> On Thu, 2026-11-12 at 11:29 +0100, Christian König wrote:
->> On 11/12/26 11:10, Philipp Stanner wrote:
->>> DriverFence::drop() contains a pr_warn!() for when the fence drops
->>> unsignaled. This warning gets into the way of canonical teardown in
->>> Rust: when you drop a lock, it unlocks itself, when you drop a KBox, it
->>> frees itself etc. Congruently, users should be able to tear down fences
->>> they don't care about anymore with ECANCELED, which is already the
->>> default error code.
->>
->> Well a dma_fence should never automatically signal when the last
->> reference drops.
->>
->> Leaving it unsignaled is the most defensive path we can go. That can
->> lead to deadlocks but it can at least not lead to memory corruption.
-> 
-> True, you choose between the Unholy Trinity of DRM: deadlocks, UAF and
-> memory corruption :]
-> 
-> In this particular case, however, Rust does not allow for preventing
-> the user from signaling "forgotten" fences anyways, no matter how we
-> write the fence core:
-> 
-> struct DriverFoo {
-> 	f: DriverFence<()>,
-> }
-> 
-> impl Drop for Driver Foo {
-> 	pub fn drop(&mut self) {
-> 		// Signals fence implicitly & automatically.
-> 		self.f.signal(ECANCELED);
-> 	}
-> }
+The Rust PHY abstraction tells every driver callback that PHYLIB holds
+`phy_device->lock`, but phy_suspend() calls `suspend` without it, also
+right after the state machine drops the lock. This was found while
+auditing the SAFETY comments of Rust abstractions against their C
+callers, and confirmed with Clang's context analysis [1].
 
-Yeah, exactly that is still a bad idea :) See the HW eventually doesn't necessarily stop doing DMA if you unload the driver.
+Patch 1 drops `read_mmd`, `write_mmd` and `match_phy_device`, which make
+the same claim but are called under other conditions, and have no users.
+Patch 2 makes `Device` generic over a lock context and documents when
+the `Locked` callbacks run without the lock, and patch 3 gives `suspend`
+the `MaybeLocked` one.
 
-I even know about one case where a driver fully intentionally leaks memory on unload because the devs couldn't figure out which FW keeps writing into a buffer.
+No in-tree driver is affected, so if this is not worth doing before
+there is a real user, I am happy to drop it.
 
-This was suggested as problem solving approach for AMDGPU as well, but we have been able to avoid it by clearing the DMA master flag in the PCI config dword.
+The audit, the patches and their changelogs were done with an AI coding
+assistant (Claude Code, Claude Opus 5.5) and reviewed line by line by
+me. Compile-tested only.
 
+[1] https://docs.kernel.org/dev-tools/context-analysis.html
 
-The fundamental problem here is that a software object running out of scope is not an indicator that the HW stops doing something.
+---
+Changes in v3:
+- Give `suspend` the `MaybeLocked` context, and make `genphy_suspend()`
+  available in both contexts (netdev AI review)
+- Move `soft_reset` and `genphy_soft_reset()` back to `Locked`, since
+  `genphy_soft_reset()` in `MaybeLocked` could race with lock holders
+  in `suspend`, and document phy_mii_ioctl() as an existing PHYLIB race
+  instead (netdev AI review)
+- Drop `match_phy_device` as well (netdev AI review)
+- Fix the `get_features`, `soft_reset`, `read_status` and `resume`
+  SAFETY comments, and name the context at each `from_raw()` call
+- List the exceptions in the `Locked` documentation, including MAC
+  drivers that call phy_init_hw() or phy_read_status() directly
+- Link to v2: https://lore.kernel.org/r/20261115-exp-phy-rs-maybelocked-v2-0-8fa7897a0352@gmail.com
 
-So just signaling all fences with ECANCELED is not enough. When the driver runs out of scope without all fences being signaling we seriously need at least some kind of warning in the system log, potentially even better call BUG() or maybe even panic().
+Changes in v2:
+- Keep `&mut self` on the moved methods, so that `match_phy_device` does
+  not gain register access (netdev AI review)
+- Give only `soft_reset` the `MaybeLocked` context
+- Drop `read_mmd` and `write_mmd` instead of leaving them `Locked`
+- Document how PHYLIB calls the `Locked` callbacks, and fix the
+  `from_raw()`, `phy_id()` and `genphy_soft_reset()` SAFETY comments
+- Link to v1: https://lore.kernel.org/r/20261110-exp-phy-rs-maybelocked-v1-0-3023cc9055e9@gmail.com
 
-Cheers,
-Christian.
+---
+SeungJong Ha (3):
+      rust: net: phy: drop unused read_mmd, write_mmd and match_phy_device
+      rust: net: phy: make Device generic over a lock context
+      rust: net: phy: pass a MaybeLocked device to suspend
 
-> 
-> 
-> So we decided to die this death because this way we get rid of the two
-> of the three problems that *can* be solved in the API.
-> 
-> 
-> But it will please you to hear that all users of drm::JobQueue do not
-> have access to fences directly anyways, they can only signal them
-> through JobQueue. Thus, they can also not forget them (signaled or
-> unsignaled), because they would have to forget / leak the entire
-> JobQueue as a whole, so effectively forgetting also their GPU ring. If
-> that would happen, the driver would be broken beyond repair anyways.
-> 
-> Regards
-> P.
+ drivers/net/phy/ax88796b_rust.rs |   4 +-
+ rust/kernel/net/phy.rs           | 299 +++++++++++++++++----------------------
+ rust/kernel/net/phy/reg.rs       |  17 ++-
+ 3 files changed, 139 insertions(+), 181 deletions(-)
+---
+base-commit: 7ccc5e05043b1bb84326b19a2b05938d8f7a2ae6
+change-id: 20261110-exp-phy-rs-maybelocked-ddc59993efba
+
+Best regards,
+--  
+SeungJong Ha <engineer.jjhama@gmail.com>
 
