@@ -1,80 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=80.241.56.151
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794903870;
-	b=DbDUdRYISvZWr8aJkPe/MUV97JDrcDzM9+X6dAL2r1LWh3v+tw7HWgafFrIDCITrqWw1
-	 J7mUPadB39CqFXSpTRM9IWxeEtMiCkuR3PKMd7CDc08MskbOEYDdLtFpdijbE+sZSMZef
-	 M5ckwcml/NqsW2rQFwclU/vCsTGLqyRLzljIf874GtAr8o5k3ydu0hWIfhGD54PuNprwI
-	 ro+/A/BMCN5+QIhciaL5wzax57kIG8UxN9QNRrXoWuw3k5d4WJPijnxkIFgKwlXhSxHWe
-	 NDz2MRfn3JkUHRMCZk9ZoYleWcJ0kiRuwglRWAieg2bG/JTjHLhyPjFx/ecnITJH1Fg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794903870;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Subject:From:
-	 Reply-To:To:Cc:Date:In-Reply-To:References:Content-Type:
-	 Content-Transfer-Encoding:User-Agent:MIME-Version:X-MBO-RS-ID:
-	 X-MBO-RS-META;
-	bh=/6sFeeE2v8KqdFq9cTEUeg70JLLH5Ub+A5TKvYvbkqk=;
-	b=5ZCn6Cm3OJHIjH3dHH499Q14S3+kbs1dCE2Fyd0wR6mAMeHBWDfaQsjSv86CoZMWatHT
-	 T5++l3ijcdLLzpn9AhKvd+51gkYKjyoy+aJex82KUqCtY21pRd1XK/ePtOqRWGRo0kgV9
-	 nW7nyNopsXVJM+Ok4RGGSbTJrgDMB7nVuy0QVYL33TlEOZOFO/iVtQGq/4TyvnN1Jc9MX
-	 x3Bb/T012L888aPQfVrR8tgwD9371jtCYDzzO65Utbu25sJjmZD5K4I3IIXV+qb0oAjN8
-	 V18m3t0E5Ij/JRAjvC5/Aib7fNXevHAjaqxniav6NEUAWYYGazMS75KWIviYiNJ5QOA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=mailbox.org;
-	spf=pass smtp.mailfrom=mailbox.org;
-	dkim=pass header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=viAmOPoL;
-	arc=none smtp.remote-ip=80.241.56.151
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794908872;
+	b=HZ766RV4j9EcXE/iPYCiEEA0aQqwRgC6Lok5TRwcmUF94xAj5kXn0VvYLozJATwhFJ4j
+	 eJQ1bqBJYcZMnxup1azgKJeVvdSAbPZ56POXeqCzlI2KMTzVw+b5y2Tze3PImr/SYopY8
+	 9fmrRkMTfSOu4TLlxvh3LZg/eBwql8LjZNJV3hF66ucH7GfMeyG1qZ7mhyMRpLwtqxkfb
+	 ygGrRVM1Pngp85Uha+8OUvg26UXMvIpX207VFyy2HmASdbrGSYTrf0joK1gUiXAKHvlBC
+	 ERJVhEMDs+H+F5XAwgBI9csyW6dgOtoo7VvWfW+D6YmTvpE3oGKXhKc6Pehl7Ijz2gA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794908872;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=XNWKjNP0ylTMFqS5R4s7agStVoLlbB3dV3UE5VmDOlE=;
+	b=jRSGRk3ZecMi1kRS1AaRYKEE/jaD2kUeEt5o3wPBKPckD6DQ51b8Wgyby4k/rv8+KAAH
+	 HeoCQOdCUON8xRsvh10oQmon5cfKWEAMutkjSrhX90sl4tSLDTQuzKKUYxKFxNk4K1EfP
+	 LGNg5r/zyuu7TGUMqaUOgKcqTstc9kxQ+ApPBOYWYXuBvEQmgQUResv9SMFpPA0pG6ssR
+	 msMjY3gmsI+TTe3E2xcB0WENlDuDXogQEpWGBI1b2ivr4X5IfZrHyx13G4bLOpOCKrV9A
+	 G2iW6wTZIc4EuvAZoeGZT67VXHqtZ7BkvUTKq7DkZl54JvCWI01jxCSibiWdQ8ke1Ww==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eukyEsXJ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F73B606A329;
+	Tue, 17 Nov 2026 09:47:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eukyEsXJ
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794908872;
+	b=yFwbkhtYib77j6dtQDMc57auIPm3DqvPI66X7wUAvkgStLZ9WwOOGTt/UIULIectPfxo
+	 eE0QpJVAJcjGpi4v6y9UsfYI/Ck7DShhyAmRZaMZ/BJ0kMyK5mlq5zpr8A9OAPgm20WO9
+	 03vuYbk9Pu+V2zJmg2T/92RJKEfYTXHFdynWx2wX3K7V63adUN5k1SJsCfZeLu/HkS1AT
+	 MwVpcLWQSSiv2yaQGojudXNDOn7Q2hxeUUMTpCnxJY0JZP3ISMFu7iTCXNBpcgFdPa/A6
+	 Srextx/u6EWlmfzOXhWD3iAMYPPAtwn0UjMfT0dLjFpyatsQURhLLzbg7AIt3bdnlZA==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794908872;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=XNWKjNP0ylTMFqS5R4s7agStVoLlbB3dV3UE5VmDOlE=;
+	b=NjUEWb1SCK0aBtWhsY0SXkhHA3pFmD/lPm/hhrNM/j558/shPSRBkayPzoQyoHdrhW7A
+	 US5CYDuK/2CXaG11k0iaBig3/gQgaKbyYSMZFQaBDGqgiVNLbDZlrpwfXy/QEZxcjh+jO
+	 AZHRStG+CPpd13FGIl1lmHnb7zNwaHgO/cQQZRF1rMbvR+fSjnQNJqhENiMn4aJXaPenI
+	 96i0AxRKRzu5HF2tQM4OYUvfH6eCaghIluS/4RkaDHO6D5VczWB5VNMMN+THRs1Ma82tk
+	 2VjI0dwpNIenqVmurnV0dCoI8Nh/J85QG8i4bc+i438VFZWLOsNWVzf4oIWW7gA51xQ==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A15606A8B9;
-	Tue, 17 Nov 2026 08:24:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B1A15606A8B9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=viAmOPoL
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4jTHnw6RQrz8vZ0;
-	Tue, 17 Nov 2026 09:24:20 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1794903860; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/6sFeeE2v8KqdFq9cTEUeg70JLLH5Ub+A5TKvYvbkqk=;
-	b=viAmOPoLWB08TuLkaRTRWKL6GyzdUBMkIZGZKpWCg514qs4PCgGVwTqmLELQKYiqolqJux
-	1syhU90LBtUOMuJxDDFMfpT9/yn1kSRfPGz4KASVfgnpO/llrM4bxjafkYy6LYmIpjpS5r
-	3F1jOHaiCRP4Sx/43hXl3wXSL67x0OFlZPtybtdcMzIsqKyPQyvW8/IbiWC1F6rLKgZVDA
-	/agbHLLcXTcRopPmiQ7E0m8FhcG3p76i5l4q1Wj6ha5k5FOMd4Q/f/3RD89CZm30Fzq4wA
-	Q4bhBTPzdMQxkvH4pUi80XrjBBqedsIlNteTrQK1Odt1ZSxdQJXeYsKrZk2s9g==
-Message-ID: <49298d3a328c1695ea27993f714c20b8a1c05f32.camel@mailbox.org>
-Subject: Re: [PATCH] rust: DamFence: Remove warning about unsignaled drop
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Philipp
- Stanner <phasta@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, Danilo
- Krummrich	 <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Miguel
- Ojeda	 <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
- <gary@garyguo.net>,  =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Daniel
- Almeida	 <daniel.almeida@collabora.com>, Tamir Duberstein
- <tamird@kernel.org>,  Alexandre Courbot <acourbot@nvidia.com>, Onur
- =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 17 Nov 2026 09:24:15 +0100
-In-Reply-To: <5d466f7c-2e70-4011-be04-9ffdf877b915@amd.com>
-References: <20261112101015.528127-2-phasta@kernel.org>
-	 <5d466f7c-2e70-4011-be04-9ffdf877b915@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
+	by smtp.kernel.org (Postfix) with ESMTPS id 9899C1F000C5;
+	Tue, 17 Nov 2026 09:47:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794908872;
+	bh=XNWKjNP0ylTMFqS5R4s7agStVoLlbB3dV3UE5VmDOlE=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=eukyEsXJqU0/4gLBim9oDaQp85TGKZh6EXzX3C7aB/u+feriK4bokpaBM42f0DkiS
+	 ucKKRLJ1QFNV55A3oehEzqmbX8OamJFtjV/OeW4mkjjSzxDWnkZsR0oMyMBKzVknOK
+	 tZnagItasZE7oc4RI/TjYepIpLCpv1KF5wv85Yclf2kcXABgLhzN0JaccdCy2ezCZF
+	 uXemzZh/2TlVX8KhfJNTdhnvLR6AZ6930x77qkQppelUhtG2SetmHCCww/tD5ce0qc
+	 J+/HCUU4dzj5LkJ50VGnLeWOTTXfBp5kS0OYT3XDwSkQk6mUWidq8YS5BKXG+YTjWi
+	 vuEinKoPyqFhA==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 132BA4A793;
+	Tue, 17 Nov 2026 09:47:51 +0000 (UTC)
+From: Peder Bergan via B4 Relay <devnull+peder.bergan.gmail.com@kernel.org>
+Date: Tue, 17 Nov 2026 10:47:51 +0100
+Subject: [PATCH] rust: str: tie Formatter to its backing buffer
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -84,53 +82,111 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MBO-RS-ID: 46dd5544d1dd3ff66d6
-X-MBO-RS-META: 7sk9otwyp8ik8zrdho6idfnnx6ekyr8w
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261117-formatter-lifetime-v1-1-9d7f38686552@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAMYi/GoC/yWMQQ6CQBAEv0Lm7CSuGlG/Yjws0CtjZCEzgyEh/
+ F3QY3W6aiaDCoxuxUyKj5j0eYWwK6huY36CpVmZDvvDOYRQcuq1i+5QfkuCSwc+XY7XgKaMKTW
+ 0ioMiyfSL3h9/trF6ofattD2qaOBKY67bbRoHc0XsWEdzzpicluULhAGl9psAAAA=
+X-Change-ID: 20261117-formatter-lifetime-48391ed7affd
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, 
+ Georgios Androutsopoulos <georgeandrout13@gmail.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794908870; l=2702;
+ i=peder.bergan@gmail.com; s=kernel-contributions;
+ h=from:subject:message-id;
+ bh=c2EXF63mEwnQnsVVyx1xUR6wHcOb7PHcB7oVHC4kogc=;
+ b=cmJf587r8vKEHlsRLXxBys9PRoJzmqc7PY99ABcGPBG30A/U+CR4NFqDkHVTlCpCiZjZyEmEh
+ B0zCJRZLbAaAGYDmROGMsitdX3LRLm5XVeeEoCJThHNaAH++9pnec/m
+X-Developer-Key: i=peder.bergan@gmail.com; a=ed25519;
+ pk=39790pn1YZCulHBoUG1uiQI1Hm01EvhBEa2zVrS/yN0=
+X-Endpoint-Received: by B4 Relay for
+ peder.bergan@gmail.com/kernel-contributions with auth_id=1395
+X-Original-From: Peder Bergan <peder.bergan@gmail.com>
+Reply-To: peder.bergan@gmail.com
+Content-Transfer-Encoding: 7bit
 
-On Thu, 2026-11-12 at 11:29 +0100, Christian K=C3=B6nig wrote:
-> On 11/12/26 11:10, Philipp Stanner wrote:
-> > DriverFence::drop() contains a pr_warn!() for when the fence drops
-> > unsignaled. This warning gets into the way of canonical teardown in
-> > Rust: when you drop a lock, it unlocks itself, when you drop a KBox, it
-> > frees itself etc. Congruently, users should be able to tear down fences
-> > they don't care about anymore with ECANCELED, which is already the
-> > default error code.
->=20
-> Well a dma_fence should never automatically signal when the last
-> reference drops.
->=20
-> Leaving it unsignaled is the most defensive path we can go. That can
-> lead to deadlocks but it can at least not lead to memory corruption.
+From: Peder Bergan <peder.bergan@gmail.com>
 
-True, you choose between the Unholy Trinity of DRM: deadlocks, UAF and
-memory corruption :]
+Formatter::new() returns a Formatter whose lifetime is independent of the
+borrow of its backing buffer. Safe code can therefore drop the buffer and
+then write through the formatter, causing a use-after-free.
 
-In this particular case, however, Rust does not allow for preventing
-the user from signaling "forgotten" fences anyways, no matter how we
-write the fence core:
+Tie the buffer borrow to the formatter's lifetime so that the borrow
+checker rejects such callers and prevents overlapping mutable access.
+Add a doctest showing formatting into a borrowed buffer.
 
-struct DriverFoo {
-	f: DriverFence<()>,
-}
+Fixes: 87482d6d9104 ("rust: str: allow `str::Formatter` to format into `&mut [u8]`.")
+Cc: stable@vger.kernel.org
+Reported-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1261
+Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
+---
+I compiled the in-tree callers with Clippy and ran the string tests and
+kernel doctests under x86_64 QEMU. Three borrowing probes compiled before
+the fix and failed with the expected borrow-checker errors after it.
+Rust documentation and formatting checks passed.
 
-impl Drop for Driver Foo {
-	pub fn drop(&mut self) {
-		// Signals fence implicitly & automatically.
-		self.f.signal(ECANCELED);
-	}
-}
+OpenAI Codex assisted with coding and testing.
+---
+ rust/kernel/str.rs | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
+
+diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+index 644b4279a..6222faacf 100644
+--- a/rust/kernel/str.rs
++++ b/rust/kernel/str.rs
+@@ -645,7 +645,7 @@ impl fmt::Write for RawFormatter {
+ /// Fails if callers attempt to write more than will fit in the buffer.
+ pub struct Formatter<'a>(RawFormatter, PhantomData<&'a mut ()>);
+ 
+-impl Formatter<'_> {
++impl<'a> Formatter<'a> {
+     /// Creates a new instance of [`Formatter`] with the given buffer.
+     ///
+     /// # Safety
+@@ -658,7 +658,23 @@ impl Formatter<'_> {
+     }
+ 
+     /// Create a new [`Self`] instance.
+-    pub fn new(buffer: &mut [u8]) -> Self {
++    ///
++    /// The formatter exclusively borrows `buffer` for its lifetime.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::fmt::Write as _;
++    /// use kernel::str::Formatter;
++    ///
++    /// let mut buffer = [0; 4];
++    /// let mut formatter = Formatter::new(&mut buffer);
++    /// formatter.write_str("test")?;
++    /// assert_eq!(formatter.bytes_written(), 4);
++    /// assert_eq!(&buffer, b"test");
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    pub fn new(buffer: &'a mut [u8]) -> Self {
+         // SAFETY: `buffer` is valid for writes for the entire length for
+         // the lifetime of `Self`.
+         unsafe { Formatter::from_buffer(buffer.as_mut_ptr(), buffer.len()) }
+
+---
+base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
+change-id: 20261117-formatter-lifetime-48391ed7affd
+
+Best regards,
+--  
+Peder Bergan <peder.bergan@gmail.com>
 
 
-So we decided to die this death because this way we get rid of the two
-of the three problems that *can* be solved in the API.
-
-
-But it will please you to hear that all users of drm::JobQueue do not
-have access to fences directly anyways, they can only signal them
-through JobQueue. Thus, they can also not forget them (signaled or
-unsignaled), because they would have to forget / leak the entire
-JobQueue as a whole, so effectively forgetting also their GPU ring. If
-that would happen, the driver would be broken beyond repair anyways.
-
-Regards
-P.
