@@ -1,81 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.96.75
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794932786;
-	b=ZJUVZsnN7cbwD6JX8n/45LqHWKjvTuOkRY21i19hnhi/OyRAko5+Gkh4j0A4GXsCKpVB
-	 GLZRXyUYgvB/oqWDSoE5LTFMtl+Ww7fS15+r01CXYPKIuhFM74xug0PjMqNTg5NYvlzWq
-	 9UgP6QsUYZVxO/Xk7Hf+fvuK/sa+TRo2vNcIY2YFYykoK/xjGiHpw7uCE/ZzMM4ltJRhP
-	 mNNVKttC6tNQdeANVEi1ykiOhP30g3VF5azj73gg/6h4n4QPp8XZKEJd4/SAytiCn+CYF
-	 U+HdzhXHrQEXLJw1looXlbQ3OSevTwkykUVZa+9+fu5Ej+m6zpXv1zlxMa2Q0NLyHOA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794932786;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
-	 From:To:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
-	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=He+RfVvtuPkPAmzokhQfTgSCsVYhrP6LK9Eft+B2spU=;
-	b=Hcp+RRZ1y5B+y3EQ2rCXHFgKYmIATPI+D0qX+Nd6alBdUPoXBswKgWjfx8PEcrAbDJe2
-	 mNYlnjaq9TWKgmVsfxwCmBQsit7RHAIViz5wsB6Cxi527hjT+c41GTrqFGOcDNEYGtAhc
-	 uEiFQfzoN7a84EAey0o9v5jr+K1oo6Mv8ZRC58anIfUFJzubLJ38Sy5M1PKflWzjycg0u
-	 eL6XyMY81r+HHAAzkmpvTHLn/xMlw+gD5B06eFZVBGVIxBDXCd6O0um9ze8XbIsFtADt/
-	 EHtaUYJmA6cFZVbys+z42SCz2NIe9h0xvkfA+uO0354grmHEeuKuW+srpM9B8GZCvpA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=garyguo.net;
-	spf=pass smtp.mailfrom=garyguo.net;
-	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=e1rc8NgC;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.96.75
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022075.outbound.protection.outlook.com [52.101.96.75])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794933418;
+	b=TKvv24QwiGl0Tc30NhSLaT94cE0lEiP4dmx2XXRdz63RIhTf+xJz0PRhsciUAN2BlMyy
+	 I2yJxIxaCkn1zse8LgzDyWpSwajScO2UAJqTTQKewQT6zxCmi0dy1FWsiSx+zAmiRxn+X
+	 IT47D4NI4MJ5og2wpa5clmjexSuftwdfwrISDKdLDPWQbeAWBGrGUbcK+mAbhfCiKE3BX
+	 J6nMdYucBV6Jm+Rcw8v4JLhOU39ZuTnQat1F3oRL/fpzNQu6D38V9MbgWIx/QKxPGHLbT
+	 3rtd6+SGIf5vC6gRvsjnl0lf2OWXa3B15g32XoSM6i4Jv/So2j6gcYoDjGU0CLKUVlA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794933418;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:To:From:Subject:Cc:References:
+	 In-Reply-To;
+	bh=tgGdYiCRp9arr66Rhn5MXQJr5Tmse7T13KsVZcqATvc=;
+	b=JiNiYN8+drlfviA5pgnQkOuYBYYpmYeoXAo212zf9PE8BSGswc0j/DCK8t0wvGYu7RPI
+	 vM+XcUi/o/Apy7Gg2OGF/zdPxvBFMq2w7lRAIywu6x998mKYWd4UKFNtlD0u6zOck7Wve
+	 wdhAvdqO5zRlL5vti6UJY9gsNJxS/9PLpODVcZw8ap/E5WcIbjEXURV13UWxnSpBhXko4
+	 7sUygZXNT9pDRTTkfHOemulx8eGOdVDyiZ1ciUL5NlfqAqb1MjyBf5m4n9hDn3a2fknsr
+	 J130z1Jb8MpRYdLIxteWz85V590pt1XgvPcko0xCmugLs5tgC6Vv/IBuAqPk4dGkEXQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="J/KyEHp6";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6CC606A32A;
-	Tue, 17 Nov 2026 16:26:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F6CC606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D662B606A339;
+	Tue, 17 Nov 2026 16:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=e1rc8NgC
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TQBdqCi8qA57TQY+OUvBwfR8W29oEqvALuUl9bUodt6BZ8tn++i5FqI5Y5P9XHoddEjCOQyiHrHl59Bdnr5imw8aIK22oUwKeqWmh+29I9xFHaHmwmZWMf441UkKIxcHiviIuoycKrptHeSxPWg+ZM/r6gb+jwFWTmo+xKLS+egL4EvHfADFCW7EXqseBkGh4qbDt+0LLBDya4UEHGkqa0eLGEKXkXmeLcQ6fxWnzdwaj2xEOfIYTMixNtXvuaw3lfFfeUfbeGu3Z7osxym110KPe6dtKTpBr/WSkP/dkucF7uyH5hSWWaAh2mJAf1Fy9KHeRdGyyCqoY4zXbK+2XQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=He+RfVvtuPkPAmzokhQfTgSCsVYhrP6LK9Eft+B2spU=;
- b=n4cQQs247BixQVUbM6/mkDsCb8xFvCL5mNtgpYrVGOWvcgqDHRYhg3aCmfjqikNaC26lCeJNS75d5NpQXRGUGNwrquq1t8JRA/PE5Ngv+TjcRW2A4FueqOK94fU2zHH8VOJcwP6DhfLIHTjKNRyH6Gll7WpxOrqf/qFFGOqS6//8/ty1IpR41gSRWAhfYZWIxSyp/MdJxdjh7njwNuaky6//R76MRSChM5LpkgyHdXDL8218e3Phlj7FEj+OgmPL/1x0AYKtqBP65keklYRh4wD2GRJaP/D3TEFzRVYJeorsxrpi5qCZykb9Scs8QXojqRDyyjiWDsbpthUEzSGwjQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=He+RfVvtuPkPAmzokhQfTgSCsVYhrP6LK9Eft+B2spU=;
- b=e1rc8NgCB74pA6Ui85gqJ1931VemqqqpyzFERWwu80fsJvmlKpqM1MjX6WhOpzHLCDrvC45Ma3hv0i4QFSO7ieRY8+prNpcpbHPxtYEgQBp65pwAYz+FCC9wR3JzsaQeNmUnIAm+zLaRAWPjIMUt0ltEb77S2p7VQpNp/XnAodg=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
- by LOAP265MB9014.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:499::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Tue, 17 Nov
- 2026 16:26:21 +0000
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0615.013; Tue, 17 Nov 2026
- 16:26:21 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J/KyEHp6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A1CD1F000C4;
+	Tue, 17 Nov 2026 16:36:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794933418;
+	bh=tgGdYiCRp9arr66Rhn5MXQJr5Tmse7T13KsVZcqATvc=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To;
+	b=J/KyEHp6WZkYwqBQMW1p9K2gCDFtEvoeGxSBGmb9nCN12CYtopOnKuvpw5JKZQRR+
+	 6gLCpkBzEnH++3YQEnMORwrw+jecKasETW3mwRJbiOollaFCfCaJ1JvF6JEkHnvZfr
+	 A02Qimv9QEi8HDcxjBtIn8tfKKYPukbuOqjibH097LN8S1sYU4J9jBOyjn5zajjeta
+	 kDLivp7MbvSXALiioN206smDguo0tTi+HE/Md9Y0gj64D+ZyCuwzrwsbYPG7lybkp/
+	 VMJn7RMKGVz6LeZyit6HUW4qqmVPJLCsWis6eIIjvzqZ6PCWxLXAoD9levG7wHRHXI
+	 zTP6khDzdzqYA==
+X-Mailing-List: rust-for-linux@vger.kernel.org
+List-Id: <rust-for-linux.vger.kernel.org>
+List-Post: <mailto:rust-for-linux@vger.kernel.org>
+List-Help: <mailto:rust-for-linux+help@vger.kernel.org>
+List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
+Precedence: list
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 17 Nov 2026 16:26:20 +0000
-Message-Id: <DMXMKFY5NA4J.1SPC0XEZZUR0O@garyguo.net>
+Date: Tue, 17 Nov 2026 17:36:53 +0100
+Message-Id: <DMXMSIQONGUW.1RRNS7I6LACD6@kernel.org>
+To: =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH] rust: DamFence: Remove warning about unsignaled drop
 Cc: <phasta@kernel.org>, "Sumit Semwal" <sumit.semwal@linaro.org>, "Alice
  Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
  Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
@@ -87,11 +67,6 @@ Cc: <phasta@kernel.org>, "Sumit Semwal" <sumit.semwal@linaro.org>, "Alice
  <work@onurozkan.dev>, <linux-media@vger.kernel.org>,
  <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: DamFence: Remove warning about unsignaled drop
-From: "Gary Guo" <gary@garyguo.net>
-To: =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, "Danilo
- Krummrich" <dakr@kernel.org>
-X-Mailer: aerc 0.22.0
 References: <20261112101015.528127-2-phasta@kernel.org>
  <5d466f7c-2e70-4011-be04-9ffdf877b915@amd.com>
  <49298d3a328c1695ea27993f714c20b8a1c05f32.camel@mailbox.org>
@@ -101,128 +76,14 @@ References: <20261112101015.528127-2-phasta@kernel.org>
  <DMXJ8TBSZJJ4.3HG0OJDI9URTT@kernel.org>
  <8da4a8c0-1740-450c-9cf1-1a7b21d12997@amd.com>
 In-Reply-To: <8da4a8c0-1740-450c-9cf1-1a7b21d12997@amd.com>
-X-ClientProxiedBy: LO4P123CA0595.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:295::12) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:1cb::9)
-X-Mailing-List: rust-for-linux@vger.kernel.org
-List-Id: <rust-for-linux.vger.kernel.org>
-List-Post: <mailto:rust-for-linux@vger.kernel.org>
-List-Help: <mailto:rust-for-linux+help@vger.kernel.org>
-List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
-Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|LOAP265MB9014:EE_
-X-MS-Office365-Filtering-Correlation-Id: 22f6cbf8-3723-4fa1-e8e6-08df44c783f9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|7416014|376014|1800799024|18002099003|22082099003|56012099006|10067099003|4143699003|261102123227099003|261028144727099003|261026140227099003|261026121527099003|261022115727099003|261021121427099003|261022105027099003;
-X-Microsoft-Antispam-Message-Info:
-	+xS/RiSp6DgwPtYXqIdTdD7vJs2nZM+R30xCz8z6n61U3xlwKWe7q2h7Klr1jdhcVsgmd7WzYJjwhTxJ8kZ4S8ithzYni2izFNASZmuV34oQEpY4o24hec/GtaaXfexjn0vHxhugqYhE0LHPz7DYfZs0gKCQKZ+R/Mvz3955oyxw/1F5x7qQdYz66qv8cvRkh2WrHo/bHMpDU+oWJ/HgRIy78sPQjRaSz0nOqzPrPYELmdWUoEJHzUdHg1Os6zbyKgKFBTtyzaWpPtAxPGFsF30yu6fTdLBwhSbJhQyiyM6FVx7TiAblciC/IuCsqFKv9M0YPCuoZZU9Fsf+y3XtsfDUXzenJ8F9ujkRXvz0RnHMVlQ0MbJQCZJ+0j5BcUm7bjk4Pl7kuzCfp8Af4i4aF418hlPu52Fezf1tll2ZQ3i6T8MT8Tw6W3o21r5TIqxVVs/dz6LrNsPUtoP9/19o5mDat+Pm1atZ0pN8kmugaB00g9Ae12M4nEXeVBcDUYG8S8Fd4lOBN45/KTrhJAwXET3I8zrqC6g78iMMR6rjc/jkHXnxOkCdv0DLleTtiZ3LGNG9G+OQYa+ghvgg7+zgSFWRP4vRua4nn5bIbOC4MJfx369ejTz909A8tbDMGJq7Ifcdwp75MeBcAUvDbG8h5SBVe7ziJLPpjdA8C84obRw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(376014)(1800799024)(18002099003)(22082099003)(56012099006)(10067099003)(4143699003)(261102123227099003)(261028144727099003)(261026140227099003)(261026121527099003)(261022115727099003)(261021121427099003)(261022105027099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZWtBcnBGTjQyOTBOdXZXbU9PNkpQdmRXdzRCNTAwWDZyY3ZFQ2toT3hRdlJ3?=
- =?utf-8?B?ZUZKK3l5N1dZd2lFQkVsWjRnbkRtTXpCSGFTRFBXa3dINlJmSXk0MkVtdCtw?=
- =?utf-8?B?L09uc21zNmRKYmVhenpLSHFPM1I4QnRHZ3Rva2JRWTByb3lyVEJTaUZKU2FX?=
- =?utf-8?B?VkNhZEZrRWZ1WHg5R01BVEhxR2JLYVY0NnROUS9VWm9OeGpYZ2g3M2F5Sklx?=
- =?utf-8?B?L2hZTWtiZHRKbFlYZE1uYTF5L0ZKYWxabXhnOXBhOEEwNUVFaDcyaHA3ZnRY?=
- =?utf-8?B?K2QyV0R6K3R0RFJFcmVJNktpTEhiS2RlQlRpa0lqOUNjMWduZ25jcHZWRlpp?=
- =?utf-8?B?VnhQMUpTc3NneXZKWUlJZE12SmkraEQvVUxMenYyN1BCUDVFcnlsQUZCRjli?=
- =?utf-8?B?bFdZMURMdGFPbml3ZTZGOWFubVc0Wk8rN292K2JocWo3WTRJYW5zdVQ4eGFi?=
- =?utf-8?B?aG16SWw1Uytuc25PWVYrZ1VOMVE3NDAxdlg3bTlvbVlycTFZOEwvKzFNMjlM?=
- =?utf-8?B?OEl5NVpURTlyTXg5WDZRTEVaZlh0ZDI3NmIzbVUyNFd1T0tXTnYyQjVnc1VP?=
- =?utf-8?B?MkQ1SUwrdDBhN01Gd1Y5Z252NEtTZUN4cGJWb0FHZ3J4ZEZ0bCtQcDErZG9U?=
- =?utf-8?B?a1V3MmxBb201b0ZVNTY5Q1piUWFLT3E2RWpobWJJSTVhT3I3VUZUNUhCTmFW?=
- =?utf-8?B?ekFudnluTmVyRUF4WW5LTzIzY0dnOWlMN1NzK1o3V2xZcHJ1NnYxR1pJdVUy?=
- =?utf-8?B?QWRmdmh2YlIrNlUzMHJIMUJYVHhtNVZuUUIwUjN2SUJaanR6MGx2WFZWVm4w?=
- =?utf-8?B?Z1Q4UEsya1NlQUNWNXlMc2tUUFRkdlcvR0ZGQlJxVkJ0MVdyeGI3LzVHNHZ5?=
- =?utf-8?B?VlQ0allzbGlSN3pEbUg1eUYyMUd0TFFVcVpaK2p2QWpXQk5WSUlQNEtIRlBt?=
- =?utf-8?B?c2xrektZbWZxMEZSbFNqOVFURGphWS9VaXNYT3dIMXRoNlhLQ3dWRmp1SStv?=
- =?utf-8?B?c24xVlVCdGlJNjJxYkNhSkh5a0I0d1dsWWxySGVRU3U1V3ljcm9pS094VEV6?=
- =?utf-8?B?ZVBUMm8ycGFFT29lOTQrV0pxNHkwcnpscHJBTU1xRmZlaTZwMHI5czc5ak9C?=
- =?utf-8?B?WmkzN2JYckNuak5VYnNYOCt0a2RIYzNlRS9QcnloVU5GQWNjbEFmclV6Zy9t?=
- =?utf-8?B?cWlSZmlnd01GenpCeDRzRHBPV3JlVzBrY2hRck1hNjU5U25qQnhvWE5teU1I?=
- =?utf-8?B?SzljaDNJOUhQK1RMMHJwZk81b1ViUWVwOVY1M3o2L1FRUmhzbFY0RWhLaHo0?=
- =?utf-8?B?ZDNaNFlxcE0wbFphR2tjSnZvQXBvckMrY0xIb2M2WkdZZmtoS2tjNmNQZEx0?=
- =?utf-8?B?Q1djemJZbnRJMlVCb1FvNTNabG4wM2Z5akF4dEVTNWprSVJvcFlYK2FVbkx6?=
- =?utf-8?B?ZE8rVlFtTzJVVm9abGk0UE1HVFJpRDNIc3lnODNTU3BhODcyMk1MdWlvNDFG?=
- =?utf-8?B?dSt3TVJvbGFOVWhLYWZ4L3R5dERvZ3hQeVZKL0Via0RrSXJWeHF5TENES2lu?=
- =?utf-8?B?azRpeUFpU1NrbVVOV3hmL0NENkt4bWtRNE5KVE9CMEc1N0RXL1FrM1EyZS8y?=
- =?utf-8?B?bXRFYW9NOUhCcFBsaDB6YkltOXFyV2sxSFlxem5BMlVMSy95TFlEWkNmM1R6?=
- =?utf-8?B?eitEcHNNaGx4SUNZcEpuVmhKYnU3RExaZjN3aWljRDBjSlRuWVExVHg1Tmhr?=
- =?utf-8?B?emhMVEZ3dmJqUWJ3TmZ3cEFLYVVBY2hhb2JuR2ZxNUVSU290ck0rSHJVdmdm?=
- =?utf-8?B?dlJqbXRtQU1VZXcrNkdkQ0RDMzNzKzFDczJyckJEZi9kRmZ6R0ZvV053citI?=
- =?utf-8?B?a3NoaENxcDE3UVRNdURNRkN2bDdyeXk5cGVZczV1djREU0JLQmttUmI5RTZZ?=
- =?utf-8?B?L3lGaU8reHlySHRjdTZIc0JlejRka2FtVGNpZjREVm9PZU1SLysrZzlzUUZx?=
- =?utf-8?B?ZEE2UjBGNlFkK3F2ZkUrQ09QWFJ5RDBoV3I3anVpUENnYlVyR3Zya1JjNExj?=
- =?utf-8?B?WTNLcGNFdUZaM3dYejBybkZSd0Nwb1YwL2I0NGlWbzdrK09CaXdUSTBzV3o3?=
- =?utf-8?B?emhtTlFnKzRZdmVoSG1xdlhvUlZoaHJ5SkVhSFdvN2VjOGRGLzZ5eVJxMHRw?=
- =?utf-8?B?TlYyaUc5aVNGZXF6V3o3VnM2Vi9Ia0RoREhNRTJja0VFU25IQmdRenpIcjZp?=
- =?utf-8?B?R2t6RDhRV1ZGOW9PQ0daRHZ1ME02bm9wcUxqV1ZoVm9ITU1MdXF6RFlJd1Rt?=
- =?utf-8?Q?3YrahLYLYxEM10Udpv?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 22f6cbf8-3723-4fa1-e8e6-08df44c783f9
-X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 16:26:21.5236
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: C6oRp+eDpM74IElgAwi60XnU+m9skngN6juuZWNdJcgRD1u4HYZuV+S/ACTMQapfqSLdAf53XKHdyzo9cr98Sw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOAP265MB9014
 
-On Tue Nov 17, 2026 at 2:50 PM GMT, Christian K=C3=B6nig wrote:
+On Tue Nov 17, 2026 at 3:50 PM CET, Christian K=C3=B6nig wrote:
 > On 11/17/26 14:50, Danilo Krummrich wrote:
 >> On Tue Nov 17, 2026 at 2:40 PM CET, Christian K=C3=B6nig wrote:
->>> On 11/17/26 11:54, Philipp Stanner wrote:
->>>> On Tue, 2026-11-17 at 10:51 +0100, Christian K=C3=B6nig wrote:
->>>>> On 11/17/26 09:24, Philipp Stanner wrote:
->>>>>> struct DriverFoo {
->>>>>> 	f: DriverFence<()>,
->>>>>> }
->>>>>>
->>>>>> impl Drop for Driver Foo {
->>>>>> 	pub fn drop(&mut self) {
->>>>>> 		// Signals fence implicitly & automatically.
->>>>>> 		self.f.signal(ECANCELED);
->>>>>> 	}
->>>>>> }
->>>>>
->>>>> Yeah, exactly that is still a bad idea :) See the HW eventually
->>>>> doesn't necessarily stop doing DMA if you unload the driver.
->>>>
->>>> I know.
->>>>
->>>>> So just signaling all fences with ECANCELED is not enough.
->>>>
->>>>
->>>> Yes. What I was trying to tell you as that you have no way to enforce
->>>> this in Rust or C.
->>>>
->>>> dma_fence_signal(f);
->>>> free_driver_resources();
->>>> // Driver forgets to stop the hardware. Memory corruption occurs.
->>>>
->>>> You see? Neither your BUG_ON() or WARN_ON() saves you if the driver
->>>> does it like that, no matter the programming language. You cannot
->>>> prevent it.
->>>>
->>>> The only one who understands how the hardware works is the driver. The
->>>> only one who can stop it is the driver.
->>>>
->>>> In Rust, the place where a driver drops its JobQueue is the same place
->>>> where it has to halt its GPU ring correctly. Enforcing this cannot be
->>>> done by dma_fence code.
->>>
 >>> I completely agree that we can't fix things from the dma_fence code, bu=
-t it is our obligation to tell the user that something very very bad happen=
-ed.
+t it
+>>> is our obligation to tell the user that something very very bad happene=
+d.
 >>=20
 >> That's the point, we can't infer that "something very bad happened" from
 >> dma::DriverFence being dropped unsignaled.
@@ -238,38 +99,119 @@ tructor
 d run
 >> already.
 >
-> Oh WOW! The signaling state of the fence should *NEVER* be bound to some =
-object lifetime.
->
+> Oh WOW! The signaling state of the fence should *NEVER* be bound to some
+> object lifetime.
+
+Let's engage with the argument and understand things before throwing
+overgeneralized statements like this around please.
+
+Realitiy is usually much more nuanced and what you say doesn't hold in all
+cases. The case described above (and clarified below) is one of them.
+
+I assume the fundamental reason why you say things like "software object ru=
+nning
+out of scope is not an indicator that the HW stops doing something" is beca=
+use
+the lifetime model in a lot of existing C DRM drivers is backwards.
+
+Drivers often reference count representations of hardware resources and har=
+dware
+states and hence keep them alive beyond what their actual lifetime should b=
+e --
+even beyond driver unbind.
+
+This causes lot's of issues and I'm looking into fixing this up, see my tal=
+k in
+[1] and an example from Xe [2] for reference.
+
+That said, in Rust we don't have this kind of ambiguity, lifetime and owner=
+ship
+of resources are well defined and the core infrastructure guides drivers
+accordingly.
+
+Consequently, it is perfectly reasonable to assume that a driver object tha=
+t
+owns device resources (such as DMA memory) will, in its destructor, tear do=
+wn
+the hardware to not access any of the resources it owns anymore.
+
+For instance, think about how your logic would apply to e.g. DMA coherent
+allocations.
+
+Those are allocated with e.g. dma::Coherent::zeroed() and are freed on drop=
+().
+They are then owned by whatever object represents the lifetime of the HW us=
+ing
+this buffer.
+
+Following your logic, we'd need to conclude that a dma::Coherent allocation
+needs an explicit free() method independent of its destructor as well, and =
+have
+the destructor print a warning and then call free() anyway.
+
+Now, eventually drivers would just call free() from the destructor of the o=
+bject
+owning the dma::Coherent allocation, so we wouldn't win anything.
+
+More in general, in Rust the object taking ownership of a device resource i=
+s
+responsible to deal with the device related state that makes use of this
+resource regardless.
+
+Insisting on an explicit method call is not improving anything in this mode=
+l.
+
+To get back to dma::DriverFence: This is slightly different, as there's two
+different signal states, but the fundamental guarantee is the same: If it i=
+s
+dropped, the HW has stopped accessing the resource that it guards already *=
+by
+design*.
+
+Signaling with an error on drop is arguably the correct thing to do, since =
+if
+the operation would have been completed successfully before already, it wou=
+ld
+have been signaled already -- if it drops unsignaled it means the hardware =
+was
+forcefully torn down (e.g. on driver unbind).
+
+
+[1] https://youtu.be/3A2vGbc_rxs?t=3D668
+[2] https://lore.kernel.org/all/as07AdBFlOQZrH_4@intel.com/
+
 > That sounds like an extremely bad practice to me. Just imagine anybody
 > grabbing an extra reference to the HW state object to inspect it for debu=
 gging
 > and the fence not signaling because of this.
 
-We do not allow "grab a reference" to prevent HW state from going away in R=
-ust.
-All device resources are tied to the lifetime of bus device being bound. Wh=
-en
-device is unbound (device going away, sysfs unbind, parent unbind, or whate=
-ver),
-device private data goes it with it and all device resources must cease to =
-be
-alive before then.
+That's not how it works.
 
-If driver's fence callbacks can access HW state, it must also be teared dow=
-n at
-at that point and cannot live past that.
+Rust ownership rules will guarantee that the driver fence will be signaled =
+with
+an error (if not signaled already) if the HW state object is destroyed (i.e=
+. its
+destructor runs that tears down the HW). But that doesn't mean that the fen=
+ce
+can't be signaled (and subsequently be dropped) independently through the
+completion of a job before that.
 
-Best,
-Gary
+IOW, the HW state object (for instance) owns Jobqueue, Jobqueue owns jobs, =
+jobs
+own driver fences.
 
->
-> Signaling a DMA-buf should always be an explicit operation drivers do bec=
-ause
-> of some HW event and not something which happens as a side effect cleanup
-> because your object runs out of scope.
->
-> Regards,
-> Christian.
+If the HW state object drops (e.g. on driver unbind), the Jobqueue drops, w=
+hich
+makes their jobs drop, which makes the driver fences drop.
 
+At this point the driver fence either has been signaled already because the=
+ job
+completed before teardown (but wasn't dropped yet), or it will be signaled =
+with
+an error in its drop(), which is fine since at this point the HW state's dr=
+op()
+is completed already and hence the HW is stopped.
 
+Besides that, reference counting HW state objects is bad practice. HW state
+objects have a bounded lifetime, so there's no point in reference counting =
+them.
