@@ -1,87 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794936075;
-	b=LncXBJvUb+ivhPhle9m2Yf5OQQG6WibJy473PyZvXvmCSKP7lututzgQmcia8pEivwhr
-	 WdoaeakpIDGcHuDni9lx5fPsntKQ7cKVTlbfRTIHfpZJm+mVvuR3A6V7iYJq8KMCYYr9C
-	 DZQuemoIeYDX3oB07xShBUZSc4GNbBas87a6bU1YEKVwLr4izsfS8AqDCOCNQ1FRMu6ZY
-	 NEKvHZndbmZTYcHltx437kXuF7imjuVPv1NW9HNOIqr/vVEz1wxkbi3G/HkqG4M9xLEN8
-	 /Bp7IDFkqSuy5I1Aw8Be/2GHjNJ+UKsiBkFDOnyoJEH7XjSP1Jcw/seS3Rs7cuGHWlA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794936075;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:X-Mimecast-Spam-Score:
-	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=kmCeC7XHDAikDGvT/3UFqVS8NhDjc6l1BgCxf4Am4wY=;
-	b=EgLAFmHSAdHkEvb8PQ5Zkydnbf/dAq2jH6DRiXuKzeQ1imW7ZeO/JqOyj6p0MeLD+Ulx
-	 1QWePmIfMdrXdClMpuFYYwgQnQ9L/XvstHbB1Tb32PAjoocMQaQhy6A9NpaLWAc/cXyVB
-	 9XgtOHzvvvfT8soQnd3hPlJmS1q1ta/CwsLYi1ybANZyGoeNgL2epJN4XSsKfQGtbB9lW
-	 QvaoQqMRqMOOIlvd27PM5Ux144ElqM9MRDBqZeCRYPJdE6W4ZHRXl4QIvuYMv9jJh0TIN
-	 p1akRnSrIS7ED81R5oZehUGTrfjP4FLvhXezuW3f3eOgkMrwH8Xpc5CTRDUEuAemGrg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P1MQ3uAG;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794938227;
+	b=pUBLUajDLTj3FNaq8+TWQptZifk6WCYBLOY6PhhAiY8v9yAEoUrkYL9tCO/aUwsOG+lf
+	 A/PTIWyugtqJFU0v16RPtCItKIyeJl8mNEH8BXiDBMFJ6DSVm6OGA0WM3+Zo0fFTq8xKg
+	 NizAjBAJQbuAEc0QCe1m4iY4VB02q8fxQokPNqmRyxe7uwumx9YBqf8QbrNIH+DeGtZDO
+	 xdDdUxGjrBW8geyLjTmM7Lrgt3CBZDfWlm+gfdt48E9zrJlyhk1NnKUlN8Npq2omDczTP
+	 kLWxxBn4u21jQP0nqu11EWuuvRLyDltUQBixkZq5dApk7AYCBlSpS2JhclaIWpfVphA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794938227;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=ArdsdUGdj0NMa0CZ1QhGoT5grO6+ssiW5NMN0otmSc8=;
+	b=0UEqjn4MY5NQhCJVdzmSDdlfIM7kjtHTNUvOCYnR/Cbv2m9N/6/MuqKFlGSEAwYYCBQB
+	 taT+a9ETMrDVzaoFqc09ERfRy3LTM3m9DzDYg/W4VH5p2WLkt+imKudgKmLJsEK2rhTP7
+	 xA8oh9BALAUfES+bff/befnY16q5GFkBQGIPOHAEeWRFu76SPY67COl/BotCQvwICSpYK
+	 zseXOiLtz+soEsgIph0eymKBAmecKF66X0YR2GrEv4dcNdiIBDHX3i1xRIANf2wYfUC3n
+	 jr63fDfHLZB7m46FVCZCeibwlTEeNPJZWSQrwas9Ql+SZUHj/8ztvPEBKMgZgDb2ypw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UrscteuC;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E641E606A31C;
+	Tue, 17 Nov 2026 17:57:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UrscteuC
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794938226;
+	b=XY86PkETJ8uO5rRiYRdlc8Zq6D4p5seX9OVzRxcDkIqi7QPTkmvvUQdOguZmr7TrJNcv
+	 tgUBv6cFfWrmw0vh/3K0RhgToE40J00befBWueDg1CxcgxUfq9V1GvIFKC69jFNRLuB4K
+	 O46bwaYbGtzi6qpDYnwGUDXfDGPPG4Ysb4TpMkoN9Wy+d5aB7XPC1dWs5vPXKUsnZHhIF
+	 9Z1adKATnX1aFCPlZ/XILt7Bu+Ll7LVthz7zAbWZsyL90Tj7MSL3u+c56+jmxCkAMkvSk
+	 Pdxci57eksxCPNK6zsTZzZGurG682Hu91+GZ0Mx1gxDhEDSz7KgBHwoLk2PJtAW3qIw==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794938226;
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=ArdsdUGdj0NMa0CZ1QhGoT5grO6+ssiW5NMN0otmSc8=;
+	b=RDQTUwfIDkSQbBo92Gdv1voVBsTXZfNSOu+igAFaAkO2MOZQ2Ku9Vb7w/H7nvOM+5a5G
+	 D6OF5/cWfg2lm/WVlW3/ZPwb3ZJKkuX4XbkRQlxGsQsziLG3Osdkn3DLfklIR4zoisW3n
+	 ecDhz3Pi0JQaLGKi+F6jCcMVkCu4Og4AE4+DM9rkC1OhdhVM83v4fWOyacvsj3PvdhcW5
+	 WYgMnBhkLZyoHfWN/xTNcXRdaDQph78b9DR+gKusIbwBluXRN2Y/Li64uzo6k1dNYIptz
+	 fV855ZweGI6gYnX9n4BM3htFHm3jEgEQkO+9teleguMamnSbo3/Pc8iHEJoc5tBVi1g==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E06606A33B
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 17:21:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 57E06606A33B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P1MQ3uAG
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794936073;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kmCeC7XHDAikDGvT/3UFqVS8NhDjc6l1BgCxf4Am4wY=;
-	b=P1MQ3uAGYXEEftIgLPys/AkTJ/YT3gJAP5ZmP+mgvgGNd/sUMNtDA7mLglGIqBQoyI+lHX
-	OaVvWnOVT11LTkuvL1O0h8eJHcmF0qlVk//krcU9AmYreQ3HHUcUe/NXisCzH1Uz9n7oq2
-	R7NoE6eXOjrmnIb0rJq8UNorFSU6+eE=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683-5_zfnAzBPT-pRPV05DyUVQ-1; Tue, 17 Nov 2026 12:21:12 -0500
-X-MC-Unique: 5_zfnAzBPT-pRPV05DyUVQ-1
-X-Mimecast-MFC-AGG-ID: 5_zfnAzBPT-pRPV05DyUVQ_1794936071
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a359b714f8so526255e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 09:21:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794936071; x=1795540871;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kmCeC7XHDAikDGvT/3UFqVS8NhDjc6l1BgCxf4Am4wY=;
-        b=g1QHSQHi51zGSICGB/LFj+OQuqn3yMnk3xWhHCWO/a4uncZnhH3wbeNSxohhyEsgKj
-         KwquncP0wAsGXheOnRw9nksmllRf/zghEjyB3pCEwWd9ocDpIl5rMcvep1sW4g/v+OfU
-         F8GSVD+eKj8ZQA4J8sdGH/P1Umg7DH3GKkQQdD3LX1x1aHPrakRnDSRRXQDnE+SVEJEg
-         TH8dDdsY9cPFy54r4t2tV0c9PyI37s66d1DWchku3Awb2SLhwE/Idx4MorBSurxSZ47W
-         9+/mtU+4jmGz2ZWjsx7kqdtQr0yFxe3b0XnQQdp0nyE15nJwmeNxlj40v/TpSJlj/0Nb
-         IZgA==
-X-Forwarded-Encrypted: i=1; AL+hErHzXnj0tHWtYgn4w/TOY00yKgLcwvv7xXeEcGwN7UbaOIa1IFdGdz74Iz/25bQq0tS6RaE2YCavfTQoA49KoQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z81kFgeImJ6iCRR1Z/IgwaZABM2GL+XIh4ocR6gVYttW4zF8U5+
-	C1kLsRQ2xFKdyRJdpXWil4v1NoqJ7UlgJBSVbZl2skfdvO5U0DG9yK9lVqiyvdj0KjNRadszMdr
-	u55A5/O/th8ewfmz5JvIte3tm+jdoI7dc4bM1h5IyOPqxKCNpS3YP4fuK30u5V8mLwx0U9LNX5U
-	hAZOMdrNot4N0lEMnZ9ZmY12dTjxUo+Lf013xLAjy6px4=
-X-Gm-Gg: AYBFou0wN8T7Ec3WsZzDC0HRaJYY54PmXcn5nM25lE71pWvUWbaBu9mJ2Djxkdv13s/
-	t2+hozyJoXs4avckcO9JTfXtoaFOFmiM0GMrE2CXs12lovbxP67HnCIotrHE7y2xXAqHCWjsjbi
-	f4fLpSBSvpEWp2L5ixZ+SiaR3dOVyLEEIQbUMAL6CbsiwzfucmU2PSN6tqyRy5+Wkb7TlJFrG1C
-	4iznoKPfcETZkB11Q==
-X-Received: by 2002:a05:600c:154a:b0:4bb:73d5:ab33 with SMTP id 5b1f17b1804b1-4bb73d5b0admr129915175e9.22.1794936070584;
-        Tue, 17 Nov 2026 09:21:10 -0800 (PST)
-X-Received: by 2002:a05:600c:154a:b0:4bb:73d5:ab33 with SMTP id
- 5b1f17b1804b1-4bb73d5b0admr129914425e9.22.1794936069801; Tue, 17 Nov 2026
- 09:21:09 -0800 (PST)
+	by smtp.kernel.org (Postfix) with ESMTPS id 3CAB91F000C4;
+	Tue, 17 Nov 2026 17:57:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794938226;
+	bh=ArdsdUGdj0NMa0CZ1QhGoT5grO6+ssiW5NMN0otmSc8=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=UrscteuCpN6jCdXD6reiUWTfRtaEiYzdIGem3Ll6FfnEtMC9AIst8wO2EdJ8GkEGq
+	 b/0bjxFOvw1LKQYBShftp8LGBNFmIGzotYcevsTL4QghnDk49P62jYQhMrzVR/caLd
+	 oNE3hy/sGRPFysWHZoenN43/vW7Tt58dsaPD2kzddpQiemTDPzjsBhek1/4ppsnCXL
+	 vRSPuK1jNXTfERRG04fBu/cd2lF2vVuEOHoll5vofyodOVz15xxrxK1yXIAUl8tvQK
+	 eV3ZgSZ1r5MDEzMAVfR2VOQic+nF6YQZ574+hidBFj3soCeiSiShKYBBC0uXe7AiEM
+	 +5VEOKFZ/TN2A==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id BD5C14A9E0;
+	Tue, 17 Nov 2026 17:57:05 +0000 (UTC)
+From: Peder Bergan via B4 Relay <devnull+peder.bergan.gmail.com@kernel.org>
+Subject: [PATCH v2 0/2] rust: str: tie Formatter to its backing buffer
+Date: Tue, 17 Nov 2026 18:57:05 +0100
+Message-Id: <20261117-formatter-lifetime-v2-0-e216d86ffb57@gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -91,546 +83,67 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261110-lrsc-only-v6-0-bafc3cc0fcae@mobileye.com> <20261110-lrsc-only-v6-6-bafc3cc0fcae@mobileye.com>
-In-Reply-To: <20261110-lrsc-only-v6-6-bafc3cc0fcae@mobileye.com>
-From: Jesse Taube <jtaubepe@redhat.com>
-Date: Tue, 17 Nov 2026 12:20:53 -0500
-X-Gm-Features: Aa3M54pi-PyuaI0qcy3-1kxlUe21cprxSC2I9K71Q5fUU6_tsEje6k0btSwDw9o
-Message-ID: <CADRr4bc0=OATpX0XvADZLGme=J954ydRxfv=cD1PZcmvA+HNwA@mail.gmail.com>
-Subject: Re: [PATCH v6 6/6] riscv: hwprobe: report whether AMO is faster than LR/SC
-To: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
-Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Gary Guo <gary@garyguo.net>, 
-	Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Chao-ying Fu <chao-ying.fu@globalfoundries.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, torvalds@linux-foundation.org, olof@lixom.net, 
-	aleksa.paunovic@htecgroup.com, arikalo@gmail.com, 
-	Boqun Feng <boqun@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
-	Luke Nelson <luke.r.nels@gmail.com>, Xi Wang <xi.wang@gmail.com>, 
-	=?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
-	Pu Lehui <pulehui@huawei.com>, Puranjay Mohan <puranjay@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
-	Charlie Jenkins <thecharlesjenkins@gmail.com>, Nam Cao <namcao@linutronix.de>, 
-	rust-for-linux@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: WGqsvMSDKuEGLubjHVtn4JFAm_Ic35iq4BX2lMu1BzA_1794936071
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHGV/GoC/32OzQ6CMBCEX4X07BoL8ufJ9zAcCmxhDaVkWwiG8
+ O5SvHv8JjNfZhMOmdCJR7QJxoUc2fGA+BKJpldjh0DtwSK+xZmUMgdt2SjvkWEgjZ4Mwr1ISol
+ trrRuxTGcGDWtp/RV/djN9RsbH0yhUSuHULMamz5E8+Q8ozLAs/Mw4upDqSfnLX/Oa4sMsr8vF
+ gkSyjbXSZEVWZrGz84oGq6NNaLa9/0Lf1AmW+sAAAA=
+X-Change-ID: 20261117-formatter-lifetime-48391ed7affd
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, 
+ Georgios Androutsopoulos <georgeandrout13@gmail.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794938225; l=966;
+ i=peder.bergan@gmail.com; s=kernel-contributions;
+ h=from:subject:message-id;
+ bh=vp/LWvvmAzX34f8vnKcLQw+RL3iAYT/77OcdfbM1kEI=;
+ b=eeZ1jr/xE+W8GNpkuqpEhdsS1+fV16E1iXTtLdK1DxWqokbyROdzfm0ed6J6RNc2K9J9Wqzsv
+ nUaKFAL90/iCO3/qxvg9eqXLMrTMuf5m3cC3XNqHnc+lG3FdDNsexyh
+X-Developer-Key: i=peder.bergan@gmail.com; a=ed25519;
+ pk=39790pn1YZCulHBoUG1uiQI1Hm01EvhBEa2zVrS/yN0=
+X-Endpoint-Received: by B4 Relay for
+ peder.bergan@gmail.com/kernel-contributions with auth_id=1395
+X-Original-From: Peder Bergan <peder.bergan@gmail.com>
+Reply-To: peder.bergan@gmail.com
 
-On Tue, Nov 10, 2026 at 8:40=E2=80=AFAM Vladimir Kondratiev
-<vladimir.kondratiev@mobileye.com> wrote:
->
-> On a CPU that traps AMO instructions into firmware and emulates them
-> there, such as MIPS P8700, an uncontended AMO costs about 600 cycles
-> where the equivalent LR/SC sequence costs about 40. Userspace built for
-> the A extension uses AMO for every atomic and pays that on every one.
-> It cannot tell from the ISA string: such a CPU still has Zaamo, and
-> correctly so.
->
-> Give userspace the same kind of hint the kernel gives for misaligned
-> access. At boot, time AMO_SPEED_ITERS amoadd.w against the same number
-> of lr.w/addi/sc.w loops on each CPU, take the best sample from an 8 ms
-> window of each, and report the result through a new hwprobe key,
-> RISCV_HWPROBE_KEY_AMO_PERF:
->
->   RISCV_HWPROBE_AMO_FAST         AMO is at least as fast as LR/SC
->   RISCV_HWPROBE_AMO_SLOW         LR/SC is faster; use it where possible
->   RISCV_HWPROBE_AMO_UNSUPPORTED  the CPU has no Zaamo
->   RISCV_HWPROBE_AMO_UNKNOWN      not measured, or differs across CPUs
->
-> Only the direction of the difference is reported, not its size: the
-> question a program can act on is which sequence to pick. Each CPU logs
-> its ratio, and a kernel whose own atomics are AMO warns once when the
-> CPU turns out to be slow, pointing at RISCV_ISA_ZAAMO.
->
-> The amoadd.w is spelled with .insn through a new AMOADD_W() in
-> insn-def.h, so the file assembles when -march has no Zaamo, and the
-> probe is skipped on a CPU whose ISA lacks the extension. CPUs that come
-> online later are measured by a hotplug callback. amo_speed=3D{slow|fast}
-> on the command line skips the measurement, as unaligned_scalar_speed=3D
-> does. The probe runs at the same initcall level as the misaligned
-> access probe, for the same reasons.
->
-> Tested on the eyeq7h hardware, with the DT advertising "a":
->
->   [    0.163714] cpu10: AMO speed is 0.07x LR/SC speed (slow)
->   [    0.163727] cpu11: AMO speed is 0.07x LR/SC speed (slow)
->   [    0.163724] cpu6: AMO speed is 0.07x LR/SC speed (slow)
->
-> and, with CONFIG_RISCV_ISA_ZAAMO set:
->
->   [    0.163729] AMO is slow but kernel atomics use it, consider disablin=
-g RISCV_ISA_ZAAMO
->
-> Signed-off-by: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
-Reviewed-by: Jesse Taube <jtaubepe@redhat.com>
+Split the lifetime fix and its documentation into separate patches as
+requested by Gary.
 
-I really like this patch.
-Aven if the rest of the set isn't ready yet I think this should be applied.
+I compiled the fix-only first patch with Clippy and ran the string tests
+and kernel doctests under x86_64 QEMU. The final source tree is unchanged
+from v1, including the previously tested example.
 
-Thanks,
-Jesse Taube
+OpenAI Codex assisted with coding and testing.
 
-> ---
->  Documentation/admin-guide/kernel-parameters.txt |   7 +
->  Documentation/arch/riscv/hwprobe.rst            |  18 +++
->  arch/riscv/Kconfig                              |  13 ++
->  arch/riscv/include/asm/cpufeature.h             |   4 +
->  arch/riscv/include/asm/hwprobe.h                |   2 +-
->  arch/riscv/include/asm/insn-def.h               |   5 +
->  arch/riscv/include/uapi/asm/hwprobe.h           |   5 +
->  arch/riscv/kernel/Makefile                      |   1 +
->  arch/riscv/kernel/amo_speed.c                   | 183 ++++++++++++++++++=
-++++++
->  arch/riscv/kernel/sys_hwprobe.c                 |  37 +++++
->  10 files changed, 274 insertions(+), 1 deletion(-)
->
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentat=
-ion/admin-guide/kernel-parameters.txt
-> index e75344f4e0cd..9bc5baff20ff 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -513,6 +513,13 @@ Kernel parameters
->                         Format: <a>,<b>
->                         See also Documentation/input/joydev/joystick.rst
->
-> +       amo_speed=3D      [RISCV]
-> +                       Format: {slow | fast}
-> +                       Allow skipping the AMO instruction speed test. Th=
-is is
-> +                       useful for testing alternative code paths and to =
-skip
-> +                       the test in environments where it runs too slowly=
-. All
-> +                       CPUs must have the same AMO speed.
-> +
->         analog.map=3D     [HW,JOY] Analog joystick and gamepad support
->                         Specifies type or capabilities of an analog joyst=
-ick
->                         connected to one of 16 gameports
-> diff --git a/Documentation/arch/riscv/hwprobe.rst b/Documentation/arch/ri=
-scv/hwprobe.rst
-> index bb1e0cbab36f..51ecb836f491 100644
-> --- a/Documentation/arch/riscv/hwprobe.rst
-> +++ b/Documentation/arch/riscv/hwprobe.rst
-> @@ -423,3 +423,21 @@ The following keys are defined:
->    * :c:macro:`RISCV_HWPROBE_EXT_ZA64RS`: The Za64rs extension is support=
-ed,
->      as defined in the RISC-V Profiles specification starting from commit
->      b1d80660 ("Updated to ratified state.")
-> +
-> +* :c:macro:`RISCV_HWPROBE_KEY_AMO_PERF`: An enum value describing the
-> +  performance of the AMO instructions of the Zaamo extension, relative t=
-o
-> +  the equivalent LR/SC sequence, on the selected set of processors.
-> +
-> +  * :c:macro:`RISCV_HWPROBE_AMO_UNKNOWN`: The performance of AMO instruc=
-tions
-> +    is unknown.
-> +
-> +  * :c:macro:`RISCV_HWPROBE_AMO_SLOW`: An uncontended AMO instruction ta=
-kes
-> +    longer than the equivalent LR/SC sequence. This is the case when AMO
-> +    instructions are trapped and emulated by firmware. Code that can cho=
-ose
-> +    should use LR/SC.
-> +
-> +  * :c:macro:`RISCV_HWPROBE_AMO_FAST`: An uncontended AMO instruction is=
- at
-> +    least as fast as the equivalent LR/SC sequence.
-> +
-> +  * :c:macro:`RISCV_HWPROBE_AMO_UNSUPPORTED`: AMO instructions are not
-> +    supported, the Zaamo extension is absent.
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index 3c3679701a60..dfd6237f879b 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -764,6 +764,19 @@ config RISCV_ISA_ZAAMO
->
->           If you don't know what to do here, say Y.
->
-> +config RISCV_PROBE_AMO_SPEED
-> +       bool "Probe AMO instruction speed at boot"
-> +       default y
-> +       help
-> +         During boot, time an uncontended AMO instruction against the
-> +         equivalent LR/SC sequence on every CPU, and report which one is
-> +         faster to userspace through the hwprobe syscall, as
-> +         RISCV_HWPROBE_KEY_AMO_PERF. On a CPU that traps AMO instruction=
-s
-> +         into firmware and emulates them there, LR/SC is much faster, an=
-d
-> +         code that can choose should use it.
-> +
-> +         If you don't know what to do here, say Y.
-> +
->  config TOOLCHAIN_HAS_ZBB
->         bool
->         default y
-> diff --git a/arch/riscv/include/asm/cpufeature.h b/arch/riscv/include/asm=
-/cpufeature.h
-> index 5efa72823475..92cab4a7a0f1 100644
-> --- a/arch/riscv/include/asm/cpufeature.h
-> +++ b/arch/riscv/include/asm/cpufeature.h
-> @@ -83,6 +83,10 @@ static inline bool unaligned_ctl_available(void)
->  }
->  #endif
->
-> +#ifdef CONFIG_RISCV_PROBE_AMO_SPEED
-> +DECLARE_PER_CPU(long, amo_speed);
-> +#endif
-> +
->  #if defined(CONFIG_RISCV_MISALIGNED)
->  DECLARE_PER_CPU(long, misaligned_access_speed);
->  bool misaligned_traps_can_delegate(void);
-> diff --git a/arch/riscv/include/asm/hwprobe.h b/arch/riscv/include/asm/hw=
-probe.h
-> index 9b04377c0f98..b700852ac42f 100644
-> --- a/arch/riscv/include/asm/hwprobe.h
-> +++ b/arch/riscv/include/asm/hwprobe.h
-> @@ -8,7 +8,7 @@
->
->  #include <uapi/asm/hwprobe.h>
->
-> -#define RISCV_HWPROBE_MAX_KEY          16
-> +#define RISCV_HWPROBE_MAX_KEY          17
->
->  static inline bool riscv_hwprobe_key_is_valid(__s64 key)
->  {
-> diff --git a/arch/riscv/include/asm/insn-def.h b/arch/riscv/include/asm/i=
-nsn-def.h
-> index 8fcc848c196e..5ca5c0b8ad66 100644
-> --- a/arch/riscv/include/asm/insn-def.h
-> +++ b/arch/riscv/include/asm/insn-def.h
-> @@ -219,6 +219,11 @@ ALTERNATIVE("nop", "fence rw, rw", SIFIVE_VENDOR_ID,=
-                       \
->         __ASM_STR(.error "hlv.d requires 64-bit support")
->  #endif
->
-> +/* Spelled out so that it assembles when -march lacks Zaamo */
-> +#define AMOADD_W(dest, addr, val)                              \
-> +       INSN_R(OPCODE_AMO, FUNC3(2), FUNC7(0),                  \
-> +              RD(dest), RS1(addr), RS2(val))
-> +
->  #define LB_AQ(dest, addr)                                      \
->         INSN_R(OPCODE_AMO, FUNC3(0), FUNC7(26),                 \
->                RD(dest), RS1(addr), __RS2(0))
-> diff --git a/arch/riscv/include/uapi/asm/hwprobe.h b/arch/riscv/include/u=
-api/asm/hwprobe.h
-> index e6a394fbe7fc..a5f726f94204 100644
-> --- a/arch/riscv/include/uapi/asm/hwprobe.h
-> +++ b/arch/riscv/include/uapi/asm/hwprobe.h
-> @@ -122,6 +122,11 @@ struct riscv_hwprobe {
->  #define                RISCV_HWPROBE_EXT_ZICCIF        _BITULL(3)
->  #define                RISCV_HWPROBE_EXT_ZICCRSE       _BITULL(4)
->  #define                RISCV_HWPROBE_EXT_ZA64RS        _BITULL(5)
-> +#define RISCV_HWPROBE_KEY_AMO_PERF     17
-> +#define                RISCV_HWPROBE_AMO_UNKNOWN       0
-> +#define                RISCV_HWPROBE_AMO_SLOW          1
-> +#define                RISCV_HWPROBE_AMO_FAST          2
-> +#define                RISCV_HWPROBE_AMO_UNSUPPORTED   3
->
->  /* Increase RISCV_HWPROBE_MAX_KEY when adding items. */
->
-> diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
-> index ebe1c3588177..fc935c877e82 100644
-> --- a/arch/riscv/kernel/Makefile
-> +++ b/arch/riscv/kernel/Makefile
-> @@ -79,6 +79,7 @@ obj-$(CONFIG_RISCV_MISALIGNED)        +=3D traps_misali=
-gned.o
->  obj-$(CONFIG_RISCV_MISALIGNED) +=3D unaligned_access_speed.o
->  obj-$(CONFIG_RISCV_PROBE_UNALIGNED_ACCESS)             +=3D copy-unalign=
-ed.o
->  obj-$(CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS)      +=3D vec-copy-una=
-ligned.o
-> +obj-$(CONFIG_RISCV_PROBE_AMO_SPEED)    +=3D amo_speed.o
->
->  obj-$(CONFIG_FPU)              +=3D fpu.o
->  obj-$(CONFIG_FPU)              +=3D kernel_mode_fpu.o
-> diff --git a/arch/riscv/kernel/amo_speed.c b/arch/riscv/kernel/amo_speed.=
-c
-> new file mode 100644
-> index 000000000000..933891b69db6
-> --- /dev/null
-> +++ b/arch/riscv/kernel/amo_speed.c
-> @@ -0,0 +1,183 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Measure whether AMO instructions are faster than the equivalent LR/SC
-> + * sequence. They are not on a CPU that traps them into firmware and
-> + * emulates them there, such as MIPS P8700, where an AMO costs hundreds =
-of
-> + * cycles and LR/SC tens. The result goes to userspace through hwprobe,
-> + * so code that can choose between the two knows which one to use.
-> + */
-> +
-> +#include <linux/cpu.h>
-> +#include <linux/smp.h>
-> +#include <linux/timekeeping.h>
-> +#include <asm/cpufeature.h>
-> +#include <asm/hwprobe.h>
-> +#include <asm/insn-def.h>
-> +#include <asm/timex.h>
-> +
-> +/* Time window for each measurement, and atomics per sample within it */
-> +#define AMO_SPEED_NS           8000000
-> +#define AMO_SPEED_ITERS                1024
-> +
-> +DEFINE_PER_CPU(long, amo_speed) =3D RISCV_HWPROBE_AMO_UNKNOWN;
-> +
-> +static DEFINE_PER_CPU_ALIGNED(u32, amo_speed_word);
-> +static long amo_speed_param =3D RISCV_HWPROBE_AMO_UNKNOWN;
-> +
-> +static void amo_speed_amo(u32 *word, unsigned long n)
-> +{
-> +       unsigned long tmp;
-> +
-> +       asm volatile(
-> +               "1:\n"
-> +               AMOADD_W(%[tmp], %[word], %[one])
-> +               "       addi %[n], %[n], -1\n"
-> +               "       bnez %[n], 1b\n"
-> +               : [tmp] "=3D&r" (tmp), [n] "+&r" (n), "+m" (*word)
-> +               : [word] "r" (word), [one] "r" (1UL)
-> +               : "memory");
-> +}
-> +
-> +static void amo_speed_lrsc(u32 *word, unsigned long n)
-> +{
-> +       unsigned long tmp;
-> +
-> +       asm volatile(
-> +               "1:     lr.w %[tmp], (%[word])\n"
-> +               "       addi %[tmp], %[tmp], 1\n"
-> +               "       sc.w %[tmp], %[tmp], (%[word])\n"
-> +               "       bnez %[tmp], 1b\n"
-> +               "       addi %[n], %[n], -1\n"
-> +               "       bnez %[n], 1b\n"
-> +               : [tmp] "=3D&r" (tmp), [n] "+&r" (n), "+m" (*word)
-> +               : [word] "r" (word)
-> +               : "memory");
-> +}
-> +
-> +/*
-> + * For a fixed amount of time, repeatedly run func and take the best tim=
-e
-> + * in cycles as the measurement.
-> + */
-> +static u64 amo_speed_measure(void (*func)(u32 *word, unsigned long n),
-> +                            u32 *word)
-> +{
-> +       u64 start_cycles, end_cycles, cycles =3D -1ULL;
-> +       u64 start_ns;
-> +
-> +       /* Do a warmup. */
-> +       func(word, AMO_SPEED_ITERS);
-> +
-> +       preempt_disable();
-> +
-> +       start_ns =3D ktime_get_mono_fast_ns();
-> +       while (ktime_get_mono_fast_ns() < start_ns + AMO_SPEED_NS) {
-> +               start_cycles =3D get_cycles64();
-> +               /* Ensure the CSR read can't reorder WRT to the atomics. =
-*/
-> +               mb();
-> +               func(word, AMO_SPEED_ITERS);
-> +               /* Ensure the atomics end before the end time is snapped.=
- */
-> +               mb();
-> +               end_cycles =3D get_cycles64();
-> +               if ((end_cycles - start_cycles) < cycles)
-> +                       cycles =3D end_cycles - start_cycles;
-> +       }
-> +
-> +       preempt_enable();
-> +
-> +       return cycles;
-> +}
-> +
-> +static void check_amo_speed(void *unused)
-> +{
-> +       int cpu =3D smp_processor_id();
-> +       u32 *word =3D this_cpu_ptr(&amo_speed_word);
-> +       u64 amo_cycles, lrsc_cycles;
-> +       long speed;
-> +       int ratio;
-> +
-> +       if (per_cpu(amo_speed, cpu) !=3D RISCV_HWPROBE_AMO_UNKNOWN)
-> +               return;
-> +
-> +       if (!riscv_cpu_has_extension_unlikely(cpu, RISCV_ISA_EXT_ZAAMO)) =
-{
-> +               per_cpu(amo_speed, cpu) =3D RISCV_HWPROBE_AMO_UNSUPPORTED=
-;
-> +               return;
-> +       }
-> +
-> +       amo_cycles =3D amo_speed_measure(amo_speed_amo, word);
-> +       lrsc_cycles =3D amo_speed_measure(amo_speed_lrsc, word);
-> +
-> +       /* Don't divide by zero. */
-> +       if (!amo_cycles || !lrsc_cycles) {
-> +               pr_warn("cpu%d: rdtime lacks granularity needed to measur=
-e AMO speed\n",
-> +                       cpu);
-> +               return;
-> +       }
-> +
-> +       if (amo_cycles <=3D lrsc_cycles)
-> +               speed =3D RISCV_HWPROBE_AMO_FAST;
-> +       else
-> +               speed =3D RISCV_HWPROBE_AMO_SLOW;
-> +
-> +       ratio =3D div64_u64(lrsc_cycles * 100, amo_cycles);
-> +       pr_info("cpu%d: AMO speed is %d.%02dx LR/SC speed (%s)\n",
-> +               cpu, ratio / 100, ratio % 100,
-> +               speed =3D=3D RISCV_HWPROBE_AMO_FAST ? "fast" : "slow");
-> +
-> +       per_cpu(amo_speed, cpu) =3D speed;
-> +
-> +       if (speed =3D=3D RISCV_HWPROBE_AMO_SLOW && IS_ENABLED(CONFIG_RISC=
-V_ISA_ZAAMO))
-> +               pr_warn_once("AMO is slow but kernel atomics use it, cons=
-ider disabling RISCV_ISA_ZAAMO\n");
-> +}
-> +
-> +static int amo_speed_online_cpu(unsigned int cpu)
-> +{
-> +       if (per_cpu(amo_speed, cpu) !=3D RISCV_HWPROBE_AMO_UNKNOWN)
-> +               return 0;
-> +
-> +       if (amo_speed_param !=3D RISCV_HWPROBE_AMO_UNKNOWN)
-> +               per_cpu(amo_speed, cpu) =3D amo_speed_param;
-> +       else
-> +               check_amo_speed(NULL);
-> +
-> +       return 0;
-> +}
-> +
-> +static int __init set_amo_speed_param(char *str)
-> +{
-> +       if (!strcmp(str, "slow"))
-> +               amo_speed_param =3D RISCV_HWPROBE_AMO_SLOW;
-> +       else if (!strcmp(str, "fast"))
-> +               amo_speed_param =3D RISCV_HWPROBE_AMO_FAST;
-> +       else
-> +               return -EINVAL;
-> +
-> +       return 1;
-> +}
-> +__setup("amo_speed=3D", set_amo_speed_param);
-> +
-> +static int __init check_amo_speed_all_cpus(void)
-> +{
-> +       int cpu;
-> +
-> +       if (amo_speed_param !=3D RISCV_HWPROBE_AMO_UNKNOWN) {
-> +               pr_info("AMO speed set to '%s' (%lu) by command line\n",
-> +                       amo_speed_param =3D=3D RISCV_HWPROBE_AMO_FAST ? "=
-fast" : "slow",
-> +                       amo_speed_param);
-> +               for_each_online_cpu(cpu)
-> +                       per_cpu(amo_speed, cpu) =3D amo_speed_param;
-> +       } else {
-> +               on_each_cpu(check_amo_speed, NULL, 1);
-> +       }
-> +
-> +       cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "riscv:amo_speed",
-> +                                 amo_speed_online_cpu, NULL);
-> +
-> +       return 0;
-> +}
-> +
-> +/*
-> + * Same level as the unaligned access probe: after clocksource_done_boot=
-ing()
-> + * so that amo_speed_measure() uses a stable clocksource, but before
-> + * rootfs_initcall() enables usermode helpers that can reach hwprobe.
-> + */
-> +fs_initcall_sync(check_amo_speed_all_cpus);
-> diff --git a/arch/riscv/kernel/sys_hwprobe.c b/arch/riscv/kernel/sys_hwpr=
-obe.c
-> index 7818e1d32622..47836ecbd9af 100644
-> --- a/arch/riscv/kernel/sys_hwprobe.c
-> +++ b/arch/riscv/kernel/sys_hwprobe.c
-> @@ -257,6 +257,39 @@ static u64 hwprobe_misaligned(const struct cpumask *=
-cpus)
->  }
->  #endif
->
-> +#ifdef CONFIG_RISCV_PROBE_AMO_SPEED
-> +static u64 hwprobe_amo(const struct cpumask *cpus)
-> +{
-> +       int cpu;
-> +       u64 perf =3D -1ULL;
-> +
-> +       for_each_cpu(cpu, cpus) {
-> +               int this_perf =3D per_cpu(amo_speed, cpu);
-> +
-> +               if (perf =3D=3D -1ULL)
-> +                       perf =3D this_perf;
-> +
-> +               if (perf !=3D this_perf) {
-> +                       perf =3D RISCV_HWPROBE_AMO_UNKNOWN;
-> +                       break;
-> +               }
-> +       }
-> +
-> +       if (perf =3D=3D -1ULL)
-> +               return RISCV_HWPROBE_AMO_UNKNOWN;
-> +
-> +       return perf;
-> +}
-> +#else
-> +static u64 hwprobe_amo(const struct cpumask *cpus)
-> +{
-> +       if (!hwprobe_ext0_has(cpus, RISCV_HWPROBE_EXT_ZAAMO))
-> +               return RISCV_HWPROBE_AMO_UNSUPPORTED;
-> +
-> +       return RISCV_HWPROBE_AMO_UNKNOWN;
-> +}
-> +#endif
-> +
->  #ifdef CONFIG_RISCV_VECTOR_MISALIGNED
->  static u64 hwprobe_vec_misaligned(const struct cpumask *cpus)
->  {
-> @@ -332,6 +365,10 @@ static void hwprobe_one_pair(struct riscv_hwprobe *p=
-air,
->                 pair->value =3D hwprobe_vec_misaligned(cpus);
->                 break;
->
-> +       case RISCV_HWPROBE_KEY_AMO_PERF:
-> +               pair->value =3D hwprobe_amo(cpus);
-> +               break;
-> +
->         case RISCV_HWPROBE_KEY_ZICBOZ_BLOCK_SIZE:
->                 if (hwprobe_ext0_has(cpus, RISCV_HWPROBE_EXT_ZICBOZ))
->                         pair->value =3D riscv_cboz_block_size;
->
-> --
-> 2.43.0
->
->
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
->
+---
+Changes in v2:
+- Split the documentation and example into a second patch, as requested by Gary.
+- Link to v1: https://lore.kernel.org/rust-for-linux/20261117-formatter-lifetime-v1-1-9d7f38686552@gmail.com/
+
+---
+Peder Bergan (2):
+      rust: str: tie Formatter to its backing buffer
+      rust: str: add an example for Formatter::new
+
+ rust/kernel/str.rs | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
+---
+base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
+change-id: 20261117-formatter-lifetime-48391ed7affd
+
+Best regards,
+--  
+Peder Bergan <peder.bergan@gmail.com>
+
 
