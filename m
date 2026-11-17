@@ -1,101 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794944778;
-	b=BJpnO9YNjrm/Owqta0jM1yh7mE7sVv78uDATh+ZtDIuNOcIO+FXrzFRnIOzdCNNKGvUL
-	 DzlKye9KgwgZg1Np+BPy/Wi1h9xYvXCi4GGzZWaxF/n9QTR9U3ftrI3xScX9m79/gAt2n
-	 fEmfaGWrN/s2bzpZ3JJPJccFLTKboGHFVvAhYEPrA/bDtOsVflWq/ZEBD3jfyTD3GDgDC
-	 pIg42XkqovEN/6f+yI3jRyr8ZXuXKQVBPyIdzGR6xQawc4uLLBWRysKNVaWw3G/XnbDT9
-	 Sp3HBsab4v7PS5mQgZD9Ebl784szFJVrDsx2DBjzKW33nj5DDLVuORP9prYozw7sjTA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794944778;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:X-Patch-Reply:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=ExUxqEZt6CeU083ngWOHRCSyuGGcbWbRoHP3g8HyKtM=;
-	b=aj0Xad4Bl6OL+UYi77Ihuydr9BRB17zDic86nbjunxuQoKruUCe/1wht8BL9rdAtQJw+
-	 NlZYVFIJVElMWlmSign8yFMMGoPRp90qL+Lvbb99+u7eyZFEAPZiWY7aUSDKnMR63NIO6
-	 KCYNP/PHQTDBLjwlmHfqPTsZpLTGbOn5k8LmMbXeqqgQ5S6iPUvGUtiITvFgR+QddXCuo
-	 mZKvpj8jrhKt1GyJTVBsEl5hI8+V6D//wJ4chKmK+2tleuMDrAfkvseR+w/rQAAoS3iNb
-	 rHkvxQoK7Ydd6rpnOH2x/CRqIiPswyK7dACT9FAaN0G2SBi211Tj3woPOxMqDnjqBxQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LmM2Fw9g;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794946204;
+	b=TgRKUom+uPNzjV5oREU6BfEmeVf1suYNj9F/9iTfizAa0qu+inzJjaTiSZ84IG4bEFpF
+	 pOKiS6zU6Aw+hkO9upTcspnXJKh1UVNIHgcboJTDVdF/Up5mblr2BCP03N/UomLOUusGw
+	 sLdRBzW/t9LEGr4ECORCr0SW0xeGx76RkeN/D3DDj59sjYEkfxxAq4JKpaC9oXoPZwvuk
+	 57Np2kRFrAFCmS7Bf9tEM7VogiIfiKSjXTVqnI4j09C+tIT/aA98FlKE9YL9Pg8HNhrqX
+	 OrTLOxuLddHMazl1nO1ErvifzRKRxT5rq36bRZsB8Io5EUGd6DttDnvadSApCtypxmA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794946204;
+	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
+	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
+	 References:To:X-Mailer:X-ZohoMailClient;
+	bh=l9gKzF4csGCLy05jMvgfB5xApHRqMpbBUWpf7823ToM=;
+	b=SRnqladhDfBP0sFUEj8i9w2WGaIdwNQJXlwdsk1V1UM0j9gNbpHaxNXm7KLWsJx3vd0O
+	 ALVAsU5cznY7c0PY8nF5DwQZSyjxjkUPo36Qk276DLEd2kIoyTk9UT51m2kpkC6rQ3yE1
+	 NM5x4VXqH5A+qiuSJQske3YJ4tgFj1Q3uBnqTCaJKgCdKAw+v26OcL32kNuRoqUGyrvdH
+	 JXXVGXb9jD8DSlUNXwhzLCmYKFADZf3CtVH5KPuSZYfVhcLZDMC2/cbVXmobNq51Flde7
+	 QLKDCNeSUiT9ZBJFsguRV3svq9j+4tb4QNyY9grIpzPAsrzx8pxuxJthX5IJSPoqjZA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=DCc13ZXw;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAC7606A31C;
-	Tue, 17 Nov 2026 19:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF01606A31C;
+	Tue, 17 Nov 2026 20:10:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8EF01606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LmM2Fw9g
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2031F000C4;
-	Tue, 17 Nov 2026 19:46:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794944778;
-	bh=ExUxqEZt6CeU083ngWOHRCSyuGGcbWbRoHP3g8HyKtM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LmM2Fw9gfbDi+AVGhDZOn7ni51zlC4OkduYjfN3OBYRvdmfWDKkYPZ/YqivYYyoVB
-	 CPf2z2Kj/kRf6q3kLA8XGFBtr9+0qUQ7N6QBOKcni0jUtLOTVjlnax82oAHDwjWu4Y
-	 Wb/G/WW/jrS4grELIH7dPPX8KpI4RSnenwJ2u0vE1UMJbXLlfbrq3lsTTF8/u/aQaP
-	 py54S1IeA7dJ9DDvZVOHfdEFotBHUh3P15g7p+6QfaC8hZOljl4qxGzF3SnwRoxEAw
-	 a3WHCXcVXjBDOwKAyeOJdMeQpeaFQxF+dvYI0bItFrVlWpjOm3fNdphqpArg4MrbaF
-	 sFIqZRxnLbXMw==
-From: Danilo Krummrich <dakr@kernel.org>
-To: Simon Song <xinmengs@nvidia.com>
-Cc: dakr@kernel.org,
-	acourbot@nvidia.com,
-	kvm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	nova-gpu@lists.linux.dev,
-	linux-pci@vger.kernel.org,
-	alex@shazbot.org,
-	jgg@nvidia.com,
-	yishaih@nvidia.com,
-	skolothumtho@nvidia.com,
-	kevin.tian@intel.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	markus.probst@posteo.de,
-	jhubbard@nvidia.com,
-	apopple@nvidia.com,
-	joelagnelf@nvidia.com,
-	ecourtney@nvidia.com,
-	cjia@nvidia.com,
-	smitra@nvidia.com,
-	kjaju@nvidia.com,
-	alkumar@nvidia.com,
-	ankita@nvidia.com,
-	aniketa@nvidia.com,
-	kwankhede@nvidia.com,
-	targupta@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	zhiwang@kernel.org,
-	zhiw@nvidia.com,
-	boqun@kernel.org,
-	daniel.almeida@collabora.com,
-	tamird@kernel.org,
-	work@onurozkan.dev,
-	jgg@ziepe.ca,
-	bhelgaas@google.com,
-	kwilczynski@kernel.org,
-	dri-devel@lists.freedesktop.org,
-	peter@colberg.org
-Subject: Re: (subset) [PATCH v6 00/11] Add Rust PCI SR-IOV support
-Date: Tue, 17 Nov 2026 20:46:06 +0100
-Message-ID: <20261117194606.1892840-1-dakr@kernel.org>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <20261111223337.508989-1-xinmengs@nvidia.com>
-References: <20261111223337.508989-1-xinmengs@nvidia.com>
-X-Patch-Reply: applied
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=DCc13ZXw
+ARC-Seal: i=1; a=rsa-sha256; t=1794946172; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=me11B3I2YcRhEMyfakc6pNPNwfJvrjXm8jNgAbUbG8OA/byoFsHKL/8BYiarnYIKzRGzpqsFLuHW3/6f0doZQj1onXJfrUIXXbI1VbIkSzeiIzSaREp9ROCEK38397BMqh1fpl9tTZGa/imXC9HSHf8mdEaOc0tb1AatzsO4CtA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1794946172; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=l9gKzF4csGCLy05jMvgfB5xApHRqMpbBUWpf7823ToM=; 
+	b=hrJBuzx4sVZWl2/1ZHOgLiEVJKTRSVJqa58ZpmQiC0ZQSPsPszX1QULo81TSUElWrK/pi1ORASwmG4LgBmDS9oHH6orIRQH1cJTBU1N3C90OMjJ1C/GI3jNZkSCTz7HyH+VjQ07D1M78dhJLmnkvOsoGnmpYk34RkQuRmDOCmn0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=DCc13ZXwsJeG8n0EEwMr9TM5O3UfhaRO2ImVjMMy2z4vZu+etNesJFdJj/6LHWwxIAgNurZZI+MJDQ14DBdMie11AjJ6fbat3BIMdS4u5lAQ9brqqbL3oXeeQ7+MjPl0bKt/GmXW366C074B+Z4iAmV1kvJa36fTN6Gb3SvF00s=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=l9gKzF4csGCLy05jMvgfB5xApHRqMpbBUWpf7823ToM=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1794946170789661.6773741019286;
+	Tue, 17 Nov 2026 12:09:30 -0800 (PST)
+Content-Type: text/plain;
+	charset=us-ascii
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -104,23 +57,145 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH 0/6] rust: iommu: add a paging domain abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20261116193821.GC2452510@ziepe.ca>
+Date: Tue, 17 Nov 2026 17:09:11 -0300
+Cc: "Joerg Roedel (AMD)" <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ iommu@lists.linux.dev,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ driver-core@lists.linux.dev,
+ Detlev Casanova <detlev.casanova@collabora.com>,
+ Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <3EB4C2ED-B699-4532-A562-68B78F6E29C6@collabora.com>
+References: <20261112-b4-iommu-domain-v1-0-c29e86788dda@collabora.com>
+ <20261116193821.GC2452510@ziepe.ca>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-ZohoMailClient: External
 
-On Wed, 11 Nov 2026 14:33:25 -0800, Simon Song wrote:
-> [PATCH v6 00/11] Add Rust PCI SR-IOV support
+Hi Jason,
 
-Applied, thanks!
+> On 16 Nov 2026, at 16:38, Jason Gunthorpe <jgg@ziepe.ca> wrote:
+>=20
+> On Thu, Nov 12, 2026 at 02:00:07PM -0300, Daniel Almeida wrote:
+>> This series adds a Rust abstraction for IOMMU paging domains. A =
+driver
+>> can allocate a domain, attach it to its device, map pages into it, =
+and
+>> install a handler for its faults.
+>>=20
+>> This will be used by the upcoming rkvenc driver that my colleagues
+>> Detlev Casanova, Nicolas Dufresne and I are working on. More details =
+on
+>> this driver can be found by watching Nicolas Dufresne's talk at LPC =
+2026
+>> [0].
+>>=20
+>> As part of the security model, each client will have its own IOMMU
+>> domain. This is needed as the submission model will let userspace set
+>> most of the encoder's registers directly, so the kernel cannot check
+>> every memory access that a job makes the encoder do. With a single
+>> domain, one client could make the encoder read or write the memory of
+>> another client.
+>=20
+> How do you plan to get the paging domain in the first place?
 
-  Branch: driver-core-testing
-  Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git
 
-[5/11] rust: device: clarify the drvdata_borrow() safety requirement
-      commit: d66d8bbb0316
+We plan to alloc a paging domain when a video encoder session is =
+created. Then
+we call iommu_attach_device() before a job runs, and detach back to the =
+default
+domain after it finishes so the next job can attach its own session's =
+domain.
+This is so each session is isolated from each other.
 
-The patch will appear in the next linux-next integration (typically within 24
-hours on weekdays).
+>=20
+> Using paging domains directly is very complicated, I'm not excite d to
+> see DRM trying to do this at all. IMHO there are many unanswered
+> questions how it could even do this safely.
 
-The patch is in the driver-core-testing branch and will be promoted to
-driver-core-next after validation.
+In a very simplified way, this is not unlike how GPU drivers currently =
+work. In
+fact, from a cursory look, this seems to be how rocket (the NPU driver) =
+works
+too. Since we are merely porting the same ideas to video codec hardware, =
+I am a bit
+surprised by your discontentment.
+
+(Note, though, that I have never worked on IOMMU drivers, so it is =
+possible that
+I am missing some context or some history here, in which case, sorry.)
+
+In any case, we need this isolation due to the submission model used.
+Most Vulkan drivers know their hardware pretty well, so a level of =
+abstraction
+on top of it like V4L2 is unnecessary. Therefore, in order to achieve a =
+leaner
+kernel driver, userspace programs most of the encoder's registers =
+directly, so
+the kernel cannot validate every address a job makes the encoder access.
+
+Instead of validating, we rely on each session having its own address =
+space, so
+a job from session X can only reach memory that was mapped for session =
+X, and
+so misbehaving sessions cannot affect one another. You cannot read or =
+write
+buffers from another session unless the buffer is explicitly shared.
+
+Again, this is pretty similar to GPU drivers, where a VM_BIND ioctl can =
+bind
+a given buffer range to an address range in a specific address space.
+
+> It would be better to come with a user so we can try to understand
+> what you are even planning.
+
+We do have a user, it is just work in progress. We will likely post an
+RFC soon (i.e.: next few weeks I assume).
+
+>=20
+>> Patch 6 adds Domain::with_fault_handler(), which allocates a domain
+>> with a FaultHandler installed. One handler can serve several domains.
+>=20
+> You intend to use fault handler?? That's even more esoteric.
+>=20
+> Jason
+
+The fault handler is used in the same way it is used in GPU drivers: to =
+kill
+sessions if they fault. This way the driver can simply refuse further =
+work from
+a misbehaving client, for example. It is also the natural place to =
+enqueue a
+reset if the codec hardware is frozen as a result of the fault.
+
+What in this model is fundamentally incompatible with how you expect =
+paging
+domains to be used? In other words, what exactly do you mean when you =
+say:
+
+> IMHO there are many unanswered questions how it could even do this =
+safely.
+
+
+-- Daniel
+
