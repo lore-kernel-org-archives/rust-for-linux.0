@@ -1,75 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794925012;
-	b=o9jd/t3GSXGSBHdbV0iEzGWrE75AT5A3MZDNc2/0eAig0OIVVc12PN7cGrlWu6GkoI4U
-	 DcoZgrNtebeT0xZ5y7sm9B6bSbIJxnbqP6LD7gPj/oCErW8d8YjcgrIlmYt+oXs45FDiQ
-	 jHd2xyLzzm38Zd3vw0/WA6rAihdy4G+yavoSIZfOetTLTuBUTQlYZjvQzqo3H9xUBNr2/
-	 cEwSBlQcyedgRFu6Q3TNc0rHoyUSs9/fMPpNuV67hspzoXjk8y/WUb3Ctw+3hylIHgJHr
-	 XxEt0iKakALRg2Z2tUUsUD2Jz74doTpzzKGjyYEyiFZZ23xlWNVFjjhb1/CUMW7gCaw==
+	t=1794925013;
+	b=hjiDEciNZ+MohWvIHfBqLG1YTn7N9DPkT1+r4GhznKWLwyrIcFiTatVZcYQz4I+DXjz6
+	 NJ0TOW0vf1QO2FSXikjVL1rUkOWuuLcHR6Q2Ns4wh70mTUVdNCYosNfpwvaRaRk8J6ttz
+	 ad+m0YdY0OZNYunVRZpSKfK6IYAp98GTOQqoT0K8tCnFdj5Gz6OWCAQrRug0d78wk8Wy+
+	 YJ/fJ9iIQjsLkN/DbMrO/VDX9uhXSvVmdAqdH4sZANn0GxG9eEpYiv6PLHBylWM0ZhHxL
+	 tMGk4UbjeNxz0+uzbmp5FM8SAPAXJF34Qp3GN4v8vITsDh45SLb4P9OAzBziX+WBRLA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794925012;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794925013;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=8mDL3N+DirypXyizj73343YIMouI63Jigsdwggl20Xk=;
-	b=MrIa3lDufkyl+6iV27+Nq0JQ/U/ZDv/Vo1hUf7HJwKM/QcIeD3vap4pBzY6sd7vvVTx+
-	 b0sOPQp6KZ0Ni3wuSHV196Ne7QgkIPMS0vhhnuHJ3HRjB0hQ1JbNkqq5xkIjwDYPDppR1
-	 KNuO8K5YbDppxGX1kzCzvgWORKH9wev3Qcf2ZsbLY0hoR+/HXu2BdbhcWl53VqWk9baKy
-	 HBf7NRlZ9emvtyOR1MRDdlO0Md7FNfz4XfFjKVv0CYzCvav/XpvPs3uu4mebgIL0w1G3y
-	 PuYvNeM/Av8wHMYW59tV15NoW64aobUYlBv3SGfX31WOSFgjAWifcMXd9EweYRz6CZA==
+	bh=SoUaO57cW+qqkOEye/VOIeEzhg9zr3S8sinSgtnZuIA=;
+	b=NjmW9uP6VAcLcMMrELD5DzbGA+naYs1f3K/fS+XM+SJZNZ+sLeAlpVOilfignCKO0UeF
+	 iLEPAQqndjJ5z6RQ/jRta8PXu5ExewppQ6eofLuuT1MW09UrC/7pguDSCXwKjppbTN25h
+	 7dKERUCqWpbIHMHv/xDkhqYw/57XtVWukRpvsv2S8YK9QcQ0ht2iXDISrpGB0bKpIMpeQ
+	 SwnmjSJdDGmHdDPU45bYLjiS8dHu1d9Rn7hetTrBJS5TC1z7vQB6hNaezrH/uK1BIofQN
+	 07iLUNdBJxkq49fFrsV+TquHbBjdt16RBGBNhEktbTe09fnv//eTUwEk6918fQxzKaQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JMY1JauI;
-	arc=none smtp.remote-ip=209.85.128.72
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Wb0t6x2z;
+	arc=none smtp.remote-ip=209.85.128.70
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE58606A881
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 14:16:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ABE58606A881
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BC6606A894
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 14:16:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 96BC6606A894
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JMY1JauI
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49953abe51fso30232405e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 06:16:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Wb0t6x2z
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a2065a2ef9so36517135e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 06:16:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794925010; x=1795529810; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794925012; x=1795529812; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8mDL3N+DirypXyizj73343YIMouI63Jigsdwggl20Xk=;
-        b=JMY1JauIRJg4BDtE7ceIsP/yqSL31cHZ23/Ik9MkGT4+n2Kw7Cpfte5uB0tyaRX37U
-         qsp1cU58hQjKcCLZhOrqKaeF6Pd5DVjJVtz4leic2yneF/nwFopGakk1nE1235R2ZcyN
-         6dbc/YX5XFEsQCzCWOt9fThFH6FuSo6wN5Q2p4XCIqobkIng92ewtzsxiUrLo3SVxQkn
-         J5XGnM/Oh3R7HY1fs6DsX43BwVPwrwtizcTLumjZPaHLECqgAnZAlECD859fW7BvTFrd
-         wFHyqjem/zC2xWWr1NAMISiD/sj8Iw/5r0ZkVdjMJg38L62DK/OHEfGiSGVlJf+TWy9f
-         CX7g==
+        bh=SoUaO57cW+qqkOEye/VOIeEzhg9zr3S8sinSgtnZuIA=;
+        b=Wb0t6x2z0bJUOeWrNkngiljOJZt4w2VXLN+M4uSRv1VdR88KzK8RwNj2dgBroLNDNs
+         wRdKE9QBHfdk1CDuiuOVengp2OblJVPYmJ0rvO3IquYPE+w2ikGta03f8IbNg7vYJUM+
+         iE1IfLcV0V9itpOfTA9MSb8yVbUSAqzSOkUbAlxwBNzNkCivTsVbjRMW24ul5mqZEmQH
+         LSfn/Tpaq1v+r0R4UWhcD+NEGaXB4Hd4XrFjnT58UbRr95j83FNWCAJSCfLsqaUzrCF0
+         7pnDwM2f5GGJCNbc1W2o/5xZlIV3zgMbc+N7lf9dvQpR93/+USvioFVPcMklolqu6l0g
+         wL3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794925010; x=1795529810;
+        d=1e100.net; s=20260707; t=1794925012; x=1795529812;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=8mDL3N+DirypXyizj73343YIMouI63Jigsdwggl20Xk=;
-        b=AMEMxnS8XAbr1wsgRbv0WoFPI0rA60DsOP0n9tNgQDMz9kNzZ2IrkzYaZeRPYAbMmd
-         +wJ4AsgSbYluNTuKMncPByAS0hwh1DzjyeT05F59PmYOHc4Vz2Ntkzsh2H35hSn/JQZf
-         LS0+3Yi1ZryKJLHXhVe8Uv8ScW5N19vnUmXrdcKiwuPAIAFhr1jaZaxIsMfS/1ba5t4G
-         9PotDndcTz3GWyNhzFn8VT8YYK0i2f03rtZopl84qtprDOwgW5mCH50qWUga4iJIoWZE
-         A7wSBRw916CuwPnnFibDJDreNitNBP42fNcl5itCtQnZPznzsyXR8Vpb6J3VHiWPa0K2
-         qvqA==
-X-Forwarded-Encrypted: i=1; AL+hErFAw+pGtDtFz8ol3mdBIlHY/20E4+BKUqOPQQh+oTD5OIIRg1HFmJt+Udf2a0Of2YnJkgJxO6U8S7Ondos1Gg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/o5cSFZdxO0H+wv1Kzc0D8VYvfvZgHHnIxtGvP8uH6OBmh1+Jl
-	gglduBkV41s/VwtU1Wjfjc5DoEIJWlloSD7WXsvKVRYnSp85IDChTHc3O77oah5A2z+qNWOA4Pt
-	Y6IfHOC2mk/USyX8XvA==
-X-Received: from wmaj16.prod.google.com ([2002:a05:600c:6c10:b0:4a2:d3e:ee4a])
+        bh=SoUaO57cW+qqkOEye/VOIeEzhg9zr3S8sinSgtnZuIA=;
+        b=RPRnwxptBK++wlO8zkKoOrCQyBfABY9x9svrGy6H+s5TFBm1tGG0wVnp9ZNIfRoS5P
+         vVVdj0k0PUUIF2AlbrpuuvthFH++zvSbqjlXyaY4SVsTbqfpTq2kXhvwgVGqL2GemUU/
+         bQwlJO4wu0u6QIEiSs1rc162NVCrQaPA+QsDQJpmy7nEamFu4uHZVRPnxie3hgBWQN7f
+         2iaX+eP+35HF8XLfjvE2RB6ceaORZa85qXs06ndqhtet6GegiYoavSoWtVE7gqEANJvC
+         lwA06WaLxj7tTQlByO9dEdYdHpnLLpZroyJXwMB89ivAnWirJmlrTJN73BsO8dzdRWA7
+         KL/g==
+X-Forwarded-Encrypted: i=1; AL+hErHZ0bM5kVfVVafcc/oteQ9Z9TDI8/niDtOUqho7bkeGZRepQJ3ECg87B6+IkLcOLw2/khEbT+8T678ocmCNdQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9kFRBmrboLuSOCDv7BzRsFOLplU5g4kFhOsPBXeA2N0GCurntk
+	Bfc9JMXwHaxavNLEYYXLEJV1kxWzb71rnqXglRmIs64u+IXHvyMCuObCkNs4v9buyHleCBJ67qO
+	sRE8I4G7k0Oep5xl28Q==
+X-Received: from wmbjj17.prod.google.com ([2002:a05:600c:6a11:b0:4a3:5d5b:9ad9])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:a302:b0:4bb:7347:d5c0 with SMTP id 5b1f17b1804b1-4bb7347d930mr100746285e9.9.1794925009887;
- Tue, 17 Nov 2026 06:16:49 -0800 (PST)
-Date: Tue, 17 Nov 2026 14:16:48 +0000
-In-Reply-To: <20261117001507.1611984-3-dakr@kernel.org>
+ 2002:a05:600c:670b:b0:4bb:7987:fbbc with SMTP id 5b1f17b1804b1-4bb7987fdc3mr38878595e9.1.1794925011619;
+ Tue, 17 Nov 2026 06:16:51 -0800 (PST)
+Date: Tue, 17 Nov 2026 14:16:50 +0000
+In-Reply-To: <20261117001507.1611984-4-dakr@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -79,10 +79,10 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261117001507.1611984-1-dakr@kernel.org> <20261117001507.1611984-3-dakr@kernel.org>
+References: <20261117001507.1611984-1-dakr@kernel.org> <20261117001507.1611984-4-dakr@kernel.org>
 X-Mailer: git-send-email 2.56.0.679.gc527c65306-goog
-Message-ID: <20261117141649.2991892-1-aliceryhl@google.com>
-Subject: Re: [PATCH v3 2/5] rust: sync: add WaitQueue infrastructure
+Message-ID: <20261117141650.2992151-1-aliceryhl@google.com>
+Subject: Re: [PATCH v3 3/5] rust: sync: convert CondVar and PollCondVar to use WaitQueue
 From: Alice Ryhl <aliceryhl@google.com>
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: Alice Ryhl <aliceryhl@google.com>, boqun@kernel.org, gary@garyguo.net, 
@@ -94,27 +94,20 @@ Cc: Alice Ryhl <aliceryhl@google.com>, boqun@kernel.org, gary@garyguo.net,
 	linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Nov 17, 2026 at 01:14:43AM +0100, Danilo Krummrich wrote:
-> Implement a wait queue wrapping the kernel's struct wait_queue_head,
-> with wait_event()-style methods that take a condition closure directly.
+On Tue, Nov 17, 2026 at 01:14:44AM +0100, Danilo Krummrich wrote:
+> CondVar currently wraps a raw wait_queue_head directly. Now that
+> WaitQueue provides the same primitive, convert CondVar to use it
+> instead. This removes duplicate init, pinning, Send/Sync, and wake-up
+> code from CondVar.
 > 
-> The API mirrors the C wait_event() family:
+> Keep the wait logic in CondVar since it needs to release and reacquire a
+> lock guard around the sleep, which WaitQueue's condition-based
+> wait_event() methods do not handle. Use wait_once_exclusive() to perform
+> a single prepare_to_wait_exclusive / finish_wait cycle with a
+> caller-provided schedule function to implement the lock-aware sleep.
 > 
->   - wait_event()
->   - wait_event_interruptible()
->   - wait_event_timeout()
->   - wait_event_interruptible_timeout()
->   - wake_up() / wake_up_all() / wake_up_sync()
-> 
-> The interruptible variant returns Result<(), Interrupted>, the timeout
-> variant Result<(), TimedOut>, and the combined variant Result<(),
-> WaitError>. These errors map to ERESTARTSYS (signal) or ETIMEDOUT
-> (timeout).
+> Adapt PollCondVar accordingly.
 > 
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-Thanks for addressing the feedback from v1!
-
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-Alice
