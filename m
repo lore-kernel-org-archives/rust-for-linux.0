@@ -1,78 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794908872;
-	b=HZ766RV4j9EcXE/iPYCiEEA0aQqwRgC6Lok5TRwcmUF94xAj5kXn0VvYLozJATwhFJ4j
-	 eJQ1bqBJYcZMnxup1azgKJeVvdSAbPZ56POXeqCzlI2KMTzVw+b5y2Tze3PImr/SYopY8
-	 9fmrRkMTfSOu4TLlxvh3LZg/eBwql8LjZNJV3hF66ucH7GfMeyG1qZ7mhyMRpLwtqxkfb
-	 ygGrRVM1Pngp85Uha+8OUvg26UXMvIpX207VFyy2HmASdbrGSYTrf0joK1gUiXAKHvlBC
-	 ERJVhEMDs+H+F5XAwgBI9csyW6dgOtoo7VvWfW+D6YmTvpE3oGKXhKc6Pehl7Ijz2gA==
+	t=1794909111;
+	b=5nYXry+VXz/82dn8uPvL9W1Ika5xeELbasitEzS+qLxY6kN2A/rvOiwUwaWBIV2QsWjx
+	 yCUwQvKbesA8TsBCLzZxJxAuklmEYhvCVdk9JwMDJlhpcfHY29TokpXh0YqdfhEwJI2/T
+	 rQAy4Y6AcEdITEOZG17EUZ8nJjNQGmkkoTh9dnXoZpmNk4pU9ADfeRFfZFZkCnzAxiae4
+	 D+pWA6iV+/hJNBAAWWiA6+at+T09k5803+2NlXtnf9Ya+EaquvCGx+QENFPowb1D1YrKH
+	 XPyqfOKm1AoNeB1nDf9kM1XoJyfrB8lTHStyJFtg3qU+rLQFZbhY67kRHj2suJKnSLQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794908872;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=XNWKjNP0ylTMFqS5R4s7agStVoLlbB3dV3UE5VmDOlE=;
-	b=jRSGRk3ZecMi1kRS1AaRYKEE/jaD2kUeEt5o3wPBKPckD6DQ51b8Wgyby4k/rv8+KAAH
-	 HeoCQOdCUON8xRsvh10oQmon5cfKWEAMutkjSrhX90sl4tSLDTQuzKKUYxKFxNk4K1EfP
-	 LGNg5r/zyuu7TGUMqaUOgKcqTstc9kxQ+ApPBOYWYXuBvEQmgQUResv9SMFpPA0pG6ssR
-	 msMjY3gmsI+TTe3E2xcB0WENlDuDXogQEpWGBI1b2ivr4X5IfZrHyx13G4bLOpOCKrV9A
-	 G2iW6wTZIc4EuvAZoeGZT67VXHqtZ7BkvUTKq7DkZl54JvCWI01jxCSibiWdQ8ke1Ww==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794909111;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=YatWmxCzLmAK7/g0QUUCrNjCZH5YtwoxdmfOVdakz00=;
+	b=S7tA2dPZUZ52usoOsstb0v6dkpqUCDLJnRSWbMIZVq5+abzZluyRkTfhe1sXw8W6wMZ8
+	 P6I9ZzZ7d9iJCBSi9QUus0gyBU6Z2O/6TuNupfk8gy+Tc7/nSRQSxMBF4T8VUEV2is1YN
+	 rd2HHMUX9Xt3V/mUvGx1FWqdFKPkiIxRzTFBHgjAnOlst9yJ00lFYlQ20E0ad12NXKYk5
+	 L94GSKCi3cHndarLy95KYjFkdtGIVzCrvmIv2ofeuZhpHQQ3aq15WiuFl3u/wvuF8YvNu
+	 rYD+YunvGRx3IIWdCmwZ19mWGknalLZiTKS0aH4ajkf+2TccVhY3lyip7OcdZfMO4Hw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eukyEsXJ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b="VIzqBc/k";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.11
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010011.outbound.protection.outlook.com [52.101.201.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F73B606A329;
-	Tue, 17 Nov 2026 09:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA99606A329;
+	Tue, 17 Nov 2026 09:51:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ABA99606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eukyEsXJ
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794908872;
-	b=yFwbkhtYib77j6dtQDMc57auIPm3DqvPI66X7wUAvkgStLZ9WwOOGTt/UIULIectPfxo
-	 eE0QpJVAJcjGpi4v6y9UsfYI/Ck7DShhyAmRZaMZ/BJ0kMyK5mlq5zpr8A9OAPgm20WO9
-	 03vuYbk9Pu+V2zJmg2T/92RJKEfYTXHFdynWx2wX3K7V63adUN5k1SJsCfZeLu/HkS1AT
-	 MwVpcLWQSSiv2yaQGojudXNDOn7Q2hxeUUMTpCnxJY0JZP3ISMFu7iTCXNBpcgFdPa/A6
-	 Srextx/u6EWlmfzOXhWD3iAMYPPAtwn0UjMfT0dLjFpyatsQURhLLzbg7AIt3bdnlZA==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794908872;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=XNWKjNP0ylTMFqS5R4s7agStVoLlbB3dV3UE5VmDOlE=;
-	b=NjUEWb1SCK0aBtWhsY0SXkhHA3pFmD/lPm/hhrNM/j558/shPSRBkayPzoQyoHdrhW7A
-	 US5CYDuK/2CXaG11k0iaBig3/gQgaKbyYSMZFQaBDGqgiVNLbDZlrpwfXy/QEZxcjh+jO
-	 AZHRStG+CPpd13FGIl1lmHnb7zNwaHgO/cQQZRF1rMbvR+fSjnQNJqhENiMn4aJXaPenI
-	 96i0AxRKRzu5HF2tQM4OYUvfH6eCaghIluS/4RkaDHO6D5VczWB5VNMMN+THRs1Ma82tk
-	 2VjI0dwpNIenqVmurnV0dCoI8Nh/J85QG8i4bc+i438VFZWLOsNWVzf4oIWW7gA51xQ==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 9899C1F000C5;
-	Tue, 17 Nov 2026 09:47:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794908872;
-	bh=XNWKjNP0ylTMFqS5R4s7agStVoLlbB3dV3UE5VmDOlE=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=eukyEsXJqU0/4gLBim9oDaQp85TGKZh6EXzX3C7aB/u+feriK4bokpaBM42f0DkiS
-	 ucKKRLJ1QFNV55A3oehEzqmbX8OamJFtjV/OeW4mkjjSzxDWnkZsR0oMyMBKzVknOK
-	 tZnagItasZE7oc4RI/TjYepIpLCpv1KF5wv85Yclf2kcXABgLhzN0JaccdCy2ezCZF
-	 uXemzZh/2TlVX8KhfJNTdhnvLR6AZ6930x77qkQppelUhtG2SetmHCCww/tD5ce0qc
-	 J+/HCUU4dzj5LkJ50VGnLeWOTTXfBp5kS0OYT3XDwSkQk6mUWidq8YS5BKXG+YTjWi
-	 vuEinKoPyqFhA==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 132BA4A793;
-	Tue, 17 Nov 2026 09:47:51 +0000 (UTC)
-From: Peder Bergan via B4 Relay <devnull+peder.bergan.gmail.com@kernel.org>
-Date: Tue, 17 Nov 2026 10:47:51 +0100
-Subject: [PATCH] rust: str: tie Formatter to its backing buffer
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=VIzqBc/k
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KOWGi+SotPsVpJqssA+TG1RsRqYS6zFwX51Re+LU64p+EUMSGYJU/n31rHPdy2dJ17gIWpcezZ12cJG9h1L2ERdGqa5l3aLIxR/GegPDj/55zxW91DhbzZfHSBevs6oHp4HoVNQlvwze1Nhx4WTlZ3EEtkYwoA9s0PtfuL8lqMqf7wmCJFIveVPY5SAdNSqQURB+gs2SF905yuSgqzi8A8MW3cvSQbQHExILi50G3v0yruMIskK6kYFAK/J1qdgUrPamjfqTzJh6TeZdEBnf6mid9BEkamOmJ8lTKgn22ud73kwne0vrWO3rBkTm6dARp67ILOvbLPpURjkcLAIM7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YatWmxCzLmAK7/g0QUUCrNjCZH5YtwoxdmfOVdakz00=;
+ b=MJGZwwSKgr9Q2+wDeFIG2qAXBQmFqTc1y4vEkDWGSRS8ECeNurtzF4iHHfwl/jHv/tIw2alI+9bu1BVzg/+NijAU11CbmSe6TeAOg/iRNJ0Zg/og0YbKS6rHTEoSsdD8Ee56IptY4cA0BXhDaozNGl8fUNuLD9teOgB4p5ZEmRsb60fCZR+McghX22/0DpYFbF8DrWaeMKGZ3XUYnP6MnvpcGez3otq4sbaKSmZyJi67i/E4RUdVSqMF3OfIbpkvzz9HPg8NoJPVlJBqy34nNt0FMG7ZtXxHtSmOeT+pCfCt3+1xWvhu+VXBhtSJzIl5cR4OupSJZW0SirzjNodVjg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YatWmxCzLmAK7/g0QUUCrNjCZH5YtwoxdmfOVdakz00=;
+ b=VIzqBc/kIYdqdf4/MasnxgE2kIbfNjjWiK/x59AcJxUIF7KQd+cegfU4VN2RXLz0q7vuREdfl1ZrWtRbgRbsLT8hEGKQvUTS5VMz70azBD5WYsFgd1tRpqYQcCRe04GwM0lm2+qJImgWvONnGzNG4q2G3/Hr+LmcZPwz5ghPdfM=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by MW4PR12MB7119.namprd12.prod.outlook.com (2603:10b6:303:220::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.13; Tue, 17 Nov
+ 2026 09:51:45 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c%3]) with mapi id 15.21.0615.013; Tue, 17 Nov 2026
+ 09:51:45 +0000
+Message-ID: <e2ec8a39-56c3-4274-91ce-60c273904877@amd.com>
+Date: Tue, 17 Nov 2026 10:51:38 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: DamFence: Remove warning about unsignaled drop
+To: phasta@kernel.org, Sumit Semwal <sumit.semwal@linaro.org>,
+ Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261112101015.528127-2-phasta@kernel.org>
+ <5d466f7c-2e70-4011-be04-9ffdf877b915@amd.com>
+ <49298d3a328c1695ea27993f714c20b8a1c05f32.camel@mailbox.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <49298d3a328c1695ea27993f714c20b8a1c05f32.camel@mailbox.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BN9PR03CA0691.namprd03.prod.outlook.com
+ (2603:10b6:408:ef::6) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -82,111 +106,131 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261117-formatter-lifetime-v1-1-9d7f38686552@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAMYi/GoC/yWMQQ6CQBAEv0Lm7CSuGlG/Yjws0CtjZCEzgyEh/
- F3QY3W6aiaDCoxuxUyKj5j0eYWwK6huY36CpVmZDvvDOYRQcuq1i+5QfkuCSwc+XY7XgKaMKTW
- 0ioMiyfSL3h9/trF6ofattD2qaOBKY67bbRoHc0XsWEdzzpicluULhAGl9psAAAA=
-X-Change-ID: 20261117-formatter-lifetime-48391ed7affd
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, 
- Georgios Androutsopoulos <georgeandrout13@gmail.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794908870; l=2702;
- i=peder.bergan@gmail.com; s=kernel-contributions;
- h=from:subject:message-id;
- bh=c2EXF63mEwnQnsVVyx1xUR6wHcOb7PHcB7oVHC4kogc=;
- b=cmJf587r8vKEHlsRLXxBys9PRoJzmqc7PY99ABcGPBG30A/U+CR4NFqDkHVTlCpCiZjZyEmEh
- B0zCJRZLbAaAGYDmROGMsitdX3LRLm5XVeeEoCJThHNaAH++9pnec/m
-X-Developer-Key: i=peder.bergan@gmail.com; a=ed25519;
- pk=39790pn1YZCulHBoUG1uiQI1Hm01EvhBEa2zVrS/yN0=
-X-Endpoint-Received: by B4 Relay for
- peder.bergan@gmail.com/kernel-contributions with auth_id=1395
-X-Original-From: Peder Bergan <peder.bergan@gmail.com>
-Reply-To: peder.bergan@gmail.com
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|MW4PR12MB7119:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2b21791f-a8bb-4cad-0980-08df449063dc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|7416014|376014|1800799024|921020|10067099003|56012099006|4143699003|11063799006|261026121527099003|261026140227099003|261028144727099003|261021135927099003|261021123027099003|261021121427099003|261022105027099003|261102123227099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	QgeW299KMZr0/nUiX/RQm9EGrReckxliuvC96K6/ndCf48iGSW154gAcZTrtPF003OXWqx2K/bEvJkctVccUhPztEaKRZWB7+sMUFBrWzfYGmHjkYG81G9Cvbh2xtlF5DS1hgBsApYRZiY0xJyFVrFv6WsrkolHr33DGejDzr0kogVUR0FkFCHmAmqe1MvhHsk51a1TMlk2+DfHm14mUgxRMN3xdxETb433/RftaTVjNKDKmM+X+eFLD4oiyexFTilx+GdZqdE+cc6Q+iFie40hyI5W/lVSEfRVDcNe+Tlh50zPN06F81VIAKhURJgXUpE1rzJ7bjqd7u+HaIzsJuf0xV7CSPln3WzNU8UwRCMAcc2oH5Z4qfAEt1E4og8TxqD4SHieEPxxpIiQLjiwJ9HqzL0YP4UtpUNN0oo9ynpCGza20O+Mw6qJ4AKJx7SSXPKJDXH6BuyvKhBcDzooUTU5Tm8m3jWz6DcIMhIoAufvt76ABeQ8QaKQE9iv/4XVyoFVYsg7HdzDU9UOwza+53RoVm6LrI0Um8OvHGBjCdoWCKdHABXcQLt7/C8gsA+RgApVZIq1Bj1J/ulJ5SicFxIQA9xajKMa1Fi4pZ1xftwgNUSffomvHBEF/nKYcENnaYN7Mg+FiUUBBE5HlLBMABUmNYQdWGHguasslzUN1MsZO3JnoBv6piz6oj+G4cwfrN62/vYVLQOIxqfYt4Xxy/w==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(1800799024)(921020)(10067099003)(56012099006)(4143699003)(11063799006)(261026121527099003)(261026140227099003)(261028144727099003)(261021135927099003)(261021123027099003)(261021121427099003)(261022105027099003)(261102123227099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?T3ppaDNXRWNzY2N0MXNDWUZPMTZxUjFTWk1vV3UvYmlzNFl6T0wvbjFHRW9h?=
+ =?utf-8?B?SXF2QkdJV29PU0FkcFA5cmlqb3JOdkhzWHkwUEUyc21EcUdzbytaMUsyMnlq?=
+ =?utf-8?B?Q1pWbmZjRlpWQ0V2UWozekhCOGNSRGtUMjVRcjlmTGdCOGtONnJleVNOZVhE?=
+ =?utf-8?B?ZGNaYVgwdGNXNzBieEdBOVQ1VDhnUnlhZGVzQnBSWTlxNC8yb3REMUxyVXpz?=
+ =?utf-8?B?bzhscC9LekY4N0RQbFR5RENCMVpZZnovS3NOVmFDRHkxYStpcEJVOHZ1eHJD?=
+ =?utf-8?B?cm5MbTBaaVR6RlYvSHdoNnFGTEVvTkY0eTlQc3h3WHI5eTZvNEp0R0VlWmZM?=
+ =?utf-8?B?N1pXUzViVEtqbkJ2TEcwTUhnMkxjTllybUdMdUdqOEY0TGluMzgrSUVrTktN?=
+ =?utf-8?B?VURJc2dCNDVMSDlURlZES3psTmZEUit0MlloWkFwYUpyQ0ppODY2eWtuTldt?=
+ =?utf-8?B?UnY5UE9nb2MvZ2JUTE1rQzVQVGo0SUdmNkZkQVlpck9vcTRTWjNBWVo1UzZi?=
+ =?utf-8?B?QnJmOTY1NWtZUi9mZnJ2YnRUbGFQb1lsMkJJbHo3MHdGZzNaV3hJOUlhSWlG?=
+ =?utf-8?B?Vm5HcXJnWFpRa2lIMXVtUE5Ibmh6Mnc3Tkp0SjRtNStnSDhtdjZwVzFDbTIx?=
+ =?utf-8?B?YnV6b1V1RlQvZ2VXQStrdWV6alBHNWFkcGtxeEY0SjBrV1Erc084d1l2MGJ4?=
+ =?utf-8?B?ZFlqRWFuMGJtUktGaHBqQ3kzY0NnWWRaelNHaTVVYjYwcjBWVUhXVkpxcDBi?=
+ =?utf-8?B?YmJ1SlFwL0dHcGpWeHlOTWJ1dzlSTHYvdFQ0d1pEUVNmbkJuNUplUmdaNVVO?=
+ =?utf-8?B?ejFBSE1yb1ZOT3VSYzFVMlhnTHZOVHA4SEJnQTM3WkcwNGJTRkRSWXNoQU5L?=
+ =?utf-8?B?SHdSNlBpYWdDWU5uUnM1R2ZkK0ZTL1VzdUNMTndnMXNSNk1HUStBd29kR1hN?=
+ =?utf-8?B?N1gzbi92UXJ3T2h5S3phSEp0bnpENVRYQ3I4ZVVjbm01bUM0ZWw4VU96WS9C?=
+ =?utf-8?B?QklrNmJJV21rOUlUMXRxQmh0TW51UnRrdTU1NHRnQ2JaSWVlSE1xUEwxSkFT?=
+ =?utf-8?B?TmJQT00remNiY3MxUThDVnpmRWVrSlYxQjY2NkpIakcyZjcrM1lLY0VFZE1E?=
+ =?utf-8?B?KzFuMnNxYUQvSXBOS2NMc1dDR3NXbzVJYkQvMlg3bGw0bVcxS3FGRlZIazBC?=
+ =?utf-8?B?NXVITEkreVRzd2lrQXU3aVg2VTJJWldFQmVZdnpHYVBRSkZhMWM3WjFSbHIw?=
+ =?utf-8?B?NW0wb2htVTdxZTdMbjNSRUlNRUIrQnNzR1B1aHdPNjBQcm9kdUtnNXlNQS9X?=
+ =?utf-8?B?MlB0cFFDeWpPQXdUSFFwNm9YeGJ1WlBwKzd0bXh3S1NteGR1RnZHOVlzM1Qx?=
+ =?utf-8?B?MzZOWVovYTAzOHU5V1NEV09rRVZXamlLY1JiSlEzQkhjUURmUGZKVFNCWVo0?=
+ =?utf-8?B?NUExV211K3d1OTNzK05nR0VwOW93T3FzVHVicWV6RUcwdEtVVXdQdW1yeEJY?=
+ =?utf-8?B?cjNWVVowS3ZoM3dQRHEvWVBmbDZQZmxpMlJNNWZidUU5TU81Z3ZhaysrcGNC?=
+ =?utf-8?B?S1JFZVR5WVBlU3hvQXNHc000WEdqU0RxQ0hhMVdhZnQ5QXY4cXBXaWp6OFVE?=
+ =?utf-8?B?bGdKTGFLSjNOcHNEZnQvZDV6cVd5WkdqQk5TbC9zblVzSDlwbldVYjEwdml5?=
+ =?utf-8?B?MDZzdVRaUC91RU1rUGZwZ1NMWGV3clNXSWkya3VKRG5HdXltdnRaWGtTblFz?=
+ =?utf-8?B?V204Z2Q4ZVIxc3hZRng5Z0kzLzdRaTd6QVFWb25MSjlpQlJ5OU9DcEhaWTV6?=
+ =?utf-8?B?Nmt0SUJpeVZaNmRrWGRUODlKbEgrempIbFNZbjlmMWNwWFlsQ3lGNDBSaGJm?=
+ =?utf-8?B?ZHBPcm1OUjg5QnZPUUFGZU9qYnFmOGpHWlN4QjJKaXZ4eXNnaXJlSXRvQ1l2?=
+ =?utf-8?B?ZkVPZ3FSTWVob0FrcFBtQ1huYVJXTW9ybXRMVzVxR1ZscmVxZjgxQzRzM1M4?=
+ =?utf-8?B?ZGF1ZjZmUE93K3hOVksxZEYrM3RFd2FNV0RHeXIyM09jTXdiY202Wi9IcWpL?=
+ =?utf-8?B?QUN1TnRTWFZGaG5vc09EbzY2S3RodXJpTDkyM2JlMmlXekJZeUczR0hsSm54?=
+ =?utf-8?B?WURCZHJkekl5TkRIK1NNMDd4UlpGTzRZbVZEK1VwVXVTZ0F1TEFvREM5SVNl?=
+ =?utf-8?B?RXFGS2VyTlUzR0VNNTF4NmZ2SGlJc3I4OFRFMFkrOFd2cnZTaThYb3lWWWFZ?=
+ =?utf-8?B?dnJqVGNvQ2RWR0I4ekZTOHpicDA3a2pOSmRCeG83TVJOdkc4VklPV0NPK0Z1?=
+ =?utf-8?Q?2MtPbhZH59QLWaJ5ZF?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2b21791f-a8bb-4cad-0980-08df449063dc
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 09:51:45.3152
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dEht/ckkP8ppmzv3t7+s2NWAe4mb7Jan7+Byb4DUEEnIXJAwQdKPF/uFR0JuO+0y
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7119
 
-From: Peder Bergan <peder.bergan@gmail.com>
+On 11/17/26 09:24, Philipp Stanner wrote:
+> On Thu, 2026-11-12 at 11:29 +0100, Christian König wrote:
+>> On 11/12/26 11:10, Philipp Stanner wrote:
+>>> DriverFence::drop() contains a pr_warn!() for when the fence drops
+>>> unsignaled. This warning gets into the way of canonical teardown in
+>>> Rust: when you drop a lock, it unlocks itself, when you drop a KBox, it
+>>> frees itself etc. Congruently, users should be able to tear down fences
+>>> they don't care about anymore with ECANCELED, which is already the
+>>> default error code.
+>>
+>> Well a dma_fence should never automatically signal when the last
+>> reference drops.
+>>
+>> Leaving it unsignaled is the most defensive path we can go. That can
+>> lead to deadlocks but it can at least not lead to memory corruption.
+> 
+> True, you choose between the Unholy Trinity of DRM: deadlocks, UAF and
+> memory corruption :]
+> 
+> In this particular case, however, Rust does not allow for preventing
+> the user from signaling "forgotten" fences anyways, no matter how we
+> write the fence core:
+> 
+> struct DriverFoo {
+> 	f: DriverFence<()>,
+> }
+> 
+> impl Drop for Driver Foo {
+> 	pub fn drop(&mut self) {
+> 		// Signals fence implicitly & automatically.
+> 		self.f.signal(ECANCELED);
+> 	}
+> }
 
-Formatter::new() returns a Formatter whose lifetime is independent of the
-borrow of its backing buffer. Safe code can therefore drop the buffer and
-then write through the formatter, causing a use-after-free.
+Yeah, exactly that is still a bad idea :) See the HW eventually doesn't necessarily stop doing DMA if you unload the driver.
 
-Tie the buffer borrow to the formatter's lifetime so that the borrow
-checker rejects such callers and prevents overlapping mutable access.
-Add a doctest showing formatting into a borrowed buffer.
+I even know about one case where a driver fully intentionally leaks memory on unload because the devs couldn't figure out which FW keeps writing into a buffer.
 
-Fixes: 87482d6d9104 ("rust: str: allow `str::Formatter` to format into `&mut [u8]`.")
-Cc: stable@vger.kernel.org
-Reported-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
-Closes: https://github.com/Rust-for-Linux/linux/issues/1261
-Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
----
-I compiled the in-tree callers with Clippy and ran the string tests and
-kernel doctests under x86_64 QEMU. Three borrowing probes compiled before
-the fix and failed with the expected borrow-checker errors after it.
-Rust documentation and formatting checks passed.
+This was suggested as problem solving approach for AMDGPU as well, but we have been able to avoid it by clearing the DMA master flag in the PCI config dword.
 
-OpenAI Codex assisted with coding and testing.
----
- rust/kernel/str.rs | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index 644b4279a..6222faacf 100644
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -645,7 +645,7 @@ impl fmt::Write for RawFormatter {
- /// Fails if callers attempt to write more than will fit in the buffer.
- pub struct Formatter<'a>(RawFormatter, PhantomData<&'a mut ()>);
- 
--impl Formatter<'_> {
-+impl<'a> Formatter<'a> {
-     /// Creates a new instance of [`Formatter`] with the given buffer.
-     ///
-     /// # Safety
-@@ -658,7 +658,23 @@ impl Formatter<'_> {
-     }
- 
-     /// Create a new [`Self`] instance.
--    pub fn new(buffer: &mut [u8]) -> Self {
-+    ///
-+    /// The formatter exclusively borrows `buffer` for its lifetime.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::fmt::Write as _;
-+    /// use kernel::str::Formatter;
-+    ///
-+    /// let mut buffer = [0; 4];
-+    /// let mut formatter = Formatter::new(&mut buffer);
-+    /// formatter.write_str("test")?;
-+    /// assert_eq!(formatter.bytes_written(), 4);
-+    /// assert_eq!(&buffer, b"test");
-+    /// # Ok::<(), kernel::error::Error>(())
-+    /// ```
-+    pub fn new(buffer: &'a mut [u8]) -> Self {
-         // SAFETY: `buffer` is valid for writes for the entire length for
-         // the lifetime of `Self`.
-         unsafe { Formatter::from_buffer(buffer.as_mut_ptr(), buffer.len()) }
+The fundamental problem here is that a software object running out of scope is not an indicator that the HW stops doing something.
 
----
-base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
-change-id: 20261117-formatter-lifetime-48391ed7affd
+So just signaling all fences with ECANCELED is not enough. When the driver runs out of scope without all fences being signaling we seriously need at least some kind of warning in the system log, potentially even better call BUG() or maybe even panic().
 
-Best regards,
---  
-Peder Bergan <peder.bergan@gmail.com>
+Cheers,
+Christian.
 
+> 
+> 
+> So we decided to die this death because this way we get rid of the two
+> of the three problems that *can* be solved in the API.
+> 
+> 
+> But it will please you to hear that all users of drm::JobQueue do not
+> have access to fences directly anyways, they can only signal them
+> through JobQueue. Thus, they can also not forget them (signaled or
+> unsignaled), because they would have to forget / leak the entire
+> JobQueue as a whole, so effectively forgetting also their GPU ring. If
+> that would happen, the driver would be broken beyond repair anyways.
+> 
+> Regards
+> P.
 
