@@ -1,78 +1,78 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1794938227;
-	b=jh1loKnqTwVetVS36aEmtSJP/z6nIXkn2iDSCVNvwmjuco4B3gkMmUixE22qSJpQCNYJ
-	 z8FsHVTRwfYnSL8QCbyw1UNLhfPA9KD8J52eWR0c5WIuZPIULrsZdO7kpicz+Wv1J8bmo
-	 NCd4ZBL6ErtUHmaZ+wM/3qlmLKKr0MOZNmfb06ZZRPCS88xKXI2iYpNuryBlKlsAjVEG1
-	 WKQD0EO4ofoTk1S+dWEZpsh0Y3ZrZelAm2FCpxtm9g6FxJZLAmxPY2X+fcexd6jq4FOr8
-	 D9g6UUkDnEufLm959GDxrS2BTDx4eo21LsneaaTLkzweLqGQ4eieYuWtKKej2hZrVPQ==
+	b=SnePY8x9MZZUXjE3aeJeydiAPHBvGN53DsZFs8AAAauqqKsG7DBOKOuw7IbARb97cKKg
+	 B4mkZjVH4eGC7L1swpx2JGVbJ2ur3JXEmwRQx2adDoZxnsq2nMuHCvTJY0Z0zWlx1iUet
+	 RSTxsq5tY6FPToDzPz85FroQ9pSmoTo4BSx91rFWLRSf5tQAsBkc2wxPgodnm0q23vNeK
+	 AxV+wu+bptC8EQltQk2N1D865bd42sSXrBzHUnovSHZ2HmekHbVnhNwSGYZma2vfRUlgD
+	 g2sAiuh2eiKo4S0enGa5LP3tdmQnZ041q2maXXqXxZ/Z/8YRwj/5EEpSpa6l2uohWoA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794938227;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=hC5KEawRSACiOVREXaGZTEtrXa+nWN81A4O1kNUKIpM=;
-	b=5izWkcMOCfOfo82aIo2vkebyVZCggiX4I8CKKRP+QajFz5tg36Oq6KMGRXMXfznHnKbW
-	 PV+M4QiSuDQSY2TByNO3g/K+3jpMily1eRjHXe1MWvKTVWECDJ6dmLzXRiSmZN1wHLctJ
-	 WORb5n20G8pTZnxao3auZXUdg+T1TkJ1bDyddyUcQeShavCvyYerxvUQMOI5Qp0qLEsUl
-	 zKMHBwoNq2PZ8PBLdgV6xpZeIjGRWXLmkiKEfcYXGlTbH4VAqssHPT8XA2yg+jJwjs8mZ
-	 AnVRt2XqEwUxr1DQ1wjZLJVXfepL0kx/YfmEzONvkDGl0mZLT/zc5+YnQJA9QUqZVng==
+	bh=iZm8gP5NtzWpDu5Ec9bghesRJyGcuypRk9ToYfTJBbQ=;
+	b=zMzDU98YC1xp12MTqvDVkKX6pBE2ISuHa9FrnGBd8MD0OtRn8EaZxkFZ4p4+S5yJ7x8t
+	 /LzikeMughkkYWN+8FRtdZybpnaMM7EPQWHi+8xgXJaO6hMNbfTm9x1ZuswphzffGMqCP
+	 i+3pM1OP5urOdp77GgGnEk8wgC0XZOGAdgrLH1OX9RPtVxgFjpbPHCnkitWPnaeCTqHMI
+	 8vi+56/IGgIkkm1UK4rA5VN7SkpooBPwyX5Ik0oozMVSB+L8JO5PAqMIuquW9Bw/PBut5
+	 QAMuTporgL7i7h+z3Xlq463LKq9m4n78kij8wGQfFWUdPbX0umiJ/FU4ClOfT+j94jg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nf9cqvoE;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OnCknJVH;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207B0606A331;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615DA606A33A;
 	Tue, 17 Nov 2026 17:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nf9cqvoE
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OnCknJVH
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1794938227;
-	b=WgqREqMj4+t1w1BwZQw25iNATnXVtYP1VBxrMAx1qcLXF6IQTJOAmUtd5Y1eoDkFlIOw
-	 zdGXFyAugf37yBDr8TJ40tafRFg+xs7c4JELSZnFarbG6XfetD76ruU22BHyzTULQZj2D
-	 jaC9txqm3gsQiLlze+ODrIIJvZmYNwxa0GLi6hWJPbmlherg8TIZkgfsKz0sET+C4AVMq
-	 naz7IM+MNPirdGc9pxg+Q0qJ7D7409rccD40ooAUjlsFxUR+5xE9r3YVw0Bin22IZNx6l
-	 l3xa7JwJPPPZyT+g0oVtiVEk4U4NegUS7tWqLzSMd1EEVhOTB70E+QkAKdcWCAtXVug==
+	b=I40bQVC3IsoyRHPyTKWNtyz3wcUuLqMh7AA3vQIOW8BeiSIn7+QL/lN9zGr4xeikZuy6
+	 fWghAelu5D6opkRZs+ElnMovGzcejm5R49hizc+OySW2AA2lA3K1ZUG0jGOJ5midBqfxE
+	 c/x+ia+Dzkv6jj+grzi+f7tdsl7hDSDzyEcyDdCYFKa4XPLMwb+Hm6AkxQBlEFXj9DeTL
+	 gdowUh2yAU+r4iEgh1eY+RCoy1Rx9OcSGBZOYX8xrB7LN4KqU4pthOfSsinnCBOdfZmuQ
+	 pEoEXAyivhqSIa4UEd7cV6EsEKukqS1QmJd2phCiPYnGONQ81G9sjEVSDdnLil5mFng==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1794938227;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=hC5KEawRSACiOVREXaGZTEtrXa+nWN81A4O1kNUKIpM=;
-	b=WocTgkUD8GGDvSqdEB3l+tWBC+5wyTfXBBT6PdiCsr+av6NTcThYy0QMtMeyBW0Mqt41
-	 VUm9zUWYCVb7xyaRMTW9wf6rswQipBAZZ57T/UIKxHyGM9S7upljeWDRjnBDwPS+VPVj1
-	 s3NncrJxu3OJ2PuoSEpC8bGslY73HgwO8RwbYFYHuokrjdudjtu90eHdPuffqWd5xxPxH
-	 dQ4g7uwYSap6qeAUlkWEbHLu6qBhAMwU9Ol6fGbEyOl5R0o6KlqPcgJK0x3/jqPrgEgnn
-	 OqFL1ZLVZ3NveuwHCk77DwxZcGn5Ca7hjzgJaEmuFyLBbfYoSHfmlhTZxb3p0xPF8+w==
+	bh=iZm8gP5NtzWpDu5Ec9bghesRJyGcuypRk9ToYfTJBbQ=;
+	b=UVGDI/4UfzavKV9tfp96Y629sP68FwwM368zbA8T143hyG3zlSxzZmMULw2sDaGs2086
+	 0FZ/IvNUzb+kO7d4AEt9VCzQsm7/rEVSr9s5OmkQbjAR/DH4NEAInOBERh8OYL29cTb51
+	 5VTJEXnJt69GmqVVyftLge0J7poP9VijvRtRvkuKa6k3DDV7eIq3yQLS96I3S/yNynrqG
+	 M9cD+3SsJSqw8jHhDbSZvWIFp8nqAoR4CYnLiFnOi5+0pXfsLN3i9kjF/DmvG/r+ozkYl
+	 oSzpMDcZkXDF57CqXW+3OCbHaAfM4j0UVfDMbYuYu/RUDVw3I4j5w4HeWQOm3qDifVQ==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 54E061F000C9;
+	by smtp.kernel.org (Postfix) with ESMTPS id 6A0AF1F000C5;
 	Tue, 17 Nov 2026 17:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794938226;
-	bh=hC5KEawRSACiOVREXaGZTEtrXa+nWN81A4O1kNUKIpM=;
+	s=k20260515; t=1794938227;
+	bh=iZm8gP5NtzWpDu5Ec9bghesRJyGcuypRk9ToYfTJBbQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=nf9cqvoESUTWYJ1HBE6isP52hxwrzSL7fwr1PtU7xzzPHLND/lusQUuTM4BQqzAx0
-	 SMoUas/0PMO7r2knddS9caXHXqEFmHMXkcUKiATYl54PFlxruhGqJ7q76cUYk6WV9k
-	 2DSf3T0KWQJlIymiOgj+Cyg5XRX6p/HV9NZedTH9oLTDpqGsAQUcBDYd1FZ3Muk3Eh
-	 6sHUAYQ6DoSfe1In82HtO/YEMI+ro4Wc3AP0VFvTBkSXQTbN/K5GJ8u0ncc4q0gOgn
-	 j0K+lrZhC+A9EFxMXos6nZNKJTTdZl8YOqzRRV+7/tRCbU9Ecn80zdDpNqqCxlJDiv
-	 Q6TcagP+pvTcg==
+	b=OnCknJVHin6QecJz28X4FFapTRTEjGcyLiea8XvZyPjLbXPbr4XME/w6zWK1WgB58
+	 WAAd8IwD4IglMaCzjrTDkSbx5rdVTnd0UcTPqJnaVpVV0qvlu9QYSeRS9JMwaGSHPk
+	 yOre/e1Ewzr/6BBhbM1H5QuKUX5a3gheeAY8FxtOHAgmIkn0XD9VZ0i82wLPZpXVJY
+	 r889Gk/e3TohsZDe53kdBcvt1Z7586HA4MpTcMlJqzt379ZPBz7Mg9lNjHVmSTYQlx
+	 NgxtTG4Lx7T4EBkzFzBM3yNbsNl7Wp5hXjeL3utL1RToTJ/qJBnNtmgyHJNu9COEwA
+	 7QySYf/I6h3ww==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id D544B4AA34;
+	by lkml.kernel.org (Postfix) with ESMTP id EBB7F4AA30;
 	Tue, 17 Nov 2026 17:57:05 +0000 (UTC)
 From: Peder Bergan via B4 Relay <devnull+peder.bergan.gmail.com@kernel.org>
-Date: Tue, 17 Nov 2026 18:57:06 +0100
-Subject: [PATCH v2 1/2] rust: str: tie Formatter to its backing buffer
+Date: Tue, 17 Nov 2026 18:57:07 +0100
+Subject: [PATCH v2 2/2] rust: str: add an example for Formatter::new
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -83,7 +83,7 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261117-formatter-lifetime-v2-1-e216d86ffb57@gmail.com>
+Message-Id: <20261117-formatter-lifetime-v2-2-e216d86ffb57@gmail.com>
 References: <20261117-formatter-lifetime-v2-0-e216d86ffb57@gmail.com>
 In-Reply-To: <20261117-formatter-lifetime-v2-0-e216d86ffb57@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>
@@ -100,12 +100,12 @@ Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
  stable@vger.kernel.org, 
  Georgios Androutsopoulos <georgeandrout13@gmail.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794938225; l=1630;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794938225; l=1243;
  i=peder.bergan@gmail.com; s=kernel-contributions;
  h=from:subject:message-id;
- bh=pk/XTxsT2Cck/gs1Jsjp5EjCnE+z6vFIFe6DZRaRaow=;
- b=UoEl7Jj1iJ543UmZ3DLnqWPw6c1Qv4seKjCgdMzsZgxf7j+C+CMr64hZ+7DDXKBoYx7hRigaY
- L0xurLXmFn6C9QfFLvxg2XjC4XUGNfPCGKUGgU4BUqAmz3L4JsVmBxm
+ bh=cXnDKX6DUJYzotZgM4eodRj9988SY5vag/57CgAxefA=;
+ b=ftlkleDiJFBrpP5Go7Zmk+scHV6bzIGVdtrSzMBuq71SDPvACTVvj4xa0XhOcRCoa6bVKLGMp
+ tn8Qq+MxRm8A7huSNZqHvGsypCZTXzVQX9Iuo9O0dTqDGEF8niqOGRZ
 X-Developer-Key: i=peder.bergan@gmail.com; a=ed25519;
  pk=39790pn1YZCulHBoUG1uiQI1Hm01EvhBEa2zVrS/yN0=
 X-Endpoint-Received: by B4 Relay for
@@ -116,44 +116,42 @@ Content-Transfer-Encoding: 7bit
 
 From: Peder Bergan <peder.bergan@gmail.com>
 
-Formatter::new() returns a Formatter whose lifetime is independent of the
-borrow of its backing buffer. Safe code can therefore drop the buffer and
-then write through the formatter, causing a use-after-free.
+Document the exclusive buffer borrow held by Formatter::new() and show
+formatting into a live buffer. Check the number of bytes written and the
+resulting buffer contents.
 
-Tie the buffer borrow to the formatter's lifetime so that the borrow
-checker rejects such callers and prevents overlapping mutable access.
-
-Fixes: 87482d6d9104 ("rust: str: allow `str::Formatter` to format into `&mut [u8]`.")
-Cc: stable@vger.kernel.org
-Reported-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
-Closes: https://github.com/Rust-for-Linux/linux/issues/1261
 Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
 ---
- rust/kernel/str.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ rust/kernel/str.rs | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
 diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index 644b4279a..e5fe84eeb 100644
+index e5fe84eeb..6222faacf 100644
 --- a/rust/kernel/str.rs
 +++ b/rust/kernel/str.rs
-@@ -645,7 +645,7 @@ impl fmt::Write for RawFormatter {
- /// Fails if callers attempt to write more than will fit in the buffer.
- pub struct Formatter<'a>(RawFormatter, PhantomData<&'a mut ()>);
- 
--impl Formatter<'_> {
-+impl<'a> Formatter<'a> {
-     /// Creates a new instance of [`Formatter`] with the given buffer.
-     ///
-     /// # Safety
-@@ -658,7 +658,7 @@ impl Formatter<'_> {
+@@ -658,6 +658,22 @@ impl<'a> Formatter<'a> {
      }
  
      /// Create a new [`Self`] instance.
--    pub fn new(buffer: &mut [u8]) -> Self {
-+    pub fn new(buffer: &'a mut [u8]) -> Self {
++    ///
++    /// The formatter exclusively borrows `buffer` for its lifetime.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::fmt::Write as _;
++    /// use kernel::str::Formatter;
++    ///
++    /// let mut buffer = [0; 4];
++    /// let mut formatter = Formatter::new(&mut buffer);
++    /// formatter.write_str("test")?;
++    /// assert_eq!(formatter.bytes_written(), 4);
++    /// assert_eq!(&buffer, b"test");
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
+     pub fn new(buffer: &'a mut [u8]) -> Self {
          // SAFETY: `buffer` is valid for writes for the entire length for
          // the lifetime of `Self`.
-         unsafe { Formatter::from_buffer(buffer.as_mut_ptr(), buffer.len()) }
 
 -- 
 2.56.1
