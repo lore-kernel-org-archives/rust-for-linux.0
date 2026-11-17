@@ -1,76 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794870105;
-	b=HCvLEiFBml40RyEHXej7nw43elVgXMXnBrpw0NHaNX2bfbDj8Tmvy2Ox/1+qHT3juG0p
-	 XTDBTyRjP+34Nn9ujwYWiydJea9iCdCfnVsfJEfaCCgEDuEmUK6ZodI123/3x6iYTKg8m
-	 XTv3vKDBldGcjfBQboBIqO57+2s35tiVaJafk6L0d9Vy8zEd712M4YpfZ11cHpoQpUGgI
-	 i83Bm0PdN7vOgvI8nYw/nfRUwsiWNGpeLUOGlvsRA4Peh+U4c0Sbn74lWAA47Hm8bozjC
-	 jBPBuUjfulXlx3RU8AvTPpaqNBuA7AxfvZGRVc74oX3JZGRa7qp5UhImVdycsk5B3Ag==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794870105;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Zoho-Virus-Status:X-Zoho-AV-Stamp;
-	bh=+NT34kLxa5Buh7EeSg6mueQnhrqQNWaU5x09tG502iA=;
-	b=kZ06UPTUaxkon7dBK724TQl2CsowQmaVQlJqaRFgNwILr1NRPwO3J289q8Qj/cxninOc
-	 ZUHRq1hMJDYeEQQ4z14lU/rVSgKID4o+h77ylj4B+4dhp8ZIg47wkvnVh4C1hv7iZ8QbU
-	 es2AKyIQZHdLicI0DLRUMjk73INjkU2DladUxAA+o4udSoiQkylMQlMo2zettrXgSRUta
-	 zyT0TCOBobnAAwrHNwapoAleKNORwt7VCnCkyGofnSHWz9La59KdfQ606bnuWnuuSjOg4
-	 QO/rlJZAE0M3/I8ppexncptqSqz66uPJSuDGCDIvekoeMwH2aLRolL0xQIS3baMf5bw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=dyAcSFRv;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794874433;
+	b=PqZ6fFyx7EhAMabtASeG0ttYgfkDOkFM2ILkmDJCTi3v2JaGrwqOvDeoskNa1x/Tmi7S
+	 RaK5MnqQdzgemO0H7HdZGmyJtzAFarRvcihvwp/chxCGk4IBGnRv+s6ZzYQnb5VDlZORw
+	 RuuNdZ7YzAW7ATdtWQ0MDLZJUYA68qeVtghKTAlJueAqxY68dIhvwPAPNvEJg6MkxKPWw
+	 mT/4E0Ihk7/6Uy/hb3am+QdiP6dPqkWMJDYlfkSC/g6B6ihpNXFwCR7ZB0bk1lOlQ/LSH
+	 dWEk9HX9rTIfp1oPZkq7q87cxokK7jjujELeeHQyDC9JOBi2YXpJ3DwsFuO0VQcsXmg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794874433;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=XVo09sxxh0tBmx3yVVO/fyACtpMXW/ZeTIbSkdS9UIE=;
+	b=G7CQ3Bevcp3B0lruEh0d8PJIpCRQnBUpfKggks8BpDjgtdmYQEANyToaaS46o4LAHzCy
+	 pFnAvZg4ccn9kBVcYeDXoB9PSPYDvA8x+aHejQwm2zJCnI+8jMZD3MM9djaaXP4CLi5zl
+	 0N7t+xmbB9Ujc6OQyOh6D2xU/qPe3YzxWQXNvKFiIkJwri4ig/kcVKmD3r11WkH48lj0j
+	 3Ldy/EgsTaqDyjZ1dn7jI2rx3314Ed+k2LFzmsK5EyXint2TyneD97PSzs7mTotB8yZqR
+	 5XHvj4NRdIiNrjSvl0SeX/Cy1x7FOskzv87E/TPgOfph/8PellMlAw1SEv2383fazyw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IOb0mbyJ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7617D606A888;
-	Mon, 16 Nov 2026 23:01:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7617D606A888
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B376606A330
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 00:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=dyAcSFRv
-ARC-Seal: i=1; a=rsa-sha256; t=1794870072; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=gxZ8+24nZsy9bGwTP1y26p3//VIT57UUXtWB+Ccgn667GFa57AqnWp0yiJTKMRSHgbBOUYNdNIQT+2Lo78hLmWojyUZurVl3TMD14JKYmvq+1Fa+s4ETaSvWzj/DW23007fbSv4AZWEbCOHelOxOHl5u2K6emaz25+m5cXyWUEs=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1794870072; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=+NT34kLxa5Buh7EeSg6mueQnhrqQNWaU5x09tG502iA=; 
-	b=iiI00f6/IYbLj1b4A6KRIs/we1VgRVpWYdZvo2IPZLg6QJS09faUYlR86ONp8FJSPCsHUeWO2RpIPHlhNcJZ6jYUYr8j2AErTf2zrBXjyZ8p7Qj0v0NRTZNfW49d2LC4HOhGWZR6fvUuF/QRhnPAwWFOdGCyT+JCizLPYBrmas0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=dyAcSFRvv3s59EvRAJG3KLf1F6B3YYlk49CVFsGwWvtPpL4Bes+MF87q9JMZEd7PdMPQVTodHgA0F1+KpPKJINz9qGs+5t5gDKj65+J2cQXm1YShryWM2LURIjPrwqvwlFaIGlDDoswZ0kc80ouvzwEaM/hgkddxOTOy+4oFO3w=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=+NT34kLxa5Buh7EeSg6mueQnhrqQNWaU5x09tG502iA=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1794870069850930.5156118632432;
-	Mon, 16 Nov 2026 15:01:09 -0800 (PST)
-Date: Mon, 16 Nov 2026 16:01:08 -0700
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Janne Grunau <j@jannau.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Janne Grunau <j@jananu.net>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	nova-gpu@lists.linux.dev, stable+noautosel@kernel.org
-Subject: Re: [PATCH 0/3] Fix import of dma-buf buffers as DRM GEM shmem
- objects
-Message-ID: <avuLNHy3bNAUpzNv@um790>
-References: <20261026-rust-drm-gem-shmem-imported-sgt-v1-0-36f15ace04b1@jannau.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IOb0mbyJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA86A1F000C4;
+	Tue, 17 Nov 2026 00:13:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794874432;
+	bh=XVo09sxxh0tBmx3yVVO/fyACtpMXW/ZeTIbSkdS9UIE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IOb0mbyJ6Zpf3675Bki3SsVd9pKF08EYuXfo6Gl6PZMLltTgKfYQWgfHpp5EsopJA
+	 6PujDHeLd2jPoc9NhnPes4e0tjdGfxyV/p0SjAY4F+BTwe4wnB+sAX+1r2joJDTOz/
+	 d/m+wuVV37GdnXjbLGSGk9wEvBM1EoEH7Wn/km7acfrCxTrHasyaWxmbPDgXHbKMAb
+	 x2AlA0QcHphxtOVXIawnwZNpt++w2teVdhT0+HkxZDW+WgfcX882dlCxXMpY6Jmvki
+	 c02crd9qBkZ8+QfmN5b2hU7A/vKBUUAKTGS1SBuH6DigQrTkcGzmPJaY0kgwtgy1lo
+	 G0vSEdOSXfs/w==
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailfauth.phl.internal (Postfix) with ESMTP id D83DEF40067;
+	Mon, 16 Nov 2026 19:13:50 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-07.internal (MEProxy); Mon, 16 Nov 2026 19:13:50 -0500
+X-ME-Sender: <xms:Ppz7aonjL6K1uJk77U_8yLq6vjTcFnWlXCDpq-UrFESlHENYFSBs5w>
+    <xme:Ppz7alBOVbtl_hZOm1XsVAmlRpml051VibDNGQDSeFdVJktam8-b2Ya1RvBTsRRcQ
+    yOJr70OxDrFlFg_Yebv7Ek3qn_tH6fh98ATrmTF52Wi8yfeWgUWdQ>
+X-ME-Received: <xmr:Ppz7arKwJfFJ4Cr055e-KoBn5kgEamgvpIosfFkrx7SLnw8k0QmU2om67J9nqWAoCYT4CCED9QjLhDuxK1lyP05LNihT3bXr>
+X-ME-Proxy-Cause: dmFkZTGPCh64XdAD5hVH7IS3FJe9LUYF5q7vq0TeCrpvkwesw13usMNbSu2kdx4d+j+BCl
+    /+UD2NXBMqVDoGANLMH+B0uuNW7rzokbr9aO5izKddQZOs6wEvRKlNwYAk1gTHFq8/rAAl
+    7ZfZGiR9MBAZX015fB34lXfCtqEw3uDmqwkGdTjeUoNLDNHlQKgEnMVW+0CMV6PnpW2UVi
+    NTkmf/i0fe4oJF2juBmRov6yxUFfTfVCx4OvF5G7eRBKDrSHogHeTTZcBbUlMn4UpeLliC
+    ypXQUrjS/jP7L2JzDaflfpvnP0zI8eT6CRa369BzNy9e0VtxfuzcKFOBVBbYdQQ5bE7QGC
+    GTwhhDxDQpcKMyAE47LrbtMpFe6QbJsiEXU6RgF2F0ZFuNYnBrF8WSNvVvwwtC3BivNEGf
+    ZY8BtrvB5h19rMfsHYMo3zO9rkZKMRwLuhEXSop6xRdtbWbpZeAYjP4mwsLAGl++AoaI97
+    Ugp55LUtIYoDLSkdyRUgPo2KpOGbac/I19/Z459QSfpiPPYOYDQjMRlfmJlXl7SlONEN5T
+    0eMAJ0lwfbLraKggwiEORKcCBjpptEperBsmV17mKzcqV0ScxCUri2FovbXu1XaR+0g2oJ
+    x3U+Tvq+7lgboP8IO4dK4GIvOLigDlbbJLnALCFcZWdrzrnMgcFksdXUXYWQ
+X-ME-Proxy: <xmx:Ppz7agwvrd8TyouWUVv_NgBFug8Ka4qzAguWtgTko6utgq4eLAHq9A>
+    <xmx:Ppz7any10wKw0qpjHH8VzbRMJUXBsh8fgzWVrBRqYnbzdUgl_qtrFg>
+    <xmx:Ppz7aq1UkwXKwL4J5BJyziLoai2A15SumovdHkYJFjxg7J7LK_SNCQ>
+    <xmx:Ppz7ahUYRaH9InQmREwiHWLvigeXErQjQPjwnDUq41aJRKpn1FpXkw>
+    <xmx:Ppz7amcSuykigTGubtL4Xa9ZELfE3voVs70abwGvo4Z472QaurF1AK78>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 16 Nov 2026 19:13:50 -0500 (EST)
+Date: Mon, 16 Nov 2026 16:13:48 -0800
+From: Boqun Feng <boqun@kernel.org>
+To: FUJITA Tomonori <tomo@flapping.org>
+Cc: aliceryhl@google.com, arve@android.com, brauner@kernel.org,
+	cmllamas@google.com, gary@garyguo.net, gregkh@linuxfoundation.org,
+	ojeda@kernel.org, tkjos@android.com, a.hindborg@kernel.org,
+	acourbot@nvidia.com, bjorn3_gh@protonmail.com, dakr@kernel.org,
+	daniel.almeida@collabora.com, lossin@kernel.org, lyude@redhat.com,
+	tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH v10] rust: sync: condvar: use Delta<Jiffy> for timeout
+ and result
+Message-ID: <avucPFPNm5jAkM6j@tardis.local>
+References: <20261104235929.1282640-1-tomo@flapping.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -82,73 +94,177 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261026-rust-drm-gem-shmem-imported-sgt-v1-0-36f15ace04b1@jannau.net>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/294.853.92
+In-Reply-To: <20261104235929.1282640-1-tomo@flapping.org>
 
-On Mon, Oct 26, 2026 at 12:14:07PM +0100, Janne Grunau wrote:
-> Hej,
+On Thu, Nov 05, 2026 at 08:59:29AM +0900, FUJITA Tomonori wrote:
+> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 > 
-> this is triggered by the discussion of gem/shmem.rs SGTableMap issues
-> in [1] which has an additional issue with imported object.
-> Imported objects are supported since GEM shmem's AllocOps use
-> drm_gem_shmem_prime_import_sg_table() as gem_prime_import_sg_table which
-> sets the same function pointer field in struct drm_driver.
+> wait_interruptible_timeout() takes the timeout as a raw Jiffies, and
+> CondVarTimeoutResult reports the remaining time as a raw Jiffies. The
+> type does not show the unit.
 > 
-> The code is broken in two ways. SGTableMap::drop() calls
-> __drm_gem_shmem_free_sgt_locked() uncondiftionally which it must not do
-> for imported objects as the object does not own `sgt`.
-> The second issue is that the imported object is allocated by
-> __drm_gem_shmem_create() with sizeof(struct drm_gem_shmem_object) as
-> size instead of the size of Rust's Object<T>.
+> Switch the parameter and the result fields to Delta<Jiffy>.
 > 
-> The second issue is already fixed in tyr's downstream driver by adding a
-> `gem_create_object` callback which is used instead of the minimal
-> allocation in the C helper.
-> The first issue is fixed in the Asahi downstream driver together with a
-> drm_gem_is_imported() wrapper change taken from the tyr downstream
-> driver.
+> Delta<Jiffy> is signed, but schedule_timeout() prints an error and a
+> stack dump for a negative timeout. Clamp a negative timeout to zero, so
+> it means an immediate timeout.
 > 
-> All three patches are tested in the Asahi downstream driver. As this is
-> unused code in-tree I marked the fixes as not suitable for stable
-> backports. The known downstream users of the code are aware of the
-> issues and carry fixes downstream. I don't expect new Rust DRM drivers
-> to be based on the (old) stable trees.
+> Update the only user, binder. It now converts the freeze timeout with
+> Delta::to_jiffies_timeout() instead of msecs_to_jiffies(). Both round
+> up, so a short timeout does not become zero. They differ only for a
+> very long timeout. msecs_to_jiffies() returns MAX_JIFFY_OFFSET for
+> 2^31 ms (about 24.9 days) or more, which means an infinite
+> timeout. to_jiffies_timeout() has no such special case. It converts
+> such a value to the matching number of jiffies, so the wait is long
+> but finite.
+> 
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Thank you Janne for this. The second issue was recently flagged
-by sashiko [1] as a critical memory bug that needs to be addressed
-before we upstream tyr's ioctl series [2]. I checked that this series
-on my Rock5B with the proposed ioctl series and igt-gpu-tools
-tests that exercise some of the panthor uapi and everything looks good.
+Acked-by: Boqun Feng <boqun@kernel.org>
 
-For the whole series:
-Tested-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+Danilo, feel free to take it from your tree if you need it as a
+dependency for the WaitQueue series. I'm also going to queue it myself
+just in case it needs to go via tip. Thank you all.
 
-[1] https://sashiko.dev/#/patchset/20261109-tyr-ioctls-v6-0-b2896bf2b3c9%40kylinos.cn
-[2] https://lore.kernel.org/rust-for-linux/20261109-tyr-ioctls-v6-0-b2896bf2b3c9@kylinos.cn/
+Regards,
+Boqun
 
-> 
-> Link: https://lore.kernel.org/rust-for-linux/20261019-rust-shmem-fixes-v1-1-3f7f6de5b5e7@google.com/ [1]
-> Signed-off-by: Janne Grunau <j@jannau.net>
 > ---
-> Janne Grunau (1):
->       rust: drm: gem: shmem: Do not free SG table of imported objects
+> v10:
+> - Rename variables and fields to describe their role, since the type now
+>   shows the unit (suggested by Boqun):
+>   - binder: the local variable `jiffies` to `timeout`
+>   - wait_interruptible_timeout(): the parameter `delta` to `timeout`
+>   - the `jiffies` match bindings and the `jiffies` field of
+>     CondVarTimeoutResult::{Woken, Signal} to `remainder`
+> - Add Alice's Reviewed-by
+> v9: https://lore.kernel.org/rust-for-linux/20261102035934.711973-1-tomo@flapping.org/
+> - Send as a single patch. Patches 1/4 and 2/4 of v8 are in v7.4-rc1,
+>   and the workqueue patch will be sent separately
+> - Rebase on v7.4-rc1
+> - Drop the comparison with enqueue_delayed() from the commit message
+> v8: https://lore.kernel.org/rust-for-linux/20261002050428.2746277-1-tomo@flapping.org/
 > 
-> Sami Tolvanen (2):
->       rust: drm: gem: shmem: implement gem_create_object for prime imports
->       rust: drm: gem: add an is_imported() accessor
-> 
->  drivers/gpu/drm/nova/gem.rs  |  4 +++
->  drivers/gpu/drm/tyr/gem.rs   |  4 +++
->  rust/helpers/drm.c           |  6 +++++
->  rust/kernel/drm/gem/mod.rs   | 16 ++++++++++++
->  rust/kernel/drm/gem/shmem.rs | 62 +++++++++++++++++++++++++++++++++++++++++++-
->  5 files changed, 91 insertions(+), 1 deletion(-)
+> Boqun, would you take this through the rust-sync tree?
 > ---
-> base-commit: 3497a403264b094ebd61b8b755165d56e7d9dc37
-> change-id: 20261026-rust-drm-gem-shmem-imported-sgt-85c4a45be283
+>  drivers/android/binder/process.rs | 13 +++++++------
+>  rust/kernel/sync/condvar.rs       | 31 ++++++++++++++++++++++---------
+>  2 files changed, 29 insertions(+), 15 deletions(-)
 > 
-> Best regards,
+> diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+> index 1f4cb43f1de6..0ed6a4b1c74b 100644
+> --- a/drivers/android/binder/process.rs
+> +++ b/drivers/android/binder/process.rs
+> @@ -35,6 +35,7 @@
+>          Arc, ArcBorrow, CondVar, CondVarTimeoutResult, SetOnce, SpinLock, UniqueArc,
+>      },
+>      task::{Pid, Task},
+> +    time::Delta,
+>      uaccess::{UserSlice, UserSliceReader},
+>      uapi,
+>      workqueue::{self, Work},
+> @@ -1552,25 +1553,25 @@ pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
+>          inner.is_frozen = IsFrozen::InProgress;
+>  
+>          if info.timeout_ms > 0 {
+> -            let mut jiffies = kernel::time::msecs_to_jiffies(info.timeout_ms);
+> -            while jiffies > 0 {
+> +            let mut timeout = Delta::from_millis(info.timeout_ms.into()).to_jiffies_timeout();
+> +            while timeout.as_jiffies() > 0 {
+>                  if inner.outstanding_txns == 0 {
+>                      break;
+>                  }
+>  
+>                  match self
+>                      .freeze_wait
+> -                    .wait_interruptible_timeout(&mut inner, jiffies)
+> +                    .wait_interruptible_timeout(&mut inner, timeout)
+>                  {
+>                      CondVarTimeoutResult::Signal { .. } => {
+>                          inner.is_frozen = IsFrozen::No;
+>                          return Err(ERESTARTSYS);
+>                      }
+> -                    CondVarTimeoutResult::Woken { jiffies: remaining } => {
+> -                        jiffies = remaining;
+> +                    CondVarTimeoutResult::Woken { remainder } => {
+> +                        timeout = remainder;
+>                      }
+>                      CondVarTimeoutResult::Timeout => {
+> -                        jiffies = 0;
+> +                        timeout = Delta::ZERO;
+>                      }
+>                  }
+>              }
+> diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
+> index 69d58dfbad7b..4be2c3bf8802 100644
+> --- a/rust/kernel/sync/condvar.rs
+> +++ b/rust/kernel/sync/condvar.rs
+> @@ -12,7 +12,10 @@
+>      task::{
+>          MAX_SCHEDULE_TIMEOUT, TASK_FREEZABLE, TASK_INTERRUPTIBLE, TASK_NORMAL, TASK_UNINTERRUPTIBLE,
+>      },
+> -    time::Jiffies,
+> +    time::{
+> +        Delta,
+> +        Jiffy, //
+> +    },
+>      types::Opaque,
+>  };
+>  use core::{marker::PhantomPinned, pin::Pin, ptr};
+> @@ -182,19 +185,29 @@ pub fn wait_interruptible_freezable<T: ?Sized, B: Backend>(
+>      /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
+>      /// thread to sleep. It wakes up when notified by [`CondVar::notify_one`] or
+>      /// [`CondVar::notify_all`], or when a timeout occurs, or when the thread receives a signal.
+> +    ///
+> +    /// A negative timeout is treated as zero.
+>      #[must_use = "wait_interruptible_timeout returns if a signal is pending, so the caller must check the return value"]
+>      pub fn wait_interruptible_timeout<T: ?Sized, B: Backend>(
+>          &self,
+>          guard: &mut Guard<'_, T, B>,
+> -        jiffies: Jiffies,
+> +        timeout: Delta<Jiffy>,
+>      ) -> CondVarTimeoutResult {
+> -        let jiffies = jiffies.try_into().unwrap_or(MAX_SCHEDULE_TIMEOUT);
+> -        let res = self.wait_internal(TASK_INTERRUPTIBLE, guard, jiffies);
+> +        let jiffies = timeout.as_jiffies();
+> +        let res = self.wait_internal(
+> +            TASK_INTERRUPTIBLE,
+> +            guard,
+> +            jiffies.clamp(0, MAX_SCHEDULE_TIMEOUT),
+> +        );
+>  
+> -        match (res as Jiffies, crate::current!().signal_pending()) {
+> -            (jiffies, true) => CondVarTimeoutResult::Signal { jiffies },
+> +        match (res, crate::current!().signal_pending()) {
+> +            (remainder, true) => CondVarTimeoutResult::Signal {
+> +                remainder: Delta::from_jiffies(remainder),
+> +            },
+>              (0, false) => CondVarTimeoutResult::Timeout,
+> -            (jiffies, false) => CondVarTimeoutResult::Woken { jiffies },
+> +            (remainder, false) => CondVarTimeoutResult::Woken {
+> +                remainder: Delta::from_jiffies(remainder),
+> +            },
+>          }
+>      }
+>  
+> @@ -248,11 +261,11 @@ pub enum CondVarTimeoutResult {
+>      /// Somebody woke us up.
+>      Woken {
+>          /// Remaining sleep duration.
+> -        jiffies: Jiffies,
+> +        remainder: Delta<Jiffy>,
+>      },
+>      /// A signal occurred.
+>      Signal {
+>          /// Remaining sleep duration.
+> -        jiffies: Jiffies,
+> +        remainder: Delta<Jiffy>,
+>      },
+>  }
+> 
+> base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
 > -- 
-> Janne Grunau <j@jannau.net>
+> 2.43.0
 > 
