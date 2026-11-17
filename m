@@ -1,131 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.154
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794920032;
-	b=3IfpwX279CWha4PwFr4AURnV7y5HrukbXVCOgjRA9PWbMA8H9omU9VVi0YLm/dhCyk2w
-	 KVdpnDwwhT/tyaGuluKJ24XM00dgqsJb6a3Inh+VhHH34FkCC2hMTudSDtjZ5TmIVY5Dk
-	 KgQcfH5nE36mR9YIS8cMBpsJL79J5DHRJIeCjDmqt+TxsfhOyZl0mcrsn1a63z6gxHDDZ
-	 Vp2DlwUhdYCom51OESODCjWa7v3mRa9Q2r6PI5bMTvlKdFyN8jY5q/1NLG52wjpg3v5Uh
-	 iNTWtj+npMEwdheJ6imkVtgQ61O6DWFBOBTxPN+wc3RiO4H3lD1Q9vHrme9E3xwqtTw==
+	t=1794921256;
+	b=bzHRAUMhN7f6vTFAo6wMeILszjYlc+9ZnaK5hLp50/sSma7jz646HUSmhxDBhND0cTBY
+	 jPeKTUTkfSQN9qfsOQt4cp45gF3pQRpgZTWCBDoxtAeQzfaKnFxWqUwrIiVcfk7vV/oC7
+	 LaMPSfDe3vIrO7ZfaMeg2c3DCkm/YttRhak7pX0DZZcjoQDhMZHrG91yq6r/qZHLyfQVJ
+	 T6YlIgigS4JyJWlRLVno9CiIxVZ6RQGVw+FsSVyAQkk32XLP+ekgqLwChYebgmI9KXAIM
+	 1ePqhNQsYmih5evFh4DcY9/i3axpZphJ+1EOH+SlwTF5CbajLSkXNyjdp78MPmSt5cw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794920032;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=aq4YYD6IK9RMKjvNRNt+aAL1Kj9Kop3kNd77oTLOhrE=;
-	b=WziwFfzyZHjLnAq1KYGJXmfLTSMqj90EUcaeF6GUw08vN8/mLinDWEvqnYaRirYTiUMO
-	 mdH1VA+fSAl0Ox5K+G/fUEmI/itkxue00MwDlJ6VVvNznPiRgCqOH0neN5urucdyHhhqX
-	 zL6ymYpPtdZFYhdUqncF7jKQdqh6RE64rS9dMx2YXIm//7JF+ONRFNUtl9q/YxS1Zggxz
-	 76o3F994klsLI9O4+RX1yKQiXZVfDa/NWpNSD6H441ZelF1fL58u+in44Dgt/E/4YZ3tx
-	 D6du51C43b1khYI7Qr7nzvNGIdgI30su2QW3DZwHRCXIL4xXcEy7rdwkfhORyGVtGAQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794921256;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:To:From:Subject:Cc:References:
+	 In-Reply-To;
+	bh=esDAPkgPyi097rGtu2NlFyj83v6KBu1QCQkoO5elA4A=;
+	b=04uMG550xZ5e0pp/SNlWiUvibuuZqCqu0GP+TJmborfnxm+3CkXBoMIgNrH9fiZJDKzk
+	 9at135f/r21KHpsxNTEdgW0ncKN9U+WYx/++4ABK/HG0QBSclQqwesGD8QiuZ5uHRzhHE
+	 D4ZttM8uM5pMlKDWN3X9IRZpkiEGoFU23rpBQNexFTp1mw6jxkU9hutv4qwUw2muGARfS
+	 kmpP93L7g/bxi0FrdB9Yd3u4OvnENiIvrehlRAd99J0Fp75b6g2Bid0ItfR/jlr+UDjrt
+	 RmFcINKR+yW+PpP3C2CVb82bA39SKbq6CHudP7Z3AmfLxOkM+0t27i/zGXD3OKtqmkA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=flapping.org;
-	spf=pass smtp.mailfrom=flapping.org;
-	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=hNMVT5yY;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b="trt/IcBU";
-	arc=none smtp.remote-ip=103.168.172.154
-Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=o0qy6k+C;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B0D606A33D
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 12:53:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5B0D606A33D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32459606A31C;
+	Tue, 17 Nov 2026 13:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=hNMVT5yY;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=trt/IcBU
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id E404D1400174
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 07:53:49 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Tue, 17 Nov 2026 07:53:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm2; t=1794920029; x=1795006429; bh=aq4YYD6IK9RMKjvNRNt+a
-	AL1Kj9Kop3kNd77oTLOhrE=; b=hNMVT5yYQdDiNk5LA5RkFWHBtY7Dhudb5bFmZ
-	iS2AjqjQ43jD6a60yldLYwLR9o5oy+pI8LLDr9ILu23DMp/4lvVJujrd3wqAwghC
-	iJ2yj5xz+NZeBcEFoF+5dca1HD//30BLNG4WWbWCQvzG2CSlPA03KqDjBCyuOnSB
-	MqYPq7ilXh9TozqwGKM4T3mS/w7fnfDsvk/VE9uS5aDr6fS9nBQTg9qOG43L6sxf
-	Y1otOIRokdFuajb6ae+ngsFrxLsDrt9YYjZ/WHsYqLQ1/QROeWOv8llhjjIToY12
-	nVP87jZbW0h/dMj/Wp7Pw/t3DMlucXcF+bLj5LYku9J2CxrwA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1794920029; x=1795006429; bh=aq4YYD6IK9RMKjvNRNt+aAL1Kj9Kop3kNd7
-	7oTLOhrE=; b=trt/IcBUCoPw2us+tynJxQF1gvXOkfy3jGbGQ1dtjUmmk0mjgD/
-	9Q7KVeGNr6zI/LdToETEmE4aiaJxQZDLk0NutwdSPVAT1HuchMTSmSaH6BpR0rqS
-	7RDbFN+8NIsreO9D8JMsM+WRqHavOCn8AY3e1rlikFFRuKRLHR+LTcJ1npvu2HYP
-	Uf0ZFMlXOvKHnbfUp0Y0WoYZgwhKym16gFXmM1aHY3V96yB3N22nTibwHZEbW3+d
-	vcisQaI28dA3oZwU/OPIANq/r52IA9kLo2u2bxGZIBUPUQWpqWJ2eozjLHM8a/xT
-	WYTqpcWk8HM03HSxZWrQjhXVQDS8KCffUwA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794920029; d=flapping.org;
-	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
-	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm2:rsa-sha256:NxeqHz4muYVF5hVhM8MRxpgmOxwWmp7gfMp8mSTEE9MbAgM
-	mCPR78olsxnkwnFgyw+2eUXcTcQBSVMfAE8wJ3XLG3CMaCwfelDvj4djTV9GCjyG
-	RR/1yCxqQuP0ZUMt4TgHIjPAhCTHsxquTeVDT3bJuSpd/Bc7fDotryKlHYRf5r99
-	E9fMm6oguBU6Mnsd8Vs9TWw/VjNUof2U2r2iq51oTKfgQhxhBqgHS7MS0oiuByTx
-	iky40yobhxnN3TqaAHQS9xEX8exDCM1d+Z+Ebxdtc0qAH7eh3uUfXsCnfaMC3DrP
-	PP4WxLdMb3zJTjNQ2GHhNgl9lIaFQxvDQOgbsZw==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=9;
-	hn=cc,content-transfer-encoding,date,feedback-id,from,
-	message-id,mime-version,subject,to;
-Message-Instance: m=1; h=sha256:1kpsBRd84zeeo3P2aM52d0y2adiTiAD9DngjpqgQjOU=:7KGUGEgtfdC9JZAy0t7PcW1mzCG9xIiSbAcUfZGzacQ=;
-X-ME-Sender: <xms:XU78auWRr7VSZHyz1rJdjb5D1WVdwXQ1It0VzOU8iNMzjTYWGoUJ8w>
-    <xme:XU78alf47KMsX_Ga8T-UlrDpcBIS_5yM4A0JNxRorBZthvVMxyqKLug5Dxj_PRN5r
-    YH9__O03wIzIJlUEDe8x-fCpjSKLdrd9WoM-XmyAB4hjqc8dUGN2P4>
-X-ME-Received: <xmr:XU78askynuYvezKgMThl3JGB2TFw5DwIhJQy3cC7vPPFnqADGCqQRRbzPApKcl5z_rVzdnfm_ExbRANglJc>
-X-ME-Proxy-Cause: dmFkZTGxy2UOuMXRdMV9loqtMx51Vey7grA2VZNeu8hnAwP/AV72pQZkxbQbAG2ZKXzJju
-    UxPWTXUS6RZ5csFymvuHQxel9m2x8q8mOL+CwG0d2y3NJOPleiCAeaJ3Ybtc1C766a8MSA
-    PwetVy9jaaHrhIHFC/xrGAV/tTG070lOVAgwQA03dqmNphXTtVKy2N1sV4vJk5PpYpY3D7
-    D7y+Upf/JiXfxhsH/aNYpbgZvT6/BskuMvCGXbsbOrU1nIhTbZaWhtj9P/dX719O+1/tHf
-    dfRL5bpdUqZPnw2BUMjdD8rHXeFP4MpoFRLqAJmxkMC1EtWIAkAZMZvdlZlVLz5l/Q1HPf
-    IWe9f+mHEHizS4o/UE0CqIVTrOhbzbB5J7tPNKIDB90gk2QjS8e/YDBjhSbG93Odq0U+JI
-    Fabz4/g7ZoK71bK3XJojmXTrFGooCBeOw88fGOYCBEZvZWS3D6nCtYofAn/6T+kdzp/+U7
-    4SqpvIqAIgJrDzIarTO1TGkSyZFfoe3Q4s0taCibUZKRflsKnxp2/TVohC5J/iGd2dZ8KC
-    k5vKvIQ1pbmNPHeL2AAF346QLcsw6VUJ2F+aXYcBo8kjqYTHFuu7vou0j+NpQGxcFJ/dPp
-    OicK4kgNr7s+hC8JdSWgFX37z4kkSKsBQId6ruOfaBEPeuXvrIuUZdN15Trw
-X-ME-Proxy: <xmx:XU78anBzR0ImCWRyuTByfifMstTDirmxPqVH5WuzJQVEx5XqsmqNIw>
-    <xmx:XU78audEmzFxZsHe4iCOoCjh4gmAGT7HT5h4dfS25b-ynST5XXkuxQ>
-    <xmx:XU78ai7mpFTcIcCR3r-b0mc9iiI-6g-ItMDSsvMa1fAHp-XYcKKDzQ>
-    <xmx:XU78aoMf7fSVqty5-57vrIh_0FXw8JILi9GHyAX_TaenJSiJ3q8LVA>
-    <xmx:XU78aqA2LWj_-bd4N7wdZUEfh1F5dtp5z-fJTvBLbhf-ISBjd6ah61Fi>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Nov 2026 07:53:45 -0500 (EST)
-From: FUJITA Tomonori <tomo@flapping.org>
-To: dakr@kernel.org,
-	ojeda@kernel.org,
-	tj@kernel.org
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	jiangshanlai@gmail.com,
-	lossin@kernel.org,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v10] rust: workqueue: take a Delta<Jiffy> for the enqueue delay
-Date: Tue, 17 Nov 2026 21:53:32 +0900
-Message-ID: <20261117125332.2293479-1-tomo@flapping.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=o0qy6k+C
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED801F000C4;
+	Tue, 17 Nov 2026 13:14:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794921255;
+	bh=esDAPkgPyi097rGtu2NlFyj83v6KBu1QCQkoO5elA4A=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To;
+	b=o0qy6k+ClRxsVrNeII8VK2DxW0z7RF1lJUs96JG4m4PgPtHClFXc3F14FySKl15DS
+	 6sqJ32GlxjNcbngtKtvZi7YWV98XOGBefybmoePtQ8jwZQprIlWJxVTC1dmFXMFQTe
+	 /yc7UaVvcuOJ9hvc1pj3WkUpuyFGwJ8TJpjPS1kr1uy1dZlNt4ojWzH4haflBOg9Lw
+	 OZNQrhCf3UfCn30J6QPwOdfB6e/T5bGIcKoOfmGGVt6tW2Q9AAo3xR8XYvy4Gre24U
+	 X+nRoH1C3xx5TnpdVYuGTqc6WNrmGiY4Vl+Brp8QepsiIVZyJfyFeBOVcCXndaTPLD
+	 WnaH0/zkegZsw==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -134,90 +48,83 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 17 Nov 2026 14:14:10 +0100
+Message-Id: <DMXIHAWC8YGT.33OH5RY5OPPBE@kernel.org>
+To: "Gary Guo" <gary@garyguo.net>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 1/5] rust: task: add safe schedule_timeout() wrapper
+Cc: "FUJITA Tomonori" <tomo@flapping.org>, <boqun@kernel.org>,
+ <aliceryhl@google.com>, <lyude@redhat.com>, <daniel.almeida@collabora.com>,
+ <work@onurozkan.dev>, <ojeda@kernel.org>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+ <tamird@kernel.org>, <acourbot@nvidia.com>, <viro@zeniv.linux.org.uk>,
+ <brauner@kernel.org>, <jack@suse.cz>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>
+References: <20261117001507.1611984-1-dakr@kernel.org>
+ <20261117001507.1611984-2-dakr@kernel.org>
+ <20261117.094531.2139684707820199268.tomo@flapping.org>
+ <DMXGHLYADENS.14LHK34JTZTRX@garyguo.net>
+ <DMXGTVTETSCB.2AG2E0Z05QT03@kernel.org>
+ <DMXGYAQZB33R.4BWEI96XQXL6@garyguo.net>
+In-Reply-To: <DMXGYAQZB33R.4BWEI96XQXL6@garyguo.net>
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Tue Nov 17, 2026 at 1:02 PM CET, Gary Guo wrote:
+> On Tue Nov 17, 2026 at 11:56 AM GMT, Danilo Krummrich wrote:
+>> On Tue Nov 17, 2026 at 12:40 PM CET, Gary Guo wrote:
+>>> On Tue Nov 17, 2026 at 12:45 AM GMT, FUJITA Tomonori wrote:
+>>>> On Tue, 17 Nov 2026 01:14:42 +0100
+>>>> Danilo Krummrich <dakr@kernel.org> wrote:
+>>>>
+>>>>> +pub fn schedule_timeout(timeout: Delta<Jiffy>) -> Delta<Jiffy> {
+>>>>> +    let timeout =3D timeout.as_jiffies().max(0);
+>>>>
+>>>> In earlier reviews of my patches, Gary asked me to use the function
+>>>> syntax or clamp() for this instead of the method syntax [1][2]:
+>>>>
+>>>>     let timeout =3D isize::max(timeout.as_jiffies(), 0);
+>>>
+>>> Yes, please do. I'm okay with either `isize::max` or `cmp::max`.
+>>
+>> The examples in [1][2] both seemed to be able to avoid a cast with this,=
+ which
+>> isn't the case for this patch. There also doesn't seem to be any ambigui=
+ty in
+>> the extression used in this patch. So I don't see why changing it would =
+be
+>> better.
+>
+> The ambiguity is "the maximum value returned will be 0" and "the minimum =
+value
+> returned will be 0". The answer is always the latter but I'd avoid the me=
+ntal
+> gymnastics.
 
-enqueue_delayed() takes the delay as a raw Jiffies, which is a c_ulong
-alias. The type does not show the unit, so callers pass a bare integer.
+To me clearly both
 
-Take the delay as Delta<Jiffy> instead. A caller that already has a
-value in jiffies passes it without conversion. A caller that has a
-Delta in nanoseconds converts it with Delta::to_jiffies_timeout(),
-which rounds up, so a short delay does not become zero.
+	a.max(b)	(1)
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
-v10:
-- Import Delta in the doc example so that the line is shorter (Alice)
-- Add Alice's Reviewed-by
-v9: https://lore.kernel.org/rust-for-linux/20261102042524.735613-1-tomo@flapping.org/
-- Send as a single patch. Patches 1/4 and 2/4 of v8 are in v7.4-rc1,
-  and the condvar patch was sent separately
-- Rebase on v7.4-rc1. The doc example now uses system_dfl()
-v8: https://lore.kernel.org/rust-for-linux/20261002050428.2746277-1-tomo@flapping.org/
----
- rust/kernel/workqueue.rs | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+	max(a, b)	(2)
 
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index a872f9fffb90..8717a78a1ebe 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -135,6 +135,7 @@
- //!
- //! ```
- //! use kernel::sync::Arc;
-+//! use kernel::time::Delta;
- //! use kernel::workqueue::{self, impl_has_delayed_work, new_delayed_work, DelayedWork, WorkItem};
- //!
- //! #[pin_data]
-@@ -171,7 +172,7 @@
- //! /// This method will enqueue the struct for execution on the system workqueue, where its value
- //! /// will be printed 12 jiffies later.
- //! fn print_later(val: Arc<MyStruct>) {
--//!     let _ = workqueue::system_dfl().enqueue_delayed(val, 12);
-+//!     let _ = workqueue::system_dfl().enqueue_delayed(val, Delta::from_jiffies(12));
- //! }
- //!
- //! /// It is also possible to use the ordinary `enqueue` method together with `DelayedWork`. This
-@@ -197,7 +198,10 @@
-         Arc,
-         LockClassKey, //
-     },
--    time::Jiffies,
-+    time::{
-+        Delta,
-+        Jiffy, //
-+    },
-     types::Opaque,
- };
- use core::{marker::PhantomData, ptr::NonNull};
-@@ -303,7 +307,9 @@ pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::EnqueueOutput
-     /// This may fail if the work item is already enqueued in a workqueue.
-     ///
-     /// The work item will be submitted using `WORK_CPU_UNBOUND`.
--    pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Jiffies) -> W::EnqueueOutput
-+    ///
-+    /// A negative delay is treated as zero.
-+    pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Delta<Jiffy>) -> W::EnqueueOutput
-     where
-         W: RawDelayedWorkItem<ID> + Send + 'static,
-     {
-@@ -328,7 +334,7 @@ pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Jiffies) -> W::Enqu
-                     bindings::wq_misc_consts_WORK_CPU_UNBOUND as ffi::c_int,
-                     queue_ptr,
-                     container_of!(work_ptr, bindings::delayed_work, work),
--                    delay,
-+                    delay.as_jiffies_unsigned(),
-                 )
-             })
-         }
+read as the maximum of a and b.
 
-base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
--- 
-2.43.0
+IIUC, what you are saying is that people may read (1) as
 
+	a.at_max(b)
+
+which would indeed be equivalent to min(a, b).
+
+If this is indeed commonly the case I'd suggest to raise this to become a c=
+ommon
+rule (ideally with a lint), such that we avoid this to be discussed in revi=
+ews.
+
+Personally, I prefer (1) for the expression above, but I don't care too muc=
+h, so
+I'm fine to change it. (In case I don't need to respin I'll change it on ap=
+ply.)
+
+Thanks,
+Danilo
