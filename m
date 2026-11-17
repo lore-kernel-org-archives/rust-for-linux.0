@@ -1,72 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=46.30.211.244
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794957573;
-	b=OcEdl7fHBS1V+jjdD945bYcu7QmvsFDuDCb/N77NPsiNE/a+kO+fmGqNLf4+Jlgtk7dq
-	 ph72l7TKdne54GD+aKvWyyuzFTFf+zi1Vgnz+If8ylxDhtFFmJIrCkdcrqG605uy1mbC3
-	 lFDdiOaJVGSLBYHPWljo0KumildurIwgn1zH2otx53Mo/GhJnj5GmLF3RJYRaC5MnrSxG
-	 ASVre0ra2f/3En9Pvkivqk8FYcmVGP6xXK96scELllitMO30iROw/9CymEfyyjgz+cWt8
-	 KSZvCqN/Q7uUmnuxkqYK/FDUBokVGFbRO7RtnDAy1daJUD3uUNXVtJwm9LkklaQiPpg==
+	t=1794958345;
+	b=ZlbonD/GDjjgt6Tu6HP/4Iv2B75BecVcHXa2sCI+Jz6omT4GPNrzOwUHHfNpRBMaNw+E
+	 NpF3pTjZfTAHkzhMM2kcV+vJIq4fMKujn7yiDFNQ0hYaZY8srMbmDRhiKLSzhPA9gsrRL
+	 Pax0uyQrSlNUM+hYL95MXRx5zyyZnqUPQ2zQrEczEyPGwwMDo/+2nTKjT0qPIZAy3tJny
+	 5dVtbS7B8S5sB3XhQwsXEO6WXpwY1YLwZriHElZMSSZIc94JCYO8ToYAZUtzAQO8KS3JZ
+	 9s/We1eUhhdWSmpf4PIaHVWnfHPhDrJ6HLvDn6D4plu7jN2uEs2NSes94d/Jka6cenA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794957573;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=gUGlqWYHoDvFFPdsJt6mn1HEJRjMR+qNjaGOxe+inKk=;
-	b=TEVbL9i3Vv3fpVWC2MzClovJ86h2+9R6/MO8k2h20OaJBZQ4u9Sc4xtzLNI74JwjAwxs
-	 L2m+oc1gH114xuPo6X1Lor2VbDCitCyeUyTMK7ncRl7VR8wg4tAI3XLjd16syJImy+EKH
-	 kO08c1hkQqYMxLu46ywN9VM1GPh4pFkzAzwLTwMN0h+VlQlJlikQj8oy8sT8GyooSnwnh
-	 FqJuxxEmFeC9S38VckSJwQlrSyXREnyFGwU0LIx1gG0SAn7KJf2j2/bBeUZw9kGK+WD23
-	 cy8tFgOeluGm8k6L0zS7eYliVcbOpHf2gUf9FasUXOJCLjFkqh3YBYwSvpqq+G3Gevw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794958345;
+	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:X-HalOne-ID:Received:From:
+	 To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=CVK3gfdAVTQvEZy1bbvtoLOfN8qA9o6BEbEAHYrhFsI=;
+	b=1OBtNf9gt2UE6/teIeXp9riTNjRKFmKJB6RGdZ/9oa3w9ssGPZ0TwQXY964bbLK9Zwq+
+	 jI8nLtN+xhAv4dJIKSa/kZkJMcD5LjvRJAE+tuLT/tib+3v/e6XZPy/UZ4G5+annRSuNg
+	 I80O8MCbWvT28jUtbB+yVnCyg6Xjwnx2KjlETz0ei4LEjIgmdnEYbyPQfS8M3Bv5cWDHi
+	 wzrtGTasExlyLHuYQuHsbDSxPmdryPpjXZXS7Z6ZS39e40mfqoPSjzhKLnT3SVuDIH0xN
+	 4qfaqSxaLry13HPBZhQ8+RElr+k+vug0Upqc5wnhVlIktmxPPB7ZFodjGEmyyrkiYaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OEldnhS5;
-	arc=none smtp.remote-ip=74.125.82.198
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=konsulko.se;
+	spf=none smtp.mailfrom=konsulko.se;
+	dkim=pass header.d=konsulko.se header.i=@konsulko.se header.a=rsa-sha256 header.s=rsa2 header.b=yzcQO23C;
+	dkim=pass header.d=konsulko.se header.i=@konsulko.se header.a=ed25519-sha256 header.s=ed2 header.b=SUgGnHKf;
+	arc=none smtp.remote-ip=46.30.211.244
+Received: from mailrelay-egress5.pub.mailoutpod3-cph3.one.com (mailrelay-egress5.pub.mailoutpod3-cph3.one.com [46.30.211.244])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36AF606A32A
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 23:19:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C36AF606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F57606A32A
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 23:32:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 31F57606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OEldnhS5
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-30bcb065bfdso506809eec.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 15:19:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794957572; x=1795562372; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gUGlqWYHoDvFFPdsJt6mn1HEJRjMR+qNjaGOxe+inKk=;
-        b=OEldnhS5zkaO6vUwK0z1qiQWsR2ZqmvTx8qO8c0QNLsDb+rs7mgEEpBHHynZfrne/r
-         lR5vdO2FVpSvAqoOArwEpS5i0tYj+rtoRWKJdTNEkb2yvdiUL2viY5b1YIK44ggqrkiN
-         P19Gj+k0RnIx5JFqLctE5VIH0dEUxtN/ij9tmOb73uZ0KPnRzyFFKmS3mpAuLB1PR1sZ
-         dEf9XKRIuswuC6tcnLrl1obzswCycmz9mZuXkZOrB3aImbJjkF/GudwtiT8vS1pXoUJA
-         /Rid1NJGaaFDADX5sLF/4eUYMhwZOWTUplZwzZKpPsl4ggryWoOq0tYi578Jhuo2p4kR
-         NjeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794957572; x=1795562372;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gUGlqWYHoDvFFPdsJt6mn1HEJRjMR+qNjaGOxe+inKk=;
-        b=jlZ2iWtJPFfAYzE3mDW18iGsJyNXXqHUFmQdUvyqObg0fTMztrMuEVP9DYtWjVHA30
-         zqvwtS0SfMzucaDGNJQGbrD/uNgESFgZiIGsgnl/CMiz0viga9LwnThsSGD7bwCqZ9x/
-         +y/wOlxll2pQcdWoWBTJAE9HiVttAmDbbBaMobshfkmZn/jSxLtJGtYy4HnqydOFJ4lF
-         Pro6866eUG3qzW2R9VUCkwA+IPuipJsbf+s64u+7fWp/psqsKwTXbHuPuURrTo8ez1j/
-         muwapdeZre9Maf3ciHkW67I+7MLZW3q0tqxPTE0GYGjAogS27Mz8yYn+yPHXPmO/As9W
-         TIpg==
-X-Forwarded-Encrypted: i=1; AL+hErED1E6awp8dhLnIEI0tnbFG7G11rx3GSsXK211YC74xJAeufHhjpjuC+R3YGmOvQpbGZNH8Gb3s7wC3HToHIg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/NxVkZSgdI7lC7AMxsgwkrzaLEnlBPiUbWq9DcwxvoS+0AGQd2
-	KC3KdE/Oq0s2/doxfOS86VN6vID5lYAmBxSNikmx/9vkUn0w2jwo+jBRNmmKB6Xv9VqYBL8ZhvK
-	uXnhkQDvx3GS5Xg==
-X-Received: from dybqd1.prod.google.com ([2002:a05:7301:6401:b0:36d:3429:f79f])
- (user=cmllamas job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:693c:88c9:10b0:36f:350b:3838 with SMTP id 5a478bee46e88-3828121ba36mr958286eec.31.1794957571614;
- Tue, 17 Nov 2026 15:19:31 -0800 (PST)
-Date: Tue, 17 Nov 2026 23:19:26 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=konsulko.se header.i=@konsulko.se header.a=rsa-sha256 header.s=rsa2 header.b=yzcQO23C;
+	dkim=pass header.d=konsulko.se header.i=@konsulko.se header.a=ed25519-sha256 header.s=ed2 header.b=SUgGnHKf
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1794958335; x=1795563135;
+	d=konsulko.se; s=rsa2;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=CVK3gfdAVTQvEZy1bbvtoLOfN8qA9o6BEbEAHYrhFsI=;
+	b=yzcQO23ChU7yvmqYbuQ6D0jbqMP1WbG9IbcPWDjLRV/NYlrlZo6M1Z8vSaEXIQT5nNA7BIe73BFsL
+	 Fr6LwtG1iOz90omYQHpJwDRzOVi3vfuykDyIifyZlvnfQnLjhO9zrIIJYhk1Ab3CfI/6qBbGG/58ss
+	 iotGJscWEBjvNvn1F/Ez90Huj/uWdpPGyyHtrlgsVXY0IyvvxxzxtlVyZbS7Ne6PrX5vbUVjRp2bQI
+	 vu1kiDJD8g41SnjPP2mC7tvKARH87wQ36opA1XIg22HPMs+FHQWHjH5BMAxJbqUPcfUnRHK8sWGOoR
+	 QiTM9jzTIYn0DjEvKM0yUXLbHQW7r5g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1794958335; x=1795563135;
+	d=konsulko.se; s=ed2;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=CVK3gfdAVTQvEZy1bbvtoLOfN8qA9o6BEbEAHYrhFsI=;
+	b=SUgGnHKfQwurNL4LuAU22YrgMLE6sgHZ1v7IabgIk2MwXJrMjFGAkE9VJ0CKfYKL8ndhjB0eWguWy
+	 tpIFBsRCA==
+X-HalOne-ID: 1e020ffd-e2df-11f1-928b-49de817b90c1
+Received: from slottsdator.home (unknown [2a02:1406:27d:15:2438:a644:c11e:a5ef])
+	by mailrelay6.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
+	id 1e020ffd-e2df-11f1-928b-49de817b90c1;
+	Tue, 17 Nov 2026 23:32:14 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: Andreas Hindborg <a.hindborg@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	linux-block@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Vitaly Wool <vitaly.wool@konsulko.se>
+Subject: [PATCH 0/3] rust: block: add rbrd, a RAM backed block driver
+Date: Wed, 18 Nov 2026 00:32:08 +0100
+Message-Id: <20261117233211.3137168-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.5
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -75,52 +91,79 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
-Message-ID: <20261117231927.2200674-1-cmllamas@google.com>
-Subject: [PATCH] rust_binder: disallow binder fd transfers
-From: Carlos Llamas <cmllamas@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
-	Alice Ryhl <aliceryhl@google.com>
-Cc: kernel-team@android.com, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Transferring a binder device fd via BINDER_TYPE_FD or BINDER_TYPE_FDA
-has no valid use case and can create direct reference cycles that
-prevent Process::release() from running when a queued transaction is
-left unread. Moreover, a binder file is bound to the opening process's
-task, credentials, and mmap state, so transferring it to another
-process breaks binder's per-process ownership model.
+This series adds rbrd, a RAM backed block driver written in Rust that
+works like brd, together with the Rust abstractions it needs:
 
-Disallow binder device fd transfers by returning EINVAL in
-Allocation::info_add_fd().
+1. bio segment iteration and request accessors for blk-mq drivers;
+2. reference counting, raw pointer conversions and a bit spinlock in
+   `page->private` for `Page`;
+3. the driver itself, configured through configfs like rnull. Its pages
+   are kept in a flat array of atomic page pointers, so finding, adding
+   or removing a page takes no lock.
 
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
----
- drivers/android/binder/allocation.rs | 7 +++++++
- 1 file changed, 7 insertions(+)
+Unlike brd, rbrd never lets a read and a write copy the same page at
+the same time: each copy holds the page's bit spinlock. brd allows
+this race, so a read that overlaps a write can return a torn mix of
+old and new data. In Rust the race would also be undefined behaviour.
 
-diff --git a/drivers/android/binder/allocation.rs b/drivers/android/binder/allocation.rs
-index 927bf47d5d20..8cd4c2a4402a 100644
---- a/drivers/android/binder/allocation.rs
-+++ b/drivers/android/binder/allocation.rs
-@@ -182,6 +182,13 @@ pub(crate) fn info_add_fd(
-         buffer_offset: usize,
-         close_on_free: bool,
-     ) -> Result {
-+        // SAFETY: `file` is valid; read `f_op` with `READ_ONCE` semantics.
-+        let f_op = unsafe { (&raw const (*file.as_ptr()).f_op).read_volatile() };
-+        if core::ptr::eq(f_op, &crate::rust_binder_fops.0) {
-+            // Binder FD transfers are not allowed.
-+            return Err(EINVAL);
-+        }
-+
-         self.get_or_init_info().file_list.files_to_translate.push(
-             FileEntry {
-                 file,
+This guarantee has a cost. rbrd is slower than brd, mostly for writes
+(4k random O_DIRECT I/O, 8 vCPU guest, mean of 9 runs, kIOPS):
+
+  test                  brd    rbrd   change
+  read,  8 threads     2048    2012     -2%
+  read,  1 thread       512     463    -10%
+  write, 1 thread       583     470    -19%
+  write, 4 threads     1693    1472    -13%
+  write, 8 threads     2004    1563    -22%
+
+We think this is a small price for page integrity: a RAM disk is still
+far faster than any real device, and a block device should never
+return data that was never written. The gap has not been profiled
+yet, so not all of it is necessarily due to the lock. With a single
+lock for the whole device instead of one per page, 8-thread reads were
+20-28% slower than brd.
+
+The series is based on rust-next (v7.4-rc3). Patches 2 and 3 were
+written with the Claude Code AI coding assistant, which also did the
+testing.
+
+Igor B (2):
+  rust: block: add bio segment iteration and request accessors
+  rust: page: add reference counting, raw pointers and a private bit
+    lock
+
+Vitaly Wool (1):
+  rust: block: add rbrd, a RAM backed block driver
+
+ MAINTAINERS                      |   1 +
+ drivers/block/Kconfig            |   1 +
+ drivers/block/Makefile           |   1 +
+ drivers/block/rbrd/Kconfig       |  17 ++
+ drivers/block/rbrd/Makefile      |   2 +
+ drivers/block/rbrd/configfs.rs   | 188 ++++++++++++++
+ drivers/block/rbrd/rbrd.rs       | 420 +++++++++++++++++++++++++++++++
+ rust/bindings/bindings_helper.h  |   1 +
+ rust/helpers/bit_spinlock.c      |  13 +
+ rust/helpers/blk.c               |  14 ++
+ rust/helpers/helpers.c           |   1 +
+ rust/helpers/page.c              |  10 +
+ rust/kernel/block.rs             |   1 +
+ rust/kernel/block/bio.rs         | 253 +++++++++++++++++++
+ rust/kernel/block/mq.rs          |   5 +-
+ rust/kernel/block/mq/gen_disk.rs |  25 ++
+ rust/kernel/block/mq/request.rs  |  81 +++++-
+ rust/kernel/page.rs              | 160 ++++++++++++
+ 18 files changed, 1192 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/block/rbrd/Kconfig
+ create mode 100644 drivers/block/rbrd/Makefile
+ create mode 100644 drivers/block/rbrd/configfs.rs
+ create mode 100644 drivers/block/rbrd/rbrd.rs
+ create mode 100644 rust/helpers/bit_spinlock.c
+ create mode 100644 rust/kernel/block/bio.rs
+
 -- 
-2.56.1.703.gf848ed807c-goog
+2.39.5
 
