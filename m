@@ -1,101 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.54
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795028326;
-	b=l7s3ZP7ISkLr18Ii4EHRLdieNi6SRwqbP9OGWFifGDfQ4xv2jHMoJXVpKtT4H4deX3vq
-	 k292NHA7AtVhS8HCM00ESQCism+H29MvDiE5/q7z5zLFmr1jQBOLwIi9UuFM24bteuTaq
-	 Uy6QhTCWJ2xwhyBw1NQJ8bABvsY3W2ASNh8vhwAC2z6DmCtUHwYpltA8swMJ/nhf1frKf
-	 wDeRRUQH9StLITOEThkIiBf6dt8ouDvWEzkPCV7i4tUJLRiPa8sjP1o5J7w/E+5fcF1MF
-	 Ke6doqajPL9iABdQtjRDtPMewVg18Rx1xChB8flL3QNA5431P1S8ygTMDNOlw3Z6bYQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795028326;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=sANgHflY4l/Fe7eOmc9nVUukAbjG9FRan2mAzBkUStg=;
-	b=TlOKZ4y8DQaTcxY4afUnsCIMUL5LK45iDXfo8GXm4gxVYYd+CDeQsL9bbLB9ZrvlbT4h
-	 MxbR2P6tKDmHf2MZ2ichFzTccSDm3gb1Rqq0pOCYVZMrPFoZQ6gl0xqehV6vYdbddS5FS
-	 aeCkP/kl1zOxz0ySEoX+5t9qUn7vrAlzhGJYc4L3mcUC59lI0/U4hWFbBvT3gBeNGzlWM
-	 ENhkebkaUptLN6UJpwFcT/FK+m6nUHPAzvyrqx/UT6FlTZm1f2uunASYTFIocpD2Had+J
-	 XwPiEDRmXQSw0Xcgrq9MctUasg2Mr2/PQqVbgvtrmlzjCaL1YNdO4MP9Nmh1HJ6oPgg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=F9We98XN;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.54
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=188.68.61.103
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795028611;
+	b=qBygbc/SBWIb4haJrzdsQxRfHi+30NVYRmN1qNGacwaIePXlh8RSzeJ/DtkVXeYecoGA
+	 A72baSn74s/a6FoBR5Ht/A2kgSFhCeDMrc4RsrNCJ8IJVzzjzzz06mLx/98LjfcBrXnzg
+	 xOG5qMM45oG4vlOI5xqi9e5+ixmiZS8tKjk/TdpxtQDVueaqyADKynvp7zj/CQspf+ctG
+	 ygpxKgDVcnUngjoaAlMTNk8VyywhIJm0XeNzqc/YN9f2RWrLs1cRYxJSq6MzdVAmvs/Q6
+	 jhGGUZcVGbYQzbVh0bRpmKMIP3gIgS+2Z8DbH4fgIl/Fxg0b43wofaJE6EvlKKdtucg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795028611;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received-SPF:Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
+	 References:From:Content-Language:Autocrypt:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-PPP-Message-ID:X-NC-CID;
+	bh=cKVUKfEjTJSrd4mq0m9icoUtnIqPcU/7y036eaR+Jts=;
+	b=YtObHabt7iaxj6rxeE6r6k8Ap7+HufKD+Hf57lkBZMg2jFp2mH4I1OQ0DZyaMxqAsoTM
+	 rUBC9lMXAfOXpqF52yjJGVvPqUKJekKeDU5T1bJG+dE6Qlj4YtqJX+AFGq8TjBCmq9Ls4
+	 tEbDebOQ8DvDt+UnpadTbzdYqhA0ua1WqjpakpHA+ihlOAR5jjnkjaWVZDvpY3F0F+Oq+
+	 JTZOrmNt7q4ZpQj+F7gSh/QljWtSRTy1IYS9woHziMGC9iKY43o3fEd6/GeoFQ78RqysB
+	 17xPnLd/ZQEYa/WD75ACH8syZbd8TAqfaqUsrQR7lUGXrewoHvxNivmgKEqItee2hLA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=leemhuis.info;
+	spf=pass smtp.mailfrom=leemhuis.info;
+	dkim=pass header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=key2 header.b=ZrswiGbz;
+	arc=none smtp.remote-ip=188.68.61.103
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.61.103])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981A560A2611
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 18:58:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 981A560A2611
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DC4606A32A;
+	Wed, 18 Nov 2026 19:03:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86DC4606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=F9We98XN
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4bb62d40736so4215e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 10:58:36 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795028314; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qurz+Rl2oWyjKuY+iG4s4ApcYLmpTyqmaa3UUdinMnaBx5lph9Lp4VOjBitQFJdD5Y
-         dAU4NK3lwzuHugWeLaXb4jFvDERgLIJKsZQEGSXhZSjhlSy0Ew+nZyDv2KcMNf92J8iy
-         v0k7qVhQbW8VdcXZGpGLnxWkgazIPoNBm4j4c3ro8RJrVILlcPKhUxO33RzZTC0k3A6f
-         swKJUkq2eN38213rujwyeRdONffclFTQrt7FeY8dXyYAYgJHVoeiEzgJAh7EunBI8nUb
-         7DIwmsktpyd0pFktWuIlqW3B5xq+IVyzVI/5I6/DLUwh4Qdhabb2x9DsFlwSy1GYW3+U
-         Vxow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sANgHflY4l/Fe7eOmc9nVUukAbjG9FRan2mAzBkUStg=;
-        fh=Y43NUmPdCuQfxtHJxmaLZDjdjkm+iascDEiDl08K8iE=;
-        b=eKlvHduXxya+sJ3wDieEtpDpikG5zuX5ilXFPpdqU0rkx8xGN1dMWqWGhr75mESbNM
-         8c92rnYTXP2VDjkKzyPaF7+gFd5XlBWE0YY+RNhQOMRGo4hKdJRPxUTSSbxSWij9beKS
-         jjbrk1BJeXOcbEo8soHvX+QhmFb6rrCv+p7z8QHtram6rPHubd6TC7xJWK1L3XmG6Aon
-         TC6djTFpjCr/kYDyP/vc0MLq4DqCF7p4ERpubq/MWFBkpveMLnJ2I7DdzLzRRtzoEsIi
-         05nh9otZd+svWPXb/v27vRx2qkY8VA0pCYj/3XQiWPd2PeUHmV59q4FUPRMCN5ueTDRJ
-         V+qQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795028314; x=1795633114; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sANgHflY4l/Fe7eOmc9nVUukAbjG9FRan2mAzBkUStg=;
-        b=F9We98XNxwEBIks/3AYeT70ES1muTwDULsZ3smWcjmbyi68BeNmCoE5UKaa+QP20IU
-         idVv3Ly9x+C69lvE4uQnSg9efmRha+lnASsrXtxS4zwprkmt0yKozwHmfe8KUIlEEM1F
-         MmNxuNKQbY7AvJzbXzeOT9p+l+2Xgb9QUPSuHSU2buIZybf4nsmFs5Si3KkhQiS/ROQO
-         KEOygG+Nfq+3axzLPY+SMkV+ZUmjt5GMPFLwJieAzlUp8kFR9eiOtLj1FUmg1UMn1spb
-         JKU6l3MlsNypoBwoz/NLDr9bLqZf87p6NhGjXigdQktEnh4jGshBesGgYHJ4+q8nrB12
-         sS5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795028314; x=1795633114;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sANgHflY4l/Fe7eOmc9nVUukAbjG9FRan2mAzBkUStg=;
-        b=GWG+s6yvBQpHzTUwYZJklR4BIDmvvag2knGeqvmYrQISzCZTqgrwT01YNwnr3h5szU
-         aaiX0vnIys1CfIrgpsuyyYhG4MrKCZ7/TqKZuFv33CWCYL8D6jqxjmoW3/0b3CbNxdub
-         PjUbYb7vnoG9oe3CQdQjHYRIoRhYlup0DMPRf3PK9LZaI3Eww4Hj2gWeCEC1GOEDZe5Y
-         wDbgPeOm9xiD9nDLptHfirchsKSyPUMH2Tt+G+TL062PHDfgpwIeWvozCAs4G6jB1ky4
-         DmPgEb8ehS3XAlT6g6ktyLK/1UVeApbrYwqjrhxOax7mPVd4yac9r/CTJ8AkIYukOKM/
-         9Kdw==
-X-Forwarded-Encrypted: i=1; AL+hErEUncW5cRIfe+fqhJFzrYaTEt8KAMtu8eJqP7/qO9UQz6V13ev2ZcFRddMdoF+FLlfn+Ttjo8h55oDc8u50qQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8GJJTiXJrwhs7EInu6EgPeCm/v4FqQTye5VQ8wE/62Muva91HL
-	k/SvEfYMs9UvuOefPqz5uVfl7NnmVPhwPfz/iBML7sfJoAXftTZ7VAm+lYrr6hm7HPp76BDUvRU
-	OotmB9GMqtBENdW0QZRzNW+iuNS4p9jyiGvXtHX2d
-X-Gm-Gg: AYBFou3Dh5BcZsVCrF/6y2wUDP6Nznti6ENtVVKH401bOObjLhkLNHRchNGebWdJhx8
-	Hp3joj80LNQC8DJWdV8j6rwFdrd404nCYnnsRu0lVKw2vsHd88vAI1AWjeggljGXpuQapQfn8bH
-	3szlTNGhXJ9lr5UlAdOX+Nc4aixjkbN6U8/3pavfGEHm65c/iW3IjugBtpCltsBIcNBfG9I8yzM
-	h8XwuWxJu0alhQ8efPiIAc0wlutGDC4iJE6QKORQcH3TjgiDNvDXF4c4MfPOa1y5hgOeyt9oiML
-	fWhwFxYFykLipLgSx+6YvkT6//9FQNjRQ14slrekNGDVOSY5Shb9GUm8x6SSY2VsqHbcVKQnWpj
-	Kq3KXMI0D+dYnY/TruR81JejMgJQqYc8IseOLwij2ojXZKcBVPTnFsxbWq5pWEOnrGWs1QNV6fn
-	YwOibAAKQN75IX
-X-Received: by 2002:a05:600c:840c:b0:49f:ddcf:45b7 with SMTP id
- 5b1f17b1804b1-4bb83c9025emr23355e9.10.1795028313968; Wed, 18 Nov 2026
- 10:58:33 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=key2 header.b=ZrswiGbz
+Received: from mors-relay-8403.netcup.net (localhost [127.0.0.1])
+	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4jV9vm73Gwz8fXt;
+	Wed, 18 Nov 2026 20:02:28 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1795028549;
+	bh=o5pFJPLvfYzsSxdkOip9Un2zRa7+ZaAOIQMq7WMNMNA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZrswiGbz2SJUdV+I2tAwAxTp0MOxS/9dStHwemJQTjwIcqRatajXu6cVkrBmwOgEW
+	 h0FvfBWwRjcgfhJ0ik/IQ6YXYPJ5IgyyoggO8g5Uddio6RG4igxIv+AKwgN0CEGLdF
+	 QRW8cjbDvguba3u+lygd4KhA++ranqqWBBPco3Ij9Lwmfa/ot3jiKIghS/qxantAT8
+	 jJ3VOgwTlB0dyYIpUABkn+E6QmHnaqkFKyA+6oW0GHxYPvvjhCBDtL64Ad6/Latyyh
+	 3kyopLCa8uoj7DAtdMWoYfQ843qhT0vBgNodVkiz/ihXawEEJzUA7mnjYPhkHHawwg
+	 AkAcRzbH7AhzQ==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4jV9vm6J02z8fXc;
+	Wed, 18 Nov 2026 20:02:28 +0100 (CET)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4jV9vj2W2qz8sb7;
+	Wed, 18 Nov 2026 20:02:25 +0100 (CET)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 38EBE5FAE1;
+	Wed, 18 Nov 2026 20:02:10 +0100 (CET)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=linux@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <cb9ff126-7767-4c60-b735-1b7890a247fc@leemhuis.info>
+Date: Wed, 18 Nov 2026 20:02:09 +0100
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -105,128 +73,120 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261026-rust-drm-gem-shmem-imported-sgt-v1-0-36f15ace04b1@jannau.net>
- <20261026-rust-drm-gem-shmem-imported-sgt-v1-1-36f15ace04b1@jannau.net> <20261118114102.490384-1-aliceryhl@google.com>
-In-Reply-To: <20261118114102.490384-1-aliceryhl@google.com>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Wed, 18 Nov 2026 10:57:56 -0800
-X-Gm-Features: Aa3M54rtfthEgFiAPOcV53y3ZwydiRtVUQnZ06u4pa0OMeOurh1hyDTgkerw9LE
-Message-ID: <CABCJKudrDOu3sD6J5LN4o3XF9JrU85pZK4DUXNH4d9iC363bEA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] rust: drm: gem: shmem: implement gem_create_object
- for prime imports
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Janne Grunau <j@jannau.net>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Lyude Paul <lyude@redhat.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev, 
-	stable+noautosel@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7.3 0000/2651] 7.3.6-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com, Miguel Ojeda <ojeda@kernel.org>,
+ RUST <rust-for-linux@vger.kernel.org>
+References: <20261118150247.972732815@linuxfoundation.org>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Content-Language: de-DE, en-US
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 MEK4
+In-Reply-To: <20261118150247.972732815@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: 
+ <179502853112.2764222.18096889583059449587@mxe9fb.netcup.net>
+X-NC-CID: boliFuEOQHkzI0IzbOIZEcbWEMqjRW/0tl8Z9QpTJHBe7qIWHMU=
 
-On Wed, Nov 18, 2026 at 3:41=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> On Mon, Oct 26, 2026 at 12:14:08PM +0100, Janne Grunau wrote:
-> > From: Sami Tolvanen <samitolvanen@google.com>
-> >
-> > For a prime-imported BO with no `gem_create_object` callback,
-> > `__drm_gem_shmem_create()` allocates `kzalloc(sizeof(struct
-> > drm_gem_shmem_object))`, which is smaller than the Rust `Object<T>`
-> > wrapper. A later `container_of!()` from a `drm_gem_object` back to
-> > `Object<T>` then runs past the allocation and corrupts the heap.
-> >
-> > Provide a `gem_create_object` callback that allocates the full
-> > `Object<T>` via `KBox::pin_init`. Move `obj` to the first field so the
-> > returned pointer is at offset zero, satisfying the `kfree()` on the
-> > init-failure path. This is now compile-checked with `const_assert!`.
-> >
-> > Imported BOs have no userspace creation arguments, so extend
-> > `DriverObject` with a `create_imported(dev, size)` constructor and
-> > implement it for Tyr's `BoData`, Nova, and the in-tree KUnit driver.
-> ...
-> > +    /// Create a new driver data object for a GEM object that is being=
- imported
-> > +    /// from another driver (e.g. via dma-buf).
-> > +    ///
-> > +    /// Imported objects are allocated by the importing helper, which =
-only
-> > +    /// provides the device and size. There is no driver-supplied
-> > +    /// [`DriverObject::Args`], so drivers must initialize the per-obj=
-ect
-> > +    /// state without those arguments.
-> > +    fn create_imported(dev: &drm::Device<Self::Driver>, size: usize) -=
-> impl PinInit<Self, Error>;
-> ...
-> > +        // SAFETY: We never move out of `self`. Ownership of the alloc=
-ation is transferred to the
-> > +        // C side, which will run `__drm_gem_shmem_init()` next and la=
-ter free us via
-> > +        // `free_callback` (or `kfree()` on the `__drm_gem_shmem_init(=
-)` error path, matching the
-> > +        // C kzalloc fallback contract).
-> > +        let new =3D KBox::into_raw(unsafe { Pin::into_inner_unchecked(=
-new) });
-> > +
-> > +        // SAFETY: `new` was just produced by `KBox::into_raw` and so =
-is a valid pointer to an
-> > +        // initialized `Self`. `obj.base` is the embedded `drm_gem_obj=
-ect` the caller expects.
-> > +        unsafe { &raw mut (*(*new).obj.get()).base }
-> > +    }
->
-> I ran this through a review agent, and it found these two things. As far =
-as I
-> can tell, these are valid concerns.
->
-> 1. On the `__drm_gem_shmem_init()` failure path, `__drm_gem_shmem_create(=
-)`
->    calls `kfree(obj)` directly rather than reconstructing `KBox<Self>`.
->    Having `obj` at offset 0 ensures `kfree(obj)` frees the start of the s=
-lab
->    allocation, but it skips running `Drop` on `Object<T>` and `inner: T`.=
- If a
->    driver's `T` owns any fields with non-trivial `Drop` implementations
->    initialized in `T::create_imported()`, they will be leaked if
->    `__drm_gem_shmem_init()` fails (e.g. if `drm_gem_create_mmap_offset()`
->    fails).
+On 11/18/26 15:20, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 7.3.6 release.
+> There are 2651 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 20 Nov 2026 14:55:47 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.3.6-rc1.gz
+> [...]
 
-I agree, this looks like a valid issue.
+This failed to build for me due to a problem with rust during the "make
+bzimage" stage:
 
-> 2. `Object<T>::ALLOC_OPS` also sets:
->
->        dumb_create: Some(bindings::drm_gem_shmem_dumb_create),
->
->    `drm_gem_shmem_dumb_create()` calls `drm_gem_shmem_create()` ->
->    `__drm_gem_shmem_create(dev, size, false)` -> `gem_create_object_callb=
-ack()`,
->    and `DRM_IOCTL_MODE_CREATE_DUMB` only checks `dev->driver->dumb_create=
-`
->    (not `DRIVER_MODESET`). So `T::create_imported()` can also be called t=
-o
->    create a non-imported dumb buffer (`obj.is_imported() =3D=3D false`).
->
-> Instead of implementing `gem_create_object`, what do you think about
-> exporting a `private =3D true` counterpart to `drm_gem_shmem_init()` (sim=
-ilar to
-> commit e3f4bdaf2c5b ("drm/gem/shmem: Extract drm_gem_shmem_init() from
-> drm_gem_shmem_create()")), implementing a Rust `gem_prime_import_sg_table=
-`
-> callback on `shmem::Object<T>` directly, and setting `dumb_create: None` =
-in
-> `Object<T>::ALLOC_OPS`? That way `new: Pin<KBox<Self>>` stays owned by Ru=
-st
-> across `__drm_gem_shmem_init()` just like in `Object::new()`, so `Drop` r=
-uns
-> normally on error and `obj` does not need to sit at offset 0 for `kfree(o=
-bj)`.
+"""> error[E0432]: unresolved import `crate::util`
+>   --> rust/pin-init/internal/src/init.rs:17:5
+>    |
+> 17 |     util::*,
+>    |     ^^^^ could not find `util` in the crate root
+> 
+> error[E0599]: no method named `extract_cfg_attrs` found for struct `Vec<Attribute>` in the current scope
+>    --> rust/pin-init/internal/src/init.rs:171:39
+>     |
+> 171 |                 let cfg = field.attrs.extract_cfg_attrs();
+>     |                                       ^^^^^^^^^^^^^^^^^
+>     |
+> help: there is a method `extract_if` with a similar name, but with different arguments
+>    --> library/alloc/src/vec/mod.rs:4245:4
+> 
+> error[E0599]: no method named `as_ident` found for reference `&Member` in the current scope
+>    --> rust/pin-init/internal/src/init.rs:413:28
+>     |
+> 413 |         let ident = member.as_ident();
+>     |                            ^^^^^^^^ method not found in `&Member`
+> 
+> error: aborting due to 3 previous errors
+> 
+> Some errors have detailed explanations: E0432, E0599.
+> For more information about an error, try `rustc --explain E0432`.
+> make[2]: *** [rust/Makefile:649: rust/libpin_init_internal.so] Error 1
+> make[2]: *** Waiting for unfinished jobs....
+> make[1]: *** [/builddir/build/BUILD/kernel-7.3.6-build/kernel-7.3.6-rc1/linux-7.3.6-0.rc1.400.vanilla.fc45.x86_64/Makefile:1440: prepare] Error 2
+> make: *** [Makefile:256: __sub-make] Error 2
+"""
+Full log:
+https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/fedora-rc/fedora-45-x86_64/11350094-stablerc-fedorarc-releases/builder-live.log.gz
 
-A later commit in tyr-dev lets drivers opt out of dumb_create, which
-addresses this part. However, your proposal sounds cleaner and fixes
-both issues, so let's go with that.
+Have to run, so not time to look at where this is coming from right now,
+sorry.
 
-Sami
+Ciao, Thorsten
