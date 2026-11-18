@@ -1,91 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.29
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794961731;
-	b=UzXLo1szQpJtUohi3idDuqBiZWGDc7+LDDaGgAHma6OV7E45nnvYqV1u4bHAKaxZS5b/
-	 bsaMNTBcwdH51CNrtJtkBWEYgjqy7+1ji6oO0980Zj79PGllJ1dtD7tC/iO6A7yUejJZV
-	 cQ+7ZbYvTqbuYUIjsTFs4dgAOxjbdULgZMI2dsNON6lWBb0wN2o/XAGSeDptYJd5xu41P
-	 DuQvH3BvWuvcDBPpt460aMs/cwDqBR9joUouR3P24LcAJdRKCny/9EFAOTycUw85kZEHw
-	 YgfMcWOQXa1Uo9iwQJaYRLzvFulfmgWiJ2BX4yjQjE3wQdGONYPAczor8tpn5ByaKwA==
+	t=1794973272;
+	b=4x7eY0d15Mc7C5nJL2RHK+SaQURYW0BbnCfbDEQQ6zZ+epsRliQICA5DGAIBasuKX4mO
+	 9Q/2dhuRrvwzbSf9Pc6GrqnqHeOD9dN4PxVAoKvkurdShNKKyrSHE7aalWyOHPYN/OqLW
+	 iuimNn1Xv/nnPcYZ5Jd2H3sRcOborTrPM72G51j+aHFo4nnpFhF0HbKzpydwE4FaWrAR1
+	 pCgbGgBHfDCqhla6si+widSaKMrL6dUNhrtPPeWRds/pFHgfzomMZj0bXQ3/0OCKBGiUk
+	 +rbDDLfYQQFlljWeeSJD8aIUUFKsGDFgem9Ild+P5azulr8dBrmyBkDwyAB5ezYui1g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794961731;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:In-Reply-To:
-	 References:Subject:Message-Id:Date:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:
-	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=qx+4s4wXOKCgX41rrsFfYWHK6/MR4pep1TyNfKF3xsk=;
-	b=SnRkrf4yCKh6L9G88q4AAM3BpIVpga1HbuRxeYF8WefpW33+LWL8TUCDcDNK5kBCYUMe
-	 w9xQfMqNVD3JVdKbPbMSul6DPwnAdAqmPkONiEuEwTDLz9l6uc8OlpabO9WOXlsIujYSi
-	 dSL1degGnVK6L+p3G5DgK4r7ym4i+BRYM1aRx+7afPjBbUy7RrhapJ0BRnnddwmrYowpy
-	 XKcXRj+a5Ihcq+T53zTOxGGFxUR7U0Y2Q6hNxa+KGWUknBShDzMrhe0hCn9q2kbm8pbd8
-	 Tyhey96FO0iKHywdO72z+HJ12R8JyccqzKDb8I4bjOX3LFiI5VHwI4430MG7b4z12MA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794973272;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Zoho-Virus-Status:X-Zoho-AV-Stamp;
+	bh=gK5oI799Kz1LcEUaOW/mOdthpI3irhOwmjheiwtPG1s=;
+	b=imSeHYpym5rK51abFpEqr+cTogGBrxjWjViQ3offGXF3xs40LsM4LQDi/HgmV0WQYEJz
+	 oeiix4Dnks6NooBt0Mmbiuu5yjkOjJbLOibNk7NjWD12E/79/cwpwCBx1UfALrNDZRYPo
+	 Gov9hwodvzXQS16RpmsAUUP+n0jYUwunlSW1LKzBPrJwDR6dm3UTbxdh3kQSr7gtMQmRE
+	 SPynCOT6QlPIRMs0I/3IQWL9/z85dawvKcmsGMMM3oFkaA+MFxfth4PHEImCuiAc7KG3X
+	 +za74pufepHz+8cSJViFShzOaorT2d2zDEeTYc2CbLh3MpdTS2k1DZEW1YK3EBXcwKw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=R4i5Sv4s;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.29
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010029.outbound.protection.outlook.com [52.101.201.29])
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=DiuyTkmX;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C55606A31C;
-	Wed, 18 Nov 2026 00:28:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 72C55606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6B1606A31C;
+	Wed, 18 Nov 2026 03:41:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F6B1606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=R4i5Sv4s
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wMKbFqNt05YtgZDD0Jtq0BQIr73OGj5evkEv3voJnxJcGiWInijGn3uZvaVfvnrhmdF/L8mSFKEnrtGYPy9oN7qbtHMaZz9OvSJ54xiXCFuXeeBZg74ugIQnt77z46PCaMMwHg5vJrnbbba0R1x/l/1hakQyFXQbwdjZSwj8HERr0wjStTDUYvsqMO2oRL94oHczNzTiF70Cuh3MiA210TM6OHPMtN9X42UX62EJTTbrJkdE3rG0DMZ8ozFmg5RzLRpBvERlK/tzUyPO8s4w1Wc6caefSP7owONjXlWlm9opVgjARrRDbWzw9JrGCDxeRweSUFtIYFwWonwzltgSHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qx+4s4wXOKCgX41rrsFfYWHK6/MR4pep1TyNfKF3xsk=;
- b=o4sCmrizVd8jhywxBg2ryFdsNpiwSiYKU9+CsFYxZ1B7hTX7UTyi+7idEQ56CJopeWCqM0pBBLQcuOkAzqL31rKq1MtOmpOdxO1AvcDEfh2RR9+g/eFoDiW+J3iqSR+eJym9lhN2WO0U9wb1+O6rnDbmhi3PyiAjstsNR69Xg8ZJqD90hlca1tKKqsth3MDvTRvTzK3mJNzmzSBeSidLI3LEWdUyIPXX+XEXvaIGf1O7itJAwpEYxmK/bXBzMS0gXwvpzfMAUqLpIR66VHQF6LH/kbk31XSCa5dCw+VkTpJ+pz+v4aMSvFsqT0VqHICD60gWfSyIaSUnH3oHeaaeqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qx+4s4wXOKCgX41rrsFfYWHK6/MR4pep1TyNfKF3xsk=;
- b=R4i5Sv4skkMCbulcZy++XSqhKo3TwKuELt8hCyyAHVucqCD1RNEOH4RRy8W7DtOG8dj/ShhYnCRpSr3mGQDeWmuWvCHYYBaz7cKU6tWaqzoOtYzPfIzbZ1ifit8ANyh2Lxf5x91d03AY2px0omTut76UmghyA7U6TEQ0NBRRgTEbqwfxOOe/kI/iqDwnaXVdXbAun5E47RGOAWovtpzdZNoKa0A3xHiwVNzGYPTAVR1b5rjOTRtY+xZZUEBWOEwArZYtZF2GSCtW6lZonfiPqCbPTjD21+BbGjsMu5B7UheD5XnlxPUHuyqxO/0x1Om8piNQ9B0wtcnvCnx41zX1hQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by DM6PR12MB4403.namprd12.prod.outlook.com (2603:10b6:5:2ab::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Wed, 18 Nov
- 2026 00:28:45 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0615.012; Wed, 18 Nov 2026
- 00:28:45 +0000
-From: Alexandre Courbot <acourbot@nvidia.com>
-To: Alice Ryhl <aliceryhl@google.com>, Burak Emir <burak.emir@gmail.com>, Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, Björn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Onur Özkan <work@onurozkan.dev>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Eliot Courtney <ecourtney@nvidia.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org
-In-Reply-To: <20261112-chid-v12-0-49ad43286dad@nvidia.com>
-References: <20261112-chid-v12-0-49ad43286dad@nvidia.com>
-Subject: Re: [PATCH v12 0/2] rust: Add support for reserving of ranges of IDs
-Message-Id: <179496165052.454970.17980287507795025780.b4-ty@b4>
-Date: Wed, 18 Nov 2026 09:27:30 +0900
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TYCP286CA0139.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:31b::7) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=DiuyTkmX
+ARC-Seal: i=1; a=rsa-sha256; t=1794973232; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=PLCpSpea4x3Fv/2NVljlVkxjca4XG5YWZoAOiCohQX4em1IYDAcn5WQxN8PwFdmhbnsB2XmB2T2idk1aiEVj2vN22ZNfcEVbY03WgwGai4Vm2HRJzcq5orIez243qu+1xYwVex4u3iZsDbifc32kHXnSPQXM7pE089kAz0EB4/U=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1794973232; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=gK5oI799Kz1LcEUaOW/mOdthpI3irhOwmjheiwtPG1s=; 
+	b=QCA8qHMs+wT2+MZDN8XVUF3lDie1IKxpo8H+0yeyvJFWWaIzBtG25hx9ev3Y+/OTrQl/5LjfglaoW5NxGFisCigyqQLtpS5EtTLYpPuaTTrd4BgY8MdmjXAEkHI/lRQ0c+3wgqbmE0+FypPbFcxcekmQhtHwUIahXoqGpQ/GxS0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=DiuyTkmXReziehhTT97QdEz3z0Ay5HL2taygwOGhQ2ntwo1rDZ7n+T7wJys0AZqH0RpxLu3XhPNYYEZTGNNcmFlQj21LXe3AmR+vW0yva2JSCG/mSOI7CuJJoX0VfyhAB+T63K3tEhVPO8/LL++IRbSSP+YSoBT3Ny0i8f3ZMNI=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=gK5oI799Kz1LcEUaOW/mOdthpI3irhOwmjheiwtPG1s=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 179497322883786.17035987788756;
+	Tue, 17 Nov 2026 19:40:28 -0800 (PST)
+Date: Tue, 17 Nov 2026 20:40:27 -0700
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev
+Subject: Re: [PATCH 0/4] drm/tyr: fix partial 2MB block unmaps on GPUVM remap
+Message-ID: <av0eKyWMqDWy1wHo@um790>
+References: <20261117-tyr-remap-2mb-v1-0-2a8efd4c8180@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -95,86 +81,59 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|DM6PR12MB4403:EE_
-X-MS-Office365-Filtering-Correlation-Id: d17d146c-0161-47f7-1d6e-08df450ae7ed
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|10070799003|366016|18002099003|22082099003|261009223027099003|921020|11063799006|56012099006|261028144727099003|10067099003|261026140227099003|261026121527099003|261022105027099003;
-X-Microsoft-Antispam-Message-Info:
-	pRTCYtR4myANaWajUvTEhwCgEIUDf8Rq6gCmJ/9WFFMSkLASHz6AmKdx4nAATiRYb89xQ+cu0kNvCB8P/XuhVUwcbNG9oBzPZH5UmEkqnR3cUyva/BRw8/zrmQzNlDRgrMlYGpELyTfBP50DiVPk3D/i2UpLm10dBTHFXhCUty/QR11G8JWlFfDOBCwAw4lMYe5lJAFpkUpsI/hf9YB0vBNq95Q9rqLnPExdXJS3xl9costpBMUo4YQ6mPhEdyTmniqk5YXJ8SNbWVRccMXfaoI6WpEkFW0rQM2VYEycm/30CYTAjckMFBBWlJ1CVVljtF1p79NQQi62d32nsywyd+nkvM+Dd929mWK6vVYTEuMFFdceZHHBoLHVom6tPwi5UnKTlujwSmOWl1bRZ9+0TU6N0MsR0gimhXa6hRXlCx/iS1p+JMlqYLWRYVlgfK2MRxaLUmP1Ky5JFP0wG0Z9ckGfP9qv8pNwkdN3M3ECYFhPTKHTNV07h1c8MYz8aGAYuSuiBn/XzR4BpkHCdkxdTrqAA3TbEmjrYF1rPNN99Z4HCS40/X2YihuSKdzKlmGmbyfui5dJ96pdNB8m1cIj4Dun/tgPp2rMLyvzoF1xT0pzKO+x6SayQSgoZ0y7FHtBpbsSD7EwooLmNyyINxpVyO0//Vfh2W1ibAdsHbBaIV01rmVSBRibIG21yODS4K5pt1TFwr8jlEQRxydHStxI0g==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(10070799003)(366016)(18002099003)(22082099003)(261009223027099003)(921020)(11063799006)(56012099006)(261028144727099003)(10067099003)(261026140227099003)(261026121527099003)(261022105027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?M3dEWEYxYTN1Si9PVS9VeHVPUVNBM1IzcHFLYVZvYkgyeXYrS3VaLzN0UGlE?=
- =?utf-8?B?RkM1b3V2d1UzaHdtbGtqVUdyR25iUXZMVHcxUEFqSGNrZjVwTGo3dWdwMU0x?=
- =?utf-8?B?U2FyZUdMWXJJMDJuU1JQa0FsZXFac3B3TUErRXlJZWU3b3BjNGhDa2p3SGVo?=
- =?utf-8?B?NlFtRjdBL25iVXh0Z2J3QngxQ1lFNUF1ekVWYnJCNG1rbUR4Wm1MVzlRekF3?=
- =?utf-8?B?c3pheUI1aEJrSlREMTBmaEpIWW15MW1oN3JyUE04R1A5Zzc4bkJ3WDF4V25q?=
- =?utf-8?B?S1YxaDBJcTE1WjFNZFZDSkF0UDcrdGhrRlo0b0RkUW9KOTlxOG84UkJORGtS?=
- =?utf-8?B?YUZ6OUlVZ3JFV2c5RVREZXBOdGN4RDhienU2VUJjZmdmU2crVHNXbXVEMitV?=
- =?utf-8?B?dDdOUHBFNWE3cmxVckFSZ0hjRmdXUEdTamFWRDB5ODEzRFR1K1JHL1c1eUl2?=
- =?utf-8?B?TmhIZUxTTlM5RjNlTnNCenpLSHBkaThzclFCeUxrb3lOVUR4amc4Sm51Z1Qr?=
- =?utf-8?B?eFA5c1NaRDVmN0RxR1cyeVluQmtuYU5wRmdsQmE1VTZRaTdqUmdHK2J1TTNR?=
- =?utf-8?B?OTFSM01uYVZpemNvS0tEdFBCVlJrZEtKdEY0VTV2Y3NUVEk4ajVRSzJMSWdt?=
- =?utf-8?B?SlJRR0xOVXJNS1lKZEpSMHNmc1gyWHNzNk1rU3hNa1dIVG5za000c1libmN2?=
- =?utf-8?B?NmRRUmViSDhnM2pYaFJiNjFKUk9CNGhyM3U4aXBzYXFEUlpIclg1Ym9UblVX?=
- =?utf-8?B?VzlrdkFOSEwvVDlaL1RMVUpQS3g0dkZJOVJIN1NVYmRtMHcwQVFoZ3B6TERN?=
- =?utf-8?B?S2NRbmphZkw4R0tDYUxCWDY4cGZBZnBOMjU3bk0zSEIxcUdTa0RpODZ4c0VB?=
- =?utf-8?B?aW1vWkhuMlM4ZCtYK0lQTDNiSWtPdDdQWE14eTIyMzFaWjRQVVNQblJTZm5r?=
- =?utf-8?B?dFFEb3BxNkw0SFhJc3FDbTNrRTlTOWFxYVVRMnhyUk5leTBBM3BPKzJmdEwv?=
- =?utf-8?B?UFBNWG1rWUhvSndvNENJSG5wRHFyMFI3cGxiTkVFSTdFZi9HZnlkYXNwZ3Rp?=
- =?utf-8?B?NSttZlExN1BBbmw0V2pSZFU2amNqWWpPWkx6RnRTd2dZeDVPa2tjZUd2alRk?=
- =?utf-8?B?b2dWRHptWFRGVzZDSnZZTGxzMkQwMmhCcndXczM1NHlVNHRDRU5MbHU5YjJu?=
- =?utf-8?B?TEVnNW96WVF4Z2drcnF5SFk5ZWFYNmF6UjdrNWJaSlNLTVlRSk9UaE1XYm1o?=
- =?utf-8?B?UmNFblVsV3FzaktJSTVWRG9Va0lQa25ZcDFqNGRoUWhOYlR3TEF2TmtCRWwx?=
- =?utf-8?B?YlNYa1R3ODFla3drZXc3VUwrMCtaT29rWU40U0NuWm53YnhyTEF3RmU2T3pF?=
- =?utf-8?B?T3U5KzlBaWYyZm51a0lveUVwZ2V1YTIxbFpiUitUeWwzOWVZYzJ6SklzOWdz?=
- =?utf-8?B?dHdwZ3JMbWpNeTVrSmdpQ2c3NzBnSXJZUHkzRktWOVEvaEJjWEJ6SDJhN1la?=
- =?utf-8?B?SUZPRzFUNUU3bjF2OGFxdk92blRjcTFlMmFTczRnei8wQkxQcjMvTTA3Yjhx?=
- =?utf-8?B?bkNHR1BTRUp6MGIzTFBDc0J5eVJmUkdTR2taV01aTlFxeFB6dkZ0Yk1UVEhm?=
- =?utf-8?B?UkN3WUpaYUd6L3hLd0dGNGNqVzR2ZTl4S05ldDVoblBEWXBCaTNVT2szOVpj?=
- =?utf-8?B?bi80YlJnclZoZnF2a0lrTW9JNEYzZWRDOTVIYy85dVF4MGd4VlFiRkJlNlBw?=
- =?utf-8?B?TXlXRWlCT3AwakhkaHlSOWd2eWtoTjdtbXk4TEdaTHB3SFR1azdqYmRERlQ1?=
- =?utf-8?B?MnNmUTFGaTZSQ3lWdHFHNyt1Nzg0cCs5VVJYOWxsNjJkcmJNcUtCT0N0WURj?=
- =?utf-8?B?QWpudGp5UHFRU05uVVRYajhLKzRFbXExdS9OWlBqMnQyd0FsZkc1RHQ4ZWlU?=
- =?utf-8?B?ZXNGeGpWQ3N5N2NWcU5rOVlxS3pRbisra0tWVFdkUXpQaThwbGVkM2xNMWQr?=
- =?utf-8?B?TldwQWpNWEMwS2hDcVRTWkE0dUZBZVF3MzVNYU1JbjlOYkhKNjM4YWJyMWtt?=
- =?utf-8?B?WmVNZkJneTNkK05IUXl0RGttb3VVNkkyWkpyNjVseUFNcEV6NVErdm1tRmhz?=
- =?utf-8?B?SG42MjR2QUVvU01MTlVILzFmMWhHN21VbFN0OGZLR0hKQXYwblFDVWkvWHor?=
- =?utf-8?B?cWFncTlvbC9hT3p1aWVCOWg5c1FEaDJ4WWd2QVhhbk5vdVFaSjJmRks5U0pq?=
- =?utf-8?B?N0lxUUdROU5GK2xDVTVtYWpBTkQrejhpNmdUZFpzNkJ0NTgrdXVDaWZTSERl?=
- =?utf-8?B?QWRYZjk5SlgvWkdXQzJQa2k5anUrZWRkODdHN1ZjSVNuMW93SDJOMDZ1VXZ2?=
- =?utf-8?Q?NbEVhBzJbmc5vmghT/maIwbD5jsEeNiBG9OYQClKv4POE?=
-X-MS-Exchange-AntiSpam-MessageData-1: XkMKhj0tKBRY4w==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d17d146c-0161-47f7-1d6e-08df450ae7ed
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 00:28:45.4865
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6CWlv+ao9LswwyezXHuGnNFzRh0qj0gtemnDXfjINZaVyz5aRx7KVafGRHkqE6N/OxAbY1OpU/Wh5SY+GAf9CA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4403
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261117-tyr-remap-2mb-v1-0-2a8efd4c8180@google.com>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/294.970.94
 
-On Thu, 12 Nov 2026 21:37:11 +0900, Eliot Courtney wrote:
-> Add support for reserving of ranges of IDs, with a usage in nova-core
-> for channel IDs.
+On Tue, Nov 17, 2026 at 07:32:17PM +0000, Alice Ryhl wrote:
+> Tyr configures its ARM64 LPAE page tables with 4KB and 2MB block sizes,
+> but arm-lpae rejects unmapping part of a 2MB block. As a result, a
+> partial unmap or overlapping remap that splits a 2MB block in
+> GpuVmData::sm_step_remap() fails in __arm_lpae_unmap().
 > 
-> The bitmap and `IdPool` parts from earlier versions are in v7.4-rc1
-> now, and this version has the remaining patches: exact `IdPool`
-> capacities and `ChannelIdPool`.
+> This series ports the remap fix and supporting accessors from tyr-dev
+> onto drm-rust-next, along with a defensive bounds check in pt_unmap():
 > 
-> [...]
+> 1. Add the GpuVa::data_ref() accessor.
+> 2. Add the IoPageTable::iova_to_phys() accessor.
+> 3. Expand sub-block unmaps in sm_step_remap() to 2MB boundaries when
+>    the swept head/tail fragment is physically contiguous, widen the AS
+>    lock over the expanded range, rebuild the surviving fragments, and
+>    take the preallocated GPUVAs before mutating page tables.
+> 4. Check the remaining-length subtraction in pt_unmap() against
+>    underflow.
 
-Applied to drm-rust-next, thanks!
+Thank you for this series. I tested it on my Rock5B with the latest Tyr ioctl
+series [1] and I can no longer trigger the unmap WARNING
+"Unmap of a partial large IOPTE is not allowed". 
 
-[1/2] rust: id_pool: do not round capacity up to BitmapVec::MAX_INLINE_LEN
-      commit: 8ea1ad9ac79575d0fb2d86b700b2db21d7149547
-[2/2] gpu: nova-core: add ChannelIdPool
-      [acourbot: use range comparisons in tests for better coverage.]
-      commit: e825f4373d252339b6f66732d6f57427930bdc77
+So, for the whole series:
+Tested-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+
+[1] https://lore.kernel.org/rust-for-linux/20261109-tyr-ioctls-v6-0-b2896bf2b3c9@kylinos.cn/
+
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Sami Tolvanen (4):
+>       rust: drm/gpuvm: add GpuVa::data_ref accessor
+>       rust: iommu: pgtable: add iova_to_phys
+>       drm/tyr: vm: expand sub-block unmaps to 2MB boundaries on remap
+>       drm/tyr: vm: check the remaining length in pt_unmap()
+> 
+>  drivers/gpu/drm/tyr/mmu.rs               |  13 +++
+>  drivers/gpu/drm/tyr/mmu/address_space.rs |  29 ++++++
+>  drivers/gpu/drm/tyr/vm.rs                | 152 ++++++++++++++++++++++++++++---
+>  rust/kernel/drm/gpuvm/va.rs              |   6 ++
+>  rust/kernel/iommu/pgtable.rs             |  23 +++++
+>  5 files changed, 209 insertions(+), 14 deletions(-)
+> ---
+> base-commit: 8045d0e7d208ad389a387f1407ce0db9070805af
+> change-id: 20261116-tyr-remap-2mb-7a53b8475cfc
+> 
+> Best regards,
+> -- 
+> Alice Ryhl <aliceryhl@google.com>
+> 
