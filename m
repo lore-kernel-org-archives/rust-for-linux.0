@@ -1,69 +1,133 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.158
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795045085;
-	b=4pMcVEKs8lQZkjotRH2ONKjXoNEAtV4ND7+bQmq4xT89rj+Qg85X40dW56TqTi04J64r
-	 kzcvbxwfttAuyCRcWfxu/ZOysr7m+XpOwpfnaQpM67hhtUfWbqJv9Zyr4/Q30V+dzP4i0
-	 o+eWHXPAWbKV6Wkq9E7eQMBfnKWb/KU8O8jRgmNI83NB7cLZ03fX4zpNTD9MT1zT/TMZj
-	 zukerefJ8BRPKW/0/BG5L/C9kOEFanWo3Z7HaR21QVzDj51UVc2Nc/4vJkGfH6rLOrsXe
-	 NGpz9qA8YKYFIrcBfxypG1a5DR7Cbuyb9oyqMGFwrPjDUvs1o/Ky1a1ZvSdvmMTY9NA==
+	t=1795045507;
+	b=m2oSGWvw35quSQQvMHTdzmBjU5/jhnwQszJZZjRXg9HXb9WpWa0kpFIu6WrFGZkNy0X4
+	 5DhWVzLlaX5FxzKpX0uN6qkWqQqGFhDHbgNdhEVGnjcUkINxh5hxh8O0oHQCT/m3DABXh
+	 NGI3s5Yi6pbIOR0Yc62SVQQFc2zx5IOnAXoG/r+E1NZ0rYZ+RZ/svWRRFaPtf9UrwOSiq
+	 SKGqnucYNr96BGYzFUw4nnOKxz/gtrBFm1ieGrZweaQj2Iqal4iCyjLA0MaaSf6izfCLA
+	 W5gOCsTatazj1O/CwlfJ9Mk+fHuJPDiSdn38MQmFOgXzvZkqJwDabpFSr+tJCgk+AHg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795045085;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=ib5I5MU9U2dx9AKOKxzo3p5UBRpPpSLOp77gYWySKQQ=;
-	b=MPxe9rFrQrulVckvWS/D/vSVIhgE0Mhmp1q0rTqinAv8PF8OKRKk4natcs8yV21smPyk
-	 EhBUM4VIz5Fk6kgjJsxs7A9FVN2GbEV3Cik64FRaTZV9QykMt7md2IZdAXPY3RwYeGhPY
-	 Z4vuv5pA9F/sLGWWtm0EXckboCXgz4AmEWI3BD+7Uq1Vcv2fhKcft88aJIuZ9ykWFzIx2
-	 P0ARYoWI/bghESiPNYOoEAWp9GlpaZecW1miqRZLy25ffOsHN90ZJLDnk+fXRVI72Lm04
-	 EKlsWkowrSbuZBr2UFUGzX7RS0ytlUVaHvN52m+rrd5bZKcb4DPSgITlxnL+u9R2D0A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795045507;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=SlvQ2VgnsFjXe3sW9Yw5Vu92DAnxWZkCnZJbEo3k38A=;
+	b=N4NOaB6mycdQ9e+CcDMKtyImjz9/vSI0vxH4NFS49DSbl8AvhPuj6SIByq4VFhgWRkUd
+	 U7qa1tnRwTa6ORfCxdj8i9LxOOOGXJelSFTTTy9Mzs0mga+rbPKHH5I6eRwlEDoLalvhc
+	 oRERjNUDxvYjdtCbcmyazSyzdNpprlZAtAHFAe226iu9YdtMrqCd1uNiY6dKJXhu8Or6b
+	 U4ARdjHAEKV+rDPpXUHkn/y2cgjfqGFUVgFn9P4vBeKodBLb9R0mDfP/2Smn7njGLA61J
+	 O416u463gX+KfMhMKd0JvkNz8LO41bUVO5J0+WiX8WEPbUvVyy6Jx+LKE9CCj7koOGw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FhIgaoUg;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=flapping.org;
+	spf=pass smtp.mailfrom=flapping.org;
+	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=dP2PLzA7;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=hB8+2G5A;
+	arc=none smtp.remote-ip=202.12.124.158
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38525606A325;
-	Wed, 18 Nov 2026 23:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E9D606A325
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 23:45:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28E9D606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FhIgaoUg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BF61F000C4;
-	Wed, 18 Nov 2026 23:38:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795045084;
-	bh=ib5I5MU9U2dx9AKOKxzo3p5UBRpPpSLOp77gYWySKQQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FhIgaoUgmfy0i8qseK8P9v0BlAgMeYl3Rn69fhAbxgx/i2w7AR4qkbgUk8w4J8mao
-	 +ubUrCjpDe/wgC0Qjhwuv3yDDD8g38uC7lGPOejDyJJ1nUsH/zBYs2l9FnNl1ZXK6k
-	 rTT41oIvW4kAbtNJ2z6oV0JLUljd7/Be02trfyRbU74O6xgo0mKlYS/hBNDKdBrQEP
-	 s/iz2qz5FzCOx1C0s8W4TgNeIoRSJ4fPN097yqG91vt2RFXdgScE/1xgmmubUmzpMc
-	 0j3Ac9VlWhu7Ro9KAXeBmIZUa5dv8ZCAIg/rrdzYLYD/QsdGwPkwFEc/+FLGVXawMg
-	 TjIIQGz+a3omg==
-From: Danilo Krummrich <dakr@kernel.org>
-To: dakr@kernel.org,
-	aliceryhl@google.com,
-	daniel.almeida@collabora.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	lossin@kernel.org,
-	gary@garyguo.net,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	bjorn3_gh@protonmail.com,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	tamird@kernel.org,
+	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=dP2PLzA7;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=hB8+2G5A
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id A33B87A02DF
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 18:45:06 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-07.internal (MEProxy); Wed, 18 Nov 2026 18:45:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm2; t=1795045503; x=1795131903; bh=SlvQ2VgnsFjXe3sW9Yw5V
+	u92DAnxWZkCnZJbEo3k38A=; b=dP2PLzA79OGnxZTiZT4meX2Jm/8OzMHkC3frv
+	Q61M0XFL/zJqi11M9D3Y3E0ptf5dz2FA2ADj4Uer5pEsq8fDPWTeLLKYblTp7TZ6
+	GcCJ2Zu8Tonosyc0eiOdUBSMpOD+N5ciJ1rirAvCLfknBLtc9aBBz8mvyWRrIj2k
+	btPLX778qRqDuN6aKZwOJg78iY/dMns9qd8yw4pbMGZSw6ZPuxGGKBoXb7na1N+2
+	gt5FxYIEBrOXCV/iXtHIxcocrzuwb4dCh/Q4iSyIkdYkcJnU+F8a+pexwqgLUuj5
+	WEWc/jk3lLoZsuQQZpYfTI0iSuJroDkjgmvWFdbK/ehUedheQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1795045503; x=1795131903; bh=SlvQ2VgnsFjXe3sW9Yw5Vu92DAnxWZkCnZJ
+	bEo3k38A=; b=hB8+2G5Ati8KEnUIhjtPkTZFUJO/pSWajZ+YUJPWEnjkSIMDprC
+	OYnGnyxqYyrhHGJN9PxUaGA7Z+64E3TIugasxOvfrzSRTGZUNJlfBpmdsWAgUkw8
+	89JYj7b3T2gyYBAfqFXleWoAOkZSZJfTR5ds95APr2B4ZQVCnylyBn1zAHdY7aWt
+	6oDnr/kW4BucEAQrb/h7nW9udXE3VQ4D5BcHMI6tAXd8PCoDNz9+cUDNnkiR7LHE
+	YUQy+IiwC7FAPhOT+iwrR5CKFv30VBLGMHROgOUcOJz+qD+wLIk3BTiG0vx9XCvK
+	9UPMBSPYoA8wb4qJ846FULI4KkeodJIyXpw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=flapping.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1795045503; d=flapping.org;
+	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
+	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
+	s=fm2:rsa-sha256:BAg/+WJ+OfruBr50bNUBAIwhQ8mTbtHYtJZablDdjod+bx4
+	ZSxSLAl2LPL0vu3zjX3SGweKHxla80hawza6xZFYgzIfS+QWVgh7crpNuPzc6ZRm
+	6vuR9kgFM6q01J3SNkRa3zp9s/qvz7JH/19U5ZP4RKqs/lnIg/9HesvsLZTaXAt1
+	WzxyAz8RDfX+k2rk3W6q84EdSOzP8z6Zl21E/hLeNaeC4lAHbnmk6WHucGfhzbEb
+	hwLadV5cWNbvqld8HjHA9NFRfBclLHyrVtsDvFBrmLaeGY1SDv7fGSW4duIjNqFi
+	l19kfP82/yWQDUvOi5X5ohVF1jUzVPgo18yCrvg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=9;
+	hn=cc,content-transfer-encoding,date,feedback-id,from,
+	message-id,mime-version,subject,to;
+Message-Instance: m=1; h=sha256:VdK/h2229Xpb2Ouscnrfx8QTL45tR//+A8G4qFlcrpY=:2WvQt4hIn1L1IHyMFwABT1ha26mfGUfohMSdBTOTfMo=;
+X-ME-Sender: <xms:fjj-avZ64KCbFei3aOGwdbcvgdPjQSCncLsGHbNEWPe7QAgNGMpkDg>
+    <xme:fjj-aiUejHhMbkA2gn004jcbIyEeKf3uYqVMcNNYxf8eUrtmZqQKhqEKfyrVwQVVC
+    4K93QvkDWnkIbL2V3RQqDEFhhAQIudsB7eGbJi7ysE_3Xfa7bx9Tho>
+X-ME-Received: <xmr:fjj-amjK0Bo7RKgknAsc4SK9R9W8-aVFqmklnLonKM7dOpcxHce_mBoWoxAhUAXGS5h3AWX-4XDe66UsQTk>
+X-ME-Proxy-Cause: dmFkZTE3oiK/yCDjq/eR3tM8m07M9PLaqebQ60WoFpU8jQdGzwP5oG0KL77CbdXuNDVoxI
+    sNSobQBHfttlSTReoIBJCx5Oehf/7s8D+PMbiJskxJyRp2H545FxU+JC0U2to3P8DzSvm4
+    SmwehFw25/0ctu9/Zijqq2VNS5qplPqILZGGp1NG15PU8QxXJGqfZpfp7JlCOM0uJx7auH
+    3kpKTRSqeThx44OEZk4V7MN0KXixv7SP3/qTStUheREYrdRg/d6FDbkSKHDPvDXFbW09yH
+    iaYKJ2BNI8EI7UMjXNWmy9VRpMvQTHtjWlD4/60FwmnOPYxMPfqtu/wkepZuYyV4Uwr/jh
+    /q/AGzmazt/fhKlgfieFAk9gC//RTZVQNKmcEJ84gTmIVVfH//UsHv51O5mBetj69ZnszR
+    ZMOBLzJ1qgriR4nMUvqt7RyCikZuGSfjxECpvMTF/R/org0GWJ2EXQJHJn6RD/P/yLlBTr
+    U1q2T42WPCaOn/d33ynZG+j6kOeYJHr4kd+FVX6tPlXfgQC0iLPhP7JFQmYzBOq0DNxnpM
+    j5jvPUOHlgdyKdSGLsOMmiajaMDZaN4jLZDrDKmfkz8uBrXkmHknqfe8g9ah3vA9zk4YSY
+    MBt7oVGiLygogNu8DkL/Auf+KTzUZ/iZJ8KB9/FHFkGCh3x/R2GhU85D5d4w
+X-ME-Proxy: <xmx:fjj-atmnRd4z3Do6G3bCS1oeHsk9_BWIFihzvkMVYS9UiCb7TQrFXA>
+    <xmx:fjj-avzKZDfGqkFhr7Lx3D7VICYkkdEET2tapXqFZh0Eb-ERvalSkg>
+    <xmx:fjj-aosniH5Brm1yuozVvFVpQ-yrJqnammLEbot6zKQCob97lxLHAg>
+    <xmx:fjj-akvwWVaUxIDKXGzk388LiZaoTbpakjTYOTneSOB-BsfBu59MDA>
+    <xmx:fzj-asnPD-Y6v37dU7qcx85DOCL6FSL8RJ-hhxIshELOLFTJWJ9OGdLv>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 18 Nov 2026 18:44:57 -0500 (EST)
+From: FUJITA Tomonori <tomo@flapping.org>
+To: corbet@lwn.net,
+	ojeda@kernel.org
+Cc: a.hindborg@kernel.org,
 	acourbot@nvidia.com,
-	work@onurozkan.dev
-Cc: dri-devel@lists.freedesktop.org,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	rdunlap@infradead.org,
+	skhan@linuxfoundation.org,
+	tamird@kernel.org,
+	tmgross@umich.edu,
+	work@onurozkan.dev,
+	linux-doc@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/4] drm/tyr: use pin-init self-referential support
-Date: Thu, 19 Nov 2026 00:37:04 +0100
-Message-ID: <20261118233727.3147222-4-dakr@kernel.org>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <20261118233727.3147222-1-dakr@kernel.org>
-References: <20261118233727.3147222-1-dakr@kernel.org>
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH v1] docs: rust: mention #[track_caller] for functions that panic
+Date: Thu, 19 Nov 2026 08:44:51 +0900
+Message-ID: <20261118234452.2621985-1-tomo@flapping.org>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -73,723 +137,39 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Now that pin-init supports self-referential structs, Arc is no longer
-needed just to share resources whose lifetimes are bounded by their
-owners.
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Use pin-init's self-referential support to share the MMIO mapping, MMU
-and firmware VM through borrows instead of Arc, avoiding their separate
-allocations and reference counts.
+When a function panics, the panic message shows a line inside the
+function, not the caller. Adding #[track_caller] makes the message show
+the caller's location.
 
-Hide the invariant resource lifetime shared by the VM and its sections
-behind an existential lifetime that outlives 'fw, so Firmware only needs
-a single lifetime parameter.
+Add a sentence to the "# Panics" guideline: a function that may panic
+should also be marked with #[track_caller].
 
-Cc: Gary Guo <gary@garyguo.net>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- drivers/gpu/drm/tyr/driver.rs            |  38 +++---
- drivers/gpu/drm/tyr/fw.rs                | 152 ++++++++++++-----------
- drivers/gpu/drm/tyr/gem.rs               |  15 +--
- drivers/gpu/drm/tyr/mmu.rs               |  36 +++---
- drivers/gpu/drm/tyr/mmu/address_space.rs |  14 +--
- drivers/gpu/drm/tyr/vm.rs                | 119 +++++++++---------
- 6 files changed, 187 insertions(+), 187 deletions(-)
+ Documentation/rust/coding-guidelines.rst | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index c2b99d67369f..8deb60f507da 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -29,7 +29,7 @@
-     regulator::Regulator,
-     sizes::SZ_2M,
-     sync::{
--        Arc,
-+        aref::ARef,
-         Mutex, //
-     },
-     time, //
-@@ -71,7 +71,14 @@ pub(crate) struct TyrDrmRegistrationData<'drm> {
-     pub(crate) pdev: &'drm platform::Device<Bound>,
+diff --git a/Documentation/rust/coding-guidelines.rst b/Documentation/rust/coding-guidelines.rst
+index 3198be3a6d63..c7404ea7ba13 100644
+--- a/Documentation/rust/coding-guidelines.rst
++++ b/Documentation/rust/coding-guidelines.rst
+@@ -241,6 +241,10 @@ in the kernel:
+ - While not shown here, if a function may panic, the conditions under which
+   that happens must be described under a ``# Panics`` section.
  
-     /// Firmware sections.
--    pub(crate) fw: Firmware<'drm>,
-+    #[pin]
-+    #[uses('mmu: invariant)]
-+    pub(crate) fw: Firmware<'mmu>,
++  Such a function should also be marked with ``#[track_caller]``, so that
++  the panic message shows the location of the caller instead of a line
++  inside the function.
 +
-+    /// MMU shared by the firmware and its buffer objects.
-+    #[pin]
-+    #[uses('iomem: invariant)]
-+    mmu: Mmu<'iomem>,
- 
-     #[pin]
-     clks: Mutex<Clocks>,
-@@ -80,7 +87,7 @@ pub(crate) struct TyrDrmRegistrationData<'drm> {
-     regulators: Mutex<Regulators>,
- 
-     /// GPU MMIO register mapping.
--    pub(crate) iomem: Arc<IoMem<'drm>>,
-+    pub(crate) iomem: IoMem<'drm>,
- 
-     /// GPU information read from hardware during probe.
-     pub(crate) gpu_info: GpuInfo,
-@@ -132,7 +139,7 @@ fn probe<'bound>(
- 
-             let request = pdev.io_request_by_index(0).ok_or(ENODEV)?;
- 
--            let iomem = Arc::new(request.iomap_sized::<SZ_2M>()?, GFP_KERNEL)?;
-+            let iomem = request.iomap_sized::<SZ_2M>()?;
- 
-             issue_soft_reset(pdev.as_ref(), &iomem)?;
-             gpu::l2_power_on(pdev.as_ref(), &iomem)?;
-@@ -149,18 +156,7 @@ fn probe<'bound>(
-             unsafe { pdev.dma_set_mask_and_coherent(DmaMask::try_new(pa_bits)?)? };
- 
-             let unreg_dev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, Ok(()))?;
--
--            let mmu = Mmu::new(pdev.as_ref(), iomem.as_arc_borrow(), &gpu_info)?;
--
--            let firmware = Firmware::new(
--                pdev.as_ref(),
--                iomem.clone(),
--                &unreg_dev,
--                mmu.as_arc_borrow(),
--                &gpu_info,
--            )?;
--
--            firmware.boot()?;
-+            let ddev = ARef::from(&*unreg_dev);
- 
-             Ok(try_pin_init!(TyrPlatformDriverData {
-                 // SAFETY: `_reg` is stored in `TyrPlatformDriverData` and dropped when the
-@@ -168,9 +164,13 @@ fn probe<'bound>(
-                 _reg <- unsafe { drm::Registration::new(
-                     pdev.as_ref(),
-                     unreg_dev,
--                    pin_init!(TyrDrmRegistrationData {
-+                    try_pin_init!(TyrDrmRegistrationData {
-+                        iomem,
-+                        gpu_info,
-+                        mmu <- Mmu::new(pdev.as_ref(), iomem, gpu_info),
-+                        fw <- Firmware::new(pdev.as_ref(), iomem, &ddev, mmu.get_ref(), gpu_info),
-+                        _: { fw.boot()?; },
-                         pdev,
--                        fw: firmware,
-                         clks <- new_mutex!(Clocks {
-                             core: core_clk,
-                             stacks: stacks_clk,
-@@ -180,8 +180,6 @@ fn probe<'bound>(
-                             _mali: mali_regulator,
-                             _sram: sram_regulator,
-                         }),
--                        iomem,
--                        gpu_info,
-                     }),
-                 )},
-                 _: { dev_dbg!(pdev, "Tyr initialized correctly.") },
-diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
-index 16c6aca3d3f1..bd377875778b 100644
---- a/drivers/gpu/drm/tyr/fw.rs
-+++ b/drivers/gpu/drm/tyr/fw.rs
-@@ -29,10 +29,6 @@
-     num::Bounded,
-     prelude::*,
-     str::CString,
--    sync::{
--        Arc,
--        ArcBorrow, //
--    },
-     time, //
- };
- 
-@@ -131,7 +127,7 @@ fn try_from_fw(value: u32) -> Result<Self> {
- }
- 
- /// A parsed section of the firmware binary.
--struct Section<'sec> {
-+struct Section<'sec, 'res> {
-     // Raw firmware section data for reset purposes
-     #[expect(dead_code)]
-     data: KVec<u8>,
-@@ -139,34 +135,41 @@ struct Section<'sec> {
-     // Keep the BO backing this firmware section so that both the
-     // GPU mapping and CPU mapping remain valid until the Section is dropped.
-     #[expect(dead_code)]
--    mem: gem::KernelBo<'sec>,
-+    mem: gem::KernelBo<'sec, 'res>,
- }
- 
- /// Loaded firmware with sections mapped into MCU VM.
--pub(crate) struct Firmware<'fw> {
-+#[pin_data(PinnedDrop)]
-+pub(crate) struct Firmware<'fw>
-+where
-+    exists<'res>: 'fw,
-+{
-     /// Iomem need to access registers.
--    iomem: Arc<IoMem<'fw>>,
--
--    /// MCU VM.
--    vm: Arc<Vm<'fw>>,
-+    iomem: &'fw IoMem<'fw>,
- 
-     /// List of firmware sections.
--    #[expect(dead_code)]
--    sections: KVec<Section<'fw>>,
-+    #[uses('res: invariant)]
-+    sections: KVec<Section<'vm, 'res>>,
-+
-+    /// MCU VM.
-+    #[pin]
-+    #[uses('res: invariant)]
-+    vm: Vm<'fw, 'res>,
- }
- 
--impl<'fw> Drop for Firmware<'fw> {
--    fn drop(&mut self) {
-+#[pinned_drop]
-+impl PinnedDrop for Firmware<'_> {
-+    fn drop(self: Pin<&mut Self>) {
-         // Stop the MCU before releasing its firmware mappings and memory.
-         let _ = self.stop();
- 
-         // AS slots retain a VM ref, we need to kill the circular ref manually.
--        self.vm.kill();
-+        self.with_vm(|vm| vm.kill());
-     }
- }
- 
- impl<'fw> Firmware<'fw> {
--    fn init_section_mem(dev: &Device, mem: &mut KernelBo<'fw>, data: &KVec<u8>) -> Result {
-+    fn init_section_mem(dev: &Device, mem: &mut KernelBo<'_, '_>, data: &KVec<u8>) -> Result {
-         if data.is_empty() {
-             return Ok(());
-         }
-@@ -212,62 +215,65 @@ fn load(
-     }
- 
-     /// Load firmware and map sections into MCU VM.
--    pub(crate) fn new(
--        dev: &'fw Device<Bound>,
--        iomem: Arc<IoMem<'fw>>,
--        ddev: &TyrDrmDevice,
--        mmu: ArcBorrow<'_, Mmu<'fw>>,
--        gpu_info: &GpuInfo,
--    ) -> Result<Firmware<'fw>> {
--        let vm = Vm::new(dev, ddev, mmu, gpu_info)?;
--        vm.activate()?;
--
--        let result = (|| {
--            let (fw, parsed_sections) = Self::load(dev, ddev, gpu_info)?;
--            let mut sections = KVec::new();
--            for parsed in parsed_sections {
--                let size = u64::from(parsed.va.end.checked_sub(parsed.va.start).ok_or(EINVAL)?);
--
--                let va = u64::from(parsed.va.start);
--
--                let mut mem = KernelBo::new(
--                    ddev,
--                    vm.clone(),
--                    size,
--                    KernelBoVaAlloc::Explicit(va),
--                    parsed.vm_map_flags,
--                )?;
--
--                let section_start = parsed.data_range.start as usize;
--                let section_end = parsed.data_range.end as usize;
--                let mut data = KVec::new();
--
--                // Ensure that the firmware slice is not out of bounds.
--                let fw_data = fw.data();
--                let bytes = fw_data.get(section_start..section_end).ok_or(EINVAL)?;
--                data.extend_from_slice(bytes, GFP_KERNEL)?;
--
--                Self::init_section_mem(dev, &mut mem, &data)?;
--
--                sections.push(Section { data, mem }, GFP_KERNEL)?;
--            }
--
--            Ok(Firmware {
--                iomem,
--                vm: vm.clone(),
--                sections,
--            })
--        })();
--
--        if result.is_err() {
--            vm.kill();
--        }
--
--        result
-+    pub(crate) fn new<'a, 'res>(
-+        dev: &'res Device<Bound>,
-+        iomem: &'fw IoMem<'fw>,
-+        ddev: &'a TyrDrmDevice,
-+        mmu: &'fw Mmu<'res>,
-+        gpu_info: &'a GpuInfo,
-+    ) -> impl PinInit<Self, Error> + use<'a, 'fw, 'res> {
-+        try_pin_init!(Self {
-+            iomem,
-+            vm <- Vm::new(dev, ddev, mmu, gpu_info),
-+            sections: {
-+                let vm = vm.get_ref();
-+                vm.activate()?;
-+
-+                let result: Result<_> = (|| {
-+                    let (fw, parsed_sections) = Self::load(dev, ddev, gpu_info)?;
-+                    let mut sections = KVec::new();
-+                    for parsed in parsed_sections {
-+                        let size =
-+                            u64::from(parsed.va.end.checked_sub(parsed.va.start).ok_or(EINVAL)?);
-+
-+                        let va = u64::from(parsed.va.start);
-+
-+                        let mut mem = KernelBo::new(
-+                            ddev,
-+                            vm,
-+                            size,
-+                            KernelBoVaAlloc::Explicit(va),
-+                            parsed.vm_map_flags,
-+                        )?;
-+
-+                        let section_start = parsed.data_range.start as usize;
-+                        let section_end = parsed.data_range.end as usize;
-+                        let mut data = KVec::new();
-+
-+                        // Ensure that the firmware slice is not out of bounds.
-+                        let fw_data = fw.data();
-+                        let bytes = fw_data.get(section_start..section_end).ok_or(EINVAL)?;
-+                        data.extend_from_slice(bytes, GFP_KERNEL)?;
-+
-+                        Self::init_section_mem(dev, &mut mem, &data)?;
-+
-+                        sections.push(Section { data, mem }, GFP_KERNEL)?;
-+                    }
-+
-+                    Ok(sections)
-+                })();
-+
-+                if result.is_err() {
-+                    vm.kill();
-+                }
-+
-+                result?
-+            },
-+        })
-     }
- 
-     pub(crate) fn boot(&self) -> Result {
--        let io = &self.iomem;
-+        let io = self.iomem;
- 
-         // Discard any stale global interrupt.
-         io.write_reg(JOB_IRQ_CLEAR::zeroed().with_glb(true));
-@@ -284,7 +290,7 @@ pub(crate) fn boot(&self) -> Result {
-         ) {
-             let status = io.read(MCU_STATUS);
-             dev_err!(
--                self.vm.dev(),
-+                self.with_vm(|vm| vm.dev()),
-                 "MCU failed to boot, status: {:?}",
-                 status.value()
-             );
-@@ -297,7 +303,7 @@ pub(crate) fn boot(&self) -> Result {
-     }
- 
-     fn stop(&self) -> Result {
--        let io = &self.iomem;
-+        let io = self.iomem;
-         io.write_reg(MCU_CONTROL::zeroed().with_req(McuControlMode::Disable));
- 
-         if let Err(e) = poll::read_poll_timeout(
-@@ -308,7 +314,7 @@ fn stop(&self) -> Result {
-         ) {
-             let status = io.read(MCU_STATUS);
-             dev_err!(
--                self.vm.dev(),
-+                self.with_vm(|vm| vm.dev()),
-                 "MCU failed to stop, status: {:?}",
-                 status.value()
-             );
-diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index 0439bf96467f..05965a9135b7 100644
---- a/drivers/gpu/drm/tyr/gem.rs
-+++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -12,10 +12,7 @@
-         shmem, //
-     },
-     prelude::*,
--    sync::{
--        aref::ARef,
--        Arc, //
--    }, //
-+    sync::aref::ARef, //
- };
- 
- use crate::{
-@@ -82,16 +79,16 @@ pub(crate) enum KernelBoVaAlloc {
- /// a GEM object with automatic GPU virtual address (VA) space mapping and cleanup.
- ///
- /// When dropped, the buffer is automatically unmapped from the GPU VA space.
--pub(crate) struct KernelBo<'bo> {
-+pub(crate) struct KernelBo<'bo, 'res> {
-     /// The underlying GEM buffer object.
-     bo: ARef<Bo>,
-     /// The GPU VM this buffer is mapped into.
--    vm: Arc<Vm<'bo>>,
-+    vm: &'bo Vm<'bo, 'res>,
-     /// The GPU VA range occupied by this buffer.
-     va_range: Range<u64>,
- }
- 
--impl<'bo> KernelBo<'bo> {
-+impl<'bo, 'res> KernelBo<'bo, 'res> {
-     /// Creates a new kernel-owned buffer object and maps it into GPU VA space.
-     ///
-     /// This function allocates a new shmem-backed GEM object and immediately maps
-@@ -99,7 +96,7 @@ impl<'bo> KernelBo<'bo> {
-     /// cleaned up when the [`KernelBo`] is dropped.
-     pub(crate) fn new(
-         ddev: &TyrDrmDevice,
--        vm: Arc<Vm<'bo>>,
-+        vm: &'bo Vm<'bo, 'res>,
-         size: u64,
-         va_alloc: KernelBoVaAlloc,
-         flags: VmMapFlags,
-@@ -138,7 +135,7 @@ pub(crate) fn bo(&self) -> &Bo {
-     }
- }
- 
--impl Drop for KernelBo<'_> {
-+impl Drop for KernelBo<'_, '_> {
-     fn drop(&mut self) {
-         let va = self.va_range.start;
-         let size = self.va_range.end - self.va_range.start;
-diff --git a/drivers/gpu/drm/tyr/mmu.rs b/drivers/gpu/drm/tyr/mmu.rs
-index b64c5bba0e8f..70662c953d7e 100644
---- a/drivers/gpu/drm/tyr/mmu.rs
-+++ b/drivers/gpu/drm/tyr/mmu.rs
-@@ -21,7 +21,6 @@
-     new_mutex,
-     prelude::*,
-     sync::{
--        Arc,
-         ArcBorrow,
-         Mutex, //
-     }, //
-@@ -57,26 +56,27 @@ impl<'mmu> Mmu<'mmu> {
-     /// Create an MMU component for this device.
-     pub(crate) fn new(
-         dev: &'mmu Device<Bound>,
--        iomem: ArcBorrow<'_, IoMem<'mmu>>,
-+        iomem: &'mmu IoMem<'mmu>,
-         gpu_info: &GpuInfo,
--    ) -> Result<Arc<Mmu<'mmu>>> {
-+    ) -> impl PinInit<Self, Error> + 'mmu {
-         let present = AS_PRESENT::from_raw(gpu_info.as_present).present().get();
--        let slot_count = present.count_ones().try_into()?;
-+        try_pin_init!(Self {
-+            as_manager <- {
-+                let slot_count = present.count_ones().try_into()?;
- 
--        let address_space_manager = AddressSpaceManager::new(dev, iomem.into(), present)?;
--        let as_slot_manager =
--            SlotManager::new(address_space_manager, slot_count).inspect_err(|e| {
--                dev_err!(
--                    dev,
--                    "Failed to initialize MMU slot manager with {} slots: {:?}",
--                    slot_count,
--                    e
--                );
--            })?;
--        let mmu_init = try_pin_init!(Self{
--            as_manager <- new_mutex!(as_slot_manager),
--        });
--        Arc::pin_init(mmu_init, GFP_KERNEL)
-+                let address_space_manager = AddressSpaceManager::new(dev, iomem, present)?;
-+                let as_slot_manager =
-+                    SlotManager::new(address_space_manager, slot_count).inspect_err(|e| {
-+                        dev_err!(
-+                            dev,
-+                            "Failed to initialize MMU slot manager with {} slots: {:?}",
-+                            slot_count,
-+                            e
-+                        );
-+                    })?;
-+                new_mutex!(as_slot_manager)
-+            },
-+        })
-     }
- 
-     /// Assign a VM to an AS slot, provide a translation table,
-diff --git a/drivers/gpu/drm/tyr/mmu/address_space.rs b/drivers/gpu/drm/tyr/mmu/address_space.rs
-index 4cb582f98852..0330cf514269 100644
---- a/drivers/gpu/drm/tyr/mmu/address_space.rs
-+++ b/drivers/gpu/drm/tyr/mmu/address_space.rs
-@@ -152,7 +152,7 @@ pub(crate) struct AddressSpaceManager<'as_mgr> {
-     dev: &'as_mgr Device<Bound>,
- 
-     /// Memory-mapped I/O region for GPU register access.
--    iomem: Arc<IoMem<'as_mgr>>,
-+    iomem: &'as_mgr IoMem<'as_mgr>,
- 
-     /// Bitmask of present address space slots from GPU_AS_PRESENT register.
-     as_present: u32,
-@@ -165,7 +165,7 @@ impl<'as_mgr> AddressSpaceManager<'as_mgr> {
-     /// I/O memory region, along with the bitmask of available AS slots.
-     pub(super) fn new(
-         dev: &'as_mgr Device<Bound>,
--        iomem: Arc<IoMem<'as_mgr>>,
-+        iomem: &'as_mgr IoMem<'as_mgr>,
-         as_present: u32,
-     ) -> Result<AddressSpaceManager<'as_mgr>> {
-         if as_present.trailing_ones() != as_present.count_ones() {
-@@ -216,7 +216,7 @@ fn validate_as_slot(&self, as_nr: usize) -> Result {
-     ///
-     /// Returns an error if polling times out after 10ms or if register access fails.
-     fn as_wait_ready(&self, as_nr: usize) -> Result {
--        let io = &*self.iomem;
-+        let io = self.iomem;
-         let op = || {
-             let status_reg = STATUS::try_at(as_nr).ok_or(EINVAL)?;
-             Ok(io.read(status_reg))
-@@ -232,7 +232,7 @@ fn as_wait_ready(&self, as_nr: usize) -> Result {
-     /// Returns an error if waiting for ready times out or if register write fails.
-     fn as_send_cmd(&mut self, as_nr: usize, cmd: MmuCommand) -> Result {
-         self.as_wait_ready(as_nr)?;
--        let io = &*self.iomem;
-+        let io = self.iomem;
-         let command_reg = COMMAND::try_at(as_nr).ok_or(EINVAL)?;
-         io.write(command_reg, COMMAND::zeroed().with_command(cmd));
-         Ok(())
-@@ -253,7 +253,7 @@ fn as_send_cmd_and_wait(&mut self, as_nr: usize, cmd: MmuCommand) -> Result {
-     fn as_enable(&mut self, as_nr: usize, as_config: &AddressSpaceConfig) -> Result {
-         self.validate_as_slot(as_nr)?;
- 
--        let io = &*self.iomem;
-+        let io = self.iomem;
- 
-         let transtab = as_config.transtab;
-         io.write(
-@@ -299,7 +299,7 @@ fn as_disable(&mut self, as_nr: usize) -> Result {
-         // Flush AS before disabling
-         self.as_send_cmd_and_wait(as_nr, MmuCommand::FlushMem)?;
- 
--        let io = &*self.iomem;
-+        let io = self.iomem;
- 
-         io.write(
-             TRANSTAB_LO::try_at(as_nr).ok_or(EINVAL)?,
-@@ -394,7 +394,7 @@ fn as_start_update(&mut self, as_nr: usize, region: &Range<u64>) -> Result {
-         // because log2(32 KiB) = 15.
-         let lockaddr_size = lock_region_log2 - 1;
- 
--        let io = &*self.iomem;
-+        let io = self.iomem;
- 
-         // The LOCKADDR base field stores address bits 63:12, so remove the low 12 bits
-         // before passing this value to the register macro helper.
-diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
-index 2557d6517ca3..4f3dbeec37a2 100644
---- a/drivers/gpu/drm/tyr/vm.rs
-+++ b/drivers/gpu/drm/tyr/vm.rs
-@@ -50,7 +50,6 @@
-     sync::{
-         aref::ARef,
-         Arc,
--        ArcBorrow,
-         Mutex, //
-     },
-     uapi, //
-@@ -316,80 +315,80 @@ pub(crate) struct GpuVmData<'drm> {
- ///
- /// Each VM can be mapped into a hardware address space slot.
- #[pin_data]
--pub(crate) struct Vm<'vm> {
-+pub(crate) struct Vm<'vm, 'res> {
-     /// Data referenced by an AS when the VM is active
--    as_data: Arc<VmAsData<'vm>>,
-+    as_data: Arc<VmAsData<'res>>,
-     /// MMU manager.
--    mmu: Arc<Mmu<'vm>>,
-+    mmu: &'vm Mmu<'res>,
-     /// Parent device used for DMA mapping and page-table operations.
--    dev: &'vm Device<Bound>,
-+    dev: &'res Device<Bound>,
-     /// DRM GPUVM core for managing virtual address space.
-     #[pin]
--    gpuvm_unique: Mutex<UniqueRefGpuVm<GpuVmData<'vm>>>,
-+    gpuvm_unique: Mutex<UniqueRefGpuVm<GpuVmData<'res>>>,
-     /// Non-core part of the GPUVM. Can be used for stuff that doesn't modify the
-     /// internal mapping tree, like GpuVm::obtain()
--    gpuvm: ARef<GpuVm<GpuVmData<'vm>>>,
-+    gpuvm: ARef<GpuVm<GpuVmData<'res>>>,
-     /// VA range for this VM.
-     va_range: Range<u64>,
- }
- 
--impl<'vm> Vm<'vm> {
-+impl<'vm, 'res> Vm<'vm, 'res> {
-     /// Creates a new GPU virtual address space.
-     ///
-     /// The VM is initialized with a page table configured according to the GPU's
-     /// address translation capabilities and registered with the GPUVM framework.
--    pub(crate) fn new(
--        dev: &'vm Device<Bound>,
--        ddev: &TyrDrmDevice,
--        mmu: ArcBorrow<'_, Mmu<'vm>>,
--        gpu_info: &GpuInfo,
--    ) -> Result<Arc<Vm<'vm>>> {
--        let mmu_features = MMU_FEATURES::from_raw(gpu_info.mmu_features);
--        let va_bits = mmu_features.va_bits().get();
--        let pa_bits = mmu_features.pa_bits().get();
--
--        let range = 0..(1u64 << va_bits);
--        let reserve_range = 0..0u64;
--
--        // dummy_obj is used to initialize the GPUVM tree.
--        let dummy_obj = gem::new_dummy_object(ddev).inspect_err(|e| {
--            dev_err!(dev, "Failed to create dummy GEM object: {:?}", e);
--        })?;
-+    pub(crate) fn new<'a>(
-+        dev: &'res Device<Bound>,
-+        ddev: &'a TyrDrmDevice,
-+        mmu: &'vm Mmu<'res>,
-+        gpu_info: &'a GpuInfo,
-+    ) -> impl PinInit<Self, Error> + 'a
-+    where
-+        'vm: 'a,
-+    {
-+        pin_init::pin_init_scope(move || {
-+            let mmu_features = MMU_FEATURES::from_raw(gpu_info.mmu_features);
-+            let va_bits = mmu_features.va_bits().get();
-+            let pa_bits = mmu_features.pa_bits().get();
-+
-+            let range = 0..(1u64 << va_bits);
-+            let reserve_range = 0..0u64;
-+
-+            // dummy_obj is used to initialize the GPUVM tree.
-+            let dummy_obj = gem::new_dummy_object(ddev).inspect_err(|e| {
-+                dev_err!(dev, "Failed to create dummy GEM object: {:?}", e);
-+            })?;
- 
--        let gpuvm_unique = GpuVm::new::<Error, _>(
--            c"Tyr::GpuVm",
--            ddev,
--            &*dummy_obj,
--            range.clone(),
--            reserve_range,
--            GpuVmData::<'vm> {
--                _phantom: PhantomData::<&()>,
--            },
--        )
--        .inspect_err(|e| {
--            dev_err!(dev, "Failed to create GpuVm: {:?}", e);
--        })?;
--        let gpuvm = ARef::from(&*gpuvm_unique);
-+            let gpuvm_unique = GpuVm::new::<Error, _>(
-+                c"Tyr::GpuVm",
-+                ddev,
-+                &*dummy_obj,
-+                range.clone(),
-+                reserve_range,
-+                GpuVmData::<'res> {
-+                    _phantom: PhantomData::<&()>,
-+                },
-+            )
-+            .inspect_err(|e| {
-+                dev_err!(dev, "Failed to create GpuVm: {:?}", e);
-+            })?;
-+            let gpuvm = ARef::from(&*gpuvm_unique);
- 
--        let as_data = Arc::pin_init(VmAsData::new(&mmu, dev, va_bits, pa_bits), GFP_KERNEL)?;
-+            let as_data = Arc::pin_init(VmAsData::new(mmu, dev, va_bits, pa_bits), GFP_KERNEL)?;
- 
--        let vm = Arc::pin_init(
--            pin_init!(Self{
-+            Ok(try_pin_init!(Self {
-                 as_data,
-                 dev,
--                mmu: mmu.into(),
-+                mmu,
-                 gpuvm,
-                 gpuvm_unique <- new_mutex!(gpuvm_unique),
-                 va_range: range,
--            }),
--            GFP_KERNEL,
--        )?;
--
--        Ok(vm)
-+            }))
-+        })
-     }
- 
-     /// Returns the parent device used by this VM for DMA mapping and page-table operations.
--    pub(crate) fn dev(&self) -> &'vm Device<Bound> {
-+    pub(crate) fn dev(&self) -> &'res Device<Bound> {
-         self.dev
-     }
- 
-@@ -426,9 +425,9 @@ pub(crate) fn kill(&self) {
-     /// GPUVM framework and the hardware page table.
-     fn exec_op<'a>(
-         &self,
--        gpuvm_unique: &mut UniqueRefGpuVm<GpuVmData<'vm>>,
--        req: VmOpRequest<'vm>,
--        resources: &'a mut VmOpResources<'vm>,
-+        gpuvm_unique: &mut UniqueRefGpuVm<GpuVmData<'res>>,
-+        req: VmOpRequest<'res>,
-+        resources: &'a mut VmOpResources<'res>,
-     ) -> Result {
-         let pt = &self.as_data.page_table;
- 
-@@ -437,7 +436,7 @@ fn exec_op<'a>(
-                 let mut pt_upd = PtUpdateContext::new(
-                     self.dev,
-                     pt,
--                    &self.mmu,
-+                    self.mmu,
-                     &self.as_data,
-                     req.region,
-                     PtOpType::Map(PtMapArgs {
-@@ -459,7 +458,7 @@ fn exec_op<'a>(
-                 let mut pt_upd = PtUpdateContext::new(
-                     self.dev,
-                     pt,
--                    &self.mmu,
-+                    self.mmu,
-                     &self.as_data,
-                     req.region,
-                     PtOpType::Unmap,
-@@ -524,9 +523,9 @@ pub(crate) fn map_bo_range(
-         };
-         let mut resources = VmOpResources {
-             preallocated_gpuvas: [
--                Some(GpuVaAlloc::<GpuVmData<'vm>>::new(GFP_KERNEL)?),
--                Some(GpuVaAlloc::<GpuVmData<'vm>>::new(GFP_KERNEL)?),
--                Some(GpuVaAlloc::<GpuVmData<'vm>>::new(GFP_KERNEL)?),
-+                Some(GpuVaAlloc::<GpuVmData<'res>>::new(GFP_KERNEL)?),
-+                Some(GpuVaAlloc::<GpuVmData<'res>>::new(GFP_KERNEL)?),
-+                Some(GpuVaAlloc::<GpuVmData<'res>>::new(GFP_KERNEL)?),
-             ],
-         };
-         let result = {
-@@ -577,9 +576,9 @@ pub(crate) fn unmap_range(&self, va: u64, size: u64) -> Result {
-                 [None, None, None]
-             } else {
-                 [
--                    Some(GpuVaAlloc::<GpuVmData<'vm>>::new(GFP_KERNEL)?),
--                    Some(GpuVaAlloc::<GpuVmData<'vm>>::new(GFP_KERNEL)?),
--                    Some(GpuVaAlloc::<GpuVmData<'vm>>::new(GFP_KERNEL)?),
-+                    Some(GpuVaAlloc::<GpuVmData<'res>>::new(GFP_KERNEL)?),
-+                    Some(GpuVaAlloc::<GpuVmData<'res>>::new(GFP_KERNEL)?),
-+                    Some(GpuVaAlloc::<GpuVmData<'res>>::new(GFP_KERNEL)?),
-                 ]
-             },
-         };
+   Please note that panicking should be very rare and used only with a good
+   reason. In almost all cases, a fallible approach should be used, typically
+   returning a ``Result``.
+
+base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
 -- 
-2.56.1
+2.43.0
 
