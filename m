@@ -1,90 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=46.30.211.244
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795013309;
-	b=DxwCbYK+pJwd5mHAgUhsrtRKyWm1pbqpZhAYfXcgXHEQmUscRNS+FRCtlGZ1xcVEbeM3
-	 nPD6epKRPbbLDfGuFbYNLRfOkJ4+lqpMGJzgr0eKtzZwjRnLt/z3l7wCRF3v0T1VmiGRD
-	 35HVjyzFfuDaQM/5frs2UB6FtbiuRj2u5/BHimj37WsljEiFKYO9xdCUwdz6Zlx6JrLrc
-	 Uzpr9/cMeDqh2tTk06TKV9sL31Y9GxtxnSUJRFeaVGGOevKK5HFKJOKQCjvsiyczy2RIS
-	 V71XpcFv0HCtxWh/QsLrBe+JSCYlf+YGcYwXqaPE1zRKeyAEv4KjtEgg9upCFkbfsfQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795013309;
-	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:X-HalOne-ID:Received:From:
-	 To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=htsl1/fGGN+PK8kCB+H1dqKretrCIe2LVjelGMma61U=;
-	b=dXeU1v2pFRw7myTNdUztq2qa6EDkqhYlt5YOi1uIPySNjHWNWEveepgEcp2vtnYii6ER
-	 0uVKk3n0P2WU2WYjNZYBonZZhRoDqDCsb6tfYw5uKR5TOEbFIh2fDJuAdkIgo8p+DU8F8
-	 pUxfvmSUo3WfKd3ELyrDiwK+mSowT+HeZsswhjBUwU1gwIuG0ssJ+n+EQAP/Jqi5xdqK/
-	 DSOvEzW0Oxs0N+pnhuR9oh2GhyZ5Jquawdou/1W0Fdt2FakFpW/c66aEhFL0gifs32y8a
-	 ejoIALfjyPwsYCaSTn6YgoMovw5Datu6kr/SKrcaFK1vrHABvG6PKQW7TLbE8saKukA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=konsulko.se;
-	spf=none smtp.mailfrom=konsulko.se;
-	dkim=pass header.d=konsulko.se header.i=@konsulko.se header.a=rsa-sha256 header.s=rsa2 header.b=AtuvhMyf;
-	dkim=pass header.d=konsulko.se header.i=@konsulko.se header.a=ed25519-sha256 header.s=ed2 header.b=vYcO7f3r;
-	arc=none smtp.remote-ip=46.30.211.244
-Received: from mailrelay-egress5.pub.mailoutpod3-cph3.one.com (mailrelay-egress5.pub.mailoutpod3-cph3.one.com [46.30.211.244])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795013317;
+	b=CMoZrUSzNXGyfCwExSPXIL0gbftPk2ZrtzGXIIvmUc98nZvfAHqHl3rdZPVNhM02bDmO
+	 ehnv4Bp6eyDkarwhtNKyuB56SM89a667pWoYiWZ8kx0ii8ukCA65oMWSlGbLP5av/6Nkp
+	 Cvpxlt6I+9QtJNBO9DrUMAlMXncpasUOubGIrjlI4DhuGahma2hePcXADcYBOsVFqpZYC
+	 6qt+J0nuyX9Ze8ct6dAOsUcespFo6qcIRjTs7PfhfDwLVcYyDVKAMUoitnN9bTaO4SIZk
+	 XY/sV/XWZW+1IvuMn96BDVN7XMpqHjiJznSYwB7u19snmkFzW5PFeLJVlClOBYqyY3g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795013317;
+	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
+	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
+	 References:To:X-Mailer:X-ZohoMailClient;
+	bh=6zB/RMHWdIa7W8+VTnT+QTtr7Bbpj33D57C4R1EDlas=;
+	b=fmPoOpHmYmxY3GflfxS0HXtjjj1s9TnEN3Qben3w/BczOrfC3YG1I/bmQvXFgp/eFhVu
+	 RBsIaGIJ46eDmX3G9jC6Y2STIQ+V3Y4fcoiPmZX1QE6Qinu424sjPg60xiNtsbqGEE8JF
+	 m15mctfHLokvmHF5nBlTzOaK7fy9Zb6kgV7ulg/rbv66+lnmV325d5bskiPRakmwdj0SR
+	 cogHor0gnIVGLs25r18532X+rBOT9U9ivi5eGXKaQ5AdCdReMICmzXXdI6AP3HqnCzLhE
+	 dLbSCIljBniYmxccni2YfjDJ3WxUPzepgytUEgmtmzRrXfEASzOsh1qAdJ4B5WR3F/w==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=EdUk8q0V;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8660E606A320
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 14:48:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8660E606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E15606A325;
+	Wed, 18 Nov 2026 14:48:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B1E15606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=konsulko.se header.i=@konsulko.se header.a=rsa-sha256 header.s=rsa2 header.b=AtuvhMyf;
-	dkim=pass header.d=konsulko.se header.i=@konsulko.se header.a=ed25519-sha256 header.s=ed2 header.b=vYcO7f3r
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1795013304; x=1795618104;
-	d=konsulko.se; s=rsa2;
-	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
-	 subject:cc:to:from:from;
-	bh=htsl1/fGGN+PK8kCB+H1dqKretrCIe2LVjelGMma61U=;
-	b=AtuvhMyfZOiYIH4uHrjJkgfksbx2zZbGG3biXW2Y6/sIkHDbZv3K2A7hLZyFr90xTLB0LXZNWedyp
-	 PUK1yNjhrurTP6r5PrO4lZkSsQHPaTSiNSxYbnyT50Um6fmHBimbQEavR2KGd1t9POMfIIfacWpyyW
-	 iBU+oaG32/vhEyRKi7GtFAk7oSr0Vx37pHiZjyaPCPoQcqvBQrtKddHGzgYKFSFQJYdwPICmVmycEF
-	 G1Fb4yKCfIza3J85vKDZdsu6Qp8ZbVCCJMOZUgiYM80yls1nmBy6Xc3EPcQuvKSwU9N0wp0xq3Y2ke
-	 62eiSKPWW/II0UgwH3Y8rHW86d6Dn5Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1795013304; x=1795618104;
-	d=konsulko.se; s=ed2;
-	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
-	 subject:cc:to:from:from;
-	bh=htsl1/fGGN+PK8kCB+H1dqKretrCIe2LVjelGMma61U=;
-	b=vYcO7f3rEhBhvaDX1PNXny5mpLRHqDQccdydc9sgSLYM7bvLQuqz+ULSIDLuY0RO8Tz6+Ai7jV2pb
-	 n1HX7hECw==
-X-HalOne-ID: 1a0a10c3-e35f-11f1-9ca0-17c427e4a17a
-Received: from slottsdator.home (unknown [2a02:1406:27d:15:2438:a644:c11e:a5ef])
-	by mailrelay5.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id 1a0a10c3-e35f-11f1-9ca0-17c427e4a17a;
-	Wed, 18 Nov 2026 14:48:23 +0000 (UTC)
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-To: Jan Engelhardt <ej@inai.de>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	linux-block@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: Re: [PATCH 0/3] rust: block: add rbrd, a RAM backed block driver
-Date: Wed, 18 Nov 2026 15:48:22 +0100
-Message-Id: <20261118144822.3197130-1-vitaly.wool@konsulko.se>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <176sn0r1-3s85-0nq0-p258-220pnspno416@vanv.qr>
-References: <176sn0r1-3s85-0nq0-p258-220pnspno416@vanv.qr>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=EdUk8q0V
+ARC-Seal: i=1; a=rsa-sha256; t=1795013248; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=OosozSG/m/6BH6LExb9WEQA9mQQDkOxmd2Y8kPDeXNAZWleSLQhMtNY2+uI8KhawaXUHYr47f8oAZn0N964ZgBYyXGCiT02s/Z74UIIxHA+2ECCTad4PExBsP1KYPsM1p9d/LWebw8uDaFCDFSfC3n7dR4fPjhnjaVOjF4NtA3U=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1795013248; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=6zB/RMHWdIa7W8+VTnT+QTtr7Bbpj33D57C4R1EDlas=; 
+	b=cqe8Ny8ZQEg4ksL1wtnrt586k9283grpoxwjSmD4McSWu3wPIRDkuHOA1YRK5ZfamqOnqyNI78DibXRqLPs819yV6gD11Jo/arIUzj9zNJTH1COBGfE2j8gwXErFqQhmzCI9MFRRYLnAAbL6QecoLNE8t7leM49RtAMFWWbX1HM=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=EdUk8q0VINosLxs21gOjRZn+nKLBqNq/iD5Npp0a0jH8Z7xTEQiaI5c3FegTTZMmf/wb4MixKQZxLGUPje7g1RDUnmXE3pAolvscDKNbqpVN641LJ1RB8Sh+t8DmYbQwsHocvRaTHw2a1WuFiaFP/IhlYOQog8lN6H29wfWIJUM=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=6zB/RMHWdIa7W8+VTnT+QTtr7Bbpj33D57C4R1EDlas=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795013246789416.0565019034008;
+	Wed, 18 Nov 2026 06:47:26 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -93,42 +57,85 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH v6 5/7] rust: clk: add devres-managed clks
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <DMYELN5M09W3.1SYPKW7DZ70E1@garyguo.net>
+Date: Wed, 18 Nov 2026 11:47:04 -0300
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Michal Wilczynski <m.wilczynski@samsung.com>,
+ Drew Fustini <fustini@kernel.org>,
+ Guo Ren <guoren@kernel.org>,
+ Fu Wei <wefu@redhat.com>,
+ =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Stephen Boyd <sboyd@kernel.org>,
+ Brian Masney <bmasney+clk@redhat.com>,
+ Jerome Brunet <jbrunet+clk@baylibre.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ linux-riscv@lists.infradead.org,
+ linux-pwm@vger.kernel.org,
+ linux-clk@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Maurice Hieronymus <mhi@mailbox.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <189F36A9-D1C1-478A-A195-F94D037E4376@collabora.com>
+References: <20261013-clk-type-state-v6-0-a5e9977b3509@collabora.com>
+ <20261013-clk-type-state-v6-5-a5e9977b3509@collabora.com>
+ <DMYELN5M09W3.1SYPKW7DZ70E1@garyguo.net>
+To: Gary Guo <gary@garyguo.net>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-ZohoMailClient: External
 
-> >
-> >  test                  brd    rbrd   change
-> >  write, 8 threads     2004    1563    -22%
-> >
-> >We think this is a small price for page integrity
->
-> A free 28% improvement, just by using a C driver, and a bit of 
-> discipline in the program (not submitting the same page).
-> Supercomputing will be all over brd if they need a ramdisk.
 
-The posted result were for Rapberry PI/QEMU, The more cores/
-computing power we get, the better rbrd actually looks, so
-supercomputing should not be worried.
 
-As an example, on a Ryzen 9, median kIOPS over 3 test runs look
-this way:
+> On 18 Nov 2026, at 11:24, Gary Guo <gary@garyguo.net> wrote:
+>=20
+> On Tue Oct 13, 2026 at 6:07 PM BST, Daniel Almeida wrote:
+>> Many drivers only need a clock running for as long as the device is
+>> bound and never touch it afterwards. In C, devm_clk_get_enabled() and
+>> devm_clk_get_optional_enabled() cover this case.
+>>=20
+>> Add devm_enable(), devm_enable_optional() and
+>> devm_enable_optional_with_rate(), which wrap the C helpers. They =
+return
+>> no handle, so the driver keeps nothing in its data and cannot change =
+the
+>> state of the clock. The clock is disabled, unprepared and put when =
+the
+>> device is unbound.
+>>=20
+>> This mirrors regulator::devm_enable() and devm_enable_optional().
+>>=20
+>> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+>> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+>=20
+> Given all the device resource lifetime changes, do we still need this =
+now, or
+> would putting a guard in driver private data to be dropped =
+automatically upon
+> unbind be sufficient?
 
-test		bs	brd (24 vCPU)
-				rbrd (24 vCPU)
-					rbrd/brd (24 vCPU)
-						brd (16 vCPU)
-							rbrd (16 vCPU)
-								rbrd/brd (16 vCPU)
-read		4k	4661	5207	112%	4411	5251	119%
-read		64k	241	265	110%	177	189	107%
-write		4k	2034	2597	128%	1942	2606	134%
-write		64k	111	134	122%	105	131	124%
-randread	4k	3508	4690	134%	3398	4853	143%
-randread	64k	229	245	107%	170	188	111%
-randwrite	4k	1833	2598	142%	1773	2680	151%
-randwrite	64k	108	134	125%	104	132	127%
+I think we should still provide this. Many drivers only care that the =
+clock be
+enabled at a given rate, and do not care about the handle. I think this =
+has
+little to do with C or Rust and should be supported in Rust too.
 
-Maybe this is what we should have posted in the cover letter in the
-first place :
-
-~Vitaly
+=E2=80=94 Daniel=
