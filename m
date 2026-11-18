@@ -1,97 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795030295;
-	b=WrobkA42vkFnjEq4jQcq5p3GS7yvcsv2IG9zJwaxXVvC4porg3SYG3no2/d/UvSol/AM
-	 oqLJPdFSM+svC5RNnHdhsjw5MEV4NLvPVmmTGSPVpj5nmYwON6xVNA9S8JNJyLHRZ8815
-	 OuCbX+OTwITWN8TNPZob3pgXktFTEzCekRerzXhRXB9UJ5G5UKXuRZqEwj+8D6uCWIuAu
-	 Lxids3ThucWuDE0EG2hwFzV8L8l44Pkdu6ql/qhWN7CktSyxuNgPyu/4ai4laLhSOEHZ0
-	 PlXF56xmjnFeDjCzh6d4G1VZSMO61Z7ub1t7hsBYQJTfMQIGp4kNe1NXJ/ZCCSTrXbw==
+	t=1795030490;
+	b=ZFCt5c9CZg+x1/2H/g6KmCDeSo6NPBTPqDctWj14rIvbQUD/9OQ0dQBUE4wmJx0Fsaba
+	 pbYB6bRyAlR3nEAEa9aE+FLfQcm0HwF4KGwC1Za5WymvHdlybbkWCZTdEBrL4+qgbJgE2
+	 EH3oFezXwcFsj9AaQvyJt6SMSAFd+to7X4FAgmDbrPneziC7fN0ZFkNnIuED1JMb8FyrN
+	 vYb26UaGOKSheo8vuM26bB25H3+MVssSWzzgjm/SWX7VRVFH1bon4ljgD/gdVIBkb2W51
+	 giqYjuqXFUhIFIjV3BDHR0+b5h5bZt3ofOPlCOViNv9d2J0092lBt77baiHkhoz27Iw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795030295;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:References:Autocrypt:Organization:Content-Type:
-	 User-Agent:MIME-Version;
-	bh=fLthrjN5WgzhoWxabUT0whfp6slcAS4z3Nr3WCkNqVY=;
-	b=sOMnMq5isaMC6t8Q5cdHpmBfvpo8gqbF3TT0a7Gwo0nhyxa2mf29ZRsNkncnlUeNHTOO
-	 nShUL4rnW/wXEuSsa8quKdjeG51p/vst3m5jkgBRATSbvwYMgEEqr6RTijlPu5V/fmFIo
-	 FJfzfcyIG+5F2VMrjU6zpNbJDIlhI5I/3tafi6xTPb18BoEPxiNinFegctL3q4VVc27Zg
-	 S5cgRYlnM5FFfWoqLnQPJWRssVR5QRmMhVXtt/Pofcfwma0mJNa+fSCA9Rrajj+CRMU3a
-	 1eu+hdMMsDicm++5uYOwsLPcE6H6+hIcm53LXOrLtWCcPy3K1d8kQbRTPZ0x10rGkgw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795030490;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=8RxXpz7hlprBpizDk9lL07D5e79Ppid8aeCKYprG2ME=;
+	b=jSb4SQJT/QsCOCjdyndkdVn5SY+Q/Id2+BzQhpw3KJ1sMBKwfHR0BR+RUEHKFa1TTGt0
+	 1r+qt2IthUqwOmKbTQyWAngBI/SU43hliWQLMH1/5FGpxkvT1cwMFNIfjVTih6C5vnT+I
+	 h1kzn2TzqKMdo7Twnjjy49CpDXtlbQaAeBK5M/ch/Nh8MJWrckVfq1eqCNvWC3Cpjxih7
+	 gbyypg/K3zOivwd6fLZFavQ9AVuVVCOpnrZqa7yF4/6SSpA4g20B/IRmuZ4eKuUjx2l1k
+	 NGFTSZXH2UWa9Ak+fELle37NBRwJeSolI23CTJwUJLIeGzSf/SRP/Y3iOg4N4neK15A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=KXgDlwr9;
-	arc=none smtp.remote-ip=148.251.105.195
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=caoGkr+z;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B98606A7E3;
-	Wed, 18 Nov 2026 19:31:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73B98606A7E3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD99606BB51;
+	Wed, 18 Nov 2026 19:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=KXgDlwr9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1795030292;
-	bh=fLthrjN5WgzhoWxabUT0whfp6slcAS4z3Nr3WCkNqVY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=KXgDlwr9EYezTyhZH6f113tD9IXvmi78IgDfAdx3BajMOcug+kilIgq1izYqmUL8d
-	 j8vEEjPLk/hzTs6DP7E274OX2N+OjJUcinoIkoN+MqcLe38W9bhTlhupvMQ2NY2yPu
-	 Xl+e6YU8sYpquLVNXRJXhV2eULFoY45/tpYqWV1ugcP3ZDReRGPVZKkn/RFwoWkSND
-	 6y5Jl6d7xbf0O5gz6j5J8ZwLrYuBkJk5fAej5MLEOY4A4oo+X4kGxSx9PU507r0raT
-	 p/vhCtHtDzE9QGVV7v9dpAUYI0Gfhcv0Dl3P6PWrbk6aMiDZLXH9jpq8DWIwMofLcm
-	 KchprO3vAlHTA==
-Received: from [100.64.0.214] (unknown [100.64.0.214])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nicolas)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id E443117E0480;
-	Wed, 18 Nov 2026 20:31:29 +0100 (CET)
-Message-ID: <ede3b421d419a35c115ed584e60e74bfd6b91dff.camel@collabora.com>
-Subject: Re: [PATCH 0/6] rust: iommu: add a paging domain abstraction
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, "Joerg Roedel (AMD)"	
- <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy	
- <robin.murphy@arm.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng	
- <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, Tamir Duberstein	 <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=	 <work@onurozkan.dev>,
- Abdiel Janulgue <abdiel.janulgue@gmail.com>, 	iommu@lists.linux.dev,
- rust-for-linux@vger.kernel.org, 	linux-kernel@vger.kernel.org,
- driver-core@lists.linux.dev, Detlev Casanova	
- <detlev.casanova@collabora.com>
-Date: Wed, 18 Nov 2026 14:31:28 -0500
-In-Reply-To: <20261118160909.GC3115493@ziepe.ca>
-References: <20261112-b4-iommu-domain-v1-0-c29e86788dda@collabora.com>
-	 <20261116193821.GC2452510@ziepe.ca>
-	 <3EB4C2ED-B699-4532-A562-68B78F6E29C6@collabora.com>
-	 <20261117202055.GA3115493@ziepe.ca>
-	 <b145b2ceb92c73a4fa0477d7b3895a6e3b4adf99.camel@collabora.com>
-	 <20261118160909.GC3115493@ziepe.ca>
-Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Organization: Collabora Canada
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-NdLYfQQ4mCwqMscWXOoT"
-User-Agent: Evolution 3.62.1 (3.62.1-1.fc45) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=caoGkr+z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 529431F000C4;
+	Wed, 18 Nov 2026 19:34:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795030490;
+	bh=8RxXpz7hlprBpizDk9lL07D5e79Ppid8aeCKYprG2ME=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=caoGkr+zi/fmbkrr6iGkrj0lzntp1e/kLAEuFcRbtktyvJK3yN3X8rgZDmtbwYUQr
+	 6ytq8smNIkQQivbFExvo7pKBefVUcpxEXMIxFKWiDjN7pNkIeHK8C/p53IGsVfgFMh
+	 Q1vr3TshI+heEGfti+KqZJHs5fkBzaCGPG5RZn9LR8jfuGr1LQChhKuQRv2bZZvuZp
+	 zHuqWeftO6eyNXWCaPUbRiH1I9XDagZin13eFA2ReaVkEN4yOSjcOfVN8pR6ccYZ1K
+	 h8j7JIthGjIqSk0TsFcWwqmR+H1FrUWSPuLwwIz4lSwQdkAzIA8tsTitcQ3VsAdUpq
+	 GZT0wyHNfvUGg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, David
+ Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman
+ <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Mike
+ Rapoport <rppt@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie
+ Kim <rakie.kim@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Matthew Wilcox <willy@infradead.org>,
+ Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
+ =?utf-8?Q?n?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Daniel Almeida
+ <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?=
+ <work@onurozkan.dev>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5u?=
+ =?utf-8?B?ZXbDpWc=?=
+ <arve@android.com>, Todd Kjos <tkjos@android.com>, Christian Brauner
+ <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, Igor B
+ <igor.b@beldev.am>, Vitaly Wool <vitaly.wool@konsulko.se>,
+ linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v22 0/6] rust: page: add page kinds
+In-Reply-To: <37B6D4A8-288E-40E8-9214-EDABBFE49C39@nvidia.com>
+References: <20261118-page-ownable-v22-0-d63ff73f4075@kernel.org>
+ <37B6D4A8-288E-40E8-9214-EDABBFE49C39@nvidia.com>
+Date: Wed, 18 Nov 2026 20:34:33 +0100
+Message-ID: <871p8iue5y.fsf@t14s.mail-host-address-is-not-set>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -101,173 +80,101 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-
---=-NdLYfQQ4mCwqMscWXOoT
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Zi Yan <ziy@nvidia.com> writes:
 
-Le mercredi 18 novembre 2026 =C3=A0 12:09 -0400, Jason Gunthorpe a =C3=A9cr=
-it=C2=A0:
-> On Wed, Nov 18, 2026 at 10:25:58AM -0500, Nicolas Dufresne wrote:
-> > Hi,
-> >=20
-> > Le mardi 17 novembre 2026 =C3=A0 16:20 -0400, Jason Gunthorpe a =C3=A9c=
-rit=C2=A0:
-> > > On Tue, Nov 17, 2026 at 05:09:11PM -0300, Daniel Almeida wrote:
-> > > > Hi Jason,
-> > > >=20
-> > > > > On 16 Nov 2026, at 16:38, Jason Gunthorpe <jgg@ziepe.ca> wrote:
-> > > > >=20
-> > > > > On Thu, Nov 12, 2026 at 02:00:07PM -0300, Daniel Almeida wrote:
-> > > > > > This series adds a Rust abstraction for IOMMU paging domains. A=
- driver
-> > > > > > can allocate a domain, attach it to its device, map pages into =
-it, and
-> > > > > > install a handler for its faults.
-> > > > > >=20
-> > > > > > This will be used by the upcoming rkvenc driver that my colleag=
-ues
-> > > > > > Detlev Casanova, Nicolas Dufresne and I are working on. More de=
-tails on
-> > > > > > this driver can be found by watching Nicolas Dufresne's talk at=
- LPC 2026
-> > > > > > [0].
-> > > > > >=20
-> > > > > > As part of the security model, each client will have its own IO=
-MMU
-> > > > > > domain. This is needed as the submission model will let userspa=
-ce set
-> > > > > > most of the encoder's registers directly, so the kernel cannot =
-check
-> > > > > > every memory access that a job makes the encoder do. With a sin=
-gle
-> > > > > > domain, one client could make the encoder read or write the mem=
-ory of
-> > > > > > another client.
-> > > > >=20
-> > > > > How do you plan to get the paging domain in the first place?
-> > > >=20
-> > > > We plan to alloc a paging domain when a video encoder session is cr=
-eated. Then
-> > > > we call iommu_attach_device() before a job runs, and detach back to=
- the default
-> > > > domain after it finishes so the next job can attach its own session=
-'s domain.
-> > > > This is so each session is isolated from each other.
-> > >=20
-> > > If you do that you can't use the DMA API at all in your driver as you
-> > > have to set 'driver_managed =3D true'. Is it OK? If it is why not jus=
-t
-> > > use VFIO?
-> > >=20
-> > > Or are you planning DT horrors to get yourself a DT created "DMA
-> > > struct" ?
-> >=20
-> > This seem to digress. All we want to do is use the iommu subsystem as i=
-ntended
-> > for the case the iommu driver is not inside the DRM driver (which seems=
- to have
-> > never been the case so far in DRM).
->=20
-> "As intended" means you use the DMA API and you do not touch
-> the paging domain.
->=20
-> "As intended" means you use iommufd if you want a domain full of user
-> controlled mappings.
+> On 18 Nov 2026, at 11:18, Andreas Hindborg wrote:
+>
+>> Note: The page patches were part of the `Ownable` series [1] until v21.
+>> This series continues the version numbering of that series, and it depen=
+ds
+>> on v22 of that series for `Ownable`, `Owned` and the split of `RefCounte=
+d`
+>> and `AlwaysRefCounted`.
+>>
+>> Not all pages can be treated the same way. A page allocated with
+>> `alloc_pages()` is managed by the page reference count, and kernel C code
+>> routinely takes its own references to such a page. A page owned by the
+>> slab allocator must not have references taken to it, but it can still
+>> show up in places such as a bio vector. A frozen page has a reference
+>> count of zero and is exclusively owned by the party that allocated it.
+>>
+>> A single `Page` type cannot describe all of these. This series makes
+>> `Page` generic over a sealed `PageKind` that describes what is known abo=
+ut
+>> the page:
+>>
+>>  - `Page<Base>` is the base kind. Nothing is known about the page
+>>    beyond the validity of the `struct page`.
+>>  - `Page<RefCounted>` is the default kind. The page is managed by the
+>>    page reference count, and `Page<RefCounted>` implements
+>>    `AlwaysRefCounted`.
+>>  - `Page<Exclusive>` is a uniquely owned frozen page whose data area
+>>    follows standard Rust aliasing rules, so the data is available as
+>>    `&[u8]` and `&mut [u8]`. It is handled through
+>>    `Owned<Page<Exclusive>>` and is the first in-tree user of `Owned`.
+>>  - `Page<Frozen>` is a frozen page whose allocation is uniquely owned.
+>>    Unlike for `Page<Exclusive>`, nothing is known about who accesses the
+>>    data of the page, so the data is only available through the unsafe
+>>    raw accessors.
+>
+> Why do we need to allocate Page<Frozen> when we can allocate Page<Exclusi=
+ve>?
+> To me, Page<Frozen> is an observed page state from a non-owner point
+> of view.
 
-As discussed at LPC, we believe its pointless for this type of device to gi=
-ve
-any direct page choices to userspace. Can you explain why you believe
-differently?
+I'm not sure we need it, which is why I added this note:
 
->=20
-> > The existing infra for that (in C) is pretty abstract an simple in
-> > my opinion, and built into the DMA API if you manage which domain to
-> > attach to your device at the right time.
->=20
-> What does this even mean? The DMA API owns the domain, not the
-> driver.
->=20
-> All the cases using these APIs in DRM and media are troubled in one
-> way or another.
->=20
-> For example the recent revelation they have always been using DMABUF enti=
-rely wrong:
->=20
-> https://lore.kernel.org/all/20261009125338.GB13920@nvidia.com/
->=20
-> Tegra desires to undo their abuses.
->=20
-> It was never intended for things to work like this, there is missing
-> infrastructure.
->=20
-> > To me, it fits CODEC HW driver which are also simple. The DT horrors
-> > you refer to seems totally unfounded, you just describe the iommu
-> > and the iommu subsystem will manage it for your device.
->=20
-> "unfounded? You are not following along, I've written about this now
-> many times to many different people. Follow the links and discussion
-> from here:
->=20
-> https://lore.kernel.org/all/20260917144804.GI3196566@ziepe.ca/
->=20
-> If you use DT correctly there is no place to attach an iommu_domain to
-> and you can't even use these APIs. You get DMA API only and that's it.
->=20
-> You have to do something "wrong" in DT to create fake HW devices to
-> even give you a struct device to even attach something to.
->=20
-> Or you have to entirely give up DMA API and attach to your only struct
-> device.
+ This currently has no users, but I add it here for completeness. Let's
+ discuss if we should keep it or not.
 
-I'm not sure how this applies to our work. But since they are all broken
-according to you, let me give example of cores/iommu mapping we are using, =
-and
-perhaps you'll be able to explain us correctly? I've picked the Rockchip vi=
-deo
-decoder, which is upstream but expose through V4L2 stateless API, but from =
-a
-hardware point of view is pretty much identical:
+The difference between the `Page<Frozen>` and `Page<Exclusive>` is that
+`Page<Exclusive>` has stronger invariants. Namely that the (physical)
+memory region of the page does not incur data races, and that the page
+not in highmem. From a Rust point of view, this allows us to obtain a
+reference to the page contents without jumping through any hoops.
 
-The DT (which I read you must be broken and in violation of everything, yet=
- all
-reviewed by DT maintainers):
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arc=
-h/arm64/boot/dts/rockchip/rk3588-base.dtsi#n1400
+I do not have a user for a frozen page without these invariants, but I
+would assume there are use cases?
 
-The multi-core support proposal, its not doing process isolation, its not
-strictly needed in higher level abstraction (though could be better), but i=
-ts
-using domains so that each core can actually see the same memory:
-https://lore.kernel.org/all/20260810-rkvdec-multicore-v2-0-986f89d22cdc@col=
-labora.com/
+> In core-mm, a page is frozen, when its refcount =3D=3D 0. The code looking
+> at the page knows the page is exclusively owned by others. If the code
+> allocates a frozen page, it will not check its refcount, because
+> the code knows it has the exclusive ownership of the page. To reflect
+> this, the code calling alloc_frozen_pages() should just get
+> Page<Exclusive>
 
-The DMA abstraction that is used by the above driver:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dri=
-vers/media/common/videobuf2/videobuf2-dma-contig.c
+Is it always the case that users of frozen pages will use them in such a
+way that they can guarantee no races to the page contents (physical
+memory)? They cannot be mapped for DMA access or anything like that -
+that always requires a refcount?
 
-GEM kind of offer similar high level abstraction to DMA (with important
-behaviour changes in of course, specially for write combine delivery), so t=
-his
-is what we have for now in the WIP driver. Check the LPC presentation for t=
-he
-rest of the context.
+> and if the code encounters a Page<Base> and finds it has no refcount,
+> it should convert it to Page<Frozen> or there should be a method
+> that accepts PFN and return Page<Frozen> if the page of the PFN has no
+> refcount, for PFN walkers.
 
-Nicolas
+We can add conversion functions, that makes sense.
 
---=-NdLYfQQ4mCwqMscWXOoT
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
+>
+> =E2=80=9Cthe data=E2=80=9D mentioned in Page<Exclusive> and Page<Frozen> =
+is struct page
+> data or the data in the physical frame pointed by Page<...>? If it
+> is the former, is it better to use metadata?
 
------BEGIN PGP SIGNATURE-----
+I'm referring to the actual physical memory region that the struct page
+describes.
 
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCav39EAAKCRDZQZRRKWBy
-9IV1AP9AxkflEeZ/bPaxvQmt8nZyMjXbjyeIHJu034CF7vtj+wD9H6GjJpenIQM8
-yOiR+zj1r9H/KSkGDS6RmpGOgH1UNA0=
-=UPaF
------END PGP SIGNATURE-----
+>
+> I am new to Rust, so feel free to correct me. Thanks. :)
+>
 
---=-NdLYfQQ4mCwqMscWXOoT--
+I'm new to mm, I really appreciate your eyes on this.
+
+
+Best regards,
+Andreas Hindborg
+
+
