@@ -1,49 +1,50 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795012293;
-	b=hRgQXsYC6TXHMH+XtuUHEqAUwGQrl42qOv3/s9wMIMwuogv6WP9rKF+AR51SkJXbLOrT
-	 Za05avAevR4CIFnEpUX24COkRdr7J2zxZ3mvbLb7bfsVdeID7AnZVZehMI2aQQH/sRBD9
-	 qwFP9W1RpNOkgNpz2YadMsA2g2kj3Fn51LbetRfF3mCKZm0HdozcOLgLXCPakXxpvYdHO
-	 3auYSW9dMNflTdP4WPaYgTiA16GWan4nCF+LJsoDlwmLot19X7gG4WYLjXQ2N2uYFhS3j
-	 RW9MeQs/O/HRAjD0Es4cc15TnwdINDWglqMg0j9YGFN5k0aBa7+ppBJffvqThwStmuw==
+	t=1795012290;
+	b=o5m2dAj++u5ATKqQKgchC26AJt4d4tEXAg4yqRCi4T7wbJQaJviwVT3JYo4JvbYM1293
+	 t89Og8bOjLBLLNaHu2Bph0GxBEmdQmggZSm5kv4pIoR5KUXfS28Ne+lli9uovRRkiaWxw
+	 mZMVmrViwG/qtSalssr6R7E4L/HOm2g39Tbko5yWUk6OJWpnMeh7iHnZfi6eZbTZQMj+a
+	 /ltvJSoGz3YVOyo83/+H7ZKYhbqHY2HZ845g4k3Z3y0pYUYsiLLeYHJtc0Ij6l1YM7877
+	 xZLyR2RMQDCCpYiWnkGnBOhV3qXhxVhbnjVjmmXG20Sh6S20tIXsi4Ssg5wv/Q95yAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795012293;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=ubbcaQRI420DuZaCj8SdRzHrFDe4BCUcBjNnGL9SLL8=;
-	b=Vlko3ZXoOqwEA1p5PSLJ4zhcwrBHkk4PDOueJKJXIHqMa31nWefoRivtmfsI8csGUbo+
-	 pQiTDrrwkmsxHk3mG1QducLLJj+qJcxgSl9Rzbvh+KR5fJQAKA6pWjjyIaHbO+b2yez2Z
-	 nbnTWn3JdG2OCtCS6RHFTDWUtFni8wJr7OaNpkfKGLA6rY1A6v2utt6sHR8CxVBy1cmw7
-	 WR2wIOUK4S9b4/t2/3VcZfw66KO7GrDj8W0Kym6xY4MCtfKw9NGVYp9JyBsbrkqHLPuke
-	 ib7MsifIJ7t2J2eaHJSI5KCCtUe64uL/8Etz2oiE4vsoIZ8xlAsSVl5OYOw8Ij/LgIw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795012290;
+	h=Received:DKIM-Signature:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=XcDe0SmpcANIrDpzAwnOmDX4Xs1qtWaLxh3V8T1jjVY=;
+	b=3abivq8ldwSd1c3iClwZGxqcFXxZ2YqRWoOPdGOCnSQnnH4GYyu6R6eWskNlsKpVAAwh
+	 /IdpkbhyoGk57CcF3aKGAPtV7HeYxgbKAmtIAJ29Abq9VRxBxr9y5JxT5ITIPE2Kc+I0t
+	 4FVTIwvU3SY7rGBIauy6R1sRxN2qjFSUWOdQHl7wM6PJhzx0i33JRq5mBTSSiSn68IBL9
+	 8isC3zpu8hyii4Tux3XJ+31OwZcH2g8MpafMVIbgBI7SPgj38+01+NWc8tqPyRx8d32K6
+	 QF8co5K3ddoJ/z5zrdFGLonAvPTdNoRIuxO5jzNA2/b7tsJcIlRzZOjXNR+lUUkeSGw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hIrQF8Wv;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h5rVw1on;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B841F60A2609;
-	Wed, 18 Nov 2026 14:31:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hIrQF8Wv
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC00B1F000C4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5693606A331;
 	Wed, 18 Nov 2026 14:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h5rVw1on
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4651F000C9;
+	Wed, 18 Nov 2026 14:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795012293;
-	bh=ubbcaQRI420DuZaCj8SdRzHrFDe4BCUcBjNnGL9SLL8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=hIrQF8Wvtz2eulyCHY6XcUtISCG8SHlBzMj5ZY3YNZd440CIeXWGfTTbrX+JWPSZU
-	 gy2Xdwcq7BNTUp1CKsPGwRsW2glTPTrtsLWVtIE8ip3cltCodv2+3py/IYvQAmXWii
-	 wWcQ8uF43XDP8IW6Qkr4mfte3NSwTKnpjEopQ29bP27yp7ql1BMfgO0/08YFk2sUY+
-	 5rGIsgBBE6GD9OZsv6MJFdCwv33S/ClgcOtVTYb7zlxkD/jNOYcg8tJnm4nJrnDBI7
-	 56GZB/3yTSg6ti6fLr2um2jgRqEkYRcx2q9yN4pTm0x+31+wIOQ06/T0YFsmG90bL6
-	 /pW1XZ7SfuMKg==
+	s=k20260515; t=1795012290;
+	bh=XcDe0SmpcANIrDpzAwnOmDX4Xs1qtWaLxh3V8T1jjVY=;
+	h=From:Subject:Date:To:Cc;
+	b=h5rVw1onUagBrmhrtKMqzBgMlU58KYisbvjLf4DcGuyY47udJrZ6jf9F+1DlfMFsJ
+	 NSrTmoP/GjL6tFf2wnyciGxDC0kXgH711zMl8CYX+UgGUpYjfdrVAE/82/Y8698lBu
+	 Wm11CMDzFobDvXCZMyrrGvI+s94lj1uRDgj4/cekKkjdTw/DDinCnZQTQsKcFiAyYh
+	 +sQX2FUrslMjOEZV5pT8ORd+KNfIsgkhRiWhWwIseD9+eWVF+CLzl6/XVPUfVuWA4M
+	 z9x8sYM5vZMvGoeaPkcaCnMtYDR8XDmFywTwR5FDZli/GHlvGQV4n1x4otGxBb7sxk
+	 Hl5WUen5WmPyA==
 From: Gary Guo <gary@kernel.org>
-Date: Wed, 18 Nov 2026 14:31:20 +0000
-Subject: [PATCH 1/3] rust: pin-init: internal: allow
- `clippy::large_unopt_stack_frames`
+Subject: [PATCH 0/3] rust: pin-init: reduce visibility of projection
+ methods to declutter rustdoc
+Date: Wed, 18 Nov 2026 14:31:19 +0000
+Message-Id: <20261118-dev-project-vis-v1-0-2a5f433bb516@garyguo.net>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -55,9 +56,10 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-dev-project-vis-v1-1-2a5f433bb516@garyguo.net>
-References: <20261118-dev-project-vis-v1-0-2a5f433bb516@garyguo.net>
-In-Reply-To: <20261118-dev-project-vis-v1-0-2a5f433bb516@garyguo.net>
+X-B4-Tracking: v=1; b=H4sIALi2/WoC/yWMQQ7CIBREr9L8tT8KJqT1KsYF0MF+F7QB2jRpe
+ ndBl2/y5h2UkQSZHt1BCZtkmWMFdenITza+wTJWJn3TRinV84iNlzR/4AtXnUPo77ADzKAN1de
+ SEGT/FZ+vP+fVNb1lmuFsBrtko5/aVBJwXSSyRCkcsRc6zy8cCVZGmAAAAA==
+X-Change-ID: 20261118-dev-project-vis-ff83ea9e6926
 To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
  Boqun Feng <boqun@kernel.org>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -70,42 +72,43 @@ To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Gary Guo <gary@garyguo.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795012287; l=1173;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795012287; l=1351;
  i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=1MhJq8D8AqTKa9/r0aVOlHd37XsnnIy0H/ZaDd0wyf0=;
- b=H2jgkh/j3kC+OPRPwGapsreOSKbvFOkwVDoE3bxV0y/WhxR+GPE5MoqlTY3Jz6Nl1gEPi07I/
- EqYlPSBxqs6Bfvk4vgr6Aeh8pBR/JhPhR9fKc9yRsMgzAEfTXh2LE/q
+ bh=kFvBYHUBXWXs9SaDQAtEnNtyG7/SiB3hj7W5dkgcI6k=;
+ b=87N/rZFfK14p/ipxL4v4wF237HBkdshie7j/9JFi41Fp9z79EV24DTER9AKL1CuRvE/lpiy0n
+ tHf7xwUMSjkDtCBBmzqcsDqorq/asyoBoe3j8wSgKcuDeDG1gAKkq9E
 X-Developer-Key: i=gary@garyguo.net; a=ed25519;
  pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
 
-From: Gary Guo <gary@garyguo.net>
+Currently all types that use `#[pin_data]` will have projection method
+generated and visible in rustdoc. But for many types, all fields are
+private and thus these projection methods are not useful as public APIs.
 
-Since Rust 1.102, Clippy renames `large_stack_frames` to
-`large_unopt_stack_frames` and make it warn by default. This is a good
-thing as in such cases pin-init should be used rather than potentially
-leave unoptimized large moves on stack. However, this also triggers in
-unexecutable code paths that pin-init generates for field duplication and
-exhaustiveness checks. Allow it on the generated check closure.
+Thus, compute a least upper bound (LUB) of field visibility and use that as
+visibility for projection methods instead. This means that if none of the
+fields are accessible publicly, the projection methods won't be as well and
+thus will be hidden from rustdoc.
+
+We could also just mark these methods as `#[doc(hidden)]` -- but LSPs will
+hide these methods too -- and bthese are indeed APIs that people would want
+to use.
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/pin-init/internal/src/init.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Gary Guo (3):
+      rust: pin-init: internal: allow `clippy::large_unopt_stack_frames`
+      rust: pin-init: internal: use visibility of the most visible field for projection
+      rust: pin-init: internal: hide `HasPinData` impl
 
-diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
-index ded2b5283376..c78f8d3ca309 100644
---- a/rust/pin-init/internal/src/init.rs
-+++ b/rust/pin-init/internal/src/init.rs
-@@ -572,7 +572,7 @@ fn make_field_check(
-     };
- 
-     quote_spanned! { Span::mixed_site() =>
--        #[allow(unreachable_code)]
-+        #[allow(unreachable_code, clippy::large_unopt_stack_frames)]
-         // We use unreachable code to perform field checks. They're still checked by the compiler.
-         // SAFETY: this code is never executed.
-         let _ = || unsafe {
+ rust/pin-init/internal/src/init.rs     |  2 +-
+ rust/pin-init/internal/src/pin_data.rs | 36 ++++++++++++++++----------
+ rust/pin-init/internal/src/util.rs     | 47 +++++++++++++++++++++++++++++++++-
+ 3 files changed, 69 insertions(+), 16 deletions(-)
+---
+base-commit: b7218f1996f8491dbe28632b70f444cb73f554df
+change-id: 20261118-dev-project-vis-ff83ea9e6926
 
--- 
-2.54.0
+Best regards,
+--  
+Gary Guo <gary@garyguo.net>
 
