@@ -1,129 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795041811;
-	b=DzrXSfhLPGRBNkPe90cHs6TDjGyaq6h6fFVGJ3p+3wLUiMC4XKfoU1O0rJx4Ca9NDOFj
-	 bW6yA+RCAwmS3iyADLBV44w1fa4SGGh4zb88DSjlZEOLuprMTlZsWDR9bCh7jotLuTSSc
-	 OvymVfg+vgjHidan3CukwADKwUqnFAWOMh4VmqUctSTMG91v3nODUTalNwiop0DO4lrxd
-	 aaK1WDnsSR/sBeOToDt9K9nxJyoeINbIibU17wCGnyS0IspWBMDJHxbSU6ng5kU5LCDr+
-	 MU7GX2/OqNk8Dkn3eRCFGmzhe0rQKv3o7p0BM/VF/BJMIEEotkQfSpoxxRivuydJWEQ==
+	t=1795041955;
+	b=Nqrg1eDl7TV0N9T9+Ofg98rxgzThbmoWja+9UTBENOUlVpovoPZKcfcEkgwtI2i3K90S
+	 n9NY6KkkFGmLnyT+q+/u5tdeE+L/XNKXFZw8/A/ljYixqx88VkyhoiEa9iSLGI5Ikbi+W
+	 QZ8OIimDE9327TZ9wdslD+x+5OzcV8LwO1rcVx0Q97PgdhSpilPcgVTWolKF9u/atDR8D
+	 i7eujbrQypmkFMzFG0XlC/IZ3NX0NLhh2vodTKHBgpCDXPJX7oXBLvtZ6KqaZjev3Lszp
+	 28IeEjRommdJkIXlOdwHac8p2j6wdyFmD4qWnJrpsQMlFJrYU1Lao/2Nd5Np309qSGg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795041811;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding;
-	bh=LVFpBiSldhBpOT4aalFMDp92Mf27FRvVEVVqeNA+pDw=;
-	b=kKeOy0hWEufnwPprehuNYVJNU03diaCxhrfhK97IqZf695GVUHF2XGFm11Oeuq7OgYNC
-	 q1IkU+UOx57sMqBxf0K8BKdVkpVn7zxrSp4BGKMnjxmyYC7LY6aL/UELY9nAa0goAZXHu
-	 ZJbvcvnuHQJP+GQ5JtUYpSya4xBIOzb0HXTzkD5NtWjqJ6jmIAY091XJ8I5Y2iYFv97fd
-	 RHwnoHv330eNL5C5hmqaPMzaFbeXJ81jQow03GysQwZ/+x6xaHSbtohe/sSNKDlJAM7BA
-	 DijccTjYREGTgGiwXSOmcINIn1kp90Fv36YXWwG/fI0Q1zYw79mY8LLIqfvl2KhxJQA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795041955;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
+	 In-Reply-To;
+	bh=BYk/c0gsLCrf5jVqJaRR5xbeOm4kW9crjwwPAlxYeHQ=;
+	b=5lURVk5uebIs9w5T7vc5K1RjUemdvW6LPUQKdALVLnv1+uCcsRxXPymoEtqaHLxE8BrI
+	 JEx95uAlRE8Ct3bIa8dzrnNx4/LOvrorAhoWQB5WSsel3gBAyEm9GJLWdoIldndVMkBzS
+	 kb+m6GtatjR1vv44v950Naes5mjaXyF/gTyuM8VkYfnUxyadXYrPhU3dKeeOMj09/E2l9
+	 ch0uEXbgUGJspL7iG9mHlknlllloUoeUWdS5a4W8ai7Rvfpdia2g6FJxz6cdcjyuwU8tq
+	 Wc6y8UHwwMi2Uiw/0I5wvZFoNeToBKdZzmL9dyW7sqdaA0W4LQDVbfAeLUw0G7Vc8wA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=flapping.org;
-	spf=pass smtp.mailfrom=flapping.org;
-	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=asrSSb3w;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=pdBjWfeB;
-	arc=none smtp.remote-ip=202.12.124.154
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OT4R3ech;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7ED606A31C
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 22:43:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC7ED606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F172A606A320;
+	Wed, 18 Nov 2026 22:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=asrSSb3w;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=pdBjWfeB
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id F39A27A02C8
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 17:43:29 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Wed, 18 Nov 2026 17:43:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1795041806;
-	 x=1795128206; bh=LVFpBiSldhBpOT4aalFMDp92Mf27FRvVEVVqeNA+pDw=; b=
-	asrSSb3wlfSIirjY1E5hDgRoJ9UALX2wV5IyuaZS88ByhVDiOXUPsujFihoV5gsT
-	T9YqPVbiXsAHZtV8S4zI+3AvQT1dRxmhHLJK4xSZXciJuQMcKRTrsCFHf/Un2VR3
-	2at5xgVE2cMMuRgQI1PA0pxbpnoytCKkHPePJbfxonx3BNxbny5dgsV10vSxYs8W
-	srQE5RB5DitCdcm9ELqcFzVUAOdnx2wffwqBHO1LSxOeo4T8sro8YOLE11EdF1XL
-	fQrDhnjm3x9uDsqS9Y/Ozpc2jytPUcS+Vl1QNsZ5zh4SZ/aOgBeanGAizRO4m4tc
-	OdkTyAXrWV5duaA6AzPV8g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795041806; x=
-	1795128206; bh=LVFpBiSldhBpOT4aalFMDp92Mf27FRvVEVVqeNA+pDw=; b=p
-	dBjWfeBt3RUXwmh0xJ95VS8iv0YJI2dutCR6cs+OqMSpjnWwQtKvh/tQWptDIPT+
-	43XIud1FgXZmcbMaSgQrJR4/vs+6CURRo0va2l3f6KsNwcUKN0vUHH49mm2Mj1UW
-	eRK5U8ytWhBGjzm+WkSDiDJWjQObQsP8lOdFwGz079JrwqY03hqSGZ/zAdc5KXnu
-	tR5EmWAGAVY2B3RQMwQFZigqB82NxNEbr70hfKXNBbgNrjgMvnLj10dAzszqqil8
-	qHHeyhvDk6NbC1EBIOOJjfCjgaGJT7rPUzE136O1cV0l1RQeTZEZROX3YleoRD7a
-	uj/0OYrM1dkipw54ob4KQ==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1795041806; d=flapping.org;
-	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
-	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm2:rsa-sha256:nWSD4+bFAhOXOUMxvQmrBDnSS1+Z2ix45Nh8/bsYx8/QFfv
-	QHkYNCCovlRqqnK58JuUMa7B12ncz0qYaXEZgAZu4qmYGjDXJQsXXAixhGyTfWYN
-	pbbVXzGsvG4AEuLE6ZlsqxOgusIYHEyQ2yssfaLu/swVtVabq5LlFJVm4eFV4tXB
-	GSwTMf8tzyiQlMG+DP9lngHmyPo6JTBQzAqunNVr6Z4Yll36lWUarSFE9QfLzuFn
-	zHHNqm3j7uOVYmoVI9BoO5uNoRymiCQqlFPBLOnOkLWYCYLXO4Ci+1GgfPETof4v
-	77ulKBH/BRSR3G3F1o87GPe/5HU1P5OEMvGcIUg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:9cnubcK1SIEWPR6abCvHPYen5ibxlcZdEVUGvNc/i0g=:WwyAxMqjlwUsaSLsIXEljbX1IqrG0u36O6DcGIs9kjk=;
-X-ME-Sender: <xms:Dir-ap3E5zb3lOKKLt7hf-IAOTECez_3ixK2F6s0fI__2CZv35pSdA>
-    <xme:Dir-ahvM2BfPDnMs1x1BeyZBN3D20LV41iuw9oXjmk_opN5ao2Y3aJx8PznH3fOlG
-    UiT2ZJ1oLhWNdcgIul7Ixn7PESkeP2dND8o8sN0YWJK27gDJUHWMJ9a>
-X-ME-Received: <xmr:Dir-at8OVegvHPRiVsw148prPS6JPDL9UnR0tpwvFw0vXYZqSiu5Bclx90EH2ET2fstvz-1dOAp583P3B-T-RdzY>
-X-ME-Proxy-Cause: dmFkZTEcdeQwH8S6Bno21oPU5H7a24y1Ylu+BiRxhM9gyYuKnO8BrrrKrSlS9zLXDJmihU
-    A0DJznSgS9Rs0qOW2HrcSh3vMW0ll91T+4ui1fOWgm6rr5wzy9CyMxBtMoZCzKgj+xUM5n
-    btAqcpOykbRccnQLfvIIe6YAWd/jnZmrfa/lpFXErtNIoPefX/E547W6fc6/HORMwRToql
-    qcYNJ8Nng2pzObJvsCRKq9cd4xts8ym9T/kwNfutIjnJB7mgkMcTDQ3LVCRjtJwQgjZMJR
-    b8VTGpZ5gwtfSEIDl0Ipl4Ial9P0+kT65vpV6D1JdyVpB6REDCUCDuAjqTPxaGeWhTwpJV
-    /FTpbNJLRL5jyNFU8uP5kDeL+4JJqkCCgK1RrmokopWOhsSAuZm4HVNjfbUu8bSWm0DcA2
-    prYIhljICbVliAbrjvWvfoZ+PKwGODW9LiCZeXkyXNBUJdRyspyeQ3NCr8NGM6bLruid3R
-    XmR38KHmtSd6uJR0MrZvL03xghseTX3f0nQs1Bv7Q12XagM7llEXAJQOco/DBoja1kdMPz
-    kC4VVf0Ge83RH08F0Y3Gq92b0agrEEaPXtmnBvIr3UGYQFMoFePJxGjGUZqlV4WXh7Xx1U
-    DS6+bBwZ8DrZ3ocoyHj+UNx1r4yQZy6sP/0KDI5kiaNXOU5LitJwYnqjjZxQ
-X-ME-Proxy: <xmx:Dir-atRVOTVYU9u68vzqO3M0HsnhskhyuGG7y6LszXmRSxc9Kxpnfg>
-    <xmx:Dir-arCf8PEiVKm2AF3qfn4NtwndtJrv-3bc-kawulCF2x7lkhqHPQ>
-    <xmx:Dir-amYRfQutIwOSPLDF_sU0SRMiqze5TNnnV9HD_UOsdEyNlTI67g>
-    <xmx:Dir-akIdFhh6vP1UGssHF8ObzIoiXOo9xhZx45y7kU4g0Xup80xGqQ>
-    <xmx:Dir-ajzSYTo1terEkcQS9jq1NfrHfZ9DaHxwT17lgnoitDHS5s5Dzzin>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 18 Nov 2026 17:43:21 -0500 (EST)
-Date: Thu, 19 Nov 2026 07:43:18 +0900 (JST)
-Message-Id: <20261119.074318.1203722168764358962.tomo@flapping.org>
-To: aliceryhl@google.com
-Cc: fustini@kernel.org, guoren@kernel.org, ojeda@kernel.org,
- ukleinek@kernel.org, wefu@redhat.com, a.hindborg@kernel.org,
- acourbot@nvidia.com, bjorn3_gh@protonmail.com, boqun@kernel.org,
- chenhan0017.work@gmail.com, dakr@kernel.org, daniel.almeida@collabora.com,
- gary@garyguo.net, linux-riscv@lists.infradead.org, lossin@kernel.org,
- m.wilczynski@samsung.com, tamird@kernel.org, tmgross@umich.edu,
- work@onurozkan.dev, linux-pwm@vger.kernel.org,
- rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Subject: Re: [PATCH v3 1/2] rust: math: add div64_u64() and
- div64_u64_round_up()
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <CAH5fLghd2at_rzqi6YU2MWFHK-r7S0VfpxrJ-dFsu0P7=2egCw@mail.gmail.com>
-References: <20261030020209.3833766-1-tomo@flapping.org>
-	<20261030020209.3833766-2-tomo@flapping.org>
-	<CAH5fLghd2at_rzqi6YU2MWFHK-r7S0VfpxrJ-dFsu0P7=2egCw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OT4R3ech
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2331F000C4;
+	Wed, 18 Nov 2026 22:45:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795041954;
+	bh=BYk/c0gsLCrf5jVqJaRR5xbeOm4kW9crjwwPAlxYeHQ=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=OT4R3echz20YrVaDz2cGiE48b9X9zbzL9vkrT+mAkViLCRjJgi7IfPWvL5ItLyaoc
+	 /hHi40GLVuT1bfxoSz6NWJRxulAw9mp+uboI7Jc9PjHuAeUIdpyH9WaHaxa+VFjjs1
+	 RnsPa/PNx4Kr7sE9wmF2mQlH60p6iYJiNCOAyfAuYeD5fKAgUD3HANf4J8TGJS1mUO
+	 YOJWm7GQJvwMbcAs/zf1iIpXjswNwRwGlm2Q3cg3pt3y/7KdS6tyU6JwxQlOKWEqvc
+	 JZTnJqvu2adHU+OxVkB6RuaQGOIFgBia/l7Ad58h7Q5u/UgoxMpzrXih0Ins4QTJwq
+	 CbJscQixm7CpQ==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -133,23 +49,58 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 18 Nov 2026 23:45:49 +0100
+Message-Id: <DMYP9JMEAF53.13MHUJHT7J420@kernel.org>
+Subject: Re: [PATCH 1/2] rust: scatterlist: tie owned tables to the device's
+ bound lifetime
+Cc: <aliceryhl@google.com>, <abdiel.janulgue@gmail.com>,
+ <daniel.almeida@collabora.com>, <robin.murphy@arm.com>,
+ <a.hindborg@kernel.org>, <ojeda@kernel.org>, <boqun@kernel.org>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <tmgross@umich.edu>, <tamird@kernel.org>, <work@onurozkan.dev>,
+ <driver-core@lists.linux.dev>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20261114234324.82387-1-dakr@kernel.org>
+ <DMWC45NN5L9I.2NUG81ETBC84L@nvidia.com>
+In-Reply-To: <DMWC45NN5L9I.2NUG81ETBC84L@nvidia.com>
 
-On Wed, 18 Nov 2026 21:52:36 +0100
-Alice Ryhl <aliceryhl@google.com> wrote:
+On Mon Nov 16, 2026 at 5:02 AM CET, Alexandre Courbot wrote:
+> The `RawSGTable` documentation still mentions `Owned`. We could adapt it
+> or (maybe better) just drop that sentence.
 
-> On Fri, Oct 30, 2026 at 3:02 AM FUJITA Tomonori <tomo@flapping.org> wrote:
->> +#[inline]
->> +pub fn div64_u64(dividend: u64, divisor: u64) -> u64 {
-> 
-> You're missing #[track_caller] on both functions.
-> 
->> +    if divisor == 0 {
->> +        panic!("attempt to divide by zero");
->> +    }
-> 
-> I suspect the panic built-in to the / operator may be more efficient,
-> so please move this panic inside #[cfg(not(CONFIG_64BIT))].
+[...]
 
-Thanks, both make sense. I will fix them in v4.
+> `sgt` is removed by this patch.
+
+diff --git a/rust/kernel/scatterlist.rs b/rust/kernel/scatterlist.rs
+index 93f431d7f548..22d039f3fdb1 100644
+--- a/rust/kernel/scatterlist.rs
++++ b/rust/kernel/scatterlist.rs
+@@ -214,9 +214,6 @@ fn drop(&mut self) {
+ }
+
+ /// A transparent wrapper around a `struct sg_table`.
+-///
+-/// While we could also create the `struct sg_table` in the constructor of=
+ [`Owned`], we can't tear
+-/// down the `struct sg_table` in [`Owned::drop`]; the drop order in [`Own=
+ed`] matters.
+ #[repr(transparent)]
+ struct RawSGTable(Opaque<bindings::sg_table>);
+
+@@ -282,7 +279,6 @@ fn drop(&mut self) {
+ /// A [`SGTable<Owned>`] signifies that the [`SGTable`] owns all associate=
+d resources:
+ ///
+ /// - The backing memory pages.
+-/// - The `struct sg_table` allocation (`sgt`).
+ /// - The DMA mapping, released before the table and backing pages are fre=
+ed.
+ ///
+ /// Users interact with this type through the [`SGTable`] handle and do no=
+t need to manage
