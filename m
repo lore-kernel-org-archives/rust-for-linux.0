@@ -1,49 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795018776;
-	b=nqDMinqH0gguVrJznIiSEPrjPQdneeS5fiMqwtkOXylk2K3esdaGNtX0+yH6ED6VuhJH
-	 NCdm3dc0SzSD/zrrYe6kxPSryxGbqbcm6ieVYiBAYvNqbe6vVCcprvqkGRDDaGjcIAYDW
-	 p+j1/ddxaMgwlO5fnJWeV6ftniT/BpBDtYFnAe6zmcsEdZNvOU5JjblZ0AvTCkcpH0HVU
-	 dVuAwBeNOc4MD07UpbQU6/ccI8wfglC4D70xiw/TWzBWPgpikVYo9RVfhdeXBHx9/WFme
-	 6e0P5B7QZKfi4f+Px6hHCB4Z64wg9Bph8acthkwbtpE98BA0fz7owOqSZhHxs7ipTNw==
+	t=1795018784;
+	b=UhVktlWn4BDomMi+b13W0053YfcBkNGkuZ5M5cPYO9qBN+7PvRA432sqm118xk/k5xKr
+	 E+C9KZmHCSg3/jg3n7Q4+KWShcV+uXbLWnkCIWlDTrWn1jIZI1vULZcZnwJn7J2MS8jie
+	 RofeQrrsqpA5urzjbdYTZXuVrgU833D0Z7HAqQLRhOdLfIqZQCvT7NfKPG5n5e6kBHeUh
+	 z5I9/J9o1Gk3u+FTlPxu7xpbB/vbe4zLZAdX394UdE5W4RouxG20emTAMxgmlI3LkiKef
+	 oks7OzJKV57xr0aGnhZBKh6oE6k7zikYn3QWGpAc9loH8nvShJQ6Okd5cTlNHTtg4SQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795018776;
-	h=Received:DKIM-Signature:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=eFrBCM7CPvXc7RORk31+znnK2wW3gMhHFGdabCbdV5I=;
-	b=E+dQZOH+T9vRyVk8CFxG6mVlp59c0ShNEH1IdgMGjff8Hj+eLD3adGTwzSQJPMtep5QP
-	 DdhOnfLLEDakKTeIhtZLae03Ji9E6cvV5yMgZ2bgItaH5LdGLwwqMbVHyui+gLqB3Zv+C
-	 p12N5rgeFWqgJA3N0SvfPmyEQQhh7OyQ+pWmLLWiOKnRrjZNIakd8T4WTAemXpB5IjlKY
-	 jxP37pHN5FbVlVRJk02aXssfhzYd82whZKcS9GhaJg4/yGO3+zoXRyHbx3r5YxEaWSOin
-	 7Mzav7bu9Cps4HUrbD5seyA5LQ1DYCeAioe8DWZcZ9J9dd8TjFpg3o7jb/tvu9JSJPQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795018784;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=FIZqapb8xoPPZmibFU/FsBHC1hySFY51gzuyNap1WSU=;
+	b=Z5Qtpx9NIQEyQh/RF2Vg5Bngl9FYQwPSstDTXELzdVo37NnJrIcn/pqFBNpFU/ZfGxUI
+	 Q/NFsjyQeTVgOpTjfWzqx0y6NRNo/QKnyw5CwiYbkT4R3S720IeSGzHEQmOBnM1BV4NIJ
+	 c+6aZC+zgME0AP7+uyg+jGsXlZDBPGxtDH8Ce8lIUs72IouPXKpLHYxcEBRdF+jPuFsEg
+	 DBr9Uw1fXcoGwTgRJ59hwbn1rWG7QJ21cPrD0ki1T+0+EFY0V6nyj+ynxxsCH7PxrmZlf
+	 OFY3ltVP0CLyy4g7xWSp7c2gfw2S9IDoMuGBi3AQGE73a7pIOZ0U9ldHRA7cO6CVY5Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VTQfgtsC;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EBr7lbGd;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12358606A31C;
-	Wed, 18 Nov 2026 16:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3328F606A320;
+	Wed, 18 Nov 2026 16:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VTQfgtsC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECA01F000C8;
-	Wed, 18 Nov 2026 16:19:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EBr7lbGd
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77FDF1F000C7;
+	Wed, 18 Nov 2026 16:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795018775;
-	bh=eFrBCM7CPvXc7RORk31+znnK2wW3gMhHFGdabCbdV5I=;
-	h=From:Subject:Date:To:Cc;
-	b=VTQfgtsC3yMr/ac3UB/d8JKsvf3GxsuSwUd7T6xGE6HYRuiUbk4U6Zt/eju9nrNA2
-	 M/hAmvNbJsIcBiwkCvsvSVsckbguQz6nlYqE4DeNrF/oedoNgwwtFyLFpAgIRT0PTZ
-	 fX9QCrlzeVEqGwmVah8t6G44/VgRFDX7IGl0uhd2YR9QjvFqo/jjSQnr4nWMZnOdoV
-	 usXoyaYVm8I/qQEcZKT9mxZrBI7Dj+B4KnvN6zJ4iDtdR5Uw4yyUEMg6aalam/QJgx
-	 l04MyCrwodC7o638fcVFuskV5VhCn3PB4THLcZn4mXTIo611J7S8KsC93NE3J8NIK1
-	 fU2sb7Ihr6ZGA==
+	s=k20260515; t=1795018784;
+	bh=FIZqapb8xoPPZmibFU/FsBHC1hySFY51gzuyNap1WSU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=EBr7lbGdd3m9eZRuIT7kCU/l44o97EDmO41nPGVVjZtTrTV8X5jmEe5lRuagtVaPn
+	 x5iLBuyBDUg1DvW5o4jNVWCOCGOYSYreSTcSuae+Z6952ruwHTPsIexa8euXHrXJq8
+	 1yE0itI4dEfNJE+7Hj8H2+7iVM4hKZupA5eRoZ3igNGSj3FoWy4WgYIQ1gcw3+JX3I
+	 6gtxmZma0+C7xe5mkPTDqBnSUZJ6gQqTouSJWxd7EaFd3HDKgua7n+0M63q86DZpUF
+	 uewccdi3tVo5JARYvUY7tU0X+uclXfHIG+LrvkcY1UgkBHXFYNz+BWI1l0vH5KfilG
+	 0KRGK1ACpTvvQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Subject: [PATCH v22 0/6] rust: page: add page kinds
-Date: Wed, 18 Nov 2026 17:18:16 +0100
-Message-Id: <20261118-page-ownable-v22-0-d63ff73f4075@kernel.org>
+Date: Wed, 18 Nov 2026 17:18:19 +0100
+Subject: [PATCH v22 3/6] mm/page_alloc: make alloc_frozen_pages() available
+ outside of mm
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -55,11 +55,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMjP/WoC/0WNS47DIBBEr2KxDhI0BoyvMsqiG5oZRhM7MXYmU
- pS7h3ykLKtU9d5VVF4KVzF2V7HwudQyTy0A7DoRf3D6ZllSKwQocFprkEds3fw/If2xBA4+9Bo
- HQyDa5bhwLpcn72v/ynWjX47rg/FeLHzammh9zT6aplVglVFWblM5bSwbTULIMTlvc+AwnuGpI
- aws43w4lHXsfO8t40B2cNqRMVH1mCl4F7PKhJhCSs5kEvvb7Q4dE0Sj8AAAAA==
-X-Change-ID: 20261112-page-ownable-2e97941a83b2
+Message-Id: <20261118-page-ownable-v22-3-d63ff73f4075@kernel.org>
+References: <20261118-page-ownable-v22-0-d63ff73f4075@kernel.org>
+In-Reply-To: <20261118-page-ownable-v22-0-d63ff73f4075@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
  "Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, 
@@ -88,187 +86,141 @@ Cc: Igor B <igor.b@beldev.am>, Vitaly Wool <vitaly.wool@konsulko.se>,
  linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
  linux-kernel@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7944; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=WHdG1t5Ag1Nz1FPp8c0/hz5TW9dGwn5dkm6bRHT4QtQ=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq/c/P4xLeBQvFzyl7yL1Rp/6IYnMqrDurD6UbQ
- Nfep8G8PgiJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCav3PzwAKCRD6UCkIqsW9
- 0NUpD/9RgYY4JysHIllCAH9/dWcz+95rSzrHZKZStdjJ93OaXna2EJi+KdpNh54KyEpOJfUTE1n
- E6tUEbpSc1zdanpzbrph+jzzeosXu+W0pOhiRycbZHFe5FRV62TQJz0X48uG9ghOsblPHL7FgaA
- zBr0S17d3KgABUWkfmD9R9w7xUT14nKb2I5KbJxMi0nvUK4ByacGwEL9Bi6jDufg+flMz/aLUD/
- q6bJgn7o2hRRVErkMGwB0pobLqncfUsgxS8jjKIa+mpEAwdxTHnyOdgPB4SBCCYgyuvFhE2RnUv
- keQH7BzML6btdaUSE4Q9qxlNoBrC3NF/nQIGy/nGWO38YOwOXpP2R7ux103QcRVJCJB1rhlkIJG
- RQUiaLhbTiuaBluDI9dhOOyGzzXxf4XPXbNsO7BKajZCC+n70WauaaBxOygLxW4ksW4HjSozndQ
- UlCatGGxL4NNhbnJVVAQa+yDwd4TpFGAsSXtkbS4+OXA5gJwLn+Ao+yvaOPpc6uju8QAoHTy20N
- vGdLq/KQiXYk+bfvM/GPucyv2YsEH5BQffSMLxZVWTZ567/i49O5IFQy5TfMFq4HaRy0EG3sOrt
- IvfsSK38Imfsdo125eQfj5tSMpL8hPh8b4+2MULU2jbWFtSR77VN35PxsccsAmEvvqi5eyEgutB
- W2KI3ss4M4zI5fg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4705; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=CSZp8YNPv6y1CiJdShh/fjzWy72Ib/hXzZVsa31Sgvw=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq/c/wX1nvR1gv9B/rOkt3izg0E8fkXINMM5O8F
+ 2+9y+ysrTeJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCav3P8AAKCRD6UCkIqsW9
+ 0GOED/9Vh/5INvgk9P8DwMR2aeS3JnDyMMF9WA2Bjl84hKZIl7oOBVjfTgOoskAxASTMJCthWjk
+ Op2BleD2sKiUr/PpAV2x4cwQJVRYFJkhFPfXJrKXUCkV6MwDkFlXJTRxd1rklOfNaFvkUjKlvcr
+ BAZPI2fUuxQNidBN/lbX2BhoyXcS2KuBi8WslDeJ8ngOR3X9WDl70uQ8oRRQsSKxBhHIFGhtWW9
+ 6zX9SGimznWfr+bcJlLmw0ZSaxjqSixBucu5YewsJbMUVb7tvIemuKLMZTa1Zzyh2TEWRo9BbFB
+ kt8ncx6AUinI8kEDkGVxNGxoZ0QWLoJ3s7tYfFXKcTudftgTKMiN6YfPcJdDG4BXtXnqk09Gt0D
+ oEqe20F73wFLY1Oc6REy0aoZqJefNBkAJuMuPuzyZxS7aTMjYjuPe3QGWn6QhXNQ5hGhSDHfAqb
+ 0x7+nHWyNB6E2fR9w97K9raJmPHk1zfsTAFhoN4QCP2tALLJ4ABJFrj2utsPjjyr2JI9LO4w1Ve
+ 85ejPhZJ9EYWK3l2/Nd94WOP+kBuMiiwvbx3Zi9+HGE+WWF6A6p7wWe5p9CQ6rvdcknmpwY0sy3
+ tyZ95LoKOkGcooGZOzOaxROhYBM04IKH9LDWRiDQWUK390O+5y85e4+VUpziCGCI3qwE2uFfwe9
+ LiDjaD5a0RPiWkg==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Note: The page patches were part of the `Ownable` series [1] until v21.
-This series continues the version numbering of that series, and it depends
-on v22 of that series for `Ownable`, `Owned` and the split of `RefCounted`
-and `AlwaysRefCounted`.
+alloc_frozen_pages() and free_frozen_pages() are declared in the private
+header mm/page_alloc.h, and free_frozen_pages() is not exported. Thus,
+frozen pages cannot be allocated outside of mm, and not from modules.
 
-Not all pages can be treated the same way. A page allocated with
-`alloc_pages()` is managed by the page reference count, and kernel C code
-routinely takes its own references to such a page. A page owned by the
-slab allocator must not have references taken to it, but it can still
-show up in places such as a bio vector. A frozen page has a reference
-count of zero and is exclusively owned by the party that allocated it.
+The Rust page abstractions need frozen pages. The reference count of a
+frozen page is zero and references to it cannot be taken, so the caller
+that allocates a frozen page is guaranteed by mm to be its only owner.
+The Rust abstractions rely on this to hand out the data of a page as a
+Rust reference.
 
-A single `Page` type cannot describe all of these. This series makes
-`Page` generic over a sealed `PageKind` that describes what is known about
-the page:
+Move the declarations of alloc_frozen_pages(),
+alloc_frozen_pages_noprof() and free_frozen_pages() to
+include/linux/gfp.h, and export alloc_frozen_pages_noprof() and
+free_frozen_pages() with EXPORT_SYMBOL_GPL().
 
- - `Page<Base>` is the base kind. Nothing is known about the page
-   beyond the validity of the `struct page`.
- - `Page<RefCounted>` is the default kind. The page is managed by the
-   page reference count, and `Page<RefCounted>` implements
-   `AlwaysRefCounted`.
- - `Page<Exclusive>` is a uniquely owned frozen page whose data area
-   follows standard Rust aliasing rules, so the data is available as
-   `&[u8]` and `&mut [u8]`. It is handled through
-   `Owned<Page<Exclusive>>` and is the first in-tree user of `Owned`.
- - `Page<Frozen>` is a frozen page whose allocation is uniquely owned.
-   Unlike for `Page<Exclusive>`, nothing is known about who accesses the
-   data of the page, so the data is only available through the unsafe
-   raw accessors.
-
-Operations that are valid for any page are available for all page kinds.
-All other page kinds dereference to `Page<Base>`. The purpose of the
-dereference is coercion: a reference to a page of any kind can be passed
-to code that takes a `&Page<Base>`.
-
-`Page<Exclusive>` is backed by a frozen page, as suggested by Matthew
-Wilcox in the review of v21. References cannot be taken to a frozen page,
-so the exclusive ownership is upheld by mm rather than only by the Rust
-type system.
-
-Patch 1 adds the page kinds `Base` and `RefCounted`, makes
-`Page<RefCounted>` reference counted, and updates the users of `Page`.
-
-Patch 2 adds `Page::from_raw()`.
-
-Patch 3 makes `alloc_frozen_pages()` and `free_frozen_pages()` available
-outside of mm. The choice of `include/linux/gfp.h` as the new home of the
-declarations is open for discussion.
-
-Patch 4 adds the page kind `Exclusive`.
-
-Patch 5 adds the page kind `Frozen`. It has no user in this series and
-can be dropped if it is not wanted at this time.
-
-Patch 6 adds slice access to the data of a `Page<Exclusive>`, and
-tightens the safety requirements of the raw data accessors accordingly.
-
-[1] https://msgid.link/20260910-unique-ref-v21-0-e83257373062@kernel.org
+For !CONFIG_NUMA, alloc_frozen_pages_noprof() is a static inline function
+that passes ALLOC_DEFAULT to __alloc_frozen_pages_noprof(). ALLOC_DEFAULT
+is private to mm, so the function cannot move to the public header as it
+is. Move it out of line to mm/page_alloc.c instead. This adds a function
+call to the existing callers in mm/slub.c on !CONFIG_NUMA kernels.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
-Changes in v22:
-- Split the `Page` patches out of the `Ownable` series.
-- Make `Page` generic over a `PageKind`, with the kinds `Base`,
-  `RefCounted`, `Frozen` and `Exclusive`. `Page<Exclusive>` replaces the
-  `ExclusivePage` type (Andreas).
-- Back `Page<Exclusive>` by a frozen page (Matthew).
-- Add a patch that makes `alloc_frozen_pages()` and `free_frozen_pages()`
-  available outside of mm.
-- Add the page kind `Frozen` in a separate patch (Andreas).
-- Return `&Page<Base>` from `Vmalloc::to_page()` and `AsPageIter`, as
-  these pages are not known to be reference counted.
-- Make `Page::from_raw()` available for all page kinds. The caller selects
-  the kind and upholds its invariants.
-- Rename `ExclusivePage::alloc_page()` to `Page::alloc_exclusive()`
-  (Andreas).
-- Let `Page<Exclusive>` dereference to `Page<Base>` (Andreas).
-- Add `Page::as_slice()` and `Page::as_mut_slice()` for `Page<Exclusive>`
-  in a separate patch. Always zero the page and never allocate it from
-  highmem, and require callers of the raw data accessors to ensure that
-  no conflicting reference to the data exists. Update the safety comments
-  of the existing callers (Andreas).
-- Justify the `AlwaysRefCounted` implementation for `Page` by all
-  instances of the type being reference counted, rather than by the type
-  not implementing `Ownable` (Alice, Gary).
-- Tighten the safety requirements of `Page::from_raw()` to require, for
-  `Page<RefCounted>`, that the page is reference counted and that taking
-  additional references is permitted (Sashiko).
-- Mark `Page::alloc_exclusive()` as `#[inline]` (Sashiko).
-- Drop the Reviewed-by tag from the `Page::from_raw()` patch, as its
-  safety requirements changed.
-- Link to v21: https://msgid.link/20260910-unique-ref-v21-0-e83257373062@kernel.org
+ include/linux/gfp.h |  9 +++++++++
+ mm/mempolicy.c      |  1 +
+ mm/page_alloc.c     | 10 ++++++++++
+ mm/page_alloc.h     | 14 --------------
+ 4 files changed, 20 insertions(+), 14 deletions(-)
 
-The entries below are the `Page` related changes from the change log of
-the `Ownable` series.
+diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+index 63a7654c725f..7e1f24658f9e 100644
+--- a/include/linux/gfp.h
++++ b/include/linux/gfp.h
+@@ -302,6 +302,15 @@ static inline struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
+ 
+ #define alloc_page(gfp_mask) alloc_pages(gfp_mask, 0)
+ 
++/*
++ * Allocate frozen pages. The reference count of a frozen page is zero, and
++ * references to it cannot be taken. The caller owns the pages and frees them
++ * with free_frozen_pages().
++ */
++struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order);
++#define alloc_frozen_pages(...)			alloc_hooks(alloc_frozen_pages_noprof(__VA_ARGS__))
++void free_frozen_pages(struct page *page, unsigned int order);
++
+ static inline struct page *alloc_page_vma_noprof(gfp_t gfp,
+ 		struct vm_area_struct *vma, unsigned long addr)
+ {
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 0cb6da1c47a4..6d872db9fc6a 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -2582,6 +2582,7 @@ struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned order)
+ 	return alloc_pages_mpol(gfp, order, pol, NO_INTERLEAVE_INDEX,
+ 				       numa_node_id());
+ }
++EXPORT_SYMBOL_GPL(alloc_frozen_pages_noprof);
+ 
+ /**
+  * alloc_pages - Allocate pages.
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index eb4f02617f53..d6284cf965cf 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -2993,6 +2993,7 @@ void free_frozen_pages(struct page *page, unsigned int order)
+ {
+ 	__free_frozen_pages(page, order, FPI_NONE);
+ }
++EXPORT_SYMBOL_GPL(free_frozen_pages);
+ 
+ void free_frozen_pages_nolock(struct page *page, unsigned int order)
+ {
+@@ -5491,6 +5492,15 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
+ }
+ EXPORT_SYMBOL(__alloc_frozen_pages_noprof);
+ 
++#ifndef CONFIG_NUMA
++struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order)
++{
++	return __alloc_frozen_pages_noprof(gfp, order, numa_node_id(), NULL,
++					   ALLOC_DEFAULT);
++}
++EXPORT_SYMBOL_GPL(alloc_frozen_pages_noprof);
++#endif
++
+ struct page *__alloc_pages_noprof(gfp_t gfp, unsigned int order,
+ 		int preferred_nid, nodemask_t *nodemask, unsigned int alloc_flags)
+ {
+diff --git a/mm/page_alloc.h b/mm/page_alloc.h
+index 7097ea1805f6..541fa8b3f532 100644
+--- a/mm/page_alloc.h
++++ b/mm/page_alloc.h
+@@ -237,22 +237,8 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order, int nid,
+ 		nodemask_t *nodemask, unsigned int alloc_flags);
+ #define __alloc_frozen_pages(...) \
+ 	alloc_hooks(__alloc_frozen_pages_noprof(__VA_ARGS__))
+-void free_frozen_pages(struct page *page, unsigned int order);
+ void free_unref_folios(struct folio_batch *fbatch);
+ 
+-#ifdef CONFIG_NUMA
+-struct page *alloc_frozen_pages_noprof(gfp_t, unsigned int order);
+-#else
+-static inline struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order)
+-{
+-	return __alloc_frozen_pages_noprof(gfp, order, numa_node_id(), NULL,
+-					   ALLOC_DEFAULT);
+-}
+-#endif
+-
+-#define alloc_frozen_pages(...) \
+-	alloc_hooks(alloc_frozen_pages_noprof(__VA_ARGS__))
+-
+ struct page *alloc_frozen_pages_nolock_noprof(gfp_t gfp_flags, int nid, unsigned int order);
+ #define alloc_frozen_pages_nolock(...) \
+ 	alloc_hooks(alloc_frozen_pages_nolock_noprof(__VA_ARGS__))
 
-Changes in v21:
-- Import `Page` directly in `allocator.rs` instead of using the
-  `page::Page` path (Danilo).
-- Convert `Page` to `AlwaysRefCounted` backed by `get_page()` and
-  `put_page()` instead of `Ownable`, and return `ARef<Page>` from
-  `Page::alloc_page()` (Alice).
-- Update Rust Binder to store `ARef<Page>` instead of `Owned<Page>`
-  (Alice).
-- Add `ExclusivePage` as the in-tree `Owned` user, without
-  `Deref<Target = Page>` as that would break its aliasing invariant.
-  The type was previously posted as `SafePage` and is renamed here
-  (Alice).
-- Link to v20: https://msgid.link/20260824-unique-ref-v20-0-490735672187@kernel.org
-
-Changes in v20:
-- Use `self.page.get()` rather than `Opaque::cast_into` (Alice).
-- Link to v19: https://msgid.link/20260626-unique-ref-v19-0-2607ca88dfdf@kernel.org
-
-Changes in v18:
-- Remove `BorrowedPage`; use `&Page` directly (Alice).
-- Update Rust Binder for the `Owned<Page>` conversion (Alice).
-- Fix stale `Page` docs (Sashiko).
-- Link to v17: https://msgid.link/20260604-unique-ref-v17-0-7b4c3d2930b9@kernel.org
-
-Changes in v16:
-- Simplify pointer to reference cast in `Page::from_raw`.
-- Use `NonNull<Page>` rather than `Owned<Page>` for `BorrowedPage` internals.
-- Fix formatting for `Page::from_raw` docs.
-- Link to v15: https://msgid.link/20260220-unique-ref-v15-0-893ed86b06cc@kernel.org
-
-Changes in v14:
-- Add patch: rust: page: convert to `Ownable`.
-- Add patch: rust: page: add `from_raw()`.
-- Link to v13: https://lore.kernel.org/r/20251117-unique-ref-v13-0-b5b243df1250@pm.me
-
----
-Andreas Hindborg (6):
-      rust: page: add page kinds and make `Page` reference counted
-      rust: page: add `from_raw()`
-      mm/page_alloc: make alloc_frozen_pages() available outside of mm
-      rust: page: add `Exclusive` page kind for race-free page access
-      rust: page: add `Frozen` page kind
-      rust: page: add slice access to `Page<Exclusive>`
-
- drivers/android/binder/page_range.rs |  24 +-
- include/linux/gfp.h                  |   9 +
- mm/mempolicy.c                       |   1 +
- mm/page_alloc.c                      |  10 +
- mm/page_alloc.h                      |  14 -
- rust/helpers/page.c                  |  21 ++
- rust/kernel/alloc/allocator.rs       |  29 ++-
- rust/kernel/alloc/allocator/iter.rs  |   7 +-
- rust/kernel/alloc/kbox.rs            |   3 +-
- rust/kernel/alloc/kvec.rs            |   3 +-
- rust/kernel/page.rs                  | 481 ++++++++++++++++++++++++++++-------
- 11 files changed, 474 insertions(+), 128 deletions(-)
----
-base-commit: 7475ea8b58616b33c04afb976cf0fbaad9dd63fb
-change-id: 20261112-page-ownable-2e97941a83b2
-prerequisite-change-id: 20250305-unique-ref-29fcd675f9e9:v22
-prerequisite-patch-id: 4e3c7a1a2077aaa0ece2d557fa73486355903ae5
-prerequisite-patch-id: d1073c5dcd6287fbcba7848a5d182108930230c1
-prerequisite-patch-id: 3244def11bbdf2eabaa6e94e15ce06540b2f5814
-prerequisite-patch-id: cef14c5bef5ba519ceaf0a0e7c9e93ef974db7b3
-prerequisite-patch-id: 56410da35ed8dbe7b210adae0985af705cc0b5b0
-
-Best regards,
---  
-Andreas Hindborg <a.hindborg@kernel.org>
+-- 
+2.54.0
 
 
