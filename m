@@ -1,107 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.45
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795021048;
-	b=o3s+ZyaEsMCokM7OQyktFaPYHXLF4dov0FjdMgw8hNoe/OgE8YuAmCE0W6YdoLkOnFKc
-	 W/uajIT4Fg2nUovBhaX/CYbrY/pIgAea3nIsCWt06BG52/p9ZxQaOjGo9neaP6GhfoMdH
-	 iSPBAjhhqO4HxArsJvGQWs/g7/164hLmhl7APht2yZ5CrHp4WZrGmaW4MOi4O80Mzd6j1
-	 JXbnLanh7iZbfRhFlJqKAyokR3/CKIIh4QzFZ7UwxlGFqnFu7WH6PCQ0pXIoXd2AivR/z
-	 kO8K0h++uGxompxvN2AJFURHpns2p9spxb85S6Fxt2qhFMFLsSXNDn9d9VpWNr3Y0yg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795021048;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=q4KDOTPdWsAvn5fnJD2QpV13fNXrFnBH5XSZbqxlxTc=;
-	b=J5coj3F8l02hSflK5N8HicCP4ZkYIiVJAH9RgCSFFOYTx6RiB6ERyjbMYXasLtmn4KS7
-	 18vKPYSt4Ax/X5fHfOyEzdBFaYVcBWKz+joPZATHkWAmZ9qdWqwI3drRPWBpx9zU9pGno
-	 dtfg3Ee3d3MIv24txW4MY6BZBrorGR8RJDEY7nLrQv1JlOagfQFpREF8gnKlqFidlG9kC
-	 CfAEgOXppWCr8nnGfcbKGwCCZDRc4oFSfxOJ8aBOO4JcyPJpPjoK1quaoAKg2+jAN4x73
-	 XFS8CV5rwbw6YrWz8y5yL1prmTVkO3hxl7nhECdz5qfqFW9+R4d8ac2Wo3KEIpzQrEQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gDbaeCUk;
-	arc=none smtp.remote-ip=209.85.221.45
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.53
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795021331;
+	b=Ie5vBOOYqZdkyoH5iAP8V/Rs0Az1k7LMCVDN/kCn4AsdGK7OU+I7FR9yyh3sAXVXHfcN
+	 Z03uhdATSJb9AjFlGzRxQWhxCEFM6kEdN6WPqa6+YTKGQyqiBxeKes7T4fTJRKThHgBrz
+	 EI3WCyienJWT/OuBmqCYLBYZCBtnofYakETuAkx+2wcxaZIAeXKTDN3UfHksPTFElp49P
+	 Ovc6MOgBfSM6atc7XT2kxpwjXXEvNFOQPVlTM6oEfPGS8CJOnVzUn3nZ4BMnGBxKi+TVq
+	 sZEk3Wg+exDHRiLNkAaK7d/oDezeDsv0qB6I//Yxxd5bxWIyY4U9Qyz+KFuoLF+d4Mw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795021331;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:X-Mailer:Message-ID:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:X-MS-Reactions:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=+LnS2wCZZHURH1O6WKOvzj8Jt7ypHJB7p4O6pU8YzsY=;
+	b=seYijX+WlbG2xV2paR00IMNtvMzwvATnIacvK075whF2mrUWZ2x+hfQQ7Q2JJCeeC97O
+	 eh8gIj4WlTxXdVvGOMTCzlxcNkPsX94Y50mPUJ/3blXMy2pgqNanuokmHVVYj6Q68otiy
+	 CFzTac1CypPOGHp10Gt6WfAVIbtXxwymrjuKhk4EFVSSmkhP/sdCii3XVFT+wd6fbAjzz
+	 3KGbcHSaz5D06K1OKFnsnO8aO8+fiSk37JPPg+Z1QsLUNuRSM60Juu3rxg6k4JU9L6iJV
+	 CViVgoSmhNY+uolaUAbzXei/xNz29l2XSUbnreBhj9oJeZON7AtlnvJe/gsX8/U0nOw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=CAs83lxx;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.53
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012053.outbound.protection.outlook.com [52.101.48.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1E860A2611
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 16:57:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE1E860A2611
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBFD606A332;
+	Wed, 18 Nov 2026 17:02:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DFBFD606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gDbaeCUk
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-4a42b34e930so988130f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 08:57:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795021046; x=1795625846; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=q4KDOTPdWsAvn5fnJD2QpV13fNXrFnBH5XSZbqxlxTc=;
-        b=gDbaeCUk4GIRuxDdeulzhOU84d7EBOgDmBW3pOzJDe3LLdN1nTHx/eqr38pjPOmtPU
-         ZZiSrhlKPjhHiIeMLGGoVnBZj7UvbiTbgmzaEW4zDTAm4UQove74zVlNSNaj/DIY1Eh8
-         65MATJR6ts2TkdIZsG7eDeqh8gICNdODo4FzYaj6iZEFhCLNZmqGG4swtcESCxRFzH2i
-         7A+vuoQFVCuN8NyMeEZdXnLDyXBSNx9mFjLFf//TTfB78DE3YIZTp2vZGzbpN3QZw8bs
-         vIFDglROm6lHh6pLIlRQEoSRIGdrelE//UvVbtHMUAtyCQCtm61WNdYJR92PJPwJhQwf
-         ijzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795021046; x=1795625846;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=q4KDOTPdWsAvn5fnJD2QpV13fNXrFnBH5XSZbqxlxTc=;
-        b=1eL7D+JcZmLfsM/DYLfO/yJQ0v8kgHQwhUhLRuAQRUp0Fz7m2x4/gVGBwyBe0jcqsD
-         Fys2FNwwfT8ji/sP7J1Fg8NG0jrn7xdZ3sbjIF6/igdhK4SYRixapz6rXwNkAonWRo3G
-         ZqTg8Hn36Rl/s6WxK8du3OS6vqRjp2I8sD+DTufjWKPR4bEgRA0t3nPbUfktv4tqc60M
-         BSrxiL4hF2PbfraxbiYbaIwA4W17cRQCvVHOEmPDKgB45Je+ML7yppF0Qln4XjSJcIok
-         4GngGxp8ywETGXzzPhyinxWAkXOdW07/1epksf1n91mpuchKvNbcIm+uJnOmI+6rYpJg
-         TqJA==
-X-Forwarded-Encrypted: i=1; AL+hErHpsohbT/1qyTZa5t/mI21MlNn/MozkvndkMWMH5lFNHU07nYFzz7n9YCeNApdK0MESC69UZMGbQSDNPsVmMw==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+kKK4pzi4cvCw1Y9z5xDoAef+gvO8DG4WtAVSQCILTT/L0Cd/W
-	8xyhjbriWOSRgb3mFBbZQ/raBauDcy0Q9rNcreVzmnufeA7Db+C5fMnb
-X-Gm-Gg: AZFdTZcJH90/b6WZ4EyKQGrV2MbGq4O66CjpvQolmZhqmVfbYRmJizZk30b4MJUZCLk
-	D+tgD/nGhRTUHaGGamvijPOuPMqtRG9JeCC3e0E+lpFgld/Ib4Fdw7z0jIduglc2+MYWbEYf8Qm
-	yMEOo0Bm9oClvyC+gyijQ+S2BMlszYFZxK9qYYyYWrzKJNe5apIgSjj63a2xJxO73WDSH0AHBQi
-	attVwyL9GrmpLyX9hIvHgihTKgdGbTvlF19cgy+/zl5mNKKLQyvJi30Hj/14wxaSNKCmuWqqyr1
-	R3H1RKx/QMBU7KzbDTFOYTyaZ124CtxE6MBD1+rxydNkqB6U8UhSLImaVPE4Pw7eZcndsXevcLp
-	ZbvQWCR85EHyCNzCM+vygreIluY3hk+rQ6joDETnnWeVR1cdjuWFBQBzw6vH19Akv3JAcAZO8cf
-	ADSp0iiPrJ0dvMfwP671c1UzJnuQGnLM4htLyIZXzbpx+sAHjhUS35vQRZQjkqwGIx2VBKI6qej
-	IRCXWO3aCHq1umdHvlaRvwpu88KsEqzLNEcuQqSDD6Of7SrtQKFzBn+cwiDlEcDPQG8GmlUpbfz
-	TeluiQdQGylKSvwLGRvTvHtJiooR/KHU6dre+a2HK5gtMLLNg4QthY/C+9jnAKDHC4ZrbydVyj1
-	sX3s2irq1VNuJRs2uEBJ4Fktg9OpUJtnxltsD1BE82v64Zgyf8KAmIbb6onfhDTS44H6FVe3PIi
-	cl
-X-Received: by 2002:a05:6000:608:b0:493:28c4:331e with SMTP id ffacd0b85a97d-4a63ac6b509mr6786601f8f.28.1795021045786;
-        Wed, 18 Nov 2026 08:57:25 -0800 (PST)
-Received: from C422HJQPQG-Fractile (cmbg-18-b2-v4wan-168328-cust3701.vm17.cable.virginm.net. [80.5.206.118])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4a656b1cfdfsm6052676f8f.47.2026.11.18.08.57.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 08:57:25 -0800 (PST)
-Date: Wed, 18 Nov 2026 16:57:22 +0000
-From: "Vishal Moola (Fractile)" <vishal.moola@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	Lyude Paul <lyude@redhat.com>, dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: drm: ioctl: fix call to unsafe function
-Message-ID: <av3Y8mTaRi7l-5iy@C422HJQPQG-Fractile>
-References: <20261118133232.48603-1-vishal.moola@gmail.com>
- <DMYH0CXPUTMP.J3AKN619TL34@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=CAs83lxx
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=m4Mz4Q+tATCDvMMXXL2FCPqcMxK6GvmGp8arGUL00SBNsQU/MyiEzzSCZDdSQ0ibSXSgFIzb6YJF04Q15GsPempNtNg+hXvHbd7p0YOGfvVbAnRHpZn/T/x6bM7eaxgDs6kt2sqWqp5MVW+dYkX42TYmFzGhemkxj/P+AcClG20OB5l7ZPBxwsxb5kN/5IOCWCSvYQpuh9FpmKVQHDevdxg8MepTjKI3FLG0gjSYnmDXVEEdNcgLeKEOGSsGyZkKXfVTzE3BamxrZrUKH50zSNkHcxjlSBP/gHSmQhmKEACw2VQiFMnMw7YVyNPNkNz7YD2/CDBOOSV5BR157cHWGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+LnS2wCZZHURH1O6WKOvzj8Jt7ypHJB7p4O6pU8YzsY=;
+ b=WHqli8XbBbEJSEjC2q5p0eypcd9gKb8Y9e27dWmgao+Ra2UNYEoeX3PsAQ3RE+oSKks7VX1iV9Tv/Bu6GlTZRjD9q+f8bMDoETFLsOE59O+Pxnbp93eK63tSAk0FBJmPYY0nAwRxQkWA876gB4x2h+i5TEt1vW9FlGwcYXuu8URTPpKmnFFDqomqrAtYoetCQ874qtu7z+7TzX6GAmzMDuWEX6t9uedUh2g7VW2StvpRDbH3+evMiE9hYoKEJAxhyndbnV0Of8HUbqz6RUBh1Zzq2mBny82Lc65FjS3PJYYFX4RTQchL3Eqma4w0EWGjq10oU0B3/7N0sSih4UyPCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+LnS2wCZZHURH1O6WKOvzj8Jt7ypHJB7p4O6pU8YzsY=;
+ b=CAs83lxx/4T8vWgn99pbYVHoPelbq4SGEsDBMh4pRpc7/VmYYYSK41x3IzrcAKnvxCagoo7qB69CpaucyvV4G8IH4udnoC3/VIL20kXPZIyba/FBAWQHx0vCvS8X6RLu0YrAV0L+tviJbyeksXAZGS9Us/tcC5abqBi5TCykaVwE6cf/Imy/0eZNrNIpy5EIhQrIhzaQaJx7grjL7lHC6qkkWcOWoVajq/+yC67PYJa/hgGqEP5bSi6nIFrpSYB+AieiuVbd3SvSIFZQZqkMitVy7LnF0ONuyUcql9A15X4h5sHKPcqnmVoEtqg2TI7mUk6W+Xz+J+oO+Lw4mgAINA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by LV2PR12MB999096.namprd12.prod.outlook.com (2603:10b6:408:353::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Wed, 18 Nov
+ 2026 17:02:06 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0615.009; Wed, 18 Nov 2026
+ 17:02:06 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
+ David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Mike Rapoport <rppt@kernel.org>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Matthew Wilcox <willy@infradead.org>, Danilo Krummrich <dakr@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ =?utf-8?b?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
+ Carlos Llamas <cmllamas@google.com>, Igor B <igor.b@beldev.am>,
+ Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v22 0/6] rust: page: add page kinds
+Date: Wed, 18 Nov 2026 12:02:01 -0500
+X-Mailer: MailMate (3.0r7038)
+Message-ID: <37B6D4A8-288E-40E8-9214-EDABBFE49C39@nvidia.com>
+In-Reply-To: <20261118-page-ownable-v22-0-d63ff73f4075@kernel.org>
+References: <20261118-page-ownable-v22-0-d63ff73f4075@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-MS-Reactions: disallow
+X-ClientProxiedBy: CH0PR03CA0346.namprd03.prod.outlook.com
+ (2603:10b6:610:11a::32) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -111,34 +119,134 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DMYH0CXPUTMP.J3AKN619TL34@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|LV2PR12MB999096:EE_
+X-MS-Office365-Filtering-Correlation-Id: 69ba2bcf-5d9c-4bd3-29ed-08df4595acce
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|23010399003|22082099003|18002099003|261022105027099003|261021121427099003|261026140227099003|261026121527099003|261102123227099003|261028144727099003|11063799006|5023799004|56012099006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	IZzlUV/5ke4F0dB7PLV0hxRKPi2xTZvsfSAO7QJj1nZDuSEwDRIHQ8we2N8ZyjsPpOrikfxX9FWNM3qD8pvLQ/Cmlh5rih6aLhZZlK1//VFkK+caCzQ77QVwVDvFdfTmU9PBftCILl3cufhW3N0RyhhYVtXvuq8qo8fnKodLIaHVb4Oyhy87w8TRBETpTjdOie/Ct3r3b3/38AHj3SD22zIXdipvzB9xX7nxaIEfVisOnVv7SMs8wPn0mn58tbZnMIeT/8sP2MvrHMRmrgdy1UR5vyknqs4fpfG/B0FxRT3f1/1dFLCsZFOHrqV0sLCTgad7ZD3gurvrmQFQzkiMz0F2OvK8nFhslYMOFYuu9s0uDSMncO3KLG7p3y8VQ3ATmYUY9UHHpLqYGLrnxP4Nl1NR9EEXkJkHhwH986lVJCPyMfPGy0Bjj5pe5Ks7cX9IlN7uDyHQ+m12mDxCHI3hu4uDYLGmEpqj/wfvEZK1WPAT5HDB2SDXAWLHJwJBFsk2+rz7jpQ+heNJJI2nN7sv6KpClzgyrBIeYrYI36W4LObAwN2ADI1jj1HQyaCzHEKdEeH7GAu5Szce6Xg5whUpG4sH/V5ui9OX3TfHKaeOirsd01eK8eVqnQG+eRWy+YsMMY2d8HUzJ+pq9/ZuMWv6kEmWu8vRRnOQTXcRzH5n7dQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(23010399003)(22082099003)(18002099003)(261022105027099003)(261021121427099003)(261026140227099003)(261026121527099003)(261102123227099003)(261028144727099003)(11063799006)(5023799004)(56012099006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NUo2anB6aVBFRTNMcEJKSDlJQkFWeVVCSWxnanNEV2JMYXV4QjJXaGNsZTZx?=
+ =?utf-8?B?TGFrR2FhbEFhKzU5M1JjMEZ3L2JsYjFpSWNqcVE2UXhBbjZhc0dGSjVVMEhH?=
+ =?utf-8?B?dFQ5aDFmTzUxbXRFWEpORjAwZUs3WEM5Y2xibUxWY093VXVBWS81c2llTUxL?=
+ =?utf-8?B?NWkzUU1rcGpRUFNxZEJnMitCV0p5eldISHNQSFdtanJUb2lTUWl4OUtnWVhY?=
+ =?utf-8?B?R0tQK0NZTnZlN1dJRmRuTENmZlNHUWJDcGFLN1g0KzJPNHMvUi80M0YwSHFU?=
+ =?utf-8?B?WjMzWE43VmpVMmdCcUU5TDlYYUp5U2gyVnI5UHdqVmI0RmNURUVYQ1g3dXZh?=
+ =?utf-8?B?K2Y3MTZEZWI1RnVJN2ptVGNXejNsMklBVHhBVmUwOEZ4dkVpVDNMTm1PS01j?=
+ =?utf-8?B?Rk5YM3I1QUNhenhoS01aTmFUbisyQVdCZy92dGZrdkhWRHRsZDdrcU05YWJS?=
+ =?utf-8?B?eHljc1hhd0F1Qm9xU0F6WmJWOTZKN0hHTWVjQkk4cnI1Y0QyaTVlcDRZL1Ax?=
+ =?utf-8?B?aG9kTDRsTXZtMGNib01nVjBhZnMxeER1TU9PbmJieWNIc0w4ZnJLUEs2R2pO?=
+ =?utf-8?B?amp4dW9oQVp5cG43cDRWVzBMZTBRNnZlMnM2OSt5ZHNPSGxuT1dISzJJQkgv?=
+ =?utf-8?B?MGhFcEcvNkF0S21hRU9QVWRJNDgvVVlOVzRSOThTNjZqaXp2Y1pyNXFFMFZ6?=
+ =?utf-8?B?ak1IOGhCOXVOMm1neldrWUk3S2F0R0J6YWZWTGVtTEsyUXN6N3pucDREN0pF?=
+ =?utf-8?B?MGJPYlhVekFvQ2kzS1F1QnplMFlaMWlnZlRRbmIyZC85ZE9jMVBZS0JuZHpT?=
+ =?utf-8?B?eFo4bkc4Z282OVozdHBYOVFZU3B5OTI0TzJ1d0JvdGMrV0pkSHRZajY3dUdq?=
+ =?utf-8?B?S0hoRGJUM3VpcFArWUZQalRiNnR3WG5BREFldGRvWkxZMjlkVWtZZFdZMThW?=
+ =?utf-8?B?SXQ2ZjZUOE1SbGNPOHl5MklkVDlpTmdjc2hNWEpDWWlUWjJ0TUhnZ3lKV1d3?=
+ =?utf-8?B?L2dwVnBrTzdRaHhBT1JTeVVJM2l0N3pmQXZydWROMFNGL0lzbmxtYXY4ZXZT?=
+ =?utf-8?B?Y3UvQ0VUSVVSYi9IWTMyWXNBK1ZTdGhrdXVpWGZJYnVDN2QyNFJacG05b01j?=
+ =?utf-8?B?SHkvUmRiRnZhNnFaait0cXZGVUJtQjBPbmJWcVN6WklLRWZRdngwbURNUUls?=
+ =?utf-8?B?MVVINjVvVXRadUcvT2FMVDlidTh0MGN2NzhUNW1YeWtVbzBjUFpORDBkSnlV?=
+ =?utf-8?B?RTk3VWFtc1l0WlpUbkV3a3oxakVKMGhIWk44NllXeWVHOFozM0lBOHFMUFZB?=
+ =?utf-8?B?UEcwbEJDMW5OL0NENFZ0QnBlemZVeFR3Qmc3Q0xEMkdsMitQRmlhdUJOREZK?=
+ =?utf-8?B?UFFueTRpZTd0eG01NFdSKytaUXl3UkNzeE9sTUdlbHcvZWJOVFpCK3JZak9L?=
+ =?utf-8?B?d1JucXMyNkRCbSsxcHRNbWN2cHhWeWVJM0VDRDRBZ0FrYVlFUXMyL25CUjJK?=
+ =?utf-8?B?aHg4YmZUZGhLNzN0R2YycWYvOW9TaHR5cTV0b1V3YWdhR0d5M0xPWi81U2k5?=
+ =?utf-8?B?NUV5QmhNRlY5bmVnRmFYd1NRa0w0b1ZFTzdISnhhOFFUMEw2ekV5ODkyRGll?=
+ =?utf-8?B?N2RWWHZvcmhKaWhRM2xCVWlzWE5COWY0U3NVYlp5ajhMbkpwUkJpeGFzWUpU?=
+ =?utf-8?B?L08rTGhBSk5vd1AwRTA3bElWc1g4N2pWbWpGMDU4Smhjb2xGZlRsSTR0YlJX?=
+ =?utf-8?B?QmNCY0pvUjkyQmRHNXdabHc3VHdUTVJicEpmZFVyajNtaDVHZVk1YzZYaFFo?=
+ =?utf-8?B?L1ZEVWd0OW13RjZDMXdEOFVVbDBuUWZzbXkrQ0VRVDI5eXJJT04xTWc3Wkdz?=
+ =?utf-8?B?bnlFM1NLWk1CUEwwaXZyOXZOU0ttbGhlRVJVQnYyTmxZcUJyRmR0NmM5cG8x?=
+ =?utf-8?B?QWdqSVFpdW5TVlVCOXo2anduS1hQNVNiWmR1SWl1b1NyQ2x3TXlLazZFdTRa?=
+ =?utf-8?B?MjVxWnErVjBkZmJKZW9YODVEWEt2dWZjb3ZWajNKckgwTHV6d09BTWlqTTB5?=
+ =?utf-8?B?Zk1OWnpCc1dUWFNqN2hCb3VVc1VVZUVnVUQ4TExROWZoVTBoMlZaSGlyNGUy?=
+ =?utf-8?B?dENXczdOUkp0dlhRcEhHRVhZYzdCL2hQdUVZYXBOZzRvTGdESTI4TllYZk9w?=
+ =?utf-8?B?VW5iTk4vRkpNVERzbHlNSWNDSllGSmtWNDlyVFVXenYxelBUcU1abDQ0OUYy?=
+ =?utf-8?B?cFo5Y1ltNVRpbkZoSnEzYUJsMHIxb2p2US95SEE2eDVpb0FuajJvT0JjZFBB?=
+ =?utf-8?B?czNhWHhiWUNRRXdiWFRVODE0QnNJMzN6dVIwb1NIYnVvYTFxdXZXUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69ba2bcf-5d9c-4bd3-29ed-08df4595acce
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 17:02:06.2943
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: N3lgXYpESyVcTlfRg9x9B1QHSBbXGRHt5JIAWLIaMjDTQObY71TUI3hDCU+ccyYS
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB999096
 
-On Wed, Nov 18, 2026 at 05:17:41PM +0100, Danilo Krummrich wrote:
-> On Wed Nov 18, 2026 at 2:32 PM CET, Vishal Moola (Fractile) wrote:
-> > diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
-> > index 64af9eacc306..5a2e2f4f0e91 100644
-> > --- a/rust/kernel/drm/ioctl.rs
-> > +++ b/rust/kernel/drm/ioctl.rs
-> > @@ -152,7 +152,7 @@ macro_rules! declare_drm_ioctls {
-> >                              // dev/file match the current driver these ioctls are being declared
-> >                              // for, and it's not clear how to enforce this within the type system.
-> >                              let dev: &$crate::drm::device::Device<_, $crate::drm::Ioctl> =
-> > -                                $crate::drm::device::Device::from_raw(raw_dev);
-> > +                                unsafe { $crate::drm::device::Device::from_raw(raw_dev) };
-> 
-> I remember there has been at least one compiler version in the supported range
-> that complained when the safety comment isn't directly above the unsafe block.
-> Has this been fixed in the meantime?
+On 18 Nov 2026, at 11:18, Andreas Hindborg wrote:
 
-I'm not sure? I'm compiling with rustc 1.98.1 (48a229cea 2026-09-01) (Fedora 1.98.1-1.fc44)
-which gives me no errors like this.
+> Note: The page patches were part of the `Ownable` series [1] until v21.
+> This series continues the version numbering of that series, and it depends
+> on v22 of that series for `Ownable`, `Owned` and the split of `RefCounted`
+> and `AlwaysRefCounted`.
+>
+> Not all pages can be treated the same way. A page allocated with
+> `alloc_pages()` is managed by the page reference count, and kernel C code
+> routinely takes its own references to such a page. A page owned by the
+> slab allocator must not have references taken to it, but it can still
+> show up in places such as a bio vector. A frozen page has a reference
+> count of zero and is exclusively owned by the party that allocated it.
+>
+> A single `Page` type cannot describe all of these. This series makes
+> `Page` generic over a sealed `PageKind` that describes what is known about
+> the page:
+>
+>  - `Page<Base>` is the base kind. Nothing is known about the page
+>    beyond the validity of the `struct page`.
+>  - `Page<RefCounted>` is the default kind. The page is managed by the
+>    page reference count, and `Page<RefCounted>` implements
+>    `AlwaysRefCounted`.
+>  - `Page<Exclusive>` is a uniquely owned frozen page whose data area
+>    follows standard Rust aliasing rules, so the data is available as
+>    `&[u8]` and `&mut [u8]`. It is handled through
+>    `Owned<Page<Exclusive>>` and is the first in-tree user of `Owned`.
+>  - `Page<Frozen>` is a frozen page whose allocation is uniquely owned.
+>    Unlike for `Page<Exclusive>`, nothing is known about who accesses the
+>    data of the page, so the data is only available through the unsafe
+>    raw accessors.
 
-Hopefully the build-bots catch it if there's a specific compiler version
-that still dislikes it.
+Why do we need to allocate Page<Frozen> when we can allocate Page<Exclusive>?
+To me, Page<Frozen> is an observed page state from a non-owner point
+of view.
 
-The following command shows a few other occurences in the kernel like this,
-so if its still an issue I imagine it'd likely be caught somewhere:
+In core-mm, a page is frozen, when its refcount == 0. The code looking
+at the page knows the page is exclusively owned by others. If the code
+allocates a frozen page, it will not check its refcount, because
+the code knows it has the exclusive ownership of the page. To reflect
+this, the code calling alloc_frozen_pages() should just get Page<Exclusive>
+and if the code encounters a Page<Base> and finds it has no refcount,
+it should convert it to Page<Frozen> or there should be a method
+that accepts PFN and return Page<Frozen> if the page of the PFN has no
+refcount, for PFN walkers.
 
-	grep -rn -B1 '^\s*unsafe {' rust/kernel | grep '=$'
+“the data” mentioned in Page<Exclusive> and Page<Frozen> is struct page
+data or the data in the physical frame pointed by Page<...>? If it
+is the former, is it better to use metadata?
+
+I am new to Rust, so feel free to correct me. Thanks. :)
+
+>
+> Operations that are valid for any page are available for all page kinds.
+> All other page kinds dereference to `Page<Base>`. The purpose of the
+> dereference is coercion: a reference to a page of any kind can be passed
+> to code that takes a `&Page<Base>`.
+>
+> `Page<Exclusive>` is backed by a frozen page, as suggested by Matthew
+> Wilcox in the review of v21. References cannot be taken to a frozen page,
+> so the exclusive ownership is upheld by mm rather than only by the Rust
+> type system.
+>
+
+
+Best Regards,
+Yan, Zi
