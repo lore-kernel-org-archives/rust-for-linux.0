@@ -1,100 +1,129 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.128.54
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1795040335;
-	b=IwuJUxmmmz0kNywLsWLQBn724qF/ilI4WJTAaHH1ld3jEvn28G0/CQr3wvlzfzFw/Es3
-	 kiqKeCY2vsWb8b1ijWgMggditVzYdxYDSL6sMj7YEfQMnFoRX8olLX0aeR6seiPpGTw/B
-	 y1bCXbKM1sxNoiiOdlRT4oAeKYZmqvxVZZKIXBvZnGFrZ6nvQMNJvlM576h/iEDl4sLnC
-	 QIY3we+RKO058kjBX7suiPyVYYs8GSy9MV+J+MEVQCUyYv6Q2OPd2Wr2GWGg1TAq++CEG
-	 xOQuZ2pGlEBMbq44EZQKzzbvLGXqUqK5JjI7HE67CWQdMCcxB8jGDXZYxoEkiWa5Heg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795040335;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=pPh8uj9XpZA6e+Lv41Z3C0qJdEEXOaN7sStIO34U/iw=;
-	b=ostgFJEC1sYeyMYG0zBWBzOK/2BO6T6uV1cL9znrOxNlIdf2nAOXYwEIeZ6nVugdHCB6
-	 GyGPp6trpajKUIcNwwGifKr0tfQAwLGQqC1UDwXg/OzVSwYmvHbWK1IeTEDgHo66e4pWX
-	 DMy04KhL5IR28sP8GXa5mGsC+mquPoy7zQ3eOHACDuVr65Fblct06HU06ukvl0THR03gW
-	 KHtcYcVnRF2ZZ5dmEPIPDohb3T2MALLr3O0wceM/M/mIjKVPGOBxWRpyb/EhkSjzlE3GR
-	 hlQwAPmjpmNmUptqLuePGm9dFRX4EsbwGTDRs1QNXAurp40eUYuv6dnzoveAnfZNi5A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DhwrPv4G;
-	arc=fail smtp.remote-ip=209.85.128.54
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.154
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795041811;
+	b=DzrXSfhLPGRBNkPe90cHs6TDjGyaq6h6fFVGJ3p+3wLUiMC4XKfoU1O0rJx4Ca9NDOFj
+	 bW6yA+RCAwmS3iyADLBV44w1fa4SGGh4zb88DSjlZEOLuprMTlZsWDR9bCh7jotLuTSSc
+	 OvymVfg+vgjHidan3CukwADKwUqnFAWOMh4VmqUctSTMG91v3nODUTalNwiop0DO4lrxd
+	 aaK1WDnsSR/sBeOToDt9K9nxJyoeINbIibU17wCGnyS0IspWBMDJHxbSU6ng5kU5LCDr+
+	 MU7GX2/OqNk8Dkn3eRCFGmzhe0rQKv3o7p0BM/VF/BJMIEEotkQfSpoxxRivuydJWEQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795041811;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type:Content-Transfer-Encoding;
+	bh=LVFpBiSldhBpOT4aalFMDp92Mf27FRvVEVVqeNA+pDw=;
+	b=kKeOy0hWEufnwPprehuNYVJNU03diaCxhrfhK97IqZf695GVUHF2XGFm11Oeuq7OgYNC
+	 q1IkU+UOx57sMqBxf0K8BKdVkpVn7zxrSp4BGKMnjxmyYC7LY6aL/UELY9nAa0goAZXHu
+	 ZJbvcvnuHQJP+GQ5JtUYpSya4xBIOzb0HXTzkD5NtWjqJ6jmIAY091XJ8I5Y2iYFv97fd
+	 RHwnoHv330eNL5C5hmqaPMzaFbeXJ81jQow03GysQwZ/+x6xaHSbtohe/sSNKDlJAM7BA
+	 DijccTjYREGTgGiwXSOmcINIn1kp90Fv36YXWwG/fI0Q1zYw79mY8LLIqfvl2KhxJQA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=flapping.org;
+	spf=pass smtp.mailfrom=flapping.org;
+	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=asrSSb3w;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=pdBjWfeB;
+	arc=none smtp.remote-ip=202.12.124.154
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E5C606A31C
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 22:18:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9E5C606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7ED606A31C
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 22:43:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC7ED606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DhwrPv4G
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4bb5b33e2ffso5565e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 14:18:54 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795040333; cv=none;
-        d=google.com; s=arc-20260327;
-        b=A57zUV3p75NbApSZGL0FS+MNEx5gbC+M82UmViNpImfdGScAG57ip45T1JFRWzkDAV
-         axtqTGyrvXAilMMO7cbXB3nyIgtmMnTs/wSB8Uk9l6lq7AaYxCUMR1UMWyykM46AiR2J
-         0OS2yoAFWTZG+xxeisxk59QWtdoavCk9peqey2mjuvbAedxYuNcv70YWH1wKQ+xwtvQ9
-         PSucG+IH+ha9I9wVXudFUeDDbARZqbvwtZ1FJdh1BY+ExspnXAmb6h0/vYnLPajzsaOi
-         nssv5Gbi73xy8IpRZ5vy/eoqzwNNr90p2fGtAlDeok1nDn9uVwPjxegzDwQbDsoCyF8w
-         augQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=pPh8uj9XpZA6e+Lv41Z3C0qJdEEXOaN7sStIO34U/iw=;
-        fh=3BPona7kINB1dnzEfoximH6ZE99jLZgwnuN7mB0n8EY=;
-        b=Lk1/zJJBA4gIK37qypazQfysRlYhyeFnSFbPYq50b3UmwFiBjcAm4wR7vFzWiO6O5P
-         L1zzNkFoOvIoqPyFsePRgqpEI2iKzFfg/6zrVhvh0NV6uspqhQvsdpynDMog2vVRlGXw
-         sVO4MTZIBRKRkJJ8kXqL/805EuB1kmHKM1NBbfzCJUQF4FSxCMvIqbG8lvLk0Gq+IhNF
-         kOua9o74JqzI0tQdUsl/F+oX1JrrueSJxQ4CrJ30QB8WCEvoLZ/wEEcfsUpgwn2XmvAy
-         06KDaVLdacf3CoVAZna3ZSCkwdXD5MOCdTGoCpPHpWIP0rZrF5nWP1D6bRdpebiZ7EC0
-         qGvg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795040333; x=1795645133; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=pPh8uj9XpZA6e+Lv41Z3C0qJdEEXOaN7sStIO34U/iw=;
-        b=DhwrPv4GGFiOVke3X6njuMQROCZZTT+xdWguHN9Ve4ls24tJInBkCDQToNg2sTOH/7
-         9fkhOJ7HqD7c58NdQDY7sym37Km0fntvXNnHSLiComuANprVK86/akMKEQtOmRk1K9xO
-         JES0ONp3tAzKlLidLptHk3TFMkYlZ1Hvyx5PdcqkASrzNWnsmeIBpBPXdjrilkGx/6cD
-         K+L5mYzqtqK2/8ulA2EwqsRtFXiw30sGQybhL4DTr6C9ZWTA47PRumYSiqWHNmNcZW+C
-         Byy1W1ngeI4hePMxMzk+5U3fmHmoAzAy7yzhoofr7fZIleSiMd01npReSTAdbkh1M6ZN
-         KBew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795040333; x=1795645133;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pPh8uj9XpZA6e+Lv41Z3C0qJdEEXOaN7sStIO34U/iw=;
-        b=xKWjKHLcdSr5Cil4sBLFxBr8duvawB0IjjehTSpZG+PSfPaabH22ROQ0jYS72OIOku
-         MyKuFwEQl367Io01F5+z3t+3/awx8sz/LiMHsDKZ2XQZuxALxZwEtLtc/fiJeFxIKxUa
-         rnAYaSXOeJcCigaYq+ozw0cP3HI8gCGBJ9r8s0OU/k1hkNoBxbnUxN7rGXXeo6IPrJrF
-         cpYzSjHdc1HbSO3X1SiXkdtjPeyXXl0SPt1vZZugidWWbyyUdPacLbLd/Sbl2C8n0bSO
-         RowfQcAuFgEMqL2tX34XEoR2z5onE8x5B4Y1DTHaTHuka+O3xHaMSAOVT4CJtH+DVrPH
-         GPeA==
-X-Forwarded-Encrypted: i=1; AL+hErFBjDyUHpzbY79msor6dzeimLFRvqM5Kyp5mflAA6VwQb1Vd4JA3aECdZNWVo+U5sUghS2pSUSxMzACe7LZkA==@vger.kernel.org
-X-Gm-Message-State: APuU4Z9weaGmigGQ9Bx5QZbpYTAlVlWsTKaKQ30SDiAoG4hqyGcK3UYy
-	4XWJBNkOaknoy+QHjPHTX4mt5F7GGLHun5vvka8oUc2REeL109OjCxB3bJC4UMwA+n9uxoHoEoK
-	IpzfqFvPn6e8HulOpMtNvrtWO9us0nTe9gRek2l5L
-X-Gm-Gg: AYBFou0Opu5Yffr8N/+2NRd/C76tVslVB9Dkp4CafqbLwBXXYg/EBLzdHz9VL1GREiv
-	233P7qOBvjZZoJpg0XdlI+RB6WQTUO9rY5TefHw9DpehiUXcdA/SRBMI1o51Ca9cyQm0oJH/c3a
-	vdDa4f2DwJGMnS4Wu5eNFOl+W6A6gl6Zk13ng2ixP8cAB5MzBh1yLo30ej89TKoxWV6KpEoYxUD
-	PEQGMX8cU6rPesLpEcj0eMFaUd3/6acKCduVcelM4DTDcpdZxHSKuAogD0va7jrF6TGAwDigfxT
-	UFVWGv1UHVf2eBTIZhD0aSnHs60F/dx+i0lqGT8hiclKd4RpoxavtXnimgpMU1EeCwSHmoJLuIa
-	e376oiS2e+czqJmzjjCPlPJHhOneyANPr6w==
-X-Received: by 2002:a05:600c:c083:b0:4a2:a8c:22ae with SMTP id
- 5b1f17b1804b1-4bb840fdcf6mr76245e9.12.1795040332631; Wed, 18 Nov 2026
- 14:18:52 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=asrSSb3w;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=pdBjWfeB
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id F39A27A02C8
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 17:43:29 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Wed, 18 Nov 2026 17:43:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1795041806;
+	 x=1795128206; bh=LVFpBiSldhBpOT4aalFMDp92Mf27FRvVEVVqeNA+pDw=; b=
+	asrSSb3wlfSIirjY1E5hDgRoJ9UALX2wV5IyuaZS88ByhVDiOXUPsujFihoV5gsT
+	T9YqPVbiXsAHZtV8S4zI+3AvQT1dRxmhHLJK4xSZXciJuQMcKRTrsCFHf/Un2VR3
+	2at5xgVE2cMMuRgQI1PA0pxbpnoytCKkHPePJbfxonx3BNxbny5dgsV10vSxYs8W
+	srQE5RB5DitCdcm9ELqcFzVUAOdnx2wffwqBHO1LSxOeo4T8sro8YOLE11EdF1XL
+	fQrDhnjm3x9uDsqS9Y/Ozpc2jytPUcS+Vl1QNsZ5zh4SZ/aOgBeanGAizRO4m4tc
+	OdkTyAXrWV5duaA6AzPV8g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795041806; x=
+	1795128206; bh=LVFpBiSldhBpOT4aalFMDp92Mf27FRvVEVVqeNA+pDw=; b=p
+	dBjWfeBt3RUXwmh0xJ95VS8iv0YJI2dutCR6cs+OqMSpjnWwQtKvh/tQWptDIPT+
+	43XIud1FgXZmcbMaSgQrJR4/vs+6CURRo0va2l3f6KsNwcUKN0vUHH49mm2Mj1UW
+	eRK5U8ytWhBGjzm+WkSDiDJWjQObQsP8lOdFwGz079JrwqY03hqSGZ/zAdc5KXnu
+	tR5EmWAGAVY2B3RQMwQFZigqB82NxNEbr70hfKXNBbgNrjgMvnLj10dAzszqqil8
+	qHHeyhvDk6NbC1EBIOOJjfCjgaGJT7rPUzE136O1cV0l1RQeTZEZROX3YleoRD7a
+	uj/0OYrM1dkipw54ob4KQ==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=flapping.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1795041806; d=flapping.org;
+	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
+	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
+	s=fm2:rsa-sha256:nWSD4+bFAhOXOUMxvQmrBDnSS1+Z2ix45Nh8/bsYx8/QFfv
+	QHkYNCCovlRqqnK58JuUMa7B12ncz0qYaXEZgAZu4qmYGjDXJQsXXAixhGyTfWYN
+	pbbVXzGsvG4AEuLE6ZlsqxOgusIYHEyQ2yssfaLu/swVtVabq5LlFJVm4eFV4tXB
+	GSwTMf8tzyiQlMG+DP9lngHmyPo6JTBQzAqunNVr6Z4Yll36lWUarSFE9QfLzuFn
+	zHHNqm3j7uOVYmoVI9BoO5uNoRymiCQqlFPBLOnOkLWYCYLXO4Ci+1GgfPETof4v
+	77ulKBH/BRSR3G3F1o87GPe/5HU1P5OEMvGcIUg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:9cnubcK1SIEWPR6abCvHPYen5ibxlcZdEVUGvNc/i0g=:WwyAxMqjlwUsaSLsIXEljbX1IqrG0u36O6DcGIs9kjk=;
+X-ME-Sender: <xms:Dir-ap3E5zb3lOKKLt7hf-IAOTECez_3ixK2F6s0fI__2CZv35pSdA>
+    <xme:Dir-ahvM2BfPDnMs1x1BeyZBN3D20LV41iuw9oXjmk_opN5ao2Y3aJx8PznH3fOlG
+    UiT2ZJ1oLhWNdcgIul7Ixn7PESkeP2dND8o8sN0YWJK27gDJUHWMJ9a>
+X-ME-Received: <xmr:Dir-at8OVegvHPRiVsw148prPS6JPDL9UnR0tpwvFw0vXYZqSiu5Bclx90EH2ET2fstvz-1dOAp583P3B-T-RdzY>
+X-ME-Proxy-Cause: dmFkZTEcdeQwH8S6Bno21oPU5H7a24y1Ylu+BiRxhM9gyYuKnO8BrrrKrSlS9zLXDJmihU
+    A0DJznSgS9Rs0qOW2HrcSh3vMW0ll91T+4ui1fOWgm6rr5wzy9CyMxBtMoZCzKgj+xUM5n
+    btAqcpOykbRccnQLfvIIe6YAWd/jnZmrfa/lpFXErtNIoPefX/E547W6fc6/HORMwRToql
+    qcYNJ8Nng2pzObJvsCRKq9cd4xts8ym9T/kwNfutIjnJB7mgkMcTDQ3LVCRjtJwQgjZMJR
+    b8VTGpZ5gwtfSEIDl0Ipl4Ial9P0+kT65vpV6D1JdyVpB6REDCUCDuAjqTPxaGeWhTwpJV
+    /FTpbNJLRL5jyNFU8uP5kDeL+4JJqkCCgK1RrmokopWOhsSAuZm4HVNjfbUu8bSWm0DcA2
+    prYIhljICbVliAbrjvWvfoZ+PKwGODW9LiCZeXkyXNBUJdRyspyeQ3NCr8NGM6bLruid3R
+    XmR38KHmtSd6uJR0MrZvL03xghseTX3f0nQs1Bv7Q12XagM7llEXAJQOco/DBoja1kdMPz
+    kC4VVf0Ge83RH08F0Y3Gq92b0agrEEaPXtmnBvIr3UGYQFMoFePJxGjGUZqlV4WXh7Xx1U
+    DS6+bBwZ8DrZ3ocoyHj+UNx1r4yQZy6sP/0KDI5kiaNXOU5LitJwYnqjjZxQ
+X-ME-Proxy: <xmx:Dir-atRVOTVYU9u68vzqO3M0HsnhskhyuGG7y6LszXmRSxc9Kxpnfg>
+    <xmx:Dir-arCf8PEiVKm2AF3qfn4NtwndtJrv-3bc-kawulCF2x7lkhqHPQ>
+    <xmx:Dir-amYRfQutIwOSPLDF_sU0SRMiqze5TNnnV9HD_UOsdEyNlTI67g>
+    <xmx:Dir-akIdFhh6vP1UGssHF8ObzIoiXOo9xhZx45y7kU4g0Xup80xGqQ>
+    <xmx:Dir-ajzSYTo1terEkcQS9jq1NfrHfZ9DaHxwT17lgnoitDHS5s5Dzzin>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 18 Nov 2026 17:43:21 -0500 (EST)
+Date: Thu, 19 Nov 2026 07:43:18 +0900 (JST)
+Message-Id: <20261119.074318.1203722168764358962.tomo@flapping.org>
+To: aliceryhl@google.com
+Cc: fustini@kernel.org, guoren@kernel.org, ojeda@kernel.org,
+ ukleinek@kernel.org, wefu@redhat.com, a.hindborg@kernel.org,
+ acourbot@nvidia.com, bjorn3_gh@protonmail.com, boqun@kernel.org,
+ chenhan0017.work@gmail.com, dakr@kernel.org, daniel.almeida@collabora.com,
+ gary@garyguo.net, linux-riscv@lists.infradead.org, lossin@kernel.org,
+ m.wilczynski@samsung.com, tamird@kernel.org, tmgross@umich.edu,
+ work@onurozkan.dev, linux-pwm@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Subject: Re: [PATCH v3 1/2] rust: math: add div64_u64() and
+ div64_u64_round_up()
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <CAH5fLghd2at_rzqi6YU2MWFHK-r7S0VfpxrJ-dFsu0P7=2egCw@mail.gmail.com>
+References: <20261030020209.3833766-1-tomo@flapping.org>
+	<20261030020209.3833766-2-tomo@flapping.org>
+	<CAH5fLghd2at_rzqi6YU2MWFHK-r7S0VfpxrJ-dFsu0P7=2egCw@mail.gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -103,56 +132,24 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261118-rust-merge-functions-v1-1-fe86126522b9@google.com>
-In-Reply-To: <20261118-rust-merge-functions-v1-1-fe86126522b9@google.com>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Wed, 18 Nov 2026 14:18:15 -0800
-X-Gm-Features: Aa3M54qrYLCi1kdI6tOsVZ4Mm-8YCYtqxNVjxhU4bWLFHJjIpemXwQLKhaF114s
-Message-ID: <CABCJKucCD8RTVTg=_PuWTDLVaV+h8T7=whx+kLuxKq1Bpi3NrQ@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: rust: disable function merging unconditionally
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Matthew Maurer <mmaurer@google.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 18, 2026 at 5:09=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> Function merging causes various different issues:
->
-> * For CONFIG_CFI there's an LLVM bug causing functions with different
->   CFI hashes to get merged. This can lead to crashes at runtime.
-> * For gendwarfksyms it causes functions with different CRCs to get
->   merged. This leads to broken MODVERSIONS information if the function
->   changes in the future so that it can no longer be merged.
-> * Wrong backtraces when a crash occurs in a merged function.
-> * Possibly also issues with pahole/BTF as the merged function's debug
->   info is lost.
->
-> These issues are new to Rust because in clang, function merging is off
-> by default, so these things have never come up before. Because of this,
-> turn this option off for all configurations.
->
-> Link: https://lore.kernel.org/all/avy_9SPRaPSKD8b4@google.com/
-> Fixes: ac61506bf2d1 ("rust: Use gendwarfksyms + extended modversions for =
-CONFIG_MODVERSIONS")
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  Makefile | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+On Wed, 18 Nov 2026 21:52:36 +0100
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+> On Fri, Oct 30, 2026 at 3:02 AM FUJITA Tomonori <tomo@flapping.org> wrote:
+>> +#[inline]
+>> +pub fn div64_u64(dividend: u64, divisor: u64) -> u64 {
+> 
+> You're missing #[track_caller] on both functions.
+> 
+>> +    if divisor == 0 {
+>> +        panic!("attempt to divide by zero");
+>> +    }
+> 
+> I suspect the panic built-in to the / operator may be more efficient,
+> so please move this panic inside #[cfg(not(CONFIG_64BIT))].
 
-Sami
+Thanks, both make sense. I will fix them in v4.
