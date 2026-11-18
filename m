@@ -1,99 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795039007;
-	b=ZQDvjZsWWqZ2UvlwDn1Q9vBGxoI6gAX6j8vJWFSFsU1Qu7wSzA18giVr+YxxhVvCVhK7
-	 WHFgFt/d5JqkyMGVxz4Yt8M1opbdkobY9A4UHJXpYcMKyffxrAXVB2lbhgp2wK3m9yaIv
-	 W2tFl9WhgR9UoEVbh3JKmj153GmnVPjtWhqZZO/JCB5OHK7rjuGIKhVGcTOK1k96Mkl+Y
-	 Z1s5W/P54NU6PQSz/iBcAPr7pQ/PAEQqggMMDPDA5hMtFlXAsLyJm+SpfGgeq2GPE6rNh
-	 iv/EMYmsSJ8CaPbnqa1d1BEpXeSd76w3ctA5A2qnnrJ3EZmRQbqc+4G6rp4xB5DkNgw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795039007;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:References:Autocrypt:Organization:Content-Type:
-	 User-Agent:MIME-Version;
-	bh=xxQ6PY+rfdV7jtvsJF4r/gSnP8FbOcab8QDdlt/1Mi0=;
-	b=y1QRfyICg0I6kX4PEUbOqtDD+Rv+dENfr1LvQJWZgVk3x/6ujLwcyoAk6BK7DU6TK7NC
-	 a1T5yW5snJi/vAP1CaVtKSZdBHz5aJWMJf/l6qt0lDEP4qZSngJnh0+eJ0YWAaFALGDmT
-	 /Z87oFv6FJ6sbBhxIar6dfJM8t+n4fLTTGnGKIPL/Rv0CJtG9yXNwE3+PU9VSGsTp58Jj
-	 TlCHk+M0V8n053apeL2aP0fmdQDf5D3uph1wXHbzWyBl/dzIuyHDPaktLXpVc0pXpUL2R
-	 XfO9hGqA9ggn4AzJ8scRebNbHT+RFTXMUI7svXFCD0UsZQUudUa13sItujTfqYQqLtg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=TD3df0AC;
-	arc=none smtp.remote-ip=148.251.105.195
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.128.54
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1795040335;
+	b=IwuJUxmmmz0kNywLsWLQBn724qF/ilI4WJTAaHH1ld3jEvn28G0/CQr3wvlzfzFw/Es3
+	 kiqKeCY2vsWb8b1ijWgMggditVzYdxYDSL6sMj7YEfQMnFoRX8olLX0aeR6seiPpGTw/B
+	 y1bCXbKM1sxNoiiOdlRT4oAeKYZmqvxVZZKIXBvZnGFrZ6nvQMNJvlM576h/iEDl4sLnC
+	 QIY3we+RKO058kjBX7suiPyVYYs8GSy9MV+J+MEVQCUyYv6Q2OPd2Wr2GWGg1TAq++CEG
+	 xOQuZ2pGlEBMbq44EZQKzzbvLGXqUqK5JjI7HE67CWQdMCcxB8jGDXZYxoEkiWa5Heg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795040335;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=pPh8uj9XpZA6e+Lv41Z3C0qJdEEXOaN7sStIO34U/iw=;
+	b=ostgFJEC1sYeyMYG0zBWBzOK/2BO6T6uV1cL9znrOxNlIdf2nAOXYwEIeZ6nVugdHCB6
+	 GyGPp6trpajKUIcNwwGifKr0tfQAwLGQqC1UDwXg/OzVSwYmvHbWK1IeTEDgHo66e4pWX
+	 DMy04KhL5IR28sP8GXa5mGsC+mquPoy7zQ3eOHACDuVr65Fblct06HU06ukvl0THR03gW
+	 KHtcYcVnRF2ZZ5dmEPIPDohb3T2MALLr3O0wceM/M/mIjKVPGOBxWRpyb/EhkSjzlE3GR
+	 hlQwAPmjpmNmUptqLuePGm9dFRX4EsbwGTDRs1QNXAurp40eUYuv6dnzoveAnfZNi5A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DhwrPv4G;
+	arc=fail smtp.remote-ip=209.85.128.54
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7D5606A320;
-	Wed, 18 Nov 2026 21:56:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8C7D5606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E5C606A31C
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 22:18:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9E5C606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=TD3df0AC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1795039004;
-	bh=pgHuQ1HVyLgR9CsAiARcDsEuwXoOXy5E0ScCU9fZ9sY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=TD3df0ACGoRlHtp9q44ZYPKQZ6UcmkINiKCv911AU5uMWca8dEO20sT6nX49FFj0z
-	 ffdnbvwTJHFkWPOWJEmx+3OHgXc1VUD6ESCF/DQhLp9EJ9jQ8fS0m2BuP0xAg0gOHL
-	 7/GXNT43ah2WCGsLSTbDiet9BYYD+ArPaoFKd+F0wVrrRZHWkian3eC88hOMXGNweu
-	 F/xunel1sV19mUR/HNK7MqcxWDM1oZQQtZjuBfRsDELMVsUqHUfciI+6e6k6R3DhKg
-	 iG2MPWstYgopvq/XQgFsbXgYxtHEvqt31eYxLGab+FBpoZMGiB3OLxlj+AwFU4yIbI
-	 7NbEbgycJJwcQ==
-Received: from [100.64.0.214] (unknown [100.64.0.214])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nicolas)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 2E83417E06BF;
-	Wed, 18 Nov 2026 22:56:42 +0100 (CET)
-Message-ID: <70ed0df5a04b11d8dcfe41d91e86fc28dedcb132.camel@collabora.com>
-Subject: Re: [PATCH 0/6] rust: iommu: add a paging domain abstraction
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, "Joerg Roedel (AMD)"	
- <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy	
- <robin.murphy@arm.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng	
- <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, Tamir Duberstein	 <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=	 <work@onurozkan.dev>,
- Abdiel Janulgue <abdiel.janulgue@gmail.com>, 	iommu@lists.linux.dev,
- rust-for-linux@vger.kernel.org, 	linux-kernel@vger.kernel.org,
- driver-core@lists.linux.dev, Detlev Casanova	
- <detlev.casanova@collabora.com>
-Date: Wed, 18 Nov 2026 16:56:40 -0500
-In-Reply-To: <20261118195130.GE3115493@ziepe.ca>
-References: <20261112-b4-iommu-domain-v1-0-c29e86788dda@collabora.com>
-	 <20261116193821.GC2452510@ziepe.ca>
-	 <3EB4C2ED-B699-4532-A562-68B78F6E29C6@collabora.com>
-	 <20261117202055.GA3115493@ziepe.ca>
-	 <b145b2ceb92c73a4fa0477d7b3895a6e3b4adf99.camel@collabora.com>
-	 <20261118160909.GC3115493@ziepe.ca>
-	 <ede3b421d419a35c115ed584e60e74bfd6b91dff.camel@collabora.com>
-	 <20261118195130.GE3115493@ziepe.ca>
-Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Organization: Collabora Canada
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-ZJcI0aBBaUP96hypVc6s"
-User-Agent: Evolution 3.62.1 (3.62.1-1.fc45) 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DhwrPv4G
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4bb5b33e2ffso5565e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 14:18:54 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795040333; cv=none;
+        d=google.com; s=arc-20260327;
+        b=A57zUV3p75NbApSZGL0FS+MNEx5gbC+M82UmViNpImfdGScAG57ip45T1JFRWzkDAV
+         axtqTGyrvXAilMMO7cbXB3nyIgtmMnTs/wSB8Uk9l6lq7AaYxCUMR1UMWyykM46AiR2J
+         0OS2yoAFWTZG+xxeisxk59QWtdoavCk9peqey2mjuvbAedxYuNcv70YWH1wKQ+xwtvQ9
+         PSucG+IH+ha9I9wVXudFUeDDbARZqbvwtZ1FJdh1BY+ExspnXAmb6h0/vYnLPajzsaOi
+         nssv5Gbi73xy8IpRZ5vy/eoqzwNNr90p2fGtAlDeok1nDn9uVwPjxegzDwQbDsoCyF8w
+         augQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pPh8uj9XpZA6e+Lv41Z3C0qJdEEXOaN7sStIO34U/iw=;
+        fh=3BPona7kINB1dnzEfoximH6ZE99jLZgwnuN7mB0n8EY=;
+        b=Lk1/zJJBA4gIK37qypazQfysRlYhyeFnSFbPYq50b3UmwFiBjcAm4wR7vFzWiO6O5P
+         L1zzNkFoOvIoqPyFsePRgqpEI2iKzFfg/6zrVhvh0NV6uspqhQvsdpynDMog2vVRlGXw
+         sVO4MTZIBRKRkJJ8kXqL/805EuB1kmHKM1NBbfzCJUQF4FSxCMvIqbG8lvLk0Gq+IhNF
+         kOua9o74JqzI0tQdUsl/F+oX1JrrueSJxQ4CrJ30QB8WCEvoLZ/wEEcfsUpgwn2XmvAy
+         06KDaVLdacf3CoVAZna3ZSCkwdXD5MOCdTGoCpPHpWIP0rZrF5nWP1D6bRdpebiZ7EC0
+         qGvg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795040333; x=1795645133; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pPh8uj9XpZA6e+Lv41Z3C0qJdEEXOaN7sStIO34U/iw=;
+        b=DhwrPv4GGFiOVke3X6njuMQROCZZTT+xdWguHN9Ve4ls24tJInBkCDQToNg2sTOH/7
+         9fkhOJ7HqD7c58NdQDY7sym37Km0fntvXNnHSLiComuANprVK86/akMKEQtOmRk1K9xO
+         JES0ONp3tAzKlLidLptHk3TFMkYlZ1Hvyx5PdcqkASrzNWnsmeIBpBPXdjrilkGx/6cD
+         K+L5mYzqtqK2/8ulA2EwqsRtFXiw30sGQybhL4DTr6C9ZWTA47PRumYSiqWHNmNcZW+C
+         Byy1W1ngeI4hePMxMzk+5U3fmHmoAzAy7yzhoofr7fZIleSiMd01npReSTAdbkh1M6ZN
+         KBew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795040333; x=1795645133;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pPh8uj9XpZA6e+Lv41Z3C0qJdEEXOaN7sStIO34U/iw=;
+        b=xKWjKHLcdSr5Cil4sBLFxBr8duvawB0IjjehTSpZG+PSfPaabH22ROQ0jYS72OIOku
+         MyKuFwEQl367Io01F5+z3t+3/awx8sz/LiMHsDKZ2XQZuxALxZwEtLtc/fiJeFxIKxUa
+         rnAYaSXOeJcCigaYq+ozw0cP3HI8gCGBJ9r8s0OU/k1hkNoBxbnUxN7rGXXeo6IPrJrF
+         cpYzSjHdc1HbSO3X1SiXkdtjPeyXXl0SPt1vZZugidWWbyyUdPacLbLd/Sbl2C8n0bSO
+         RowfQcAuFgEMqL2tX34XEoR2z5onE8x5B4Y1DTHaTHuka+O3xHaMSAOVT4CJtH+DVrPH
+         GPeA==
+X-Forwarded-Encrypted: i=1; AL+hErFBjDyUHpzbY79msor6dzeimLFRvqM5Kyp5mflAA6VwQb1Vd4JA3aECdZNWVo+U5sUghS2pSUSxMzACe7LZkA==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9weaGmigGQ9Bx5QZbpYTAlVlWsTKaKQ30SDiAoG4hqyGcK3UYy
+	4XWJBNkOaknoy+QHjPHTX4mt5F7GGLHun5vvka8oUc2REeL109OjCxB3bJC4UMwA+n9uxoHoEoK
+	IpzfqFvPn6e8HulOpMtNvrtWO9us0nTe9gRek2l5L
+X-Gm-Gg: AYBFou0Opu5Yffr8N/+2NRd/C76tVslVB9Dkp4CafqbLwBXXYg/EBLzdHz9VL1GREiv
+	233P7qOBvjZZoJpg0XdlI+RB6WQTUO9rY5TefHw9DpehiUXcdA/SRBMI1o51Ca9cyQm0oJH/c3a
+	vdDa4f2DwJGMnS4Wu5eNFOl+W6A6gl6Zk13ng2ixP8cAB5MzBh1yLo30ej89TKoxWV6KpEoYxUD
+	PEQGMX8cU6rPesLpEcj0eMFaUd3/6acKCduVcelM4DTDcpdZxHSKuAogD0va7jrF6TGAwDigfxT
+	UFVWGv1UHVf2eBTIZhD0aSnHs60F/dx+i0lqGT8hiclKd4RpoxavtXnimgpMU1EeCwSHmoJLuIa
+	e376oiS2e+czqJmzjjCPlPJHhOneyANPr6w==
+X-Received: by 2002:a05:600c:c083:b0:4a2:a8c:22ae with SMTP id
+ 5b1f17b1804b1-4bb840fdcf6mr76245e9.12.1795040332631; Wed, 18 Nov 2026
+ 14:18:52 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -103,234 +104,55 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-
---=-ZJcI0aBBaUP96hypVc6s
+References: <20261118-rust-merge-functions-v1-1-fe86126522b9@google.com>
+In-Reply-To: <20261118-rust-merge-functions-v1-1-fe86126522b9@google.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Wed, 18 Nov 2026 14:18:15 -0800
+X-Gm-Features: Aa3M54qrYLCi1kdI6tOsVZ4Mm-8YCYtqxNVjxhU4bWLFHJjIpemXwQLKhaF114s
+Message-ID: <CABCJKucCD8RTVTg=_PuWTDLVaV+h8T7=whx+kLuxKq1Bpi3NrQ@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: rust: disable function merging unconditionally
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Matthew Maurer <mmaurer@google.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Le mercredi 18 novembre 2026 =C3=A0 15:51 -0400, Jason Gunthorpe a =C3=A9cr=
-it=C2=A0:
-> On Wed, Nov 18, 2026 at 02:31:28PM -0500, Nicolas Dufresne wrote:
-> > > > This seem to digress. All we want to do is use the iommu subsystem =
-as intended
-> > > > for the case the iommu driver is not inside the DRM driver (which s=
-eems to have
-> > > > never been the case so far in DRM).
-> > >=20
-> > > "As intended" means you use the DMA API and you do not touch
-> > > the paging domain.
-> > >=20
-> > > "As intended" means you use iommufd if you want a domain full of user
-> > > controlled mappings.
-> >=20
-> > As discussed at LPC, we believe its pointless for this type of device t=
-o give
-> > any direct page choices to userspace. Can you explain why you believe
-> > differently?
->=20
-> This is what was asked for a few messages back?
->=20
-> > I'm not sure how this applies to our work. But since they are all broke=
-n
-> > according to you, let me give example of cores/iommu mapping we are usi=
-ng, and
-> > perhaps you'll be able to explain us correctly? I've picked the Rockchi=
-p video
-> > decoder, which is upstream but expose through V4L2 stateless API, but f=
-rom a
-> > hardware point of view is pretty much identical:
-> >=20
-> > The DT (which I read you must be broken and in violation of everything,=
- yet all
-> > reviewed by DT maintainers):
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi#n1400
->=20
-> You linked to a clocks line, I have no idea what I'm supposed to look
-> at in this file. Can you explain what parts of the DT apply to what
-> you are intersted in?
+On Wed, Nov 18, 2026 at 5:09=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> Function merging causes various different issues:
+>
+> * For CONFIG_CFI there's an LLVM bug causing functions with different
+>   CFI hashes to get merged. This can lead to crashes at runtime.
+> * For gendwarfksyms it causes functions with different CRCs to get
+>   merged. This leads to broken MODVERSIONS information if the function
+>   changes in the future so that it can no longer be merged.
+> * Wrong backtraces when a crash occurs in a merged function.
+> * Possibly also issues with pahole/BTF as the merged function's debug
+>   info is lost.
+>
+> These issues are new to Rust because in clang, function merging is off
+> by default, so these things have never come up before. Because of this,
+> turn this option off for all configurations.
+>
+> Link: https://lore.kernel.org/all/avy_9SPRaPSKD8b4@google.com/
+> Fixes: ac61506bf2d1 ("rust: Use gendwarfksyms + extended modversions for =
+CONFIG_MODVERSIONS")
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  Makefile | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-No, I linked to the four nodes, 2 decoders, 2 iommus.
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
 
->=20
-> > The multi-core support proposal, its not doing process isolation, its n=
-ot
-> > strictly needed in higher level abstraction (though could be better), b=
-ut its
-> > using domains so that each core can actually see the same memory:
-> > https://lore.kernel.org/all/20260810-rkvdec-multicore-v2-0-986f89d22cdc=
-@collabora.com/
->=20
-> IIRC This is the driver that had the weird not-quite-an-iommu issue and
-> there were many complaints about it doing things with the API that
-> make no sense because it's HW is bad.
->=20
->                 /*
->                  * To rewrite mapping into the attached IOMMU core, attac=
-h a new empty domain that
->                  * will program an empty table, then detach it to restore=
- the default domain and
->                  * all cached mappings.
->                  * This is safely done in this interrupt handler to make =
-sure no memory get mapped
->                  * through the IOMMU while the empty domain is attached.
->                  */
-
-We are aware of this, someone have to find the time to go back to it and sp=
-end
-another year in discussion to try and fit the need to re-program the rkiomm=
-u
-after a decoder fault.
-
-Our best guess of the hardware problem is that its "self reset" mechanism o=
-n
-fault spill over the mmio of the iommu. It pretty hard to create a rkiommu
-function that does not look like a bigger hack. And until we had an agreeme=
-nt,
-this made it work for the users.
-
->=20
-> But that doesn't excuse this:
->=20
->   As each core has its own IOMMU core, buffers must be mapped in each
->   core's IOMMU so that any run() call can use any core without having to
->   remap everything.
->=20
->   To do that, we use rockchip iommu domain's iommu devices list.
->   With that, one IOMMU domain can be mapped on multiple devices, meaning
->   that each call to iommu_map() will flush the new mapping on all devices
->   in the list.
->=20
-> We have DT for this already, you use iommus=3D[] and list all your
-> iommus and it sets everything up for you. Going around and changing
-> domains behind the scenes when the core already attached DMA API
-
-Mind linking examples and doc? No one mentioned this, maybe the DT maintain=
-er
-need to be educated, you guys don't participate when these bindings are mad=
-e.
-
-Can we group the iommus from driver instead of DT ? (these DT predates us t=
-rying
-to use the HW unfortunatly, so backward compatibility is kind of needed). N=
-ote
-that appart from the hack above the v4l2 mutli-core case has completely sta=
-tic
-domain, just that there is N device with the same domain. It is less safe, =
-since
-it does not do process isolation.
-
->=20
-> Then WTF is this:
->=20
-> -                       ret =3D iommu_map(iommu_get_domain_for_dev(core->=
-dev),
-> -                                       virt_addr, phys_addr,
->=20
-> Seriously? You cannot directly map to a DMA API owned domain. It is
-> fully illegal.
-
-I guess I should fix that one, suggested change below (I'll make a patch la=
-ter).
-We should drop iommu_map() from any bindings. But that leaves us with no wa=
-y to
-use the rkiommu and do process isolation, which basically defeat the purpos=
-e of
-an iommu no?
-
-
-RFC:
----
-diff --git a/drivers/media/platform/rockchip/rkvdec/rkvdec-rcb.c b/drivers/=
-media/platform/rockchip/rkvdec/rkvdec-rcb.c
-index fdcf1f1773797..37d5677e4c8f9 100644
---- a/drivers/media/platform/rockchip/rkvdec/rkvdec-rcb.c
-+++ b/drivers/media/platform/rockchip/rkvdec/rkvdec-rcb.c
-@@ -9,7 +9,7 @@
- #include "rkvdec.h"
- #include "rkvdec-rcb.h"
-=20
--#include <linux/iommu.h>
-+#include <linux/dma-mapping.h>
- #include <linux/genalloc.h>
- #include <linux/sizes.h>
- #include <linux/types.h>
-@@ -44,7 +44,6 @@ void rkvdec_free_rcb(struct rkvdec_ctx *ctx)
- {
-        struct rkvdec_dev *dev =3D ctx->dev;
-        struct rkvdec_rcb_config *cfg =3D ctx->rcb_config;
--       unsigned long virt_addr;
-        int i;
-=20
-        if (!cfg)
-@@ -58,11 +57,11 @@ void rkvdec_free_rcb(struct rkvdec_ctx *ctx)
-=20
-                switch (cfg->rcb_bufs[i].type) {
-                case RKVDEC_ALLOC_SRAM:
--                       virt_addr =3D (unsigned long)cfg->rcb_bufs[i].cpu;
--
--                       if (dev->iommu_domain)
--                               iommu_unmap(dev->iommu_domain, virt_addr, r=
-cb_size);
--                       gen_pool_free(dev->sram_pool, virt_addr, rcb_size);
-+                       dma_unmap_resource(dev->dev, cfg->rcb_bufs[i].dma,
-+                                          rcb_size, DMA_BIDIRECTIONAL, 0);
-+                       gen_pool_free(dev->sram_pool,
-+                                     (unsigned long)cfg->rcb_bufs[i].cpu,
-+                                     rcb_size);
-                        break;
-                case RKVDEC_ALLOC_DMA:
-                        dma_free_coherent(dev->dev,
-@@ -125,29 +124,19 @@ int rkvdec_allocate_rcb(struct rkvdec_ctx *ctx,
-                                                        SZ_4K);
-                }
-=20
--               /* If an IOMMU is used, map the SRAM address through it */
--               if (cpu && rkvdec->iommu_domain) {
--                       unsigned long virt_addr =3D (unsigned long)cpu;
-+               if (cpu) {
-                        phys_addr_t phys_addr =3D dma;
-=20
--                       ret =3D iommu_map(rkvdec->iommu_domain, virt_addr, =
-phys_addr,
--                                       rcb_size, IOMMU_READ | IOMMU_WRITE,=
- 0);
--                       if (ret) {
-+                       dma =3D dma_map_resource(rkvdec->dev, phys_addr, rc=
-b_size,
-+                                              DMA_BIDIRECTIONAL, 0);
-+                       if (dma_mapping_error(rkvdec->dev, dma)) {
-                                gen_pool_free(ctx->dev->sram_pool,
-                                              (unsigned long)cpu,
-                                              rcb_size);
-                                cpu =3D NULL;
--                               goto ram_fallback;
-                        }
--
--                       /*
--                        * The registers will be configured with the virtua=
-l
--                        * address so that it goes through the IOMMU
--                        */
--                       dma =3D virt_addr;
-                }
-=20
--ram_fallback:
-                /* Fallback to RAM */
-                if (!cpu) {
-                        cpu =3D dma_alloc_coherent(ctx->dev->dev,
-
---=-ZJcI0aBBaUP96hypVc6s
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCav4fGAAKCRDZQZRRKWBy
-9FqhAP4pY0JMdUIZJr/LhHtvb6DsQm54XOOj6JgdlKQ2E+itcwD/Vm7FSFzr0alW
-F+xXlxvgDMiEUu59Utc6C6/8cilSAws=
-=LlMs
------END PGP SIGNATURE-----
-
---=-ZJcI0aBBaUP96hypVc6s--
+Sami
