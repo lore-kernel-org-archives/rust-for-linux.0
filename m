@@ -1,75 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795009678;
-	b=g8eI7p1d73ybTiKY3+cd1hax4NdcTNTPzjld0vJrO74pdRzBUMwn/dZ3Fjcq0lYqaR7T
-	 vzhcWz2TRp8jcOqXbRQouL9NEXWzy6SVBaacJ1T7L+7jWHpb6cOZ3IP5EXfg4UZkNUlR4
-	 MNOSte20B6rmDcgILeXiS5bGTPpZlPAtlRH0HC69vLc5V6NxHNxQ2y58jzrECjm8/vf2v
-	 D7kn29Qc8xk4yw0fuYrMGqnesUSoQKt0A3eGK0VVtafyg0vMxtwKvd6iZmomNj31RqfNb
-	 lRq6ECzLi9AcSYbBa84EmnEWZJlA5pptEXd3pGaAsaXEm3Xv/3mbCmYPqkTG2sWffmA==
+	t=1795009682;
+	b=ncvIN9mapb2fDnoOoKOux7vnbo+mFBa2lb+DW7fa19gQRUfH6bj3ydaN+gJD/KPgOo/V
+	 4YbLkabbWL3As5sckas97jlvcCrOb3rm/8h0kKjCFvbxTi+YHoRDAvksfPzbi0sKH54hx
+	 J1ksvIbuYvP/VPVVJafoIRqatd8YIIwLBEHxKgGJp3eskaVQ6E6FtH2N2QY25p31poqTO
+	 IEItjBBq+pLAEbdUtr6h3CHmpmgiqUfGlmoo1pX/EG2G1TB9or7MfnI4vsnPk6HKVLxm+
+	 KEJOdZAOhPJ/x9p4JmyGzoLPgDwzVWi9tjqgb4jhkZA7iIu7EMKgnIBtR4WXOud3/JA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795009678;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795009682;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=fp5kGNyd0eTmZJulttSFuV08XJjVgnvokjb06RGq2vw=;
-	b=ks+DG+gIx41VZEWn15p1e6J2IzaHu73tOLTStW/b8uvsq4dgoLWJc8OdK2QHqi55zCpm
-	 uRaybqOAXYCcGl3yxkOQjrG784Lcorek8Tl+wL/5drGz4GqI/sCWevKONlDxoju29vZjX
-	 JKbwdeOR9OFv4lTO2YyWaOuBdrLS62/KOUKQrBfkbtFuAA21/buPRWSEnBQyaB5xt88eR
-	 4UsIdFuyVa1f7F2cOsINRfCJcGZFyINzhZU+Jc52ZOHtybf/CdmlTpKdAZefOTh9q99Yf
-	 NjkGS+43Sa+/UTM7h9AoaBkczpbK/dku/FTPQ/YuRg6TunQW7LK/Jd7grGkc6Y2J2jQ==
+	bh=YBVvUekf13M+I2J4OXSpne5JBm6BNzst3m7Bc2T2IGo=;
+	b=wYK0vJHF8yw+fyLn3ElXr0ECildCQkz1R2LdZNPmpcx5413FZwvHZ5xdnGH1x1chBqWu
+	 jTI1XbXV9OUYvYy+cmQuSM3sO7ORHI3YFdBuHzSH9DfeIxQSou/Ue6tRxSA0IZoN2A7xD
+	 6mPYBU5mURkSCXzf3YvkNbQ82G8rWjI9CfDwXMyz6GWp7iSc1BCH3b/veg6ZlTtBKVgHI
+	 Oq+H87pMNF16CYhFH/uig3H6OwVXXlYJKhDQ9fvQ/ItPRc7KQTr6NeyJzN/SOcknrCmKR
+	 9EZ+aaOPcFFVKQZE62Mq+u8TC7fMQoCvTQtwb2Qm/6Mqdr6mAQZrlPiEf7uUQ8Sqimw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dNmkEaEl;
-	arc=none smtp.remote-ip=209.85.221.70
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Yy21S5I2;
+	arc=none smtp.remote-ip=209.85.221.71
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EEA5606A339
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 13:47:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4EEA5606A339
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEC660A262F
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 13:48:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4AEC660A262F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dNmkEaEl
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4a589b28bddso584780f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 05:47:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Yy21S5I2
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-492d47f142cso597449f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 05:48:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795009677; x=1795614477; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1795009680; x=1795614480; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=fp5kGNyd0eTmZJulttSFuV08XJjVgnvokjb06RGq2vw=;
-        b=dNmkEaElbn7W0RsZzP/CYzFGmyEkXFAnBJjALAYfOzlk5HKf4yBZkElycb3wOmea7O
-         caAf+vkZXidQ/di0XnDTfCdqbUOHcyPxFv9vqY7Z/bNPLvL70J5d1tHYO8ykNC99A/AE
-         IBC4avKCzgyHpAPYrXcC+Cv78m3zCcxC+bAIZklOa9Vtn6dRcyBR5i+fG1R5s9nJXSSm
-         JdNyGZJQhYb3mjD+yjh3nq6zr1VKvAtBWf9uAHjJUBG7g7u0s7jWEDRIIxYC9bbo3DPg
-         qIC24zC2EllAlbIaFfpivJ7b85mZTeQzPkJdMKExuftIfOVe0pX+yVbikwHF7SxWdf+q
-         MQhA==
+        bh=YBVvUekf13M+I2J4OXSpne5JBm6BNzst3m7Bc2T2IGo=;
+        b=Yy21S5I2XLIJsEjcJfnwiafnIj6tQpwVdezBaC/tKTofNpSoYeCUC8Eqddrb0Q+Ida
+         42tnkukBTfvYFjB5yTqBCnuYhMhBjy7nNUAq0rOBgyHA7smTq+DK0gthUc2+MV513e+Y
+         fBKWifCkWg9CbSuph2Zu4cfmZ9HHU+ZPXkMs8m1p096BNJ/4PS5aS8TUfb/AlyuKXVPl
+         q5uXgvrgGofr5dAglr5srIa/JwsbgyhPhqKy7eSMEJBCCe//vjXyJwvqV7DtiJe2sERU
+         ZSrJURmnfhZH81d5iLycCXCcH3RROk6TTob8tBBscrTol/e8n5X9GQZ+SEFDR/zWjjx2
+         c0yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795009677; x=1795614477;
+        d=1e100.net; s=20260707; t=1795009680; x=1795614480;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=fp5kGNyd0eTmZJulttSFuV08XJjVgnvokjb06RGq2vw=;
-        b=SlWq1fQR3mzcJwDENwxz1gvmxNQzLD4sdTzkdAT0loDFyoOSjDCFRnMzTlk0TGhFxn
-         XCQIeJo3XMIYZ9I/ZmS1byI8DwBBfZH19KbEjCCC+R8g1Hxkdfr/npsqI4wVAG9QsJcK
-         Cyn4lhTa7wyjTia6RJHqm1l5MTRw/LAEs3aj7Q4Mfz1lzEJzKjfv5LJ4K9SBk+FBnEQN
-         slPWX9+bIAJJxSzlhRSQzt5oFOVPIVSULvcfzh5FJEcp8DR/am/u4A+j2GAUYcP1KbM9
-         Paw3q8ekd9wbBgf1fpIEYQdXx/gy1l3AkGFCxDHuoYuxsG1ZL0V0MJwseRs/JjazN2Qt
-         EHaQ==
-X-Forwarded-Encrypted: i=1; AL+hErEM6PayyY5b3EAOokCoaR0AtFeiPAo5IJ9m1O8O5w4nqYyrSuVEyAiZzY/8INlkkf8wH1iFCQxMTZAFWVKzGQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/S9tBt/u9P1BkEvHZ3i8qW6gnrZC7emcfCFTy4bl0T7XsNXZ2S
-	vLsOU9+au+Ltf6PRQ+BENUotmyhoyRnCG++gPOeH6q+zb/D2l8JRzrVKK4FnwgqVeQj8sUwl0h0
-	nkK4bI2JFrNVh5LiPyQ==
-X-Received: from wrbay30.prod.google.com ([2002:a5d:6f1e:0:b0:49b:ed87:ac7b])
+        bh=YBVvUekf13M+I2J4OXSpne5JBm6BNzst3m7Bc2T2IGo=;
+        b=tlCAWtnnskMIjTKvB3Uvji4hDRP+O0QWH9/G2LXVlGYBGbXS/BN+5WkSZkEWsc6dgm
+         ML1sgrueJkvdAkCd1gmnYqoMYyv3JQhETz56dg4PJY0XMomgMci2K+mKpuuUpmdrQfDn
+         JfzM+c9E4p6CVVTN+YrL9yYneejhUwjG6yW8r485SCHdJSSyP1J9SiMA1alIdS2fLDvp
+         Rub/j6e5xe3LCde/RgTJ/toM2D2UfmOUdo1vAErbDfHILC23E9PoUHRDNf97Pp8/k0ir
+         SdQvJFOogSqlgbZqZBc1kcm005QqMY0CCQswRD/Otb/vIuDxijIN6X6dd14MT8GMX36H
+         orEw==
+X-Forwarded-Encrypted: i=1; AL+hErGqn8Yh003/CRrWR8RNmJwa2LOcCJGJws3wtmab/D0Ntt5/7MbwJM0wBCxk7zBxtZxeJrKsZJsSznxUbWml/A==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+w2i5NBK1BXDJw17OPkN9UUzJy9yqMvESILxawwzv9B4VA73dU
+	5Acq3YnErD20XwR/90JaOzjxjIVAlsgsMwbg1UbUDnwntl4dLrBPBy0rFE5RBUTRGtTuWME4oM2
+	xLWRqueIxMUtMg+XHTw==
+X-Received: from wrvt10.prod.google.com ([2002:a5d:534a:0:b0:49d:572:f312])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:adf:e002:0:20b0:4a1:a2ed:bc1d with SMTP id ffacd0b85a97d-4a63b6fbe61mr4560158f8f.43.1795009676739;
- Wed, 18 Nov 2026 05:47:56 -0800 (PST)
-Date: Wed, 18 Nov 2026 13:47:55 +0000
-In-Reply-To: <20261013-clk-type-state-v6-5-a5e9977b3509@collabora.com>
+ 2002:a5d:5f91:0:b0:49b:b94c:e8e8 with SMTP id ffacd0b85a97d-4a37294840dmr12837911f8f.8.1795009679054;
+ Wed, 18 Nov 2026 05:47:59 -0800 (PST)
+Date: Wed, 18 Nov 2026 13:47:58 +0000
+In-Reply-To: <20261013-clk-type-state-v6-6-a5e9977b3509@collabora.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -79,10 +79,10 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261013-clk-type-state-v6-0-a5e9977b3509@collabora.com> <20261013-clk-type-state-v6-5-a5e9977b3509@collabora.com>
+References: <20261013-clk-type-state-v6-0-a5e9977b3509@collabora.com> <20261013-clk-type-state-v6-6-a5e9977b3509@collabora.com>
 X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
-Message-ID: <20261118134755.658603-1-aliceryhl@google.com>
-Subject: Re: [PATCH v6 5/7] rust: clk: add devres-managed clks
+Message-ID: <20261118134758.658847-1-aliceryhl@google.com>
+Subject: Re: [PATCH v6 6/7] rust: clk: add `ExclusiveClk`
 From: Alice Ryhl <aliceryhl@google.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>
 Cc: Alice Ryhl <aliceryhl@google.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
@@ -103,21 +103,71 @@ Cc: Alice Ryhl <aliceryhl@google.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
 	"=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, Maurice Hieronymus <mhi@mailbox.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Oct 13, 2026 at 02:07:44PM -0300, Daniel Almeida wrote:
-> Many drivers only need a clock running for as long as the device is
-> bound and never touch it afterwards. In C, devm_clk_get_enabled() and
-> devm_clk_get_optional_enabled() cover this case.
->
-> Add devm_enable(), devm_enable_optional() and
-> devm_enable_optional_with_rate(), which wrap the C helpers. They return
-> no handle, so the driver keeps nothing in its data and cannot change the
-> state of the clock. The clock is disabled, unprepared and put when the
-> device is unbound.
->
-> This mirrors regulator::devm_enable() and devm_enable_optional().
->
-> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+On Tue, Oct 13, 2026 at 02:07:45PM -0300, Daniel Almeida wrote:
+> +    impl<T: ClkState> ExclusiveClk<T> {
+> +        /// Takes exclusive control over the rate of `clk`.
+> +        ///
+> +        /// No other consumer of the clock may change its rate until the
+> +        /// returned [`ExclusiveClk`] is dropped or [`ExclusiveClk::into_inner`]
+> +        /// is called. This may sleep.
+> +        ///
+> +        /// Equivalent to the kernel's [`clk_rate_exclusive_get`] API.
+> +        ///
+> +        /// [`clk_rate_exclusive_get`]:
+> +        /// https://docs.kernel.org/core-api/kernel-api.html#c.clk_rate_exclusive_get
+> +        #[inline]
+> +        pub fn new(clk: Clk<T>) -> Result<Self> {
+> +            // SAFETY: By the type invariants of `Clk`, `clk.as_raw()` is a valid
+> +            // argument for `clk_rate_exclusive_get()`.
+> +            to_result(unsafe { bindings::clk_rate_exclusive_get(clk.as_raw()) })?;
+> +
+> +            // INVARIANT: `clk_rate_exclusive_get()` succeeded, and the matching
+> +            // `clk_rate_exclusive_put()` is called when the `ExclusiveClk` is
+> +            // dropped or consumed by `into_inner()`.
+> +            Ok(Self(clk))
+> +        }
+> +
+> +        /// Releases the exclusive control over the rate and returns the [`Clk`].
+> +        ///
+> +        /// Equivalent to the kernel's [`clk_rate_exclusive_put`] API.
+> +        ///
+> +        /// [`clk_rate_exclusive_put`]:
+> +        /// https://docs.kernel.org/core-api/kernel-api.html#c.clk_rate_exclusive_put
+> +        #[inline]
+> +        pub fn into_inner(self) -> Clk<T> {
+> +            let this = ManuallyDrop::new(self);
+> +
+> +            // SAFETY: By the type invariants, `clk_rate_exclusive_get()` was
+> +            // called on `this.0` and not yet balanced, so this balances it.
+> +            unsafe { bindings::clk_rate_exclusive_put(this.0.as_raw()) };
+> +
+> +            // SAFETY: `this` is wrapped in `ManuallyDrop`, so the `Clk` is moved
+> +            // out exactly once and the `Drop` of `ExclusiveClk` does not run.
+> +            unsafe { ptr::read(&this.0) }
+> +        }
+> +    }
+> +
+> +    impl<T: ClkState> Deref for ExclusiveClk<T> {
+> +        type Target = Clk<T>;
+> +
+> +        #[inline]
+> +        fn deref(&self) -> &Clk<T> {
+> +            &self.0
+> +        }
+> +    }
+> +
+> +    impl<T: ClkState> Drop for ExclusiveClk<T> {
+> +        #[inline]
+> +        fn drop(&mut self) {
+> +            // SAFETY: By the type invariants, `clk_rate_exclusive_get()` was
+> +            // called on `self.0` and not yet balanced, so this balances it.
+> +            unsafe { bindings::clk_rate_exclusive_put(self.0.as_raw()) };
+> +        }
+> +    }
+>  }
+
+Only new() states that it may sleep, but into_inner() and drop() may also
+sleep. This may be worth stating.
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
