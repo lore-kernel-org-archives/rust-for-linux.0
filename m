@@ -1,102 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.54
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795027737;
-	b=nQ/RD8mAHP4/8RyABwQ80BnOPMTVbYjUOoNtkcVUXVDlKuaw5DwFdZO96+ZQPTT7KQAj
-	 UuxwYT0a1N3pwdlbMgUDaK84JpFFvKpRGarTE9wpKvWYAKF2N/8VorgtBYBOxJfE/0lTh
-	 c6/UIwCsv9EiNNYylf4ySpwnZ7Pl/j/msQD+3QhXhY63XwDQ91k4ost3xveBYNSeggEfL
-	 EWx4AgAEtoBw0vTBxTq06ZzyQ5WQciiT3sLnsESoQT6Q1GZGjF6ajR3Mf47bALO4fAf7C
-	 EHsG4pREhSWMmtJ5/WBpROzJ6CDBVz3MLLga2YwpUw+S/OON3w/7YIT+3rM2s3rvJ9w==
+	t=1795028326;
+	b=l7s3ZP7ISkLr18Ii4EHRLdieNi6SRwqbP9OGWFifGDfQ4xv2jHMoJXVpKtT4H4deX3vq
+	 k292NHA7AtVhS8HCM00ESQCism+H29MvDiE5/q7z5zLFmr1jQBOLwIi9UuFM24bteuTaq
+	 Uy6QhTCWJ2xwhyBw1NQJ8bABvsY3W2ASNh8vhwAC2z6DmCtUHwYpltA8swMJ/nhf1frKf
+	 wDeRRUQH9StLITOEThkIiBf6dt8ouDvWEzkPCV7i4tUJLRiPa8sjP1o5J7w/E+5fcF1MF
+	 Ke6doqajPL9iABdQtjRDtPMewVg18Rx1xChB8flL3QNA5431P1S8ygTMDNOlw3Z6bYQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795027737;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795028326;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=X7wW/hkB6qND2hL7cUVTjlLecjmTYZgHHtjTcQBDC20=;
-	b=02vuIAa+v47yUHQXs36wH8yDD2+ZLgx5J02TwAzec5WtYEaFQKhSWE6lacbE5hLj1keZ
-	 aV37v2ROZN6o4Px4RoyVC3JaBuFdpwz/Ci4W1h5jGMYy0rWjfCD5Q78JWJ2VilPEwzMGd
-	 yVwG/1lb3o1SiEBsVUQ3Q1sMBf/k88TKgPzwWZ4jcOEbt57Euoglbay+/h9JtxF8MPUKx
-	 3I2XtOK35UzXMNfoZZD/Hu++yfVfZdZoLXcCIpXiP1Dyj/LkgYDFkhxDEcwppgvxFFcDL
-	 YMGLwsR4nO0h/vr84qVMVO83cS1c2NZ0tFmTPjKJXjruzjavD+zJJpFHmRCF7JXvPuQ==
+	bh=sANgHflY4l/Fe7eOmc9nVUukAbjG9FRan2mAzBkUStg=;
+	b=TlOKZ4y8DQaTcxY4afUnsCIMUL5LK45iDXfo8GXm4gxVYYd+CDeQsL9bbLB9ZrvlbT4h
+	 MxbR2P6tKDmHf2MZ2ichFzTccSDm3gb1Rqq0pOCYVZMrPFoZQ6gl0xqehV6vYdbddS5FS
+	 aeCkP/kl1zOxz0ySEoX+5t9qUn7vrAlzhGJYc4L3mcUC59lI0/U4hWFbBvT3gBeNGzlWM
+	 ENhkebkaUptLN6UJpwFcT/FK+m6nUHPAzvyrqx/UT6FlTZm1f2uunASYTFIocpD2Had+J
+	 XwPiEDRmXQSw0Xcgrq9MctUasg2Mr2/PQqVbgvtrmlzjCaL1YNdO4MP9Nmh1HJ6oPgg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SaVd11am;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.50
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=F9We98XN;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.54
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C245606A32C
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 18:48:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9C245606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981A560A2611
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 18:58:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 981A560A2611
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SaVd11am
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-49412eb1474so866103f8f.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 10:48:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795027735; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=F9We98XN
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4bb62d40736so4215e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 10:58:36 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795028314; cv=none;
         d=google.com; s=arc-20260327;
-        b=bSYoGMMuQs6eZHrT/MsZNA4gSjaYBpt9hO0bLhpJ8bnIfvYmcYIBEAe37SQLqRnjaQ
-         61PLlNeBlD1iM7DOoEt1ktCVVkQh6dIaTOKyAkvF9U1KDicdAuDvvRv8syIRUZBpdJkI
-         Q80RksF52Um2ixc34tK8UwPvDcYO2JVDwBiSoK4/Ac0JOJSCrXsJB30qxbYVzq1m5DFA
-         y/ksMjOnng/G17JsSbnruECOqroQRWs2yektPHumcLFtxZ+6osuk07oFEPiDxWlcNUcL
-         H3yNVQiSADAByivcM47VjwYFd5LjUu9Vgkl8nMLEMLWG4DH4jZrr0FYndSNKJjJQ3E4D
-         RPnw==
+        b=qurz+Rl2oWyjKuY+iG4s4ApcYLmpTyqmaa3UUdinMnaBx5lph9Lp4VOjBitQFJdD5Y
+         dAU4NK3lwzuHugWeLaXb4jFvDERgLIJKsZQEGSXhZSjhlSy0Ew+nZyDv2KcMNf92J8iy
+         v0k7qVhQbW8VdcXZGpGLnxWkgazIPoNBm4j4c3ro8RJrVILlcPKhUxO33RzZTC0k3A6f
+         swKJUkq2eN38213rujwyeRdONffclFTQrt7FeY8dXyYAYgJHVoeiEzgJAh7EunBI8nUb
+         7DIwmsktpyd0pFktWuIlqW3B5xq+IVyzVI/5I6/DLUwh4Qdhabb2x9DsFlwSy1GYW3+U
+         Vxow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=X7wW/hkB6qND2hL7cUVTjlLecjmTYZgHHtjTcQBDC20=;
-        fh=JiTdtNQ8nhZJ7ns8lheLAseISokTMe0OSnZqEXUloRs=;
-        b=BEJwIeW+tP92J6mEqbbfq9TjShjR2s/QonsCzm5gd8efqV9Q7DfWBzzazKBzbMwWpG
-         /C9lq3tG9+xE+2xrEXcffc7Xa4UT7/SwwIAxxsruU1A4GM/6vGWzpOsV3akGY3b1m0TZ
-         bPmmuKsQemj0h2so7Vl0xIGopIcfyr/Z37mnQ8+ueWExp2s+illX7Gk8SWKuHlA8o8wz
-         eLVxBEzKwuOXGVg4Ip8LICIE5PLWzBbGrSZWqpPViDDi5MHc0wiCu7/PDRReoLklE684
-         wgqtzdUWkmH94Tr2Pre5QBNDd4gn5asvTmovSffJ0x8kwkxS1/lO9wwfINtW5fHZotn0
-         pBwg==;
+        bh=sANgHflY4l/Fe7eOmc9nVUukAbjG9FRan2mAzBkUStg=;
+        fh=Y43NUmPdCuQfxtHJxmaLZDjdjkm+iascDEiDl08K8iE=;
+        b=eKlvHduXxya+sJ3wDieEtpDpikG5zuX5ilXFPpdqU0rkx8xGN1dMWqWGhr75mESbNM
+         8c92rnYTXP2VDjkKzyPaF7+gFd5XlBWE0YY+RNhQOMRGo4hKdJRPxUTSSbxSWij9beKS
+         jjbrk1BJeXOcbEo8soHvX+QhmFb6rrCv+p7z8QHtram6rPHubd6TC7xJWK1L3XmG6Aon
+         TC6djTFpjCr/kYDyP/vc0MLq4DqCF7p4ERpubq/MWFBkpveMLnJ2I7DdzLzRRtzoEsIi
+         05nh9otZd+svWPXb/v27vRx2qkY8VA0pCYj/3XQiWPd2PeUHmV59q4FUPRMCN5ueTDRJ
+         V+qQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795027735; x=1795632535; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1795028314; x=1795633114; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=X7wW/hkB6qND2hL7cUVTjlLecjmTYZgHHtjTcQBDC20=;
-        b=SaVd11amMVaZjfemF+IdOLWVydW/v6XL9frGvxx7ZZp1u9OrILJarL+fMcOGS6mqbn
-         4XimgGUBm/a3LFYWlv8NYnjom6o+ODA/WyR9X2xnj66H2kqVJmMsLfGdxahANKjAJHf9
-         Q/QFhpIbAzEpAT96XnIOLyaKEmEI9Epx7m3YwFzfcCLse8tXhiHbaGE+ZKABhULiU+nu
-         poO3h0MjuGBJNbPsJU5sRMaRaFXdz+PirVzKqMfDizt0/KZr1EJfII/mQuNKyXqm0g7L
-         CtU9N82CiGKDKZDWmQY6sIpf0FzltFzZL8MF5O/B2XN1KEdDCkY1QRB6PuKvy7B0897k
-         d6cg==
+        bh=sANgHflY4l/Fe7eOmc9nVUukAbjG9FRan2mAzBkUStg=;
+        b=F9We98XNxwEBIks/3AYeT70ES1muTwDULsZ3smWcjmbyi68BeNmCoE5UKaa+QP20IU
+         idVv3Ly9x+C69lvE4uQnSg9efmRha+lnASsrXtxS4zwprkmt0yKozwHmfe8KUIlEEM1F
+         MmNxuNKQbY7AvJzbXzeOT9p+l+2Xgb9QUPSuHSU2buIZybf4nsmFs5Si3KkhQiS/ROQO
+         KEOygG+Nfq+3axzLPY+SMkV+ZUmjt5GMPFLwJieAzlUp8kFR9eiOtLj1FUmg1UMn1spb
+         JKU6l3MlsNypoBwoz/NLDr9bLqZf87p6NhGjXigdQktEnh4jGshBesGgYHJ4+q8nrB12
+         sS5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795027735; x=1795632535;
+        d=1e100.net; s=20260707; t=1795028314; x=1795633114;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=X7wW/hkB6qND2hL7cUVTjlLecjmTYZgHHtjTcQBDC20=;
-        b=R3mkA64Kt/GcaxZOmxoJZa7hVRnnW8S4mZ+WaQQGFo9Rhj36A9jRe6gqPlh5XD4BGz
-         Trl9LrEDLNKm1I5GIDNLabtogsnB9NTbnkXfKCVtojh2Yy24hzchRIXZilPC/ibSLv6l
-         D+YzqCN/0Fc7hzXHRV7PaDiEY9loRf7ZD0/xpO3c1yc5YdyH8lBg0Vp38EQjXYInTXpA
-         0kEz6RXt2NzHaqXSJoOFYsIkhZgynXBwq/T2iV2zIHB9TIktrpKwXyQOcjc4i7A93i+1
-         UBbFgdDHaXGBZWMSEutHISKT560uEVz5ue/BiGB6IE4wrqlO6d5bDENYbmG9sGCdmpij
-         gSWw==
-X-Forwarded-Encrypted: i=1; AL+hErE7/DGIG47mGpJ/dqkntsqVHOhUwTTf/cf+fsjLujc4tqfR2x0wzR1BhREQJno+0O6GmI//SUvdGVSzgXGepQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+d+vYC1XUqLPZpvMq+70Vy3kz75YxeMO8QfkrMw2t39KsIQtSX
-	S9OTIQ6/51lY1bdQ6hfB3hsMsAvNf61/YLlZEv3VfBAGcfwi/dtMwE92Ma6eh79y+E5e0pqFPXj
-	hxj3gvURNltKW6mpWFEzJ/hGkZLCdGWLm2UXuoaMa
-X-Gm-Gg: AZFdTZf7AxItuWZy9iHDbHmvg/U15xh43o5uPEHGm6a+R4nr1wqh35yQtZZVnuX0kbI
-	8RVfKyqBncBA13y+rKPgwMPf8Q1yqHUJSEFb1eATkyzK/ipKrpj1i2+MdA7rmUpkUw4HL9qRoQv
-	ykbP0EdqUAEoOGJ+PlM8LfZlsEh535DuHSX/JU2bApWps08Wngs2387jIPjTyRG0RrllbVqRpya
-	TN0kEv27jGhg/28AzoIBLqR4bCLJYdXcMZcq2YWj5eLNqvZpDgKJYm4gtMftMczrqBaqHIO//6K
-	znipG4PvyqNHcEZOGXsfnPI0SP7InPyfvR4Z5crGWwv3RSb3Ld7WYOyCkSnxBoaNKyRulvbPFiD
-	4HRoHu5gxKoscsbZRCINJYST3IydRhk8W4k760SN73b87rwSIXePqPgL6TQzqHeuSHbqQzE4kZv
-	d00Y81GUxas585BbMq7v4uedBC7Ewkx1y6htaEp425RyTG+qXglGeHb1u2fop8lT+R/+2DZ4JBW
-	SS/c0hparfx+NnS5wmDWp7DSQzPuIM+Ffucpg==
-X-Received: by 2002:a05:6000:41c9:b0:4a3:777a:a964 with SMTP id
- ffacd0b85a97d-4a62d6d4875mr7842462f8f.0.1795027734320; Wed, 18 Nov 2026
- 10:48:54 -0800 (PST)
+        bh=sANgHflY4l/Fe7eOmc9nVUukAbjG9FRan2mAzBkUStg=;
+        b=GWG+s6yvBQpHzTUwYZJklR4BIDmvvag2knGeqvmYrQISzCZTqgrwT01YNwnr3h5szU
+         aaiX0vnIys1CfIrgpsuyyYhG4MrKCZ7/TqKZuFv33CWCYL8D6jqxjmoW3/0b3CbNxdub
+         PjUbYb7vnoG9oe3CQdQjHYRIoRhYlup0DMPRf3PK9LZaI3Eww4Hj2gWeCEC1GOEDZe5Y
+         wDbgPeOm9xiD9nDLptHfirchsKSyPUMH2Tt+G+TL062PHDfgpwIeWvozCAs4G6jB1ky4
+         DmPgEb8ehS3XAlT6g6ktyLK/1UVeApbrYwqjrhxOax7mPVd4yac9r/CTJ8AkIYukOKM/
+         9Kdw==
+X-Forwarded-Encrypted: i=1; AL+hErEUncW5cRIfe+fqhJFzrYaTEt8KAMtu8eJqP7/qO9UQz6V13ev2ZcFRddMdoF+FLlfn+Ttjo8h55oDc8u50qQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8GJJTiXJrwhs7EInu6EgPeCm/v4FqQTye5VQ8wE/62Muva91HL
+	k/SvEfYMs9UvuOefPqz5uVfl7NnmVPhwPfz/iBML7sfJoAXftTZ7VAm+lYrr6hm7HPp76BDUvRU
+	OotmB9GMqtBENdW0QZRzNW+iuNS4p9jyiGvXtHX2d
+X-Gm-Gg: AYBFou3Dh5BcZsVCrF/6y2wUDP6Nznti6ENtVVKH401bOObjLhkLNHRchNGebWdJhx8
+	Hp3joj80LNQC8DJWdV8j6rwFdrd404nCYnnsRu0lVKw2vsHd88vAI1AWjeggljGXpuQapQfn8bH
+	3szlTNGhXJ9lr5UlAdOX+Nc4aixjkbN6U8/3pavfGEHm65c/iW3IjugBtpCltsBIcNBfG9I8yzM
+	h8XwuWxJu0alhQ8efPiIAc0wlutGDC4iJE6QKORQcH3TjgiDNvDXF4c4MfPOa1y5hgOeyt9oiML
+	fWhwFxYFykLipLgSx+6YvkT6//9FQNjRQ14slrekNGDVOSY5Shb9GUm8x6SSY2VsqHbcVKQnWpj
+	Kq3KXMI0D+dYnY/TruR81JejMgJQqYc8IseOLwij2ojXZKcBVPTnFsxbWq5pWEOnrGWs1QNV6fn
+	YwOibAAKQN75IX
+X-Received: by 2002:a05:600c:840c:b0:49f:ddcf:45b7 with SMTP id
+ 5b1f17b1804b1-4bb83c9025emr23355e9.10.1795028313968; Wed, 18 Nov 2026
+ 10:58:33 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -106,101 +105,128 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261118-rust-merge-functions-v1-1-fe86126522b9@google.com>
-In-Reply-To: <20261118-rust-merge-functions-v1-1-fe86126522b9@google.com>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Wed, 18 Nov 2026 10:48:43 -0800
-X-Gm-Features: Aa3M54qO-h-RtjaPnh7QVBF5Y0JJtJj8eYAtLacwVWO8_kUzOdD5vosJqDSsgHo
-Message-ID: <CAKwvOd=iOXmF9DS8iopFZEgsqORe6eHokpF_-3-jEfD7yPuDFA@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: rust: disable function merging unconditionally
+References: <20261026-rust-drm-gem-shmem-imported-sgt-v1-0-36f15ace04b1@jannau.net>
+ <20261026-rust-drm-gem-shmem-imported-sgt-v1-1-36f15ace04b1@jannau.net> <20261118114102.490384-1-aliceryhl@google.com>
+In-Reply-To: <20261118114102.490384-1-aliceryhl@google.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Wed, 18 Nov 2026 10:57:56 -0800
+X-Gm-Features: Aa3M54rtfthEgFiAPOcV53y3ZwydiRtVUQnZ06u4pa0OMeOurh1hyDTgkerw9LE
+Message-ID: <CABCJKudrDOu3sD6J5LN4o3XF9JrU85pZK4DUXNH4d9iC363bEA@mail.gmail.com>
+Subject: Re: [PATCH 1/3] rust: drm: gem: shmem: implement gem_create_object
+ for prime imports
 To: Alice Ryhl <aliceryhl@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Cc: Janne Grunau <j@jannau.net>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
 	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
 	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Matthew Maurer <mmaurer@google.com>, Sami Tolvanen <samitolvanen@google.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Lyude Paul <lyude@redhat.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev, 
+	stable+noautosel@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 18, 2026 at 5:09=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+On Wed, Nov 18, 2026 at 3:41=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
 rote:
 >
-> Function merging causes various different issues:
+> On Mon, Oct 26, 2026 at 12:14:08PM +0100, Janne Grunau wrote:
+> > From: Sami Tolvanen <samitolvanen@google.com>
+> >
+> > For a prime-imported BO with no `gem_create_object` callback,
+> > `__drm_gem_shmem_create()` allocates `kzalloc(sizeof(struct
+> > drm_gem_shmem_object))`, which is smaller than the Rust `Object<T>`
+> > wrapper. A later `container_of!()` from a `drm_gem_object` back to
+> > `Object<T>` then runs past the allocation and corrupts the heap.
+> >
+> > Provide a `gem_create_object` callback that allocates the full
+> > `Object<T>` via `KBox::pin_init`. Move `obj` to the first field so the
+> > returned pointer is at offset zero, satisfying the `kfree()` on the
+> > init-failure path. This is now compile-checked with `const_assert!`.
+> >
+> > Imported BOs have no userspace creation arguments, so extend
+> > `DriverObject` with a `create_imported(dev, size)` constructor and
+> > implement it for Tyr's `BoData`, Nova, and the in-tree KUnit driver.
+> ...
+> > +    /// Create a new driver data object for a GEM object that is being=
+ imported
+> > +    /// from another driver (e.g. via dma-buf).
+> > +    ///
+> > +    /// Imported objects are allocated by the importing helper, which =
+only
+> > +    /// provides the device and size. There is no driver-supplied
+> > +    /// [`DriverObject::Args`], so drivers must initialize the per-obj=
+ect
+> > +    /// state without those arguments.
+> > +    fn create_imported(dev: &drm::Device<Self::Driver>, size: usize) -=
+> impl PinInit<Self, Error>;
+> ...
+> > +        // SAFETY: We never move out of `self`. Ownership of the alloc=
+ation is transferred to the
+> > +        // C side, which will run `__drm_gem_shmem_init()` next and la=
+ter free us via
+> > +        // `free_callback` (or `kfree()` on the `__drm_gem_shmem_init(=
+)` error path, matching the
+> > +        // C kzalloc fallback contract).
+> > +        let new =3D KBox::into_raw(unsafe { Pin::into_inner_unchecked(=
+new) });
+> > +
+> > +        // SAFETY: `new` was just produced by `KBox::into_raw` and so =
+is a valid pointer to an
+> > +        // initialized `Self`. `obj.base` is the embedded `drm_gem_obj=
+ect` the caller expects.
+> > +        unsafe { &raw mut (*(*new).obj.get()).base }
+> > +    }
 >
-> * For CONFIG_CFI there's an LLVM bug causing functions with different
->   CFI hashes to get merged. This can lead to crashes at runtime.
+> I ran this through a review agent, and it found these two things. As far =
+as I
+> can tell, these are valid concerns.
+>
+> 1. On the `__drm_gem_shmem_init()` failure path, `__drm_gem_shmem_create(=
+)`
+>    calls `kfree(obj)` directly rather than reconstructing `KBox<Self>`.
+>    Having `obj` at offset 0 ensures `kfree(obj)` frees the start of the s=
+lab
+>    allocation, but it skips running `Drop` on `Object<T>` and `inner: T`.=
+ If a
+>    driver's `T` owns any fields with non-trivial `Drop` implementations
+>    initialized in `T::create_imported()`, they will be leaked if
+>    `__drm_gem_shmem_init()` fails (e.g. if `drm_gem_create_mmap_offset()`
+>    fails).
 
-Do you have a link to a bug filed against llvm?
+I agree, this looks like a valid issue.
 
-> * For gendwarfksyms it causes functions with different CRCs to get
->   merged. This leads to broken MODVERSIONS information if the function
->   changes in the future so that it can no longer be merged.
-> * Wrong backtraces when a crash occurs in a merged function.
-> * Possibly also issues with pahole/BTF as the merged function's debug
->   info is lost.
+> 2. `Object<T>::ALLOC_OPS` also sets:
 >
-> These issues are new to Rust because in clang, function merging is off
-> by default, so these things have never come up before. Because of this,
+>        dumb_create: Some(bindings::drm_gem_shmem_dumb_create),
+>
+>    `drm_gem_shmem_dumb_create()` calls `drm_gem_shmem_create()` ->
+>    `__drm_gem_shmem_create(dev, size, false)` -> `gem_create_object_callb=
+ack()`,
+>    and `DRM_IOCTL_MODE_CREATE_DUMB` only checks `dev->driver->dumb_create=
+`
+>    (not `DRIVER_MODESET`). So `T::create_imported()` can also be called t=
+o
+>    create a non-imported dumb buffer (`obj.is_imported() =3D=3D false`).
+>
+> Instead of implementing `gem_create_object`, what do you think about
+> exporting a `private =3D true` counterpart to `drm_gem_shmem_init()` (sim=
+ilar to
+> commit e3f4bdaf2c5b ("drm/gem/shmem: Extract drm_gem_shmem_init() from
+> drm_gem_shmem_create()")), implementing a Rust `gem_prime_import_sg_table=
+`
+> callback on `shmem::Object<T>` directly, and setting `dumb_create: None` =
+in
+> `Object<T>::ALLOC_OPS`? That way `new: Pin<KBox<Self>>` stays owned by Ru=
+st
+> across `__drm_gem_shmem_init()` just like in `Object::new()`, so `Drop` r=
+uns
+> normally on error and `obj` does not need to sit at offset 0 for `kfree(o=
+bj)`.
 
-I've never heard of function merging (in clang). I've heard of
--Wl,--icf=3D{none,safe,all), a linker flag.  Is rustc setting that by
-default, implicitly?
-https://github.com/ClangBuiltLinux/linux/issues/1598
+A later commit in tyr-dev lets drivers opt out of dumb_create, which
+addresses this part. However, your proposal sounds cleaner and fixes
+both issues, so let's go with that.
 
-> turn this option off for all configurations.
->
-> Link: https://lore.kernel.org/all/avy_9SPRaPSKD8b4@google.com/
-> Fixes: ac61506bf2d1 ("rust: Use gendwarfksyms + extended modversions for =
-CONFIG_MODVERSIONS")
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  Makefile | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/Makefile b/Makefile
-> index 5aac6f1b011e..17b7ac3afbc4 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -622,6 +622,7 @@ KBUILD_RUSTFLAGS :=3D $(rust_common_flags) \
->                     -Csymbol-mangling-version=3Dv0 \
->                     -Crelocation-model=3Dstatic \
->                     -Zfunction-sections=3Dn \
-> +                   -Zmerge-functions=3Ddisabled \
->                     -Wclippy::float_arithmetic
->  KBUILD_RUSTFLAGS_OPTION_CHKS :=3D
->
-> @@ -1136,8 +1137,7 @@ endif
->  ifdef CONFIG_RUST
->         # Always pass -Zsanitizer-cfi-normalize-integers as CONFIG_RUST s=
-elects
->         # CONFIG_CFI_ICALL_NORMALIZE_INTEGERS.
-> -       # Disable function merging as LLVM incorrectly merges functions w=
-ith different KCFI types.
-> -       RUSTC_FLAGS_CFI   :=3D -Zsanitizer=3Dkcfi -Zsanitizer-cfi-normali=
-ze-integers -Zmerge-functions=3Ddisabled
-> +       RUSTC_FLAGS_CFI   :=3D -Zsanitizer=3Dkcfi -Zsanitizer-cfi-normali=
-ze-integers
->         KBUILD_RUSTFLAGS +=3D $(RUSTC_FLAGS_CFI)
->         export RUSTC_FLAGS_CFI
->  endif
->
-> ---
-> base-commit: 20eef29b7c8465ac98d7dd6d6f2ac07a8d8056ca
-> change-id: 20261117-rust-merge-functions-9ccbc0516df5
->
-> Best regards,
-> --
-> Alice Ryhl <aliceryhl@google.com>
->
-
-
---=20
-Thanks,
-~Nick Desaulniers
+Sami
