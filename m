@@ -1,48 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=46.30.211.244
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795012299;
-	b=Mc7jCMY4od69EuME7UypL2ZCrsjJCnHb3rdgUP+rWSDOUngEdiGsvfgxSlfwPpw8ljfS
-	 E0QOWTZbpoHNF2gkqf77wWm/HAKtxTVYfOHWiSTMEtPDIsCzgfBrJ14beLVHplvdabdW1
-	 CyBZXPVjQ6DeZA425mSO9xWhn22/gd40+e+mdZIX5Prxx82Uybcw10ii+4+HwgiRc1pmW
-	 nu2YoyH4ssLulbPrxDwlKSsKYDq5Kis871K7yf/bDHPpxZW9070aV8+K2bLiFrtWNPfvy
-	 QXGvCh85dhETcNQR3KH6TkKBtlLDFc2J8TEroshnOfbotkxVTF6XG799ILwIBR/HC5w==
+	t=1795013309;
+	b=DxwCbYK+pJwd5mHAgUhsrtRKyWm1pbqpZhAYfXcgXHEQmUscRNS+FRCtlGZ1xcVEbeM3
+	 nPD6epKRPbbLDfGuFbYNLRfOkJ4+lqpMGJzgr0eKtzZwjRnLt/z3l7wCRF3v0T1VmiGRD
+	 35HVjyzFfuDaQM/5frs2UB6FtbiuRj2u5/BHimj37WsljEiFKYO9xdCUwdz6Zlx6JrLrc
+	 Uzpr9/cMeDqh2tTk06TKV9sL31Y9GxtxnSUJRFeaVGGOevKK5HFKJOKQCjvsiyczy2RIS
+	 V71XpcFv0HCtxWh/QsLrBe+JSCYlf+YGcYwXqaPE1zRKeyAEv4KjtEgg9upCFkbfsfQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795012299;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=sNrgUb2+kOIP5RtEqFOBFqWj/Ks95fM/CbzhImm3lc8=;
-	b=l4aD/dNnD0q94z8VmrbhwaAyHZfL2bhxpTamaQbdE9uQim0AKtyOm+FJqeoneLZXJmOl
-	 kazNNOOw/Z59hnfFx4ctEb+KEz+21UCkY/4/slyj8vVQdTLOhsrYPg9I5AXl3v3zEtosm
-	 /DwnIccRVKBEYwvhSd30VNxagKzZBUEvF1ymdsJ/70ISpmDUxFoLYhP8XJnIEOsJ/wgU3
-	 kY+Tm1nzhQhZOFq1yNOaEudgRNFiFxZ8bGA+UpFgaIC+cTIO4dLUTirDr2EUM+SJgzu39
-	 geH72wHrkFd9OJQn5r7J3B5Vv6ukOuQj2YOmmTMbehGRvns1ztUoifFMviE1HwkOxQw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795013309;
+	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:X-HalOne-ID:Received:From:
+	 To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=htsl1/fGGN+PK8kCB+H1dqKretrCIe2LVjelGMma61U=;
+	b=dXeU1v2pFRw7myTNdUztq2qa6EDkqhYlt5YOi1uIPySNjHWNWEveepgEcp2vtnYii6ER
+	 0uVKk3n0P2WU2WYjNZYBonZZhRoDqDCsb6tfYw5uKR5TOEbFIh2fDJuAdkIgo8p+DU8F8
+	 pUxfvmSUo3WfKd3ELyrDiwK+mSowT+HeZsswhjBUwU1gwIuG0ssJ+n+EQAP/Jqi5xdqK/
+	 DSOvEzW0Oxs0N+pnhuR9oh2GhyZ5Jquawdou/1W0Fdt2FakFpW/c66aEhFL0gifs32y8a
+	 ejoIALfjyPwsYCaSTn6YgoMovw5Datu6kr/SKrcaFK1vrHABvG6PKQW7TLbE8saKukA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SCwNq2jT;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=konsulko.se;
+	spf=none smtp.mailfrom=konsulko.se;
+	dkim=pass header.d=konsulko.se header.i=@konsulko.se header.a=rsa-sha256 header.s=rsa2 header.b=AtuvhMyf;
+	dkim=pass header.d=konsulko.se header.i=@konsulko.se header.a=ed25519-sha256 header.s=ed2 header.b=vYcO7f3r;
+	arc=none smtp.remote-ip=46.30.211.244
+Received: from mailrelay-egress5.pub.mailoutpod3-cph3.one.com (mailrelay-egress5.pub.mailoutpod3-cph3.one.com [46.30.211.244])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9193C60A2602;
-	Wed, 18 Nov 2026 14:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8660E606A320
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 14:48:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8660E606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SCwNq2jT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A208A1F000C7;
-	Wed, 18 Nov 2026 14:31:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795012299;
-	bh=sNrgUb2+kOIP5RtEqFOBFqWj/Ks95fM/CbzhImm3lc8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=SCwNq2jTJYp+3L4rFiuWb4h8fwH64jg0dQEbE3QsVaZ+0zGroszCzKVRus4JaOwzn
-	 fVJs+KoyhMHKhhlONdokkXaWOXZoOV+Cp3/UdSSfbfZw+Fif0VipsugA9DjL5eebhJ
-	 IkMj7heOwz8iXEqYpzei6aPH7X+MkhH4oAnA7evfPYKrr9nynVUV486B2FTuIm8siB
-	 e9KpRgaiMPL4BgM8I+V6TG8wuyckUN2Gm3g8DX5fbJsgjWa10myly6VyHZk8FJD44V
-	 2QvbyAsGcej2151VTfHoKMCN0zkjv7QqNeSjv/Xnjr7lZwIg4dnEdSkpObAbNbDOkY
-	 SvOoCS2nRXRcw==
-From: Gary Guo <gary@kernel.org>
-Date: Wed, 18 Nov 2026 14:31:22 +0000
-Subject: [PATCH 3/3] rust: pin-init: internal: hide `HasPinData` impl
+	dkim=pass (2048-bit key, unprotected) header.d=konsulko.se header.i=@konsulko.se header.a=rsa-sha256 header.s=rsa2 header.b=AtuvhMyf;
+	dkim=pass header.d=konsulko.se header.i=@konsulko.se header.a=ed25519-sha256 header.s=ed2 header.b=vYcO7f3r
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1795013304; x=1795618104;
+	d=konsulko.se; s=rsa2;
+	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+	 subject:cc:to:from:from;
+	bh=htsl1/fGGN+PK8kCB+H1dqKretrCIe2LVjelGMma61U=;
+	b=AtuvhMyfZOiYIH4uHrjJkgfksbx2zZbGG3biXW2Y6/sIkHDbZv3K2A7hLZyFr90xTLB0LXZNWedyp
+	 PUK1yNjhrurTP6r5PrO4lZkSsQHPaTSiNSxYbnyT50Um6fmHBimbQEavR2KGd1t9POMfIIfacWpyyW
+	 iBU+oaG32/vhEyRKi7GtFAk7oSr0Vx37pHiZjyaPCPoQcqvBQrtKddHGzgYKFSFQJYdwPICmVmycEF
+	 G1Fb4yKCfIza3J85vKDZdsu6Qp8ZbVCCJMOZUgiYM80yls1nmBy6Xc3EPcQuvKSwU9N0wp0xq3Y2ke
+	 62eiSKPWW/II0UgwH3Y8rHW86d6Dn5Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1795013304; x=1795618104;
+	d=konsulko.se; s=ed2;
+	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+	 subject:cc:to:from:from;
+	bh=htsl1/fGGN+PK8kCB+H1dqKretrCIe2LVjelGMma61U=;
+	b=vYcO7f3rEhBhvaDX1PNXny5mpLRHqDQccdydc9sgSLYM7bvLQuqz+ULSIDLuY0RO8Tz6+Ai7jV2pb
+	 n1HX7hECw==
+X-HalOne-ID: 1a0a10c3-e35f-11f1-9ca0-17c427e4a17a
+Received: from slottsdator.home (unknown [2a02:1406:27d:15:2438:a644:c11e:a5ef])
+	by mailrelay5.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
+	id 1a0a10c3-e35f-11f1-9ca0-17c427e4a17a;
+	Wed, 18 Nov 2026 14:48:23 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: Jan Engelhardt <ej@inai.de>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	linux-block@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: Re: [PATCH 0/3] rust: block: add rbrd, a RAM backed block driver
+Date: Wed, 18 Nov 2026 15:48:22 +0100
+Message-Id: <20261118144822.3197130-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <176sn0r1-3s85-0nq0-p258-220pnspno416@vanv.qr>
+References: <176sn0r1-3s85-0nq0-p258-220pnspno416@vanv.qr>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -52,56 +94,41 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-dev-project-vis-v1-3-2a5f433bb516@garyguo.net>
-References: <20261118-dev-project-vis-v1-0-2a5f433bb516@garyguo.net>
-In-Reply-To: <20261118-dev-project-vis-v1-0-2a5f433bb516@garyguo.net>
-To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Gary Guo <gary@garyguo.net>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795012287; l=1052;
- i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=HKVzZknJHNulxgGXD/v3bNlpQt5n3b0YntPGYdJBVMo=;
- b=H8hlyEDza0ywKHvNp1WsupZ2Qgc7s2DwIcjqfov8RLPlJ63oG+Ir4gQ4EiHzgaVw1ABkYmEPs
- 4+EkmWySwf8CD0qJUiW5EgfsE8AgMAavsDvbRTBSKr9Jm2rDdBn5dGA
-X-Developer-Key: i=gary@garyguo.net; a=ed25519;
- pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
+Content-Transfer-Encoding: 8bit
 
-From: Gary Guo <gary@garyguo.net>
+> >
+> >  test                  brd    rbrd   change
+> >  write, 8 threads     2004    1563    -22%
+> >
+> >We think this is a small price for page integrity
+>
+> A free 28% improvement, just by using a C driver, and a bit of 
+> discipline in the program (not submitting the same page).
+> Supercomputing will be all over brd if they need a ramdisk.
 
-`HasPinData` is an implementation detail of pin-init to communicate from
-`#[pin_data]` macro to `pin_init!()` macro on how to initialize the struct.
-Thus, `HasPinData` is marked as `#[doc(hidden)]`; however, Rustdoc still
-renders the impl. Thus, also mark impl as `#[doc(hidden)]`
+The posted result were for Rapberry PI/QEMU, The more cores/
+computing power we get, the better rbrd actually looks, so
+supercomputing should not be worried.
 
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
- rust/pin-init/internal/src/pin_data.rs | 1 +
- 1 file changed, 1 insertion(+)
+As an example, on a Ryzen 9, median kIOPS over 3 test runs look
+this way:
 
-diff --git a/rust/pin-init/internal/src/pin_data.rs b/rust/pin-init/internal/src/pin_data.rs
-index bcbdf33f65ae..df1de7b27e1b 100644
---- a/rust/pin-init/internal/src/pin_data.rs
-+++ b/rust/pin-init/internal/src/pin_data.rs
-@@ -2081,6 +2081,7 @@ impl #impl_generics __ThePinData #ty_generics
- 
-         // SAFETY: We have added the correct projection functions above to `__ThePinData` and
-         // we also use the least restrictive generics possible.
-+        #[doc(hidden)]
-         unsafe impl #impl_generics ::pin_init::__internal::HasPinData for #struct_name #ty_generics
-             #whr
-         {
+test		bs	brd (24 vCPU)
+				rbrd (24 vCPU)
+					rbrd/brd (24 vCPU)
+						brd (16 vCPU)
+							rbrd (16 vCPU)
+								rbrd/brd (16 vCPU)
+read		4k	4661	5207	112%	4411	5251	119%
+read		64k	241	265	110%	177	189	107%
+write		4k	2034	2597	128%	1942	2606	134%
+write		64k	111	134	122%	105	131	124%
+randread	4k	3508	4690	134%	3398	4853	143%
+randread	64k	229	245	107%	170	188	111%
+randwrite	4k	1833	2598	142%	1773	2680	151%
+randwrite	64k	108	134	125%	104	132	127%
 
--- 
-2.54.0
+Maybe this is what we should have posted in the cover letter in the
+first place :
 
+~Vitaly
