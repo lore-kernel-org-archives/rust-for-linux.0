@@ -1,107 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.41
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795017338;
-	b=P9SYMt3s2o3NgwePSn6wJGLmqjsi/RiFAj0AmiDCS1wYqcCKNyZuugCyr8r/wrMWUYZC
-	 mQn2SsibEzEKWq1N+H8FwgwdHOPsR5idrGxFBifqQbjanpUY25iU27J4ZGKiddmpis+d2
-	 MccUvZLAIFQ82BK3AUxdzkH9+UD882cbpbi3OTuRI0w7gPrbPohTCinIONPmJ2ykXRL5V
-	 ByfvOJ+Jy1DL77shpfAjPuf102bKIrlkW4O1mMVbrubT9gpRpWRNSjVLw0QhJnN/OdW3n
-	 6APyqUy3I1rjtPu6PR1E3h9EvqrphS217O5ykVacjK1QQxI9f3lE+LfECOxmnFPv2jQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795017338;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=opiYjd9kyePy56Loel5UjRPuD8cH7yPxU8I5WOGrYBw=;
-	b=r4k57obF/c76k8MkcNpm+3nUC+E92MSL0wR6bL8MdQx5kd8rzZaSCpffBqKXhdO1nrFs
-	 CcC3kZ7wA9B/oEjPipI8XbyE4g9z8jmneRyiiUXz+Z+RNs65o3nul91Hq7Og8SIF88xNo
-	 musDOJF8jEB2hElU6dPJifHLcPH181FuCkBuMR15l2iK2hKYaCyG2PFFObu2QnlxftjXi
-	 EtnJrzu8/JrPz20A008NpubrtNigBwYzpWVqGieNlLXg10TEV5xZpOByor5AINPCPeoUJ
-	 aksmK5YMjG983MWa1IDW4oNGQzCQiFiKlTGj2aiR/0oSykWRJEziWIHSxKd31c8nRnA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fMtU0Ddr;
-	arc=none smtp.remote-ip=209.85.221.41
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795017397;
+	b=o44ShqmDPDZ41y1MAxp6pgtQWxxl7TZkVpAbGdRx6qJ1wRIRcdeL8vQFtFItWx7U4Sog
+	 kTJbVGgtkdyyixSajiDKMZQt0sX5wh+qsIBWnSroyzKGHE8reyBH99hsKohoT5QZiBYM+
+	 qfzmFhGYOPDw2fSsH2UC6LKf5x6gKcQD0oOJBhiuv791yL59LHQeJKs+/thmUdWdEcIdS
+	 hBaxpWla6HhQwXLrp/kjNC9KN42XWgcXH9pZxf8q6Ig7+SLeCfHfnZcZs5R1Ara/qOI3m
+	 r+WEYgwzfaGMTQ0UBPqRPw8Bzwi51fYvQbvQH8bqjNHkF91m5EUQf9F7TJhhG0rc+oQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795017397;
+	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
+	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
+	 References:To:X-Mailer:X-ZohoMailClient;
+	bh=6sJDfIqoJRz6OacN4WC3akT40sE3dP03HyRnaz2zBvw=;
+	b=4e0iZAcZfKGPAVxeFINZFFEXZRofIg1jelJfOf4exjSvNdTzpuq2SzvYlSxjxvwuA1yU
+	 lIqJCOB0eSPzMTrLeLVK7Gx1A18f4UMfYetKO0YzvX87u8wsa9gJH6T8rmWD4dLKd+kVW
+	 3rPyfg3ceXBKscMmrY8uYazDKnoS1KYTVa0LGjVA0U2NoaoSwz9E3IPR8tSiweuRAkZSd
+	 Zf79MsSD75OUAPzGOyb7RJWDp2bK1ys5Zre9LGrpXJv2KQDf8iSZSut0Hcu3ZFw3uf63d
+	 lJhIYhuG73LHXP9YMhftZhTkJOtFLwA6xqOth29jA6JM7DMjJCMEilfvWfX627Ug1gw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b="khl/W3s1";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427D7606A320
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 15:55:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 427D7606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4FB606A32A;
+	Wed, 18 Nov 2026 15:56:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AA4FB606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fMtU0Ddr
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-492690dd5daso934408f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 07:55:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795017336; x=1795622136; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=opiYjd9kyePy56Loel5UjRPuD8cH7yPxU8I5WOGrYBw=;
-        b=fMtU0Ddr1dtcFOHuJwKGWLeIEgdUmkB1/fhxjb4Zf29xrbuCBwKDtNAfzl6nhpS3yz
-         FuX/edLakZ2Fok4Qn2UTwFmQ0HbbTWeQIhMksloMIfzCRPKjmYFTO04zTgSOJg8MtX7j
-         ZOBJgwKLyGhIFR8jUDeneVkV5CPzrjMrn20SozI45UkPKvTnwx7+AaWYpIl9ZmMbH2Sc
-         SQqyaINGpPm9OYbHGWDPtmDX1KddLlkIXO99bx00yJjA58qF0qesW8V76y/fQPp24hmo
-         eu1N1JaOs+YzAYnglKnGinwp8YvQv1edehoNrLrUkloAkfRtv58bGLua8XnuUgPBDd5W
-         dfpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795017336; x=1795622136;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=opiYjd9kyePy56Loel5UjRPuD8cH7yPxU8I5WOGrYBw=;
-        b=RGEWh1sQhXI5Xyb61ovuP6g3Ff9LA9J2CpR0G1z0KEO7Ewkm3DPPveLys/0usDKTEW
-         8X6YEWEnfb4olif6oqGVLmm2D8CWSBAWZIlpvKMrqzxwzvy3LQei0hy7+FtKznPyAE9R
-         v7HWl6ZoSixXQi7OKbVJl/YRcNathm9yAyJIWLlACH1zIXvDWHMHmed4/8tnrvxl9+jr
-         y6Ft0RqZKmlkkMAdGKv5cC0fCSjfBYvbw28MkYNRl8RmbhfxyHxPJRb5VCqdURbGMCSV
-         beFD54RB+hVXtrEflfy+MukQywtVz5UjVDug8na1LwfosZBDg0PRh/1rj9QeHrJ7KrMQ
-         AeFw==
-X-Forwarded-Encrypted: i=1; AL+hErHlODwc9WDNAF37VkfxXKkkObH7wqreQOTu0tyBVBTkaBQeWPJu6ckrFJbhTcILiNEg8wkxj3klF42RtGZOsQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/6O83X3Q/wyp79Uuj5uaxlP2K+zPl8Q8hpEwxq9viPwlzLv+Er
-	W778agPVTVPaqdang22i9rztwqkc3ylsA9JIa63Yxca43oT4BcgELGYm
-X-Gm-Gg: AZFdTZemjBQBOqTmDmfeDzKzqrJbvCvkREsT4Vsm9YgMvqbt3MYDiOQLDgNwzsaBQPy
-	31Gpw595l46Qqenu5bteh297RL8zRqGygt3Q4hY0d98RYser/TBCeyhU3scMjLw0K0D1B+MoTHh
-	xup8V7qJrc9+I5DHKR71H1pjkVFl+NDKKmXED+lXgYmJXB0+8uD1kTVfqDzc6XjLEBsYLGgJ4ct
-	erlGpXb4Tpq5zwl7HW4qwtAySDTMl/cTNrcv75CAPp5EXqffmCW9C/tOUKxC2hFWtHFabJII1WQ
-	aen5GAX+CauHmk7sjEGAbb7TSWOysakSFwfyFti6nqlrDZXv5DzhwiysERFPu8Df3EUMXvE9SHI
-	jqQunZ+WXASVP9H5qm3FNw61iQCyKC9JDAyCRhs7V2EaHQJhk5a7qSgm0Ob4pLhWo2+LpKoY9d9
-	zOEE+K3H4+wxGL3EhMLnBRZZZNgKGF1tEDcpC9WEkcauUpJGtn7EVvC+vuq4pKRv5q29c5waHE1
-	SsmUj3hrHW4kg6b+Kss7/SY0IMAjb3U+Pp9YKUxeQFSsqNOfAJ0bR2rIURzXdAqAmS99uCKBoLl
-	lTvKSPgUNIAqwSQdV2V9ZZrtTBw+TX+piwIm/BAwYQqi0bN6F1jN2QNc9xqonjyqspsmgsbmGtC
-	YJRzaqhr6iFx3A57itcjL0UDfR89mI/Vt8QGa3lwmWp7IFJxdbyvBowYhmRTdtjO67gHEo1URnR
-	Nt
-X-Received: by 2002:a05:6000:4102:b0:48e:3bc4:a367 with SMTP id ffacd0b85a97d-4a639ff61aemr5650397f8f.33.1795017336371;
-        Wed, 18 Nov 2026 07:55:36 -0800 (PST)
-Received: from C422HJQPQG-Fractile (cmbg-18-b2-v4wan-168328-cust3701.vm17.cable.virginm.net. [80.5.206.118])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4a654a8c406sm5490881f8f.14.2026.11.18.07.55.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 07:55:36 -0800 (PST)
-Date: Wed, 18 Nov 2026 15:55:33 +0000
-From: "Vishal Moola (Fractile)" <vishal.moola@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	Lyude Paul <lyude@redhat.com>, dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: drm: ioctl: fix call to unsafe function
-Message-ID: <av3KdRxCJsek49L7@C422HJQPQG-Fractile>
-References: <20261118133232.48603-1-vishal.moola@gmail.com>
- <20261118152901.788942-1-aliceryhl@google.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=khl/W3s1
+ARC-Seal: i=1; a=rsa-sha256; t=1795017370; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=UQD1UEoBXfruoRRSm990gZKrS5pwnqQ8A8t4yEY8TsKbkc84+96yZ4cUPomepB0VpoXwcWIu/UCUAWpa1EUKkT7jzz0cZUUaEAXRNROqEmsj1BQmoyc2Z/zEE4ofYQvkVBoaSt70uVZ/t34ZhGjyevNiat2uHgblAMFoe0F+TZ0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1795017370; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=6sJDfIqoJRz6OacN4WC3akT40sE3dP03HyRnaz2zBvw=; 
+	b=SKVj+FIbaJQ6XFiofW78YiTWFsnKKXChpB5PDRP0ovXgeF0cTUsCGs/x8XgXbDRT52tD3rNb3MUuEXHxXFzKS5j8S0AtyNZkMpnAmKrQMbeULa5Vk/KQ5gDUHUPtlNEvAxzxkiBrGrlKErKIIhXqpaMr8U/brFh7EnE3eG2NB9c=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=khl/W3s11re+hi2jq8M3Vc6y0leCIaABgeHODIXSqfFm5t4YwF4T3gjDnrkOGB/JxPTYEPaidXuZWWeaZVVphTaTOOsD4gDGFhZgqKO9zu3VqBqcprTsZnevPcRGZA9sjm2PgLIk998unDIc1J7VnE3b4euxmxaxJlq7l+Hv/bM=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=6sJDfIqoJRz6OacN4WC3akT40sE3dP03HyRnaz2zBvw=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795017368433890.2082940439967;
+	Wed, 18 Nov 2026 07:56:08 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -110,28 +57,120 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261118152901.788942-1-aliceryhl@google.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH 0/6] rust: iommu: add a paging domain abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <b145b2ceb92c73a4fa0477d7b3895a6e3b4adf99.camel@collabora.com>
+Date: Wed, 18 Nov 2026 12:55:49 -0300
+Cc: Jason Gunthorpe <jgg@ziepe.ca>,
+ "Joerg Roedel (AMD)" <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ iommu@lists.linux.dev,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ driver-core@lists.linux.dev,
+ Detlev Casanova <detlev.casanova@collabora.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <42134022-AFBD-49E0-9AE5-0C5885F6C71D@collabora.com>
+References: <20261112-b4-iommu-domain-v1-0-c29e86788dda@collabora.com>
+ <20261116193821.GC2452510@ziepe.ca>
+ <3EB4C2ED-B699-4532-A562-68B78F6E29C6@collabora.com>
+ <20261117202055.GA3115493@ziepe.ca>
+ <b145b2ceb92c73a4fa0477d7b3895a6e3b4adf99.camel@collabora.com>
+To: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-ZohoMailClient: External
 
-On Wed, Nov 18, 2026 at 03:29:01PM +0000, Alice Ryhl wrote:
-> On Wed, Nov 18, 2026 at 01:32:32PM +0000, Vishal Moola (Fractile) wrote:
-> > Fixes: 9a69570682b1 ("rust: drm: ioctl: Add DRM ioctl abstraction")
-> > Signed-off-by: Vishal Moola (Fractile) <vishal.moola@gmail.com>
-> > 
-> > --------------------
-> > Based on drm-rust-next.
-> 
-> Note that patch commentary needs to go after a three-dash `---` line
-> rather than `--------------------`, otherwise `git am` / `b4` includes
-> everything above `---` in the commit message. No need to resend just for
-> that as we can strip it when applying.
 
-Ah, I never realized the tools were that particular about exactly three
-dashes. Thanks for pointing that out, I'll keep that in mind for the
-future :).
+>=20
+>>=20
+>>> The fault handler is used in the same way it is used in GPU drivers: =
+to kill
+>>> sessions if they fault. This way the driver can simply refuse =
+further work from
+>>> a misbehaving client, for example. It is also the natural place to =
+enqueue a
+>>> reset if the codec hardware is frozen as a result of the fault.
+>>=20
+>> IIRC no GPU driver does that, they hook the obsolete fault handler =
+not
+>> supported in new iommu drivers not the new PRI based one... IDK we
+>> have even wired this up to work this way.
+>>=20
+>> It is nicer if the HW can tell you it faulted rather than expect the
+>> iommu to do it.
+>=20
+> We most likely don't need that, and should drop it from this series. =
+We have
+> never used the fault handler in any linux-media codec in the past, the =
+HW would
+> always endup producing an IRQ with a error or a timeout. Using the =
+fault handler
+> would probably be a bit racy too. Pausing work from a faulty source =
+though isn't
+> a bad idea, but more of a nice future addition, assuming it can work =
+in a non-
+> racy way.
+>=20
+> Nicolas
 
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> 
-> Alice
+I am still collecting my thoughts to reply to Jason, but I don't see why =
+we
+wouldn't want a fault handler. For example this:
+
+> IIRC no GPU driver does that, they hook the obsolete fault handler not
+> supported in new iommu drivers not the new PRI based one... IDK we =
+have even
+> wired this up to work this way.
+
+Perhaps does not account for the fact that the fault handler in Mali =
+doesn't go
+through the iommu subsystem, but there is a fault handler. Not only did =
+I write
+the handler, I also had to use it constantly as tyr initially faulted =
+all the
+time :/
+
+Also, saying that a handler was never used in media is not a good =
+argument,
+IMHO. Yes, eventually the decoder reports some error, but this is =
+orthogonal to
+knowing whether someone is trying to access invalid memory. And if you =
+know
+that, you can prevent further invalid accesses before they bring the =
+whole
+thing down. Quite often I had to reboot the whole machine because the =
+hardware
+was perpetually stuck, and if the objective is having all the users of =
+the
+encoder play nice together, then this is not very ideal.
+
+This is not unlike my time reverse engineering the NVIDIA codec =
+hardware:
+nouveau would complain on faults and kill the channel too.
+
+What I am trying to say is: if the argument is "not all iommu drivers =
+properly
+support fault handlers", then perhaps I can vonlunteer to fix this in =
+the C
+code, if they want it and if a "fix" is technically feasible(?). But the =
+overall
+desire to kill a faulting user is something we could definitely use, and =
+the
+remaining question is whether this is possible via the iommu API.
+
+=E2=80=94 Daniel=
