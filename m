@@ -1,104 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.96.99
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795007753;
-	b=L0T2nEm0e5yT4DD52DUkDcngEFVp2HvnsxvHyVH9iJclHZub7reKi0kht87ADzmaaJ3C
-	 WUh3ZHmmacIZqQ317AjlxNNc6mDHfFsyR8P2IFEXsZeVQVnXrgRcxH9DdfL+HmWjN4HPy
-	 /t8SiphexPh/jy0ZUg/XCqJ7W9I1nM3c74TEuyV3/ap9J0KHvSKD7jExy9gGNH7yf0T1A
-	 rEUeuC2tEySaX9CmnviCpoWcM4ukBbsU8+pT3FCPmn1K4A9bOu7urhSt7Mvx8xLPwVn7z
-	 Nw69Rz2AdBPO59bdgURTjVGl41RWZz4vOOOJZ7SoiqEd/y6i945i7wdnlRyle2Oexdg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795007753;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:To:Cc:Subject:
-	 From:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=IBTW2QYj/Psia5swpWkFv+idj/v8sTnzeQ/86NpmGGk=;
-	b=GEkKueE8svniCtyCzn4OHONpM1wGjzLvKnBprxBcUH0h6MHD92htoikvi4TTInpFkdlv
-	 uw/ZEGvYHJ5aTy0qeHKdaP1c6wrKdEkn73sA6UNE6doQmE2wf4RtzMR81uYgu/Ywh2/pw
-	 VD8PU6XpYDXZGsZorSMD0Ux6vgH7cIRkk/z3BUuugu7avqLik0PtsXZIoLQZPk1EymFER
-	 r9jC0JrXAimgopZYK+yb/s66ZwYgFMl1QXLsILmLiufUbA36OzxZqw+7Pmv1i8o14Pa3L
-	 i1sqZc9mKbidT4LywYybdsu/TDjhuU9KBkrhspTl8HF5wmE2iMOZjTxoHclVe7p6+zg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=garyguo.net;
-	spf=pass smtp.mailfrom=garyguo.net;
-	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=PKXSzVve;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.96.99
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022099.outbound.protection.outlook.com [52.101.96.99])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.51
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795008763;
+	b=UnBf/oJCqfycjQXPDHhysXee9P9TabImnL9bsSrJV9gQkSQ6WY7Ruo/SH1hYoG7ouD/a
+	 EKKRa1Rc3HRuU0qlLoVsO2L04iq1+RTdUnha4QFw+amarSXzMwhC6S7AnE6AQNC6YWGPZ
+	 KaH/ur2L9Xs6O+EsrrUc1CW29QattwrOW3SroRdVKUc464gfgT772ZcigdsYgsoOwjDdw
+	 7Jxcr7LqbpCkZOJLPJtL7K75HHfNliUdALWt5i9Li9Gt0EJPyW+OZvnqtywCBRJrLeCAh
+	 1KExUv+uKOiSlY897gFTt3LwWV1fT2FgE4zDocrAYqfLreNNG1vXrmXntkUA2EkXIkw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795008763;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=vARgZ4ae1GlRG7TFzkKePX/f+At6TdRa5dq48dnLYwg=;
+	b=lJI3wGXOCYTlAE7qWHdbtsK5zq9RCbn3u80vItij6+fLam0YS2af7B0wZrSjlzC1uxTx
+	 1/u0mIpgF4MYxIgvc9Vh9fuJVynf/3+2VpM2FzLNH/D2r7vHFsYEA9MYUiquzddsNF+gk
+	 I2F8TkpO/EeLPiB0xxuOilqYEfIIcTvYgn11eLQ233kzhgSv4/4Tt+oPnMKKFHXtzT5/d
+	 lDKDe1Cozmvo1+KO+vkFAWmFBzrHabTyoiKpg+xPExFpsckAXc1HDjpwHHd++7GQIFyjc
+	 8ERmW1A92ivd7d3yTcGT9dXJuTAwnVB6FH5+lXWJH7drQicV9LwQsYoRlBeZhJ96NzA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=R0HGTCba;
+	arc=none smtp.remote-ip=209.85.167.51
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30043606A31C;
-	Wed, 18 Nov 2026 13:15:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 30043606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74844606A32F
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 13:32:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74844606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=PKXSzVve
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EEIlKKAK61br212sCJmc+7AGQlONkpHK8Li8tlbg2PQgWwsby8lcb0UlohTeKTmiAc0Nk33b7S2sbQxezHw8IMo01GsyZgVSar25ktrgnM8DC+eAq6hbyU6jMoJTr9d5fyLU+b/lhADRrtqZfEEjGNurQr46M2USNvO3UT1OVBxvB4l7kLti12ZIluL+QtLnUf7tfpCh+dCI7YBFGH4+jM8ZG+/QqctHifroS5EuTbVtYUhLb3ZaKWOoXikBy+gPaMRRwMWTLvwP8DUXzhQ0zB0FxwcBBAq7rcbRGgTa/CIM9D2maX++hkP7YaoGEB8NXJ7WpwAWIhTN08h3/o19Vg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IBTW2QYj/Psia5swpWkFv+idj/v8sTnzeQ/86NpmGGk=;
- b=f9WiIwp3hqmqrR7HE9iKNy+m7ZbhhyrvtYRkjsRke5cLxwIdI+LNBM/q1gZ3rnb30BtlfpqP+oG9Hi2nfIyTJTkRCtVvextZ884DOlpy4Oz/5nIfk2Gs8OuQav/2JN6dQOgb4+k3smm8c3ZzajDuaUAV0TzeeZt0F33Ko1Fp5pQcJiMsw0MyHwLKUZYq+yYHlXVBqPrVWVa3thgBD+nPXLlWIy9/Juq/rngGyNgxKqFEA1PBW9yemksIZJtAXUGT8JzbpM2Hvo6L6y7hUbkbP7AkXKk0BLGEGvLmla+Qbxl8vRFaq5HfplcWzvjAJIJ43N4LlnK7KvzIXYgQ1VCzHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IBTW2QYj/Psia5swpWkFv+idj/v8sTnzeQ/86NpmGGk=;
- b=PKXSzVveJxCwxO3SpQMmRj3oZkP9dmzlBePBqZGlMm37uhRz1pNq9nKkqBHDeKA3fEpYx89swDA00qaH+HbHsF4SjyzAgSwJbzujUnPjxp+cQp+4Ia27d01EB1wSSIr53h7C0ExFVZ3cp9z7LSQdEIM4lFWVAdTJQdqg6xxhseQ=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
- by CWLP265MB5971.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1d0::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Wed, 18 Nov
- 2026 13:15:49 +0000
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0615.013; Wed, 18 Nov 2026
- 13:15:49 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 18 Nov 2026 13:15:48 +0000
-Message-Id: <DMYD53NKY6UM.M1A2EY4TRSA7@garyguo.net>
-To: "Alice Ryhl" <aliceryhl@google.com>, "Nathan Chancellor"
- <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "Nick Desaulniers" <ndesaulniers@google.com>, "Bill
- Wendling" <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>,
- "Matthew Maurer" <mmaurer@google.com>, "Sami Tolvanen"
- <samitolvanen@google.com>, "Masahiro Yamada" <masahiroy@kernel.org>
-Cc: <linux-kbuild@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <llvm@lists.linux.dev>
-Subject: Re: [PATCH] kbuild: rust: disable function merging unconditionally
-From: "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.22.0
-References: <20261118-rust-merge-functions-v1-1-fe86126522b9@google.com>
-In-Reply-To: <20261118-rust-merge-functions-v1-1-fe86126522b9@google.com>
-X-ClientProxiedBy: LO4P123CA0263.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:194::16) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:1cb::9)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=R0HGTCba
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5be3d5927ceso1135320e87.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 05:32:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795008761; x=1795613561; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vARgZ4ae1GlRG7TFzkKePX/f+At6TdRa5dq48dnLYwg=;
+        b=R0HGTCbaAt0zBaWeiU03QdsUJ5zB3b5nl2+hCxiIpFJveWiSYRqck2FLSpimAl71oi
+         RPVTb1zX7Td6eSZXvcqJ5GQakK8jQFlR/hqbdtNjmr6W14RYBqQp9Qf7VTht+2cX5Pya
+         cIXOgxwaW8F/ZHlUlVj/L+S0rgjxMnPEHWVLxJQ5tqfP/tGgMBjUvpOptED3DDL7U4lW
+         3EXzCsPngS2WxozP+/fuyI2WGhmTC5XbIq8jxRuPnQD/BPQhwA0Dw8UiG7aEeYmlumDl
+         +viPvvBHNaO/ZrO/ivZlU9u+nT3uke3BXcq59CvvMq1j916Cef3BNDanSzP3gMtDoEYI
+         I6tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795008761; x=1795613561;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vARgZ4ae1GlRG7TFzkKePX/f+At6TdRa5dq48dnLYwg=;
+        b=dvS+GxVjLN2eMcM4vnZystj2zicYCW2yjZEL/ylopOmaNC4JdWuXARzadCHeUTDTyp
+         fWIu+yf+wX4vt8+2s84+eLovYIFsO/UAMEUw8drdKuK4TV1EwheZ6Y6clY6KWh+7UA7h
+         h8hjbnxj+uSNFPQFyFOSVN+uFzVoM5m7lXFo+D5qCyDwkCZ0NGeSodr+lC72J/qJBOSl
+         EAUFcE38/Sr2wwSm8kwO3wGjI2/w1DKYmFDJrKOmtGORpD8mc1/Sgp/j7Nl0bS2vh4be
+         YBBLxOG7s8RcTw56Y4NjTIoo8mBTfubtf9vsbJ2i2FsUYBaf+4nY1Wj6VElV0QW7AGxw
+         bwOg==
+X-Forwarded-Encrypted: i=1; AL+hErF402JDcyZ9rBEpNCtdbeOrQ11GWa6RreMAXHkHRoUD0GS/kNR2iU2r62K+IUu3PIKUerPAVh2/0mSWTSQQYw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+m/iJnarFPfI9NXCPQs/Q8klZNAiTHKNMTGh/MwEVHZgjnmBbC
+	R7z+P2Hfviye0oVI6J4BggRKrIx9dwb+SIkE/KQYnc8vtkLrsZSXl1W5
+X-Gm-Gg: AYBFou0zDdZS4JO9gpVP2jG9gQW4Ybg79uq2WCDA5jNuuyWgB3K8AU75A78VvReA4/S
+	9i9WaI8IdDZDZfJqWaEHtk9kMNye7a6FXyQjSp2S+YfXa3v9GAgkCVKnRgoFjuQYKf0u5a9nzFY
+	0nNP/KQzhe/nqZqvRzqmIOT+Tmq0klSma18pcWEPGDw6dyZ9qeDstQ3nNxL6B4ltxzXaO8ZEcrS
+	0q1Zc5t6kB9gveUdJADVeEt+lo97UC8ubSQLwXnYZLWJv+Ovm3E+953hPFs0mPNIBBDAJJ3LE0r
+	+JjxhpHvJ59TE5IA7MOG8xQ5IAHLPEYrf9t9Sq6+nJ03/shbVijNSLiIDv4Td0HQpfECdIdy5ZZ
+	ekgfcdf8+R/xzjcoOrCVWS6EcetN4t7iPglhzqE1ENvLfGkMSBZlU5JO15wBSKmiA//J/KAIIxc
+	tlSiv5t0aVy/0vSoqPC1gRjiN+uucS6wCDf6zB907N+5izeFonr0Js8bmsjoQArmiYZwJWoVtib
+	gGk9SauY7e2ozAzOXOy1wLGTVaVA/6l9P6tn57nAbhl8mpE7tNuUgf5qncuJ553XVrX6iVSx3Bm
+	vaw1qtDv/YylSylBoIIo9KKAQLLXasTLKEoPjGCv8ZhBsZGPVO1jwETy/VyUZrBd933OcrQj5+2
+	OJM92AXXfBaZZ7nvOJE1wwqNDr1cD+mXpmAKr88w6Yn68tagsl1gxqrFCNzD4put53ccFmZqV87
+	iq
+X-Received: by 2002:a05:6512:104c:b0:5c0:a7f:3ee8 with SMTP id 2adb3069b0e04-5c1a9d25ab8mr1067457e87.8.1795008761239;
+        Wed, 18 Nov 2026 05:32:41 -0800 (PST)
+Received: from C422HJQPQG-Fractile (cmbg-18-b2-v4wan-168328-cust3701.vm17.cable.virginm.net. [80.5.206.118])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-4a650d2e26csm4798809f8f.4.2026.11.18.05.32.39
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 18 Nov 2026 05:32:40 -0800 (PST)
+From: "Vishal Moola (Fractile)" <vishal.moola@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	Lyude Paul <lyude@redhat.com>
+Cc: dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Vishal Moola (Fractile)" <vishal.moola@gmail.com>
+Subject: [PATCH] rust: drm: ioctl: fix call to unsafe function
+Date: Wed, 18 Nov 2026 13:32:32 +0000
+Message-ID: <20261118133232.48603-1-vishal.moola@gmail.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -108,94 +114,60 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|CWLP265MB5971:EE_
-X-MS-Office365-Filtering-Correlation-Id: af85fa9c-3e23-4ea7-5858-08df45761034
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|366016|10070799003|1800799024|921020|261021123027099003|261022075727099003|56012099006|10067099003|261021121427099003|261102123227099003|261009223027099003|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	wyC6wZ9tp8ROgXbPQNb450w+QRLRhoIcytU3uSLQhDSipWMf4d5piy+0ixuHBSHeM0WsI1gwr30oFSXrvrFMd3pNoR/9UNkjNb5A0vjLRCWKx+ZXtK0hisvKXC+XBLbBkrgNGHN1MQxPne/gl6GNiYHRJQntQ2x19eNUGYsZ1X4Fr54tUD5zdKUlPUTMLcFKJRmw1be4Yn2vcsZsBCwZ+lltClEY2bvPoA9dTZWL22qJJHrofoNRm8ZGX+OlTrpYOSQO1SyRBDr6kFgzw6pmQY4Xx6qYhu6DoUqrrlHewhoR+OpTsiVE2HcQk1jUqbhLn89hp/mGXbeJJhJLNaa4JKndYwLKpXnlRLzMA7o6PIG95gyz212xXvNnD4NC39b4obQwu0XVpY96v7Z+r9ZdQNlrInfr/uArzyAwVYypxQF8nxM7e+v8q+IGTcgPgXEiiBkJUHbMnqPpEzamyazuOMmQX1JNvRLtSR1McdMwo05uRBiL8Y1qtHdSgmqbKXQNBjAW+aJda1lVDwrnNUqcyHdEQjeG+i4uknDmGNAvVO4Ht5LXf8cwCk6gNtSH0np8jqyPZsNjHPS52CMPWZkavG94z9pmikSuAKDgFOujH0RuUtL59ZZAy0EUfKeL+5ROxDv5NBHZAInelZPejGix5knj0EVjFaTI31FIMoDnchQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(10070799003)(1800799024)(921020)(261021123027099003)(261022075727099003)(56012099006)(10067099003)(261021121427099003)(261102123227099003)(261009223027099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eVhDM2FVZGVkanVJYVkvcW5zbnJYRmMzcEUxOEUxYW5MMjM5TCs4eG8rcTcx?=
- =?utf-8?B?VjJtL09hKzE1c2c0Q2Zmano4SHc5Z25SRG1QZFl3TzVvUUxFTHJNS2huWlhG?=
- =?utf-8?B?cjNnVlRxbnlzTmRMenVLQ21TRlMvMTVMQ2wrcVpSaHlDYjd4NElCZW5udHVQ?=
- =?utf-8?B?ZGlWYzZndm9uSlpUR2p4WkR3RUp5SThDTGlzRk1jQnFndlN3cFRkanhOQ28z?=
- =?utf-8?B?V01RQ1JFb0w5dFlRcUFEdWhHWUJBODdkYnIyMCtFV3EvdFhyTmNrYmlKOWxu?=
- =?utf-8?B?KzJDZHkrOTBGOS9zaTBkcDVPQVVhMGhOTFQvVjdZdDEwUGE0VkpUTjdxcXV5?=
- =?utf-8?B?bUdPd0hPbWJXdmhBcE1uZFJ2b21EV1MzejZvTThUQkhpTDVkcTJQYi9Xa2Vr?=
- =?utf-8?B?dDhmVVdjVmlwN3V1d3ZSRjJubkRxUTQrVTNYcmsyT2FpbFJ3dGJwTDRuN1pX?=
- =?utf-8?B?T2ZtSXRMenkxbXhtR3NlT3B1LzdGM29PSzlNS3VQaGdMODNMczc4ek80OU1B?=
- =?utf-8?B?c2pFcFVjemhGOExzRGZxcXlzZWZJaUFkVkhBdzBYTUFTMzNYcEwyTENvNU1t?=
- =?utf-8?B?UVlCTWFva2oxWkFYbnBuT1g2SStTZlU0aDJsQTJXMGdMbUJqZzJkd0ZyY0RL?=
- =?utf-8?B?eE5kV2d5WmQ2QlhnRTBBb3A5dVM2c2RDb2twaE0zbFNZRzVvdnM5QU5XQk1K?=
- =?utf-8?B?YTY4TlB1eHBaNHVDNFBhR09Wcnpldi9RUjBZbTFwRW8xYXBQUkp1UGp4ZzI5?=
- =?utf-8?B?TkEyZkhmR1FJQ3B4TFNKcFp3WDBob1BYOHZONmJYbWhYamREa3FTRm1LM093?=
- =?utf-8?B?K0g4THU2cUJKaDAwWTc2VHJ4Y0htZVcvN2FUWXZRaHJxcEI1R05WOGRRRGhN?=
- =?utf-8?B?QUVpMnB0Tk1oR0IxSm5QZkt1QlFIODRrNTN5VXJ3NG9qeEQ4VWFja3hMWWto?=
- =?utf-8?B?K1NHamIzT2FoWVBJaU9zTG5LVGVLTVMveUxyVWxpRzh2MWorYnczM1V0MU5Z?=
- =?utf-8?B?bWtKeG9iREU0NmNjL0s4QzYrZGoxdFkxdjB6blVENExPcndpSHpXVjNETHgr?=
- =?utf-8?B?ZFErVml3N3pXTHJFQkoxc2VPODZNSjNvZW5NenZ3b0MyODZxTEdoYlJjMXF3?=
- =?utf-8?B?ZGx4SzVXRGRTNHNzVzc3MjExVmdXTXhtYzV1Mkd4OG1OUTZNcXVVbGpXTjNx?=
- =?utf-8?B?N3ZmeEFNUXQ4dXNmdXVxWHkzZ3FwUndEeWhlRnJrcVFzamxuY0k0VHpTeUFH?=
- =?utf-8?B?eGZCdGpxWXFycFNrYm5jQnhJSEJWbVZzRlJkZjlZbS95enFZN1lHUUgyQnZ4?=
- =?utf-8?B?QXhaNW5OZ0lTeDZDRmtwK2RqOUNDNkJaWEtmaW0zQ2Exd1M0L1FPYThiZTBr?=
- =?utf-8?B?eElzR3kyUFVkLy9DdHk0NVlQS0U5ZzhyQUg4Qzd3elNSUHRtVlcyblRoSHhF?=
- =?utf-8?B?dS9EZTBHZTdlaXVTK2E5TEQyL3BvOUlkZXNaaWtacFR1NHhZZWhKL1FaWkRV?=
- =?utf-8?B?Uko2RDVFcjNhaldaclUxUkx0Z1djVHdVY0RjZnpjWU9XYXp1aTF3Q3lKaXkx?=
- =?utf-8?B?U0RjcXluM2s1eVZDTkxDcHlmV0lUV1NROVRGQWZHOWl0ZDk2RkVVbHcvbFhP?=
- =?utf-8?B?QnpRSS9BUTRBckZyWmFsaUVyR3I4cU5iZWlJN0xlbThYQmxzK2JGeVhIOWJo?=
- =?utf-8?B?ZnZET1pNTi9SMzlGSEpuanI2Qkd0WXEySDBNVTRobVphd2JaM0dWcnFiQjZp?=
- =?utf-8?B?OC9na2FlTmplQnBMS3VQbXpLN0p5UWtuTTZ4anl4M2VSWW9MNHBqNUgxZUkx?=
- =?utf-8?B?WlJZTW4xQU5YbXE4QU82dHJ3YW9zaGlaQXhQSHdnTTlSQ1RIaVZKU3VPSmZ2?=
- =?utf-8?B?Q3JldytCT0h3Zm53WE5jRGNBMGNXYnlkVXpRR1VEd3I1T1l2VWZTSHgwdXhP?=
- =?utf-8?B?b21uN3FJZTA3dWp6WS9KZ1hPY0dDYjV2WWFXYW50ZzFLM0lhR3JxSmpqREFu?=
- =?utf-8?B?RlFzcWl5bXJydHZ4ZWlGdm5lZmh1UXg1c1J5aVBna0dTajFmdmQ3L0FrVEhx?=
- =?utf-8?B?VzZHeWN1QjlBQWE2Um56QjlIN2w0b2VsRzlqcXl6MC9rMVJPV0JranVlNTR0?=
- =?utf-8?B?bjRaa0Q3djhJb1hITHlNMHlZOWxEQUJQak9ibnZvb2NRQVQ0RGt6MCsyeitO?=
- =?utf-8?B?aEQrdlJDR2pGT0htdzJ6K0NRYUR4OFlyeGF5WHZQZWJLbng4aTk1aGdiYjB4?=
- =?utf-8?B?cG1uMGs0UmlLblpsaHA1bEVla3l6d3VjTW02ZGlVWVB6STlFazJ4L3VBOWRI?=
- =?utf-8?B?ZUJKQ1JvNUJLT2pWZUNGZllpWHkwZ0NuRTBRY2NGUkN2eS9jejRVZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: af85fa9c-3e23-4ea7-5858-08df45761034
-X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 13:15:49.1402
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hNW9ONJY95jc8XH9BMvAkHSGFeNMxGaKwURTRSvUuK3rwimGGKnULmHJEhJE1sDK3HqKQNnCN4bAUavBS9f1Dw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5971
+Content-Transfer-Encoding: 8bit
 
-On Wed Nov 18, 2026 at 1:09 PM GMT, Alice Ryhl wrote:
-> Function merging causes various different issues:
->=20
-> * For CONFIG_CFI there's an LLVM bug causing functions with different
->   CFI hashes to get merged. This can lead to crashes at runtime.
-> * For gendwarfksyms it causes functions with different CRCs to get
->   merged. This leads to broken MODVERSIONS information if the function
->   changes in the future so that it can no longer be merged.
-> * Wrong backtraces when a crash occurs in a merged function.
-> * Possibly also issues with pahole/BTF as the merged function's debug
->   info is lost.
->=20
-> These issues are new to Rust because in clang, function merging is off
-> by default, so these things have never come up before. Because of this,
-> turn this option off for all configurations.
->=20
-> Link: https://lore.kernel.org/all/avy_9SPRaPSKD8b4@google.com/
-> Fixes: ac61506bf2d1 ("rust: Use gendwarfksyms + extended modversions for =
-CONFIG_MODVERSIONS")
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+dev is created via an unsafe pointer dereference. Following the
+convention, it should be wrapped in an unsafe block, but it is not.
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+The compiler only properly lints declare_drm_ioctls! when its defined
+in the same crate as it expands in. Since upstream drivers are all
+separate crates, this is silently ignored.
 
-> ---
->  Makefile | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+This has been present since commit 9a69570682b1 ("rust: drm: ioctl:
+Add DRM ioctl abstraction").
+
+Fixes: 9a69570682b1 ("rust: drm: ioctl: Add DRM ioctl abstraction")
+Signed-off-by: Vishal Moola (Fractile) <vishal.moola@gmail.com>
+
+--------------------
+Based on drm-rust-next.
+
+I encountered this while trying to build a rust driver out of tree. I
+copied the macro to an out-of-tree crate so that our uapi can see the
+same generated values without needing the generated bindings.
+
+Ai has told me that this is because the macro expands from the same
+crate its defined in, which sounds sensible.
+
+I see:
+
+error[E0133]: call to unsafe function `kernel::drm::Device::<T, C>::from_raw` is unsafe and requires unsafe block
+  --> driver/drm_ioctl.rs:77:33
+   |
+77 |   ...                   ::kernel::drm::device::Device::from_raw(raw_dev);
+   |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+   |
+
+Plus a number of warnings. But warnings are warnings so those are
+whatever... Its all silently ignored upstream anyways, so doesn't
+need a cc-stable either.
+---
+ rust/kernel/drm/ioctl.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
+index 64af9eacc306..5a2e2f4f0e91 100644
+--- a/rust/kernel/drm/ioctl.rs
++++ b/rust/kernel/drm/ioctl.rs
+@@ -152,7 +152,7 @@ macro_rules! declare_drm_ioctls {
+                             // dev/file match the current driver these ioctls are being declared
+                             // for, and it's not clear how to enforce this within the type system.
+                             let dev: &$crate::drm::device::Device<_, $crate::drm::Ioctl> =
+-                                $crate::drm::device::Device::from_raw(raw_dev);
++                                unsafe { $crate::drm::device::Device::from_raw(raw_dev) };
+ 
+                             // Type-inference anchor: the closure is never called but ties `dev`'s
+                             // type to `$func`'s first parameter, which the compiler cannot infer
+-- 
+2.55.0
 
