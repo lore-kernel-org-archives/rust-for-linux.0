@@ -1,153 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.150.75
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795020336;
-	b=31Kkvg6gwncwbVbpnZTDc/9nfumbNEUTypCckLR6GKGU5PuKFm7xnFdZbv3RNEwZpR2l
-	 frc9t+Ec18Du/npPAocU4vXu5V+9mckaxgE6p8Ail78W728l6i91FU9AuBoqazAZE0JO7
-	 YtSFOZim23DAK1+Oc9yUFxLUsOfXKf/8qq6ktyEgTmJP94WkeRxvjQQljkkgn8VmZXL8B
-	 VLsbsKl6vYl9EwHDHvoNCIGS2yc+dga5Z0DTJxMijlBkzZLq8Et2zTx1orT/1QpMgPLHO
-	 WMtOT93aqAqP4YlDqsDFU1dtnZnjP6alefcb+SAgFOuVIF86jnY1DK2s2WVujw6477Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795020336;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:DKIM-Signature:
-	 Received:Received:X-MS-Exchange-Authentication-Results:Received-SPF:
-	 Received:Received:Received:Received:Received:From:To:CC:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-OriginatorOrg:X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-Proofpoint-GUID:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=MrX5mC4VPlUVN+JUyclxkItxC7EtCEZKrKl0Ge+qRwg=;
-	b=dzdAwlMMFIi6LKhLxLrTivqZHjXkaAOBSYG+YDTJWFCKu1f2copqdFLTf1/vg885ZLDR
-	 WpcrPxS07wKW7wyPGbYvA3VFtEuvpaTShm5dyp2KjNV8lCtIsUl06waG0rJCLVMUw/loJ
-	 tbczqaugB9pNfOe7sEQFW4/ZvSyjb/uEfcgT3YtKJPJorILanTuun9lQ/HekGZXkH29ly
-	 2U/pdw3MHmN39mEcVNjHSouuCFTwzGKIa8XqrPSKC/L3hqz6jhzxZ0Ff280WOGZ2UDzqL
-	 GNJKuucy0kysZp8+LD11aVbv5Xl0PwJkvzwWKZ21yPpOtPpEVzBBtEwaSZKZP8wMFeg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ti.com;
-	spf=pass smtp.mailfrom=ti.com;
-	dkim=pass header.d=ti.com header.i=@ti.com header.a=rsa-sha256 header.s=proofpoint-05-2026 header.b=BT1iEfES;
-	dkim=pass header.d=ticloud.onmicrosoft.com header.i=@ticloud.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-ticloud-onmicrosoft-com header.b=AWMo1Lqm;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.150.75
-Received: from mx0a-0002e601.pphosted.com (mx0a-0002e601.pphosted.com [148.163.150.75])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.45
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795021048;
+	b=o3s+ZyaEsMCokM7OQyktFaPYHXLF4dov0FjdMgw8hNoe/OgE8YuAmCE0W6YdoLkOnFKc
+	 W/uajIT4Fg2nUovBhaX/CYbrY/pIgAea3nIsCWt06BG52/p9ZxQaOjGo9neaP6GhfoMdH
+	 iSPBAjhhqO4HxArsJvGQWs/g7/164hLmhl7APht2yZ5CrHp4WZrGmaW4MOi4O80Mzd6j1
+	 JXbnLanh7iZbfRhFlJqKAyokR3/CKIIh4QzFZ7UwxlGFqnFu7WH6PCQ0pXIoXd2AivR/z
+	 kO8K0h++uGxompxvN2AJFURHpns2p9spxb85S6Fxt2qhFMFLsSXNDn9d9VpWNr3Y0yg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795021048;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=q4KDOTPdWsAvn5fnJD2QpV13fNXrFnBH5XSZbqxlxTc=;
+	b=J5coj3F8l02hSflK5N8HicCP4ZkYIiVJAH9RgCSFFOYTx6RiB6ERyjbMYXasLtmn4KS7
+	 18vKPYSt4Ax/X5fHfOyEzdBFaYVcBWKz+joPZATHkWAmZ9qdWqwI3drRPWBpx9zU9pGno
+	 dtfg3Ee3d3MIv24txW4MY6BZBrorGR8RJDEY7nLrQv1JlOagfQFpREF8gnKlqFidlG9kC
+	 CfAEgOXppWCr8nnGfcbKGwCCZDRc4oFSfxOJ8aBOO4JcyPJpPjoK1quaoAKg2+jAN4x73
+	 XFS8CV5rwbw6YrWz8y5yL1prmTVkO3hxl7nhECdz5qfqFW9+R4d8ac2Wo3KEIpzQrEQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gDbaeCUk;
+	arc=none smtp.remote-ip=209.85.221.45
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C6B606A320;
-	Wed, 18 Nov 2026 16:45:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82C6B606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1E860A2611
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 16:57:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE1E860A2611
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.a=rsa-sha256 header.s=proofpoint-05-2026 header.b=BT1iEfES;
-	dkim=pass (1024-bit key) header.d=ticloud.onmicrosoft.com header.i=@ticloud.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-ticloud-onmicrosoft-com header.b=AWMo1Lqm
-Received: from pps.filterd (m0384305.ppops.net [127.0.0.1])
-	by m0384305.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 6AIDPr7h3440141;
-	Wed, 18 Nov 2026 10:45:01 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	proofpoint-05-2026; bh=MrX5mC4VPlUVN+JUyclxkItxC7EtCEZKrKl0Ge+qR
-	wg=; b=BT1iEfESJSY70O9Xl25EynN8v4XMCGVthJEQIfiu94bA43htMfYDfvx4P
-	7rQixkBhSTMasy/bZBlXCyLitYyHuIatF/KCf9/L4VUX8B5Ob6smamqrjE9d5e1W
-	prUoq1r7ZDkZKdsa6i7E57x8pRcfASqImecvcDWpaGnnuEEnIuW8sPMhQsm7jK6m
-	vqWB3qCVitALm6HqokTa1FsBIlNNPq6eVSqBlANVaffW42Bmn/VEHGgl583l9j5Y
-	uSl/8TX5/btKS522qnZyEISvuYMCun0mz2EnRwVARuzNFurq1PDJmpfwb8Gw0Cut
-	drLh48E3v2MvJlJJ7QbtnkGal4bXA==
-Received: from bl0pr03cu003.outbound.protection.outlook.com (mail-eastusazon11012020.outbound.protection.outlook.com [52.101.53.20])
-	by m0384305.ppops.net (PPS) with ESMTPS id 4j19fp2bak-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 18 Nov 2026 10:45:00 -0600 (CST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vyioxvXn2hSGK7JcgCtBy+i7m+ITO6HRZq8wbf6R/ERE/3xsfER0YZw4Zi416Vrx/fvJzi2UMdLd8Mw8CEA9IrInVSAIJnW/3JSGWW1s6qi9QNjqdlcKGHrt8B5nyHrpMhGiuVMbJbbUaMuRglJ1quewgAtLtDqVmDppD2j1JFP3OloFJ1iMXWKrsXjdWTguypj6hA2HZ73xemd7rHQ9555t79dD6LvYdMo6CEEirz9Xsn5f+CLabJjQFHfbrWOIpEzct9n5+ExJZ43K73sNYLqO/idVZt4qmmsqgFXfv64gt553bsGhlp/VLANcK63muVNwpCHcHP/M6okTWi3RvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MrX5mC4VPlUVN+JUyclxkItxC7EtCEZKrKl0Ge+qRwg=;
- b=CPnUvZmbUZwqrDmlOnbWxFBF8yKdlaJGMf7TOUk1CwCiNA+3QlsLdR8TJBFO8dsMZaM0hh30p3WqJs40Y7eAhbsQGO0gH1HSefJZfPlmbtptbDYj4dhVwdEiAHi+RWH++Io8fbpm3Gsa2vqRBMv84jVKpRho/TAxef+I7PDeC+NwFnYxEFmLCHxD52oJC4if/xvnfF64ovr70nkGi3ueE/9t9StLFeVWkqucg4XYU0A4m3dbYVMJ4JzHefHZX/EzfIAM6Mu1Uxc+FDTUieygbDSf74jX/uUwVUyzKOISrA6w5Q9sasrJWIrcb8o81xz/Cz8BN1IEbw1VYMGzi1HYLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.21.194) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=ti.com;
- dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
- dkim=none (message not signed); arc=none (0)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gDbaeCUk
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-4a42b34e930so988130f8f.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 08:57:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ticloud.onmicrosoft.com; s=selector1-ticloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MrX5mC4VPlUVN+JUyclxkItxC7EtCEZKrKl0Ge+qRwg=;
- b=AWMo1Lqmc0qPxLiyj3UbwWr3nbiqbQ7wZqSUO9qtGJec4Gb1iGsLmlKZ4zol2X04o1kMW7QLfQDQcVM47RfG5qkFP/w2DRgdBRjLYZ3ukiUU1N3XgbEdJ7fdP9Hvgxp+pkf86J7ualyGPfMFWltJi9Uz8RyOajvGlAMUEsOqnZg=
-Received: from BL1P222CA0015.NAMP222.PROD.OUTLOOK.COM (2603:10b6:208:2c7::20)
- by CH3PR10MB7957.namprd10.prod.outlook.com (2603:10b6:610:1bf::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Wed, 18 Nov
- 2026 16:44:55 +0000
-Received: from IA0PEPF0000003C.namprd03.prod.outlook.com
- (2603:10b6:208:2c7:cafe::37) by BL1P222CA0015.outlook.office365.com
- (2603:10b6:208:2c7::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.13 via Frontend Transport; Wed,
- 18 Nov 2026 16:44:53 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 198.47.21.194) smtp.mailfrom=ti.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=ti.com;
-Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
-Received: from flwvzet200.ext.ti.com (198.47.21.194) by
- IA0PEPF0000003C.mail.protection.outlook.com (10.167.249.73) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Wed, 18 Nov 2026 16:44:51 +0000
-Received: from DFLE208.ent.ti.com (10.64.6.66) by flwvzet200.ext.ti.com
- (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 18 Nov
- 2026 10:44:05 -0600
-Received: from DFLE205.ent.ti.com (10.64.6.63) by DFLE208.ent.ti.com
- (10.64.6.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 18 Nov
- 2026 10:44:05 -0600
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE205.ent.ti.com
- (10.64.6.63) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45 via Frontend
- Transport; Wed, 18 Nov 2026 10:44:05 -0600
-Received: from ula0226330.lan ([10.249.36.95])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 6AIGi4Gk1372119;
-	Wed, 18 Nov 2026 10:44:04 -0600
-From: Andrew Davis <afd@ti.com>
-To: Igor Korotin <igor.korotin@linux.dev>, Danilo Krummrich <dakr@kernel.org>,
-        Daniel Almeida <daniel.almeida@collabora.com>,
-        Miguel Ojeda
-	<ojeda@kernel.org>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        "Boqun
- Feng" <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin
-	<lossin@kernel.org>,
-        Andreas Hindborg <a.hindborg@kernel.org>,
-        Alice Ryhl
-	<aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-        Tamir Duberstein
-	<tamird@kernel.org>,
-        Alexandre Courbot <acourbot@nvidia.com>,
-        =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-CC: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "Andrew
- Davis" <afd@ti.com>
-Subject: [PATCH] rust: i2c: Remove use of bindings::i2c_match_id
-Date: Wed, 18 Nov 2026 10:44:04 -0600
-Message-ID: <20261118164404.237865-1-afd@ti.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261111205204.481923-1-afd@ti.com>
-References: <20261111205204.481923-1-afd@ti.com>
+        d=gmail.com; s=20260707; t=1795021046; x=1795625846; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=q4KDOTPdWsAvn5fnJD2QpV13fNXrFnBH5XSZbqxlxTc=;
+        b=gDbaeCUk4GIRuxDdeulzhOU84d7EBOgDmBW3pOzJDe3LLdN1nTHx/eqr38pjPOmtPU
+         ZZiSrhlKPjhHiIeMLGGoVnBZj7UvbiTbgmzaEW4zDTAm4UQove74zVlNSNaj/DIY1Eh8
+         65MATJR6ts2TkdIZsG7eDeqh8gICNdODo4FzYaj6iZEFhCLNZmqGG4swtcESCxRFzH2i
+         7A+vuoQFVCuN8NyMeEZdXnLDyXBSNx9mFjLFf//TTfB78DE3YIZTp2vZGzbpN3QZw8bs
+         vIFDglROm6lHh6pLIlRQEoSRIGdrelE//UvVbtHMUAtyCQCtm61WNdYJR92PJPwJhQwf
+         ijzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795021046; x=1795625846;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=q4KDOTPdWsAvn5fnJD2QpV13fNXrFnBH5XSZbqxlxTc=;
+        b=1eL7D+JcZmLfsM/DYLfO/yJQ0v8kgHQwhUhLRuAQRUp0Fz7m2x4/gVGBwyBe0jcqsD
+         Fys2FNwwfT8ji/sP7J1Fg8NG0jrn7xdZ3sbjIF6/igdhK4SYRixapz6rXwNkAonWRo3G
+         ZqTg8Hn36Rl/s6WxK8du3OS6vqRjp2I8sD+DTufjWKPR4bEgRA0t3nPbUfktv4tqc60M
+         BSrxiL4hF2PbfraxbiYbaIwA4W17cRQCvVHOEmPDKgB45Je+ML7yppF0Qln4XjSJcIok
+         4GngGxp8ywETGXzzPhyinxWAkXOdW07/1epksf1n91mpuchKvNbcIm+uJnOmI+6rYpJg
+         TqJA==
+X-Forwarded-Encrypted: i=1; AL+hErHpsohbT/1qyTZa5t/mI21MlNn/MozkvndkMWMH5lFNHU07nYFzz7n9YCeNApdK0MESC69UZMGbQSDNPsVmMw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+kKK4pzi4cvCw1Y9z5xDoAef+gvO8DG4WtAVSQCILTT/L0Cd/W
+	8xyhjbriWOSRgb3mFBbZQ/raBauDcy0Q9rNcreVzmnufeA7Db+C5fMnb
+X-Gm-Gg: AZFdTZcJH90/b6WZ4EyKQGrV2MbGq4O66CjpvQolmZhqmVfbYRmJizZk30b4MJUZCLk
+	D+tgD/nGhRTUHaGGamvijPOuPMqtRG9JeCC3e0E+lpFgld/Ib4Fdw7z0jIduglc2+MYWbEYf8Qm
+	yMEOo0Bm9oClvyC+gyijQ+S2BMlszYFZxK9qYYyYWrzKJNe5apIgSjj63a2xJxO73WDSH0AHBQi
+	attVwyL9GrmpLyX9hIvHgihTKgdGbTvlF19cgy+/zl5mNKKLQyvJi30Hj/14wxaSNKCmuWqqyr1
+	R3H1RKx/QMBU7KzbDTFOYTyaZ124CtxE6MBD1+rxydNkqB6U8UhSLImaVPE4Pw7eZcndsXevcLp
+	ZbvQWCR85EHyCNzCM+vygreIluY3hk+rQ6joDETnnWeVR1cdjuWFBQBzw6vH19Akv3JAcAZO8cf
+	ADSp0iiPrJ0dvMfwP671c1UzJnuQGnLM4htLyIZXzbpx+sAHjhUS35vQRZQjkqwGIx2VBKI6qej
+	IRCXWO3aCHq1umdHvlaRvwpu88KsEqzLNEcuQqSDD6Of7SrtQKFzBn+cwiDlEcDPQG8GmlUpbfz
+	TeluiQdQGylKSvwLGRvTvHtJiooR/KHU6dre+a2HK5gtMLLNg4QthY/C+9jnAKDHC4ZrbydVyj1
+	sX3s2irq1VNuJRs2uEBJ4Fktg9OpUJtnxltsD1BE82v64Zgyf8KAmIbb6onfhDTS44H6FVe3PIi
+	cl
+X-Received: by 2002:a05:6000:608:b0:493:28c4:331e with SMTP id ffacd0b85a97d-4a63ac6b509mr6786601f8f.28.1795021045786;
+        Wed, 18 Nov 2026 08:57:25 -0800 (PST)
+Received: from C422HJQPQG-Fractile (cmbg-18-b2-v4wan-168328-cust3701.vm17.cable.virginm.net. [80.5.206.118])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4a656b1cfdfsm6052676f8f.47.2026.11.18.08.57.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Nov 2026 08:57:25 -0800 (PST)
+Date: Wed, 18 Nov 2026 16:57:22 +0000
+From: "Vishal Moola (Fractile)" <vishal.moola@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	Lyude Paul <lyude@redhat.com>, dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: drm: ioctl: fix call to unsafe function
+Message-ID: <av3Y8mTaRi7l-5iy@C422HJQPQG-Fractile>
+References: <20261118133232.48603-1-vishal.moola@gmail.com>
+ <DMYH0CXPUTMP.J3AKN619TL34@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -157,130 +111,34 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PEPF0000003C:EE_|CH3PR10MB7957:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f5b7b29-d106-4ed2-15c7-08df45934446
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|82310400026|1800799024|36860700016|376014|261102123227099003|261026121527099003|261022075727099003|261021121427099003|261021123027099003|921020|56012099006|10067099003|18002099003|22082099003|261009223027099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	wHvzV6Hk0DwVPy1BJE78sz8VY/MXU4q8RmvTnwMQXKtOGBOObzVfqyztqa4xKpr9cuYzwHdjHmljU7SKe4tISkGVlHotmlIQDDDJf2DOkbU7jDpDFCGwIvlUtiZTNbHk9i2GB00no5xF4hrXDdeauzA5FKwQoGxKcgblnKEMhbZ9yz6aCeE0vNXj8IHohyDAgZ0qwjle21O1qqsuUJWvJO9o51qj71dYAUgj2I0INsIwJiVBcWfjtxzLjuYzitx/YLCEeJuKI/XJR9Xgf05SgszIFOwIndprIyP4atFOG3WN+nJiM77OjrlJ4y3oBKmL+R+F2/fPKHWkiV/ufMeBi++d2P7pEQ0FBcwOZn/kfEAX8LH9O/2mibiKb79wHYulHEf0H3P7hs8JJdhWz9sVsE1jZbQPjERmYBYamTHYe4A233SUEDn6fOyQxalyPke6rQ+yIh7Prwgu/dVdVpZWTP2ThKRhv3cCgzOxhVKwXTsxlYo00m4qZ6AwVT5zoinreBUnub/sDZpN55XNmxK4kA7zarDxQwHVsyYEC0yE0+5ZVyHARCkPx6x4cfnV6VsQUhEMdbf/a/jwH2NJGzcKGurnVuumr2rq4AyDukm59KdQWNCPimFXChwPvpkPHEn3uYEld+jHSzvCZtE8bHMsc6Bt4miK7wi98ONYIy6sF25WPkWpQclrgXdMXk7hdSHyuohiPLRXFEX/6y0oG07Gz99GDtKzu4/8Arurt5qQlweP8esQpCnxOT69TcJXv2XM
-X-Forefront-Antispam-Report:
-	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(82310400026)(1800799024)(36860700016)(376014)(261102123227099003)(261026121527099003)(261022075727099003)(261021121427099003)(261021123027099003)(921020)(56012099006)(10067099003)(18002099003)(22082099003)(261009223027099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	aEO1y3B+QkKbsczFrwV/G1nSKxmMgfQgPemuZmOGyzLk3NLtCKru9vOBt8AGaDZV8VsVXmaK15GdxedHLpcgaEULajUi2bY+nyUjkLwVpG0Y2zkIuSFnJWTpFdulaC30cnRUDyCoxWwj11AcpCp5T6vcE3vOSC2TTTfod/RIpdva7uiN2enZYoSfLqvMfN+w0yJpuJ2RRhJyWu2hbjt0f2zmpfQAbDL1fLy4YXmo4JZBMRpeXhLht6wkLa2SbNN2unQqpJFl7pgOfjp0zW8ClRqN8izTFh6dGfAesEo0hCsuvNisTFByh+XU0lYUXn5A2a0cn0lVJXcQ2ZQs/egQU+msU0qsaq5IyCrKZXYIFJ3St1vwB+djJQYxK1C7u9d80AKO2Z0hDcI9BjnRvztWXDWJ+hBwqQlgXn1sbv+0QguUG+1/Ast5uUFAWyruEeDV
-X-Exchange-RoutingPolicyChecked:
-	xpAWeHOm7UqYDDxU7kv0G1egUdZc50dvTjUg9Hw4wEt4V320VHLM4LuKzHqxjj3gk2jBKRYgp/+Ml/t4S7T8Sv+ak3GNGlma3rCvukh0LzEhG6H2JDzZR0wyxuDVCOpBD0zalMdZsgrsNalXW4wggFn6VgGKtHAnRKd8z3o2AOOVjIU3VROO1ykamG8kg7Hctd/U87WpVh5tNmA5DGIv9ukTtw1QgD2PIIlKneNwrdycUL79WRJvfF5t7hiT696ZoZ1IucZCW6IOg46zRk9PyHUQDiEsAZcx2M8Urv/9it29bTm/xlAcPMnaBmhShDJUIw2ai0m4Ec8IrOHzxvNEJg==
-X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 16:44:51.6656
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f5b7b29-d106-4ed2-15c7-08df45934446
-X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	IA0PEPF0000003C.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR10MB7957
-X-Proofpoint-GUID: 8EcU8Aegs0O-Mqsk2w1bj2j-cLXauBIe
-X-Authority-Analysis: v=2.4 cv=ebKo7LEH c=1 sm=1 tr=0 ts=6afdd60c cx=c_pps
- a=3tfckwpITFtzIurveUQz+Q==:117 a=iwqwCZQqcuTv3JOpYdM7/Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=zJRp6_cAMcgA:10 a=AlMIdn_sM9wA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Z8NIEmU8O1QQgoT56wFK:22 a=taLDd7a_hP9WKsMzeGRc:22
- a=sozttTNsAAAA:8 a=_2yia0w1AAAA:8 a=zBEN6GVtQS-nI4kvh8cA:9
- a=4yAS8WwzZ1jAEY03B-5r:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE4MDA2NiBTYWx0ZWRfX5f7UV7JLOxqK
- 4zQ7sZJDCzdx1VtjjgtQ9FCsY/UQmEZPeCBYT4kjkIDs4doNsK1Qt8LfmBGISbHBCG8aEoJdDDj
- jf5yKM4pIzJ5XwPFairIrcegLncDd7c=
-X-Proofpoint-ORIG-GUID: 8EcU8Aegs0O-Mqsk2w1bj2j-cLXauBIe
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE4MDA2NiBTYWx0ZWRfXzQkD27M1UQMG
- UwTaCV2N2DGarvcMedyel+llQNbKP0zDpt+Z1osyCLg/0rgpnWgU3sHwCX2+BSTlmcxNZluhyPL
- 9z7k7vp+Wfm7iorTumyD3ig+9t0pwprrskHls75rTwW/dCZysXFh1Dh5ztuV21mYCIfOgFg1DGg
- jw9t+W73E/1Hq5Nc5WIYsxYEjU1UYhyE4K6v1BhBfbrE5lqeP7EyyffRZhyI0ppLzcXTT1U2EsY
- d4xUJKmllj/tfMgBrCnvyl32/vKsSSOwj5uWkr7tHeZ+KwrDqB/WUc2Cew3ALEVz0uox03v1PyG
- EVWouG5D7kHK9RYmCuAgw3N9A49wVA+1hjViDJCRFpP/5+/KrhE8NXO8zL32uq+UmdGkGRUHpGT
- nZ9/0MrXKNDo5F1YnZbufcHdk+As4xF6t6BsgNG+VLYQclQcfn0VpzywnKvFSNnuy1K8/GEf4/X
- gFt4LThhOvS52Sip1KA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-18_04,2026-11-16_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0
- adultscore=0 priorityscore=1501 spamscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611180066
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DMYH0CXPUTMP.J3AKN619TL34@kernel.org>
 
-The C function i2c_match_id() is slated for removal, remove use of this
-from Rust I2C by switching to bindings::i2c_get_match_data().
+On Wed, Nov 18, 2026 at 05:17:41PM +0100, Danilo Krummrich wrote:
+> On Wed Nov 18, 2026 at 2:32 PM CET, Vishal Moola (Fractile) wrote:
+> > diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
+> > index 64af9eacc306..5a2e2f4f0e91 100644
+> > --- a/rust/kernel/drm/ioctl.rs
+> > +++ b/rust/kernel/drm/ioctl.rs
+> > @@ -152,7 +152,7 @@ macro_rules! declare_drm_ioctls {
+> >                              // dev/file match the current driver these ioctls are being declared
+> >                              // for, and it's not clear how to enforce this within the type system.
+> >                              let dev: &$crate::drm::device::Device<_, $crate::drm::Ioctl> =
+> > -                                $crate::drm::device::Device::from_raw(raw_dev);
+> > +                                unsafe { $crate::drm::device::Device::from_raw(raw_dev) };
+> 
+> I remember there has been at least one compiler version in the supported range
+> that complained when the safety comment isn't directly above the unsafe block.
+> Has this been fixed in the meantime?
 
-Signed-off-by: Andrew Davis <afd@ti.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
----
- rust/kernel/i2c.rs | 39 +++++++--------------------------------
- 1 file changed, 7 insertions(+), 32 deletions(-)
+I'm not sure? I'm compiling with rustc 1.98.1 (48a229cea 2026-09-01) (Fedora 1.98.1-1.fc44)
+which gives me no errors like this.
 
-diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
-index b4ff25c830fc0..37d914fcb3662 100644
---- a/rust/kernel/i2c.rs
-+++ b/rust/kernel/i2c.rs
-@@ -148,10 +148,13 @@ extern "C" fn probe_callback(idev: *mut bindings::i2c_client) -> kernel::ffi::c_
-         // INVARIANT: `idev` is valid for the duration of `probe_callback()`.
-         let idev = unsafe { &*idev.cast::<I2cClient<device::CoreInternal<'_>>>() };
- 
--        let info = Self::i2c_id_info(idev).or_else(|| {
--            // SAFETY: `idev` matched data is of type `Self::IdInfo`.
--            unsafe { <Self as driver::Adapter>::id_info(idev.as_ref()) }
--        });
-+        // SAFETY: `idev` is a valid `struct i2c_client` bound to this driver, so
-+        // `i2c_get_match_data()` may read `idev.dev.driver`.
-+        let raw_info = unsafe { bindings::i2c_get_match_data(idev.as_raw()) };
-+
-+        // SAFETY: Non-NULL match data is either the OF/ACPI entry data or the `driver_data` of an
-+        // I2C id entry. Both are built from `&'static Self::IdInfo` by this driver's tables.
-+        let info = unsafe { raw_info.cast::<T::IdInfo>().as_ref() };
- 
-         from_result(|| {
-             let data = T::probe(idev, info);
-@@ -184,34 +187,6 @@ extern "C" fn shutdown_callback(idev: *mut bindings::i2c_client) {
- 
-         T::shutdown(idev, data);
-     }
--
--    /// The [`i2c::IdTable`] of the corresponding driver.
--    fn i2c_id_table() -> Option<IdTable<<Self as driver::Adapter>::IdInfo>> {
--        T::I2C_ID_TABLE
--    }
--
--    /// Returns the driver's private data from the matching entry in the [`i2c::IdTable`], if any.
--    ///
--    /// If this returns `None`, it means there is no match with an entry in the [`i2c::IdTable`].
--    fn i2c_id_info(dev: &I2cClient) -> Option<&'static <Self as driver::Adapter>::IdInfo> {
--        let table = Self::i2c_id_table()?;
--
--        // SAFETY:
--        // - `table` has static lifetime, hence it's valid for reads
--        // - `dev` is guaranteed to be valid while it's alive, and so is `dev.as_raw()`.
--        let raw_id = unsafe { bindings::i2c_match_id(table.as_ptr(), dev.as_raw()) };
--
--        if raw_id.is_null() {
--            return None;
--        }
--
--        // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of `struct i2c_device_id` and
--        // does not add additional invariants, so it's safe to transmute.
--        let id = unsafe { &*raw_id.cast::<DeviceId>() };
--
--        // SAFETY: `id` comes from `table` which is of type `IdArray<_, Self::IdInfo>`.
--        Some(unsafe { id.info_unchecked::<T::IdInfo>() })
--    }
- }
- 
- impl<T: Driver> driver::Adapter for Adapter<T> {
--- 
-2.43.0
+Hopefully the build-bots catch it if there's a specific compiler version
+that still dislikes it.
 
+The following command shows a few other occurences in the kernel like this,
+so if its still an issue I imagine it'd likely be caught somewhere:
+
+	grep -rn -B1 '^\s*unsafe {' rust/kernel | grep '=$'
