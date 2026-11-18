@@ -1,45 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795018666;
-	b=TYionNW4NGu6CwAkpRjMcYua5Amrh176awwsKzWSsZOBQZWYDVZAlh+r46SaeZ4BSfu/
-	 ccxqXUmpNSGGgilyf2Z+Og2/SLnZiRCvzVBdKKdy0dbhaT+D9pyQeorcSWHENegjdgXfU
-	 J0GHTbxrzOW5XGDaDsXsYppIH08SInTDxJdK2FEMSNSR8PNVNR5Uy7wy73GBo2LHISWtq
-	 Rr8JahT0Qs+r2sXDkcQF/uQBSIqfZuqLwsX85sbFujulQcb6fT1xKTJN6igFpUH+TIHB7
-	 /DcomM4Bn36qMHYnZ14XV61AHAYn09szuhWcryi8HcZ4nHxg/Omtw4OLsK65jde3woQ==
+	t=1795018759;
+	b=fv05XHM+qwpsMyS3MGBY4fq6Z4cD7CQ1Kla88oFvn6U1IwvfWHQtsWbrVL3VW1xEugrK
+	 0e7WdFIPzZXvSU7FFJu15ARqBLXP6H9tm5xhl8NtdUHVSgzqV0nnl3rIU1kB3g52CKDOa
+	 5jKfgBxuvdPPPioLNB/GAbgylTWjFIFm7b/YfLsXFNvA4V9UlYRMabFtoszlxtKITaDtV
+	 EtrZzWxiGCjoSGLyex46wXswjG9VLyyRzguDLLt271jioN1d+PGaczZCiUcaBEZ52biNA
+	 MiHcHACYYHTkcznW420gEnwEYS7sxpGjxhPKknWV6qU5XBzeFIF7W4fXZkCBaZqKUig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795018666;
-	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:To:From:Subject:Cc:References:
-	 In-Reply-To;
-	bh=I3euMsr0R3jsztb6tBx9FVmWbLkOv+l5VRxL2+eRjeE=;
-	b=Viv7DN1dWmsA4970LIka6rAFRJYrHNVVSLj+91eDEdk1uz9l4XsaiIK1wY2UxRMS/oVE
-	 GfhmxSkfrhUNF+6+9XWWpHNXGk+mi6fuwF34BQz2yJ3wpy/SJSipTKXIiCUlfvkwrmaUI
-	 m5zNrJoYTu8YeC+7mRtBHiwrt2s80Kw6JOmerD9R0apEEjDgF54u7PvP4zCAajSfY/30M
-	 wZbK4wLicYY9Ghii0olq5txwegDcXO3fEHxbwLUHg32l2nqdWm2MsPyuj2STe/3VEUvT8
-	 KPDc15XCrQCdI+eAL2QiHiHdJ2frbXpfYrz2lD8043OxZZFFmU5gWd3CUBejJ5O+QCQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795018759;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=B3/C9Gq7wR7AFFJJ/O6DHxX08MLwJ2b7auylc1SLKLo=;
+	b=ZX/H/KRoZhgamL+TGFrQBsrohxR8ptYmRdz0fQWoZwTinOX+KywNZgtJi69+bkkNtfiC
+	 wGF7fUgmCQRhI928pXTrU8ww7Jqy8/km3eVeUYUkul1ki3x3nqMBczT2HzAREeendL9wL
+	 fYYpQUtxTp9lZnOizQpxRK9Am7VQTurlga9bwlhZOsVv806jpfKr9I2FJVhZyxL7UaPhi
+	 W7IT1yNq9cs7Je7/y82JjrzyQpVLyEVI8On1wbMO0NYVU4336AH9ZJ3HmDeDQuCM4yRhu
+	 K6ODEKvmbRMOx99Epu9cnRMXGtn0NSzKOVH0mVoaEU2q+bKk4g/wkAjLe/GRP9skvjg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f8PZYMun;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RsfWkpgD;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BDB606A31C;
-	Wed, 18 Nov 2026 16:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D53606A325;
+	Wed, 18 Nov 2026 16:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f8PZYMun
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF10D1F000C5;
-	Wed, 18 Nov 2026 16:17:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RsfWkpgD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F0B1F000C6;
+	Wed, 18 Nov 2026 16:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795018666;
-	bh=I3euMsr0R3jsztb6tBx9FVmWbLkOv+l5VRxL2+eRjeE=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To;
-	b=f8PZYMunuilXaJTcx8ZrhLeWaXNaLQTyX35hbHY7pCCKA2Twh6JKaXBTb664lnEtK
-	 WZiRgXI5eYvyj6uEQS3ldceWXYXAB8DXU4dLpF1lw/VrmuqJfil64tbS/Tdjhk3iQm
-	 GDrk4Nqxl/xyO6Rfq/VXvCezB57ny7QdymCvlgWXvxd1z4ZoZlXQf+I0LRDGPvbMhP
-	 GagWO7vKstIVbcPAgEGfo9W8Ty4P2jKHP8oAZCiFG6IDK9XntLugEV48XLpuRqVTjv
-	 x6CvGQ21JzXWXxt6tZ1AmfJlNIfu8ODWussVNXSZwuJZCaC0chRrECTwuFUSa6h1ct
-	 0YeX5gjxMt/Jw==
+	s=k20260515; t=1795018759;
+	bh=B3/C9Gq7wR7AFFJJ/O6DHxX08MLwJ2b7auylc1SLKLo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=RsfWkpgDLp1mCjhaNligmLWmgxBb5kY1ZGpwk2QKIjpJU0PyMPKIHdu+2FbDu2pP7
+	 veZvae8ECkaTr3EnIw5zQjqv94cbE+quQ/yYL3JJnIh2Q6+mkXgQ9dqLu4c/HB9Py5
+	 aIhzX83c9IUyrfuLValnUJck/o7xoTfXqZPLkKBBLkmedgPNc5MVmPE4oMcpOPb/7U
+	 hziGnXN/+DQVEFqpDq3RZeNY+8+0RF1H6Fc1ZCiqt+PCG7t2/y0HD68iuIkeD7TKmx
+	 M7thuTJDf5GoPDLWXp9K+8FQEVM3+vNvf0ej94fc6RB4bVStI32dGCS/YSCN6B2e0t
+	 fu5T3lMDz9vjA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Wed, 18 Nov 2026 17:18:21 +0100
+Subject: [PATCH v22 5/6] rust: page: add `Frozen` page kind
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -48,47 +51,197 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 18 Nov 2026 17:17:41 +0100
-Message-Id: <DMYH0CXPUTMP.J3AKN619TL34@kernel.org>
-To: "Vishal Moola (Fractile)" <vishal.moola@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH] rust: drm: ioctl: fix call to unsafe function
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "Asahi Lina" <lina+kernel@asahilina.net>, "Lyude
- Paul" <lyude@redhat.com>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20261118133232.48603-1-vishal.moola@gmail.com>
-In-Reply-To: <20261118133232.48603-1-vishal.moola@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261118-page-ownable-v22-5-d63ff73f4075@kernel.org>
+References: <20261118-page-ownable-v22-0-d63ff73f4075@kernel.org>
+In-Reply-To: <20261118-page-ownable-v22-0-d63ff73f4075@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, 
+ David Hildenbrand <david@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Brendan Jackman <brendan.jackman@linux.dev>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+ Mike Rapoport <rppt@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+ Rakie Kim <rakie.kim@sk.com>, Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Matthew Wilcox <willy@infradead.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+ Carlos Llamas <cmllamas@google.com>
+Cc: Igor B <igor.b@beldev.am>, Vitaly Wool <vitaly.wool@konsulko.se>, 
+ linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6418; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=Vw4L8gIAfErZqGCBSVgqXqrFyw9e8Tx+BWAmaOIHTt0=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq/c/yGLmpTN6MVE81epUxMfSmozWD0gj9RVIwM
+ 8pzLB0S2CGJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCav3P8gAKCRD6UCkIqsW9
+ 0LQ/D/4qFDkHHYuNbKZFNk28mwu2XI0qWlvZb+yKZysjypoPr4fOmrZ52fDhIYrdb4eToGSX2pG
+ sLZYateZ/XLI8/ShJGeVVXvty5PamrB53EBrFHry0pfIXTyhhvUHdtyMhqFV0zPOncen7wzZuMc
+ sh4iMH6JXsFaWh5EjOpi7yIuRsnfo9dP3rFNJydZG4bYTwmmElB1suffnRljJEpv4Fog39s14fP
+ sEzyj+M5hM4Lv3Ce8acqYBXahS7sYcDIHxbx+MyDDgq3SlK7MaaCPBBPoloAwK36C0pHDIQuo4N
+ YMQzOHiwA9jGFiSjuuv7kHiPA99sRACo3j4WSrO1z7HMqAn0SXgYC6h2XaP/RmwF4CfvSIN4uFf
+ M45sKyol8xfrYPaAwdddKfMu/+wtz/cOUEWnB+WJlVp+OUt0DIsPk8sNoTB3bVwMVJhsxZlP0da
+ fB8lWj/iQrSAF6HkhDvmkztUYToSBhDlKhNisMYc2nYT18YzQp9utP3tH5a3PDq8cMDGN2KYnPe
+ 7Sr9jKuGg76FnsQULzx1Rr5VxP3KV9rpM0gft+GAaq7qxry5xGlQ93jqYT8n87mf/JCAm6RHxGZ
+ G6y4hiqOJubqTspteKAReaNroTHo92wf6I+oCinvXU314YT3MhOn3dlGiWb8GcUMx+mToEN5KZv
+ WzWZmET0WYr76zw==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Wed Nov 18, 2026 at 2:32 PM CET, Vishal Moola (Fractile) wrote:
-> diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
-> index 64af9eacc306..5a2e2f4f0e91 100644
-> --- a/rust/kernel/drm/ioctl.rs
-> +++ b/rust/kernel/drm/ioctl.rs
-> @@ -152,7 +152,7 @@ macro_rules! declare_drm_ioctls {
->                              // dev/file match the current driver these i=
-octls are being declared
->                              // for, and it's not clear how to enforce th=
-is within the type system.
->                              let dev: &$crate::drm::device::Device<_, $cr=
-ate::drm::Ioctl> =3D
-> -                                $crate::drm::device::Device::from_raw(ra=
-w_dev);
-> +                                unsafe { $crate::drm::device::Device::fr=
-om_raw(raw_dev) };
+Add the page kind `Frozen`. A `Page<Frozen>` is a frozen page that is
+uniquely owned through an `Owned<Page<Frozen>>`. The reference count of
+a frozen page is zero and references to it cannot be taken, so the
+ownership is exclusive.
 
-I remember there has been at least one compiler version in the supported ra=
-nge
-that complained when the safety comment isn't directly above the unsafe blo=
-ck.
-Has this been fixed in the meantime?
+In contrast to `Page<Exclusive>`, a `Page<Frozen>` has no invariant on
+who accesses the data of the page. The owner can share the data with a
+device, and thus the data is accessed through the unsafe raw accessors
+only.
+
+Add `Page::alloc_frozen()` to allocate a `Page<Frozen>`, and let
+`Page<Frozen>` dereference to `Page<Base>`.
+
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+
+---
+
+This currently has no users, but I add it here for completeness. Let's
+discuss if we should keep it or not.
+---
+ rust/kernel/page.rs | 90 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 89 insertions(+), 1 deletion(-)
+
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index c885bcf4f886..c629764f773b 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -93,7 +93,7 @@ pub trait Sealed {}
+ /// Marker trait for the kinds of a [`Page`].
+ ///
+ /// A page kind describes what is known about a `struct page`, and thereby what a [`Page`] of that
+-/// kind can be used for. See [`Base`], [`RefCounted`] and [`Exclusive`].
++/// kind can be used for. See [`Base`], [`RefCounted`], [`Frozen`] and [`Exclusive`].
+ ///
+ /// A [`Page`] of any other kind dereferences to a [`Page`] of the base kind [`Base`]. The
+ /// purpose of the dereference is coercion: a reference to a page of any kind can be passed to code
+@@ -138,6 +138,7 @@ impl PageKind for RefCounted {}
+ ///
+ /// - `Page<Base>` is a page for which nothing is known beyond its validity.
+ /// - `Page<RefCounted>`, or just `Page`, is a page that is managed by the page reference count.
++/// - `Page<Frozen>` is a uniquely owned page that references cannot be taken to.
+ /// - `Page<Exclusive>` is a uniquely owned page whose data follows standard Rust aliasing rules.
+ ///
+ /// Operations that are valid for any page are available for all page kinds. All other page kinds
+@@ -435,6 +436,93 @@ unsafe fn dec_ref(obj: NonNull<Self>) {
+ // non-zero and it is okay to obtain an `ARef<Page>` from it.
+ unsafe impl AlwaysRefCounted for Page {}
+ 
++/// A [`PageKind`] for a frozen page.
++///
++/// The reference count of a frozen page is zero, and references to it cannot be taken. A
++/// [`Page<Frozen>`] is accessed through an owning [`Owned<Page<Frozen>>`], and the page is freed
++/// when the [`Owned<Page<Frozen>>`] is dropped.
++///
++/// Unlike for a [`Page<Exclusive>`], nothing is known about who accesses the data of a
++/// [`Page<Frozen>`]. For instance, the owner can share the data of the page with a device. Thus,
++/// the data is accessed through the unsafe raw accessors of [`Page`] only.
++///
++/// # Invariants
++///
++/// For a [`Page<Frozen>`]:
++///
++/// - The page is an order 0 frozen page: it was allocated with `alloc_frozen_pages()`, and its
++///   reference count is zero for as long as the [`Page<Frozen>`] exists.
++/// - The page is owned by a unique [`Owned<Page<Frozen>>`]. No references to the page exist
++///   together with the [`Owned<Page<Frozen>>`], other than the ones borrowed from it.
++pub struct Frozen;
++
++impl private::Sealed for Frozen {}
++impl PageKind for Frozen {}
++
++impl Deref for Page<Frozen> {
++    type Target = Page<Base>;
++
++    #[inline]
++    fn deref(&self) -> &Self::Target {
++        // SAFETY: `Page` is transparent over `struct page` for all page kinds, so the pointer cast
++        // is valid. `Base` has no invariants in addition to the ones of `Page`, which hold for
++        // `self`.
++        unsafe { &*ptr::from_ref(self).cast() }
++    }
++}
++
++impl Page<Frozen> {
++    /// Allocates a new frozen page.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::page::{
++    ///     Page,
++    ///     PAGE_SIZE, //
++    /// };
++    ///
++    /// let page = Page::alloc_frozen(GFP_KERNEL)?;
++    ///
++    /// // SAFETY: The page was just allocated and is not shared, so there are no concurrent reads
++    /// // or writes to the page.
++    /// unsafe { page.fill_zero_raw(0, PAGE_SIZE)? };
++    /// # Ok::<(), Error>(())
++    /// ```
++    #[inline]
++    pub fn alloc_frozen(flags: Flags) -> Result<Owned<Self>, AllocError> {
++        // SAFETY: Depending on the value of `gfp_flags`, this call may sleep. Other than that, it
++        // is always safe to call this method.
++        let page = unsafe { bindings::alloc_frozen_pages(flags.as_raw(), 0) };
++        let page = NonNull::new(page).ok_or(AllocError)?;
++
++        // INVARIANT: The page was just allocated with `alloc_frozen_pages()`, so it is frozen and
++        // we own it.
++        // SAFETY:
++        // - We just successfully allocated the page, so `page` points to a valid `struct page`.
++        //   Since `Page` is transparent over `struct page`, we can cast the pointer directly.
++        // - The page was just allocated, so no other `Owned` exists for it.
++        // - A `struct page` is never moved, so the page is pinned.
++        // - `Page<Frozen>` allows no other references to exist together with the `Owned`, and
++        //   none exist, as the page is newly allocated and references cannot be taken to a frozen
++        //   page. Thus, it is sound to hand out `&Page<Frozen>` and `Pin<&mut Page<Frozen>>`.
++        // - Pages have no logic that relies on them staying on a given thread or on them not being
++        //   accessed concurrently.
++        Ok(unsafe { Owned::from_raw(page.cast()) })
++    }
++}
++
++impl Ownable for Page<Frozen> {
++    #[inline]
++    unsafe fn release(this: NonNull<Self>) {
++        // SAFETY: By the function safety requirements, we have exclusive ownership of the page, and
++        // by the type invariant the page is an order 0 frozen page, so we can free it with
++        // `free_frozen_pages()`. Since `Page` is transparent over `struct page`, we can cast the
++        // pointer directly.
++        unsafe { bindings::free_frozen_pages(this.cast().as_ptr(), 0) };
++    }
++}
++
+ /// A [`PageKind`] for a page whose data area follows standard Rust aliasing rules.
+ ///
+ /// A [`Page<Exclusive>`] is accessed through an owning [`Owned<Page<Exclusive>>`]. It has the same
+
+-- 
+2.54.0
+
+
