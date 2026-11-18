@@ -1,111 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.152
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.144
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794974382;
-	b=rqhNnCtip7viqVADJi/Cwk6uy5oWmZCjX3bcwMEsjQvAQTHtGoq5XE/s1IOgs4sjgXdk
-	 pianSIh58DT0n1BuUWSnw25QALJK9eJuCQb3WClynuVvsecWiTx9/1VGcpidXXhAp/RaC
-	 7qakaAf0sMLv9qCEypvmXpOt2HrxHeKJHDEsBf9u1eIjMtySZVHSgiuCkOnD2VYSfZ6Qv
-	 YP1/kR6ruscJNImKl1z0txEZT9A275J3APhD29FIKBByV5viOI0Gir+g9kFHlFzvFgCQC
-	 Fvq8srLsosxPqKbEMAamtyqi0CZ7Y+TXSNMHhpN1rZTPLNREIAnPSmMHYowp8074aqQ==
+	t=1794974387;
+	b=YHIbE+wcxWQwttt+6j51pwq5rCHaWjljdWtRSH8lavLCeURhYXyJcYTU/WOPL9BT06sI
+	 LR4t5LHWM3xbCQ4lQhCXQ404mQt2jdvmKuHRz1tHEmi4OIcMqcCp1YAojfpyjcOCDP0Ca
+	 lqXtQf8phGA121jgCIugM3mi2oHkYSZoNWb3KI3/ZVPQ0Z8KO5QtUm5SadiJRv7gebTJa
+	 P0T9ey06LmqQ90x0ROP/b0uqEfRev0jp5X6gRz91KDtlA9jWqi0qj9bS6MTYwtfhP9+eN
+	 q0sXbJWPeW/pamTn8nWdE3MQjIsyyiE6+vSyvP/AhnMb5LR0Wc57tI/KlNUpQbJUOPQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794974382;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794974387;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
 	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
 	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
 	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
 	 References:MIME-Version:Content-Transfer-Encoding;
-	bh=K3PFIi9kdO3sng2wrRVdm/PobA0YV07+0TmKpx/wELI=;
-	b=NLhgW+e8IxiB0BvLmGQVR/V0zOTTJEif3tfoh1pO1esINfDM2a3YSF4rMgJc+JJAaS8b
-	 yWlt3U+F1oIogHgwjVj5GSVLzgEnsjeHWJUMi9eYa2IQHN6ZanoS/TQQQBjM03rnHdmvW
-	 jn+rn1C6pl0/StVLIS76lfC7pKY8Dy/ayd7NgK5BawXPYJUjlfI7OZ0twLMd/gMcE6u2b
-	 i4mMBlPaClFK6r2I0k1IF85+vEj1r/FL6qs+gFGDrZrm1E+pyhPEKjWlhVNvbUnX3fmfW
-	 e1AOsm0WtTM1iMoCU/qwANJhUv49xOH5lgeTc5Got76kQlWRwiysnySmCOiUluDtTeg==
+	bh=To8dBNHSQXCgtFljQBQa3HiNdIIE2PU2SiFVazSeS0M=;
+	b=C4bAHWhGLfeSZv8t+0tn1ekGzyrA2uQmIZz/d3TQOhEli4YFXt+3j4JOiA3AzWU4hABi
+	 ZpwvRzT6BGGDW68/DkusJrnEnoyhMReOKNVEYNoRztlnln1znj7EShP85l/vFOtpnD+3q
+	 EKVq2pB0OQSpu10L4BmtLOxZdzfHOwXONTGK57y9gpMo+ecTDl1zEqhKQ/i+s1Zd/lZqM
+	 Naa6YKHH2/YUrfDC/icDjtbV1xiBVCk2tMQb5Pe/YauDjupZCZtw6NaOyjicJuJoljvxb
+	 fFePhlqXBPkT5s4M/OQJc6Gfwhw6evRcfHszAkXlRkt13k1JjRUtPf30ZWQETGDdjqQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=flapping.org;
 	spf=pass smtp.mailfrom=flapping.org;
-	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=JCj0vIVI;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=anVFoMYl;
-	arc=none smtp.remote-ip=103.168.172.152
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=LaepfhCx;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=vggEvyXQ;
+	arc=none smtp.remote-ip=103.168.172.144
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A67606A32F
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 03:59:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B1A67606A32F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EF8606A31C
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 03:59:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90EF8606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=JCj0vIVI;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=anVFoMYl
+	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=LaepfhCx;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=vggEvyXQ
 Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id E343214001BB
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 22:59:40 -0500 (EST)
+	by mailfout.phl.internal (Postfix) with ESMTP id C3F69EC08F3
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Nov 2026 22:59:45 -0500 (EST)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Tue, 17 Nov 2026 22:59:40 -0500
+  by phl-compute-12.internal (MEProxy); Tue, 17 Nov 2026 22:59:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1794974380; x=
-	1795060780; bh=K3PFIi9kdO3sng2wrRVdm/PobA0YV07+0TmKpx/wELI=; b=J
-	Cj0vIVIYl+QfU13IXQoAa/pIxAP7cxM7Wsec3lbm1IKaDjlvvKv9/pvpVD6HIehR
-	i32byjBCPcoV7Zh6cniESDhO/1kzMPoi+JAdaeF6opZpjlrm/vswA/2jFKFT33iq
-	8BC0JerOBV1cwMUvSD1NQz3RAKSsrTyejPe5kcChz/8kY9FGk0HR/Rf4+mVuBrgP
-	ZHD3nIj+w3OEUAceYPgbL/LjmvYB0aGBPf8GqNJAncPgEyMvjLj/7rTFxcKzofPM
-	EUkvxl+R8SaLBKSVIffXozPVYhU4XDxvJ27zMA170JFJL2+utSICyv891JUiuJOW
-	tQcRULr1RDBbip8pcgNPg==
+	:reply-to:subject:subject:to:to; s=fm2; t=1794974385; x=
+	1795060785; bh=To8dBNHSQXCgtFljQBQa3HiNdIIE2PU2SiFVazSeS0M=; b=L
+	aepfhCx4z+wa2harp1xWvPJnJUy7piQeOHmEeXK5IL1P8plKovs5FxCp+4EPfdzP
+	23ahfKk8bvMW1Q+OAddAQ3XwnjfQsfUZHePWTj2ikppYR1Lb+x775TN2R+yRkrMo
+	wI3P9pPwhQtLEu37NQpYVvNvaahdVaCymnKFbN4xyrvkI5St9iXbZCO9j8V8vNBt
+	bah60tc2MELZjxdCafsZyUfCEJ5MdEbTSOWiIEX6O8RR1p8OjIgyMQlB8TFBcQNw
+	pdqC0FJJ1FA3erX2X/xL/rPfloHSdzUdpYZW5pFgMtKsCF+Zn2lBcVy6SiS8wYB2
+	QBMP9fpZ6z838T1wSTthA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1794974380; x=1795060780; bh=K
-	3PFIi9kdO3sng2wrRVdm/PobA0YV07+0TmKpx/wELI=; b=anVFoMYlfEoIe7d3u
-	pUmmcBCJd99zEJeEWOa1vYG7teCvp0StqMW384AZDZxXaS3J7sjWJ7Y8/N06RMpj
-	2ekORxj4/shhu5fHBfW4EreFQmejTc0N3jd55x7hs0RNqJQ+OzBAIvjPO5oU/gn+
-	NbiatF2/QFtpeEs1S77nY6Y+Xnvno+bKYGXJ7g50FyxkyCKSwQZPQcKGij03/azN
-	8MYb66pLLQELfrOv0xHS/RqY1Le4YYxUZKXpcqKQbQ+FvSuRTzwBiZZUAPRBmXI/
-	BIqJ1RVBWfnI12hONtTMpG6JLycA9r5boY0n2fsud6wieyOz9lsWvXkubl4sfGR9
-	yajfA==
+	:x-me-sender:x-sasl-enc; s=fm3; t=1794974385; x=1795060785; bh=T
+	o8dBNHSQXCgtFljQBQa3HiNdIIE2PU2SiFVazSeS0M=; b=vggEvyXQ2r2KY+edY
+	3nReJFAJ7LjvV1+k7F/J8cLmjloTA6hQcJYPyDoSG1F/teVa3jMBpOMCLB2dQouV
+	jqGMleEK3CJkn33mMJsJW2LadJIw4vKWn1Txy8baPTjHl5963eDaaoh2NlZBQVfF
+	8iRd1wNCyZV1j6CgZSn6tn85Q3bAn3EpKvFV7Ccyw5v8pYsZ+yIDUvFmlJTedWhn
+	PyuCF83TYrNxmP6Y3wNknWiaol99gBPy35EUJ90pmUSIXHARZ17la9xgEwKte0hg
+	DsdzrhKueXPts40iHleys1jYGnRdV/9Fq77be14YB5G8VJBo/cGt5rR5JNtzu4XY
+	vnmSg==
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
 	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
 	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794974380; d=flapping.org;
+DKIM2-Signature: i=1; m=1; t=1794974385; d=flapping.org;
 	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
 	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm2:rsa-sha256:gvD67TFJSjpPRTrHVl367EgFstRcS4Gdejeh1AgGXIemfS4
-	/Kwy69MAi5o+U4oBhs/RpxN+IpWiQybGZQdiPH5jCRU7DPA8uOY6eGoWKAiVDdhR
-	Y6eAvCY5plu3WXJJsNVYbTSNBffDvIeq64LxRUr1Vfa3hd7ng1LI9k8z+RpJpQAn
-	1g9swnr0O5PmGzc4wz2LiiE7sHE6Km4gxhPvOGW6kPIIrVEQJigXmIa3VYGvtY3N
-	EvPY+j5FfGr1O4XT4CeJpQZOLogz4ZsV+plbZ9kfT98Y/8CUXLynL4mxtSU04++x
-	z1OTh/Y3g9UEBbNUzOE7R+FbL0/oHR4P+8Pm1Dg==;
+	s=fm2:rsa-sha256:atUSv+ojUs8IKsbvQQjsJCkazXwEOqhKFhzrBgbEi5Ddgf9
+	9KXCa0NfPh85Zrp+L9QBgOx5/aVyoJT5q2PoK+sRH0Dhc2kaokmlTe7snMIyjrkE
+	jw/tORM7lGkDv/OEGNCIAnGHON4kVbGrMhhpT38MVk54m8rC0PfKxZCiXxi13WEm
+	YeDbGzJUTuX0oqcLCsKG+xXYhh8n/X3d12gNX42PBFRziFYNgeINwJBK1xgochDX
+	Un8IZeWIRzMjEmCBkGF3awSQYkxYj/amy6HCi/QdGlH3B2D/BVdKOXZxJxWawlzn
+	x5I1Z+fGdhgYFtq2NplpPYbytQrXSSl7BEPCfGQ==;
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
 	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
 	action=mi-m=1; hc=11;
 	hn=cc,content-transfer-encoding,date,feedback-id,from,
 	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:TY0QgO7Wie6BpLvGjg4fNL6RIAWlX2Q+uRL6YbhzU5I=:tIF3bonUzFzsn/tgFGDAqp5Qogm16VIkZoREnCu9vaA=;
-X-ME-Sender: <xms:rCL9alLTtAyhoD0mQEotRMDEn6Kqv4Gsi88TfMYWH3W2t0rCC-PJJA>
-    <xme:rCL9atD0dKY25gG4xIjbiyGfPKNB5ND6XGIYCocdJupTLHOadFuksBesWurgIGyRC
-    eLMeKpYK2vIymS19X0gO2QR2352AoTLGTxM6Gda-MV8nPRRJ-nVsGrw>
-X-ME-Received: <xmr:rCL9apMDkwx7CGdpgFc3uobLTzanNWs8yPIyMMkUX3-luiTkNpPeq7F4PfHSV-dGYC3ulPuRF3yeJ3QZexQ>
-X-ME-Proxy-Cause: dmFkZTFaeiJKKYQgf9DfWMtf3Mtlnh52oWdg90HZNB1dB41Sqi7Rilq+HUBvtM7D9mai6C
-    0CqMy2rjSmXnq6tQMpr4T7oSo6ypBEk7qAHm8J9gNsDCAHa++kWEEf0w/zoc5n5JN+yTEK
-    EgUy9xW25Dg1ibK5OVuV348w7WtmhX9Xxkxkq67Q9rIa+gnemDmFYDWMjzNo9zKFgK52P/
-    oIToXZl2jNOWW68kL38YRzdrsWs6GJdo59oaYY2MbDeKTpH2c3Zy3E10XkO1BzQ0/0ktLg
-    mxeFPojcIpCgDbEyBsfz6g9jS0mEai+R7qkmuNXQVowBevK3Y5SKwB+lPcS92O241OUOcs
-    kxXrHBFlPEmr/SkZVnM4ULvEHO8h4xazkACnx7nEm1OONWjWvghiS4tKR4QegmtGgXlLZQ
-    lPuZ6jRMi85wqm2l+kUnn2PQmw8xo0ELgzvcrikGh8DzQeTbUsnYyiPR7B+JeHbxhnuv08
-    u50QseLh3Er/1WM7nMvP1L4Vrl/clVN9UOlxIjHUPzWjFAXEtNTxZW+CT+qy2Be1zbHF+e
-    TBYhWiSp7NGt0p2JpiCUCafHdB/JTv90Dycs628JedofbG5tn4+r7OG1jq4eQIVwjuPDCd
-    OjPx8yI2O3F3fOJk8HGNi01+/E+FJpk0SminKZhaoy1Jg61nupA4r60tFCfQ
-X-ME-Proxy: <xmx:rCL9aqWBxYgLgkCjc9Ujx-bDEm93or0_EnZlHYNCVio40Y6lm9TyTw>
-    <xmx:rCL9akQqGsTz8s-F4GJ5UrojyEDOnRCn1cc54dkL0zWpyqr3Gv9L8Q>
-    <xmx:rCL9ao2tKLA1bGUhPK0u85Y7n3eGfoOMv6k2YxlruHc15YbIqrNEgQ>
-    <xmx:rCL9api0BNuh-k9VgfgG3o0HH6yK_T6OiD3d36rVjHbu48EMsBIMQA>
-    <xmx:rCL9at1iMT25_DcHcEUUbOK7kyY-Ach492bAW3nlEQbM3oXkmsLFERM3>
+Message-Instance: m=1; h=sha256:JuLKAqqlxn2WBbpeTgppEL1c+lc0VTG1JqpM2AQOlug=:LHlUJa6oduRIQL221ZFaRD6e7j3tmPbxhiqCYSkmOIw=;
+X-ME-Sender: <xms:sSL9aq0AKFHmmndUwQcseMJEzHY9_RgD_NsoJCr_wkhTMe_ymM0sjw>
+    <xme:sSL9ao8GIwBiQxWocUKdpCHLxkNuzXO_-KWOe86aV1dwQ4pTSoiSxtOHcg3uzSRwB
+    XjEU7lyFs3XhqqEFLxIjsGhPZ0i3GFSJFlWO0nb1EqFzbgSyiSxYI0O>
+X-ME-Received: <xmr:sSL9auYrtp14AhaKOJ3ul0QTG3b2fiwupl2vasRl8FiUZJqA3dFWoU3f-NVe_tPTVITCULgwTz-bA4e-l2Y>
+X-ME-Proxy-Cause: dmFkZTGNuUNLuU7Pu6rh5IU169+6hzvjVpdTChBuf5wIDbq7LDIdzE+38X99mwHspETxCr
+    UEI4DjNke4I+Tpbt/QcYvbUp+GFbE9FK+GCL/zqS+g7kFLtY/zzcAs+aDOVnyb5Kd9Z7LE
+    T6y7YVqW4XD9Ic/AjwYWm18JUdJBgAS0tBJ4OFGii7oiEh8XOjXpHEyhXL4irLLCE28x73
+    Irh4An0BV732sK60nJrxqV0CDAwno5OPA+dHqCBTLYoE9we7gioosxG6lVriqbOcslUiip
+    MyDprtX4D9RjCIaBbutmqrf5Kc5Nao8uy6mBDtjyZNWRSGDYMevstBaqza60gicMak/8WA
+    pl96U9XYPmlOEcnclB9TygG/9qyc7Y4wTDJvzUbbok+XJcUJ9ct6w3q39NAVYCjhWjyfny
+    DqPMclv8IqY1KAGM3aP7ajYSQPpSe1iiwRhbrQqMMUaf45tihzcKltfte5oDGnuBsBax8d
+    VDz9N8Xx6rRiXUJdiGk/W12p6Ravcl88TgWn6smBFEGXn0zeC2sHB8Iwh5FUPIYi3IITZk
+    GJ9yZnDejZlBD+QOFYq0GBx8aeDYQEmRq2D7GW7r7/IcGEFSFuyL1rJCzoEp0PYaq7lYAr
+    FVwvkbPHW604cWPHYj8t+PBtbQsrSLhOMq8o1o11/HTkWpjC3qQn1TI86HRg
+X-ME-Proxy: <xmx:sSL9avw-fBFtZFzrTYiAks8rA-UrqUElJ7VwODVpQrXuaOV91oRL0w>
+    <xmx:sSL9ak_yOCavpZfk2LvgdXEVRaEVsWSn4K8SZpQjO-av-jUYTVaehw>
+    <xmx:sSL9ajy8IRMFNn9oreDcFMqlGcBK4RsK7TalsglQnoHgxqeDgD2t8w>
+    <xmx:sSL9ahsvlQ1hWYv8OI5_hr0Nv886GxyKYEB9K904Iu11Bjfr1Z60oQ>
+    <xmx:sSL9aqQbdNlQ8KUmZn6aMxzipD536bYM5StBbKD4Ez3kU7ZMoYatAfQm>
 Feedback-ID: i51fe4b43:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Nov 2026 22:59:35 -0500 (EST)
+ 17 Nov 2026 22:59:41 -0500 (EST)
 From: FUJITA Tomonori <tomo@flapping.org>
 To: a.hindborg@kernel.org,
 	ojeda@kernel.org
@@ -128,9 +128,9 @@ Cc: acourbot@nvidia.com,
 	work@onurozkan.dev,
 	rust-for-linux@vger.kernel.org,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v1 1/2] rust: time: add examples to Delta methods
-Date: Wed, 18 Nov 2026 12:57:22 +0900
-Message-ID: <20261118035723.2380960-2-tomo@flapping.org>
+Subject: [PATCH v1 2/2] rust: time: add KUnit tests for Delta boundaries
+Date: Wed, 18 Nov 2026 12:57:23 +0900
+Message-ID: <20261118035723.2380960-3-tomo@flapping.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261118035723.2380960-1-tomo@flapping.org>
 References: <20261118035723.2380960-1-tomo@flapping.org>
@@ -147,155 +147,91 @@ Content-Transfer-Encoding: 7bit
 
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Add examples to the following Delta methods: from_micros(),
-from_millis(), from_secs(), as_micros_ceil(), as_millis(),
-as_millis_ceil() and rem_nanos().
+Add KUnit tests for the boundary values of from_micros(),
+from_millis(), from_secs(), as_micros_ceil() and as_millis_ceil().
 
-The examples show positive and negative values, and how the methods
-saturate or round.
+The boundary values are defined as constants in the test module, so
+they are not part of the API.
 
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- rust/kernel/time.rs | 84 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 84 insertions(+)
+ rust/kernel/time.rs | 63 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 63 insertions(+)
 
 diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index aeb518b91e1c..f0e36077bb4a 100644
+index f0e36077bb4a..a5d1d011c077 100644
 --- a/rust/kernel/time.rs
 +++ b/rust/kernel/time.rs
-@@ -547,6 +547,19 @@ pub const fn from_nanos(nanos: i64) -> Self {
-     /// The `micros` can range from -9_223_372_036_854_775 to 9_223_372_036_854_775.
-     /// If `micros` is outside this range, `i64::MIN` is used for negative values,
-     /// and `i64::MAX` is used for positive values due to saturation.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::time::Delta;
-+    ///
-+    /// assert_eq!(Delta::from_micros(1).as_nanos(), 1_000);
-+    /// assert_eq!(Delta::from_micros(-1).as_nanos(), -1_000);
-+    ///
-+    /// // A value out of range saturates.
-+    /// assert_eq!(Delta::from_micros(i64::MAX).as_nanos(), i64::MAX);
-+    /// assert_eq!(Delta::from_micros(i64::MIN).as_nanos(), i64::MIN);
-+    /// ```
-     #[inline]
-     pub const fn from_micros(micros: i64) -> Self {
-         Self {
-@@ -559,6 +572,19 @@ pub const fn from_micros(micros: i64) -> Self {
-     /// The `millis` can range from -9_223_372_036_854 to 9_223_372_036_854.
-     /// If `millis` is outside this range, `i64::MIN` is used for negative values,
-     /// and `i64::MAX` is used for positive values due to saturation.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::time::Delta;
-+    ///
-+    /// assert_eq!(Delta::from_millis(1).as_nanos(), 1_000_000);
-+    /// assert_eq!(Delta::from_millis(-1).as_nanos(), -1_000_000);
-+    ///
-+    /// // A value out of range saturates.
-+    /// assert_eq!(Delta::from_millis(i64::MAX).as_nanos(), i64::MAX);
-+    /// assert_eq!(Delta::from_millis(i64::MIN).as_nanos(), i64::MIN);
-+    /// ```
-     #[inline]
-     pub const fn from_millis(millis: i64) -> Self {
-         Self {
-@@ -571,6 +597,19 @@ pub const fn from_millis(millis: i64) -> Self {
-     /// The `secs` can range from -9_223_372_036 to 9_223_372_036.
-     /// If `secs` is outside this range, `i64::MIN` is used for negative values,
-     /// and `i64::MAX` is used for positive values due to saturation.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::time::Delta;
-+    ///
-+    /// assert_eq!(Delta::from_secs(1).as_nanos(), 1_000_000_000);
-+    /// assert_eq!(Delta::from_secs(-1).as_nanos(), -1_000_000_000);
-+    ///
-+    /// // A value out of range saturates.
-+    /// assert_eq!(Delta::from_secs(i64::MAX).as_nanos(), i64::MAX);
-+    /// assert_eq!(Delta::from_secs(i64::MIN).as_nanos(), i64::MIN);
-+    /// ```
-     #[inline]
-     pub const fn from_secs(secs: i64) -> Self {
-         Self {
-@@ -598,6 +637,18 @@ pub const fn as_nanos(self) -> i64 {
+@@ -846,6 +846,69 @@ pub fn rem_nanos(self, divisor: i32) -> Self {
+ mod tests {
+     use super::*;
  
-     /// Return the smallest number of microseconds greater than or equal
-     /// to the value in the [`Delta`].
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::time::Delta;
-+    ///
-+    /// assert_eq!(Delta::from_nanos(1_000).as_micros_ceil(), 1);
-+    ///
-+    /// // A value between two whole microseconds is rounded towards positive infinity.
-+    /// assert_eq!(Delta::from_nanos(1_001).as_micros_ceil(), 2);
-+    /// assert_eq!(Delta::from_nanos(-1_001).as_micros_ceil(), -1);
-+    /// ```
-     #[inline]
-     pub fn as_micros_ceil(self) -> i64 {
-         // Only positive values need to be rounded up: truncating division already
-@@ -623,6 +674,18 @@ pub fn as_micros_ceil(self) -> i64 {
-     }
- 
-     /// Return the number of milliseconds in the [`Delta`].
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::time::Delta;
-+    ///
-+    /// assert_eq!(Delta::from_nanos(1_000_000).as_millis(), 1);
-+    ///
-+    /// // A value between two whole milliseconds is rounded towards zero.
-+    /// assert_eq!(Delta::from_nanos(1_999_999).as_millis(), 1);
-+    /// assert_eq!(Delta::from_nanos(-1_999_999).as_millis(), -1);
-+    /// ```
-     #[inline]
-     pub fn as_millis(self) -> i64 {
-         #[cfg(CONFIG_64BIT)]
-@@ -639,6 +702,18 @@ pub fn as_millis(self) -> i64 {
- 
-     /// Return the smallest number of milliseconds greater than or equal
-     /// to the value in the [`Delta`].
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::time::Delta;
-+    ///
-+    /// assert_eq!(Delta::from_nanos(1_000_000).as_millis_ceil(), 1);
-+    ///
-+    /// // A value between two whole milliseconds is rounded towards positive infinity.
-+    /// assert_eq!(Delta::from_nanos(1_000_001).as_millis_ceil(), 2);
-+    /// assert_eq!(Delta::from_nanos(-1_000_001).as_millis_ceil(), -1);
-+    /// ```
-     #[inline]
-     pub fn as_millis_ceil(self) -> i64 {
-         // Only positive values need to be rounded up: truncating division already
-@@ -725,6 +800,15 @@ pub fn to_jiffies_timeout(self) -> Delta<Jiffy> {
-     ///
-     /// Panics if `divisor` is zero, or if `self` represents [`i64::MIN`]
-     /// nanoseconds and `divisor` is `-1`.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::time::Delta;
-+    ///
-+    /// assert_eq!(Delta::from_nanos(10).rem_nanos(3).as_nanos(), 1);
-+    /// assert_eq!(Delta::from_nanos(-10).rem_nanos(3).as_nanos(), -1);
-+    /// ```
-     #[inline]
-     pub fn rem_nanos(self, divisor: i32) -> Self {
-         if divisor == 0 {
++    // The largest values that `Delta::from_micros()`, `Delta::from_millis()` and
++    // `Delta::from_secs()` convert without saturation.
++    const MAX_MICROS: i64 = 9_223_372_036_854_775;
++    const MAX_MILLIS: i64 = 9_223_372_036_854;
++    const MAX_SECS: i64 = 9_223_372_036;
++
++    #[test]
++    fn from_micros_saturates() {
++        assert_eq!(
++            Delta::from_micros(MAX_MICROS).as_nanos(),
++            MAX_MICROS * NSEC_PER_USEC
++        );
++        assert_eq!(Delta::from_micros(MAX_MICROS + 1).as_nanos(), i64::MAX);
++
++        assert_eq!(
++            Delta::from_micros(-MAX_MICROS).as_nanos(),
++            -MAX_MICROS * NSEC_PER_USEC
++        );
++        assert_eq!(Delta::from_micros(-MAX_MICROS - 1).as_nanos(), i64::MIN);
++    }
++
++    #[test]
++    fn from_millis_saturates() {
++        assert_eq!(
++            Delta::from_millis(MAX_MILLIS).as_nanos(),
++            MAX_MILLIS * NSEC_PER_MSEC
++        );
++        assert_eq!(Delta::from_millis(MAX_MILLIS + 1).as_nanos(), i64::MAX);
++
++        assert_eq!(
++            Delta::from_millis(-MAX_MILLIS).as_nanos(),
++            -MAX_MILLIS * NSEC_PER_MSEC
++        );
++        assert_eq!(Delta::from_millis(-MAX_MILLIS - 1).as_nanos(), i64::MIN);
++    }
++
++    #[test]
++    fn from_secs_saturates() {
++        assert_eq!(
++            Delta::from_secs(MAX_SECS).as_nanos(),
++            MAX_SECS * NSEC_PER_SEC
++        );
++        assert_eq!(Delta::from_secs(MAX_SECS + 1).as_nanos(), i64::MAX);
++
++        assert_eq!(
++            Delta::from_secs(-MAX_SECS).as_nanos(),
++            -MAX_SECS * NSEC_PER_SEC
++        );
++        assert_eq!(Delta::from_secs(-MAX_SECS - 1).as_nanos(), i64::MIN);
++    }
++
++    #[test]
++    fn as_micros_ceil_handles_extremes() {
++        assert_eq!(Delta::from_nanos(i64::MAX).as_micros_ceil(), MAX_MICROS + 1);
++        assert_eq!(Delta::from_nanos(i64::MIN).as_micros_ceil(), -MAX_MICROS);
++    }
++
++    #[test]
++    fn as_millis_ceil_handles_extremes() {
++        assert_eq!(Delta::from_nanos(i64::MAX).as_millis_ceil(), MAX_MILLIS + 1);
++        assert_eq!(Delta::from_nanos(i64::MIN).as_millis_ceil(), -MAX_MILLIS);
++    }
++
+     #[test]
+     fn to_jiffies_timeout_converts() {
+         const HZ: isize = bindings::HZ as isize;
 -- 
 2.43.0
 
