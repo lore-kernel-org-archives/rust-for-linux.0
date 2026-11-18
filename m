@@ -1,67 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795015441;
-	b=TwrGCAB9hNB9uDA2BXUysQSDy4yGTc/ydFGvgLiF7+V54sRsTaSNIXHM43G9x1XzzLgj
-	 YYySSaqkfQE6kNWaRWdcIrKBrRLTCkGQdk3AZf1tKwV4MtfmWcfSv9mMK4uuEv+sdJtoe
-	 JRwZLGrXcqUFryFaQ41AnLBJ9y+gMsxzMJz1F0/W81zzIHY4uXY5wRGRsw8ND2Tih3nk7
-	 I+/jCCpBBA6z5zm1o2eY2s5K7Hca0Wqi5PwmD5WkTdyTWmfm8zcR/tAnd0fyejMp9M3aD
-	 ZOogO7SGY77/3V1+m7uRDYaOE2rIY4UDNGGoBEEa71BTyyq3V3whinYpjhApu8EWr1Q==
+	t=1795015565;
+	b=DW+yKCob2yLnhLJbBFmWtx5guibd0fQvqTjmqZJy6swQbiXmvJfm5Bpgbd7+Rod1aoFv
+	 DwYcTxcGnx7Pnh8+YAklPzDGGISXnp0wSKtHhJpDRSUOXZtxTpSOv0HXBcovVmInR8hx4
+	 bqb0NyZznftOyF5Md3d0Ae6qRCOl+oEKyqemW9jjr1eKxVBq1mlhl2M0MONmku6HrPnQa
+	 2GHozAYh0cSNVopyz/ENr0eBo9dfngRuJvtEN4QJ1aM7v5RRcdrrYVcDlYs2sC3Zr33gg
+	 /i/6hXER5hc0raHpyv6BKyOgjQcRAPZIFydDarZsVdH6nr0l8fZ4vHhwIOK3Ls+YLzQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795015441;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
-	 Date:Message-ID:MIME-Version:Content-Type;
-	bh=RQcOM5LZ+A50DskRP5nF4QpJYB2S5F35ZVxDxecyXLE=;
-	b=rgHW1tL4MkYAjshT3r5BdRlR6C2KtZ+ooxD73/BDYbD4CgHXHRN1lmDswZrOWyoeHAzY
-	 Cd/h2sGBP/w2GnmM4KnnRvNxs2+AwkMEJUGQZh8R7PHT0UmKZtiMTYtdjVQkveHd4HZVb
-	 CTsXsIecK4U53Y0xYbNhBlqyJ6IU4GvTG/kYoMcYXT+fOwqtBOpJ3EoUUmJbOpkss3pY2
-	 nYMWOGielhn0FSNujjAetg0sUrlUsGaZZK0VIca33PnwBMZBjia6mB0G/OAg5TFjk8Max
-	 PPW2a579j0885OBw8XZhSuhTyaDiNehmGds4jug0U8AjSL8WSng4TjFT7Gltbln5y/g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795015565;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
+	 Date:In-Reply-To:References:Autocrypt:Organization:Content-Type:
+	 User-Agent:MIME-Version;
+	bh=Jj7CHtLt62pLL7MMim1REZseI1Ujb3pinwo7e+2pg+M=;
+	b=r46916WSV9Y7e1XmfLz6RAg7COK7eR9r2e0W3w9TQAOOKyjBQpx3KJXzfjuOCEOG+ejW
+	 ZUB9W+NrEN0s7ievWJdoh3dXyD+9AaKxb8NoZapEL29hfwd0lrW25MiNS0aa62CuQ0uEK
+	 LG9mHpVVlRwzA2Y926ixq3SWLxdaWeTQEv8k8Ra25SQiqJ0EDUCL0QAXKROYePUxA11ii
+	 vYQlE2Av6eJJjLMU+280/uS9Tu9oUHB9zkprxTpWHjmduMGAOFbgR+ImV6gV9jDkHKY6X
+	 vxLd5Xh8Eq52onjDoP2sTmshrzjuse0J6j0vW7Wyby6PULBKqmCXrPhQ7opWY/yGo6g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bAu+g7DZ;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=Y0fe9G03;
+	arc=none smtp.remote-ip=148.251.105.195
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1A3606A32A;
-	Wed, 18 Nov 2026 15:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D3B60A2601;
+	Wed, 18 Nov 2026 15:26:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 02D3B60A2601
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bAu+g7DZ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C755F1F000D0;
-	Wed, 18 Nov 2026 15:23:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795015441;
-	bh=RQcOM5LZ+A50DskRP5nF4QpJYB2S5F35ZVxDxecyXLE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=bAu+g7DZw3J/d5gjI5fKw3TQ5XEKjEBdA61DLneCyxO9RyQFJT6NDl4rp2J/zIrby
-	 UTRU6hZ4OvYXpq9U96p5J+Jp0RqsBkW0dTjYTMVk1ETfP71i70Qnb9En+xPV1yXXsM
-	 5MPUfHlg8dz8XISX3fRv5jql4mAeUyn4Tlx/96Xz6lR1VVeDlDm4SXsJO7iB0jBfqG
-	 iACcY4jLn1auGGi1XCeSv4z5KNXdBIdEAld5BQoR4aTSY6tmKz9mgq8ojXPiafJAk1
-	 II6HR8YBy70CWBDAWiWqZVZxI7NoTPmt+kZQo2OSHntI+1N6AGCuaBk5PS6wXtHDQ3
-	 KVcn3u0OBQG1Q==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Vitaly Wool <vitaly.wool@konsulko.se>, Jens Axboe <axboe@kernel.dk>,
- Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor
- Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel
- Almeida <daniel.almeida@collabora.com>, Tamir
- Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
- Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>, Lorenzo Stoakes
- <ljs@kernel.org>, "Liam R
- . Howlett" <liam@infradead.org>, linux-block@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Igor B <igor.b@beldev.am>, Vitaly Wool
- <vitaly.wool@konsulko.se>
-Subject: Re: [PATCH 2/3] rust: page: add reference counting, raw pointers
- and a private bit lock
-In-Reply-To: <20261117233211.3137168-3-vitaly.wool@konsulko.se>
-References: <20261117233211.3137168-1-vitaly.wool@konsulko.se>
- <nJAtLmDmAV24rOe6aN54vqMAgr06LVJtplZTvmqfydTzMhml3convxW0wdHq0nMHqmRM7qsioK1kV78UIwCkzQ==@protonmail.internalid>
- <20261117233211.3137168-3-vitaly.wool@konsulko.se>
-Date: Wed, 18 Nov 2026 16:23:40 +0100
-Message-ID: <877biaups3.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=Y0fe9G03
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1795015563;
+	bh=Jj7CHtLt62pLL7MMim1REZseI1Ujb3pinwo7e+2pg+M=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=Y0fe9G03H0jsbGazwKmLkXR08FJJloc5QZKZiNTuNRmkB9eGrWBNAywPj0KzVjlLW
+	 VJqOv2obWrRbvhf4aQdf0snXWLR3nKFoDggtAu/L57Bfwn0VWS36cupd615hf0z/ZE
+	 /Qk9zhCbjoNaURDnpFZlQAKhbE9rpjZskRDAnAwGOEF+hx88uZiWnMU40n8vFelIRE
+	 QmQPCf4ASWQlCqkcUs88o4VizwEFL2QKl06lMjAvJTdJjV8i55+yorSxqrHeu7lX0G
+	 p3/p+rVyiJLIVnODQjw1cITkXIFuLt9Nz7Djr3Gh5fmgrXvpWvF2mdu6sdzv0fr93t
+	 PNyHblA8aWz3g==
+Received: from [100.64.0.214] (unknown [100.64.0.214])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 4E3F617E0B1E;
+	Wed, 18 Nov 2026 16:26:00 +0100 (CET)
+Message-ID: <b145b2ceb92c73a4fa0477d7b3895a6e3b4adf99.camel@collabora.com>
+Subject: Re: [PATCH 0/6] rust: iommu: add a paging domain abstraction
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>, Daniel Almeida
+	 <daniel.almeida@collabora.com>
+Cc: "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+ Robin Murphy <robin.murphy@arm.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Gary Guo	 <gary@garyguo.net>,
+ =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	 <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Andreas Hindborg	 <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein	 <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=	
+ <work@onurozkan.dev>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	iommu@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, Detlev Casanova	
+ <detlev.casanova@collabora.com>
+Date: Wed, 18 Nov 2026 10:25:58 -0500
+In-Reply-To: <20261117202055.GA3115493@ziepe.ca>
+References: <20261112-b4-iommu-domain-v1-0-c29e86788dda@collabora.com>
+	 <20261116193821.GC2452510@ziepe.ca>
+	 <3EB4C2ED-B699-4532-A562-68B78F6E29C6@collabora.com>
+	 <20261117202055.GA3115493@ziepe.ca>
+Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Organization: Collabora Canada
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-IJcHGH9mSee+VxCb9BnL"
+User-Agent: Evolution 3.62.1 (3.62.1-1.fc45) 
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -71,42 +99,116 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
 
-"Vitaly Wool" <vitaly.wool@konsulko.se> writes:
+--=-IJcHGH9mSee+VxCb9BnL
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> From: Igor B <igor.b@beldev.am>
->
-> A `Page` always owns its page exclusively, with no way to take another
-> reference or keep it as a raw pointer. Add:
->
-> - `Page::get()`, which takes another reference with `get_page()`;
-> - `Page::into_raw()` and `Page::from_raw()`, to convert a `Page` to and
->   from the `struct page` pointer it holds a reference to;
-> - `Page::try_get_raw()`, which takes a reference from a possibly stale
->   pointer with `get_page_unless_zero()`, for lock-free lookups like
->   brd_lookup_page(). This is sound because a `struct page` is never
->   freed, even once its memory is;
-> - `Page::lock_private_bit()`, which takes a bit spinlock in the page's
->   `private` field and returns a guard that releases it. This gives a
->   page used as plain memory a lock of its own at no memory cost.
->
-> Add Rust helpers for `get_page()`, `get_page_unless_zero()`,
-> `bit_spin_lock()` and `bit_spin_unlock()`.
->
-> This patch was tested with the help of  Claude Code AI coding assistant.
->
-> Signed-off-by: Igor Belousov <igor.b@beldev.am>
-> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+Hi,
 
-I already submitted most of this as part of the `Ownable` work [1]. I
-sent v22 of the `Ownable` series a few days ago [2]. I stripped out the
-page stuff to send as a separate series. I plan to send the page things
-this week. It covers both reference counted pages and frozen pages.
+Le mardi 17 novembre 2026 =C3=A0 16:20 -0400, Jason Gunthorpe a =C3=A9crit=
+=C2=A0:
+> On Tue, Nov 17, 2026 at 05:09:11PM -0300, Daniel Almeida wrote:
+> > Hi Jason,
+> >=20
+> > > On 16 Nov 2026, at 16:38, Jason Gunthorpe <jgg@ziepe.ca> wrote:
+> > >=20
+> > > On Thu, Nov 12, 2026 at 02:00:07PM -0300, Daniel Almeida wrote:
+> > > > This series adds a Rust abstraction for IOMMU paging domains. A dri=
+ver
+> > > > can allocate a domain, attach it to its device, map pages into it, =
+and
+> > > > install a handler for its faults.
+> > > >=20
+> > > > This will be used by the upcoming rkvenc driver that my colleagues
+> > > > Detlev Casanova, Nicolas Dufresne and I are working on. More detail=
+s on
+> > > > this driver can be found by watching Nicolas Dufresne's talk at LPC=
+ 2026
+> > > > [0].
+> > > >=20
+> > > > As part of the security model, each client will have its own IOMMU
+> > > > domain. This is needed as the submission model will let userspace s=
+et
+> > > > most of the encoder's registers directly, so the kernel cannot chec=
+k
+> > > > every memory access that a job makes the encoder do. With a single
+> > > > domain, one client could make the encoder read or write the memory =
+of
+> > > > another client.
+> > >=20
+> > > How do you plan to get the paging domain in the first place?
+> >=20
+> > We plan to alloc a paging domain when a video encoder session is create=
+d. Then
+> > we call iommu_attach_device() before a job runs, and detach back to the=
+ default
+> > domain after it finishes so the next job can attach its own session's d=
+omain.
+> > This is so each session is isolated from each other.
+>=20
+> If you do that you can't use the DMA API at all in your driver as you
+> have to set 'driver_managed =3D true'. Is it OK? If it is why not just
+> use VFIO?
+>=20
+> Or are you planning DT horrors to get yourself a DT created "DMA
+> struct" ?
 
-Best regards,
-Andreas Hindborg
+This seem to digress. All we want to do is use the iommu subsystem as inten=
+ded
+for the case the iommu driver is not inside the DRM driver (which seems to =
+have
+never been the case so far in DRM). The existing infra for that (in C) is p=
+retty
+abstract an simple in my opinion, and built into the DMA API if you manage =
+which
+domain to attach to your device at the right time. To me, it fits CODEC HW
+driver which are also simple. The DT horrors you refer to seems totally
+unfounded, you just describe the iommu and the iommu subsystem will manage =
+it
+for your device.
 
-[1] https://lore.kernel.org/all/20260910-unique-ref-v21-0-e83257373062@kernel.org/
-[2] https://lore.kernel.org/all/20261116-unique-ref-v22-0-12029383206d@kernel.org/
+>=20
+> > The fault handler is used in the same way it is used in GPU drivers: to=
+ kill
+> > sessions if they fault. This way the driver can simply refuse further w=
+ork from
+> > a misbehaving client, for example. It is also the natural place to enqu=
+eue a
+> > reset if the codec hardware is frozen as a result of the fault.
+>=20
+> IIRC no GPU driver does that, they hook the obsolete fault handler not
+> supported in new iommu drivers not the new PRI based one... IDK we
+> have even wired this up to work this way.
+>=20
+> It is nicer if the HW can tell you it faulted rather than expect the
+> iommu to do it.
 
+We most likely don't need that, and should drop it from this series. We hav=
+e
+never used the fault handler in any linux-media codec in the past, the HW w=
+ould
+always endup producing an IRQ with a error or a timeout. Using the fault ha=
+ndler
+would probably be a bit racy too. Pausing work from a faulty source though =
+isn't
+a bad idea, but more of a nice future addition, assuming it can work in a n=
+on-
+racy way.
+
+Nicolas
+
+--=-IJcHGH9mSee+VxCb9BnL
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCav3DhgAKCRDZQZRRKWBy
+9DUJAP4x+G6i8V/mCJNB0vLdcr/oloJeHb9XQjPQTymPNu+lDQEA7nyMQLSBGku5
+VljshCPKu96vUzI4tKRMkP9UWePglwg=
+=PT9b
+-----END PGP SIGNATURE-----
+
+--=-IJcHGH9mSee+VxCb9BnL--
