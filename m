@@ -1,92 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794999370;
-	b=DQU+wFpNdTGPLehDR4/PxKvEo+USk9DCk7yf6O1qj++ZNah9Bd9UZAc97/hWXcdwBYoT
-	 9iusTyM1Mk4hvHSQe+5askkaPXfopWrRBhGKowjT9Bco2hNmIvlNuKPst/sgPluHT9M7i
-	 9vFbbPPbOf9kC+90vr4aW9jH8oxr70GtEJJD/a76Zs7OnNpiFxgahb4Ke0zG0twGgmprf
-	 HXBzz52d8OsRQHrX4V92fYDUuBrFvGEizufuO0asBMNpr2azIeCSFd4kfcbk+G7PTITqL
-	 T3CokygE/3tFTjAg8pYflwLBvUrGkb77O73wzKBCQdKyM81MbBrDjJLHwKiATKx2pDw==
+	t=1795000617;
+	b=0SY4oSAS1mYxYDL+AsUEjlUw4ww5JVaJD1UiiYHXa0/bpPoHiww9sp8lJfX4zNJjpLUE
+	 djuph/FP3Bc8nzyw95yxCjGR+PM7YFUb5qCDXBbQSuKothkr/+GnTIOyeCwrfLKd1ZhOZ
+	 LvF+5ypfiezxtiRe5+vgApn3kGH+DvGNSASjhI+uZmbmrr1N4NbEhU4sz6e3B2uizKpOv
+	 UMTdHkVVEJasHMve6iiev5MMywYESkEAZ931/PQIJzyorWE3dICKS7yNrSc+xgKnjcn7q
+	 Xf/QzT44vNYCXWLMwmmGWLxDxO1V3Y3kjU2wHIvoQycpcmwabqP4XTi2hnJL4OLS/eA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794999370;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795000617;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=IN879SLlnbKDx+IQRdl4OB8xJqPQf4M3p3iCVyXzytc=;
-	b=AvzUsLjrt9zJfYrARhnQvr1bqB+Qvf+JpFHLrU20yH7gHrNgi7dffAf0dtTLmPcAjZUM
-	 64S/PXupPItJjgSYp/2YVR7AV0zABDFnKRr5dnVBcN3qhgdr6s4K9kBBjSC6UeQggc3o9
-	 CEzyTD9rpvo/wAeUmGVLPIxw5/UsO6rkj3gO6Xv4kemdowB0fOEe2+/ddHyd/bWuFPwVJ
-	 zdDtpSTrLZPy8fB95jPB7BtrXgRYgrAfrLUn/5zaNdzGXb7RAj4PO8FBgSKgBDVy29LRX
-	 jsIZINTtXoR6fYqvGyZRjdw2y/bckxeyBgfsx2WlKN9/afEGAfet/wWXtzai0nA+CQQ==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=VdBK9iPCpdL4SaGML/svEnUVQsDV7jsVMj4rTVCaMEQ=;
+	b=O+f+q+lzglTg+taVFzE3IgucIgJ5SUrWSXSvpG15quZFNEqUnHnuAO4rRKaYuKn2+PDX
+	 Dctu14+v1K6w5ytiGyoyIaIFfNNF6SM7O9vrjHRP2qXnwgSB7IT4fZkE1yFW+LAq+T5Bm
+	 XYryuliP38T2YZf/x95kAMDF+zKYB0J72qMD1FbgWuJsWkpnPnbaN7VYX957KSaBMLRzA
+	 f162fGy4gDXuJUQ/07+j8sJg4iWpQl+rjVUsVPDkIfrecmHjO9ffUYffaGQPftgIb+0bh
+	 zbJAtatzJ7IR1mwsmyuHvb7QUpeCnoJKAFKlh6OxbEm6f7AGZ3xSp74+7W4IsL2lFiQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZQZgj2H2;
-	arc=none smtp.remote-ip=74.125.82.173
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CnbFd2fo;
+	arc=none smtp.remote-ip=209.85.221.71
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825C3606A33D
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 10:56:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 825C3606A33D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A1D606A31C
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 11:16:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E7A1D606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZQZgj2H2
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-36e99cf7bb3so1249536eec.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 02:56:09 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CnbFd2fo
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4a3052225cbso813272f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 03:16:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794999369; x=1795604169; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IN879SLlnbKDx+IQRdl4OB8xJqPQf4M3p3iCVyXzytc=;
-        b=ZQZgj2H2Ug4J/BjoFFQj3oaS4AIXLU2XZrLKYsgRWQqGw59sRtgQQ5sF5cMImoMtTk
-         GJ5elSuYUxQMTEeIBBdTA0JB+xEFFoyMMgQOMmmQ0crUkKErIznub3/ZmkRyuC2yK7N1
-         oGiycLGfkfSh9XhMVngIaWzZu88hikyrhRUwLXsYRLIc/Cp+JBKQbvldo3OEEhJtuqqL
-         AuM+PhT1H4k4e2RGw+7Ze/lYJVtqxM5EMUegPoDynjjgh3Q/3jKVyUZs28VnTC0kdZZi
-         fgMDU48M5/HuIPOQbnq1r/D/+mIGJ4svhbQpPyA7VgAbq7XvLjJaDqLpaOo70MtxI97r
-         E3Aw==
+        d=google.com; s=20260707; t=1795000615; x=1795605415; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VdBK9iPCpdL4SaGML/svEnUVQsDV7jsVMj4rTVCaMEQ=;
+        b=CnbFd2foIc1oP4OQ+apE2+PUd8KhbCuov0KPVg6H49pjv3XxrZ0chRd8fFEo4IzCfU
+         wyLRlrpnxS/eAB8q8r2DVSttlIn6STnYOMtUi+60CnXVALhmXCdujG63j1PnzXy6P1S0
+         XkqUd15s+lkpVUD/GDZaFYVv7QQLT2a/R56lgjgLsFQG2jaiq4rTaQqKNO04FRjR0qDZ
+         whBjXblsWfzMiVxHo3KL4ZB/muJ+nfRJCEb6S/3Gg+bx5WV0mhTIM77xmVF4VsjEpa7x
+         OXJIIRwi4spArEDSI11y2mU+tRW7hwbH3pDkZmIuIOorrmjyFlsTMar8E/wCpi76AQMX
+         e8QQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794999369; x=1795604169;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1795000615; x=1795605415;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=IN879SLlnbKDx+IQRdl4OB8xJqPQf4M3p3iCVyXzytc=;
-        b=Q+GcnQW6xcRZCRy8h58qzJdLyNkKv+U1qEhWZ8eaq5JHcWKWNYkVaKxD2wwl7jATeQ
-         jYkqNpBccq6N5WFwCCs+cd3DqiqVXsXmYuLD0U6PhfGmwT+orcR3jtYuC4mjE2rt2us6
-         3k45B0DGILuQdA7E2IK1VwRPFUOT4z+Hx+k3ld4YXoRI2b5uTclauSynLcDoEv/5y1Y5
-         EBiFzr1TATeDqAmki+rSEfMc1hXnuwDdydIJhaAcWeouyYUBmMwJJW/paGAzRdPJIVU4
-         oGkOHpxkvHCj4p7CCqdyqH7+j/xFNoaYVvEYZB0Z0zTB9Xa29apZsUMbLWm+AjPqsTWS
-         jJCw==
-X-Forwarded-Encrypted: i=1; AL+hErGoqT/GCU52TVDRJYIZgOqA4A4eDxKwaWe9wLTQAZLB5fOSdNI9lohNu0wNR/JSKIYFPXOm3j61XqxTwEH0Eg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/GueuJySTkER6v+l1vKDqJNivEAEvbdXBmyBVv8aRNJ5Nu1pgg
-	U7QnQ+PAzvvU4c8EWqm2SQIs8gTJu42MboYaTwkYH4elWANT7Z1nXlF0JTFmqw==
-X-Gm-Gg: AZFdTZfDfR7c9udiQzVQhNjnRh8HsrS4gxwwdZXDn4zdbf+rNqgjYk2Xotef4s59S2z
-	+DMDNdAiHpqUMURWrXyDXlJMka9e6Otid821akWWuLKD2a5Ke09BBTvHBJcwn0qxp5a6+oVwI6H
-	CLN8IvGq6NzMMqjvfqZsIeLUBN3TBq1vXOFj2jvpAam1CkyEU4Up14wD0IQ8VExZaBBEFG/2Aa9
-	E4R85YD9nv8f7pfdabxYooVLFWqhPMyujQ4SjQXztmZaFy2bqvUI2UMHavlKNFjZAGlu0Aowerw
-	QC7k11b2BL4v1h8yehrtZVu26m5HTYQ87W+sxgUW0HtUKFMWVbeIZ+hFaIDxfvHxrVtyDQ/WMkj
-	t8+JJsezGA/zPRaDE3TRH3g9wBIeXwqGUuHQbCNMNuoiJwYA2UJWl4icQTI3f1Egv90ew+kWkHc
-	UlXrsmEbLpaW0MKhc43pTHd/LEc0nRf0csiwXD0lff0+1/fYl0Iuv3ClFvvZqBBJ7DBljI/2hbz
-	/R90KkiwH2jLpmWoUEBznAJkXvOpvdEjB8EnK8QDzxX7fwtzllKhHDKMn+mxqzWiABe/RPzSDnD
-	nWN336TwWNcH+w0b3vMqHuR1s6Zb3gTIe70ETw0+wmqXKTsG/gX3+OTritMmWjE=
-X-Received: by 2002:a05:7300:ff43:b0:369:5583:bf4c with SMTP id 5a478bee46e88-382820de610mr1965626eec.28.1794999368563;
-        Wed, 18 Nov 2026 02:56:08 -0800 (PST)
-Received: from deepak-80tv ([2405:201:a40c:e0d8:ae82:1cfd:7bfd:2676])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-382a6def9e2sm7186657eec.13.2026.11.18.02.56.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 02:56:08 -0800 (PST)
-From: Deepak Pandey <deepak.os.system@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>
-Cc: nova-gpu@lists.linux.dev,
-	rust-for-linux@vger.kernel.org,
-	Deepak Pandey <deepak.os.system@gmail.com>
-Subject: [PATCH] gpu: nova-core: falcon: make pfalcon field private
-Date: Wed, 18 Nov 2026 16:25:57 +0530
-Message-ID: <20261118105557.140069-1-deepak.os.system@gmail.com>
-X-Mailer: git-send-email 2.56.1
+        bh=VdBK9iPCpdL4SaGML/svEnUVQsDV7jsVMj4rTVCaMEQ=;
+        b=FINZnZ8EzQGH9xFljdIVC+HzrQUvwqMKUm9HrT4k/s+f1yLlEGxXW4IhD0nazBpIqs
+         xxBBhzssL3Ld1S0OruQcUhoBPbu8Xp4b0dMgtlUN1u+PM2SxS1j1BHi3ZbQ9N+/ja4s4
+         xTID3a8brVtg2fEGqC0bYq05qUUcJ9SEBay0rKim1ncbwyMQ6df0b3fEwvsIRCjQ9tWW
+         CYi/1KiYvU1sg9IHjb8uaooPuH5zyhvXYXfefV4Onxat2Ptm5+Kk8s2X0NATatzCLd+V
+         OXW4ZVGKg13mMej3pToUDV8X3h52+wtMnLmuzptHFE53e3eFVaX4t3Ctq2xB2OfZq5gE
+         Lh8Q==
+X-Forwarded-Encrypted: i=1; AL+hErGV1Kwq61PwF8YpL0L/BCxDpmquYGTU/Y56aDOILsUJUQzNXWLzhE0tRp6XXD1i1dniVWSDu3Uu+EKH3Q8v/A==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8zCfdUJlsl4P15RtFNf3Qd1vi6UZb5oAor+FBlZhPBtRP+Wc4C
+	cfGfwt+LgnToVY2xXhRwD40/oTnSe2K7qmSn/yR4kM/nuQmyY0Jglo8/9FnTgUzeIgfvC32yKqA
+	7meumYdRgStmf+gO6yA==
+X-Received: from wrsw6.prod.google.com ([2002:a5d:4b46:0:b0:4a5:1c26:11b4])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1d06:b0:4bb:6f45:2a6d with SMTP id 5b1f17b1804b1-4bb7da14a3bmr43246995e9.12.1795000615091;
+ Wed, 18 Nov 2026 03:16:55 -0800 (PST)
+Date: Wed, 18 Nov 2026 11:16:53 +0000
+In-Reply-To: <0d26baaa-92ae-43ff-9a76-a81cad624dcf@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -95,122 +78,45 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20261117-tyr-remap-2mb-v1-0-2a8efd4c8180@google.com>
+ <20261117-tyr-remap-2mb-v1-1-2a8efd4c8180@google.com> <0d26baaa-92ae-43ff-9a76-a81cad624dcf@kernel.org>
+X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
+Message-ID: <20261118111653.448550-1-aliceryhl@google.com>
+Subject: Re: [PATCH 1/4] rust: drm/gpuvm: add GpuVa::data_ref accessor
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Deborah Brouwer <deborah.brouwer@collabora.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Matthew Brost <matthew.brost@intel.com>, 
+	"=?UTF-8?q?Thomas=20Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	"=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Boris Brezillon <boris.brezillon@collabora.com>, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Currently, `Falcon::pfalcon` is marked as `pub(crate)` with a `TODO: make
-private` comment. The only use of `pfalcon` outside of the `falcon`
-module hierarchy is in `fwsec::bootloader`, which updates the FBIF
-transaction configuration register (`NV_PFALCON_FBIF_TRANSCFG`) during
-firmware DMA setup.
+On Tue, Nov 17, 2026 at 08:40:20PM +0100, Danilo Krummrich wrote:
+> > +    /// Access the driver-private [`VaData`](DriverGpuVm::VaData) associated with this mapping.
+> > +    #[inline]
+> > +    pub fn data_ref(&self) -> &T::VaData {
+> > +        &self.data
+> > +    }
+> > +
+> Why data_ref() instead of just data() or a Deref impl?
 
-Introduce a dedicated helper method `Falcon::set_fbif_transcfg()` to
-encapsulate configuring FBIF transaction parameters for a DMA context,
-use it in `Falcon::dma_load()` and `fwsec::bootloader`, and make `pfalcon`
-private. In addition, clean up unused register and I/O imports in
-`bootloader.rs`.
+I guess this came from mirroring UniqueRefGpuVm, which uses the names:
+data_ref(&self) and data(&mut self).
 
-Signed-off-by: Deepak Pandey <deepak.os.system@gmail.com>
----
- drivers/gpu/nova-core/falcon.rs               | 27 ++++++++++++++-----
- .../nova-core/firmware/fwsec/bootloader.rs    | 18 ++++---------
- 2 files changed, 25 insertions(+), 20 deletions(-)
+I think it makes more sense to rename to data(&self)/data_mut(&mut self)
+for consistency with other similar APIs. But we should also update
+UniqueRefGpuVm if so.
 
-diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
-index 9015de965a53..507f638e8936 100644
---- a/drivers/gpu/nova-core/falcon.rs
-+++ b/drivers/gpu/nova-core/falcon.rs
-@@ -364,8 +364,7 @@ pub(crate) struct Falcon<'a, E: FalconEngine> {
-     hal: KBox<dyn FalconHal<E>>,
-     dev: &'a device::Device<device::Bound>,
-     bar: Bar0<'a>,
--    // TODO: make private
--    pub(crate) pfalcon: Mmio<'a, PFalconRegisters>,
-+    pfalcon: Mmio<'a, PFalconRegisters>,
-     pfalcon2: Mmio<'a, PFalcon2Registers>,
- }
- 
-@@ -395,6 +394,24 @@ pub(crate) fn dma_reset(&self) {
-             .write_reg(regs::NV_PFALCON_FALCON_DMACTL::zeroed());
-     }
- 
-+    /// Configures FBIF transaction parameters for a DMA context.
-+    pub(crate) fn set_fbif_transcfg(
-+        &self,
-+        ctx_dma: usize,
-+        target: FalconFbifTarget,
-+        mem_type: FalconFbifMemType,
-+    ) -> Result {
-+        self.pfalcon.update(
-+            regs::NV_PFALCON_FBIF_TRANSCFG::try_at(ctx_dma).ok_or(EINVAL)?,
-+            |v| {
-+                v.with_target(target)
-+                    .with_mem_type(mem_type)
-+            },
-+        );
-+
-+        Ok(())
-+    }
-+
-     /// Reset the controller, select the falcon core, and wait for memory scrubbing to complete.
-     pub(crate) fn reset(&self) -> Result {
-         self.hal.reset_eng(self)?;
-@@ -614,11 +631,7 @@ fn dma_load<F: FalconFirmware<Target = E> + FalconDmaLoadable>(&self, fw: &F) ->
-         };
- 
-         self.dma_reset();
--        self.pfalcon
--            .update(regs::NV_PFALCON_FBIF_TRANSCFG::at(0), |v| {
--                v.with_target(FalconFbifTarget::CoherentSysmem)
--                    .with_mem_type(FalconFbifMemType::Physical)
--            });
-+        self.set_fbif_transcfg(0, FalconFbifTarget::CoherentSysmem, FalconFbifMemType::Physical)?;
- 
-         self.dma_wr(&dma_obj, FalconMem::ImemSecure, fw.imem_sec_load_params())?;
-         self.dma_wr(&dma_obj, FalconMem::Dmem, fw.dmem_load_params())?;
-diff --git a/drivers/gpu/nova-core/firmware/fwsec/bootloader.rs b/drivers/gpu/nova-core/firmware/fwsec/bootloader.rs
-index a87878fe2aec..db1cb4498acd 100644
---- a/drivers/gpu/nova-core/firmware/fwsec/bootloader.rs
-+++ b/drivers/gpu/nova-core/firmware/fwsec/bootloader.rs
-@@ -12,10 +12,6 @@
-         Device, //
-     },
-     dma::Coherent,
--    io::{
--        register::Array,
--        Io, //
--    },
-     prelude::*,
-     ptr::{
-         Alignable,
-@@ -48,7 +44,6 @@
-     },
-     gpu::Chipset,
-     num::FromSafeCast, //
--    regs,
- };
- 
- /// Structure used by the boot-loader to load the rest of the code.
-@@ -247,14 +242,11 @@ pub(crate) fn run(&self, dev: &Device<device::Bound>, falcon: &Falcon<'_, Gsp>)
-             .inspect_err(|e| dev_err!(dev, "Failed to load FWSEC firmware: {:?}\n", e))?;
- 
-         // Configure DMA index for the bootloader to fetch the FWSEC firmware from system memory.
--        falcon.pfalcon.update(
--            regs::NV_PFALCON_FBIF_TRANSCFG::try_at(usize::from_safe_cast(self.dmem_desc.ctx_dma))
--                .ok_or(EINVAL)?,
--            |v| {
--                v.with_target(FalconFbifTarget::CoherentSysmem)
--                    .with_mem_type(FalconFbifMemType::Physical)
--            },
--        );
-+        falcon.set_fbif_transcfg(
-+            usize::from_safe_cast(self.dmem_desc.ctx_dma),
-+            FalconFbifTarget::CoherentSysmem,
-+            FalconFbifMemType::Physical,
-+        )?;
- 
-         let (mbox0, _) = falcon
-             .boot(Some(0), None)
--- 
-2.56.1
+We don't want to go the Deref/DerefMut route because mutable access needs
+to return a `Pin<&mut GpuVa<T>>` which doesn't work with DerefMut.
 
+Alice
