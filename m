@@ -1,69 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=188.68.61.103
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795028611;
-	b=qBygbc/SBWIb4haJrzdsQxRfHi+30NVYRmN1qNGacwaIePXlh8RSzeJ/DtkVXeYecoGA
-	 A72baSn74s/a6FoBR5Ht/A2kgSFhCeDMrc4RsrNCJ8IJVzzjzzz06mLx/98LjfcBrXnzg
-	 xOG5qMM45oG4vlOI5xqi9e5+ixmiZS8tKjk/TdpxtQDVueaqyADKynvp7zj/CQspf+ctG
-	 ygpxKgDVcnUngjoaAlMTNk8VyywhIJm0XeNzqc/YN9f2RWrLs1cRYxJSq6MzdVAmvs/Q6
-	 jhGGUZcVGbYQzbVh0bRpmKMIP3gIgS+2Z8DbH4fgIl/Fxg0b43wofaJE6EvlKKdtucg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795028611;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received-SPF:Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
-	 References:From:Content-Language:Autocrypt:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-PPP-Message-ID:X-NC-CID;
-	bh=cKVUKfEjTJSrd4mq0m9icoUtnIqPcU/7y036eaR+Jts=;
-	b=YtObHabt7iaxj6rxeE6r6k8Ap7+HufKD+Hf57lkBZMg2jFp2mH4I1OQ0DZyaMxqAsoTM
-	 rUBC9lMXAfOXpqF52yjJGVvPqUKJekKeDU5T1bJG+dE6Qlj4YtqJX+AFGq8TjBCmq9Ls4
-	 tEbDebOQ8DvDt+UnpadTbzdYqhA0ua1WqjpakpHA+ihlOAR5jjnkjaWVZDvpY3F0F+Oq+
-	 JTZOrmNt7q4ZpQj+F7gSh/QljWtSRTy1IYS9woHziMGC9iKY43o3fEd6/GeoFQ78RqysB
-	 17xPnLd/ZQEYa/WD75ACH8syZbd8TAqfaqUsrQR7lUGXrewoHvxNivmgKEqItee2hLA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=leemhuis.info;
-	spf=pass smtp.mailfrom=leemhuis.info;
-	dkim=pass header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=key2 header.b=ZrswiGbz;
-	arc=none smtp.remote-ip=188.68.61.103
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.61.103])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795029151;
+	b=Hbp0EC2VxQbFnYfSIHHKIfFIrcyARf2GuOusW0B+blJ0wLUbKufJKal4RUzP4LQlLUE/
+	 rjm9jMbyAvuWMaWRsnEUeBGv52ptbC4o4T2X04VJMdScORwyf4GUFmXGaQZV+LaqmlvNh
+	 fHUa5NBqEtUxAGZ6LP2ohJYK03A1QUuQ3R/K5byGMC8MRpjwiiAZpY03A3CfOhztOwHdX
+	 rkv/UcHtRywCtA35u2ep9ecz1yIVKWAgVp7lVNDz1/JxQ5ssfCjxG4sK1Fjdz1FSOaXTS
+	 e3Pn0u3Ep5fMPbcrPnm39KktBGzWly7hVeEMQRKlWYXTnQ3dE+ajQU9iJ8ipsT3DO6g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795029151;
+	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
+	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
+	 References:To:X-Mailer:X-ZohoMailClient;
+	bh=ItEIAqfkh9HYjyYLYFlHdsVmiv2JFV6DaAPAUqusY5E=;
+	b=nvwUwZG2en6QIMqiA3f+uGskVPRIx2zxSV4zlQ7cm1ARV5AcY7ZLKA8U3uIi10XTWwm4
+	 IDBPE4EpqE0zltUQb9df/T9U+JNVAw1EG8Q3IXLZyYXXcPzvhOAoGclKPgW3E2ngWdU76
+	 3WGO3fSwb9GZRON8fJxi5EYRpfB5Obt4wR3t1KHPTk5/Lt54R8m6yt0Hk2HpP9OshxXmD
+	 FxyKWzJ565kzQAFVnb372ggGzWTNpEGQR5g8ZlPcKbm5dA4uCrZFShLnvhOnmIgqIechW
+	 o+POTzZYHmK3xgYJvnP7bha1jJzcrvIkkttqT8erF6BI+AYPk17zIBEl2AFgKizBOnQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b="CHZhBR/n";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DC4606A32A;
-	Wed, 18 Nov 2026 19:03:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86DC4606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E283F606A31C;
+	Wed, 18 Nov 2026 19:12:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E283F606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=key2 header.b=ZrswiGbz
-Received: from mors-relay-8403.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4jV9vm73Gwz8fXt;
-	Wed, 18 Nov 2026 20:02:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1795028549;
-	bh=o5pFJPLvfYzsSxdkOip9Un2zRa7+ZaAOIQMq7WMNMNA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZrswiGbz2SJUdV+I2tAwAxTp0MOxS/9dStHwemJQTjwIcqRatajXu6cVkrBmwOgEW
-	 h0FvfBWwRjcgfhJ0ik/IQ6YXYPJ5IgyyoggO8g5Uddio6RG4igxIv+AKwgN0CEGLdF
-	 QRW8cjbDvguba3u+lygd4KhA++ranqqWBBPco3Ij9Lwmfa/ot3jiKIghS/qxantAT8
-	 jJ3VOgwTlB0dyYIpUABkn+E6QmHnaqkFKyA+6oW0GHxYPvvjhCBDtL64Ad6/Latyyh
-	 3kyopLCa8uoj7DAtdMWoYfQ843qhT0vBgNodVkiz/ihXawEEJzUA7mnjYPhkHHawwg
-	 AkAcRzbH7AhzQ==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4jV9vm6J02z8fXc;
-	Wed, 18 Nov 2026 20:02:28 +0100 (CET)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4jV9vj2W2qz8sb7;
-	Wed, 18 Nov 2026 20:02:25 +0100 (CET)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 38EBE5FAE1;
-	Wed, 18 Nov 2026 20:02:10 +0100 (CET)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=linux@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <cb9ff126-7767-4c60-b735-1b7890a247fc@leemhuis.info>
-Date: Wed, 18 Nov 2026 20:02:09 +0100
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=CHZhBR/n
+ARC-Seal: i=1; a=rsa-sha256; t=1795029121; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=SbUtX7o2tXBdzJcUrHgGFvCZiVPQwSCavGNMjLhqtxToc6mdjCvF+hY/uPLUH2Mx1jfBd/rZkEtEkDX2CHdC+Y933U3oYvzFo930HGLwRY+EdK4HGlq1LtGLCg8gOGKQ2vwnkwbrGN2NANOMos24CInJQgSNNcKYHvkTao3ccqk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1795029121; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ItEIAqfkh9HYjyYLYFlHdsVmiv2JFV6DaAPAUqusY5E=; 
+	b=SgvkozKZMm+eC8E7ZpbY1jl+DgRg1zV1PC9TvY/pe2RTAzGRnYkiViYXSyY+EYBvC9RWrGDYNdxNXbfap2awXCl9iN3PuSvUH63HW7mvcFT4izNqr8BymTA0mfC4HmXzOABcANtHeBwZ74Pn+Q12a5yUKnjLta8Vs9S06gSZL8A=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=CHZhBR/nRwVGvB1bfY3yg+ACd+YE2U6+4nmCDwab8WHPj96FJoWDV4E3sUxOOTd2TbqWhzEVljBHkJVZEXY9l6BQNBFZSybslFRSBhTuCCXhF4PHiY3cN0pD+xwwIfctvrj+4WZ5f/Qau/rzIXzESI9av3/cRYNGKhskUdXY9eY=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=ItEIAqfkh9HYjyYLYFlHdsVmiv2JFV6DaAPAUqusY5E=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795029119789199.42815469236405;
+	Wed, 18 Nov 2026 11:11:59 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -72,121 +57,208 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.3 0000/2651] 7.3.6-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com, Miguel Ojeda <ojeda@kernel.org>,
- RUST <rust-for-linux@vger.kernel.org>
-References: <20261118150247.972732815@linuxfoundation.org>
-From: Thorsten Leemhuis <linux@leemhuis.info>
-Content-Language: de-DE, en-US
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 MEK4
-In-Reply-To: <20261118150247.972732815@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: 
- <179502853112.2764222.18096889583059449587@mxe9fb.netcup.net>
-X-NC-CID: boliFuEOQHkzI0IzbOIZEcbWEMqjRW/0tl8Z9QpTJHBe7qIWHMU=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH 0/6] rust: iommu: add a paging domain abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20261117202055.GA3115493@ziepe.ca>
+Date: Wed, 18 Nov 2026 16:11:40 -0300
+Cc: "Joerg Roedel (AMD)" <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ iommu@lists.linux.dev,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ driver-core@lists.linux.dev,
+ Detlev Casanova <detlev.casanova@collabora.com>,
+ Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <615C3DA2-4C02-4A8B-AEC4-70D498672559@collabora.com>
+References: <20261112-b4-iommu-domain-v1-0-c29e86788dda@collabora.com>
+ <20261116193821.GC2452510@ziepe.ca>
+ <3EB4C2ED-B699-4532-A562-68B78F6E29C6@collabora.com>
+ <20261117202055.GA3115493@ziepe.ca>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-ZohoMailClient: External
 
-On 11/18/26 15:20, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 7.3.6 release.
-> There are 2651 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 20 Nov 2026 14:55:47 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.3.6-rc1.gz
-> [...]
 
-This failed to build for me due to a problem with rust during the "make
-bzimage" stage:
+> On 17 Nov 2026, at 17:20, Jason Gunthorpe <jgg@ziepe.ca> wrote:
+>=20
+> On Tue, Nov 17, 2026 at 05:09:11PM -0300, Daniel Almeida wrote:
+>> Hi Jason,
+>>=20
+>>> On 16 Nov 2026, at 16:38, Jason Gunthorpe <jgg@ziepe.ca> wrote:
+>>>=20
+>>> On Thu, Nov 12, 2026 at 02:00:07PM -0300, Daniel Almeida wrote:
+>>>> This series adds a Rust abstraction for IOMMU paging domains. A =
+driver
+>>>> can allocate a domain, attach it to its device, map pages into it, =
+and
+>>>> install a handler for its faults.
+>>>>=20
+>>>> This will be used by the upcoming rkvenc driver that my colleagues
+>>>> Detlev Casanova, Nicolas Dufresne and I are working on. More =
+details on
+>>>> this driver can be found by watching Nicolas Dufresne's talk at LPC =
+2026
+>>>> [0].
+>>>>=20
+>>>> As part of the security model, each client will have its own IOMMU
+>>>> domain. This is needed as the submission model will let userspace =
+set
+>>>> most of the encoder's registers directly, so the kernel cannot =
+check
+>>>> every memory access that a job makes the encoder do. With a single
+>>>> domain, one client could make the encoder read or write the memory =
+of
+>>>> another client.
+>>>=20
+>>> How do you plan to get the paging domain in the first place?
+>>=20
+>> We plan to alloc a paging domain when a video encoder session is =
+created. Then
+>> we call iommu_attach_device() before a job runs, and detach back to =
+the default
+>> domain after it finishes so the next job can attach its own session's =
+domain.
+>> This is so each session is isolated from each other.
+>=20
+> If you do that you can't use the DMA API at all in your driver as you
+> have to set 'driver_managed =3D true'. Is it OK? If it is why not just
+> use VFIO?
 
-"""> error[E0432]: unresolved import `crate::util`
->   --> rust/pin-init/internal/src/init.rs:17:5
->    |
-> 17 |     util::*,
->    |     ^^^^ could not find `util` in the crate root
-> 
-> error[E0599]: no method named `extract_cfg_attrs` found for struct `Vec<Attribute>` in the current scope
->    --> rust/pin-init/internal/src/init.rs:171:39
->     |
-> 171 |                 let cfg = field.attrs.extract_cfg_attrs();
->     |                                       ^^^^^^^^^^^^^^^^^
->     |
-> help: there is a method `extract_if` with a similar name, but with different arguments
->    --> library/alloc/src/vec/mod.rs:4245:4
-> 
-> error[E0599]: no method named `as_ident` found for reference `&Member` in the current scope
->    --> rust/pin-init/internal/src/init.rs:413:28
->     |
-> 413 |         let ident = member.as_ident();
->     |                            ^^^^^^^^ method not found in `&Member`
-> 
-> error: aborting due to 3 previous errors
-> 
-> Some errors have detailed explanations: E0432, E0599.
-> For more information about an error, try `rustc --explain E0432`.
-> make[2]: *** [rust/Makefile:649: rust/libpin_init_internal.so] Error 1
-> make[2]: *** Waiting for unfinished jobs....
-> make[1]: *** [/builddir/build/BUILD/kernel-7.3.6-build/kernel-7.3.6-rc1/linux-7.3.6-0.rc1.400.vanilla.fc45.x86_64/Makefile:1440: prepare] Error 2
-> make: *** [Makefile:256: __sub-make] Error 2
-"""
-Full log:
-https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/fedora-rc/fedora-45-x86_64/11350094-stablerc-fedorarc-releases/builder-live.log.gz
+No, not OK :/ We want to use GEM shmem, which calls into the DMA API =
+internally
+through drm_gem_shmem_get_pages_sgt() -> dma_map_sgtable().
 
-Have to run, so not time to look at where this is coming from right now,
-sorry.
+>=20
+> Or are you planning DT horrors to get yourself a DT created "DMA
+> struct" ?
 
-Ciao, Thorsten
+I wasn't even aware such hacks existed. In any case, I am not proposing =
+more
+hacks, no.
+
+>=20
+>>> Using paging domains directly is very complicated, I'm not excite d =
+to
+>>> see DRM trying to do this at all. IMHO there are many unanswered
+>>> questions how it could even do this safely.
+>>=20
+>> In a very simplified way, this is not unlike how GPU drivers =
+currently work. In
+>> fact, from a cursory look, this seems to be how rocket (the NPU =
+driver) works
+>> too. Since we are merely porting the same ideas to video codec =
+hardware, I am a bit
+>> surprised by your discontentment.
+>=20
+> In my experiance any place I see DRM touching the iommu it is
+> immediately suspect. We keep uncovering horrors that people buried in
+> there. Yes, you can point to some DRM places doing something like
+> this, with a convoluted struct device scheme and DT hacks to make it
+> functional, no you should not copy it and certainly not entomb it in
+> rust. :(
+
+Sounds reasonable.
+
+>=20
+>> In any case, we need this isolation due to the submission model used.
+>> Most Vulkan drivers know their hardware pretty well, so a level of =
+abstraction
+>> on top of it like V4L2 is unnecessary. Therefore, in order to achieve =
+a leaner
+>> kernel driver, userspace programs most of the encoder's registers =
+directly, so
+>> the kernel cannot validate every address a job makes the encoder =
+access.
+>=20
+> Sure, but you haven't explained what the iommu gets attached to (ie
+> where does the SID come from), how cache flushing works, who programs
+> the mappings, who is managing page pinning, etc.
+
+The SID comes from the platform_device backing the encoder, as far as I =
+am
+aware. Pinning is handled by the GEM shmem layer.
+
+The CPU mappings are write-combined, so the only cache maintenance is =
+the clean
+of newly allocated pages, which dma_map_sgtable() does in
+drm_gem_shmem_get_pages_sgt(). The mappings themselves are chosen by the =
+kernel
+driver. We don't care about what the actual IOVA is. All we care about =
+is that a
+given GEM object is mapped to a given domain, and that we have some IOVA
+representing the start of the allocation, such that we can pass that to =
+the
+device.
+
+>=20
+> Are you sure you shouldn't be using iommufd for this, tied into your
+> driver? It was intended for exactly this use case, to allow drivers to
+> delegate their translation to userspace. Though that doesn't relly
+> solve the questions about what it is even being attached to..
+
+I had a cursory look at iommufd, but it seems like:
+
+a) it requires IOMMU_CAP_CACHE_COHERENCY, which is not offered by the =
+rk_iommu
+backing the RK3588 SoC we are currently targeting. In fact, IIUC, this =
+does not
+seem to be possible, since the encoder is not cache coherent with the =
+CPU?
+I.e., does iommufd expect hardware cache coherency/snooping?
+
+b) there is no way to do what I said above about GEM, i.e.: there is no
+connection between iommufd and GEM.
+
+>=20
+>> The fault handler is used in the same way it is used in GPU drivers: =
+to kill
+>> sessions if they fault. This way the driver can simply refuse further =
+work from
+>> a misbehaving client, for example. It is also the natural place to =
+enqueue a
+>> reset if the codec hardware is frozen as a result of the fault.
+>=20
+> IIRC no GPU driver does that, they hook the obsolete fault handler not
+> supported in new iommu drivers not the new PRI based one... IDK we
+> have even wired this up to work this way.
+>=20
+> It is nicer if the HW can tell you it faulted rather than expect the
+> iommu to do it.
+
+See my reply in another part of this thread about how handlers work in =
+Mali,
+just as a comparison point.
+
+>=20
+> Jason
+
+You seem to be saying that what I'm proposing here has a few pitfalls =
+that have
+come up over the years. Perhaps we can massage iommufd to make our use =
+case
+work? I can volunteer to do whatever work is needed, of course.
+
+Same caveat as before: feel free to correct me at any point above, as I =
+have no
+previous experience with the iommu internals.
+
+=E2=80=94 Daniel
+
+
+
