@@ -1,75 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795021808;
-	b=wznYJvjb8nvUaYsF0oiVIE0g5d0YVh4JW7ZHw0XFLOLt+VwtLJlxcrGWAlN19SXYUOhh
-	 1OeT4yh3mQtaYiVqLRDyQfUMn2PvOiTz5pX4ID8RVOGdNCxZ3DGTRdJsW2KRY70IP/2zW
-	 cIbM32UKW1EXo9R3qGW6FbEGHDAQNZWuDUOi3a4vJU7CYC81MrCQ9jPIM7ES//7Z2BXXo
-	 XPTbmIepYD4p2wYoD1ml8uessSLmZ8xvXQ9TjsawiVdcdx5t7UlM+kmgM9qYYtTsHXWJf
-	 5zr3Ru49xpGN4IzBb0c/+OhVN+f/mR9ed5Gi/cl7348K/TTPYPEq9S4g8yqxoIMvTtQ==
+	t=1795022638;
+	b=Klg3pAneE3QyZhuMg1/yyHWl0yzfyOsv5OSQYBZ0+XQ3CCtCDqe0nnG6VZCn4mPRL0tB
+	 CAhF75C+epD/lEAxd4UQULq8rVkCVSohxw17br5PWzLhD6q5+N05x9Tbv26aDJB4+PWQ2
+	 ih5FnzCdpDJNSHrDrRq4UhGHW+wPLwUtTJnVb5AcwdVAhotgfSVDlntZqvekcPG0riUEb
+	 IY/Kc5Z2puYWZmbaEQbaQgQpIn7C36mL3DuhWSTc/vDh/7HzU7TxW1Lb3mRkT1fOtTq78
+	 CzkpT0bh4SwpFcuGBIAxaf6ehY/7gcgYvUVhnhZlvMDhc7Cu4zaBKtVb1ab9JIxZBqQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795021808;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Developer-Key:X-Developer-Signature:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=upxsZjZd23/rE94pnRNu7XdEGLc2MTF7owyJv89u1r0=;
-	b=Ma6TQ6y/rrStvcNu+/yx+gM5S4a2UBYTHSh4GqbhDpibP7exr9+09wc5LjcHYkX5sxRC
-	 Zsi9XbNnE+HR04BUdvyYzDnNJkhUVaOvejLKSpOHBUikeJ3AoM2qM3FDsSVA4wzi6ipde
-	 MAzSvWrfK1NIRP6rkHVmAZFQomtD87bkUWdUdMrUZfkOUM2K+Ygrq5/tnEjWfOsmxSpVY
-	 NjOBP9ZOCqN4jFiQmVIxXMC3t+FaogOMwkgQGo5Kv0lO9X5F5D9Qw1r13MPrOtMlJFwm3
-	 2610XQpV39tPrf/IWbIvVKNsVTEom2HICCyBBiKMJ6jNLuJ1sRZ6vbk9itARFpwYJEA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795022638;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=2RksEooRSQy8s2okC3wauXTJ94u3NPIg5qK3nWOQ/to=;
+	b=DP+bOh25d87i+wBxbRNtBInOupOOzdvJT5h8gpZsUEL2unZl4b5BGniBkfqHJ5ACVDwQ
+	 nl1C32r5vwoo/qM7RKhZU3tB3TAwPFayRNQSeL9N11CGrlkEwQ+B2ndsS1kgzwbthK1Ns
+	 sxoPiRuFjtJXXX7n3MusnlOSAQ9hhS2kJU6J/GPegyjaE7H6Q7UU71TzZoJ9v1JjtDocH
+	 0Mk+zxHyKEW2lh2hIITnNdSvoJhgH4eG8ddixpZHa26NgaSKtS8655w0AsmP3hW3p7DDn
+	 1AUfc1xvurBajXOgimcQmUvhmW18mQvPG0Z7OcGdmo9chmEMixS5Tp1t9LRStD4gYpA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=E7BFRAzH;
-	arc=none smtp.remote-ip=209.85.128.72
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DzAdLeyM;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085C560A2623
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 17:10:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 085C560A2623
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B18606A336
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 17:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=E7BFRAzH
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a1f03f2e8aso9673415e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 09:10:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795021806; x=1795626606; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=upxsZjZd23/rE94pnRNu7XdEGLc2MTF7owyJv89u1r0=;
-        b=E7BFRAzHwOu8MPdDKyvAsqHvgNd5UTFf3H+TKU7c/gSlCGgN/HUGtjJ3kwlwEEG087
-         VoFwrs5R37nkI6Bg90E8/oz/tr8l5ZhL9IJFIpGi3BGsx7P6YH5jQBBiBCiDPn4pnhFs
-         kapdXD2Iek4cq5Fj9SeXy2IDys87M63CZ8HuMSV9l0B6zy1lmk9lkgjrdMAACnHIEobA
-         XPh9NtKCDyfDF/O3wnrY3OCCkrxZKZzFCC/uivkab7QR5Fa/objxqJedHIw8mNixhQuP
-         xr5ol2mbRioxmNokYSN9UTnFED8asM/wYeC0ffjeTquk40IRywCGodTdGRmpsK0yZIlv
-         QbWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795021806; x=1795626606;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=upxsZjZd23/rE94pnRNu7XdEGLc2MTF7owyJv89u1r0=;
-        b=YSyWq1K6RVdR0g4y/kLG5NcjhobWaTzTF/ZkXrgxK/uR7/5OS85O7jlCS3wPyH9lj9
-         F0JgGJFadNaXwL0cwoqP3YLff8a6nYrg2qcJIdwVm2ycJ5zYd8L6NjQv38UmQOJ7dpdy
-         ERXd60Z9KXZgKgI/rUUrL0atNKp3BCWYuQxxd1e/3HyGtNiPCWwJjTTLvdofbAifkVVM
-         m7v5WE7OTbUS8LAtnxXwz4Vuroi37y0d5SKhQDFw3yGZayYUzopRr3wLYTuQRKZX9hj/
-         JMj58ddUdSGqSOPeHhZIHjimSP5SCrTnLV60hBsqaitktWecy8L28p3ixCkLOMoy3a0I
-         Ltfw==
-X-Forwarded-Encrypted: i=1; AL+hErE1vHXOKPMJT6ry9MKQCb2hSlCEcxg+ulxvAGSt1KO2gX0xx02/oZ2IegGpEgm8lkUywEyNlyTcEdHWvQBHDg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/ReEtPMitcwITzkoE4rQqPz70f9P08b+PLjYOy4R07zh72yOc1
-	v/V8pFuUpqVxECwMpV/+r8Wg74XBHWBvB2m15mj7c5g9nyU6JNNeQZS2fx8abn/exQcRJBE+vJ2
-	YfnXd3eCpKTUmUzLGqw==
-X-Received: from wmbdr23.prod.google.com ([2002:a05:600c:6097:b0:4a2:8b4:78e1])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4e11:b0:4bb:6a2d:b438 with SMTP id 5b1f17b1804b1-4bb7d578be5mr70523065e9.0.1795021805907;
- Wed, 18 Nov 2026 09:10:05 -0800 (PST)
-Date: Wed, 18 Nov 2026 17:09:52 +0000
-In-Reply-To: <20261118-ordered-wq-cancel-v1-0-916e01f9affe@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DzAdLeyM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17CE11F000C8;
+	Wed, 18 Nov 2026 17:23:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795022638;
+	bh=2RksEooRSQy8s2okC3wauXTJ94u3NPIg5qK3nWOQ/to=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DzAdLeyMCA0IjTXMenv5yUHQK9upvBRXD0/ev8C9zXTwKQ6RGLPFwCnjduWmzTfQe
+	 v21/QKXCBz41YNkNxWaVYQAHFRhmoXQA1xnSSvNYhq+5WhuWZ7XNI7zW3+c6VR6lGR
+	 pBVootEX/n50Wtfdo+x+arPW28e0xXin2GYylhv1c5yVdSeWVdjMyDzMfzt+SLDsvn
+	 2pENgB4hbtd9G8L0K/fU1rBQq8eioycTSYdG4OKfvxfBVS1UCkGjKFdldoVR/DcXoi
+	 RSegnFC+91vRi3gAEDW5qE6c9s3xmbo1yA1p5RP2AdqaCDtJJu11dryjnSjdifxf7b
+	 laenvWxknMxcg==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5E770F40066;
+	Wed, 18 Nov 2026 12:23:57 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Wed, 18 Nov 2026 12:23:57 -0500
+X-ME-Sender: <xms:Ld_9amQOu9lfEQ1w8TuLhxzrxXO-oNmFGxSm9S6Fbw4877dVQ3syIw>
+    <xme:Ld_9aqLiNROPBSKcP6TqXh5mCEGXcXSAEqV5D5VrcE7C6HEYnDsR3pSQ7_2UnsuYC
+    2OGqFtc6svNbYhQF3dBvutJ4YAfwHwA_mCNq3D_UKXaC_A0s9zgCeY>
+X-ME-Received: <xmr:Ld_9av3DUnyQmbqwEcvzWSlvRcpHU0vHSlmnq6CyudlWXfdf2SvUZ7F7mQZDuIuS7gzPvcM0YDNF7XjuV6jb9f-AFcP-qAyJ>
+X-ME-Proxy-Cause: dmFkZTE+Ncdsmq9B/GZ/+WChSg2xAz+aE3Ph6S7mbrG1mDLu84NH40Ak7PjFmaYnj0T016
+    FRJtDawBaIJ5zps2vaNYfmOc+AjKOloVVfD6S/jYyZePRUnKfY3Q74rsarXJtajD0dYNI8
+    Yv19s5Ga7iCGJ4QB6mx6FaIcZhdsieMALloXLuhaIoHpr2QaCOEnaNCEhMoGhWFDavUhVo
+    h6/ledDzrALW33YNgQEq5ySdRf9vSAZ0RTMSGntUqqJX91G6xkjoAydnSGnu7RyWyYHRya
+    IAZTk7KCvMJ2RZCZxjrNNv6iY3kLG6g46H/XIYs+efKk6I4aVAMGQMrL4BkYIeG5BFaKrR
+    cnT0gh66LPNsDS6Tx+YTUZHvXrqHYITJA4ylzqaUfm3w1E2/FF2ih2A249eHvhO6tWzpac
+    V1Yjuxur/dehwODwMWI0jHV5JkQ+hCxwZLyyTQNKHI0QGtlkGCXAaQMdz4SiACCWLxAzu6
+    0Lbc3w2gBShx+DxuK1SY6QT2U9q932VEQgvo39gUOyOUxy30rytwa0Mnu6OFvAm3yHXrsu
+    XEL/NgWRyfLeCHGINJPdHmlIdMUinEIKtboQ31an8PplshkX/mKK2+I2Q3GxqfCTQQqlgA
+    glZJ7ZgSOdiCP7cxmCZRhTmQffwunyGmp0S993vXr1YKE5LU566xbas3du5w
+X-ME-Proxy: <xmx:Ld_9alJX6h40VeSsorBAJuKbawe0P7q6FL87kaI3ihzIIXG5e9fCUw>
+    <xmx:Ld_9ann7nFn-SIJTP1aaqBbq16acvKpGKi1Uh7jYotguYpvah17fSg>
+    <xmx:Ld_9arN8YL08SKNDokiSHaraFCWJ-jbhhSf4wCzbDg4os66NEYkLxQ>
+    <xmx:Ld_9auz32_97lCeyOqaOMoNffeG5qHwfKEh0jlpkAlCYKrzRjCRr2A>
+    <xmx:Ld_9arlIyGRCiHI7dZ6B8XbaY7UyBaMbgFJdttPJzPfe5feEEx1_VxiC>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 18 Nov 2026 12:23:56 -0500 (EST)
+Date: Wed, 18 Nov 2026 09:23:55 -0800
+From: Boqun Feng <boqun@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gary@garyguo.net, aliceryhl@google.com, lyude@redhat.com,
+	daniel.almeida@collabora.com, work@onurozkan.dev, ojeda@kernel.org,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	tmgross@umich.edu, tamird@kernel.org, acourbot@nvidia.com,
+	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v3 0/5] rust: sync: add WaitQueue infrastructure
+Message-ID: <av3fK2ybemq91riD@tardis.local>
+References: <20261117001507.1611984-1-dakr@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -78,143 +89,69 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261118-ordered-wq-cancel-v1-0-916e01f9affe@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4847; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=Xu/sW3b3m/uzBSmDGW/8Hbncj3Ai/sXo4vu+FkRqaDo=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBq/dvox4g8vhDKk566WX3T16iHQaAmZHkBk//92
- M3vG/2KvN2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCav3b6AAKCRAEWL7uWMY5
- Rl1iEACFig3wS7IisPl6v58G8IIV6kpnKlfzz4ioHVi7mJSEZEqn1rcY+49YkZeNgku1WTXkS0N
- qn0/Jp+ekIQWGwpD9dWHZneJxYl2pR5sRE4fas5iZzNyEVcLFK5COJp+7agxaFupYZfcJm/F+tE
- QfkyqYS0BfgX6SaDNcL6TMuj7CWtxvsssd+t8pLqZvTXHs7tq5TUMXQluBNK0zETysWX1R07xck
- 8ggnMly7tyvb5670Y68i2f2xUhwBGABAHgwEmWwflYO2AWE10wpOcOlkhxHJtO0ouD5kgSDgNmO
- RMyzC+Nq6rW79km+XtWQtUOtYLXYEAnhllPwYDyuz6W7J5NXbz6DvqRuXjPugBix4I+ucx8kV5m
- glJxGZzi+Lg7a27aRAAMXtjfamDL3rS2lS8ejxH06zB6MDWDRe3i177OWw3FtnRCUCU92yVmBub
- HaWw/jLpnjOEYo2e7NO08NpPEUcWBK7wiStRDQk3YdxdiJiPcVH2y8oJk8l2LNnkUJcyb6VfLqc
- JST6/COHadrQD61G8iVlrZd8mYeZd2tF5z/nwHbLZ1Y/U9Eff2Ng2hCQAJnGF9E5aDIFa8yLu6p
- AHZmZBvMT3PyHhGYTqn/GbK8uFQSlCe2hlxBK+XSqc8KxRKySZrUUh7iRQ6J3Yo9O64wuCuYArE 2FDvU6bcoKF3n1A==
-X-Mailer: b4 0.14.3
-Message-ID: <20261118-ordered-wq-cancel-v1-2-916e01f9affe@google.com>
-Subject: [PATCH 2/2] workqueue: doc: clarify cancel_work_sync()
- cross-workqueue behavior
-From: Alice Ryhl <aliceryhl@google.com>
-To: Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>
-Cc: Boqun Feng <boqun@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Philipp Stanner <phasta@kernel.org>, 
-	Matthew Brost <matthew.brost@intel.com>, 
-	"=?utf-8?q?Christian_K=C3=B6nig?=" <ckoenig.leichtzumerken@gmail.com>, 
-	"=?utf-8?q?Thomas_Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Steven Price <steven.price@arm.com>, 
-	Liviu Dudau <liviu.dudau@arm.com>, "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, 
-	dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261117001507.1611984-1-dakr@kernel.org>
 
-The kernel-doc comment for cancel_work_sync() claims that it waits for
-@work to finish even if @work "migrates to another workqueue". However,
-this has not been true since commit 606a5020b9bd ("workqueue: gut
-flush[_delayed]_work_sync()") replaced the all-pools scan with
-start_flush_work(). Consider the following scenario:
+On Tue, Nov 17, 2026 at 01:14:41AM +0100, Danilo Krummrich wrote:
+> Add a WaitQueue abstraction wrapping struct wait_queue_head, providing
+> wait_event()-style methods that take a condition closure directly.
+> 
+> This is needed for a (subsequent) DRM patch series to wait for in-flight file
+> close operations during driver unbind. The Tyr driver also needs it for "CSF
+> firmware responses and other GPU-driven events" [1].
+> 
+> Convert CondVar (and PollCondVar) to use WaitQueue internally, removing
+> duplicate code using WaitQueue as the base primitive and add
+> wait_interruptible_freezable_nonexclusive() for subsequent binder usage.
+> 
+> This series is based on FUJITA Tomonori's CondVar timeout conversion [2].
+> 
+> Changes in v3:
+> - Use Delta<Jiffy> for timeouts and treat negative durations as zero.
+> - Add might_sleep() and caller tracking to the wait_event() methods.
+> - Gate the WaitQueue KUnit tests behind a dedicated Kconfig option.
+> 
+> Changes in v2:
+> - Drop the already merged workqueue patch.
+> - Make as_raw() public.
+> - Split error types and use bindings constants for direct C calls.
+> - Avoid condition rechecks after success.
+> - Check the condition before preparing a waiter.
+> - Add non-exclusive wait support, including a CondVar method for subsequent
+>   Binder conversion.
+> - Handle zero and expired timeouts before interruption; extend KUnit coverage.
+> 
+> [1] https://lore.kernel.org/dri-devel/20260721151423.444175-2-laura.nao@collabora.com/
+> [2] https://lore.kernel.org/rust-for-linux/20261104235929.1282640-1-tomo@flapping.org/
+> 
 
-1. @work starts executing on wq A (pool A).
-2. While @work is still executing on pool A, it is queued onto a
-   different workqueue wq B (backed by pool B). Because __queue_work()
-   only redirects to last_pool when re-queueing onto the same workqueue,
-   @work is queued on pool B (where it may even start executing
-   concurrently with pool A) and work->data is overwritten with wq B's
-   pwq / pool B.
-3. flush_work(), cancel_work_sync(), or disable_work_sync() is called on
-   @work.
-4. start_flush_work() only inspects the single pool recorded in
-   work->data (pool B) and returns once @work is no longer pending or
-   executing on pool B, while @work is still executing on pool A.
+Nice work, thank you!
 
-Queueing an in-flight work item onto another workqueue already violates
-the documented non-reentrance conditions in
-Documentation/core-api/workqueue.rst. Thus, update the kernel-doc
-comments for flush_work(), cancel_work_sync(), and disable_work_sync()
-along with workqueue.rst to stop claiming that cross-workqueue migration
-is supported, and link directly to the non-reentrance conditions
-section.
+Acked-by: Boqun Feng <boqun@kernel.org>
 
-Fixes: 606a5020b9bd ("workqueue: gut flush[_delayed]_work_sync()")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- Documentation/core-api/workqueue.rst |  7 ++++++-
- kernel/workqueue.c                   | 17 ++++++++++++-----
- 2 files changed, 18 insertions(+), 6 deletions(-)
+Regards,
+Boqun
 
-diff --git a/Documentation/core-api/workqueue.rst b/Documentation/core-api/workqueue.rst
-index bb770f556568..007dee698ede 100644
---- a/Documentation/core-api/workqueue.rst
-+++ b/Documentation/core-api/workqueue.rst
-@@ -769,6 +769,8 @@ The work item's function should be trivially visible in the stack
- trace.
- 
- 
-+.. _workqueue_non_reentrance:
-+
- Non-reentrance Conditions
- =========================
- 
-@@ -784,7 +786,10 @@ executed by at most one worker system-wide at any given time.
- 
- Note that requeuing the work item (to the same queue) in the self function
- doesn't break these conditions, so it's safe to do. Otherwise, caution is
--required when breaking the conditions inside a work function.
-+required when breaking the conditions inside a work function; in particular,
-+flush_work(), cancel_work_sync(), and disable_work_sync() only track the last
-+queued instance and may return while an earlier execution on another workqueue
-+is still running.
- 
- 
- Kernel Inline Documentations Reference
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index d7acedfb8b27..5c7018ea0b48 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -4634,7 +4634,9 @@ static bool __flush_work(struct work_struct *work, bool from_cancel)
-  * @work: the work to flush
-  *
-  * Wait until @work has finished execution.  @work is guaranteed to be idle
-- * on return if it hasn't been requeued since flush started.
-+ * on return if it hasn't been requeued since flush started and the
-+ * :ref:`non-reentrance conditions <workqueue_non_reentrance>` in
-+ * Documentation/core-api/workqueue.rst hold.
-  *
-  * Return:
-  * %true if flush_work() waited for the work to finish execution,
-@@ -4764,9 +4766,14 @@ EXPORT_SYMBOL(cancel_work);
-  * @work: the work to cancel
-  *
-  * Cancel @work and wait for its execution to finish. This function can be used
-- * even if the work re-queues itself or migrates to another workqueue. On return
-- * from this function, @work is guaranteed to be not pending or executing on any
-- * CPU as long as there aren't racing enqueues.
-+ * even if the work re-queues itself. On return from this function, @work is
-+ * guaranteed to be not pending or executing on any CPU as long as there aren't
-+ * racing enqueues.
-+ *
-+ * Care must be taken if :ref:`the non-reentrance conditions <workqueue_non_reentrance>`
-+ * in Documentation/core-api/workqueue.rst are not upheld for this work item.
-+ * In that case, this function only waits for execution on the last queued
-+ * workqueue.
-  *
-  * cancel_work_sync(&delayed_work->work) must not be used for delayed_work's.
-  * Use cancel_delayed_work_sync() instead.
-@@ -4843,7 +4850,7 @@ EXPORT_SYMBOL_GPL(disable_work);
-  * @work: work item to disable
-  *
-  * Similar to disable_work() but also wait for @work to finish if currently
-- * executing.
-+ * executing; see cancel_work_sync().
-  *
-  * Must be called from a sleepable context if @work was last queued on a non-BH
-  * workqueue. Can also be called from non-hardirq atomic contexts including BH
-
--- 
-2.56.1.703.gf848ed807c-goog
-
+> Danilo Krummrich (5):
+>   rust: task: add safe schedule_timeout() wrapper
+>   rust: sync: add WaitQueue infrastructure
+>   rust: sync: convert CondVar and PollCondVar to use WaitQueue
+>   rust: sync: condvar: use task::schedule_timeout()
+>   rust: sync: condvar: add non-exclusive freezable waiting
+> 
+>  rust/kernel/Kconfig.test    |  10 +
+>  rust/kernel/sync.rs         |   8 +
+>  rust/kernel/sync/condvar.rs | 154 +++++-----
+>  rust/kernel/sync/poll.rs    |  19 +-
+>  rust/kernel/sync/wait.rs    | 546 ++++++++++++++++++++++++++++++++++++
+>  rust/kernel/task.rs         |  23 ++
+>  6 files changed, 664 insertions(+), 96 deletions(-)
+>  create mode 100644 rust/kernel/sync/wait.rs
+> 
+> 
+> base-commit: 60fff02883397e17439c16f0e72b2f8c5f6eb791
+> -- 
+> 2.56.1
+> 
