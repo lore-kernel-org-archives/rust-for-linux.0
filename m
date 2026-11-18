@@ -1,54 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795013317;
-	b=CMoZrUSzNXGyfCwExSPXIL0gbftPk2ZrtzGXIIvmUc98nZvfAHqHl3rdZPVNhM02bDmO
-	 ehnv4Bp6eyDkarwhtNKyuB56SM89a667pWoYiWZ8kx0ii8ukCA65oMWSlGbLP5av/6Nkp
-	 Cvpxlt6I+9QtJNBO9DrUMAlMXncpasUOubGIrjlI4DhuGahma2hePcXADcYBOsVFqpZYC
-	 6qt+J0nuyX9Ze8ct6dAOsUcespFo6qcIRjTs7PfhfDwLVcYyDVKAMUoitnN9bTaO4SIZk
-	 XY/sV/XWZW+1IvuMn96BDVN7XMpqHjiJznSYwB7u19snmkFzW5PFeLJVlClOBYqyY3g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795013317;
-	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
-	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
-	 References:To:X-Mailer:X-ZohoMailClient;
-	bh=6zB/RMHWdIa7W8+VTnT+QTtr7Bbpj33D57C4R1EDlas=;
-	b=fmPoOpHmYmxY3GflfxS0HXtjjj1s9TnEN3Qben3w/BczOrfC3YG1I/bmQvXFgp/eFhVu
-	 RBsIaGIJ46eDmX3G9jC6Y2STIQ+V3Y4fcoiPmZX1QE6Qinu424sjPg60xiNtsbqGEE8JF
-	 m15mctfHLokvmHF5nBlTzOaK7fy9Zb6kgV7ulg/rbv66+lnmV325d5bskiPRakmwdj0SR
-	 cogHor0gnIVGLs25r18532X+rBOT9U9ivi5eGXKaQ5AdCdReMICmzXXdI6AP3HqnCzLhE
-	 dLbSCIljBniYmxccni2YfjDJ3WxUPzepgytUEgmtmzRrXfEASzOsh1qAdJ4B5WR3F/w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=EdUk8q0V;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795013685;
+	b=e73tuGtfNDmaPfOUDaVI13lU6TGllPWhvKNWdoRDzptyfYdnB0PyNSo3D7KyT1AFdIJF
+	 RN+o+rBxwyzmSdrNgyZZO/8jxGeGQ5F06V4iOpReld9FSn9Nx1t+P/gKy2kS14JaSJXfd
+	 Anw8rPoF6ThuE1soaUOUfxhVhsoRuBO++lgvFLSDItSP2t3mIdYAKz/thr72aT6A6Hdbr
+	 YEOMEHodXl888vmLLFYsWBXAbth2H+6VEalFO2YxTRbVfX83KtOif58I1ajybhC364vv1
+	 1zfLIIdz+cGFbL7dsmGqxsM7IiYZ3w/FmRu1FP0AlRzU+V8KYDZYPxLszvLzdcjzQQA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795013685;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=xk2u0IFYzMOmP4mw0YTVUf3YzRzuPFILTqJcr/ZnYVI=;
+	b=XU6516KCIn2gpR3L/yr6DprYeh3At1/5jmxWs35xas3+WMQvSU0Tgm3RZNWvsifHgvER
+	 gUpkElA6AOaJGVRbpFGAD7uz+aTaJZJ1OJKB4Kt9Szvlwte/i1wntRORLKDK7WdEAnRqv
+	 /DQFAJyoarjUKRjZNBOKzY7fOORKQ2i9RV9ZN7idxJ+eLeN9Tz4yPVj+bJxFr8IZmeFxa
+	 rY+UwI0G1JHpS2HjKiEBch/eM29EWIvQDkQb3KUQj820UyJfvkpE3yo8ub7qziWp/0Oq3
+	 ZvmMQWvDmMmenelMeMaI4IW+QPiYAGD9BSykmvXSoA4SiuVW8Aok0lCaUSKPRvgkdxw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KrJRAilG;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E15606A325;
-	Wed, 18 Nov 2026 14:48:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B1E15606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5902C60A2602;
+	Wed, 18 Nov 2026 14:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=EdUk8q0V
-ARC-Seal: i=1; a=rsa-sha256; t=1795013248; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=OosozSG/m/6BH6LExb9WEQA9mQQDkOxmd2Y8kPDeXNAZWleSLQhMtNY2+uI8KhawaXUHYr47f8oAZn0N964ZgBYyXGCiT02s/Z74UIIxHA+2ECCTad4PExBsP1KYPsM1p9d/LWebw8uDaFCDFSfC3n7dR4fPjhnjaVOjF4NtA3U=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1795013248; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=6zB/RMHWdIa7W8+VTnT+QTtr7Bbpj33D57C4R1EDlas=; 
-	b=cqe8Ny8ZQEg4ksL1wtnrt586k9283grpoxwjSmD4McSWu3wPIRDkuHOA1YRK5ZfamqOnqyNI78DibXRqLPs819yV6gD11Jo/arIUzj9zNJTH1COBGfE2j8gwXErFqQhmzCI9MFRRYLnAAbL6QecoLNE8t7leM49RtAMFWWbX1HM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=EdUk8q0VINosLxs21gOjRZn+nKLBqNq/iD5Npp0a0jH8Z7xTEQiaI5c3FegTTZMmf/wb4MixKQZxLGUPje7g1RDUnmXE3pAolvscDKNbqpVN641LJ1RB8Sh+t8DmYbQwsHocvRaTHw2a1WuFiaFP/IhlYOQog8lN6H29wfWIJUM=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=6zB/RMHWdIa7W8+VTnT+QTtr7Bbpj33D57C4R1EDlas=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1795013246789416.0565019034008;
-	Wed, 18 Nov 2026 06:47:26 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KrJRAilG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245EB1F000C8;
+	Wed, 18 Nov 2026 14:54:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795013685;
+	bh=xk2u0IFYzMOmP4mw0YTVUf3YzRzuPFILTqJcr/ZnYVI=;
+	h=From:Date:Subject:To:Cc;
+	b=KrJRAilGb24q6cnY1AvdfVe3lSit+hPvoj43uhV5HP2jcKzQH9nwDG4+mxoH+ARNj
+	 fGLhdUDM1Y8YlxYB4jg34ulseICbvjC/KVCdnELc+Ob/LNng5JsJeBmDEj2KnCmvZ3
+	 m/wAbaXhJqfXZ2djCmUyHTyqw7GDI90odcMoV1oBACVfYofPa63uMfYR1TLTwjwHYO
+	 oaEBcYMo7jvDKjpzBZ0waFfzf/xWwkxWem9faXUQW2y3EcxkDrDEz8sFpe5EHHfJ9C
+	 2lU69y1ONxHpmCTKFnRv+F7rwdg3HQQsh1d+b/33RHxHK8QmWjbs8aazjJTnrdBrp4
+	 w0z5nNRPBd/kw==
+From: Gary Guo <gary@kernel.org>
+Date: Wed, 18 Nov 2026 14:54:26 +0000
+Subject: [PATCH] rust: io: call `iounmap` if MmioRaw region constructor
+ fails
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -57,85 +52,76 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v6 5/7] rust: clk: add devres-managed clks
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <DMYELN5M09W3.1SYPKW7DZ70E1@garyguo.net>
-Date: Wed, 18 Nov 2026 11:47:04 -0300
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Michal Wilczynski <m.wilczynski@samsung.com>,
- Drew Fustini <fustini@kernel.org>,
- Guo Ren <guoren@kernel.org>,
- Fu Wei <wefu@redhat.com>,
- =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Stephen Boyd <sboyd@kernel.org>,
- Brian Masney <bmasney+clk@redhat.com>,
- Jerome Brunet <jbrunet+clk@baylibre.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- linux-riscv@lists.infradead.org,
- linux-pwm@vger.kernel.org,
- linux-clk@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- Boris Brezillon <boris.brezillon@collabora.com>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Maurice Hieronymus <mhi@mailbox.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <189F36A9-D1C1-478A-A195-F94D037E4376@collabora.com>
-References: <20261013-clk-type-state-v6-0-a5e9977b3509@collabora.com>
- <20261013-clk-type-state-v6-5-a5e9977b3509@collabora.com>
- <DMYELN5M09W3.1SYPKW7DZ70E1@garyguo.net>
-To: Gary Guo <gary@garyguo.net>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261118-dev-iomem-v1-1-2c3193c85c43@garyguo.net>
+X-B4-Tracking: v=1; b=H4sIACG8/WoC/yWMQQrCMBAAv1L27KKpWINfkR6y6WpXTCrZtARK/
+ 26jxxmGWUE5CSvcmhUSL6IyxR3MoQE/uvhklGFnaE9tZ4yxOPCCMgUOyHSm7mrp4izB3n8SP6T
+ 8Xvf+zzrTi32ug1qQU0ZKLvqxqrfEuWDkko/BaeYE2/YFW5bgsZEAAAA=
+X-Change-ID: 20261118-dev-iomem-eb3b678b5a8b
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+ Gary Guo <gary@garyguo.net>, Sashiko <sashiko-bot@kernel.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795013681; l=1569;
+ i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
+ bh=bJicDS8Enk7JiUI6epOZtEqK+3PIAnBShgsKojLhHsU=;
+ b=Jvs37/gryJmgY8eT1fMZp/jUrM8DcPn1i2NcclgqGen/vvTK0tTYLreLwfP4dzXI+4VAq98oU
+ xyj2X1iu36eDztuFWDfmVIM+mPhQ8IbJmrxbHO7OHH5xUbONoXPhqc2
+X-Developer-Key: i=gary@garyguo.net; a=ed25519;
+ pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
 
+From: Gary Guo <gary@garyguo.net>
 
+`MmioRaw::new_region` may fail if the IO memory region is insufficiently
+aligned or not as large as the minimum size requested by the caller. In
+such cases, as `IoMem` is yet to be constructed, there is no destructor run
+and the IO mapping is leaked. Call `iounmap` manually in such case instead.
 
-> On 18 Nov 2026, at 11:24, Gary Guo <gary@garyguo.net> wrote:
->=20
-> On Tue Oct 13, 2026 at 6:07 PM BST, Daniel Almeida wrote:
->> Many drivers only need a clock running for as long as the device is
->> bound and never touch it afterwards. In C, devm_clk_get_enabled() and
->> devm_clk_get_optional_enabled() cover this case.
->>=20
->> Add devm_enable(), devm_enable_optional() and
->> devm_enable_optional_with_rate(), which wrap the C helpers. They =
-return
->> no handle, so the driver keeps nothing in its data and cannot change =
-the
->> state of the clock. The clock is disabled, unprepared and put when =
-the
->> device is unbound.
->>=20
->> This mirrors regulator::devm_enable() and devm_enable_optional().
->>=20
->> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
->> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
->=20
-> Given all the device resource lifetime changes, do we still need this =
-now, or
-> would putting a guard in driver private data to be dropped =
-automatically upon
-> unbind be sufficient?
+Fixes: 1d0d4b28513b ("rust: io: mem: add a generic iomem abstraction")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/bug/linux-26b373ff-c31b-4f16-9765-2ff8fbfd4184
+Cc: stable@vger.kernel.org
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+ rust/kernel/io/mem.rs | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-I think we should still provide this. Many drivers only care that the =
-clock be
-enabled at a given rate, and do not care about the handle. I think this =
-has
-little to do with C or Rust and should be supported in Rust too.
+diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
+index 32a919099dcd..5bf5766ad36a 100644
+--- a/rust/kernel/io/mem.rs
++++ b/rust/kernel/io/mem.rs
+@@ -294,7 +294,14 @@ fn ioremap(dev: &'a Device<Bound>, resource: &Resource) -> Result<Self> {
+             return Err(ENOMEM);
+         }
+ 
+-        let io = MmioRaw::new_region(addr as usize, size)?;
++        let io = match MmioRaw::new_region(addr.addr(), size) {
++            Ok(io) => io,
++            Err(err) => {
++                // SAFETY: `addr` is the returned address of `ioremap`/`ioremap_np` and is not null.
++                unsafe { bindings::iounmap(addr) };
++                Err(err)?
++            }
++        };
+         Ok(IoMem { dev, io })
+     }
+ 
 
-=E2=80=94 Daniel=
+---
+base-commit: 7cfbf79c66c63e807ea452abf0546e6f6d6833a6
+change-id: 20261118-dev-iomem-eb3b678b5a8b
+
+Best regards,
+--  
+Gary Guo <gary@garyguo.net>
+
