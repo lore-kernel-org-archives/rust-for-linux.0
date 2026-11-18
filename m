@@ -1,118 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795035989;
-	b=LsK2TMfxU3Cy7EK+QCVbXjtscqv2zWV1AoYKP0NgHb1U08Y61dssaUtLRkDU6mtfZClb
-	 +KIPjn6ScBrC9Vcje3NR8LDadu45RuCtICku2h0uuMZxLQTbwUvBT5XIkoY6kk8C6QJU1
-	 swIe1bQoRH20Q2tQX5ZOUnU0yrBeNobu8Mx9JEPXM4dHBdMK9vsKQvvaJ+OCggibv7qxz
-	 igzMalIM2Sxe026AJn+9euLmr0SATxmg/OwZv6+J8M2BOVySmLQUbfE96AXY8jxnKFk+q
-	 OkUwowmYYoKpb7vh3ncY87uNPigKaD8duD417Z+S42ybQtMfZChevP08CKBLDx9tIbA==
+	t=1795036004;
+	b=zUMiBWTA70RoHfHqjjnbPAIyI2a26pRfgIoFYOioaBZJWMFbWMGUag38G7+dHaZTlxaY
+	 vr5lf3YexDao6LWkPTp8k0dALWvklN1/G+E2CxGxbXg6tymQiPLyFGpRfw73XZr+aHrT6
+	 hsPxoqYm90f7wTV9XkIsSZd4TZ0SYcbMPmQmE03Sgx+hHPct/uL+nOHyZ1Sp54bscco8S
+	 wG/HrBMgNlsBAebQNYEwwIJnIfJ7X5KCPfltvnlyPEQjx3jkZwoOjsEigp2yQfOUT4GoV
+	 po8VeC0BFBNufkiO6ZCDmVwTzwumv7qUUdtPbIjIcCY09t3iBNng3GOZTmpztthPK/Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795035989;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=pZ3JtacZcjsrcECbYipQCJ4gvP+CBNK95VHZ3UWM6ww=;
-	b=0ZDH3r87QSg5DeRLlcx3tSqXt13aszByuCMQbZLP7VRP4WYQ3W1ZTZA7bBI9Ip9XpCsc
-	 0ti7L1hFJ6TPAsM/RhsD2YjAfLFjGpJBe6pX/+zetJafYQGX/869abe7Ac4rPp4qkJB7g
-	 YljivAmXrQlbd1yv5EijPOum5sp6qlQ427mUqjSyrJkWLPMfCB9YCWjIM/bKXHeNkFsL+
-	 w9HPRnKPXxAjLhnBS+NmUfSDJiEKHEmtF6xsNtwNPCSdRl1UVKEl4qY9VuwplZH8XQnDg
-	 O7oPjpGei1kCn4s/ws+U1brduA/Qv1hhWC/4Hmzz6uZXHbIubC8VZMkJ0NKMcFW5fWg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795036004;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=QcdoykT7wYwH64NiHJnoPRkjFYtZrVANXbTjbGgP68s=;
+	b=BU6mxSfvRnxx9oR2i6JrBXEL2fglu/pcvIICDHRLAqJMCfTIyG9dPh0yp+J1IOFdPo0r
+	 KDNovYL7b/Fm2BWq8GZK8nET/1BJoEJEu8aUw9y+lzFEbsjp6AUMguf06KzLGBSaQcRLL
+	 oDMWd1z54VuasNqF/UeJhTdXKRrDbGKexEfMEk5dEPvbhfKE78KJTbTW8XWPCj+winByc
+	 0ZhiqkfSwF5DzapUA+S/QYGgN0GbHMPhAaxymQ8Q2KZNkTUXos07XEnA6sm92UhWmOfMd
+	 EfM4xs0n7q8WMc47rJqlovQEUE1QAiIWpCwRR7QheJ2+BmCp0KHgz27J3h8QYPFc6bg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=KaGPGf7q;
-	arc=none smtp.remote-ip=209.85.222.182
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="UpKi7B/0";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B21D606A325
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 21:06:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4B21D606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AFF606A32C;
+	Wed, 18 Nov 2026 21:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=KaGPGf7q
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-949680e6d83so151719685a.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 13:06:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1795035988; x=1795640788; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pZ3JtacZcjsrcECbYipQCJ4gvP+CBNK95VHZ3UWM6ww=;
-        b=KaGPGf7qgbbucEYYgFiUG5ZMe+M+gxnIXYiye9EMd1ek0LBcp2J66fBc1Xzcclgaba
-         zhk0t//rnYpdXx8D/U3P7c04aRbXHsc9p3gEu88aSdAFhG4CEesns7D25iI4aQ16pZtt
-         S8snp761ySTocbmda8A/bjeZUWhM4lmsYOdbHlMPMAFDbpHtvMrvkrDKiVxOVAZRUsvN
-         Ck6cFrhc+RDzjS8Tnw61iA+u2C76JaHcGvQbNPUjKr+2NIe0xkAh5MJ1LaNq/A37hCrg
-         KhR0K+8sfg5nW4TVrjBBI8NXO19e4+0rDt0MXr8pnneeprrVvtUm9UOtPBm4K7/59349
-         yQkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795035988; x=1795640788;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=pZ3JtacZcjsrcECbYipQCJ4gvP+CBNK95VHZ3UWM6ww=;
-        b=HAJ2Xtb6W97fmLCBCJqT0VRQq+3HnBUpNkCgi/u5cY4MjkiFTjXru88IGatvh/usuZ
-         74iyvOcT/FNSZbd17UAMN/+ow70pCzAwwP7FG6W2CEQLipoW1iMnXC/yabt5n+lCQYTg
-         E1lOodbxWnFE9/0/24Rh/xFJRQQfTOldqXAYrnndWbc39KzXFOMsE0JCG6Rt6fgiyqOn
-         fwHmxfu/+Z0hF57YLlqlrGW4BKHWKiMswMSFH7QX0rwSPqbZunz4O+UmvyLz7JTc81Wy
-         6i+YWk3A2Khn5Dp4eHBMA0+WGTqSxfTW+Sn4kO+7BNbe6RnRriFV2lfNF3oHczgguvSE
-         8Ubw==
-X-Forwarded-Encrypted: i=1; AL+hErEwX4PFwSfEc7+hBFpQDayDlA7lkMcu7dkDYbhDEg6PquCsBTQoPJ3KUaLFqxV4O86lwYGTfFnywjQrkTkVbw==@vger.kernel.org
-X-Gm-Message-State: APuU4Z9TMaiMVcmafUMzAVAAiGVwOPrv3ENk0+KV+n40UrpuUIRvaCJF
-	SsQ0FP7vdMN/QcQPBeMK6ue/oT2JYx2dxiix7RAGqVMraTENsPW9XbHTHUiogp875Ek=
-X-Gm-Gg: AYBFou37BwYilLpaDOWX5CY0347HW+6z9H3aK2kJCYOT+zLsClFGuBUjrRf2n5fEFdl
-	Ybb5RS4blgzp1oIxBmJWnwv2aupI/je49wznpIQzAZXjT+CQYeK6gYUe4EPPk6b9IMYbaozdvNi
-	LwMF5s+9fwhZwORXEg7hU+HgHxgnDqXUn/g6QxqXXCbAykFJ6y8ENnGXlpiGiaroeJ0oWt7s+Xo
-	8Hd0gjq+siAUDi7ue4PEwNeBXJDxjYJBH2Dm5r63sbW0GD9ZctgHWIWbKIhETcsIh9zH7rcDrrU
-	RXI5X9BMYn0wv+qqqhgb/uDZhmGE3dU412952to9N8dF/9OouYyfhUFFKSPyH2Vqu2kSkwrgJol
-	Cq5GDlOpIyb05rJYTk3YKTH/C3txSQ2T1Mh+AglmK2d40yYMlfaey2OUKOwvCkCDsbHxZoAJ9qZ
-	5Thih2n2J/F9EItKaMQoFvL5ANBbxkj//EjVhnFlggjCRQh9GH/s/ad+dNGwCjeoociJbza054d
-	5wQlCH9MIQGueOpRW1OUpJeEq1p9hN4UhmS4wDRstbfivGo5dN3yEKXAYcU8A7mZEPvbmlUvboo
-	2/LD5r+oQpB40mCZlc4l4+byaXQ=
-X-Received: by 2002:a05:620a:4556:b0:93e:c12c:f121 with SMTP id af79cd13be357-9499964526bmr691694185a.77.1795035988208;
-        Wed, 18 Nov 2026 13:06:28 -0800 (PST)
-Received: from ziepe.ca ([142.166.156.71])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9499b8182dbsm271138185a.41.2026.11.18.13.06.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 13:06:27 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xTmrK-0000000GRJU-0IJL;
-	Wed, 18 Nov 2026 17:06:26 -0400
-Date: Wed, 18 Nov 2026 17:06:26 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UpKi7B/0
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C6B81F000C7;
+	Wed, 18 Nov 2026 21:06:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795036004;
+	bh=QcdoykT7wYwH64NiHJnoPRkjFYtZrVANXbTjbGgP68s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UpKi7B/0rBCYX/nY6Jz+aDxC3oaQEMDYkDs+aZgD+uQm1Ob/FaLUnDS+VC8rPjnBp
+	 vkaF1O/n1A26L03g0MMXM23H7BKQNSjrNrWux+k3wVksqrOlMYs4hbRGxb/0/AvkFz
+	 Aah19WcWHEbQ5N8nTrQlB5WMqIn+kJlC8oQ2cqggEzj3c1FVvPuyLLq+7lcza5UQKN
+	 gqMcRWvgg3dvfJCv+0Y2RTJy1zEKeWV7WxZcmUuSJnPsVaV9JdOb84SI3sC4WS49j9
+	 5kv4OV3nAOggVayD7JIXHDYgQ9T2t9ddX8N01RHCI6U9TJUQbtWytFDmeAss8Z0QOO
+	 /GEXb+FEwfEKw==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 74E17F40068;
+	Wed, 18 Nov 2026 16:06:42 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Wed, 18 Nov 2026 16:06:42 -0500
+X-ME-Sender: <xms:YhP-ahF0xGaLJjQTPNDwoZaCXRwMTnC6Rk81rRAnIvKWVx1qnf5IrA>
+    <xme:YhP-alnpTiQM444SY2WW_BMaHqPlbtqBTY_qeX8kYe_DZl4KbKEqDBlizX8Pcu1P4
+    NQ8NmmR4cZjxcxjapFlvhgfxgVelNnoLhajGrR0Ws7GxXF3cHkvOXc>
+X-ME-Received: <xmr:YhP-al9FqsEim7rHDm9gEcW1Rs2pqG-79pBAQlg73yEMIst5oNVQDoAHqz6K28whZ6SDm0zr1Dh-AobTOVIK7OWGcDymjCZv>
+X-ME-Proxy-Cause: dmFkZTEBaqTySe0wNL78njswhLR6PyMpnjMwmJKjGUrTkM+Oe0HsPVQTNp/x2OgyHRdGI2
+    0TZ5HlEM3gdmwHwtq2f2qFu0/5zzQpamvIg/VqADwmqbHuaVXKsbmfHnlXi/789qV+IN5h
+    v8Pg8UJC+mZhXqmH89qeiXq1QUaslvVidTobZCIRk8fyAqek/dmmFmjtiSUdIbtWpcgOrD
+    7MS1/sB7Zh8Fhf5NxR1qRcQEJWD93pZp3s89b80gdI7DDoq9h+OBN3wpqK6u+T/L+lwcx2
+    nsuCPqaL9xtx96boYuZotJynFjNTWT14i2pFLlzfNGG6COxk4fe1twZVx+c8xdH/lfYldf
+    V+kyUAeRSC+dqvMJvOeqncSIhfyQkJHHhGsS58u6jXUs6ReY7e59MDJbVj+txBt5y2Vb8R
+    HS4pnANeLQANZMzZxCpA9s0m7+8Za+JdFf3lAArPWgx4MEsbVPa6IVaSlc6axBKrAEJISa
+    k9s427jdRW7VVySNbJBwpeBXVcoq8obZNQnAy2C6aXvaKFtMf4MTI16P4Mim9WNua3y6qq
+    B2ImwFcxw1UvjLxAIJZbzqWjnbESFFuH7i1LGrV86MpsirbdCCVrpLW3/R8292JIT90f/k
+    ZgLZLc89QmC+Z83RkB3fHQZ564V7c5qus0aSPr6slNBsoV4IiGba+Gpd2Eiw
+X-ME-Proxy: <xmx:YhP-aum6OEIb38kNQeS_ifZ1YRiGH4EeSrkHXjkIKQxnVqvk5rFWDg>
+    <xmx:YhP-arkzLboiVCzz6MIH9iDOVwE5hzJRqZDF61tLzJPL2rsdwlaF7w>
+    <xmx:YhP-aquKRtpLYbOTyI3HA632QhzExiYCOcswr6urPKMtYDlKzQP6vg>
+    <xmx:YhP-atKTVnnST1TuTi0NM2NhaI2I6alMmmxmY56OP3CP7-v70WXsLQ>
+    <xmx:YhP-aniGtidSo19Tc7FNvBtb1MZoZr179hSA2Xm3aWdeYbw9MN1fkl_P>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 18 Nov 2026 16:06:41 -0500 (EST)
+Date: Wed, 18 Nov 2026 13:06:40 -0800
+From: Boqun Feng <boqun@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Alice Ryhl <aliceryhl@google.com>,
+	Lyude Paul <lyude@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>, iommu@lists.linux.dev,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	Detlev Casanova <detlev.casanova@collabora.com>
-Subject: Re: [PATCH 0/6] rust: iommu: add a paging domain abstraction
-Message-ID: <20261118210626.GF3115493@ziepe.ca>
-References: <20261112-b4-iommu-domain-v1-0-c29e86788dda@collabora.com>
- <20261116193821.GC2452510@ziepe.ca>
- <3EB4C2ED-B699-4532-A562-68B78F6E29C6@collabora.com>
- <20261117202055.GA3115493@ziepe.ca>
- <615C3DA2-4C02-4A8B-AEC4-70D498672559@collabora.com>
- <20261118193521.GD3115493@ziepe.ca>
- <457fe01cc1fbc5b6e2d7b5c9c167012b56fe86b2.camel@collabora.com>
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3] rust: sync: export lock::do_unlocked
+Message-ID: <av4TYDj2-mEhIZS5@tardis.local>
+References: <20260929-export-do-unlocked-v3-1-f7000684178f@kernel.org>
+ <N1IBV5ko8VdO1uPeg7myJ5jVnnfJI-s5phM0IuhjOxWo1AvKFtlvojnvOBY1fnhKJpl9GKVkN0dD6GEM3f1FKQ==@protonmail.internalid>
+ <DLRXW31Y0IVK.3A3NJVS2BG39M@garyguo.net>
+ <87zex0rl3r.fsf@t14s.mail-host-address-is-not-set>
+ <ar0SaUYCeGvi2fTD@MacBook-0RXW5>
+ <DLSPFJ7IF2XC.1KZBWTARDIG1I@garyguo.net>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -122,55 +102,98 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <457fe01cc1fbc5b6e2d7b5c9c167012b56fe86b2.camel@collabora.com>
+In-Reply-To: <DLSPFJ7IF2XC.1KZBWTARDIG1I@garyguo.net>
 
-On Wed, Nov 18, 2026 at 02:41:32PM -0500, Nicolas Dufresne wrote:
-> Jason,
+On Wed, Sep 30, 2026 at 03:01:41PM +0100, Gary Guo wrote:
+> On Wed Sep 30, 2026 at 2:45 PM BST, Boqun Feng wrote:
+> > On Tue, Sep 29, 2026 at 08:03:20PM +0200, Andreas Hindborg wrote:
+> >> "Gary Guo" <gary@garyguo.net> writes:
+> >> 
+> >> > On Tue Sep 29, 2026 at 3:45 PM BST, Andreas Hindborg wrote:
+> >> >> Export lock::do_unlocked publicly. Add documentation for the method.
+> >> >>
+> >> >> Reviewed-by: Benno Lossin <lossin@kernel.org>
+> >> >> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> >> >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> >> >> ---
+> >> >> Changes in v3:
+> >> >> - Rebase on v7.3-rc5.
+> >> >> - Do not import prelude in example (Alice).
+> >> >> - Link to v2: https://msgid.link/20260605-export-do-unlocked-v2-1-e23001390231@kernel.org
+> >> >>
+> >> >> Changes in v2:
+> >> >> - Drop spurious space before `guard.do_unlocked` in the doc example (Benno).
+> >> >> - Un-hide the imports in the doc example so the rendered docs no longer have a spurious blank line after them (Alice).
+> >> >> - Link to v1: https://msgid.link/20260215-export-do-unlocked-v1-1-f5cd2203b20f@kernel.org
+> >> >> ---
+> >> >>  rust/kernel/sync/lock.rs | 26 +++++++++++++++++++++++++-
+> >> >>  1 file changed, 25 insertions(+), 1 deletion(-)
+> >> >>
+> >> >> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> >> >> index 10b6b5e9b024..edfff9e10199 100644
+> >> >> --- a/rust/kernel/sync/lock.rs
+> >> >> +++ b/rust/kernel/sync/lock.rs
+> >> >> @@ -238,7 +238,31 @@ pub fn lock_ref(&self) -> &'a Lock<T, B> {
+> >> >>          self.lock
+> >> >>      }
+> >> >>
+> >> >> -    pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
+> >> >> +    /// Temporarily unlock the lock to execute the given closure.
+> >> >> +    ///
+> >> >> +    /// This method unlocks the lock before calling the closure `cb`, and re-locks it afterwards.
+> >> >> +    /// This is useful when you need to perform operations that are not allowed while holding
+> >> >> +    /// certain locks, such as allocating memory (which is prohibited while holding a spinlock).
+> >> >> +    ///
+> >> >> +    /// # Examples
+> >> >> +    ///
+> >> >> +    /// ```
+> >> >> +    /// use kernel::new_spinlock;
+> >> >> +    /// use pin_init::stack_pin_init;
+> >> >> +    ///
+> >> >> +    /// stack_pin_init!{
+> >> >> +    ///     let lock = new_spinlock!(())
+> >> >> +    /// }
+> >> >> +    ///
+> >> >> +    /// let mut guard = lock.lock();
+> >> >> +    /// let mut buffer = KVec::new();
+> >> >> +    /// // Temporarily unlock to allocate memory, which should not be done while holding a spinlock.
+> >> >> +    /// guard.do_unlocked(|| {
+> >> >> +    ///     buffer.push(5u32, GFP_KERNEL)
+> >> >> +    /// })?;
+> >> >> +    /// # Ok::<(), Error>(())
+> >> >> +    /// ```
+> >> >> +    pub fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
+> >> >
+> >> > Do we want to keep the name `do_unlocked` now this is public?
+> >> >
+> >> > I think we can drop "do_" and just call this `unlocked`, consistent with popular
+> >> > Rust ecosystem crates like parking_lot and spin.
+> >> 
+> >
+> > I didn't find a unlocked() in spin. You mean
+> > https://crates.io/crates/lock_api ?
 > 
-> Le mercredi 18 novembre 2026 à 15:35 -0400, Jason Gunthorpe a écrit :
-> > > No, not OK :/ We want to use GEM shmem, which calls into the DMA API internally
-> > > through drm_gem_shmem_get_pages_sgt() -> dma_map_sgtable().
-> > 
-> > You cannot continue to use DMA API once you start touching a paging
-> > domain directly. It is why driver_managed exist.
+> Right, both of them share the common interface via lock_api.
 > 
-> You are building a strong argument around something that is not what we intent
-> this binding to be used for. If you had cared about the context you'd know we
-> don't want to touch paging from userspace in this type of drivers. 
+> > To me, `do_unlocked()` is better, since it indicates something is going
+> > to be done after the lock being dropped.
+> 
+> I think that indication is usually "with". So `guard.with_unlocked(|| action)`.
+> 
+> From my experience in Rust code "do_" is quite commonly the internal helper for
+> a public API.
+> 
 
-Go re-read Daniel's answer and perhaps you can understand my confusion:
+After some thoughts and asking for suggestion, I do want to keep the
+name as it is (i.e. using do_unlocked()), the major reason is
+`unlockded()` is not necessary a better name. But of course, in kernel
+we can always change the name later.
 
-https://lore.kernel.org/all/3EB4C2ED-B699-4532-A562-68B78F6E29C6@collabora.com/
+Regards,
+Boqun
 
-If you want to
-
-   "We plan to alloc a paging domain when a video encoder session is created. Then
-    we call iommu_attach_device() before a job runs"
- 
-You cannot use the DMA API.
-
-You absolutely CANNOT attach a brand new driver controlled domain, use
-the DMA API to populate it, and then detach it.
-
-Then we have the issue that the rust bindings expose iommu_map, which
-cannot even be used on any non-coherent arch due to lack of cache
-flushing.
-
-Further, from a Rust binding perspective all these unsafe things I
-talked about have to be blocked by the Rust compiler:
- 1) You cannot attach a domain to a driver_managed_dma=false device
- 2) You cannot call DMA API functions on a driver_managed_dma=true device
- 3) I object to exposing iommu_get_domain_for_dev()/etc to Rust
-    due to how unsafe it is, but if you were to do it then the
-    returned pointer must never be used with attach or iommu_map/unmap
-    functions.
- 4) Since there is no cache flushing a non-coherent arch must never be
-    allowed to call iommu_map(), since it is unsafe to create memory
-    incoherence.
-
-Thus, what exactly is the plan here? Do you see my concern?
-
-Jason
+> Best,
+> Gary
+> 
