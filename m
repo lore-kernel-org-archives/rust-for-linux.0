@@ -1,75 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795000617;
-	b=0SY4oSAS1mYxYDL+AsUEjlUw4ww5JVaJD1UiiYHXa0/bpPoHiww9sp8lJfX4zNJjpLUE
-	 djuph/FP3Bc8nzyw95yxCjGR+PM7YFUb5qCDXBbQSuKothkr/+GnTIOyeCwrfLKd1ZhOZ
-	 LvF+5ypfiezxtiRe5+vgApn3kGH+DvGNSASjhI+uZmbmrr1N4NbEhU4sz6e3B2uizKpOv
-	 UMTdHkVVEJasHMve6iiev5MMywYESkEAZ931/PQIJzyorWE3dICKS7yNrSc+xgKnjcn7q
-	 Xf/QzT44vNYCXWLMwmmGWLxDxO1V3Y3kjU2wHIvoQycpcmwabqP4XTi2hnJL4OLS/eA==
+	t=1795001075;
+	b=MkqLft1e606g9uhDSYQWfqHj5AH6A3bDhdJaTD6lMzhGag8X2mJkITKMov3kSaICg1vK
+	 TMoZ7RreDcaf5VLUxzxag1l1as02C/2JkReP93RHfbzDrHJK5nfOm4JzzhVMcX7yHNaez
+	 eCI77hkaooXKH+PLZMp5zV/oXdui2rfwTIwdKaUKeOiLWPGZu2dCFa+wNRGchPvGFqC4g
+	 lCjbrBEmQ58UioL5DdhkNocPzzmiCloTlEmmrqIujOWJA+10l0d20sqS7TYIlYRuDACJJ
+	 pcdnEZwLOIGNITwPbC9YxXwnsMgjyfY++KSv2ZUFHBlYO+i0UENxCgcPzWcWBTNgYLg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795000617;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795001075;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=VdBK9iPCpdL4SaGML/svEnUVQsDV7jsVMj4rTVCaMEQ=;
-	b=O+f+q+lzglTg+taVFzE3IgucIgJ5SUrWSXSvpG15quZFNEqUnHnuAO4rRKaYuKn2+PDX
-	 Dctu14+v1K6w5ytiGyoyIaIFfNNF6SM7O9vrjHRP2qXnwgSB7IT4fZkE1yFW+LAq+T5Bm
-	 XYryuliP38T2YZf/x95kAMDF+zKYB0J72qMD1FbgWuJsWkpnPnbaN7VYX957KSaBMLRzA
-	 f162fGy4gDXuJUQ/07+j8sJg4iWpQl+rjVUsVPDkIfrecmHjO9ffUYffaGQPftgIb+0bh
-	 zbJAtatzJ7IR1mwsmyuHvb7QUpeCnoJKAFKlh6OxbEm6f7AGZ3xSp74+7W4IsL2lFiQ==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-B4-Tracking:X-Change-Id:X-Developer-Key:X-Developer-Signature:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=NgxcydZ7W7diTZLrEW7mmD64GYiEJTtactewUU2r9BU=;
+	b=eUi+mGR3avw6TvQTqOgTYdi4rKECDmSSocjyLm+bcjdX9pstxpqVOo6ZZLkKOeMz4yKt
+	 zgAORrcwMNtfycMIi26nIDLEec5eshsvYxJFlP2xi8/RL+sRll+nx1GPoxo9nKz1VC4qE
+	 1LGibN4DOajHXcuZdkLdDfiYSKXJMpEPmD159GBpNYMu906dyU56WYSzlr9PnKCXveWni
+	 sQBKhDhd+tsF7NprTT4fAVvJq+JrrtxTVMRpzN9KLP/Vl8PyV0Z1DYZSKvmjxT5o48yED
+	 m/CraSwwv90q3Dn1gY1rvYaR/L8wmyG/cNak1Dv9Zijb5X6rvhbzdZVyHpVaMjQz7yw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CnbFd2fo;
-	arc=none smtp.remote-ip=209.85.221.71
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nTYKR7vS;
+	arc=none smtp.remote-ip=209.85.221.72
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A1D606A31C
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 11:16:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E7A1D606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931A5606A320
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 11:24:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 931A5606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CnbFd2fo
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4a3052225cbso813272f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 03:16:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nTYKR7vS
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48e4d1e29f3so861926f8f.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 03:24:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795000615; x=1795605415; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VdBK9iPCpdL4SaGML/svEnUVQsDV7jsVMj4rTVCaMEQ=;
-        b=CnbFd2foIc1oP4OQ+apE2+PUd8KhbCuov0KPVg6H49pjv3XxrZ0chRd8fFEo4IzCfU
-         wyLRlrpnxS/eAB8q8r2DVSttlIn6STnYOMtUi+60CnXVALhmXCdujG63j1PnzXy6P1S0
-         XkqUd15s+lkpVUD/GDZaFYVv7QQLT2a/R56lgjgLsFQG2jaiq4rTaQqKNO04FRjR0qDZ
-         whBjXblsWfzMiVxHo3KL4ZB/muJ+nfRJCEb6S/3Gg+bx5WV0mhTIM77xmVF4VsjEpa7x
-         OXJIIRwi4spArEDSI11y2mU+tRW7hwbH3pDkZmIuIOorrmjyFlsTMar8E/wCpi76AQMX
-         e8QQ==
+        d=google.com; s=20260707; t=1795001073; x=1795605873; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NgxcydZ7W7diTZLrEW7mmD64GYiEJTtactewUU2r9BU=;
+        b=nTYKR7vSpmKhR0Ssct/nW+P9T+b621hzUsbStNf5cIUdGf5KKRDXanH0lgGuqHHc4q
+         8pLVSBHj0W6WuX6nG1UR0s49rfRBqocVJ5vxatLU5NG2qdVRRNt8pTocYZvE4Zf8697o
+         uuuKUOsSwQ8NXC8aTTtAXN0qfkkug4m+Jy3TNcVyaCvq4Wz1HQzYvAQYbx5ClmMXPxPf
+         Of4kXO5JFsIZssgaXv0hkJP4Vhn4pbaz7L32Fumg1gQVL2aFbIqwebA2Hpz3IsG9xaAY
+         NwLNyJUm7Ie0m7ccBlkQIdrTmjimOJJxznjQqL7DhuyskKymiEOn9Zyyxh+wZumNfM8m
+         al8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795000615; x=1795605415;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VdBK9iPCpdL4SaGML/svEnUVQsDV7jsVMj4rTVCaMEQ=;
-        b=FINZnZ8EzQGH9xFljdIVC+HzrQUvwqMKUm9HrT4k/s+f1yLlEGxXW4IhD0nazBpIqs
-         xxBBhzssL3Ld1S0OruQcUhoBPbu8Xp4b0dMgtlUN1u+PM2SxS1j1BHi3ZbQ9N+/ja4s4
-         xTID3a8brVtg2fEGqC0bYq05qUUcJ9SEBay0rKim1ncbwyMQ6df0b3fEwvsIRCjQ9tWW
-         CYi/1KiYvU1sg9IHjb8uaooPuH5zyhvXYXfefV4Onxat2Ptm5+Kk8s2X0NATatzCLd+V
-         OXW4ZVGKg13mMej3pToUDV8X3h52+wtMnLmuzptHFE53e3eFVaX4t3Ctq2xB2OfZq5gE
-         Lh8Q==
-X-Forwarded-Encrypted: i=1; AL+hErGV1Kwq61PwF8YpL0L/BCxDpmquYGTU/Y56aDOILsUJUQzNXWLzhE0tRp6XXD1i1dniVWSDu3Uu+EKH3Q8v/A==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8zCfdUJlsl4P15RtFNf3Qd1vi6UZb5oAor+FBlZhPBtRP+Wc4C
-	cfGfwt+LgnToVY2xXhRwD40/oTnSe2K7qmSn/yR4kM/nuQmyY0Jglo8/9FnTgUzeIgfvC32yKqA
-	7meumYdRgStmf+gO6yA==
-X-Received: from wrsw6.prod.google.com ([2002:a5d:4b46:0:b0:4a5:1c26:11b4])
+        d=1e100.net; s=20260707; t=1795001073; x=1795605873;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NgxcydZ7W7diTZLrEW7mmD64GYiEJTtactewUU2r9BU=;
+        b=rViPf9EfzIKiD58wpcaHom0xa9mBvCMBvaM0C62GM8nBD28ZCJQR4uFPGHIBIUevGe
+         kDP0vSMp27hoGemqw8i2fn5pF2cZK7XtwOvRYd7ryW235sD5ylmmD8yuN6Jkf2v75L5D
+         waRrMN1xhm754oFcF5MLVgDBxh3NSaGpcKJWcQnyf7JPI8xEgWP7P0S+lvvcOxKjoaiE
+         na8edBUe/TyIoB8p0l/hk7b5RUhiyasIDE6LpsxxPKYhsBgxbJICp90AIh/PgS6SHCxQ
+         UBj4czVT4hgxxTifiHRVGirURIfccPhMjUY9MjwbuhN2X1ntwTe+6BFXk9r1W+2xGTGE
+         dgOg==
+X-Forwarded-Encrypted: i=1; AL+hErGi5k8y59/TMhq0zzH/TCNMBbu+rT6zRY7nW1i9ba4WK/krgaP2A2nyIraehoT7HZFbDFm5Q1tKDYu9lnhi9w==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8rT+btmNJCLi7Nm5FkntOSgX5TMIps0ApQxRJ9Z4KVy/O2iI4/
+	T4cFYS7OpZSOuez3osBjnSZhUIVS61uUJ47WiPYhZ7FlfZEKD4JFy8V4y23mx1sP+MznnAE2u2I
+	d5QNBv56kz+O07XOrFQ==
+X-Received: from wrud4.prod.google.com ([2002:a5d:4f84:0:b0:48f:beda:6924])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d06:b0:4bb:6f45:2a6d with SMTP id 5b1f17b1804b1-4bb7da14a3bmr43246995e9.12.1795000615091;
- Wed, 18 Nov 2026 03:16:55 -0800 (PST)
-Date: Wed, 18 Nov 2026 11:16:53 +0000
-In-Reply-To: <0d26baaa-92ae-43ff-9a76-a81cad624dcf@kernel.org>
+ 2002:a05:6000:2383:b0:490:f98f:addd with SMTP id ffacd0b85a97d-4a6331c6cdamr5728890f8f.4.1795001072496;
+ Wed, 18 Nov 2026 03:24:32 -0800 (PST)
+Date: Wed, 18 Nov 2026 11:24:25 +0000
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -79,44 +77,74 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261117-tyr-remap-2mb-v1-0-2a8efd4c8180@google.com>
- <20261117-tyr-remap-2mb-v1-1-2a8efd4c8180@google.com> <0d26baaa-92ae-43ff-9a76-a81cad624dcf@kernel.org>
-X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
-Message-ID: <20261118111653.448550-1-aliceryhl@google.com>
-Subject: Re: [PATCH 1/4] rust: drm/gpuvm: add GpuVa::data_ref accessor
+X-B4-Tracking: v=1; b=H4sIAOiK/WoC/x3MQQqDMBBG4avIrB3IBFpMryJdaPLXzCaVGSiCe
+ HdDl9/ivZMcpnB6DScZfur6bR0yDpTr0jawlm6KIT4lxMSrtgJjuOXK6lywFJ4kpIw1iTwy9XQ 3fPT4b+f3dd2c6z16ZgAAAA==
+X-Change-Id: 20261029-binder-esrch-is-dead-8109ceb9115c
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1396; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=wZRKSXn6TR6MdqwykIO/PARHCDKLEFWKsF5C3d2QD3c=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBq/YrrtJoXrIaXn2dfYFATxfXU8esNx7i83ho1K
+ IYauU+mWy6JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCav2K6wAKCRAEWL7uWMY5
+ RvvbD/9NEP5A+vzaHatKFT8hAu+P+BohRZ9ddIu5EuKxN7Dv8TP7AV1tBovrhxsLz2yCbz6jPgM
+ 5xkhKoW9gjX0BD4Uum6GqgXa5LJgTpNJeGYaxZ4KhL22x5ACHnepNqGq1CWX/LZXpHUJni0nbwA
+ YdOdcm2YzqiVWtl4fQf7Tlrjm4/nON3eyV9W1mLrgHabPsSB7VrHqxgi0Egj6ZuyLMwfRJTwK/p
+ 1HKXmyOGt4K71MxmiuJC8jsd5tqhwPH8wDyY0nGF5+LP09xgvhXC01fjYj9vKM67l0iuhPrA4SS
+ YuUsP2UfGpIbFuzL3UeXs29VgtMUJ4iG/sydfYUp2kPDBCT13MZqkRoGo9QB2wXdofhk/fjxd4N
+ dDxh8tSx+r3/A3NN8TEoGhNTVdsgAr+nuqFtrS46yyntbqMv+RKy5kcRVCO+6bmtY9TEjJy06KK
+ wuuOuw6Y5855Of0qTGbV6rPH+FyxDFGCIMpz/qIJ22oLdQpZIqV0XVgPF0rfZV6ktSqaaQekDim
+ RyBjlOWn0J63yRt4WWfH82cfie6lvMkdAKpKOK3Q4oml0JeVGPbPx+yLTXyGlRbbR9ngoZMVKsy
+ p+a7/qiSy0KMp1N9PoCKiK0ffiK8ptzeVo1dBgnU9CeOLBFIfRXy4z8B3hNA06CFLBWLVzq3o9w KO8LOTm+X6DoDDQ==
+X-Mailer: b4 0.14.3
+Message-ID: <20261118-binder-esrch-is-dead-v1-1-a45bb951fd14@google.com>
+Subject: [PATCH] rust_binder: treat ESRCH as BR_DEAD_REPLY instead of BR_FAILED_REPLY
 From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Deborah Brouwer <deborah.brouwer@collabora.com>, Sami Tolvanen <samitolvanen@google.com>, 
-	Matthew Brost <matthew.brost@intel.com>, 
-	"=?UTF-8?q?Thomas=20Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Boris Brezillon <boris.brezillon@collabora.com>, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Nov 17, 2026 at 08:40:20PM +0100, Danilo Krummrich wrote:
-> > +    /// Access the driver-private [`VaData`](DriverGpuVm::VaData) associated with this mapping.
-> > +    #[inline]
-> > +    pub fn data_ref(&self) -> &T::VaData {
-> > +        &self.data
-> > +    }
-> > +
-> Why data_ref() instead of just data() or a Deref impl?
+When sending a message concurrently with it exiting, the transaction may
+fail with ESRCH if the timing is right. Since this is delivered to
+userspace as BR_FAILED_REPLY, userspace thinks that something went wrong
+with the transaction, but actually the target process just died. This
+usually leads to the sender aborting.
 
-I guess this came from mirroring UniqueRefGpuVm, which uses the names:
-data_ref(&self) and data(&mut self).
+Cc: stable@vger.kernel.org
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ drivers/android/binder/error.rs | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-I think it makes more sense to rename to data(&self)/data_mut(&mut self)
-for consistency with other similar APIs. But we should also update
-UniqueRefGpuVm if so.
+diff --git a/drivers/android/binder/error.rs b/drivers/android/binder/error.rs
+index acf0aa09c555..00f1519a8d77 100644
+--- a/drivers/android/binder/error.rs
++++ b/drivers/android/binder/error.rs
+@@ -78,8 +78,12 @@ pub(crate) fn new_frozen_oneway() -> Self {
+ impl From<Error> for BinderError {
+     #[track_caller]
+     fn from(source: Error) -> Self {
++        let reply = match source {
++            ESRCH => BR_DEAD_REPLY,
++            _ => BR_FAILED_REPLY,
++        };
+         Self {
+-            reply: BR_FAILED_REPLY,
++            reply,
+             source: Some(source),
+             line: ErrorLocation::caller(),
+         }
 
-We don't want to go the Deref/DerefMut route because mutable access needs
-to return a `Pin<&mut GpuVa<T>>` which doesn't work with DerefMut.
+---
+base-commit: 20eef29b7c8465ac98d7dd6d6f2ac07a8d8056ca
+change-id: 20261029-binder-esrch-is-dead-8109ceb9115c
 
-Alice
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
