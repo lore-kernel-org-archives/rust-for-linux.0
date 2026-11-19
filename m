@@ -1,78 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795081729;
-	b=BpZVzyDAs3Fi3Sd3Hlv7pcAI8zYGBUFBTLISppfUCFdHeY4HXfNVWE+vS4V0gftqpyWP
-	 XdOdmuTc4RDblutEu7/Y6/CHmZ4nqA5CIDvqCH20fQ9JD5zsixQKwtjjI2/qhpi8md+2V
-	 mM796zEEc4wcx8cecVkRfXMJmc1QDNEz+vzVTf26KBp4Qn96wuDpkJv0l62maE4re0ihW
-	 XbsqfO61mTTyuTfaYvinosuFmLgfSXYM2t91YpbysCez1OGKHsMl2Nbd4HvvFvj47rm2L
-	 JWh3kMoe5pJ172HkQprjqkRU2I4H8zE8D9p5zumMizb+4pmUFv/BaLBQEgQWVCvAJqw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795081729;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=zVwOWwHUXzKlToaA0R+Ga3qN0U7VwWvqFPcvbla4RKk=;
-	b=YcS5Tyf8jMRXkSPQblBa4V8T1310vq45WNBbbUX4RCCdtYjfVsphwDvtRyMPJvd1wV8I
-	 S0rQ1zYRzADTITg63V/wt6DWihe1NOXm6g2KgtmdinIMPr4dnaruchvL0Y5mTSRtez4Kq
-	 oAOIr7mDt2EBw0Blz94uGONS1N/L20j7yUcay4F2mlrc40QXPrnvzMQlGFqg/fL1Kn0Tf
-	 +PUWpz/kQcMSV2scqusAByarJ3GqdAFhq04eHbTx8yIU3uWxPxX16WuQKxiqBHbbQziWI
-	 8xsHN3+xvwyOBukyB26bh5BT2ZctdMNhIML4JbsbvDFhmcaHLO/HkgW9c8JvT6lJdZA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CA0Jifub;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F68606A320;
-	Thu, 19 Nov 2026 09:48:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CA0Jifub
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795081728;
-	b=E0tBF+d0g01McuoEXV82ofJuLCoSBJ5iAQnfBYaseesOs3b09SYzL5ZZJTlWTrV2lZBV
-	 8Q82vJBv16AAFtgOXZvJeo8zIhbp1Xx/oEGRF5C5qFaDQp02z47bEVxNKjawsJsDIJtHU
-	 pF1DkzRTb8EkxnYhyz94hxlEQjOvR9/is+weIKV8AWvSwH84A2vd1S/+sLtiF5HF+A14D
-	 ylwMmkZGfLDCMH+ltDjIIKQNubkYmKs8EegYU4KH6SK/GEiUEWcurO50cqHevB8dhaX9/
-	 3o5kEffQShFLNwasJYh1SDUdtGs8SIgNFjmF89z/iCx9jfD5LnGJnbu7D64LTqJ187Q==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795081728;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=zVwOWwHUXzKlToaA0R+Ga3qN0U7VwWvqFPcvbla4RKk=;
-	b=ULFlw2c1bxGu5BfrReXGMictl77HGielQGMbD6WsKUPH1mvQkBhAkvr/WH1C6qfmgwGe
-	 xWzOrpicBsXGCHscQFIeVrO75kdnQjC+ZaFMz32gXs6uFMTtZfL+34XZtf8lu0ao9WAWd
-	 WQlKZmUlXS3/sZx4C0Rvf+ZihV8t9fE6LY7gPZiVPVOnanrKVIypaYJNqG/JQEfewDQ9o
-	 HwLR0ERFVC7XXuxppUIL0RaXouCTUsN2bQYkT/7U9XcnfSuIdB9meexNf+zScziYvFFUi
-	 KX0ZbuRBuJLtayNl53Bkeoza7BE6FYMiVYRnaQv7eKxw7AoWE6LWg5Htgk/sfCjxszg==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=80.241.56.161
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795082350;
+	b=vVvW4t4id+4JLs5AbX15iEFVJhfMi6o3ifZM1+vJYyO/g3763wm51wZH1gK4y/cpNzEK
+	 NsJEhapMTPYFY0Fq4YlbKCR/baM6zkka9pYenz73GOlrP852lAmF2JZdGdJgoR62NRCJt
+	 cEcnzc5yRPbB4Gi6wdYNMVepF8weKkNOxuR6Z/KuYfgoIJSUvOfgITl+4ZF3SQ3z6Qdau
+	 t55hWnYsAKLHZaSXr1sgIbBuju52fI6l091CsTq309QjBjd8F4m9dtmTysrh1qhaNJfq7
+	 QjcaeSb8WY8ryDdhM2aFqC2+tIobymR35YOz7rFdvAlisz/amKnFnGib5uP2SgTnrbA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795082350;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Subject:From:
+	 Reply-To:To:Cc:Date:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:User-Agent:MIME-Version:X-MBO-RS-ID:
+	 X-MBO-RS-META;
+	bh=Q3GQZrybC5QxaJKCFYXWQxqvNW0jtycxDKmrfuuMapE=;
+	b=FbAz1mYxkW2NZQjka30jmjjBRL141tTxZRCBsqErh0egyAO/B9wOiNSupun+43F68f6i
+	 iVnli9xvHjkIXJPkeRD6ap0jBSgjNtESuAEwb4Y4iI1PBD4r55yoighEauuDCpE7QO+8M
+	 9Sv3ps4RRBJ6Gps76zEGcErB5707jCcBGaYojsN1+fMlgPCsP0R6zoPmmJugHC/kyaOqT
+	 h8saKCNXOO4ScI4+LJdkp10XcJ/TU6dWS7avybQQt1MMFKxRfo0M/Zzc6s1wFkQxSC31j
+	 d752NAUphe8x3GofHnnU72g8AhPRvMOBU6PwEByXl5v0CevhKI2gSGoBQN/ZlhyH22Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=mailbox.org;
+	spf=pass smtp.mailfrom=mailbox.org;
+	dkim=pass header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=e4wNncEa;
+	arc=none smtp.remote-ip=80.241.56.161
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id E61521F000C4;
-	Thu, 19 Nov 2026 09:48:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795081728;
-	bh=zVwOWwHUXzKlToaA0R+Ga3qN0U7VwWvqFPcvbla4RKk=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=CA0JifubC91hEHefqtbvm/LWAf/4mBz1m5sqSLBR5q7HB5/CTef777sDCzdlEd9qh
-	 D9SGwTa3lP5TyMWjin0c5o96vVk2ONzT7DXKbbBpuTBe7XUpccTCnboMnX5VMK1cpg
-	 MHhTQ5S0kKoaRDHA/5UgpO+9dUP1nMo0QA9RsEw6SFkLMmbZ2eoKB6e72omRZcoPmH
-	 nXLpcIs9j3eodSp3Z81f1l5SkxRrmaMAsBCFgpcFMFkV/k++0NwvcM5ExrhNIoeMHi
-	 iitmZzLlV0nGySp76tWYxu5uW5R1QMNkxxT9K2LkwDVUez9oCW75bm71eWIY7Kii3u
-	 XoH84aEK3ySnw==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 630804B1F2;
-	Thu, 19 Nov 2026 09:48:47 +0000 (UTC)
-From: Peder Bergan via B4 Relay <devnull+peder.bergan.gmail.com@kernel.org>
-Date: Thu, 19 Nov 2026 10:48:47 +0100
-Subject: [PATCH] rust: drm: enable standard fdinfo for Rust drivers
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37343606A331;
+	Thu, 19 Nov 2026 09:59:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37343606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=e4wNncEa
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4jVYpF6J2vzKnr1;
+	Thu, 19 Nov 2026 10:59:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1795082341; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q3GQZrybC5QxaJKCFYXWQxqvNW0jtycxDKmrfuuMapE=;
+	b=e4wNncEaiArLAyqQUA+yobmyL1ur4Y2Wpm1fA1jFpvgIgIorXA9ZgMK8KQ6tOAPXvX35CT
+	2TsAbAZoha4kj4Pc+kxwRQ2bDVviWVOBu0YXWciu+gIaaqoXQggXkAxbtzIM50Ean4bqIv
+	Z9ui6UtS8ykCwzvQDXLFut2Uven/pdUxNOtHXQiENDCG2CT63PDcALppOTpsLj/sw65bGL
+	t2GjgbjxRDwCQ5QkJ1nB4Hs3tIaVxckrXzBgzbyifVBbKyH7AFph2rhxGSQO/BFeY21cjG
+	JiRqWz6Vkr2uz+D+uo4Axi9GycZkYRoV7U8gKJHcu/N00YrSFIaQ//G+Oh/1lw==
+Message-ID: <202dd0c3d515ddfa77a8ec8751badadd31b8a7b0.camel@mailbox.org>
+Subject: Re: [PATCH] rust: DamFence: Remove warning about unsignaled drop
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Danilo
+ Krummrich <dakr@kernel.org>
+Cc: phasta@kernel.org, Sumit Semwal <sumit.semwal@linaro.org>, Alice Ryhl	
+ <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng	
+ <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg	 <a.hindborg@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, Daniel Almeida	 <daniel.almeida@collabora.com>, Tamir
+ Duberstein <tamird@kernel.org>,  Alexandre Courbot <acourbot@nvidia.com>,
+ Onur =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>, 
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 19 Nov 2026 10:58:57 +0100
+In-Reply-To: <a7f9e0f3-b299-4d40-9230-106003725dc2@amd.com>
+References: <20261112101015.528127-2-phasta@kernel.org>
+	 <5d466f7c-2e70-4011-be04-9ffdf877b915@amd.com>
+	 <49298d3a328c1695ea27993f714c20b8a1c05f32.camel@mailbox.org>
+	 <e2ec8a39-56c3-4274-91ce-60c273904877@amd.com>
+	 <ab99758408df682c68a3792cc3014b77d6e1c8ab.camel@mailbox.org>
+	 <c2dd46ea-94d8-4720-af37-897c91809338@amd.com>
+	 <DMXJ8TBSZJJ4.3HG0OJDI9URTT@kernel.org>
+	 <8da4a8c0-1740-450c-9cf1-1a7b21d12997@amd.com>
+	 <DMXMSIQONGUW.1RRNS7I6LACD6@kernel.org>
+	 <a7f9e0f3-b299-4d40-9230-106003725dc2@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -82,90 +92,141 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261119-fix-drm-rust-fdinfo-v1-1-c10f4134488d@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAP7F/moC/0WM0QrCMAxFf2Xk2aCZ4Jy/IntY29RFsJNkE2Hs3
- 20n4uO53HMWMFZhg0u1gPJLTMaUgXYV+KFPN0YJmaE+1CciajHKG4M+UGebMAZJccQzUxMbCqH
- 1R8jmUznftuq1+7LN7s5+KqnycL0xOu2TH8r0C+7/5c1f1w8kFOGgoQAAAA==
-X-Change-ID: 20261119-fix-drm-rust-fdinfo-8e17f71dd9c3
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Asahi Lina <lina+kernel@asahilina.net>, Lyude Paul <lyude@redhat.com>, 
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-api@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795081726; l=1843;
- i=peder.bergan@gmail.com; s=kernel-contributions;
- h=from:subject:message-id;
- bh=xxqWVMVxZbBkPwfGR3DEyfjXL1JPRrrX4MkbzxGWQrE=;
- b=rPGVsN+1pazjTfjzZNIzCQIkNRmJM51jRUZ7lIiSyXuBw8ULl6w8n77Lj/7Cw4gLW85fu/kcM
- 4snU6fRBnW0DNdVdLHz9Y6n9NGKz3jLwgSUWfzSlS2DrR/b8IgOqxz5
-X-Developer-Key: i=peder.bergan@gmail.com; a=ed25519;
- pk=39790pn1YZCulHBoUG1uiQI1Hm01EvhBEa2zVrS/yN0=
-X-Endpoint-Received: by B4 Relay for
- peder.bergan@gmail.com/kernel-contributions with auth_id=1395
-X-Original-From: Peder Bergan <peder.bergan@gmail.com>
-Reply-To: peder.bergan@gmail.com
-Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: 8917f7885d5135c09a4
+X-MBO-RS-META: 5bgyrspatab3ugyn7198xxbjjtnsxz6p
 
-From: Peder Bergan <peder.bergan@gmail.com>
+On Thu, 2026-11-19 at 10:32 +0100, Christian K=C3=B6nig wrote:
+> On 11/17/26 17:36, Danilo Krummrich wrote:
+> > Drivers often reference count representations of hardware resources and=
+ hardware
+> > states and hence keep them alive beyond what their actual lifetime shou=
+ld be --
+> > even beyond driver unbind.
+>=20
+> Yeah, I agree 100% with that. I know why drivers do this and there are un=
+fortunately really good reason for that.
 
-DRM monitoring tools use drm-driver and drm-client-id in procfs fdinfo
-to identify DRM clients. The common Rust DRM file operations leave
-show_fdinfo unset, so these entries are missing for those clients.
+To me it seems more that we are often working around fundamental design
+errors. What good reasons come to mind?
 
-Set show_fdinfo to drm_show_fdinfo. The DRM core helper emits the
-standard client information and calls the separate driver statistics
-hook if the driver provides one.
+>=20
+> > This causes lot's of issues and I'm looking into fixing this up, see my=
+ talk in
+> > [1] and an example from Xe [2] for reference.
+> >=20
+> > That said, in Rust we don't have this kind of ambiguity, lifetime and o=
+wnership
+> > of resources are well defined and the core infrastructure guides driver=
+s
+> > accordingly.
+>=20
+> I disagree, you do have that in Rust as well.
+>=20
+> Background is that the fundamental problem of having two signaling
+> directions which want to define lifetime differently doesn't go away
+> because you switch the programming language.
 
-Fixes: c284d3e42338 ("rust: drm: gem: Add GEM object abstraction")
-Closes: https://github.com/Rust-for-Linux/linux/issues/1266
-Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
----
-Matt Mireles reported the missing fdinfo fields on an Asahi kernel and
-suggested using this helper.
+For Rust DmaFence, this is addressed by having two distinct objects
+sharing the same refcounted memory, DriverFence and Fence.
 
-The x86-64 LLVM=1 CLIPPY=1 build adds the drm_show_fdinfo callback to
-nova-drm.ko's file operations table.
+Dropping / signaling DriverFence is the decoupling point.
 
-The pending move of the file operations into drm::device [1] should
-carry this assignment into UnregisteredDevice::FOPS.
+Which is by the way why I am trying to convince you so hard to give me
+the spinlock, to make this simpler and fully sync ;)
 
-[1] https://lore.kernel.org/dri-devel/20261118163203.2483856-4-dakr@kernel.org/
+> But even in Rust there is still the need to give HW drivers something
+> like a template in which is defined how things should be done and
+> what things need to be avoided.
 
-OpenAI Codex assisted with coding and testing.
----
- rust/kernel/drm/gem/mod.rs | 1 +
- 1 file changed, 1 insertion(+)
+see below
 
-diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index 85657a39e146..b37695f870d4 100644
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -388,6 +388,7 @@ pub(super) const fn create_fops(owner: *mut bindings::module) -> bindings::file_
-     fops.read = Some(bindings::drm_read);
-     fops.llseek = Some(bindings::noop_llseek);
-     fops.mmap = Some(bindings::drm_gem_mmap);
-+    fops.show_fdinfo = Some(bindings::drm_show_fdinfo);
-     fops.fop_flags = bindings::FOP_UNSIGNED_OFFSET;
- 
-     fops
+>=20
+> > Consequently, it is perfectly reasonable to assume that a driver object=
+ that
+> > owns device resources (such as DMA memory) will, in its destructor, tea=
+r down
+> > the hardware to not access any of the resources it owns anymore.
+>=20
+> Exactly that is a pattern I have seen many many times before and I
+> can say from experience that it is very prone to human errors as
+> well.
 
----
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-change-id: 20261119-fix-drm-rust-fdinfo-8e17f71dd9c3
+Danilo's argument is that the object that halts the hardware is the
+same that owns the fences.
 
-Best regards,
---  
-Peder Bergan <peder.bergan@gmail.com>
+You drop the hardware-ring-object, this halts the ring, waits for it
+synchronously, then the fences drop and signal. Of course, you can
+additionally signal them manually before their drop with another error
+code than the default.
+
+> > Insisting on an explicit method call is not improving anything in this =
+model.
+>=20
+> I'm not insisting on an explicit method call.
+>=20
+> What I'm insisting on is that the response from the HW that the DMA
+> operation has stopped is signaling the fence.
+
+That is effectively the case, see above.
+
+> And not that driver tell the HW stop DMA and then continue and dma
+> fence is automatically signaled without explicitly saying that is the
+> signal that DMA operations are stopped.
+
+Again, the main point here is that the object layout ensures *exactly*
+what you want, Christian
+
+Like this, pseudocode
+
+// Drops first, stops hardware
+struct exec_context {
+	// drops second
+	jq: JobQueue, // signals remaining fences when it drops
+}
+
+It's maybe more implicit, but ensures exactly what needs to be ensured.
+
+That's how teardown is done in Rust. You drop the lock, it unlocks
+itself. You drop the memory, it frees itself. You drop the fence, it
+signals itself.
+
+That's by design because the object lifetime model falls naturally into
+place.
+
+> I think the most defensive way would be as last resort scream loud in
+> the logs that the driver is somehow buggy and hasn't signaled it's
+> fence, wait for a certain amount of time (100ms?) as safeguard and
+> then signal the fence with an error.
+
+Now that doesn't make any sense at all, either the hardware is stopped
+or it isn't. Having some random delay is probably even worse because
+the problem is then more difficult to even encounter and thus fix.
+
+> Exactly that is what I disagree on.
+>=20
+> Stopping the HW is what makes fences signal and that is what this
+> tear down process should block for.
+
+Our point is that dropping stuff stops the hardware, and *then* signals
+the fences. Exactly what you want! :)
+
+> Well the question is can we enforce this?
+>=20
+> I mean there are usually only limited options from the compiler side
+> to enforce things, but we should still push developers to use well
+> proven patterns and coding practices.
+
+You currently cannot prevent people from refcounting stuff if they
+really want to. The Rust language is working on enforcing that, too,
+though
+
+https://goals.rust-lang.org/2026/move-trait.html
 
 
+btw the best feature that Rust offers IMO is that the refcounting is at
+least always right. That's quite cool. A great many hacks I've seen
+stem from the fact that programmers are not disciplined when it comes
+to copying pointers and their refcount.
+
+
+P.
