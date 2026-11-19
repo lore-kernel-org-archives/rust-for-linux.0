@@ -1,49 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795091097;
-	b=QJWx7aUnGSbz3BDHfB7iEHNtTYc9BgSySoj2ujDN6sQnFRNQ2KH5cqeO6T4pUEmB9YT6
-	 vrT5JDbEED/+w6lN//KmLTnqkXCgCz+5Z38LOLi/ydtLmOF36TpL32XoI7C5eIu0oND1k
-	 5dIeV1s5OeR9siq59zYPUOYUG4RvDyqYHbMg+vPPNiOVmJT7EQz3IfCV1rfkdOz4Ov3jD
-	 0alg71mbDWeU+X5MkNdy44QmmrUP0sE5owp4Wo8ef/V8DEcVwpAFVI7VoctZsmxYa7SLs
-	 ppiyubs7PY3lcXo1DRqtPzoZNjoFu+17J5HkZRp2DGi0AHpATJejZBtVsxO2HknRp4w==
+	t=1795091328;
+	b=rjIFD78N0sH94APdF/d9VnX0G3Qz7tPgVGf5amGiQuaXuyc83PW4MYcFf6yhvHLU+vTC
+	 vZa0QxEuw6TISNfH9NBi1IwluQhdAi45PwMdEq3RClTK6q1I4DMY4jlSqgB9rvq4HhKX0
+	 akTqgLTwW/tv9jK3PygvTZmF0mDPouP3IeAk+9+POwGe38n8AoTpQvRx7U3PxkmtVKTeQ
+	 y1eTL5UkAW69wFXdHlppKhdy6MfmDoP8KhVhe6uhw0+1zMJcSGu9n6qBvqC5MCUqqQ3cx
+	 aQXmJuJLr5M7xMuFg5lBpx80XHZMcPPs4Y7+XD8Zzml7NzDF9Vp2ofxDdXmr8h/KH9g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795091097;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=rNajSngytGm8mtvAWgpqThXqlpNe7qAFM40MIDd7694=;
-	b=3tmcW1ATeec1fYhxsDLLsCkY9pQbaeNYtRIniKM/MFqrUQiv8O38iOn/IGSn5JrcBLmf
-	 HLiBcJctzVOnuhx2mjaxO3r/1GBkWKfEPE3k6DMKZe/OsNNjqYkIUVUKAXHQMNjC9qwEo
-	 2hounfARRUlgWYU/PSmQBgI8XFM/2z04y0h+cwwWU1S0TTKRPWkFrkY3q++RBTq3K/bSD
-	 23P+sBNDNa+6rNeAdJd/IA1s+VtgCi67NtjiFOpnbXnzf/0hfb1S8YHhN+r7qhiH7kNrO
-	 w+6hDhl37kah3eBc/BmoN8dWMlaavLxUCeLKZrns70Kf1Fus2VApKl0hj1yEivpLDQw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795091328;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:To:From:Subject:Cc:References:
+	 In-Reply-To;
+	bh=OYKLKa88kqYxtvXJjLZgL4uoSuTqh7GrrX11eW0zc38=;
+	b=nziVY83q/YgnvcknYpMDexCrosQxS3sQ3Nb9KO6ofjC6fnvCjWIX9JXcd1aqjOptCz0c
+	 Crh8FTTMQgmRinh74hrCFD4S+V47q1G640lbmyqEzXVd2hSGnP6ZiXDbqADv9YQf82DIi
+	 CjpwEdtPcLqWn8l7FOPgkhauKGgMljG0yImBN6A+4PUnxUCp/KZSRIBLVI2TaMvBiROAa
+	 RoTWQfwwOzRIzGnJ8xUUP8tBKGu9Wxf1JiPdO857JvtW8X5IEFdXVP6tIg6QR9TrOb10t
+	 w0Asx/yEyVR4mK0eKyy034BF0XFvvb1puWKNGrL2Ubx+LM4EMxJTuD8lOWq7XSariCA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ZiQznPLn;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25477606A320;
-	Thu, 19 Nov 2026 12:24:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25477606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NVvNh44c;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066A0606A320;
+	Thu, 19 Nov 2026 12:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ZiQznPLn
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1D0AA1575;
-	Thu, 19 Nov 2026 04:24:53 -0800 (PST)
-Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E11413F673;
-	Thu, 19 Nov 2026 04:24:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795091096; bh=QBq9PQw0Pr94poUNHbDPbL4VDmT2XAawnGIjosmoAJI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZiQznPLnW5HNhPtyf5c5HsUBV7TdtnmUz89PVcL0CxCieqVWSDx27MkItSb51oT3L
-	 iPto6OFmcmm+RT1ygM+PVHKS1wQlcblpmjOSJ+MyULm+nIsuI6M63/AU7CZSjNT2Pn
-	 Ea0eKc7ffcjE6T/63cjVT35v+Xm6NftdkCmgL3tM=
-Message-ID: <fe60c0bd-1ee2-4b33-8ca3-564ee08e6db5@arm.com>
-Date: Thu, 19 Nov 2026 12:24:50 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NVvNh44c
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D5831F000C4;
+	Thu, 19 Nov 2026 12:28:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795091327;
+	bh=OYKLKa88kqYxtvXJjLZgL4uoSuTqh7GrrX11eW0zc38=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To;
+	b=NVvNh44cVzTMlynElex+ufbnZilXmrZ5yfrUBv7GCk+AjBzidEaRvibb/QLHEtZ89
+	 Rk4nz/j315rI5DLnJDrgi7LQ9cz5PXTN/UJDejlo3btteojzKtnG0SEBkUDxYwqXst
+	 5DrcqIAxFKlso8tCEGhQyfFJlTMth/TmftrGdtbL7wIysUvrmrzjhMxzeUz1x17Ycl
+	 WwPUrhwadRdDHWMX9s9cePEYRrprNhU/gbaPSHxk6PgIv8bSY/ImXLwilyDbmizZ+s
+	 DhGl3KfpxnsX6luWq8+llr7qzEIWDN/yFp50yfN0wy4vpEFYVd0cpTACf25bGkdh92
+	 iOnsWgnkw58Hg==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -52,161 +48,105 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] rust: iommu: add a paging domain abstraction
-To: Jason Gunthorpe <jgg@ziepe.ca>,
- Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Abdiel Janulgue <abdiel.janulgue@gmail.com>, iommu@lists.linux.dev,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- driver-core@lists.linux.dev, Detlev Casanova <detlev.casanova@collabora.com>
-References: <20261112-b4-iommu-domain-v1-0-c29e86788dda@collabora.com>
- <20261116193821.GC2452510@ziepe.ca>
- <3EB4C2ED-B699-4532-A562-68B78F6E29C6@collabora.com>
- <20261117202055.GA3115493@ziepe.ca>
- <b145b2ceb92c73a4fa0477d7b3895a6e3b4adf99.camel@collabora.com>
- <20261118160909.GC3115493@ziepe.ca>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20261118160909.GC3115493@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Nov 2026 13:28:42 +0100
+Message-Id: <DMZ6RL5X2UXE.33EY9MDLO2AJA@kernel.org>
+To: "Gary Guo" <gary@garyguo.net>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 1/4] drm/tyr: name resource lifetimes after their types
+Cc: <aliceryhl@google.com>, <daniel.almeida@collabora.com>,
+ <airlied@gmail.com>, <simona@ffwll.ch>, <lossin@kernel.org>,
+ <ojeda@kernel.org>, <boqun@kernel.org>, <bjorn3_gh@protonmail.com>,
+ <a.hindborg@kernel.org>, <tmgross@umich.edu>, <tamird@kernel.org>,
+ <acourbot@nvidia.com>, <work@onurozkan.dev>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+References: <20261118233727.3147222-1-dakr@kernel.org>
+ <20261118233727.3147222-2-dakr@kernel.org>
+ <DMYTKRS80NRC.18PBQHK9SZ8K9@garyguo.net>
+ <DMZ4C3GGD9U0.360KJBSFLEK61@kernel.org>
+ <DMZ5HM326EKD.1I8KUFD65L91Y@garyguo.net>
+In-Reply-To: <DMZ5HM326EKD.1I8KUFD65L91Y@garyguo.net>
 
-On 18/11/2026 4:09 pm, Jason Gunthorpe wrote:
-> On Wed, Nov 18, 2026 at 10:25:58AM -0500, Nicolas Dufresne wrote:
->> Hi,
->>
->> Le mardi 17 novembre 2026 à 16:20 -0400, Jason Gunthorpe a écrit :
->>> On Tue, Nov 17, 2026 at 05:09:11PM -0300, Daniel Almeida wrote:
->>>> Hi Jason,
->>>>
->>>>> On 16 Nov 2026, at 16:38, Jason Gunthorpe <jgg@ziepe.ca> wrote:
->>>>>
->>>>> On Thu, Nov 12, 2026 at 02:00:07PM -0300, Daniel Almeida wrote:
->>>>>> This series adds a Rust abstraction for IOMMU paging domains. A driver
->>>>>> can allocate a domain, attach it to its device, map pages into it, and
->>>>>> install a handler for its faults.
->>>>>>
->>>>>> This will be used by the upcoming rkvenc driver that my colleagues
->>>>>> Detlev Casanova, Nicolas Dufresne and I are working on. More details on
->>>>>> this driver can be found by watching Nicolas Dufresne's talk at LPC 2026
->>>>>> [0].
->>>>>>
->>>>>> As part of the security model, each client will have its own IOMMU
->>>>>> domain. This is needed as the submission model will let userspace set
->>>>>> most of the encoder's registers directly, so the kernel cannot check
->>>>>> every memory access that a job makes the encoder do. With a single
->>>>>> domain, one client could make the encoder read or write the memory of
->>>>>> another client.
->>>>>
->>>>> How do you plan to get the paging domain in the first place?
->>>>
->>>> We plan to alloc a paging domain when a video encoder session is created. Then
->>>> we call iommu_attach_device() before a job runs, and detach back to the default
->>>> domain after it finishes so the next job can attach its own session's domain.
->>>> This is so each session is isolated from each other.
+On Thu Nov 19, 2026 at 12:28 PM CET, Gary Guo wrote:
+> On Thu Nov 19, 2026 at 10:34 AM GMT, Danilo Krummrich wrote:
+>> On Thu Nov 19, 2026 at 3:08 AM CET, Gary Guo wrote:
+>>> On Wed Nov 18, 2026 at 11:37 PM GMT, Danilo Krummrich wrote:
+>>>> The firmware, buffer, VM and MMU types use 'drm for their resource
+>>>> lifetimes, even though each parameter is local to its type.
 >>>
->>> If you do that you can't use the DMA API at all in your driver as you
->>> have to set 'driver_managed = true'. Is it OK? If it is why not just
->>> use VFIO?
+>>> This doesn't make any sense, a lifetime on a type by definition cannot =
+refer to
+>>> a scope of itself.
 >>>
->>> Or are you planning DT horrors to get yourself a DT created "DMA
->>> struct" ?
+>>> `'sec` is not the lifetime of `Section` and `'fw` is not the lifetime o=
+f
+>>> `Firmware` and I think this is just confusing.
 >>
->> This seem to digress. All we want to do is use the iommu subsystem as intended
->> for the case the iommu driver is not inside the DRM driver (which seems to have
->> never been the case so far in DRM).
-> 
-> "As intended" means you use the DMA API and you do not touch
-> the paging domain.
-> 
-> "As intended" means you use iommufd if you want a domain full of user
-> controlled mappings.
+>> Yes, this was badly phrased. What is actually meant is that e.g. 'fw con=
+strains
+>> how long a Firmware instance can be used.
+>
+> I think this is weird still. Any lifetime on a type would constrain how l=
+ong an
+> instance of that type can be used, that's just type wellformness.
+>
+> I think what you're saying is basically "I couldn't think of a good name =
+so I
+> use the name of the type instead". To me I think using `'a` has the same =
+effect
+> and is less confusing because reader knows that it is a generic name and =
+is not
+> tied to any specific scope.
 
-There is a middle ground, where a kernel driver wants pages to appear at 
-specific IOVAs under its own control. This is entirely legitimate to do 
-by using the public IOMMU API "as intended" - the fact that people often 
-also try to do the wrong things for the wrong reasons, and that any 
-attempt to involve dma-buf usually ends up a hot mess, does not make 
-that basic premise unsound.
+Oh, I agree, 'a technically achieves the same thing.
 
->> The existing infra for that (in C) is pretty abstract an simple in
->> my opinion, and built into the DMA API if you manage which domain to
->> attach to your device at the right time.
-> 
-> What does this even mean? The DMA API owns the domain, not the
-> driver.
-> 
-> All the cases using these APIs in DRM and media are troubled in one
-> way or another.
-> 
-> For example the recent revelation they have always been using DMABUF entirely wrong:
-> 
-> https://lore.kernel.org/all/20261009125338.GB13920@nvidia.com/
-> 
-> Tegra desires to undo their abuses.
-> 
-> It was never intended for things to work like this, there is missing
-> infrastructure.
-> 
->> To me, it fits CODEC HW driver which are also simple. The DT horrors
->> you refer to seems totally unfounded, you just describe the iommu
->> and the iommu subsystem will manage it for your device.
-> 
-> "unfounded? You are not following along, I've written about this now
-> many times to many different people. Follow the links and discussion
-> from here:
-> 
-> https://lore.kernel.org/all/20260917144804.GI3196566@ziepe.ca/
-> 
-> If you use DT correctly there is no place to attach an iommu_domain to
-> and you can't even use these APIs. You get DMA API only and that's it.
-> 
-> You have to do something "wrong" in DT to create fake HW devices to
-> even give you a struct device to even attach something to.
-> 
-> Or you have to entirely give up DMA API and attach to your only struct
-> device.
+With self-referential pin-init, several lifetime roles appear together. In =
+the
+Firmware example below, 'fw describes its external borrows, 'res is the (hi=
+dden)
+invariant device resource lifetime, and 'vm describes the borrow of the emb=
+edded
+VM.
 
-I can't speak for the actual intent of the Rust drivers, but giving them 
-the benefit of the doubt, none of that fearmongering should apply: the 
-valid use-case is just simple time-division multiplexing.
+	pub(crate) struct Firmware<'fw>
+	where
+	    exists<'res>: 'fw,
+	{
+	    /// Iomem need to access registers.
+	    iomem: &'fw IoMem<'fw>,
+=09
+	    /// List of firmware sections.
+	    #[uses('res: invariant)]
+	    sections: KVec<Section<'vm, 'res>>,
+=09
+	    /// MCU VM.
+	    #[pin]
+	    #[uses('res: invariant)]
+	    vm: Vm<'fw, 'res>,
+	}
 
-A = iommu_paging_domain_alloc(dev);
-B = iommu_paging_domain_alloc(dev);
-iommu_attach(dev, A);
-iommu_map(A, iova_x, virt_to_phys(X));
-dma_map(dev, X) //still needed for the underlying memory
-... //tell dev to do the work for context A using iova_x
-dma_unmap(dev, X);
-dma_map(dev, Y);
-iommu_map(B, iova_y, virt_to_phys(Y));
-iommu_detach(dev, A);
-iommu_attach(dev, B);
-... //do some work in context B
+	pub(crate) struct Vm<'vm, 'res> {
+	    as_data: Arc<VmAsData<'res>>,
+	    mmu: &'vm Mmu<'res>,
+	    dev: &'res Device<Bound>,
+	    #[pin]
+	    gpuvm_unique: Mutex<UniqueRefGpuVm<GpuVmData<'res>>>,
+	    gpuvm: ARef<GpuVm<GpuVmData<'res>>>,
+	    va_range: Range<u64>,
+	}
 
-...and so on. The only real subtlety is that while you still need to 
-make the DMA map/unmap calls as usual (for the sake of managing cache 
-coherency), you only use the returned DMA address for checking 
-dma_mapping_error() and the subsequent dma_unmap(); the address you give 
-to the device is your own IOVA for the mapping through your unmanaged 
-domain.
+I find naming the external borrow parameter after the containing type easie=
+r to
+follow when reading these definitions.=20
 
-Plus as I mentioned recently in one of those sketchy dma-buf threads, 
-it's also true that at the moment, iommu-dma will still do a load of 
-unnecessary work in the unattached default domain for reasons that were 
-valid 5 years ago, but that now can and really should be optimised out. 
-I guess I'll have to steal a day or two from what I'm supposed to be 
-doing to write that patch before I get fed up of explaining it :)
+I thought we did settle on this convention in the past; am I misremembering=
+?
 
-Thanks,
-Robin.
+>> (In the following patch, in TyrDrmRegistrationData, Firmware borrows Mmu=
+. That
+>> borrow has its own lifetime, distinct from TyrDrmRegistrationData's 'drm
+>> parameter.)
+
