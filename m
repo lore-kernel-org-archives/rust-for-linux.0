@@ -1,64 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795092159;
-	b=nN7PDJVOpDtoakNJd+5iyAlZdajkkjpsTY5BadFuABBD5YIO1bzn+KpvXdFE/QwN6adq
-	 faEsURAWoLG5eSn9XSG5YLPIzoZC5wpuo+nUp6iU8WLhXEnHtgq0obsYTssQq2Jl8HJ72
-	 BjWfNHxYH/1gFL1/LzdnSTe5j4od6btRHBloc3CQEoNM0f+/dVDVGN+pHGUU8MO8ib1sc
-	 rvENtbtt2QKqtTt2Ktpn02GtrwueYG6hmOk2QocLm5mmGoZ3Oi2F/yoxHfLqAMB084e21
-	 amr54TVJZccecb0TDxTXL1u2QOV5tPSd9AJYz8xO1vQ+8aWLsFxZILiAB9Lx3RMYJeQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795092159;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
-	bh=lM4zbDVsCPSsDHsmfGlZKAfqrqsKb6hhzgK78oiN2hA=;
-	b=z0MB17F7baOyDonOBrz3vMPTcJ8x4+1fgJkM93X3nTUeLDz2ptzCdEaOoSBApU3oaV2j
-	 HeGIFbuQuNku8f2pxbOxIVsW9DNdAj6yI3Q2ML8UV/0m5CvRhq7BqZSahI512TnaC7kNt
-	 s/xgp7L74Pqnb7Rp5/PIZkadmGu8lbwYDC5w2Hmj30RRZzJgB9OcfOvSUHAhXTg0ogWYJ
-	 tZ0CcAm9sY6KXpxyAYjKB5dzKPSShJeIFFO8vZPf3EbxCfuhUREHCWhbAqb6/nTA3PK4m
-	 wvnmxvPlyhDBxQzVGQkO5kVnjHflKlG/0erlvIfngUzNwXfMVmy2MhbCvMIDjohvPNg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Jv765HMT;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD5A606A320;
-	Thu, 19 Nov 2026 12:42:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EDD5A606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.196.128
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795092967;
+	b=MlPmXfTmy26eHApRmi9gcGwSF31jOx8a5U1N90EcAVSsxZrWeUZGpVwitwCflNY874C5
+	 X9TCii8xtCw2SQ5TBCGVMvHUC3Uo5AUnfRHwXoR3sB0N2G1xsIa3J2bpwF4Ke5+QZUHeK
+	 nb+IgB3Vws7Oifdww2PivBjhnJljLtJAfIw7VMGeeTowAZz0iiEPLf9PDIuGq6FckB/Ry
+	 YaAzCMIHTiFOBlZg7tuYQebd5vUf7GzPB48SbhWD2btYykgKSI1CjS0EOiScz/CZmTtzi
+	 QwXnEwAK1jal0GSfCW8cZMAEWP+CsFLZY6olWSJRLgTXvC3A0cxZVm4oSpTR3SrQXlw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795092967;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:To:Cc:Subject:
+	 From:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=x+L4DBo+iN7sRByQnI/RUD2yBa5eyv8XoCVEXrHg8ck=;
+	b=VWYBHpu7tN3r3uqBFzwwQnDz/56qEISw7GZNYWO7ZVFBi4PZaM05Xj3xKbNlsOfZSP2U
+	 WnkmW5mNpy0wraKCDaC2tKGZuNPypNIN5wp72Vx2E170tc/mGBEgJSLBMgD3jpTy8j4On
+	 OA27/d5xkbNNKKrg8F+QM4q5S+gZKqxE+JAOK+gVViCAD4zn6I0fp3g5oRfivowSHMb9J
+	 PqnE726ZcoA58USvDUdcaFG5RBcnctJx2knyJutPbQAXGlnI2AJ7Y1q3gCmZfxq12zkPj
+	 Caj6chyZyWTuQANagrVj8n+LdNLCBpEwZoZ3PrwLc6z15K5MjT84EbBbeW1XiE0n9Sw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=garyguo.net;
+	spf=pass smtp.mailfrom=garyguo.net;
+	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b="ekPhL/ct";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.196.128
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020128.outbound.protection.outlook.com [52.101.196.128])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE8B606A334;
+	Thu, 19 Nov 2026 12:56:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6FE8B606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Jv765HMT
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0B50D1477;
-	Thu, 19 Nov 2026 04:42:35 -0800 (PST)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 074C33F673;
-	Thu, 19 Nov 2026 04:42:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795092157; bh=RXAWQ8pRxi6qK5xZ/CdIK7XpQMSP9I8CLb20ybHXtqk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Jv765HMTRUh/tl1uUeem2YzCY5z2yu6D0lzjII/RqabeJHcfeLoKc5rAFYcj5L5sn
-	 e7h6RL/rcCVACzoVwa0SMBaop/yCch2rqS8wmTonzebOd0AjLIpnARLYVm+M1ie+Ub
-	 XhCqO5m+8CjA6PqlhBTopyJhCtrfgzcQsmqqY4Dg=
-Date: Thu, 19 Nov 2026 13:42:23 +0100
-From: Beata Michalska <beata.michalska@arm.com>
-To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, lossin@kernel.org, lyude@redhat.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, dakr@kernel.org, peterz@infradead.org,
-	mingo@redhat.com, will@kernel.org, longman@redhat.com,
-	felipe_life@live.com, daniel@sedlak.dev,
-	daniel.almeida@collabora.com, thomas.hellstrom@linux.intel.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v13 6/7] rust: ww_mutex: implement DynLockSet
-Message-ID: <av7ur4dNCArFPTSY@arm.com>
-References: <20261020153112.299745-1-work@onurozkan.dev>
- <20261020153112.299745-7-work@onurozkan.dev>
- <avTIMTuuFnxHhS74@arm.com>
- <20261112144158.278467-1-work@onurozkan.dev>
+	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=ekPhL/ct
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UpsmsihAtFPoby3H/o3ztLqoU/LDq9jhLfTxXg6WFxP2Bm65DBvZaaCD5st6MDQoRR5bsmiLGWCew9wB9vbe2k6j6Okq1CgxFEhhsAFLOwhOt/gx2pfMQlgy+3CjqWvmKJy1yyhZS1fKEsKCF3RafOKkLYWUaX8GP1YI1g5fUQxuI0L4adOJMeCFICqot9MglCwqxeg6G0ptCO3VCqEBBAxEnyR5R2rX1oSa5t9OoUZIc9856I5S7brqxo6fu9jTcgmPt8765uJ0kwK/rl8dsWho8vpjZDaoYaYNEb/QVjmjNy65yS5eOQsTDK1nFkAy3ltjU/XUZ4sbCnhj10V8Yw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=x+L4DBo+iN7sRByQnI/RUD2yBa5eyv8XoCVEXrHg8ck=;
+ b=AyIk5a2awjR6pQAbR1Ltri9US05nPEEb8I/wCRxKq3rVOpLvJDsI7Yw39/9ibY6ZcZA6PelQSuTHi8epTfnEJR2ggHWLhX1CUCZcUFusEDg4nfbwirKO4+xexO1iNIb+A4ORdIOuiiLiBay99bJU932rMyzBB4/jXHWmplARh8OK6lVkFReg7DTf5T1DjxqvDs/7OGwptMPwTilEL8z/GvtGA27Xm/JbPGJJvVz9l5k/9LRyKmwcWQ9zjy+VpocO3q4qIg1AI4HLXbt5Y3oMYvZ1kkA3uPOzSEgUfPWdqdffiMphITP3QxtJAzloVilwNXl9645uqRICF0Q1yfNPDg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x+L4DBo+iN7sRByQnI/RUD2yBa5eyv8XoCVEXrHg8ck=;
+ b=ekPhL/ctJ4zuWBHDBfmfxWF33I/H1n+SJB6Haca/Jc/YbSxLop0+oZjFVUD20YW+wud7gs9ggiZwrBXtEFpU9N8xazB89ulQtscTx4HIIdENy2DkqicugwG9W2QQM8+QnX8aK70v/ZWTFVGeoh3rhjhBtzxUkvW/9XHkNnsMino=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
+ by LOVP265MB8855.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:48a::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.10; Thu, 19 Nov
+ 2026 12:56:02 +0000
+Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0615.015; Thu, 19 Nov 2026
+ 12:56:02 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Nov 2026 12:56:01 +0000
+Message-Id: <DMZ7CHWBWU4O.3EA040FFBVCLG@garyguo.net>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Gary Guo" <gary@garyguo.net>
+Cc: <aliceryhl@google.com>, <daniel.almeida@collabora.com>,
+ <airlied@gmail.com>, <simona@ffwll.ch>, <lossin@kernel.org>,
+ <ojeda@kernel.org>, <boqun@kernel.org>, <bjorn3_gh@protonmail.com>,
+ <a.hindborg@kernel.org>, <tmgross@umich.edu>, <tamird@kernel.org>,
+ <acourbot@nvidia.com>, <work@onurozkan.dev>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/4] drm/tyr: name resource lifetimes after their types
+From: "Gary Guo" <gary@garyguo.net>
+X-Mailer: aerc 0.22.0
+References: <20261118233727.3147222-1-dakr@kernel.org>
+ <20261118233727.3147222-2-dakr@kernel.org>
+ <DMYTKRS80NRC.18PBQHK9SZ8K9@garyguo.net>
+ <DMZ4C3GGD9U0.360KJBSFLEK61@kernel.org>
+ <DMZ5HM326EKD.1I8KUFD65L91Y@garyguo.net>
+ <DMZ6RL5X2UXE.33EY9MDLO2AJA@kernel.org>
+In-Reply-To: <DMZ6RL5X2UXE.33EY9MDLO2AJA@kernel.org>
+X-ClientProxiedBy: LO4P265CA0076.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2bd::11) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:400:1cb::9)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -68,215 +106,188 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261112144158.278467-1-work@onurozkan.dev>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|LOVP265MB8855:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3216135d-9a65-42b5-c6b3-08df463c76fd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|366016|10070799003|1800799024|18002099003|22082099003|3023799007|4143699003|5023799004|10067099003|56012099006|261022105027099003|261026140227099003|261026121527099003|261102123227099003|261028144727099003|261021135927099003|261021121427099003;
+X-Microsoft-Antispam-Message-Info:
+	l24NB6LJ0GwT9DhXU4n5uex3j6VavXiDLZGO8IRux4wsH5TqK1z9PN3YwB+ZgvXDq2WwKKLdjxpo+K4OvycmTWao7QxQ3dsRVR4M7DnM86qk0fBkIbMnNO/MwE3hClpylbNX8oeHmh6th1qMD5W9LmYrUnDD23jQxAHJhaDpM0kvt6MXBf4dZ8rKHkE5df12aklkc2N4RGbMMHgwMGWF8936/VvhXpZSSlBU7DuOloRLNJVbqaKiTi4ltXp5pO4C93KT1X46YXMWuHBvGir2tnkuVgF5jMyYiPSHEP6I7aPlQ4CMh0aTCNYnDlepIbRuhgxT6hJJ9fwuua3YgmSn3Yt1CXXmXPqIzs6yRHHDPIJ67XySmbSj2J9K0LKrzDzfQgzAltyBObwdi73SqY4eAHeWaMSHRgi+ZbXwtxHwLj6Tku7g5SPo4SW0pj7XuQONwS6dvcEkb7yqPXMRKw7O0/KX+e36XsgsSPkxXHx6KtrMiLS8LYezWz//ij1B9TC9UxQCkLbUcuoCBDgtdYfB0jkKyrPG1qlvWTf+HBJK7sd85YvwQgNaPSUXZ3C4nkHvNegLuRvE82P1+UshV3iCFJ5cjbW4fKJuh/JTN5J7K1NiloJk0f/BhyiPTBuOH70Cb9Re3tfXfXhdSV1ymVO9u0ZD3TeDCO9FKuAo3tE8PKI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(10070799003)(1800799024)(18002099003)(22082099003)(3023799007)(4143699003)(5023799004)(10067099003)(56012099006)(261022105027099003)(261026140227099003)(261026121527099003)(261102123227099003)(261028144727099003)(261021135927099003)(261021121427099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RDVzTjl0U3R6VjFyZTFsTzRpSWxaMGJRcnVrMGYyTUlQWXpEa0k3RERGT1p0?=
+ =?utf-8?B?OVRiRGNrZ0JaaXlMckJWT0h6NW9BRTU3TFczbk94SXhCbFNOTHU5Y21vTkdq?=
+ =?utf-8?B?L0dIZWdZeDZjMzBaRlgyRjJERkd6dVpiRzkyREJCSCtQSDQwd1JRbGVBeVUv?=
+ =?utf-8?B?UndSdjJBNTNWaGJIUG0vMkdidk9XZEl2NW1TSm5hdGRrNUF4S0xXek10ZklR?=
+ =?utf-8?B?L0xndDhrTEdpQkpLK0VRY2NUVmlKM0daOGZTem9RVTc0dTNTcytzb2hsYzB5?=
+ =?utf-8?B?T1k4d0N4c2hZaVpZY0RlZHpaWFFtVDJ4Mlo2U3FVTEpEdWVpSlZ5VU9KU2lW?=
+ =?utf-8?B?RU9zVjBMS1ZDUVZEQUJreXVzRGtsU1hNZi9sRFRqbkgzZzVCcnpoam5HWVBL?=
+ =?utf-8?B?NjJ3N2x0Q0U2UTNUWlBLQ2NPZThCdnUzdVZtREo2Wm9zaHcvVDVVZ29kSXhT?=
+ =?utf-8?B?U2pRWkF5RHdmeDFvMUE1MWxjcGQ1TXEweUEvNlZoTE1oRjkzT3lybnNpbzd2?=
+ =?utf-8?B?aTh4S21jWHlWY3pPTEtlSUR6SnVwSm90My9iaEdTUVBqaFlQazl6UWdyd0Va?=
+ =?utf-8?B?c01jdHExVjdpcHJsVmRpcURJckJSeENJbGFPQzRmbmx3cmtRZUZsUTliRE44?=
+ =?utf-8?B?alZaa1kvOW82V3EzVTdjWE1lL1hGb1lTSWQwVXV1aW1uRnh2cVQzWjhMZGhK?=
+ =?utf-8?B?UlIzKzgrMmlNMmdhUklJK2ljdHZjS0J4RnVxRW51RzQwSDhVU1JZa3VuV0lC?=
+ =?utf-8?B?TC9ZSjl0WlhLV05WaUFBbTFiTS9UMHVkTUIyZ0YreC9NS2FFTXViWGh2US9D?=
+ =?utf-8?B?ak9NdXZya011MjZ1WWFpRzRnamxTOEIwcDUyaFRnYXUrdC92N3dWVGxQTUdH?=
+ =?utf-8?B?QWlZS1k0aHoyTHFTckhKQjhvYmVuN3lTQ3g1UmU4VkVHR2ZSRkFRVm1wcXJK?=
+ =?utf-8?B?SXZYVHdoTXNaNW5TSXBkbzF4TTNSeUpUbm44bEl6SW0vMHovQ2Iyd2s3ekM0?=
+ =?utf-8?B?cFRoZXM4YTNGSnQ0YmxnYzU5OU9oUDEwcWF3RmZjekNOVUltZ0llV3IvZHho?=
+ =?utf-8?B?THYvUzFNOVFDekxxMHd3RE9LenAwaXIrTERGOW9tUlpldUE3aGREbUNLZVpz?=
+ =?utf-8?B?UlJ6MDh1SHBoaUQ0akNKZXFtNmlOU0ZQU2pGSDRXTlB4QlI0VFB1R29zNlZp?=
+ =?utf-8?B?RlZSSVhNSGltWlVYcVluZGZHbVdPeG1kUVdXSFFYV0pZSUR6TDFLdENmTmds?=
+ =?utf-8?B?Sm5LMkk0bEYxZkovM25WOFkrd3BoVE8xVkphZFI2SFAvMnNkdVZZa2NuWkRn?=
+ =?utf-8?B?VG4yNmRjMGMyYkZtTTdZWkNhcEoyd1h2YjFJTWhkczJLa1F1ZmlLYnR6L1RI?=
+ =?utf-8?B?OGI1Y1daMmZnNHBIWmlJa3hjWEdldXlxYklXUDJJQUFreWR4WGRIcHJ2RjRx?=
+ =?utf-8?B?cGEvVUVzdHowcVFSdUNHZWpiUXlTSkpPbWllQytRKzZ3dFhOcE9sRGRIRWk2?=
+ =?utf-8?B?RmJVclQ3QXlqdEdlRWpNNEd5ejhadDBvMjFmd1BDYUZaWXlhd0o3ZU9CVTdY?=
+ =?utf-8?B?Qkg2NGl0Ui9XQUJac3A4YnJCQmxTTzk0NjlkV1UyTHM4aVl3RTZHNHNlV09x?=
+ =?utf-8?B?bmY1YnQrUy8xQWdSd3AwVWVlVGRYY1JjTHRDTzRwYWJkWVIwSUJiclpVRzd6?=
+ =?utf-8?B?NElZb1llQ21CU2w1bTYzQ0Ird3dSdUZtUVNZd2ZoYUE0SUNkSUdCdUNXMlZR?=
+ =?utf-8?B?TFNSZmFzQlltL0hONXdYeTJWRGkwSUdZQjlFSStCdUN0QitZVEFsUVBzb3NB?=
+ =?utf-8?B?a2RhNCtNUTRKUk9YenFLWmljWG93U2ZTblBGYjlOSUE1T1o3Rit2ZmFaS20z?=
+ =?utf-8?B?WThnWHJ4TnFJMU1WeGFma1BOcHZHNUJGNWlUSDlLYUZ6NHZpSkIxa1dKK0ln?=
+ =?utf-8?B?U3JqM1NES3VsVUNabm9QUjdpV256bVZIZ2V3R0dKMmxtVjRFWVhwdjUvK0Jh?=
+ =?utf-8?B?QkRXRHE5c2xHWjFoTEJxT3lVeWF3dGNUYjJXS3ZtQkpyNXM0NjZRM2N5cytJ?=
+ =?utf-8?B?aEN2eTlzUjhZMGw4ZWxVUS9aSVNuSzBaVSt6NlFrOXN5NEl5ZFlMa1pwTVkw?=
+ =?utf-8?B?Z1U3WStjcEk1M0lWZ1N0WnBSYmI5UVl6SHlCazRBQkd3T2d3M0luYktXYjBz?=
+ =?utf-8?B?UTF4S0Rob3hEU3ppSzJNa3p2U1JzY0FtbGVzS3JpanR4bEk0UnlvN01BblQz?=
+ =?utf-8?B?MEhqTlVMaFd2UWxBZmpXRXFQWjFFN1ZleFVadVJLazhXSCszZXpocFo3WjFQ?=
+ =?utf-8?B?ZzZoOHRMelNTRnA4WG9LRU9hdTkvRFdydlRVVHpIWjRReWpqSDBWQT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3216135d-9a65-42b5-c6b3-08df463c76fd
+X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 12:56:01.9777
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VrSKC2CwXCbtwlRylIjdJH/+xu8W4MNI3RZRzHgkN5/08byz4E+QwzS+kPjshcn7gnAvFaQ/ogrB0QyDX2qQ+g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOVP265MB8855
 
-Hi Onur,
+On Thu Nov 19, 2026 at 12:28 PM GMT, Danilo Krummrich wrote:
+> On Thu Nov 19, 2026 at 12:28 PM CET, Gary Guo wrote:
+>> On Thu Nov 19, 2026 at 10:34 AM GMT, Danilo Krummrich wrote:
+>>> On Thu Nov 19, 2026 at 3:08 AM CET, Gary Guo wrote:
+>>>> On Wed Nov 18, 2026 at 11:37 PM GMT, Danilo Krummrich wrote:
+>>>>> The firmware, buffer, VM and MMU types use 'drm for their resource
+>>>>> lifetimes, even though each parameter is local to its type.
+>>>>
+>>>> This doesn't make any sense, a lifetime on a type by definition cannot=
+ refer to
+>>>> a scope of itself.
+>>>>
+>>>> `'sec` is not the lifetime of `Section` and `'fw` is not the lifetime =
+of
+>>>> `Firmware` and I think this is just confusing.
+>>>
+>>> Yes, this was badly phrased. What is actually meant is that e.g. 'fw co=
+nstrains
+>>> how long a Firmware instance can be used.
+>>
+>> I think this is weird still. Any lifetime on a type would constrain how =
+long an
+>> instance of that type can be used, that's just type wellformness.
+>>
+>> I think what you're saying is basically "I couldn't think of a good name=
+ so I
+>> use the name of the type instead". To me I think using `'a` has the same=
+ effect
+>> and is less confusing because reader knows that it is a generic name and=
+ is not
+>> tied to any specific scope.
+>
+> Oh, I agree, 'a technically achieves the same thing.
+>
+> With self-referential pin-init, several lifetime roles appear together. I=
+n the
+> Firmware example below, 'fw describes its external borrows, 'res is the (=
+hidden)
+> invariant device resource lifetime, and 'vm describes the borrow of the e=
+mbedded
+> VM.
 
-Apologies for late reply, got wrapped up in other things.
+It's true that many lifetime names would appear with self-referential pin-i=
+nit,
+but apart from invariant lifetimes, the covariant lifetime parameters are a=
+lmost
+always the shortest living lifetime among things that it may reference.
 
-On Thu, Nov 12, 2026 at 05:41:46PM +0300, Onur Özkan wrote:
-> On Wed, 11 Nov 2026 20:55:29 +0100
-> Beata Michalska <beata.michalska@arm.com> wrote:
-> 
-> > Hi Onur,
-> > 
-> > On Tue, Oct 20, 2026 at 06:29:42PM +0300, Onur Özkan wrote:
-> > > DynLockSet is a high-level and safe API built on top of ww_mutex
-> > > for dynamically discovered locks. It keeps acquired locks held,
-> > > handles repeated objects and provides access to their data.
-> > > 
-> > > When EDEADLK is hit it drops all held locks and waits for the
-> > > contended mutex. It then retries the given (by the user)
-> > > locking algorithm with that mutex held and the same acquire
-> > > context until it succeeds.
-> > > 
-> > > Signed-off-by: Onur Özkan <work@onurozkan.dev>
-> > > ---
-> > >  rust/kernel/sync/lock/ww_mutex.rs             |   4 +
-> > >  .../sync/lock/ww_mutex/acquire_ctx_backoff.rs | 138 ++++++-
-> > >  .../kernel/sync/lock/ww_mutex/dyn_lock_set.rs | 351 ++++++++++++++++++
-> > >  3 files changed, 489 insertions(+), 4 deletions(-)
-> > >  create mode 100644 rust/kernel/sync/lock/ww_mutex/dyn_lock_set.rs
-> > > 
-> > > diff --git a/rust/kernel/sync/lock/ww_mutex.rs b/rust/kernel/sync/lock/ww_mutex.rs
-> > > index 2249214959b1c..fea2603d1bd1f 100644
-> > > --- a/rust/kernel/sync/lock/ww_mutex.rs
-> > > +++ b/rust/kernel/sync/lock/ww_mutex.rs
-> > > @@ -7,6 +7,8 @@
-> > >  //! [`AcquireCtx`] to track ordering and ensure forward progress.
-> > >  //!
-> > >  //! [`ww_transaction`] provides automatic deadlock recovery for ordinary guards.
-> > > +//! Use [`DynLockSet::ww_transaction`] for dynamically discovered locks and
-> > > +//! separate acquisition and work callbacks.
-> > >  //!
-> > >  //! See srctree/Documentation/locking/ww-mutex-design.rst for more details.
-> > >  
-> > > @@ -28,10 +30,12 @@
-> > >      AcquireCtxBackoff, //
-> > >  };
-> > >  pub use class::Class;
-> > > +pub use dyn_lock_set::DynLockSet;
-> > >  
-> > >  mod acquire_ctx;
-> > >  mod acquire_ctx_backoff;
-> > >  mod class;
-> > > +mod dyn_lock_set;
-> > >  
-> > >  /// A wound-wait (ww) mutex that is powered with deadlock avoidance
-> 
-> [...]
-> 
-> > > +
-> > > +    /// Acquires a dynamic set, retrying on deadlock then runs `work` once.
-> > > +    ///
-> > > +    /// Each call releases existing locks and starts a new transaction. Retries keep
-> > > +    /// the same ticket. The set retains its allocation across retries and calls.
-> > > +    ///
-> > > +    /// `work` runs once after acquisition and must not acquire more locks. Its errors
-> > > +    /// are returned without retrying. All locks and pending backoff state are released
-> > > +    /// on return. The callbacks must not change the set's context or nest transactions
-> > > +    /// on that context.
-> > > +    ///
-> > > +    /// # Panics
-> > > +    ///
-> > > +    /// Panics if the context holds caller-owned locks outside this set at a transaction
-> > > +    /// boundary, including forgotten guards.
-> > > +    ///
-> > > +    /// # Examples
-> > > +    ///
-> > > +    /// ```
-> > > +    /// use kernel::{
-> > > +    ///     define_ww_class,
-> > > +    ///     prelude::*,
-> > > +    ///     sync::lock::ww_mutex::{
-> > > +    ///         AcquireCtx,
-> > > +    ///         AcquireCtxBackoff,
-> > > +    ///         DynLockSet,
-> > > +    ///         Mutex, //
-> > > +    ///     }, //
-> > > +    /// };
-> > > +    /// use pin_init::stack_pin_init;
-> > > +    ///
-> > > +    /// define_ww_class!(CLASS);
-> > > +    ///
-> > > +    /// stack_pin_init!(let first = Mutex::new(1, &CLASS));
-> > > +    /// stack_pin_init!(let second = Mutex::new(2, &CLASS));
-> > > +    ///
-> > > +    /// stack_pin_init!(let acquire_ctx = AcquireCtx::new(&CLASS));
-> > > +    /// let ctx = AcquireCtxBackoff::new(acquire_ctx.as_mut());
-> > > +    /// let mut set = DynLockSet::new(&ctx);
-> > > +    ///
-> > > +    /// set.ww_transaction(
-> > > +    ///     |set| {
-> > > +    ///         set.lock(&first)?;
-> > > +    ///
-> > > +    ///         if set.with_locked(&first, |value| *value > 0)? {
-> > > +    ///             set.lock(&second)?;
-> > > +    ///         }
-> > > +    ///
-> > > +    ///         Ok(())
-> > > +    ///     },
-> > > +    ///     |set| set.with_locked(&first, |value| *value += 1),
-> > > +    /// )?;
-> > > +    /// # Ok::<(), Error>(())
-> > > +    /// ```
-> > > +    pub fn ww_transaction<R>(
-> > > +        &mut self,
-> > > +        mut acquire: impl FnMut(&mut Self) -> Result,
-> > > +        work: impl FnOnce(&mut Self) -> Result<R>,
-> > > +    ) -> Result<R> {
-> > So I have been pondering a bit on that one, in a context of drm_exec and
-> > potentially having a Rust version of drm_gpuvm_exec_lock & co, and I'm having
-> > some doubts really. The `drm_exec` implementation, apart from locking and
-> > reserving fences, also plays with the `drm_gem_object` reference counting.
-> > The `drm_exec` pairs each tracked lock with a GEM reference and releases both
-> > during backoff or cleanup. Proposed implementation makes it rather cumbersome
-> > to drop the reference when unlocking the mutex on a rollback (or backoff in
-> > this series terminology). I assume that would require some sort of extension
-> > to the `DynLockSet` ? Or am I missing smth ?
-> > 
-> > ---
-> > BR
-> > Beata
-> 
-> Current API tracks the locks but leaves ownership of the objects to the caller
-> and, yes, we need some sort of extension on DynLockSet probably together with
-> AcqureCtx and its wrapper type.
-> 
-> Does current API limit your GPUVM use case? Could you share an example of the
-> flow you need? I would be happy to extend the API if that's needed.
-> 
+>
+> 	pub(crate) struct Firmware<'fw>
+> 	where
+> 	    exists<'res>: 'fw,
+> 	{
+> 	    /// Iomem need to access registers.
+> 	    iomem: &'fw IoMem<'fw>,
+> =09
+> 	    /// List of firmware sections.
+> 	    #[uses('res: invariant)]
+> 	    sections: KVec<Section<'vm, 'res>>,
+> =09
+> 	    /// MCU VM.
+> 	    #[pin]
+> 	    #[uses('res: invariant)]
+> 	    vm: Vm<'fw, 'res>,
+> 	}
+>
+> 	pub(crate) struct Vm<'vm, 'res> {
+> 	    as_data: Arc<VmAsData<'res>>,
+> 	    mmu: &'vm Mmu<'res>,
+> 	    dev: &'res Device<Bound>,
+> 	    #[pin]
+> 	    gpuvm_unique: Mutex<UniqueRefGpuVm<GpuVmData<'res>>>,
+> 	    gpuvm: ARef<GpuVm<GpuVmData<'res>>>,
+> 	    va_range: Range<u64>,
+> 	}
+>
+> I find naming the external borrow parameter after the containing type eas=
+ier to
+> follow when reading these definitions.=20
 
-So what I have been looking into, is locking selected BO's - which is where the
-`DynLockSet` comes into play. The tricky bit is when we need/should pair each
-lock taken with bumped reference count on the object itself, and drop that
-reference on releasing the lock. And as the first step is pretty
-straightforward, the second is the one that needs a bit of attention.
-That said, It has been suggested (credits for Gary) that we could simply
-bump the reference count before entering the retry loop, so we do not have to go
-back and forth on each retry.
-I still need to explore the viability of this approach but it looks like it is
-worth the shot.
+In my view it's the exact opposite. If this is called `'a` then it's 100%
+external borrow (surely nobody would call their field `'a`?) while otherwis=
+e I'd
+need to see if it's a field or a lifetime parameter.
 
----
-BR
-Beata
-> Thanks,
-> Onur
-> 
-> > 
-> > > +        let ctx = self.ctx;
-> > > +        self.clear();
-> > > +        ctx.restart();
-> > > +
-> > > +        let result = retry(ctx, || {
-> > > +            if let Some(guard) = self.ctx.take_contended_guard() {
-> > > +                self.add_guard(guard)?;
-> > > +            }
-> > > +
-> > > +            let result = acquire(self);
-> > > +            if result.is_err() {
-> > > +                self.clear();
-> > > +            }
-> > > +
-> > > +            result
-> > > +        });
-> > > +
-> > > +        let result = result.and_then(|()| work(self));
-> > > +
-> > > +        self.clear();
-> > > +        ctx.clear_backoff();
-> > > +        ctx.assert_no_locks_held();
-> > > +
-> > > +        result
-> > > +    }
-> > > +
-> 
-> [...]
-> 
-> > > +
-> > > +        assert_eq!(set.with_locked(&mutex, |v| *v), Err(EINVAL));
-> > > +
-> > > +        Ok(())
-> > > +    }
-> > > +
-> > > +    #[test]
-> > > +    fn test_class_mismatch() -> Result {
-> > > +        stack_pin_init!(let mutex = Mutex::new(5, &TEST_WOUND_WAIT_CLASS));
-> > > +        stack_pin_init!(let acquire_ctx = AcquireCtx::new(&TEST_WAIT_DIE_CLASS));
-> > > +        let ctx = AcquireCtxBackoff::new(acquire_ctx.as_mut());
-> > > +        let mut set = DynLockSet::new(&ctx);
-> > > +
-> > > +        assert_eq!(set.lock(&mutex), Err(EINVAL));
-> > > +        assert!(!mutex.is_locked());
-> > > +
-> > > +        Ok(())
-> > > +    }
-> > > +}
-> > > -- 
-> > > 2.51.2
-> > > 
-> > > 
+>
+> I thought we did settle on this convention in the past; am I misrememberi=
+ng?
+
+I don't think there's an established convention. I know this is the pattern=
+ that
+Nova is using, and I didn't question that. But I am wary of having this bec=
+oming
+established as a standard pattern.
+
+If a rule is to be established, I'd rather it being the following:
+
+- for invariant lifetime parameter, use the name of the borrowed resource
+  (because you know the exact lifetime).
+
+- for covariant lifetime parameter (especially if multiple resources are
+  borrowed and the lifetime is the shortest among those), pick a generic na=
+me
+
+- for covariant lifetime parameter referencing just a single resource, I th=
+ink
+  either is fine -- (as long as it's unlikely to be used by unsafe code tha=
+t may
+  assume that it covers the full lifetime, e.g. 'bound).
+
+Best,
+Gary
+
+>
+>>> (In the following patch, in TyrDrmRegistrationData, Firmware borrows Mm=
+u. That
+>>> borrow has its own lifetime, distinct from TyrDrmRegistrationData's 'dr=
+m
+>>> parameter.)
+
+
