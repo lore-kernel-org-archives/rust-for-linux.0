@@ -1,45 +1,75 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795106296;
-	b=dCjMUSKPnkWFz+XRm6X5DLF3xOnghIfStWrqMcZLk+g90EJndflfh8ThjgLsvJRRe0BO
-	 0GWG9c5sT3n3qPCEuUT1sqSbh/ASrKNws2FsxSjGjrw4weVaph/qnkInDpQt/KnUeOgxt
-	 xIu9p7H6VbgfGckacbDFKONXkviv338WbtettUWLgXHUm5AGk64CheF84E8x/n+oSEZQX
-	 YZHnMa2qgunf8OUl0WZ8hFv7055+lWm5cljanBiEjv1yb5KR714xhds+23fMWf0LIfsK/
-	 NpSiOkWpmWP7CjKofYhWbKUq5US/I2lRsPr4xo02ly45e0RRyl5iREGAF3jFvoxtBAQ==
+	t=1795106404;
+	b=0KebHOsQYA5l955vSDqVRU8SBWkfbRRJ8qqd3MNfwojNr/0pF/bBMpIpyAdygJEeTY1z
+	 DJI9Uq8YD96R/kJLOi0M6eGIV6vWaFBrVflJ/i1mkLfwSQfDxbxN7QEaygGt2q7MYRdNR
+	 HRXH4c/ngqXlS1KbE+yKf+03LL58UHMaDGw3hpjbmWHHU5HcdC9DYO2ENE46MOJkl2my7
+	 53xz5g/DO4aRG0knFTjrKRPpjgze/jxcZLw6aVMAr/fegoVaKKg8qsQLYXVNfxMkZW8d2
+	 RZJ4mfQwBO/ptMpoeVgprw9ij5EdRG9O15vpy1YhaFsg0v55OHZhyA4kOKAhbzFY0sw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795106296;
-	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
-	 In-Reply-To;
-	bh=Qnkd9IzUfJL6pRotEqKRjb0AkZ6zIZR7+fouUqriiqA=;
-	b=qh8bx+4WJD3UmEjco7jkP9ipmSPWHLlkIbYoNAJ/cYfXdgY5C/po2Aia0LMrf/Te+2Fh
-	 I8Mb9pn5H1UVkg+jgfWkE/kJ/DSlbfz96fKi12w3DyzsHFUkntGqwuXJ8t117znvKbCn+
-	 d+2kHwJ1SML2PPeimM+nrX+QGZl9YfIDl+UiyScT+apee7eWuWKztGzdsdvzwrvL+VpcY
-	 zwhrDhBgUhmYlPwq+aMxoIYmtgxSTVIFWy8bzYGw9O2+nf5x7/fwK2ni/9kWHS3YJ4jMU
-	 7m4xY92najq3pfI7Ou2BzbEdL6v9aqgbFEG2d8xGXc28Tjm8aODhxXLocAyh+IyfMlA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795106404;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=4VzLDqafiDWhFr/DdyeQKRM0NcRyz0FQybaldYQnsfI=;
+	b=4DBYg8RXbCNSN8Hrgq8RXh6SOH+8B2jTOubioZQr7aZpfmotlpKWPnu2ijixrQJ1B/+k
+	 INtRrcqAC5ASRYLObboBkTbWWpGDKcWNIfZtzZoEmdQvrGlFg6AtA9QP96crqAE05lH+X
+	 sOzW4BDcT9EkeXVw/0PAtvv81ptBpd+HUsid2l9Q3fp+jFyrOcHSrRLH0grAiMfAe1m+e
+	 MfmKiZhwGieNFXap4U5VMK5MJcknRYs53DjityKlQuRg+YYfgVO82YuO/INSFdLaEdopf
+	 epNJahsBpzFHoF09Txq6ZloMz+0vU6kMx50v2wDNwD8ofyOcWjilOZiTUCefEIul9IA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XRNGci51;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eAVFNlJf;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE717606A324;
-	Thu, 19 Nov 2026 16:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44604606A325;
+	Thu, 19 Nov 2026 16:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XRNGci51
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6986C1F000C4;
-	Thu, 19 Nov 2026 16:38:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eAVFNlJf
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A232E1F000C6;
+	Thu, 19 Nov 2026 16:40:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795106296;
-	bh=Qnkd9IzUfJL6pRotEqKRjb0AkZ6zIZR7+fouUqriiqA=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=XRNGci51SIE3oHtCwVfNl9mHrt8swIeharTSKW7ZEipwvJPmMMTY/u4m+xSmybe81
-	 0e1jremmE+JIRXM1/gEcx5D5ALBVbPsBj28iDjBk0WA7amgdTeg0XyjR6PIOai6faU
-	 LXz5B0JhwzqbdsNiUahHS4zU7j15/4hgD1KL43ptpqkXjPUHJun4YO1K1TUtUlcvsH
-	 JUMDEEukfO0SrO+IIcSmxHzy0ZjsSLmDruuQQHg6AlKlJzVUY1tvApUjOBeKOjoI79
-	 ruskHQz5joYYEGC0V/pIRZG+99xpE4Jqa4qSemjidlwvh5HdFpOLC/lNX1jCSFy6kM
-	 IpOdMESLGtPdg==
+	s=k20260515; t=1795106404;
+	bh=4VzLDqafiDWhFr/DdyeQKRM0NcRyz0FQybaldYQnsfI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=eAVFNlJfeKEpL3/1EoXVrCxRiDu8TI68rMxzUh6PyVPkfJHM6mhJtUlPG251K/mka
+	 EmohQMaTJjXvqrIh/PScsUcXS0ekfsl7MlFOs07dLr5sv7T3OtDT9mQTPrU2XNcSdz
+	 2jUATcuZqTkfxQaGMPf4FA3hR9HiPMLfo27Nx9wu1DfalCfN3h/8ci6AegDh77/P19
+	 r1RBBlIcy8FyzZnOyp3JZGZ3fWqjWS+u8TQGd8ocwC1YMmXOyQmLXeCHCKrn199EJW
+	 yIMXO54WsNrzbe7MXbrGJ6klwNF9Z8a6Pl7oc2gK3ynn5DXFkB4n9sRnM23Mc/CNne
+	 3zyrFBDTIYYxw==
+Received: from ams-compute-01.internal (ams-compute-01.internal [10.64.2.61])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 11CA81980066;
+	Thu, 19 Nov 2026 11:40:01 -0500 (EST)
+Received: from ams-frontend-01 ([10.64.2.36])
+  by ams-compute-01.internal (MEProxy); Thu, 19 Nov 2026 11:40:01 -0500
+X-ME-Sender: <xms:YCb_ag4uDpFv27jn8CuOXBWSlmjSm9tRhoOrzPGim8aX3Y3ZfjS0Lg>
+    <xme:YCb_aqrLerbacfGddxYK089spM0P86UjoaoqUHYLaKrvD40CZTKlHrpTe3bbFov-g
+    3N5rxdrmx8UvjxF5ug4IJtzO9GCyWYSjU5josYIAQaXeb5n4eAaZznI>
+X-ME-Received: <xmr:YCb_auKSmnzgaYae-HO4xGpoZPsNEOWRu3byDAEoNTdFoYBf34pzADgAuy0ll66_0A>
+X-ME-Proxy-Cause: dmFkZTGCPjoSuxH0fAr9/QnGtf8k3qsXIbYvox3eF/ev855AN0NnwQRh0s20wnNReHI1mY
+    1MAs9dMfamltZFMfqcy6+GfGyTX7DTk8ofBSdS7O2AMMfY+YbZOv74NA7tjTng5rsio6fM
+    XtC0FXS06fnB4LX3qCH2PP+aSO/+6usSr7B8DOeMITWtWC1smW0U85jJhuwNn94wlYtiqJ
+    0Bptk5nAhgHjEWgvXkd6fr442yCMs9se7hPNXEfwwgtHpUZXMHnHRHfE6rAZ5WfD+qMgzP
+    +jcqdzVRbn3pucq50T05OEQA0SdBnL3lUgJWZ4+XmwYQTgmc2GfatiBA5e4VzS9+8g5WnD
+    LLLJ5hKxn2aE11lvcZIkIotu0LMKbXzm+oiQb1iItFYVu8GSnLRAN0p5vaRWy8E28KH3OS
+    XBYDaHmbJ8VccXQJohUWZMOeGSQIQJzJEPwBRg0ylzXnFnEGAS/GUrRgVL1+Ji2cZlGQO2
+    XG6VP/e9S3ieVC5SEOr83ezGJm0Pqt2LblcRqG/TW0xsQ/YUnJjrFrkasGYlKNw3a9QW2x
+    qnhpHmvwR1Ck8tsXvV6VEpjr9X+1k8LWTLqyv0pydXq+I8touW/KfSnAivDgh2E4aNCks6
+    XzIJ3YEYuZ6O/YrpVItZfMLGTTY8pLMiaUo2rtzKcQTlZofeEllU/gQqwW7w
+X-ME-Proxy: <xmx:YSb_angtOrQ9cdKh5y_zsmvogKSnnwLAkUcZJOUjnPgDq1iA5uW7OQ>
+    <xmx:YSb_an_r9ZfhCeranaw1GK6tWV0JIlirCLc_II0fKPEhsP9idd8L5g>
+    <xmx:YSb_aroVVOQ7xVkFNV9SrhBlj7c9_WUmC-WHnmrZ80exb1F4mHP9-Q>
+    <xmx:YSb_asNlcCzHNrtb9rCsQuCzQaYJ0JqSjzz_HcwNHZ383jiWP07u6A>
+    <xmx:YSb_ap7j7-XMhuElr4Zsoz6DW5WFmRz4yumvWFuIUenOKjyw3leS6wTN>
+Feedback-ID: i78584a88:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 19 Nov 2026 11:39:56 -0500 (EST)
+Message-ID: <44b2b390-e5bf-49ce-995b-724be11a9ff7@kernel.org>
+Date: Thu, 19 Nov 2026 17:39:55 +0100
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -48,56 +78,34 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: drm: gpuvm: rename UniqueRefGpuVm data accessors
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Matthew Brost <matthew.brost@intel.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Sami Tolvanen <samitolvanen@google.com>, dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261119-gpuvm-data-rename-v1-1-8eb773435fde@google.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20261119-gpuvm-data-rename-v1-1-8eb773435fde@google.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Nov 2026 17:38:11 +0100
-Message-Id: <DMZC2LXTA7IC.5BU39FYHJU1J@kernel.org>
-Subject: Re: [PATCH 1/4] drm/tyr: name resource lifetimes after their types
-Cc: "Gary Guo" <gary@garyguo.net>, <daniel.almeida@collabora.com>,
- <airlied@gmail.com>, <simona@ffwll.ch>, <lossin@kernel.org>,
- <ojeda@kernel.org>, <boqun@kernel.org>, <bjorn3_gh@protonmail.com>,
- <a.hindborg@kernel.org>, <tmgross@umich.edu>, <tamird@kernel.org>,
- <acourbot@nvidia.com>, <work@onurozkan.dev>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20261118233727.3147222-1-dakr@kernel.org>
- <20261118233727.3147222-2-dakr@kernel.org>
- <DMYTKRS80NRC.18PBQHK9SZ8K9@garyguo.net>
- <DMZ4C3GGD9U0.360KJBSFLEK61@kernel.org>
- <DMZ5HM326EKD.1I8KUFD65L91Y@garyguo.net>
- <DMZ6RL5X2UXE.33EY9MDLO2AJA@kernel.org>
- <DMZ7CHWBWU4O.3EA040FFBVCLG@garyguo.net>
- <DMZ8NNSPL36I.15O2JQR7M65T0@kernel.org>
- <20261119154430.918072-1-aliceryhl@google.com>
-In-Reply-To: <20261119154430.918072-1-aliceryhl@google.com>
+Content-Transfer-Encoding: 7bit
 
-On Thu Nov 19, 2026 at 4:44 PM CET, Alice Ryhl wrote:
-> On Thu, Nov 19, 2026 at 02:57:37PM +0100, Danilo Krummrich wrote:
->> I think in the end it comes down to personal preference, so this is fine=
- with me
->> too.
->>
->> Though, I'd use a generic name in the latter case too, such that it does=
-n't need
->> to be changed once a second resource is referenced later on.
->
-> Agreed, using a generic name like `'a` (or borrowed-resource names for
-> invariant lifetimes) sounds good to me too.
->
-> Also, when updating this for v2, note that `VmAsData<'drm>` in
-> `mmu/address_space.rs` and `GpuVmData<'drm>` (along with `VmMapArgs`,
-> `VmOpType`, `VmOpResources`, `VmOpRequest`, and `PtUpdateContext` in
-> `vm.rs`) were still left using `'drm`.
-
-Before I respin I'll wait for Gary to look into how the existential lifetim=
-e
-could be moved to Vm (which is what I considered initially, but couldn't re=
-ally
-get to work).
-
-I think having it on Firmware is reasonable, but I think having it on Vm wo=
-uld
-probably be better.
+On 11/19/26 5:36 PM, Alice Ryhl wrote:
+> `UniqueRefGpuVm` currently names its shared and mutable data accessors
+> `data_ref()` and `data()`, unlike `GpuVmBo::data(&self)` and standard
+> Rust naming conventions. Thus, rename them to `data(&self)` and
+> `data_mut(&mut self)` for consistency.
+> 
+> Link: https://lore.kernel.org/r/20261118111653.448550-1-aliceryhl@google.com
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Acked-by: Danilo Krummrich <dakr@kernel.org>
