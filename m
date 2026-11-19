@@ -1,49 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795093442;
-	b=V8fSSnEt8jddE3gSznFfIA1btLstK+V+Vb5Jiuef/jeY1TGQWZXp1M6tHd938wm0nXkK
-	 smMjsKG1bdgM6a2oJPwfoxsWewH49r2WpWUJ0VHJB420M1IuUeuyfD7rixbrVGJruwPER
-	 7evpm66Z9Gtj9b7RAMnHqJJuntOkMg4SrNAqMvERfx9YRpxN7xYADqG2OKrtPdt3ldEE3
-	 +kejPBftbD9DBFkLRcgh/IevmptXrekQpK5qaTH+XKshlGzWhlarsLiaZeueiUsgQVk1o
-	 SpuK6wr1KGknEUOjatYWtCrsY3wKo21OUz8lIyFNyHlPJtcdZWmCSSuBBPZg8SyczkA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795093442;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=t0uM0NBtYS/5IoagvFIL2DymKazUe4CV4ZOcwY0JkuA=;
-	b=g9qR6+sJRz1jNCblIHkAN57MT5NIvbKnGx9bkn7J+B+epPn9uPQdMWDxWZSHfd3LgLJP
-	 HKIqwSRrjJKgEREnjmKqoepLAMvJ7ruuxbuh7heq8EVCvX1IdYPfz/0plw5cRLd0lAeqU
-	 pKj52FU55wV4gTn4e57Uz7OSEv9TMbZRo0y8ZF3Omi/Qbw7gxvL7/fBxUGSKcVDTbaqZi
-	 1E11GHOGUPwikEMohPXxdJ4hl1GcAcSBLOmTvfuJtUGdl7feQFENYBcBy3rwn4Ue4c7N6
-	 sfmeLy/kN3RJIDQ8dwqI8xo1qHWPuKru3Fz97qySGtSVCSk1eem/ibcxEi884zjUfTg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="bV/ldCjM";
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1F00606A320;
-	Thu, 19 Nov 2026 13:04:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F1F00606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795094773;
+	b=ASXUIju8zN1Mg1TMsl4PozGOUcoZsIdB2KOsASOizUV5E0JpdSPkcGY8IZNHZlAWLQad
+	 o1aCc6A2FoPdEjv8eMMhLCXHjdckv6YStILgn+yt9d37eaRE3LMMmYYVsL0ezLT8PqTKj
+	 BdrfiX+wKo7Al8AjpDzWNLh6l4rWGW2g/S+xr7yT+I6It9GJ9ljmkfe8zu6+6GvDfCFix
+	 hp/exwYL29tU0J7MxtRoIM/MCdvjc8r1xFZDrpJUt8WLSrC67H5A5F+tmmE2oe6ujy0g5
+	 asaN02c+AuFiGdljvP8+A/1ONZGTWwzV599evDfRDva/ry6aBdrifSrv0FFvWe11HlQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795094773;
+	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
+	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
+	 References:To:X-Mailer:X-ZohoMailClient;
+	bh=pr51uze1wqLNhsetq8CpxBiZ5s6nc5Ak2O88RJm+VXU=;
+	b=4FGoVcyZOCz2m1NJISwxQ987HRiShqs6L7fLBdkzrx3vGOIU5qdXq2vmdGfVP6ebQ7pR
+	 qDXPjtK+iY5uEOs782ttuIAlPeV9ijN7ITPOyrxbOB1F3cjGZRbfdM9RHJwoG5qUqncT7
+	 jyQgj/ot7G3s91FNoRW3kOFiyEV01lSFU0iHDEIyvhwWukk5m5afDq62RPNuMUgt07FaF
+	 6CDKnPqkVySSNIFqf3Mn83w5veWQhzCpkF6gNiIc3fFh7q3/SGzEM7axOheqzAY/zPQBn
+	 KbMVrZAg+++R4TSN+IGjAiAbCNzbiibBQI15Xxuw8zdTtwH9VfXV0Cuz/hH1O339Gig==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=gO5QMmtm;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7960606A320;
+	Thu, 19 Nov 2026 13:26:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7960606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=bV/ldCjM
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 907E51575;
-	Thu, 19 Nov 2026 05:03:57 -0800 (PST)
-Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AAC0D3F882;
-	Thu, 19 Nov 2026 05:03:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795093440; bh=iIlEwi6pkHXBxZ9dNFNoka7f10xmdTnGjWHOLxEkjcs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bV/ldCjMlEqMWyMzf+Y7IfkjNzUnjf+GmzrPVIPfw52FGzyFL6OVRLmhJZc3IxwEi
-	 o4tFSyJEz/j36VmQl/u33QtPNmHxdMtbLrSoFjoGL62q6f+Co8ZvjhTFFeqzsfUKmH
-	 nIh2jMWxjx53idxjvRQnHDIJ17tWuUi22CHT5CkI=
-Message-ID: <06d4eead-b765-44b9-94a8-6ec2d71d172a@arm.com>
-Date: Thu, 19 Nov 2026 13:03:52 +0000
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=gO5QMmtm
+ARC-Seal: i=1; a=rsa-sha256; t=1795094746; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=R+k1VavXzV7QFASzYoqR/gb/1v0p254Ipn5AGs2N7S4pi0dAmxtNPkVHPj5jlMdWIrZWkGUNyKDjcuT6G468IzSkxy552rWdh528GdIP27l+/vEq/K/DFNFSgGrTmGU6MBtkToezTsz/9RwU2/judnnKKrYnskSaS3+9YcnMBGQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1795094746; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=pr51uze1wqLNhsetq8CpxBiZ5s6nc5Ak2O88RJm+VXU=; 
+	b=arbENZWcLogbT6Ni0iHRbgEBGV3gfk7v9Z+wb2MI0p7pjZ//g9KcI2UD5+j9YspJnSRbNbUi7MCIPLLa0WPTPr8sauQwD+Jng9FgibE4Cn7pyBUrK6XofTaXxH1QzeRBIefiQLyaZ5n8i3b/EmuSQu904lAB+BqTc5Xcjn4dk5c=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=gO5QMmtmFU2qWUGkeDwL8ZDeSv0MHNz8StC0PvdxEjD7eXmZMvTKlhTpO3AKxXltEQ4CMuzmh+xeZbqXorH+geMHU/mvDIzdg7O6EXNpeEZl+SJX2Q27fLQuPEt8NjE3QeXVW2c1g/E8npSeVoNaUWjwbFy29n1B8WHWtrtpK9s=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=pr51uze1wqLNhsetq8CpxBiZ5s6nc5Ak2O88RJm+VXU=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795094743215152.64426972208537;
+	Thu, 19 Nov 2026 05:25:43 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -52,99 +57,91 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
 Subject: Re: [PATCH 0/6] rust: iommu: add a paging domain abstraction
-To: Jason Gunthorpe <jgg@ziepe.ca>,
- Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Abdiel Janulgue <abdiel.janulgue@gmail.com>, iommu@lists.linux.dev,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- driver-core@lists.linux.dev, Detlev Casanova <detlev.casanova@collabora.com>
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <fe60c0bd-1ee2-4b33-8ca3-564ee08e6db5@arm.com>
+Date: Thu, 19 Nov 2026 10:25:24 -0300
+Cc: Jason Gunthorpe <jgg@ziepe.ca>,
+ Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+ "Joerg Roedel (AMD)" <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ iommu@lists.linux.dev,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ driver-core@lists.linux.dev,
+ Detlev Casanova <detlev.casanova@collabora.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <CF2BE3BB-4F16-49FC-8421-B2B823BB7BB4@collabora.com>
 References: <20261112-b4-iommu-domain-v1-0-c29e86788dda@collabora.com>
  <20261116193821.GC2452510@ziepe.ca>
  <3EB4C2ED-B699-4532-A562-68B78F6E29C6@collabora.com>
  <20261117202055.GA3115493@ziepe.ca>
- <615C3DA2-4C02-4A8B-AEC4-70D498672559@collabora.com>
- <20261118193521.GD3115493@ziepe.ca>
- <457fe01cc1fbc5b6e2d7b5c9c167012b56fe86b2.camel@collabora.com>
- <20261118210626.GF3115493@ziepe.ca>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20261118210626.GF3115493@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+ <b145b2ceb92c73a4fa0477d7b3895a6e3b4adf99.camel@collabora.com>
+ <20261118160909.GC3115493@ziepe.ca>
+ <fe60c0bd-1ee2-4b33-8ca3-564ee08e6db5@arm.com>
+To: Robin Murphy <robin.murphy@arm.com>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-ZohoMailClient: External
 
-On 18/11/2026 9:06 pm, Jason Gunthorpe wrote:
-> On Wed, Nov 18, 2026 at 02:41:32PM -0500, Nicolas Dufresne wrote:
->> Jason,
->>
->> Le mercredi 18 novembre 2026 à 15:35 -0400, Jason Gunthorpe a écrit :
->>>> No, not OK :/ We want to use GEM shmem, which calls into the DMA API internally
->>>> through drm_gem_shmem_get_pages_sgt() -> dma_map_sgtable().
->>>
->>> You cannot continue to use DMA API once you start touching a paging
->>> domain directly. It is why driver_managed exist.
->>
->> You are building a strong argument around something that is not what we intent
->> this binding to be used for. If you had cared about the context you'd know we
->> don't want to touch paging from userspace in this type of drivers.
-> 
-> Go re-read Daniel's answer and perhaps you can understand my confusion:
-> 
-> https://lore.kernel.org/all/3EB4C2ED-B699-4532-A562-68B78F6E29C6@collabora.com/
-> 
-> If you want to
-> 
->     "We plan to alloc a paging domain when a video encoder session is created. Then
->      we call iommu_attach_device() before a job runs"
->   
-> You cannot use the DMA API.
-> 
-> You absolutely CANNOT attach a brand new driver controlled domain, use
-> the DMA API to populate it, and then detach it.
-> 
-> Then we have the issue that the rust bindings expose iommu_map, which
-> cannot even be used on any non-coherent arch due to lack of cache
-> flushing.
-> 
-> Further, from a Rust binding perspective all these unsafe things I
-> talked about have to be blocked by the Rust compiler:
->   1) You cannot attach a domain to a driver_managed_dma=false device
->   2) You cannot call DMA API functions on a driver_managed_dma=true device
->   3) I object to exposing iommu_get_domain_for_dev()/etc to Rust
->      due to how unsafe it is, but if you were to do it then the
->      returned pointer must never be used with attach or iommu_map/unmap
->      functions.
->   4) Since there is no cache flushing a non-coherent arch must never be
->      allowed to call iommu_map(), since it is unsafe to create memory
->      incoherence.
-> 
-> Thus, what exactly is the plan here? Do you see my concern?
+>=20
+> I can't speak for the actual intent of the Rust drivers, but giving =
+them the benefit of the doubt, none of that fearmongering should apply: =
+the valid use-case is just simple time-division multiplexing.
+>=20
+> A =3D iommu_paging_domain_alloc(dev);
+> B =3D iommu_paging_domain_alloc(dev);
+> iommu_attach(dev, A);
+> iommu_map(A, iova_x, virt_to_phys(X));
+> dma_map(dev, X) //still needed for the underlying memory
+> ... //tell dev to do the work for context A using iova_x
+> dma_unmap(dev, X);
+> dma_map(dev, Y);
+> iommu_map(B, iova_y, virt_to_phys(Y));
+> iommu_detach(dev, A);
+> iommu_attach(dev, B);
+> ... //do some work in context B
+>=20
 
-Yes, your concern is a restriction that you largely made up :)
+Yeah, this is basically exactly what we want to do..yet Jason has been
+repeateadly saying you cannot call the dma api at all once you allocate =
+paging
+domains. So now, I am confused.
 
-This is very much *not* driver_managed_dma, which TBH is poorly named 
-since it really means either "no DMA at all and thus fine to nominally 
-hotplug into live domains" or "userspace-managed DMA with no chance of 
-ever inserting DMA API calls at the right points". The model here is 
-basically just dma_link except you run your own explicit IOVA allocator, 
-and you have to make the IOMMU and DMA API calls separately because 
-there are no bundled helpers. Sure it's a relatively specialist use-case 
-that's not for any old driver, and isn't without its own caveats, mostly 
-that extra care would be needed if the device also had reserved regions 
-and/or IOMMU-translated MSIs, but for the typical embedded media devices 
-(in which I firmly include embedded NPUs, since from this perspective 
-the way they work is still about the same) which do want to operate this 
-way, those do not apply so it's fine and pretty straightforward.
+> ...and so on. The only real subtlety is that while you still need to =
+make the DMA map/unmap calls as usual (for the sake of managing cache =
+coherency), you only use the returned DMA address for checking =
+dma_mapping_error() and the subsequent dma_unmap(); the address you give =
+to the device is your own IOVA for the mapping through your unmanaged =
+domain.
 
-Thanks,
-Robin.
+Yeah, exactly.
+
+>=20
+> Plus as I mentioned recently in one of those sketchy dma-buf threads, =
+it's also true that at the moment, iommu-dma will still do a load of =
+unnecessary work in the unattached default domain for reasons that were =
+valid 5 years ago, but that now can and really should be optimised out. =
+I guess I'll have to steal a day or two from what I'm supposed to be =
+doing to write that patch before I get fed up of explaining it :)
+
+Yeah, but I did some perf here, and it doesn=E2=80=99t matter much.
+
+>=20
+> Thanks,
+> Robin.
+
+
