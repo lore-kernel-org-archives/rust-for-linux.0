@@ -1,55 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.10
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795117217;
-	b=imd7t9euWY6SFV1/VSBj87DrnlsHuNRufgBENGVsB7dV0X//S35lHRQKSs1a/bKf7HNZ
-	 cet6jY27USSwfjkxmAOxUaKp06GzRJbOSv0l6tHl9ztLOk7TWNgQq7qPmHEpVsk1EE/lI
-	 Q0W9XU8VdS4Lz7ngU9VfmLIltvpKrzd396e09ItgYM2sq8/qrNNvFTKNhHVeGHkxqsMBQ
-	 CwFCCgSKrsJtxkDUGxq7b/X56Y35GewRVTJXjG7eqB3rh0dK6X2NpVCn+GK7bB1FIu3nq
-	 o/QK5OqDCiZY930682LmpAKPOYUK/0fbk1w0ecqJ2x447Fkp/88FCDkllt6KtVe6Edg==
+	t=1795119852;
+	b=CFO2NXtxWh/DkH8+y+Ux3Riwownz/ZmqgkstTny5F7n23OiVPnB+pfwaAbf+xy9jgb+L
+	 jTcxlP20sVDNdgPVOH2rNbHkQ42zFzfRrNAda2nmMsARz9Ue8RMhaAqpbZ42cBycsZ3Ar
+	 4vFKXxl21uw+0PJ3y0zeFBBztEgf3I99KROkMYttvoiEHBkUFwHB67IorY8Ilax9utDrF
+	 +DgtjayddzVmr1KqjLw8BrygDr+l4CibMiSERXTtnVbiQGWIyj4mjqWwQIrEQkZqLm6Ts
+	 iXZUO4fGcSCHoTBpu5r3YODSN5rBTlSzcpvzQjAohTI5QlRK7COPjqgeNVW47ri82fg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795117217;
-	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=RYRHezxiFiN6SonzsgbEp1/rfDoYB4umsJfwajcek78=;
-	b=T/OFFp6PsASKTqcVEUln1/GXoB7cz2J83K8M8XSH8j72H10j2CeUO1lGarhcaozQxDyX
-	 LtplyBP8xM8zwXIh6rbKW0D6SRFUVWLhMkNuCctNHYDOOYHyAJ3XAnCjXJ1Qvc4FTljJS
-	 ghtRiGSOYXkKJPMntttxJ11+ZLQnsND/5+lG0keNq82XbqgAjT5HjGNGFVIKyevoTguJf
-	 4RRuiAUhPCkSvd44T2DGV9QQALXF4vbqUSew3a79VsNTMgv6aMEklCf9hoGwbXadE6mEY
-	 Iy6x4z+jLoZQ3zhJZvfvj6jXZh6QoI4pVBa0NnfLVlUMM6cKOF1s6RnMf/exon8OIgA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795119852;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:
+	 Organization;
+	bh=NEN0atKg/M3F1a8/0+/P4ZK6rfO9L4rm/xzeeNC7L3Q=;
+	b=Gtx/8W/c9cZreME79uuACmjdlpWnsd/63MkBJNxyEPKALhjyoJHqS4a20+JnUIBbONj1
+	 ePUeeN7k81qn3sL4eFWQ68w+08faJs7/VP7Ayt3VDlJvzK5/oWE5etYMz5kdA9zc4PCRk
+	 EGAmr0cvuYJ32yXQz7AAU8LB6d7vHGNiPpAAjtoEGRHalKiQ0m/HgiJiVfqR+ClQtRB6h
+	 ebHRXgqfT27fFIchke04ecffX8mvZTSHTbn5amQLCDPR22nOkkdSUx8OY/JdOl9NXsMm2
+	 9kV7XCUpvviHZ9EajX206/iAoTw5ggvCmWG/+QdJYxEbi87+G8N0RIYF5LBMELy8cXw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=igalia.com;
-	spf=pass smtp.mailfrom=igalia.com;
-	dkim=pass header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b="GNnDc/uW";
-	arc=none smtp.remote-ip=213.97.179.56
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XAvohrvw;
+	arc=none smtp.remote-ip=198.175.65.10
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB85606A32A
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Nov 2026 19:40:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ADB85606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E29606E4CA;
+	Thu, 19 Nov 2026 20:24:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66E29606E4CA
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=GNnDc/uW
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Subject:Date:From:From:Reply-To;
-	bh=RYRHezxiFiN6SonzsgbEp1/rfDoYB4umsJfwajcek78=; t=1795117216; x=2110477216; 
-	b=GNnDc/uWSXzh4vXcsVHihb9t7W9gpno3c4ZUsEtAtXrrDo54n4iCMc3vkaubih0iZXNIApPrmUm
-	1jPaUGYxJMr523aA0IQEE1BK1Pb1mkp856Rg8JqjhV0+NpaNCYXEs9Z3FOFZuRVtCovQn53ZGvzjX
-	Zk3bnYm5bBB+f1M1T6OcXKV+Kb6IULm3cgaXzgs47a7NXtF0XSNhzlTJZZ8kEVemG+AYM/6tfFNWq
-	q8/Bxlvx5E/HkcgT2NQwf+3/fL4lJ+bc+IzDDNqJRA0VkANIIGflo2TyMmLULNOWv7DBSn3BaDzcO
-	Fk00Kvjlk5mr6pexke6XiBF3HdR681vVCg6Q==;
-Received: from [179.105.94.163] (helo=[10.0.0.1])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1xU7zQ-00000001bU7-14Dl;
-	Thu, 19 Nov 2026 20:40:12 +0100
-From: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Date: Thu, 19 Nov 2026 16:38:21 -0300
-Subject: [PATCH 6/6] drm/panthor: Drop custom dma_buf_ops
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XAvohrvw
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795119851; x=1826655851;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=JCHXofKG4BjXdQuJ/JAqQItB9QfzqxZYzwScTVo02+M=;
+  b=XAvohrvwBGtHvmL2MpPHmtKw9m2VlAXaJIGmCWH340Q3eYBXcbJsE3aQ
+   C1dWIziiQ+HgbLb4C6Wjdb1S2611NUjhBMweXbW9ios/G5aCtJeoNxC9j
+   XIY1LQfeOabTNyBABk2/MOwY4lVjOVw3M1v01USgtOqcqWC21EFvdRN6s
+   DWKP7r2zpB+E1WOB4Bf3ChrcFXOBWF8zyu5938vwAYdOVlYsOjmfyOSEL
+   dvxVc8L48KUXKs7tQNDcZu0H7RFhZ6qAq4z8FkgiQWusan9XCNOMQkw8G
+   x77yvVqMQQJncSI2dl6VO6t/IiBLSja56v+gr/RCnock8qucF/N3MJ/Ed
+   Q==;
+X-CSE-ConnectionGUID: nOqHn7C2QfK12aJyBZNvtw==
+X-CSE-MsgGUID: Ub/P3bynTg+MfQrg4jGFzQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="3903699"
+X-IronPort-AV: E=Sophos;i="6.27,221,1787036400"; 
+   d="scan'208";a="3903699"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 12:24:11 -0800
+X-CSE-ConnectionGUID: excDA9WDTXKDaqLKx4dK6g==
+X-CSE-MsgGUID: TxWBSIFOTV6/yOBNrMYwLg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,221,1787036400"; 
+   d="scan'208";a="10814598"
+Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.61])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 12:24:07 -0800
+Date: Thu, 19 Nov 2026 22:24:04 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	". Boqun Feng" <boqun@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kbuild@vger.kernel.org
+Subject: Re: rant on Rust in kernel
+Message-ID: <av9a5P6ciEEjmxbO@ashevche-desk.local>
+References: <avXdJyqNNqopuH2_@ashevche-desk.local>
+ <CANiq72nw+g=RTvR-zZh29D0=MOwNYboNSeKkNr_Z4v74Q4hn1w@mail.gmail.com>
+ <avc-fQWSvmtHhtCO@ashevche-desk.local>
+ <CANiq72=RbzZHgZEMfLkDRQx-_PoxEfgL_Ar8figchde5u5qc=Q@mail.gmail.com>
+ <avq_fOVO4dina23a@ashevche-desk.local>
+ <CANiq72mWNJ6qpxUrsGHGiRHeqb=uHMzqEuYLOkK50i40T=yHNw@mail.gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -59,225 +87,29 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261119-pan-drop-dma-buf-hooks-v1-6-6c6f1629e7f9@igalia.com>
-References: <20261119-pan-drop-dma-buf-hooks-v1-0-6c6f1629e7f9@igalia.com>
-In-Reply-To: <20261119-pan-drop-dma-buf-hooks-v1-0-6c6f1629e7f9@igalia.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Faith Ekstrand <faith.ekstrand@collabora.com>, 
- Boris Brezillon <boris.brezillon@collabora.com>, 
- Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>, 
- =?utf-8?q?Adri=C3=A1n_Larumbe?= <adrian.larumbe@collabora.com>, 
- Liviu Dudau <liviu.dudau@arm.com>, Akash Goel <akash.goel@arm.com>, 
- Karunika Choo <karunika.choo@arm.com>, 
- Lukas Zapolskas <lukas.zapolskas@arm.com>, 
- Chris Diamand <chris.diamand@arm.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Alice Ryhl <aliceryhl@google.com>
-Cc: kernel-dev@igalia.com, dri-devel@lists.freedesktop.org, 
- rust-for-linux@vger.kernel.org, 
- =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6134; i=mcanal@igalia.com;
- h=from:subject:message-id; bh=K8OFJTaV9HehQGeZFewc0EAKtvObfCJqG8TsdAA8c0A=;
- b=owEBbQGS/pANAwAKAT/zDop2iPqqAcsmYgBq/1BvT/wDi7u6uzJo1EGE+qNCvSlowYHzyag9p
- MEbfgM7xpKJATMEAAEKAB0WIQT45F19ARZ3Bymmd9E/8w6Kdoj6qgUCav9QbwAKCRA/8w6Kdoj6
- qlIhB/9kiBXn38mFpXXBa6+IVRFrCKLI0yfYniyB+jWuiESMmhmXxV5wWOlNp3sXaVBQUT4pOdD
- EU56zw17b3+fFHdIWdCCJ+MmKmqrFrhKXYAJxWTBCEB3ROAJMRBPj5zamgjAyEHcn8bri32LESj
- g/vPPF3NOalHdAZfTALS1gxcBGEIO566+dqt0Yc5hVEgN1sBejm68DXUTLVyjCpwyUDlKxfXBc2
- J4jdQd4hoL6NGUqziRaIgJ/dUfT0etCnrjnW9tAHMXxdLrJndbIHFBXwk+CSmLTr0JT+8wrJOkP
- pPCpE+Ffcx6lxcMBE399iaP8avT+Reoxkk+0rJt5kfqBDce0
-X-Developer-Key: i=mcanal@igalia.com; a=openpgp;
- fpr=F8E45D7D0116770729A677D13FF30E8A7688FAAA
+In-Reply-To: <CANiq72mWNJ6qpxUrsGHGiRHeqb=uHMzqEuYLOkK50i40T=yHNw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-The custom dma_buf_ops were added to provide CPU cache maintenance in
-begin/end_cpu_access() for WB_MMAP BOs. As those can no longer be
-exported, use the default PRIME ops.
+On Mon, Nov 16, 2026 at 10:28:12AM +0100, Miguel Ojeda wrote:
+> On Mon, Nov 16, 2026 at 9:32 AM Andy Shevchenko
+> <andriy.shevchenko@intel.com> wrote:
+> >
+> > You mean for the in-kernel builds or in general? If you are talking for
+> > the former, this needs to be fixed as the version  we supply via LLVM make
+> > parameter (as you can see in my command line examples). Another story if
+> > this is broken on the clang level (but then how kernel is built?).
+> 
+> Hmm... I don't understand what you are asking, sorry. Can you please clarify?
 
-On IO-coherent GPUs, all BOs are CPU-mapped WB, so exported BOs lose
-begin/end_cpu_access() cache maintenance for non-coherent importers.
-This restores the behavior prior to commit 925ad0c26dd8 ("drm/panthor:
-Provide a custom dma_buf implementation").
-
-Suggested-by: Faith Ekstrand <faith.ekstrand@collabora.com>
-Suggested-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
----
- drivers/gpu/drm/panthor/panthor_drv.c |   1 -
- drivers/gpu/drm/panthor/panthor_gem.c | 118 +---------------------------------
- drivers/gpu/drm/panthor/panthor_gem.h |   4 --
- 3 files changed, 1 insertion(+), 122 deletions(-)
-
-diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
-index dc8d0191aef4..8712587b37d6 100644
---- a/drivers/gpu/drm/panthor/panthor_drv.c
-+++ b/drivers/gpu/drm/panthor/panthor_drv.c
-@@ -1801,7 +1801,6 @@ static const struct drm_driver panthor_drm_driver = {
- 	.minor = 9,
- 
- 	.gem_prime_import_sg_table = panthor_gem_prime_import_sg_table,
--	.gem_prime_import = panthor_gem_prime_import,
- #ifdef CONFIG_DEBUG_FS
- 	.debugfs_init = panthor_debugfs_init,
- #endif
-diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/panthor/panthor_gem.c
-index 730567d97f46..af8c94031d14 100644
---- a/drivers/gpu/drm/panthor/panthor_gem.c
-+++ b/drivers/gpu/drm/panthor/panthor_gem.c
-@@ -471,108 +471,9 @@ static void panthor_gem_free_object(struct drm_gem_object *obj)
- 	drm_gem_object_put(vm_root_gem);
- }
- 
--static struct sg_table *
--panthor_gem_prime_map_dma_buf(struct dma_buf_attachment *attach,
--			      enum dma_data_direction dir)
--{
--	struct sg_table *sgt = drm_gem_map_dma_buf(attach, dir);
--
--	if (!IS_ERR(sgt))
--		attach->priv = sgt;
--
--	return sgt;
--}
--
--static void
--panthor_gem_prime_unmap_dma_buf(struct dma_buf_attachment *attach,
--				struct sg_table *sgt,
--				enum dma_data_direction dir)
--{
--	attach->priv = NULL;
--	drm_gem_unmap_dma_buf(attach, sgt, dir);
--}
--
--static int
--panthor_gem_prime_begin_cpu_access(struct dma_buf *dma_buf,
--				   enum dma_data_direction dir)
--{
--	struct drm_gem_object *obj = dma_buf->priv;
--	struct drm_device *dev = obj->dev;
--	struct panthor_gem_object *bo = to_panthor_bo(obj);
--	struct dma_buf_attachment *attach;
--
--	dma_resv_lock(obj->resv, NULL);
--	if (bo->dmap.sgt)
--		dma_sync_sgtable_for_cpu(drm_dev_dma_dev(dev), bo->dmap.sgt, dir);
--
--	if (bo->cmap.vaddr)
--		invalidate_kernel_vmap_range(bo->cmap.vaddr, bo->base.size);
--
--	list_for_each_entry(attach, &dma_buf->attachments, node) {
--		struct sg_table *sgt = attach->priv;
--
--		if (sgt)
--			dma_sync_sgtable_for_cpu(attach->dev, sgt, dir);
--	}
--	dma_resv_unlock(obj->resv);
--
--	return 0;
--}
--
--static int
--panthor_gem_prime_end_cpu_access(struct dma_buf *dma_buf,
--				 enum dma_data_direction dir)
--{
--	struct drm_gem_object *obj = dma_buf->priv;
--	struct drm_device *dev = obj->dev;
--	struct panthor_gem_object *bo = to_panthor_bo(obj);
--	struct dma_buf_attachment *attach;
--
--	dma_resv_lock(obj->resv, NULL);
--	list_for_each_entry(attach, &dma_buf->attachments, node) {
--		struct sg_table *sgt = attach->priv;
--
--		if (sgt)
--			dma_sync_sgtable_for_device(attach->dev, sgt, dir);
--	}
--
--	if (bo->cmap.vaddr)
--		flush_kernel_vmap_range(bo->cmap.vaddr, bo->base.size);
--
--	if (bo->dmap.sgt)
--		dma_sync_sgtable_for_device(drm_dev_dma_dev(dev), bo->dmap.sgt, dir);
--
--	dma_resv_unlock(obj->resv);
--	return 0;
--}
--
--static const struct dma_buf_ops panthor_dma_buf_ops = {
--	.attach = drm_gem_map_attach,
--	.detach = drm_gem_map_detach,
--	.map_dma_buf = panthor_gem_prime_map_dma_buf,
--	.unmap_dma_buf = panthor_gem_prime_unmap_dma_buf,
--	.release = drm_gem_dmabuf_release,
--	.mmap = drm_gem_dmabuf_mmap,
--	.vmap = drm_gem_dmabuf_vmap,
--	.vunmap = drm_gem_dmabuf_vunmap,
--	.begin_cpu_access = panthor_gem_prime_begin_cpu_access,
--	.end_cpu_access = panthor_gem_prime_end_cpu_access,
--};
--
- static struct dma_buf *
- panthor_gem_prime_export(struct drm_gem_object *obj, int flags)
- {
--	struct drm_device *dev = obj->dev;
--	struct dma_buf_export_info exp_info = {
--		.exp_name = KBUILD_MODNAME,
--		.owner = THIS_MODULE,
--		.ops = &panthor_dma_buf_ops,
--		.size = obj->size,
--		.flags = flags,
--		.priv = obj,
--		.resv = obj->resv,
--	};
--
- 	/* We can't export GEMs that have an exclusive VM. */
- 	if (to_panthor_bo(obj)->exclusive_vm_root_gem)
- 		return ERR_PTR(-EINVAL);
-@@ -581,24 +482,7 @@ panthor_gem_prime_export(struct drm_gem_object *obj, int flags)
- 	if (to_panthor_bo(obj)->flags & DRM_PANTHOR_BO_WB_MMAP)
- 		return ERR_PTR(-EINVAL);
- 
--	return drm_gem_dmabuf_export(dev, &exp_info);
--}
--
--struct drm_gem_object *
--panthor_gem_prime_import(struct drm_device *dev,
--			 struct dma_buf *dma_buf)
--{
--	struct drm_gem_object *obj = dma_buf->priv;
--
--	if (dma_buf->ops == &panthor_dma_buf_ops && obj->dev == dev) {
--		/* Importing dmabuf exported from our own gem increases
--		 * refcount on gem itself instead of f_count of dmabuf.
--		 */
--		drm_gem_object_get(obj);
--		return obj;
--	}
--
--	return drm_gem_prime_import(dev, dma_buf);
-+	return drm_gem_prime_export(obj, flags);
- }
- 
- static void panthor_gem_print_info(struct drm_printer *p, unsigned int indent,
-diff --git a/drivers/gpu/drm/panthor/panthor_gem.h b/drivers/gpu/drm/panthor/panthor_gem.h
-index 5ae37d0d3646..444ef9f66adf 100644
---- a/drivers/gpu/drm/panthor/panthor_gem.h
-+++ b/drivers/gpu/drm/panthor/panthor_gem.h
-@@ -274,10 +274,6 @@ void panthor_gem_kernel_bo_set_label(struct panthor_kernel_bo *bo, const char *l
- int panthor_gem_sync(struct drm_gem_object *obj,
- 		     u32 type, u64 offset, u64 size);
- 
--struct drm_gem_object *
--panthor_gem_prime_import(struct drm_device *dev,
--			 struct dma_buf *dma_buf);
--
- static inline u64
- panthor_kernel_bo_gpuva(struct panthor_kernel_bo *bo)
- {
+make LLVM=-$VERSION supplies the version of the compiler, can it be used
+to understand which libraries to take?
 
 -- 
-2.56.0
+With Best Regards,
+Andy Shevchenko
+
 
