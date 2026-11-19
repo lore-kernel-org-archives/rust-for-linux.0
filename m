@@ -1,74 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795104378;
-	b=I/kar6v5C87wdedPq2bW77jzRtf7O/QqpNRW34QQk9WZ+7AJnfPaYGIlzRGP9QCSbNjW
-	 Cp4R+LV1KzR/ly11PzFka0af71Wl4baVgl/hbVgFRFWGaTYCmzN+jldIDwGOaXCgekNfu
-	 Vi4OCGrT5C4bHe80vrbnzC0L9lHj2kF13L1VufUshihLaUBas0fHUlK9rvCUwIFuHpUZs
-	 LbJNiD21v1CVqidIpk77VVeTXq+uVdGO7qyIk9H2MVi8lpDm+LwsnQVszL3Gm/ipi4mdY
-	 1YnrgrD0/Cq/0shU2KBkDXellRSTy5icYxtDKJAn+hbd1//i609MUstduF9bUtKbFWQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795104378;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:In-Reply-To:References:Organization:X-Mailer:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=RTbUFwBdNXRP1TzkAjyrcqlRCzuyPunpDv2q8JLjmKk=;
-	b=vW0Aw/w5DzsUFj9X3yJNH4kadh956OYRoGTn4lBi3rv6SeB30R4EjmbVcT7FGExZtrb+
-	 SsAbLBoNEZIok2c0znWnz7yEk739oi11W20Eq+HUXd1owFcNqoiZ0Dd30P3Z8cEFg5CsV
-	 hrYQlZn+/A5/6h2CPpQ1+G1PJKFYiqbGOXl2aYVEJVguRnU8hmVSxfySDge+KODy2bmse
-	 3JmW7PaUNHkn573/J8d1TJBB+nrAKYa/YBNT1mKj/vTzntr6HvoLDj6TZP8eeWKy3f9Sr
-	 6F1ZUIOOdN/4NDORhOiKEPD1p+5ifIziA+9AxRYK8ZJqWGR5a8BrmELLIyugAQBG2tA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=gqrxGraY;
-	arc=none smtp.remote-ip=148.251.105.195
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.50
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795105426;
+	b=yAhh7r8pMcVVoY3z8gs/zHsL/tQjRBOqm7Hswt0VRU3f1bIpiv1JoJWoM++mjbN4Fs3G
+	 OS0fD+awwQaIT2an7s8fgOHWEGnnv4CnyCUSMP8/7ygEma0D81+BhDJ87b3unJQ8BvmTb
+	 NI391EcYcRn7vcpS9CLmVXRDo0O5Y3DAsY9KYMf7HV6YKJH/dQ4dnyYi1IGe+3c1SxjUy
+	 OjCWRvKa45Cq1Mbhi79rC23PF56ddsEdgoZ+E9JBcFbt+QEvEnr13oFX3NoI3VtJwOJgx
+	 JmyqhrfH1Ix8GcS62wXLFI3CRj9NJlJLaLP7SJ1tEwQYxXfLMehkBzC7dw+gNidEDNQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795105426;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=+PcaAwQ0PR5vU4PI0WrkTjiNqMUtnDUUt58Dd2LFEBo=;
+	b=XOVSGxZl1smuMagzaGReVA8pPsds2J3PRw2i9VawjQZz+hg/CPr/4mFWB29s9tpWtfdL
+	 ilZoOk7Mb9wTWlKHrM1CC7JIfl9YUxZC09m7WoXSjWN7EgtPc/TohFrk6MMlxq3n7n3HO
+	 lxC8vw3NVEy2inRxshGPOs9HXkE9eyWkjFwCoQxTqxqNVW+/o498Al4InpnPPc5sa/Mcn
+	 3IFBFccJcptzegD/hwnu8bUghhdIV3g6InK8GuHMrHDakfwY4JnQVHMrphThT78gj14Cj
+	 jbhtNgtJyJpqyTnwVjpnPAMLpaziTJLMmgkRjDP/z53OTnMcSePvyuzy1ikCtlJ7HWw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="NtKSe4Y/";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.50
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A50606A335;
-	Thu, 19 Nov 2026 16:06:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 32A50606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989DC606A324
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Nov 2026 16:23:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 989DC606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=gqrxGraY
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1795104375;
-	bh=sAcMG9XBl3fij982NWy6C6FsqfiPI7EIZtKznKdWRfA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gqrxGraYLN3huMo+h81K7bNy+IP/VdVzf738C5NJ23L4RS7Fg1gvbUbTeQ6UcwAzv
-	 5HwbX7xSiQujuDGHr9ALg186TafNI4LH8tPAIgoxMFFWbfnV3odvY5jI7sPRb9/FBt
-	 BjSAuRbDC+Z3QQO9VU9kY8TSArzFWkAt+MZTKtlAINCShCLiOPiBNXWnOepudzoTDR
-	 ISU4RCRqfvhsUfKsHYx8bF+ETBw2zccOLLrrjLaMioWgQspXdNbDgn2eQTgp4eTobH
-	 M31Z2xMXy2QpkPKc0TJvK9bWv8b0MtcexYJQqVgkDbj6AJ275A8ftNWV92nFRFQGS0
-	 SuhSdJMFUGLhQ==
-Received: from fedora1.home (unknown [100.64.0.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id DFC6617E0A27;
-	Thu, 19 Nov 2026 17:06:14 +0100 (CET)
-Date: Thu, 19 Nov 2026 17:06:09 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Karunika Choo <karunika.choo@arm.com>
-Cc: dri-devel@lists.freedesktop.org, nd@arm.com, Steven Price
- <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- linux-kernel@vger.kernel.org, Akash Goel <akash.goel@arm.com>, Lukas
- Zapolskas <lukas.zapolskas@arm.com>, Chris Diamand <chris.diamand@arm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Daniel Almeida
- <daniel.almeida@collabora.com>, Alice Ryhl <aliceryhl@google.com>,
- rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 9/9] drm/panthor: Add Mali v15 hardware support
-Message-ID: <20261119170609.6953008d@fedora1.home>
-In-Reply-To: <20261119154604.2519184-10-karunika.choo@arm.com>
-References: <20261119154604.2519184-1-karunika.choo@arm.com>
-	<20261119154604.2519184-10-karunika.choo@arm.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=NtKSe4Y/
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-490d59c3edaso858138f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 19 Nov 2026 08:23:45 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795105424; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HErebiLVIYlKo9QBXzafTEyfG4zZPqn5o2wLC6c78jEaeNKnkb80d6iZdsfLuHqDXN
+         HQ6LXaQTVOKhRtNtdZjPXh2e1G2wn1vYxB4s6uCjy8X9rtY6qt3ncSOXq8TMYNTobaxd
+         CORQmNh8mB8Hx+0NFjWY3wUcjmWT/vizKwd5LzuThFug0l0Wydq/jenQi2TRjA1Ws+pp
+         RoEmDyRymHink1DfZ1EvfUZoPrCR0zmlwoeyvZyRU0z4h7fDoe2y5RasuBIHWepH3LfZ
+         dVpezsBEl+IoaNFNO1pnb+W3iByve+tQk0xmZjgfvlOrtutQ3nSsCd2oza2pSjDu6eS3
+         Qtog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+PcaAwQ0PR5vU4PI0WrkTjiNqMUtnDUUt58Dd2LFEBo=;
+        fh=kwEdNWeGoQ+qzejWY8qpkAe+WiVkBYVd/alE4AduOrw=;
+        b=fc4Wz7Q/kki2/E4QFq7t7jJm1abXJYxz/L7KTa9rvtwUFl2GjTyncXIqCUl/aS1hMV
+         pqtgHqlSOyqmID4xJiT5KQAnIOXDu0Q2mIPuXZUsV+cLxBcgxoAPKz7sXnyfTrVOJnPt
+         JeJzIQT5+G9cR4L3Mifxs6M8raOeR6GiQXeDoHEBldD7surx6zOvTGFbyHbtHo2CFCxn
+         UzoPFn9DkhGbnGmoguf1EzhCTbylQ2C/a0pOOmEg6zFxCzg5lj0dVcK9i2LDcBX++0U7
+         MDdi4sKy3tAPBay8DuWC7hsSNGIAOwuWq/2hQ/UQrJS+qA5ajt55/z6AwFeekDhiGYN0
+         S+qg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795105424; x=1795710224; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+PcaAwQ0PR5vU4PI0WrkTjiNqMUtnDUUt58Dd2LFEBo=;
+        b=NtKSe4Y/hnOj0P0R1tYVUUitJCFSZHniX+6wzTl8PcZgRDH+nE1P7QrOm7MCun/sbZ
+         zyKEeoTVIGC19JVAG7I0xGf6gHcIjbNo2eJuV10cIqv+WfDDuiHSM4TQ1y0tDWQNfXyV
+         EYoP+PaXg4O9vVwij367syue8BDXdnsEf9gJprgryAV53+rBV2CSmjdQPgLeTDquxzY7
+         e6iN8YmYqH2GnesvCtgoOcXZ1Y/7fB+lA/7PNvly2Dw9K1jJcsrit7Sc9tp7waT54w+g
+         oavT/E/QERscgadunlxUj3WmA0ahiEqCGYHaT70lP2ofzZmXy5S1QiB8ncdi86FN/ldr
+         HDnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795105424; x=1795710224;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+PcaAwQ0PR5vU4PI0WrkTjiNqMUtnDUUt58Dd2LFEBo=;
+        b=C8zRVKRpZ3PFeuVEYDW4DiXTvhBCsT9VC0J5pSLeDfQkXT5oRgyyFEKDLaugG94ydh
+         L7203iZolHPzdVNqhhXCXYilXQmLGGoyXoceUZyRtbiaXticGCDwdDrbvzLAoU8HV+VS
+         W2smzagtJLq5KG02Zbngff+3mfKBUlVnfgk28xS86Rl672T4shoZl3PO/fbj0mmiTvQF
+         34MYpQRNr2FCo0gto9muU18hrI2FJdspfO9lF/8arXT0nRlaTQ75SZnVeamcMv/+p4ps
+         6Kt6apN/CYOYdm+OV5Q9FAIsM8LvGkP5QfF7LxD1BNdyV/lrFiifZZedss5cRDQa2OsT
+         KmfA==
+X-Forwarded-Encrypted: i=1; AL+hErFpxOWlkVWN5vMEFvxIF413TrmesZ72QpiH9nTJ+n4CZmNkLfMiej1N86MZpkGgc1us62tSWVEaWkbzqiO4nQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/BGKIFjI1auKh4bCsJOBFEd7/spVwwXTM0mKm22JV8krNmR1bs
+	PQtNjIOffbOYBgxsobI8/uMs5GGy4R+E4nCBKO9rgE3heySJAKthUPxuL5kRRuh0uMrkgLL4s3H
+	KwS8CszTbWgjLZCXUM2pTL01/qcAF/dgDGwY0+npu
+X-Gm-Gg: AZFdTZfx98rFEu4/7r5Di8Fe9j247FtAPbUZSwKgzDvTMgLJDJFRAiAYvzLMiZ9I5U+
+	YwG9cuVGkDIIVaSQvs76ANHPHsU4a7E8YauKG2R8IUxSDwMsM5rdEI2jHJE7o/JnkBPHazFLjM7
+	jBRDuAS+ZxmzSmFHaM1e/eJCs4XHxB4kqfyxNimJSLfiMG7BCt5Ewq5ZG/WUHDWW7AaeXvgegn8
+	tuNvLltyVmz7l3t+WIzEfEpURh9FhlKNMbGf/+IRrSDgga6tWdafaez2khQXGWi76y6dYmNC/Xx
+	iIfk04ae2F6DlCAzgSpxFdr4BqjkTopuBOHk28Hla5uM4XYTNIuNkBYR9l0Q6kfI4FKFshFUZAb
+	fCQel+WXe6BrE2mQcgOIr3xlxQuL8fB6zmJzZefG7RqhfIPGpubfio+qo+NT+DYZLCj8i8IcwiF
+	Frxtb8LVBMCVvgIhER569xemREUlJ3KJw0/8BQD9nC+GeW
+X-Received: by 2002:a05:6000:401f:b0:48e:7475:fe7b with SMTP id
+ ffacd0b85a97d-4aa545e305fmr3959097f8f.6.1795105414756; Thu, 19 Nov 2026
+ 08:23:34 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -78,513 +105,41 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20261117-tyr-remap-2mb-v1-0-2a8efd4c8180@google.com> <20261117-tyr-remap-2mb-v1-2-2a8efd4c8180@google.com>
+In-Reply-To: <20261117-tyr-remap-2mb-v1-2-2a8efd4c8180@google.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 19 Nov 2026 17:23:22 +0100
+X-Gm-Features: Aa3M54q16wzTGtbS81z0CLg8Zo7Ll8Oq1HQJT0nxCo6CHGOwHrlaM2Dzo0-8z18
+Message-ID: <CAH5fLgjwOypVwBGaac100KiyCCwb+SqQU6Fz=CO98tJCd3zG4w@mail.gmail.com>
+Subject: Re: [PATCH 2/4] rust: iommu: pgtable: add iova_to_phys
+To: Will Deacon <will@kernel.org>, Joerg Roedel <joro@8bytes.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Matthew Brost <matthew.brost@intel.com>, 
+	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Robin Murphy <robin.murphy@arm.com>, Boris Brezillon <boris.brezillon@collabora.com>, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev, 
+	Deborah Brouwer <deborah.brouwer@collabora.com>, Sami Tolvanen <samitolvanen@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 19 Nov 2026 15:45:59 +0000
-Karunika Choo <karunika.choo@arm.com> wrote:
+On Tue, Nov 17, 2026 at 8:32=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> From: Sami Tolvanen <samitolvanen@google.com>
+>
+> Tyr's VM_BIND remap path rebuilds the page-table mappings that a partial
+> unmap sweeps away, recovering their backing from the still-present
+> entries. Add IoPageTable::iova_to_phys(), which returns the physical
+> address that an iova maps to.
+>
+> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+> [aliceryhl: split into separate gpuvm and iommu commits]
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-> Add the panthor hardware description for Mali v15 GPUs and hook it into
-> device matching.
-> 
-> This includes the v15 register map and product identification needed to
-> populate the GPU information exposed by the driver and its uAPI, as well
-> as add compatibility string for v15 GPUs.
-> 
-> Mali v15 also exposes a 64-bit GPU_ID register with a different field
-> layout from earlier GPUs. Add the register definitions and decoding
-> helpers for the new format, read GPU_ID_WIDE when the compatibility
-> value indicates a v15 GPU, and populate both the cached GPU_ID fields
-> and the uAPI gpu_id_wide field.
-> 
-> Bump drm minor to 10.
-> 
-> Signed-off-by: Karunika Choo <karunika.choo@arm.com>
-
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-
-> ---
-> v4:
-> - squashed 64-bit GPU_ID decoding into this patch. Resetting R-bs as
->   a result.
-> v2:
-> - check as_count is non-zero before generating as_present mask per
->   sashiko's comment.
-> - Link: https://lore.kernel.org/all/20260922205812.C473B1F000FF@smtp.kernel.org/
-> - clean up l2_features value assignment.
-> - removed duplicated GPU_FEATURES macro definitions
-> - Picked up R-b from Liviu
-> v1:
-> - make COHERENCY_FEATURES register read use cached gpu_info values.
-> - Added Mali-G2 name variants and NX aware model identification.
-> - fix premature reading of l2_features gpu_info field during
->   panthor_hw_info_init().
-> - build as_present using GENMASK.
-> 
-> 64-bit GPU_ID:
-> v3:
-> - Fix the missing blank line after declarations in GPU_ID decoding.
-> v2:
-> - Picked up R-b from Liviu.
-> - Rename the register macro from GPU_WIDE_ID to GPU_ID_WIDE.
-> - Rename the uAPI field from gpu_wide_id to gpu_id_wide.
-> - Print the upper 32 bits of GPU_ID_WIDE as the logged 'id' for v15 and
->   later GPUs. Keep the existing output for earlier GPUs. Continuation
->   fix for previous sashiko comment.
-> - Link: https://lore.kernel.org/all/20260922205659.3C4F21F000FF@smtp.kernel.org/
-> v1:
-> - Decode selected GPU_ID format after checking compatibility value.
-> - Document GPU_DISCOVER and GPU_CONTROL register offset differences
->   between GPUs.
-> - Fix mask generation in panthor_gpu_discover_regs.h
-> 
->  drivers/gpu/drm/panthor/panthor_drv.c         |   9 +-
->  drivers/gpu/drm/panthor/panthor_fw.c          |   1 +
->  drivers/gpu/drm/panthor/panthor_gpu.c         |   3 +-
->  .../drm/panthor/panthor_gpu_discover_regs.h   |  42 +++++
->  drivers/gpu/drm/panthor/panthor_heap.c        |   3 +-
->  drivers/gpu/drm/panthor/panthor_hw.c          | 159 ++++++++++++++++--
->  drivers/gpu/drm/panthor/panthor_hw.h          |  13 ++
->  include/uapi/drm/panthor_drm.h                |  23 ++-
->  8 files changed, 230 insertions(+), 23 deletions(-)
->  create mode 100644 drivers/gpu/drm/panthor/panthor_gpu_discover_regs.h
-> 
-> diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
-> index b4d3d339b04b4..94320799d5d75 100644
-> --- a/drivers/gpu/drm/panthor/panthor_drv.c
-> +++ b/drivers/gpu/drm/panthor/panthor_drv.c
-> @@ -1788,6 +1788,8 @@ static void panthor_debugfs_init(struct drm_minor *minor)
->   * - 1.8 - extends DEV_QUERY_TIMESTAMP_INFO with flags
->   * - 1.9 - adds DRM_PANTHOR_DEV_QUERY_MMU_INFO query
->   *       - adds DRM_PANTHOR_VM_BIND_OP_MAP_SPARSE flag
-> + * - 1.10 - adds thread_num_active_granularity, gpu_rev_wide, l2_features_wide,
-> + *          and gpu_id_wide to drm_panthor_gpu_info
->   */
->  static const struct drm_driver panthor_drm_driver = {
->  	.driver_features = DRIVER_RENDER | DRIVER_GEM | DRIVER_SYNCOBJ |
-> @@ -1801,7 +1803,7 @@ static const struct drm_driver panthor_drm_driver = {
->  	.name = "panthor",
->  	.desc = "Panthor DRM driver",
->  	.major = 1,
-> -	.minor = 9,
-> +	.minor = 10,
->  
->  	.gem_prime_import_sg_table = panthor_gem_prime_import_sg_table,
->  	.gem_prime_import = panthor_gem_prime_import,
-> @@ -1880,10 +1882,15 @@ static const struct panthor_soc_data soc_data_mediatek_mt8196 = {
->  	.asn_hash = { 0xb, 0xe, 0x0, },
->  };
->  
-> +static const struct panthor_soc_data soc_data_gen5_am = {
-> +	.devfreq_disabled = true,
-> +};
-> +
->  static const struct of_device_id dt_match[] = {
->  	{ .compatible = "mediatek,mt8196-mali", .data = &soc_data_mediatek_mt8196, },
->  	{ .compatible = "rockchip,rk3588-mali" },
->  	{ .compatible = "arm,mali-valhall-csf" },
-> +	{ .compatible = "arm,mali-gen5-am", .data = &soc_data_gen5_am, },
->  	{}
->  };
->  MODULE_DEVICE_TABLE(of, dt_match);
-> diff --git a/drivers/gpu/drm/panthor/panthor_fw.c b/drivers/gpu/drm/panthor/panthor_fw.c
-> index 679ea1d233d53..1449d9a66302e 100644
-> --- a/drivers/gpu/drm/panthor/panthor_fw.c
-> +++ b/drivers/gpu/drm/panthor/panthor_fw.c
-> @@ -1563,3 +1563,4 @@ MODULE_FIRMWARE("arm/mali/arch11.8/mali_csffw.bin");
->  MODULE_FIRMWARE("arm/mali/arch12.8/mali_csffw.bin");
->  MODULE_FIRMWARE("arm/mali/arch13.8/mali_csffw.bin");
->  MODULE_FIRMWARE("arm/mali/arch14.8/mali_csffw.bin");
-> +MODULE_FIRMWARE("arm/mali/arch15.8/mali_csffw.bin");
-> diff --git a/drivers/gpu/drm/panthor/panthor_gpu.c b/drivers/gpu/drm/panthor/panthor_gpu.c
-> index ab54119314da0..2e1b00e86cdea 100644
-> --- a/drivers/gpu/drm/panthor/panthor_gpu.c
-> +++ b/drivers/gpu/drm/panthor/panthor_gpu.c
-> @@ -503,8 +503,7 @@ int panthor_gpu_coherency_init(struct panthor_device *ptdev)
->  	/* Check if the ACE-Lite coherency protocol is actually supported by the GPU.
->  	 * ACE protocol has never been supported for command stream frontend GPUs.
->  	 */
-> -	if ((gpu_read(ptdev->gpu->iomem, GPU_COHERENCY_FEATURES) &
-> -		      GPU_COHERENCY_PROT_BIT(ACE_LITE))) {
-> +	if ((ptdev->gpu_info.coherency_features & GPU_COHERENCY_PROT_BIT(ACE_LITE))) {
->  		ptdev->gpu_info.selected_coherency = GPU_COHERENCY_ACE_LITE;
->  		return 0;
->  	}
-> diff --git a/drivers/gpu/drm/panthor/panthor_gpu_discover_regs.h b/drivers/gpu/drm/panthor/panthor_gpu_discover_regs.h
-> new file mode 100644
-> index 0000000000000..05e90950ec6ad
-> --- /dev/null
-> +++ b/drivers/gpu/drm/panthor/panthor_gpu_discover_regs.h
-> @@ -0,0 +1,42 @@
-> +/* SPDX-License-Identifier: GPL-2.0 or MIT */
-> +/* Copyright 2026 ARM Limited. All rights reserved. */
-> +
-> +#ifndef __PANTHOR_GPU_DISCOVER_REGS_H__
-> +#define __PANTHOR_GPU_DISCOVER_REGS_H__
-> +
-> +#include <linux/bits.h>
-> +
-> +#define GPU_ID_WIDE					0x0
-> +#define   GPU_WIDE_COMPAT				0xF
-> +#define   GPU_WIDE_ARCH_MAJOR(x)			(((x) & GENMASK_U64(63, 56)) >> 56)
-> +#define   GPU_WIDE_ARCH_MINOR(x)			(((x) & GENMASK_U64(55, 48)) >> 48)
-> +#define   GPU_WIDE_ARCH_REV(x)				(((x) & GENMASK_U64(47, 40)) >> 40)
-> +#define   GPU_WIDE_PROD_MAJOR(x)			(((x) & GENMASK_U64(39, 32)) >> 32)
-> +#define   GPU_WIDE_VER_MAJOR(x)				(((x) & GENMASK_U64(23, 16)) >> 16)
-> +#define   GPU_WIDE_VER_MINOR(x)				(((x) & GENMASK_U64(15, 8)) >> 8)
-> +#define   GPU_WIDE_VER_STATUS(x)			((x) & GENMASK_U64(7, 0))
-> +
-> +#define DISCOVER_REVIDR					0x8
-> +#define DISCOVER_GPU_FEATURES				0x20
-> +#define   GPU_FEATURES_VARIABLE_RATE_SHADING		BIT(0)
-> +#define   GPU_FEATURES_SIMD_STATE			BIT(1)
-> +#define   GPU_FEATURES_CROSS_STREAM_SYNC		BIT(3)
-> +#define   GPU_FEATURES_LD_LEA_TENSOR_INSTRUCTIONS	BIT(6)
-> +#define DISCOVER_MCU_FEATURES				0x40
-> +#define DISCOVER_PRFCNT_FEATURES			0x50
-> +#define   PRFCNT_FEATURES_COUNTER_BLOCK_SIZE(x)		(((x) & GENMASK(7, 0)) << 8)
-> +#define DISCOVER_DOORBELL_FEATURES			0x60
-> +#define DISCOVER_MEM_FEATURES				0x100
-> +#define DISCOVER_MMU_FEATURES				0x108
-> +#define   MMU_FEATURES_AS_COUNT(x)			(((x) & GENMASK(23, 16)) >> 16)
-> +#define DISCOVER_AMBA_FEATURES				0x120
-> +
-> +#define DISCOVER_L2_FEATURES				0x128
-> +#define DISCOVER_TILER_FEATURES				0x200
-> +#define DISCOVER_CORE_FEATURES				0x300
-> +#define DISCOVER_THREAD_FEATURES			0x320
-> +#define DISCOVER_THREAD_MAX_THREADS			0x330
-> +#define DISCOVER_THREAD_NUM_ACTIVE_GRANULARITY		0x334
-> +#define DISCOVER_TEXTURE_FEATURES			0x360
-> +
-> +#endif /* __PANTHOR_GPU_DISCOVER_REGS_H__ */
-> diff --git a/drivers/gpu/drm/panthor/panthor_heap.c b/drivers/gpu/drm/panthor/panthor_heap.c
-> index 99311abdf1e91..afb7d68abc874 100644
-> --- a/drivers/gpu/drm/panthor/panthor_heap.c
-> +++ b/drivers/gpu/drm/panthor/panthor_heap.c
-> @@ -11,6 +11,7 @@
->  #include "panthor_gem.h"
->  #include "panthor_gpu_regs.h"
->  #include "panthor_heap.h"
-> +#include "panthor_hw.h"
->  #include "panthor_mmu.h"
->  
->  /*
-> @@ -105,7 +106,7 @@ struct panthor_heap_pool {
->  
->  static int panthor_heap_ctx_stride(struct panthor_device *ptdev)
->  {
-> -	u32 l2_features = ptdev->gpu_info.l2_features;
-> +	u64 l2_features = panthor_hw_get_l2_features(ptdev);
->  	u32 gpu_cache_line_size = GPU_L2_FEATURES_LINE_SIZE(l2_features);
->  
->  	return ALIGN(HEAP_CONTEXT_SIZE, gpu_cache_line_size);
-> diff --git a/drivers/gpu/drm/panthor/panthor_hw.c b/drivers/gpu/drm/panthor/panthor_hw.c
-> index 593bf6743d6df..fc81fabbe62fd 100644
-> --- a/drivers/gpu/drm/panthor/panthor_hw.c
-> +++ b/drivers/gpu/drm/panthor/panthor_hw.c
-> @@ -1,13 +1,16 @@
->  // SPDX-License-Identifier: GPL-2.0 or MIT
->  /* Copyright 2025 ARM Limited. All rights reserved. */
->  
-> +#include <linux/bits.h>
->  #include <linux/nvmem-consumer.h>
->  #include <linux/platform_device.h>
-> +#include <linux/wordpart.h>
->  
->  #include <drm/drm_print.h>
->  
->  #include "panthor_device.h"
->  #include "panthor_gpu.h"
-> +#include "panthor_gpu_discover_regs.h"
->  #include "panthor_gpu_regs.h"
->  #include "panthor_hw.h"
->  #include "panthor_pwr.h"
-> @@ -73,6 +76,29 @@ static struct panthor_hw panthor_hw_arch_v14 = {
->  	},
->  };
->  
-> +static struct panthor_hw panthor_hw_arch_v15 = {
-> +	.ops = {
-> +		.soft_reset = panthor_pwr_reset_soft,
-> +		.l2_power_off = panthor_pwr_l2_power_off,
-> +		.l2_power_on = panthor_pwr_l2_power_on,
-> +	},
-> +	.regs = {
-> +		.gpu_control = {
-> +			.offset = 0x3000,
-> +		},
-> +		.mcu_control = {
-> +			.offset = 0x3100,
-> +		},
-> +		.pwr_control = {
-> +			.offset = 0x3800,
-> +		},
-> +		.mmu_as_control = {
-> +			.offset = 0x2800,
-> +			.stride = 0x80,
-> +		},
-> +	},
-> +};
-> +
->  static struct panthor_hw_entry panthor_hw_match[] = {
->  	{
->  		.arch_min = 10,
-> @@ -84,6 +110,11 @@ static struct panthor_hw_entry panthor_hw_match[] = {
->  		.arch_max = 14,
->  		.hwdev = &panthor_hw_arch_v14,
->  	},
-> +	{
-> +		.arch_min = 15,
-> +		.arch_max = 15,
-> +		.hwdev = &panthor_hw_arch_v15,
-> +	}
->  };
->  
->  static int panthor_hw_set_power_tracing(struct device *dev, void *data)
-> @@ -151,8 +182,11 @@ static char *get_gpu_model_name(struct panthor_device *ptdev)
->  						gpu_id->prod_major);
->  	const bool ray_intersection = !!(ptdev->gpu_info.gpu_features &
->  					 GPU_FEATURES_RAY_INTERSECTION);
-> +	const bool neural_present = !!(ptdev->gpu_info.gpu_features &
-> +				       GPU_FEATURES_NX);
->  	const u8 shader_core_count = hweight64(ptdev->gpu_info.shader_present);
->  
-> +
->  	switch (product_id) {
->  	case GPU_PROD_ID_MAKE(10, 2):
->  		return "Mali-G710";
-> @@ -195,6 +229,18 @@ static char *get_gpu_model_name(struct panthor_device *ptdev)
->  		return "Mali-G1-Premium";
->  	case GPU_PROD_ID_MAKE(14, 3):
->  		return "Mali-G1-Pro";
-> +	case GPU_PROD_ID_MAKE(15, 0):
-> +		return "Mali-G2-Ultra-NX";
-> +	case GPU_PROD_ID_MAKE(15, 1):
-> +		if (neural_present)
-> +			return "Mali-G2-Premium-NX";
-> +
-> +		return "Mali-G2-Premium";
-> +	case GPU_PROD_ID_MAKE(15, 3):
-> +		if (neural_present)
-> +			return "Mali-G2-Pro-NX";
-> +
-> +		return "Mali-G2-Pro";
->  	}
->  
->  	return "(Unknown Mali GPU)";
-> @@ -218,7 +264,7 @@ static int overload_shader_present(struct panthor_device *ptdev)
->  	return 0;
->  }
->  
-> -static int panthor_gpu_info_init(struct panthor_device *ptdev)
-> +static void panthor_gpu_info_v10_init(struct panthor_device *ptdev)
->  {
->  	unsigned int i;
->  
-> @@ -259,31 +305,86 @@ static int panthor_gpu_info_init(struct panthor_device *ptdev)
->  		ptdev->gpu_info.tiler_present = gpu_read64(gpu_iomem, GPU_TILER_PRESENT);
->  		ptdev->gpu_info.l2_present = gpu_read64(gpu_iomem, GPU_L2_PRESENT);
->  	}
-> +}
-> +
-> +static void panthor_gpu_info_v15_init(struct panthor_device *ptdev)
-> +{
-> +	void __iomem *pwr_iomem = ptdev->iomem + ptdev->hw->regs.pwr_control.offset;
-> +	u64 texture_features;
-> +	u32 as_count;
-> +
-> +	ptdev->gpu_info.gpu_rev_wide = gpu_read64(ptdev->iomem, DISCOVER_REVIDR);
-> +	ptdev->gpu_info.l2_features_wide = gpu_read64(ptdev->iomem, DISCOVER_L2_FEATURES);
-> +
-> +	texture_features = gpu_read64(ptdev->iomem, DISCOVER_TEXTURE_FEATURES);
-> +	ptdev->gpu_info.texture_features[0] = lower_32_bits(texture_features);
-> +	ptdev->gpu_info.texture_features[1] = upper_32_bits(texture_features);
-> +
-> +	ptdev->gpu_info.thread_features = gpu_read(ptdev->iomem, DISCOVER_THREAD_FEATURES);
-> +	ptdev->gpu_info.max_threads = gpu_read(ptdev->iomem, DISCOVER_THREAD_MAX_THREADS);
-> +	ptdev->gpu_info.thread_num_active_granularity =
-> +		gpu_read(ptdev->iomem, DISCOVER_THREAD_NUM_ACTIVE_GRANULARITY);
-> +
-> +	/* The upper 32-bits of following registers do not contain any information (yet) */
-> +	ptdev->gpu_info.gpu_features = gpu_read64(ptdev->iomem, DISCOVER_GPU_FEATURES);
-> +	ptdev->gpu_info.mem_features = gpu_read(ptdev->iomem, DISCOVER_MEM_FEATURES);
-> +	ptdev->gpu_info.mmu_features = gpu_read(ptdev->iomem, DISCOVER_MMU_FEATURES);
-> +	ptdev->gpu_info.coherency_features = gpu_read(ptdev->iomem, DISCOVER_AMBA_FEATURES);
-> +	ptdev->gpu_info.tiler_features = gpu_read(ptdev->iomem, DISCOVER_TILER_FEATURES);
-> +	ptdev->gpu_info.core_features = gpu_read(ptdev->iomem, DISCOVER_CORE_FEATURES);
-> +
-> +	/* AS_PRESENT register removed on v15+ create virtual mask from MMU_FEATURES.AS_COUNT */
-> +	as_count = MMU_FEATURES_AS_COUNT(ptdev->gpu_info.mmu_features);
-> +	if (as_count)
-> +		ptdev->gpu_info.as_present = GENMASK(as_count - 1, 0);
-> +
-> +	ptdev->gpu_info.l2_present = gpu_read64(pwr_iomem, PWR_L2_PRESENT);
-> +	ptdev->gpu_info.tiler_present = gpu_read64(pwr_iomem, PWR_TILER_PRESENT);
-> +	ptdev->gpu_info.shader_present = gpu_read64(pwr_iomem, PWR_SHADER_PRESENT);
-> +}
-> +
-> +static int panthor_gpu_info_init(struct panthor_device *ptdev)
-> +{
-> +	if (panthor_hw_has_gpu_discover(ptdev))
-> +		panthor_gpu_info_v15_init(ptdev);
-> +	else
-> +		panthor_gpu_info_v10_init(ptdev);
->  
->  	return overload_shader_present(ptdev);
->  }
->  
->  static int panthor_hw_info_init(struct panthor_device *ptdev)
->  {
-> -	u32 major, minor, status;
-> +	u64 l2_features;
-> +	u32 prod_id, major, minor, status;
->  	int ret;
->  
->  	ret = panthor_gpu_info_init(ptdev);
->  	if (ret)
->  		return ret;
->  
-> +	/*
-> +	 * The logged 'id' contains four 4-bit architecture and product fields
-> +	 * in pre-v15 GPUs. In v15+ GPUs, this is now four 8-bit fields.
-> +	 * Preserve the pre-v15 format for compatibility. Tools decoding these
-> +	 * fields must handle the wider format for v15+ GPUs.
-> +	 */
-> +	if (ptdev->gpu_id.arch_major < 15)
-> +		prod_id = upper_16_bits(ptdev->gpu_info.gpu_id);
-> +	else
-> +		prod_id = upper_32_bits(ptdev->gpu_info.gpu_id_wide);
-> +
->  	major = ptdev->gpu_id.ver_major;
->  	minor = ptdev->gpu_id.ver_minor;
->  	status = ptdev->gpu_id.ver_status;
-> +	l2_features = panthor_hw_get_l2_features(ptdev);
->  
-> -	drm_info(&ptdev->base,
-> -		 "%s id 0x%x major 0x%x minor 0x%x status 0x%x",
-> -		 get_gpu_model_name(ptdev), ptdev->gpu_info.gpu_id >> 16,
-> -		 major, minor, status);
-> +	drm_info(&ptdev->base, "%s id 0x%x major 0x%x minor 0x%x status 0x%x",
-> +		 get_gpu_model_name(ptdev), prod_id, major, minor, status);
->  
->  	drm_info(&ptdev->base,
-> -		 "Features: L2:%#x Tiler:%#x Mem:%#x MMU:%#x AS:%#x",
-> -		 ptdev->gpu_info.l2_features,
-> +		 "Features: L2:%#llx Tiler:%#x Mem:%#x MMU:%#x AS:%#x",
-> +		 l2_features,
->  		 ptdev->gpu_info.tiler_features,
->  		 ptdev->gpu_info.mem_features,
->  		 ptdev->gpu_info.mmu_features,
-> @@ -323,18 +424,42 @@ static int panthor_hw_bind_device(struct panthor_device *ptdev)
->  static int panthor_hw_gpu_id_init(struct panthor_device *ptdev)
->  {
->  	struct panthor_gpu_id *gpu_id = &ptdev->gpu_id;
-> -	ptdev->gpu_info.gpu_id = gpu_read(ptdev->iomem, GPU_ID);
-> +	u32 gpu_id32 = gpu_read(ptdev->iomem, GPU_ID);
->  
-> -	if (!ptdev->gpu_info.gpu_id)
-> +	if (!gpu_id32)
->  		return -ENXIO;
->  
-> -	gpu_id->arch_major = GPU_ARCH_MAJOR(ptdev->gpu_info.gpu_id);
-> -	gpu_id->arch_minor = GPU_ARCH_MINOR(ptdev->gpu_info.gpu_id);
-> -	gpu_id->arch_rev = GPU_ARCH_REV(ptdev->gpu_info.gpu_id);
-> -	gpu_id->prod_major = GPU_PROD_MAJOR(ptdev->gpu_info.gpu_id);
-> -	gpu_id->ver_major = GPU_VER_MAJOR(ptdev->gpu_info.gpu_id);
-> -	gpu_id->ver_minor = GPU_VER_MINOR(ptdev->gpu_info.gpu_id);
-> -	gpu_id->ver_status = GPU_VER_STATUS(ptdev->gpu_info.gpu_id);
-> +	if (GPU_ARCH_MAJOR(gpu_id32) == GPU_WIDE_COMPAT) {
-> +		/*
-> +		 * GPU_DISCOVER register block always starts at offset zero,
-> +		 * so does the GPU_CONTROL register block on pre-v15 GPUs.
-> +		 */
-> +		void __iomem *discover = ptdev->iomem;
-> +		u64 gpu_id64 = gpu_read64(discover, GPU_ID_WIDE);
-> +
-> +		if (!gpu_id64)
-> +			return -ENXIO;
-> +
-> +		ptdev->gpu_info.gpu_id_wide = gpu_id64;
-> +
-> +		gpu_id->arch_major = GPU_WIDE_ARCH_MAJOR(gpu_id64);
-> +		gpu_id->arch_minor = GPU_WIDE_ARCH_MINOR(gpu_id64);
-> +		gpu_id->arch_rev = GPU_WIDE_ARCH_REV(gpu_id64);
-> +		gpu_id->prod_major = GPU_WIDE_PROD_MAJOR(gpu_id64);
-> +		gpu_id->ver_major = GPU_WIDE_VER_MAJOR(gpu_id64);
-> +		gpu_id->ver_minor = GPU_WIDE_VER_MINOR(gpu_id64);
-> +		gpu_id->ver_status = GPU_WIDE_VER_STATUS(gpu_id64);
-> +	} else {
-> +		ptdev->gpu_info.gpu_id = gpu_id32;
-> +
-> +		gpu_id->arch_major = GPU_ARCH_MAJOR(gpu_id32);
-> +		gpu_id->arch_minor = GPU_ARCH_MINOR(gpu_id32);
-> +		gpu_id->arch_rev = GPU_ARCH_REV(gpu_id32);
-> +		gpu_id->prod_major = GPU_PROD_MAJOR(gpu_id32);
-> +		gpu_id->ver_major = GPU_VER_MAJOR(gpu_id32);
-> +		gpu_id->ver_minor = GPU_VER_MINOR(gpu_id32);
-> +		gpu_id->ver_status = GPU_VER_STATUS(gpu_id32);
-> +	}
->  
->  	return 0;
->  }
-> diff --git a/drivers/gpu/drm/panthor/panthor_hw.h b/drivers/gpu/drm/panthor/panthor_hw.h
-> index f93a6b16df2af..8d61a1099aa5e 100644
-> --- a/drivers/gpu/drm/panthor/panthor_hw.h
-> +++ b/drivers/gpu/drm/panthor/panthor_hw.h
-> @@ -105,4 +105,17 @@ static inline bool panthor_hw_is_devfreq_disabled(struct panthor_device *ptdev)
->  	return data->devfreq_disabled;
->  }
->  
-> +static inline bool panthor_hw_has_gpu_discover(struct panthor_device *ptdev)
-> +{
-> +	return ptdev->gpu_id.arch_major >= 15;
-> +}
-> +
-> +static inline u64 panthor_hw_get_l2_features(struct panthor_device *ptdev)
-> +{
-> +	if (panthor_hw_has_gpu_discover(ptdev))
-> +		return ptdev->gpu_info.l2_features_wide;
-> +
-> +	return ptdev->gpu_info.l2_features;
-> +}
-> +
->  #endif /* __PANTHOR_HW_H__ */
-> diff --git a/include/uapi/drm/panthor_drm.h b/include/uapi/drm/panthor_drm.h
-> index a2ff0f4ec6915..da9f8f82413cf 100644
-> --- a/include/uapi/drm/panthor_drm.h
-> +++ b/include/uapi/drm/panthor_drm.h
-> @@ -371,11 +371,30 @@ struct drm_panthor_gpu_info {
->  	/** @core_features: Used to discriminate core variants when they exist. */
->  	__u32 core_features;
->  
-> -	/** @pad: MBZ. */
-> -	__u32 pad;
-> +	/** @thread_num_active_granularity: Granularity of number of active threads */
-> +	__u32 thread_num_active_granularity;
->  
->  	/** @gpu_features: Bitmask describing supported GPU-wide features */
->  	__u64 gpu_features;
-> +
-> +	/**
-> +	 * @gpu_id_wide: 64-bit GPU ID for v15 and later GPUs. @gpu_id is 0 when
-> +	 * this is populated.
-> +	 */
-> +	__u64 gpu_id_wide;
-> +#define DRM_PANTHOR_WIDE_ARCH_MAJOR(x)		(((x) >> 56) & 0xff)
-> +#define DRM_PANTHOR_WIDE_ARCH_MINOR(x)		(((x) >> 48) & 0xff)
-> +#define DRM_PANTHOR_WIDE_ARCH_REV(x)		(((x) >> 40) & 0xff)
-> +#define DRM_PANTHOR_WIDE_PRODUCT_MAJOR(x)	(((x) >> 32) & 0xff)
-> +#define DRM_PANTHOR_WIDE_VERSION_MAJOR(x)	(((x) >> 16) & 0xff)
-> +#define DRM_PANTHOR_WIDE_VERSION_MINOR(x)	(((x) >> 8) & 0xff)
-> +#define DRM_PANTHOR_WIDE_VERSION_STATUS(x)	((x) & 0xff)
-> +
-> +	/** @gpu_rev_wide: 64-bit GPU revision for v15 onwards */
-> +	__u64 gpu_rev_wide;
-> +
-> +	/** @l2_features_wide: 64-bit L2_FEATURES for v15 onwards */
-> +	__u64 l2_features_wide;
->  };
->  
->  /**
-
+Joerg, Will, any objections to merging this through drm-rust-next?
