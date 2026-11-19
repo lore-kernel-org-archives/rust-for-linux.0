@@ -1,99 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.96.101
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795055179;
-	b=w6vKSuKGqC9lRZekvqEVhxcZY1fWa9ihxoHGLx+W6tybAEbAn/aZ8kAkhMYvtBA+N6vy
-	 hhWnv9SPrJhmQFANvWpt8dem5f/MWyi0gKrigLE5fPb4jDDyxk/ZZz9z/jw2Y3NPYmJd8
-	 waYSft8MmCsr2ZUpkE1SNvuZc/vuyERmUf8UzhOaLTTUkMRYrzu93dgHd89yEtv8Ko00W
-	 wRXqlluGLlUPs7KOA0Vb2GJC2rYtdyUoYVdoPuP9g4kKtrMorpuDPfXkNvMTiftY25L/k
-	 bQln1rZb2OqJzmxG9067KIeGxq4OjxHEV5/DBHTtgMs8wQawgGqK129x+/HclRzQVAA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795055179;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.125.188.122
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795058591;
+	b=b02IcY+I6SCbTy/lZTTdOF/uKGLq28EnOJPPgd1U8SZaPCruGnCiR12yx0LgKHZGT0q3
+	 4LGmErQZk0t54Rxan3FgWss9iyQVrMEIX/M/eVjFnETvnOcaKKIIzXW+wxGX4qGOueis4
+	 HibgfppybIz8mLEQImhgyI55x2kCrjbQtuKWj0u1zgFlu+m/t+qJ5D8zrLrBuuzs86Slm
+	 5ZUMh4lBg9TQ+17hhccw5dy41M3ujCBVBN5FfS0vsHw+JG8l0NbRhqlcOzNZzvdzp6Pf6
+	 DV2UpH5NPwdyea7OJAug4bRIOQQjgAO9+cR480YwLu+l40FO8RwUFqITOAv6vqRw73Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795058591;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:
+	 X-Google-DKIM-Signature:X-Forwarded-Encrypted:X-Gm-Message-State:
+	 X-Gm-Gg:X-Received:X-Received:Received:Mime-Version:
 	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
-	 From:To:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
-	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=+y1sryJ4zE0m4LV3NoJF+n1XCJQE6nbEJaxRmHqQpGQ=;
-	b=tPAZ8LhLI/0ftIPbyUUg66kIJ01bqX4K3/IH0GqNsFLwFkbPUtZU9afYVmAAoeewDFgu
-	 mPhEszlozhbdrBq7C+AlqhWf7ro/s7AuIabr7gvgYtdlpcGZrNy70Ygq7ZUIpx7DXD2Kz
-	 CDgN/SG+Ihi2XlDOBlZSfBWZPxG+GaJyKLNB+C0AKhQcWfzEnZV7t0WmksCRLbNmB9mZC
-	 Odf5HGi0R71MiGdw4XuSR4o1RVvtHasw6vy5KqOok8j6h8LmQlshezrWihvl5AMdYE2E6
-	 f7Na2Pp3/Afl7OOiA8/94GEZytHwnzK/F6yrcuQg5ATEEZXWoDO9kW9yfkEEs8T8Lig==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=garyguo.net;
-	spf=pass smtp.mailfrom=garyguo.net;
-	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=MDZhGIk5;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.96.101
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022101.outbound.protection.outlook.com [52.101.96.101])
+	 From:To:X-Mailer:References:In-Reply-To;
+	bh=1gCemJ+OoIUXvLmdwnpvyyQkDg9ytHfxR6YyKzs9Mfc=;
+	b=JrsoQPxghUgPpH7JBfTN9nwytz61PRHPowmv2TipbKG8pv7BJEihRCB6ks3kBIptcqaS
+	 gZQHb7pPFxT2dSxEDON+9SPHdm+9IsEWDS6S19hVmLp1J+Mwa9IrMMHgq9tinqH/WBHyb
+	 HSHyThIRoW+sjPxrF6VG0U3k/br2NZ6Nz9aQlGsZ6c8J8Ncq4lMbceg8wN50pqHB/0aZ8
+	 mZLh7OqYC+AKLX6j7zpOpDSTLiTDeq+L5X+S9dq/SxD3y3AT+NkQG5YMEpSJtTSiqwU7/
+	 yu8JsQ/8xyf5dQ2VsUiyDwWHFy+0TQdmFVeUdIobjFywCN3yvaic6tH/tDiaC4giMXw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=canonical.com;
+	spf=pass smtp.mailfrom=canonical.com;
+	dkim=pass header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20251003 header.b=mw0T9X9D;
+	arc=none smtp.remote-ip=185.125.188.122
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F5D606A31C;
-	Thu, 19 Nov 2026 02:26:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24F5D606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BB8606A31C
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Nov 2026 03:23:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3BB8606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=MDZhGIk5
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BVYJTYG0psewFpdGgVstu2F8v4ec0u4nFMQxFAv0choAGeyw98GutVhYqOQXogvid8YYWLPU6KDSmntv6xHW1tRVFKdIqdUrP/5mUcCnBYXeVHervwBR1HPhx3Yhp+X4398orTITS68MRf1d0tm8fbKQt5Z2WQKusarihF3ESPnCaPiSDZf76U6F4ATr+qc6PUyHPQXWNLWPRfbFpBTlMPvfoRiAJ6OUETmB4kOSiN7YUhSQp5LJJKJ6MrVyhYYTeF+S69ZS12NP8KdZ9RmhIn/oXaDJUjgwIuDTUJbji3uIAgejj5TfyxFqye9W9RdGHqG9I+d5aTbiWqUQo0wyCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+y1sryJ4zE0m4LV3NoJF+n1XCJQE6nbEJaxRmHqQpGQ=;
- b=DOkpoW5SkMc7WdGr9laEuSglktnX62Ea8X84HJqQWwckUO6Q2nkREQiCYa1iVXBH96EcK4aHUFS+Bh62q520mcKfWoK0/jaV1RwTgQF8owoDKIFphmH1nrbguYJ7c2zybx/TwugxpYFXRaRM92hHwUf2yXn7NAQIBkafFqqVEdfIdVIjmQNmtSbRwA1XctK6nz7ZmjL0BjNtLdocz+fBSwsKPvcl/QSVwCRn4h7txNC6Eg6UuvQXUNKVejG5GVwJNtOJ7YnW9G1+iILWRd4pMWxwo15AFoLHBqGHfOr8kG6ILaDHdDz/5naJ+wBtWbYfMz+Oco5X5Y7H/YUXDB3pmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+y1sryJ4zE0m4LV3NoJF+n1XCJQE6nbEJaxRmHqQpGQ=;
- b=MDZhGIk5VRjFoBwNmqXdwgbmaOk0y654BFFZMx/FLLtTjcxWscUqpcr5IRxseVNGcDa5WC7XfF4m6pnu37Qbbh3nkLIEaUDxAHjCiq+tBP+cr0AVjwLdere79uM0GhbkM6Ei/OqJGQ8a8uLedqPgzKxJl85/pXPP8KDTCF5d8wo=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
- by LO6P265MB6751.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:302::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Thu, 19 Nov
- 2026 02:26:13 +0000
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0615.015; Thu, 19 Nov 2026
- 02:26:13 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Nov 2026 02:26:12 +0000
-Message-Id: <DMYTYA2G4WEM.3U76EBDBUEPN9@garyguo.net>
-Cc: <a.hindborg@kernel.org>, <acourbot@nvidia.com>, <aliceryhl@google.com>,
- <bjorn3_gh@protonmail.com>, <boqun@kernel.org>, <dakr@kernel.org>,
- <daniel.almeida@collabora.com>, <gary@garyguo.net>, <lossin@kernel.org>,
- <rdunlap@infradead.org>, <skhan@linuxfoundation.org>, <tamird@kernel.org>,
- <tmgross@umich.edu>, <work@onurozkan.dev>, <linux-doc@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "FUJITA Tomonori"
- <fujita.tomonori@gmail.com>
-Subject: Re: [PATCH v1] docs: rust: mention #[track_caller] for functions
- that panic
-From: "Gary Guo" <gary@garyguo.net>
-To: "FUJITA Tomonori" <tomo@flapping.org>, <corbet@lwn.net>,
- <ojeda@kernel.org>
-X-Mailer: aerc 0.22.0
-References: <20261118234452.2621985-1-tomo@flapping.org>
-In-Reply-To: <20261118234452.2621985-1-tomo@flapping.org>
-X-ClientProxiedBy: LO3P123CA0018.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:ba::23) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:1cb::9)
+	dkim=pass (4096-bit key, unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20251003 header.b=mw0T9X9D
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id D78CD3F529
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Nov 2026 03:23:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20251003; t=1795058588;
+	bh=1gCemJ+OoIUXvLmdwnpvyyQkDg9ytHfxR6YyKzs9Mfc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To;
+	b=mw0T9X9D2Q8CU+WtyJVZNE/Zwm7KrPBiUtl8ZDpAF9yxZIBJ9emJjnlRN7uNjK/VV
+	 ML5dE4trEvhFcbM2rSfAiXCCP8+CmB5/zUio8uuclhm1UMSXJq8jSywePX2wc58djN
+	 NCetCeWZuuLs0KU96oofL0uYnRk5rtEmLM2uFMFwv81/qnblsLjh/FTuJdroTbfCFo
+	 hupZ2u0vMZjPCJA3Fqhm7hNhdfej3F3sh0TY3lasZ42f5pp754HEHL0wGt2GtlZwN4
+	 HYULSEpE3TXOu/t+VEpdGIJL5OArpipE0Sv17G0B6Us2KuOLMUAL6azgsXkmtV9w+q
+	 nIOTm0AHgEXQ2ABwBM4NUs4Sr8JzViIsZcA4i4G+DnK/kIvwEDDUO4rdhdX3zKaL8k
+	 Hy8XON38b2TkaxWWWkqQXnE0j/NR2Q6LQzbcp8gyPgil4ua5+ToVjTd1s0e8shqxEn
+	 j/CFVmDo+qjoJHnMIW1gyunYvd3Uxhe4xqKOAPCKJ0J4IBVX6y2ehSFCe6AHP1NJMP
+	 ccrRgGRFBMsuRejzVvSlWQKdnfbVJA/Dyj5trLa/ieoB+I6TJJ365sDTWWRVq0faAr
+	 XsAwGM9mC8APQKxHjoeAKIrSUgHtQAQy9Cab1JMv5ieneUP01ESDNVgtT3UT2YEM34
+	 ZnK9MOQ2Ku2QI9NQOakJSOvI=
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-9212335e257so13988276d6.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Nov 2026 19:23:08 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795058588; x=1795663388;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1gCemJ+OoIUXvLmdwnpvyyQkDg9ytHfxR6YyKzs9Mfc=;
+        b=2hLFrQAi/h1UNE8E5QIXK+h+SVHmvETkaeUsH/u1Ws9ucM+qZWL5pAakOOhvLyoi/Z
+         UADOW8ZgYwKl+lUT6mjEHL49iHb6nCoTVcEBHf4LG2omfWtnMoz3+hUhJwtKZriQx5zS
+         1QOYe0/OI+q9GWb0lRt4oFTK2t0GEvioLVKY2UHXXTLY2SOajoT02XgBqTjZo75squxd
+         ypTzSdA7NrT71TwAWkyqcE0f7mVjxLacHMp2Uk/AIjFgCDbxlWcu3WqYPT3yzYgFEulg
+         6tS3GsAHz/+A6PqjvpPYgdDyGNzEfSjUvuFL/002Cdu8yKbof2I+TSWeaXDIjvyA4rOf
+         67OA==
+X-Forwarded-Encrypted: i=1; AL+hErERpMmswpiUkfIOg5jm8aAb5YhRbzlGDnMS32dw4Xi+2eFTqL9thWtTl8aZoh+NW2tm97Q2WjWtN4w+j13Oug==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8l/mBykGMrMZLizLQR+/urPWT9ppSK1vd0yFGI1ist+pR31RrN
+	sEDiri+6mn1pcTAsu1ubQmlF70hp611XpHOIH9q+WR+WPmxSfo6fK0QG5AQ9AlmxZfecF1zAuk/
+	LipJNh8tqMwLPWAC5ClvkA3xXbLnFvHRk4oGiRytixlMrNUgerKrxaoJbGF0KZugkqbbLRTD6x7
+	jCiTql4ubRybC8ylbBmKU=
+X-Gm-Gg: AZFdTZdNb1ITL1TpDQJNv5u6V0Ozv2LMCfwemFVgtNJk6yq12s22TB6tLsnnow7dtKS
+	lk60t++GMpB/6sjDLoGPl/bpJunb0rw+m4F3F/4gxm2mv3JzF+JN2u+SQtH3AAw+6ruJ57+5rY5
+	WJlXPqEkXGvZCngEhKYivXYK0leBFIfRscW4UF4atxUseV8r3DgzZK9C5Ve0y6ViROvghC0RSnG
+	fhzvP8PFVJOcBa5W5ScmAOlQvZSZGXy9M1G8Hr6icOXpfGdfPzEE2na4xZs5JAsGVe99x6ljstj
+	TxNxtGIJc67PQ7nMnppO7g004o2mviVeJLxaThTeEZYZ9IfLHv/IJl07n2wNkHFj/4dA4VoVQSd
+	anNJ7bKb2pH9J+Jh2MDZNpVqdzyjLlHgaFmTMFL5dJ3bl8tbMEP84gmPCU4AfLA==
+X-Received: by 2002:a05:6214:4886:b0:921:2b3f:95e5 with SMTP id 6a1803df08f44-9212b3f9742mr4788996d6.24.1795058587638;
+        Wed, 18 Nov 2026 19:23:07 -0800 (PST)
+X-Received: by 2002:a05:6214:4886:b0:921:2b3f:95e5 with SMTP id 6a1803df08f44-9212b3f9742mr4788556d6.24.1795058587036;
+        Wed, 18 Nov 2026 19:23:07 -0800 (PST)
+Received: from localhost ([107.159.93.232])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-92114d28215sm38265326d6.16.2026.11.18.19.23.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Nov 2026 19:23:06 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -102,117 +99,131 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|LO6P265MB6751:EE_
-X-MS-Office365-Filtering-Correlation-Id: 59805567-ce4b-4a32-58f9-08df45e47b42
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|10070799003|366016|1800799024|7416014|376014|18002099003|22082099003|6133799003|261009223027099003|5023799004|56012099006|261026121527099003|261026140227099003|261102123227099003|261028144727099003|261021121427099003|261021135927099003|261021123027099003|261022105027099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	SlGCc2aePFhvYJfsuMXNmrCdZqcTyTxSkWho/oNWFtCsj7npmAr7MQNGJ0WhKrluKbCA7CiDD6eZn2q06ienDxOpS/nV9lxE9o6VJbytAEJS6MuCeBCWKa6JKwWlHhD2fcu+m6jRgyaE73CxQOcsJzDFeZaR92QM+TgT+ne79dScRDReSBI59cK1dJPHnNZ8X3XSXwJXDwBKYrFlUkLbeHeqi0EoT6Naw18/b0EK+TsFsz4eeXl9jo6KzI5QM8YAv/aMbAYb6XkhkD+Kwjd8TC9VAsaHPPuV05r7S9CChULzy3ZIwD4O45Fy4//auGd04Dq7Eo3R4CxQ1FJW+pkS0APHevK3W+A6LVMMjkxlkPNarbhwdrAKGvD4oSMXkPcqD6V5dNoWW0NKFtJYlHNsv3jeVz23Mu8N0T+kXoD2V1Q0p2gIX1YqH4T39vguTu56cFJwYwDqfIvd2p3Pe27iR9D8uj/fLztr6J2zoulJ013XiKW2gY75ZVlKxtKcMUe6ushQdiQQcdH2jTzPY8gtO6xa8J4y+bLiu289jJjerFrVhvP+ZYim1dQYr66SIWX+NtQ3hm0Hn4kptDcA8K66Zjo9g38C2ULoIKyVi8wy1y7PtPJiASVillWGzx2hbXeIztLGWXLhlDhn9vO4f2Hrn84MwIFTJzOciOlMoUi2PNM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(366016)(1800799024)(7416014)(376014)(18002099003)(22082099003)(6133799003)(261009223027099003)(5023799004)(56012099006)(261026121527099003)(261026140227099003)(261102123227099003)(261028144727099003)(261021121427099003)(261021135927099003)(261021123027099003)(261022105027099003)(10067099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c0JKaTdSWlIrNENIcy9YTFc0aFMyNGZzQm9OTk9uWjZmcUIyY1FmU1NpN2tu?=
- =?utf-8?B?TTBpdS9YUHdaRXlmdkpzQTdFTm5kdXQ4RVJIZW9LTExxS1NQeDVBaVUzb1Bm?=
- =?utf-8?B?R0lFSjk2T1B3eGN3WDgzNy9XZ1VqaVFJRFArOGdkR0htZis4c1RrRyt6dys3?=
- =?utf-8?B?NVI2dFFPL1FiK1dpbUlTZE9yTnFObUtxbis3TWFiYzhVcjFRcEppeTZHWXZu?=
- =?utf-8?B?TWJRSG16RUhOMlJUWVFzVkFEaVdMWTh2ZnR0YVhoOFdsSjdDeFZKMmFCQUxw?=
- =?utf-8?B?SXd0UnNpVmpVTG9PM3o5VnZPSHhzUXkweWErOVhrTzBXOEx4N3p6Rm5RbmdF?=
- =?utf-8?B?d0VobThLU0U2V1JJSlVwckFHVTZlUFFPNW8wL0dFb2QzU0FhQmdaK040R3Yy?=
- =?utf-8?B?ZXE3V1JhRERqUEhBZmlEM0xCdDF6NXJoTUV3cGg2R1ROS29vY1AyRkM1bXVH?=
- =?utf-8?B?czYvOVhQODdLQjV5SHNSbWg4dVhrTnM2Z2VKRk1qWDRreVphR21XVEkwaWgx?=
- =?utf-8?B?YzZVMjhxemt4TXhiM251bm9OUTBzSmxWU1Jma3VSak5ldWdyV2FHMjQ2OXUz?=
- =?utf-8?B?ZlVsMW5RaWI5dHBKd2pFVnJDQVVzaWtEa1BSN1piMkRYcU00T2cwZ1h4M3dF?=
- =?utf-8?B?VTNxL0NmZ085eWJGMmFvU0tRaE5CNFA3alc1RWxQNXdtR2kzZTZNeEFpQWtv?=
- =?utf-8?B?SWhFTUFiUW5Kd2NRVXlPMytiT1Y4TS9LbWVGT2NzWWtndXpZNkE2eVJLUSs2?=
- =?utf-8?B?RFozWHdGLzM4WmV2akJMYXFLOTZiQlRiSDN1RWFwY1hPNmlZMzNOTlIrL2pq?=
- =?utf-8?B?SEtQOFpvVW1NZHZkaDJjdVNwb1dBcklTTVYvTGVKeXNwaE5JcXR3NGtyY0Zi?=
- =?utf-8?B?eS9YR0JMK0ZpVEVFVlJDNFVBSzUrb0tnYytyYlNYZXBXQVdmMW1YQ0NuRlhD?=
- =?utf-8?B?K3F6d2pPM0h3bVJ0dU5ZQzhJcXc5RTdEaTFMQzJqdDRub2FQMmlxOWZWYWMw?=
- =?utf-8?B?dW5Mblg4dTY0SlpEdlZxUThaS3dhbkxqaFI3QjlpeS8rek1maHNmZC9vSG1S?=
- =?utf-8?B?QldLRHlFaDFTcWtWS2t1MklZdGdQUGdvZjBZVENlN0puTjFTWU1DRlo4TFdL?=
- =?utf-8?B?ZElPU1diQzY1QnpuTjZVZlZYck4zSHZPZkgwYkIxVjdQcWthSzkzNnZDdE0y?=
- =?utf-8?B?UkhwUm94aE9DSnlVV2FUZlpuM2tPNU5FMWJ2VVlKK3RLZU9JWnl4bWtuTWZI?=
- =?utf-8?B?RHZUMzVTSEVCYThRQUlTVkhCNkVvY0JTUlExT2tQYWNYRWhnTGczaHEvQmNk?=
- =?utf-8?B?Z3VYRlJMYWZHdVEzTUNQaFlocmxmR0lPRERpdjY2ZHF1bWVQOVRFWjI2MVlT?=
- =?utf-8?B?dTNjZHpHVFE0TFZUdVM0dTNteWlGSUhzb24wRjYydzBMRXMvZXFYM3NncFFi?=
- =?utf-8?B?N21sbU5yaE5HOTRGRkoycWorT0dGdVRtdnV2TVdWblI3T0YvTlpvcGRjdDht?=
- =?utf-8?B?dkdCZUJSSWdkQS8vLzhvVlZPeFJhWUV1OTVmb0t2bW8vcDVia3VBMFA2cHhj?=
- =?utf-8?B?VTZsMXptQmdjSDlmYXppVGZKRnZad0JXNzU3NUFpQWFZS244bWVrYkZxSFU0?=
- =?utf-8?B?ZkxqUFVrTlQ1Zmx1QU1hOUxSalpaZXcrSk01dHdJOTFjUTdPSERRZUtaM0Ft?=
- =?utf-8?B?UlNaYUlXZFBxTDNFM3JQRXZUVjUrMFJxMHVtSy9iSUZicm5FaVgrRDQ1N2gz?=
- =?utf-8?B?QWtPZWY1UGFNVG9YQVVJemRzQWwrWStxajJMSmpGTGdvNE5POHBrbnZBamk4?=
- =?utf-8?B?aGM3VDJLNkp3b0RlK3FSOFNIbkNEQW5Vb2l3c1pnM3Z0RVRkQjlBN2xyaExi?=
- =?utf-8?B?OTJnREdjTGNuQWlJbngzQ1BNYWkrMUVyeUZacUYyaG9SemZLUC9GR1RJRHpu?=
- =?utf-8?B?YmtDbXNubUs0VXo0Z3NibndYT0ZpQnN1L1ZocFJpOE9QN0ZhTUtQWVl0R1dB?=
- =?utf-8?B?Y2ZyTzlPZ2ZxNkxhTFVaV3cyT2NXQ2UxdEpqWFF3Z2Z6WXZ3MHJHOFZmbzZn?=
- =?utf-8?B?c2xsYlA4M1JCRTZCWEFoVWhRZVhzZldIQ0w3bGhaaFJjY1RRWis0OEI1d2Ux?=
- =?utf-8?B?WXM3b2ZEMVR1RloyYWR3Wk91aXVDUi9mVDBac29XbEtPb0ZLL2tmOUZMR0pR?=
- =?utf-8?B?aHdwbzNhVTk3cVhoRjdNTEZROS80Zjc5YXl3R0VTYy9LdzlueERNQk05bkZP?=
- =?utf-8?B?MWlFaUs2UUdjaHpwMnhQWXdjeDdRZzMwdFhWRmN5UEYyUWxsdFlUZVVDZDFU?=
- =?utf-8?B?NG1qQ1ZSVUlLWW5pdnYrQllWNEJLVDVsVjBFNms1NnNDc1Q4YkRxZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 59805567-ce4b-4a32-58f9-08df45e47b42
-X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 02:26:13.4168
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +oF0PFby6rWWznuftONq/0fzv/Io1aOPj857NigwqdCKr8PBICSileNOvUldoCS/LEJLAAKQcP7mhimAlFo/wQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6751
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 18 Nov 2026 22:23:03 -0500
+Message-Id: <DMYV5T0TLKEG.1RHCZH8L40LWY@canonical.com>
+Cc: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+ <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+ <lkft-triage@lists.linaro.org>, <pavel@nabladev.com>,
+ <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
+ <sudipm.mukherjee@gmail.com>, <rwarsow@gmx.de>, <conor@kernel.org>,
+ <hargar@microsoft.com>, <broonie@kernel.org>, <achill@achill.org>,
+ <sr@sladewatkins.com>, "Miguel Ojeda" <ojeda@kernel.org>, "RUST"
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 7.3 0000/2651] 7.3.6-rc1 review
+From: "Alice C. Munduruca" <alice.munduruca@canonical.com>
+To: "Gary Guo" <gary@garyguo.net>, "Thorsten Leemhuis"
+ <linux@leemhuis.info>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ <stable@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20261118150247.972732815@linuxfoundation.org>
+ <cb9ff126-7767-4c60-b735-1b7890a247fc@leemhuis.info>
+ <DMYMKQ2PRN7X.WKDSQ4X8JIFB@garyguo.net>
+In-Reply-To: <DMYMKQ2PRN7X.WKDSQ4X8JIFB@garyguo.net>
 
-On Wed Nov 18, 2026 at 11:44 PM GMT, FUJITA Tomonori wrote:
-> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Wed Nov 18, 2026 at 3:39 PM EST, Gary Guo wrote:
+> On Wed Nov 18, 2026 at 7:02 PM GMT, Thorsten Leemhuis wrote:
+>> On 11/18/26 15:20, Greg Kroah-Hartman wrote:
+>>> This is the start of the stable review cycle for the 7.3.6 release.
+>>> There are 2651 patches in this series, all will be posted as a response
+>>> to this one.  If anyone has any issues with these being applied, please
+>>> let me know.
+>>>=20
+>>> Responses should be made by Fri, 20 Nov 2026 14:55:47 +0000.
+>>> Anything received after that time might be too late.
+>>>=20
+>>> The whole patch series can be found in one patch at:
+>>> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.3.6=
+-rc1.gz
+>>> [...]
+>>
+>> This failed to build for me due to a problem with rust during the "make
+>> bzimage" stage:
+>>
+>> """> error[E0432]: unresolved import `crate::util`
+>>>   --> rust/pin-init/internal/src/init.rs:17:5
+>>>    |
+>>> 17 |     util::*,
+>>>    |     ^^^^ could not find `util` in the crate root
+>>>=20
+>>> error[E0599]: no method named `extract_cfg_attrs` found for struct `Vec=
+<Attribute>` in the current scope
+>>>    --> rust/pin-init/internal/src/init.rs:171:39
+>>>     |
+>>> 171 |                 let cfg =3D field.attrs.extract_cfg_attrs();
+>>>     |                                       ^^^^^^^^^^^^^^^^^
+>>>     |
+>>> help: there is a method `extract_if` with a similar name, but with diff=
+erent arguments
+>>>    --> library/alloc/src/vec/mod.rs:4245:4
+>>>=20
+>>> error[E0599]: no method named `as_ident` found for reference `&Member` =
+in the current scope
+>>>    --> rust/pin-init/internal/src/init.rs:413:28
+>>>     |
+>>> 413 |         let ident =3D member.as_ident();
+>>>     |                            ^^^^^^^^ method not found in `&Member`
+>>>=20
+>>> error: aborting due to 3 previous errors
+>>>=20
+>>> Some errors have detailed explanations: E0432, E0599.
+>>> For more information about an error, try `rustc --explain E0432`.
+>>> make[2]: *** [rust/Makefile:649: rust/libpin_init_internal.so] Error 1
+>>> make[2]: *** Waiting for unfinished jobs....
+>>> make[1]: *** [/builddir/build/BUILD/kernel-7.3.6-build/kernel-7.3.6-rc1=
+/linux-7.3.6-0.rc1.400.vanilla.fc45.x86_64/Makefile:1440: prepare] Error 2
 >
-> When a function panics, the panic message shows a line inside the
-> function, not the caller. Adding #[track_caller] makes the message show
-> the caller's location.
+> It looks like there's missing dependency not picked for pin-init changes.
 >
-> Add a sentence to the "# Panics" guideline: a function that may panic
-> should also be marked with #[track_caller].
-
-I don't think this is a universal rule. `#[track_caller]` has a code and it
-shouldn't be used unless you really care about the caller (or have the pani=
-cking
-code being always inlined)
-
-Best,
-Gary
-
-
+> Greg, can you drop
 >
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  Documentation/rust/coding-guidelines.rst | 4 ++++
->  1 file changed, 4 insertions(+)
+>     [PATCH 7.3 0580/2651] rust: pin-init: internal: init: emit `slot` usi=
+ng mixed site hygiene
+>     [PATCH 7.3 0579/2651] rust: pin-init: internal: init: support tuple s=
+truct constructor syntax
+>     [PATCH 7.3 0578/2651] rust: pin-init: internal: init: support tuple s=
+tructs in `[pin_]init!`
 >
-> diff --git a/Documentation/rust/coding-guidelines.rst b/Documentation/rus=
-t/coding-guidelines.rst
-> index 3198be3a6d63..c7404ea7ba13 100644
-> --- a/Documentation/rust/coding-guidelines.rst
-> +++ b/Documentation/rust/coding-guidelines.rst
-> @@ -241,6 +241,10 @@ in the kernel:
->  - While not shown here, if a function may panic, the conditions under wh=
-ich
->    that happens must be described under a ``# Panics`` section.
-> =20
-> +  Such a function should also be marked with ``#[track_caller]``, so tha=
-t
-> +  the panic message shows the location of the caller instead of a line
-> +  inside the function.
-> +
->    Please note that panicking should be very rare and used only with a go=
-od
->    reason. In almost all cases, a fallible approach should be used, typic=
-ally
->    returning a ``Result``.
+> ? While patch 0580 is a fix, pin-init is not used in a way that manifeste=
+d the
+> issue in 7.3, so it's simpler to just drop it and the other two picked as=
+ dep of
+> it.
 >
-> base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
+> Best,
+> Gary
+>
 
+Hey all,
 
+After dropping the above patches there remain a few compilation errors with=
+ LLVM=3D1. They all seem to
+relate to pointers in bindings being sent across threads. I am unable to di=
+agnose the issue farther
+than this, as I'm just starting to dabble in rust/ so hopefully someone mor=
+e experienced can track
+down the patch at issue.
+
+I've uploaded the build log alongside the config used in the pastebin links=
+ below.
+
+>>> make: *** [Makefile:256: __sub-make] Error 2
+>> """
+>> Full log:
+>> https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/fedor=
+a-rc/fedora-45-x86_64/11350094-stablerc-fedorarc-releases/builder-live.log.=
+gz
+>>
+>> Have to run, so not time to look at where this is coming from right now,
+>> sorry.
+>>
+>> Ciao, Thorsten
+
+Link: https://pastebin.com/WCpUdkaC
+Link: https://pastebin.com/5BUM2Cys
+
+Sorry and best of luck,
+ - Alice C. Munduruca
