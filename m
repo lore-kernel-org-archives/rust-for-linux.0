@@ -1,75 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795103074;
-	b=aIftS7OJYVQbYLCfNAahvww1pmf7CshlaEbUprZGYjlmqjc8jddXCsSXaLe4ME6bRfkm
-	 +DRcLjXvkxeu1VLJCMdzajIbz8IXIFXg9/8zXRjrSxJORs/0zjY+nrO0el+DuPo4e0Btv
-	 Phub/VAqZwseXv5XRvjNrHK+f4yrHtgQskfOtI8LJAtqaOuVxyoGv0teySsDRZxYGpK+0
-	 N7+gFibHNIjG3W+INbtSaniSvrkg59Wt83CgeNqwz3YDQFySx1YTYNm7NruMfH6DJJQ9L
-	 x3g1Va6jqGByvtI0Qu9YxmgMJvffZTrgeVfoczjacYFSq3sXvATMJ7IPGLLvjYx3iXQ==
+	t=1795103228;
+	b=3lIXi4ocDLO1rT50i13w72xyJHup8X+lQVryTsL6i2pSUviWWV8zk8u1zNmUt8FbTffN
+	 pu+WWrnLmP4v9yNcNQaHEaZcZ1QtnOkCTNF2ayhd7r7eISHuqdJahkh+kbImeLwweSWsH
+	 C8tvjMFFCfrO1t5QmPgqRMp1xlq4lqnUeYk3MmwTG7geYSoILpkPiFU7aGmuP8Z4nyNJ5
+	 yg17uUN7cbwCqXY2bHchblFFvPOcUu/MnKJd0OtAvAC0pTb9VCnejvyPWNSvzH/UzNayq
+	 KMh4BOvT7Q7imPqbBsfhCNIR/fBYxyqhNZhVH6yRRuo62tZTjAe6AP65Ai9SnzbqwMA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795103074;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=plRJXSHLssMK20rYzYBE8Y5/bfsmM0mbLiVQroO7VYE=;
-	b=BoaEYnIItaNtujBQK/ojd8G7WawDFNu8xyglnBV9JS3P4DP26s4yPZU9yTctm+LtYiyR
-	 KyGh16RXvU7etafdAxsaqGlwQDqcbMuOn6TZkT391vpgUmhf++CqaeMCcN9hJhuRHLYDG
-	 EUmbkZ1PKwQPH3X5bIkqW8+wiWHBq5JiJzioPtA1eFghuvMSAAF5hJqyPoQc2ttljbsGy
-	 f/Bfoivr93xD2TKH5/73e8SatO26NIxDbx26blbzJv6dBVOTfjMpVxaRh4PP21WnDiA2U
-	 2EDMfdSinURZ1MGQi2Bv6ZhXfvej3K4aR+k9VHD+NSrK9Tzmo7BysPC0GbcMCeF6Msw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795103228;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
+	 Date:In-Reply-To:References:Autocrypt:Organization:Content-Type:
+	 User-Agent:MIME-Version;
+	bh=i/2eBaDlENYHBrc7c5WJuNaoO0uM35xX9VzqdyJy/SI=;
+	b=jaJ0h4VnMH94pf3STQyBQrZmkK/R9Esy54fCMRfUNKNg4RAVJLQUt3Bzrj2r4ilM2nNc
+	 u7pNZsivZ911gBego+FeL7Vjx22jO6LfnFnGAyDOloBpkUvOqpLret15gK97ZN0ogYHkt
+	 L44CQ0esieHFl9R7qECvg4fxJq7033wPNDxnkB9HjsHywOgRovdWvpI9T5psHORlSRSCf
+	 KLa5KZ+JLZ7ojiKVsSu5RY9S0G05MjcM2UJP2MVXgx38C8zVvqJn+de43+XYywkGYIQWA
+	 EKMehITPIcyPeSwOHmvnQTzLjDjkTga4extzyNTe26/LR5X6eaUAh2ILUDO2L6bzonA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dhYU2RLR;
-	arc=none smtp.remote-ip=209.85.221.71
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=e0VvPrIT;
+	arc=none smtp.remote-ip=148.251.105.195
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A712B606A32A
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Nov 2026 15:44:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A712B606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F316F60A260F;
+	Thu, 19 Nov 2026 15:47:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F316F60A260F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dhYU2RLR
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48e0389d6f9so1573327f8f.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 19 Nov 2026 07:44:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795103072; x=1795707872; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=plRJXSHLssMK20rYzYBE8Y5/bfsmM0mbLiVQroO7VYE=;
-        b=dhYU2RLRhjRMFqZMy8elmtfJ4dXKwFU/92H3dNdgTsuJ0MQFIT6TsYnnB/S2AILL4R
-         ayus790DzrpTP+WsKc8ZxWnhLyONg4f/mN8VxMWpN0bmy1OEWK0qUUpFb1KFFIQGvVHq
-         I98dQCEO0+yhPUXDFDUHnUlE19s8inIYRYCdcT4ceOaonhaVzcQfVigDyPNSs+8hcZPK
-         xTEtKnm8+iGwU9hnFIPWRe9Z8lcpwBiBQALO+s8ndlTbbso6IBsIVch2yKy6ZMqirNV4
-         3XpgGmg1be6TzNoLBHWy7chJp25wqGkblPOXOGqBVMmeoIpGBIqEiY5nweDY+oPUVVR/
-         /Fkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795103072; x=1795707872;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=plRJXSHLssMK20rYzYBE8Y5/bfsmM0mbLiVQroO7VYE=;
-        b=UthYZEYhjTsP5qSugbwRnkLJkdCYGdzNMKFMdD5CErJCLZk61++DiwYnoaVm2l3mKV
-         KpkCiYFSDYMZ8+6h/pQ+yNjqp4thl98eIUxkKIw9PXUuEJJt1BNPi1lSEbuf8SLA/vIz
-         7dp8+sGkFAyIhqimLlSSAvvQLXRZtTR1ubKgEfKHYf9jsggsG8+4XcUDhWSrVTiHLZD3
-         1+NZLyAW5FMhflRBwac1Ny8BvC7sMtnJGOsGkpNXgR/BDjUXd+NkFDxTcNN3s+5tjXXO
-         66M2JvIXZ3Pj7+b7ZDYCD9m74L33+tTI40+Ddk0UkUot1P18vMBUUG7wMWxBD81zv78U
-         2mow==
-X-Forwarded-Encrypted: i=1; AL+hErFIiaCM7TJyREumpsAaJ5yIRmiV4qcBngIaaQ2OEjegNZMhebbqVCy91BeFKvXjPPENaqND6C5TTgaVwMndLA==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8Ua8AbIZ2PpAhhNgeuAlcusEyThWCpKWw4dvGPXwiU76vVULAW
-	2Tsr5NYtVH+znP+QYe0vH+tKiTMr9a+bTakC6SOoPJ+g6rRLKuov8kNdzSioKyQ3sefdvPn8mDL
-	FXIuoYbUGB2BaXTkOMQ==
-X-Received: from wrsr11.prod.google.com ([2002:a5d:494b:0:b0:497:e67e:6f53])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4f93:b0:4a5:1cf1:b7bd with SMTP id 5b1f17b1804b1-4bb7da1c549mr137461195e9.16.1795103071706;
- Thu, 19 Nov 2026 07:44:31 -0800 (PST)
-Date: Thu, 19 Nov 2026 15:44:30 +0000
-In-Reply-To: <DMZ8NNSPL36I.15O2JQR7M65T0@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=e0VvPrIT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1795103226;
+	bh=pkdcwHwB3w5af4YAyvVrMlpBkQp3oqomrFFYmpopMWk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=e0VvPrITlscyDdSJfiRlu7DbbuvW03O247BdtGKV0g9gR5VDTh2HigjE3ft8An/NM
+	 XKDiqUtOvlV3fDzDCvFr4VmNyLhKzDn3ktB0i7hAH5oF0hGAKRgqSfW2g115D7ttSr
+	 z1Ut/tc3uxYHMWD8geLKPCtDbK/ECw/wxtUDh+lpE+4Q0X4EtJTzdgEQ8BdYX/A7T6
+	 2SO301zNO8kDpu3F7qGNgiWtDUBtuafy/bKT+pbl0Mms/e7NCmWq8LTpfl7Icuuo24
+	 6c0yX+6Zj+twePDzzKCl2AEwKveJSm5nvs05tViXmth1RTwG8GwD6EyEp3KVryiVqW
+	 R6eduK9CNiP7g==
+Received: from [100.64.0.214] (unknown [100.64.0.214])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id A58F017E04AE;
+	Thu, 19 Nov 2026 16:47:03 +0100 (CET)
+Message-ID: <da198506005be5c69d61105a5519121fe7bcdd36.camel@collabora.com>
+Subject: Re: [PATCH 0/6] rust: iommu: add a paging domain abstraction
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy	
+ <robin.murphy@arm.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon
+	 <will@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
+ <boqun@kernel.org>,  Gary Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>,  Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>,  Alexandre Courbot
+ <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+ Abdiel Janulgue	 <abdiel.janulgue@gmail.com>, iommu@lists.linux.dev, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	driver-core@lists.linux.dev, Detlev Casanova <detlev.casanova@collabora.com>
+Date: Thu, 19 Nov 2026 10:47:01 -0500
+In-Reply-To: <20261119150857.GK3115493@ziepe.ca>
+References: <20261112-b4-iommu-domain-v1-0-c29e86788dda@collabora.com>
+	 <20261116193821.GC2452510@ziepe.ca>
+	 <3EB4C2ED-B699-4532-A562-68B78F6E29C6@collabora.com>
+	 <20261117202055.GA3115493@ziepe.ca>
+	 <b145b2ceb92c73a4fa0477d7b3895a6e3b4adf99.camel@collabora.com>
+	 <20261118160909.GC3115493@ziepe.ca>
+	 <fe60c0bd-1ee2-4b33-8ca3-564ee08e6db5@arm.com>
+	 <CF2BE3BB-4F16-49FC-8421-B2B823BB7BB4@collabora.com>
+	 <20261119143151.GH3115493@ziepe.ca>
+	 <32a64e144c11bec72908ce143044773808be5115.camel@collabora.com>
+	 <20261119150857.GK3115493@ziepe.ca>
+Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Organization: Collabora Canada
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-kkIaoF7bHVHvcS0UAPcF"
+User-Agent: Evolution 3.62.1 (3.62.1-1.fc45) 
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -78,37 +104,86 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261118233727.3147222-1-dakr@kernel.org> <20261118233727.3147222-2-dakr@kernel.org>
- <DMYTKRS80NRC.18PBQHK9SZ8K9@garyguo.net> <DMZ4C3GGD9U0.360KJBSFLEK61@kernel.org>
- <DMZ5HM326EKD.1I8KUFD65L91Y@garyguo.net> <DMZ6RL5X2UXE.33EY9MDLO2AJA@kernel.org>
- <DMZ7CHWBWU4O.3EA040FFBVCLG@garyguo.net> <DMZ8NNSPL36I.15O2JQR7M65T0@kernel.org>
-X-Mailer: git-send-email 2.56.1.708.g77570a6a1d-goog
-Message-ID: <20261119154430.918072-1-aliceryhl@google.com>
-Subject: Re: [PATCH 1/4] drm/tyr: name resource lifetimes after their types
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Gary Guo <gary@garyguo.net>, daniel.almeida@collabora.com, 
-	airlied@gmail.com, simona@ffwll.ch, lossin@kernel.org, ojeda@kernel.org, 
-	boqun@kernel.org, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, 
-	tmgross@umich.edu, tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+MIME-Version: 1.0
+
+--=-kkIaoF7bHVHvcS0UAPcF
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 19, 2026 at 02:57:37PM +0100, Danilo Krummrich wrote:
-> I think in the end it comes down to personal preference, so this is fine with me
-> too.
->
-> Though, I'd use a generic name in the latter case too, such that it doesn't need
-> to be changed once a second resource is referenced later on.
+Le jeudi 19 novembre 2026 =C3=A0 11:08 -0400, Jason Gunthorpe a =C3=A9crit=
+=C2=A0:
+> On Thu, Nov 19, 2026 at 09:52:59AM -0500, Nicolas Dufresne wrote:
+> > Le jeudi 19 novembre 2026 =C3=A0 10:31 -0400, Jason Gunthorpe a =C3=A9c=
+rit=C2=A0:
+> > > With the additional twist that alot of embedded HW has apparently
+> > > choosen to not implement SSID but instead has a pool of SIDs that one
+> > > device can use, functionally similar to SSID.
+> > >=20
+> > > We'd need also API support for unbundling the DT iommus=3D[] SID list
+> > > into something that the SIDs can be attached more like a PASID.=C2=A0=
+ That
+> > > need, I think, has become clear with all the DT tricks and fake busse=
+s
+> > > to try to work around this issue. :|
+> >=20
+> > The word "fake" never flies with the DT maintainers. On that subject, I=
+ still
+> > don't know what you mean with iommus=3D[].
+>=20
+> When you write your DT you can list all the iommu streams in one
+> iommus property. Like this randomly picked out of the DT files:
+>=20
+>         iommus =3D <&sysmmu_decon0x>, <&sysmmu_decon1x>;
+>=20
+> If you do that then Linux sets the struct device containing it to
+> put the same paging domain on all of those iommus.
+>=20
+> It doesn't make any sense to open code this in drivers when you can
+> just have the core code do it by writing your DT to match how the
+> driver wants to work...
 
-Agreed, using a generic name like `'a` (or borrowed-resource names for
-invariant lifetimes) sounds good to me too.
+The will be rejected, as it does not map the hardware. If you check multi-c=
+ore
+codecs, each pair of core+iommu are independent from each other, at least e=
+nough
+that they could be driven by different device drivers. And so they have bee=
+n
+described separately in the DTs. I don't see a fault here.
 
-Also, when updating this for v2, note that `VmAsData<'drm>` in
-`mmu/address_space.rs` and `GpuVmData<'drm>` (along with `VmMapArgs`,
-`VmOpType`, `VmOpResources`, `VmOpRequest`, and `PtUpdateContext` in
-`vm.rs`) were still left using `'drm`.
+Its a Linux design decision to manage them as a group, so Linux can schedul=
+e
+them fairly between processes. It would also conflict with the power manage=
+ment,
+which arguably should happen independently. On this last bit, I'm actually =
+a bit
+concern of how careless the multi-core patchset are regarding PM of the dev=
+ice
+that owns the shared domain, it only works by accident as they schedule cor=
+e0
+first, and other cores are only used if core0 is busy (there is no affinity=
+).
 
-Alice
+Collecting all cores using the component mechanism, and picking one master =
+and
+sharing its domain to all other is pretty small effort, I don't want to go =
+too
+crazy here. But I'm open for better DT mapping if something would be accept=
+ed by
+the DT maintainer.
+
+Nicolas
+
+--=-kkIaoF7bHVHvcS0UAPcF
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCav8Z9QAKCRDZQZRRKWBy
+9NEnAPsH9GRCZV+KDrqinZiHq6m4Cr/ajHkbFvGo1kLQXaXqYAEAsdYQBgBSjliv
+lU4jcH1EuRr023RuyH7PTwbC/HfiOgA=
+=IR4z
+-----END PGP SIGNATURE-----
+
+--=-kkIaoF7bHVHvcS0UAPcF--
