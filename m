@@ -1,103 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.171
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795087141;
-	b=WbSNvj+BpUwnpJg5IWauPzaAx5mn+lvzfYlxFae6Wy7587eXdg3KTpsZ/WymKOtJ6ezI
-	 MsajFOlChZFxkoQJuggHbSElBI9xGFMaqaDVBB/HrSG4qwqv7YanGXooDLxXC7C4sVtT9
-	 QPXUcSl5BWJU0X/PsnEQwE2qeDyfh/O7fJeh4+RmJaOIRWQSvUUKX7p5NUZi3pb27AYKj
-	 Ahgl1B2HyrDX7mfD/8Jn0riNZZ6GccTfqbch5zO4PFH03RHWryn3Y7ik9YyWJN6zRwyoL
-	 /2DAVT44y884iFCA3divzycAd0WAe3bDpW9EWymK1ULteIiaOoaPPobO0urWV+DO5PA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795087141;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=Zgs6SyHjUqs1Qm+T+oyA24Ly2fWRmc8rFy/5dpxwQdQ=;
-	b=jF/v9nCUyWE9bMsV9zUr5agytwdY5ilS8Cmyhx3Ms2K6v1xJtPKvBFOTsmiDlqFWzhP6
-	 IAOp4FJGapLI2xAu3WfnUgnqyZMH/hwHUy2/0Ra2qq+3Vv2GSKu1z8w4NWhNFt0TA55lQ
-	 zfsEUiXaxo+90ZuJKqT6yrWnPA/gB3Hh9E5O8szLiACWMIie2iKpvDLQSSufrk/69F7+J
-	 wFygeg/4HOqaKxfxPJrQiGKLBm0++KzvP4SyeJjK9bxPWNg3sng0gJhdmM9wnP4sG4Mir
-	 IH80hcex3UvarIE3Okf+U7RXqHPlsI5sRyGskVikUs4wF3AuJFx++PL+tyBFwDE40cQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cAsiU3NU;
-	arc=none smtp.remote-ip=209.85.208.171
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.196.104
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795087276;
+	b=G/Bnv/ufoKS0KedHMBmbuocpu5I9goiUNm9Zoz9Kjl3kMrvWe97CqqmaUbtIBSuFa2kj
+	 AfBqh2VNVVACEeirscwmJMPhB4/9KfPHTDrVF5/1L3yKhryOnKL7CsXMDNHxHaNtLycZO
+	 s8ZmWNPr9h2h0Pfb5bjdguAYVhVKPm6U7HbL7+P1CDkdkILnMLERydLi3DK5XsE0kvkDf
+	 FMGN0KNwaMkMC5D3qTUQq6me2lInNEqjxRA0XHqSgBxvpWYQspEoyKLVaww4xFNLKjTmq
+	 moGyaBVvyGvgZs+ti04rNtWa4k4kuRqMn9H0CLxOts4MghBVuBMjqiqFa6F8PZAU3fw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795087276;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:From:To:Cc:
+	 Subject:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=LExJgTcK+lcNTmf5sktebOy5nfMif9WqSEibeXU2O0o=;
+	b=CzYOupOJqiWPqTGx2CaCJjrE6jolTIZa3Qb16CiVeLdb7MgUdkEoLiTQacU07SBCSmwH
+	 MkB2+2CnTCkBKGqK0Qk3g9kRoZNdVVtv2/iI+GxKslPA6qlUAKk805Yu7+JkfYf/q5g3f
+	 o76g3VjffODTVUFzXG4ya5e6LXaB6scGvS31DTV86t3a5FrF5ibFUVp8tZDoC8iwh1pev
+	 XPLVMeelMTetxQx5h4ry8KP6P7JN6bMIWh9JzTW4ToTDsObQkuesoCen1JUxYZeeV6Rqt
+	 Z2DMQU5S8cRPXFppFPKnFIRcoY7nhK+rOmhoKqRdwM+APDP9YNdSv6UKu5d45gBgdXw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=garyguo.net;
+	spf=pass smtp.mailfrom=garyguo.net;
+	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=o2zBB+1V;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.196.104
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020104.outbound.protection.outlook.com [52.101.196.104])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959D8606A32F
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Nov 2026 11:19:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 959D8606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5D0606A32A;
+	Thu, 19 Nov 2026 11:21:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E5D0606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cAsiU3NU
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-3ae0a5c1715so7835421fa.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 19 Nov 2026 03:19:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795087139; x=1795691939; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Zgs6SyHjUqs1Qm+T+oyA24Ly2fWRmc8rFy/5dpxwQdQ=;
-        b=cAsiU3NUDcdFtfRRhn3m4kAQgqy+uOA+R3KgiSB5ET3rF3pzJZh+Qwm9rTsaI7jGqT
-         Fg5uP/9ZPKULD9IdEbr1nLv8hSUehXQLSRJ5BYNkzH9GLvGKVXem7cdhKJqyE4WG3V2e
-         IMs8fHKJY0OuqbnydLaI9RmEobD24ERbHjBi1A23aR1jcfnhBQVUx4bv3tGLyEiaNil4
-         BnTCcor2dfVDcVcY46QZeG28RIsrrC56zitfDfKSp7d4ogv40KL03GTg8ZtHtbmgmqFF
-         URrpl01aMXXWplJN+lBHnezjK44yNfnGoU/Y79ErX2mvQyAXXl8YsOJN/SZNWi78jaFT
-         G+6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795087139; x=1795691939;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Zgs6SyHjUqs1Qm+T+oyA24Ly2fWRmc8rFy/5dpxwQdQ=;
-        b=Sk8U5WqmJx3+WMjZ5ifbSqr41JxuUY37d0T4engFHCNpstOvmtxu4T2SnAgaH/g7+Y
-         xYpqqCz/ZgJh5t9Hp7dwLT4+IQIq8xnoC6Slz4VQwmnOaJk74IsL3PJ3GYCYE/pPhXBa
-         hiJcvHuMlnoBF72Vd5TOKviEO2OLmlEFKSBsAC/hrSmOwQC+RBssrGMAZ33NfhBz2hQN
-         EbjtHXmulK600wjqRyw6IFqrtO18Gr9LJv1VRtZnhp9MwtPIY663chstINct5j+ZQh78
-         aUZrCbeX49KlcoV56ntiz1QTaTZKpSFdfMDZAkeY5mTmfm3DZm3PiuEwtwAtNnLqyL5g
-         11eg==
-X-Gm-Message-State: APuU4Z/x7TFv4TWPog5OSBMu3FeHzTsBzpIwKlIhzEXr0QE53b5TmZDH
-	QHmWVx3G/g8XD3S/H7GvxZZxAtygfaXr/Ksq/hTELV8xb7vt4lQ266zAkC4uCnWz1pUr4Q==
-X-Gm-Gg: AYBFou0KKBI2McBoN6MpWVpM2eo3dI9Y4+NG943PBzibBu92RWo9qhEAgZEM35mosnn
-	r5s1fdJnvYcGAP+/MStUMDze99QqcmsZNAtuuH3NSt5BTzQdKRj9Gk6IjNV3xrBZ4IWoyl6lxm6
-	PFB+iiRF0l4NxmK2I29lUF/zjm3kgkajJSasLb+ceUeBQzgs8XB8Tc/DvrxrEZfKUb8Y0a56uue
-	E9plKYA6y3PMKlrLm3d1VRdmhQ0i3fn1NSdbdQ7fEFIUqsUMhXMGn/EIE/TPRRAlFpY44QAYEbN
-	PvFIgTyVRHuDTCXc2l8gQyi5Bq0A1ykrrAaVgS/GWb9a+Hlp1jyGXQioGZ7hFs595PaNV6m4tb5
-	DB1+K/v94b3jPF60SLoqB7y4uvpVsxePTJGTYP6yIVRR0AAdpZ43XT25zVNrpvePzwXFXRilLM1
-	J056KLtoEGoYnFU73eP8WgqQo49mrJQT+iqkkCG9947nlvPczdmmhyQciiJfCUn8QPXrnTJEtz4
-	gtLQYJxW6P921qtlXIqbqkqyWGtZ6/R0ffRZSuoFwqvVpu6rTzYJKLrPQr+ryxekEKFAOU32Ba2
-	RIbbfEvyEzl4IgMus4NpsoUUx9ztD/F6iZgZ
-X-Received: by 2002:a05:6512:2354:b0:5c1:56e4:c705 with SMTP id 2adb3069b0e04-5c1b79fd08amr335267e87.3.1795087138391;
-        Thu, 19 Nov 2026 03:18:58 -0800 (PST)
-Received: from archlinux ([194.28.181.64])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c1aa8b3c86sm1376278e87.83.2026.11.19.03.18.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2026 03:18:57 -0800 (PST)
-From: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Arun Pravin <arunpravin.paneerselvam@amd.com>,
-	Joel Fernandes <jfern@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH v2] rust: gpu: buddy: store the allocator inside the Mutex
-Date: Thu, 19 Nov 2026 13:18:50 +0200
-Message-ID: <20261119111850.33270-1-mbkchelofficialdev@gmail.com>
-X-Mailer: git-send-email 2.56.1
+	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=o2zBB+1V
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GybqQVpvjwbdLMa/tU+eT/Num1iUPjWtHTitw6TWZZ8sxPs/9+o8y9mol7NL3+Yo3CJI/VF8/gflcAQGtXAVDDz1n8ad8F+/5ntmYodx3KTia1U0QF84sLqUCm8fTW9k+BemJuMuxrLUc38nJDzM5DzWIWxQRSIbfJt210Z7p6oeGBmiFsgC9k5v7aqX/1tGFgi7/9ehJBPROqGVKWMpVqUYuny0XVTftxBNsb43HDIHLb8CtdqUhKq2xMttt3ZAiZ7ULRmOEApxowZUHz6RQj4s1irQCpO2Mkd5jEG/IfXjtyTHTiErka+uJ39Mu5yN5dZGHXDPR2QvhM/fjCHnIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LExJgTcK+lcNTmf5sktebOy5nfMif9WqSEibeXU2O0o=;
+ b=PcZjOoiY4OXKzb30grTLdVukTkzJMTRNIG3YUpu+/2DutA3tGLUGrZTx8V7xZs8onr6iAWwgF15n6jxczcB3SABLuvUq07rKr0p/E6060CY+KBg+DIi1OzE+KT/CL7toDtZIcaq1G706J8qkH6ChT7abED0vmlD+ahtwP0CiaMi4LbRP6u3qHSjRFmndu5lXJn2ki0JOx0l0EiUHCSp//RjEi0J/oNccksL04zNWzS6cuEiBBmB0IeTMMfyrYx9eEUMMoXiIpik4j2MX0WK7RUEMIv+eJ01WVqtBXbOC6EGRW2ORQoKW+E+wfAQGVY94sj5HuDNMJkzSrXhcjYdlSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LExJgTcK+lcNTmf5sktebOy5nfMif9WqSEibeXU2O0o=;
+ b=o2zBB+1VPmBA0D5AeV65JqpqLb5lajbVuc7JTXAXdXigaNeDTdNEVruKoxYLghqkzU/XqvKsBA2PIiuHuKY9q/MljfTYSdeteqdJBkD67BtLO5cb5aeWHlPBl6L0ibC/0gaXPfLvSDDHah4M5AYTOQd5b62ISDSRCmqrLo/zZd4=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
+ by LO7P265MB8543.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4a5::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.10; Thu, 19 Nov
+ 2026 11:21:12 +0000
+Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0615.015; Thu, 19 Nov 2026
+ 11:21:11 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Nov 2026 11:21:10 +0000
+Message-Id: <DMZ5BVNPA3LK.13FNSF2VLYTWD@garyguo.net>
+From: "Gary Guo" <gary@garyguo.net>
+To: "Danilo Krummrich" <dakr@kernel.org>, <aliceryhl@google.com>,
+ <acourbot@nvidia.com>, <daniel.almeida@collabora.com>, <ojeda@kernel.org>,
+ <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+ <tamird@kernel.org>, <work@onurozkan.dev>, <brauner@kernel.org>,
+ <lyude@redhat.com>, <j@jananu.net>, <alvin.sun@linux.dev>,
+ <deborah.brouwer@collabora.com>, <laura.nao@collabora.com>,
+ <beata.michalska@arm.com>
+Cc: <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 7/7] rust: drm: make Driver::File
+ lifetime-parameterized
+X-Mailer: aerc 0.22.0
+References: <20261118163203.2483856-1-dakr@kernel.org>
+ <20261118163203.2483856-8-dakr@kernel.org>
+In-Reply-To: <20261118163203.2483856-8-dakr@kernel.org>
+X-ClientProxiedBy: LO2P265CA0494.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:13a::19) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:400:1cb::9)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -107,130 +105,110 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|LO7P265MB8543:EE_
+X-MS-Office365-Filtering-Correlation-Id: f9d65542-576d-479b-31df-08df462f3740
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|366016|10070799003|1800799024|22082099003|18002099003|921020|4143699003|56012099006|10067099003|261026140227099003|261028144727099003|261021123027099003|261022105027099003|261021121427099003|261022075727099003|261009223027099003|261102123227099003;
+X-Microsoft-Antispam-Message-Info:
+	xbe3Lf7ZdJq+XErDNLt/yjMYC8y9GmCZdzligF6SD9raX97VrBMm+jlGw5LsckZeNDW1ytJ7gatKKQMzirdmyx59Xwtzzpa0bX9ABCsD94zLNdtc5TANZPbeL5AFON/SfMy4Pbyycj9uhR+GyR1d+vZX8hyl27nXjGtRoEpeaCljYvX9XEQZ/mljF0dog2a4m01rSh/YKr28wUvuQciP9VMarbWVg8NkCfmNTdI4XFcqx46tDJc8ngpY6ruAMDasASfiMfhWoibg7Zl9DDjttFGOrgmSrgrVMYOLHCMzPx1k78VqPJbTtKEoPORWUSbX1EOQ6K7jmEV/FhgvJYBxYpOIxw35DxdiLxc/4PgRLBoieiChGJiM9ebX39+C5OgofAUr+mXJKpxD7uMDU5x0lphfwodrtQw9DTqSDdN3mxuQDWJzYMfewGF4g17V/7qeBLWAvM1qx0eEKydoLYUNrsZ7Hn9bo8s2Gu0VogucNasyHZ4Wqpl9hhKqpE41jR3GI1EDaqT9VrVm4s36eJKB9ene/zvxgGWZ2wtIueiT6FKwyDFOMkqsoP1+mmFPNCrr2VuV7dDa2yjkx9JSvx9BmmZqqT/1cmtHzxnC8agfuowXG5w7QT2teag0/SO7K0d7NFATQ+XD3k+nzpmTDHf68YSt5Rr1GbNjd9b9FTXaumFTcobKjAehTvn/CmQ1Mgr03fqJrcTyzpmMj7CnOY4i+A==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(10070799003)(1800799024)(22082099003)(18002099003)(921020)(4143699003)(56012099006)(10067099003)(261026140227099003)(261028144727099003)(261021123027099003)(261022105027099003)(261021121427099003)(261022075727099003)(261009223027099003)(261102123227099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?N0F0aG1CMEMwZ3k2K3RibCswV3JsNmxlQUJOTVQ4KzlDMFJWckRkRTRzMGZS?=
+ =?utf-8?B?c1Z3czI3QnN3L2VRN2psMEU2bFBtWHlSZis2V1lqM1grcUhqK3FQajNNR0N6?=
+ =?utf-8?B?WU0yZzh2aG8zN1lmN0J5UXFKRU9RcXlPNjdQRXFLMTBQeEFTMmlnTWRBTHBv?=
+ =?utf-8?B?YWJqTm9MaTArdkZNT0JKZXF1a290Nk4zdVVJVVJxR1hKNnFjaUl5Y2UwTEZI?=
+ =?utf-8?B?U2xTTUYzZnhmUHVDVXIrNmc0eko5cDRVY0d4NFloS1dkeUxCUlpockF6cm10?=
+ =?utf-8?B?WEszRHdJWjFheEZYWitNM0lkTU85OHM2eTRLZEN3Q1dpS1ZlWk9MRFFNV05O?=
+ =?utf-8?B?T05RMmVybW90SFZBWWxreEVHRkJWTjhLQlp2UU5wSTZIZDl0TG1pMThoT1Mz?=
+ =?utf-8?B?dGZqVEFsQ0FOSnJVVFppWFZiS2M1ajAzTkc4Z1BiTWZ3Q3VPNWNlRWprV3FT?=
+ =?utf-8?B?NWs1MVMvaE1HVjdIQXEwcXdnTXdUNEVkRnBrSEhtNTJnZmdDM2xyMGlrSnQx?=
+ =?utf-8?B?UGZ2SW84UXlScDVYTXlscmpBeGFlY2d3YUhGcGViNnU0Nk1zMEVkM3BrZnpl?=
+ =?utf-8?B?QlNreEM2NHBwMUpybFB2OGU1Wk8rYzIxTXErODdhR0VQQk1XS1FoNm4rYURu?=
+ =?utf-8?B?b0hjbkZkWTJjRGVVZytvQU1vU3k0b0hDR21tMXlRVXBxNmJIcGFzSERoeWhU?=
+ =?utf-8?B?Ym1vc0ozZkdjQWtDTlMvcVFQN3NWMk5PVzhFSmplbDB0eFVoWDIrbVVBaDho?=
+ =?utf-8?B?Zmc1d1FWR3ZraXhkZzNXSHlFbnEzM2FGUW1GZHBXNkpYY1lKMXdmV0sybUVI?=
+ =?utf-8?B?SGdxemIrWkxLTmZxZHFEUFlGQW1sdjQwWVlLK0Zzd0dxZWkyenlhcU9hSWJN?=
+ =?utf-8?B?Q0p6SUM1OUhEclpscm9XY2wvMGMwUWNocEVQYjhFMjFaTGR3WUUrc3dzdjZo?=
+ =?utf-8?B?SnVQT0o5dW5SWU4rYUFhWnBMc2lZcjRXek40M0ljdWpSRlY5R1FNV2IyNzIz?=
+ =?utf-8?B?T3owTGZqQXVieWNCQlRXM0NjOTdtdUpjZkVTWjRJWFp0VzhUQStUa2NVdDhR?=
+ =?utf-8?B?ajBUeFp5WjU3dUdybytXL0l2QmRKdjlaVWNQcGg0WG91cmI5cWdCajk2bFE5?=
+ =?utf-8?B?WWNXUHZUbHYrVnhQVitub0s1Zk4rTll2Z0NVU2c5Q2FQQUgxYTFKTFIrRFlu?=
+ =?utf-8?B?MDIxdjQwZ1l2ZERyWHk1cURtejZESGZYbG1KKzFLb0s0cjd1UU1vN25JUjEy?=
+ =?utf-8?B?RFVmbjZPN3dwWHdEWStIU0dSVllEbUdsTEx0MTd0STF4YmJWeC9FVGtWenJi?=
+ =?utf-8?B?Z0tJZklDOE5MSTkya3QvZXlxd2hSdHIwRXgxNDV1cGVNUzQ4RXE5QXYrSzcw?=
+ =?utf-8?B?ZllTUlFPZWhRZnc3eG92Smp6QXZKRHovaWZYZFRLMytCV3oxd1h1Zjk0QXo3?=
+ =?utf-8?B?L20rd25TVjUvK0JmOHAxQlY1Y2V1YmRpZmRGNE9MSWxNZ0R2VnZ3ZWlFUVEw?=
+ =?utf-8?B?bGFwU0h4STk0endWRlYwanh3TkljRlBCUmRCaGQ4a0ZJVDFvdVhhN2J3M3B4?=
+ =?utf-8?B?QzIwQjJBRUhhRDdyM0hjQ012UEoveEd4OHBMeXBlVm9nWEFrN21xSUZzYWxI?=
+ =?utf-8?B?eEdHbGdlSDh1bHg3MGJMYVRWQzR3LzVVK1VjMVUwUFBubExzSCtDSUJ5a2R6?=
+ =?utf-8?B?TlNsWWEvOTJlay9PYTVFV0ZJL1lYdkVDUGdRM1VQV0dZZUtjNExJQ0NscEZN?=
+ =?utf-8?B?RGlEZWttZFdPSmNtRms4VXpjVytDbXM1aTVNZCs0U0luK2RUWnY2TUl1ek5V?=
+ =?utf-8?B?MGF4MFdkZVUvR1A0UnppNXA4OTdqNm1mM0pYdDUrazFLZnNPVjRYTm1uajkr?=
+ =?utf-8?B?YjZ3VHY5SWEyYVFseTlpNXk5VlczeEdpUjU0T2VqQnNET2g0NmRwMERaUGVV?=
+ =?utf-8?B?RTdmMUdydnc3dkc2NG1mL3lORWFXaGx6NWpzRFN3djVWa2h1Z3NBdUI1bXdH?=
+ =?utf-8?B?TDU4TjBNb3p6UWRKVU81TDkrTjhZM2dRUjl0WTZrU3hsTGozcU12MElBMk5w?=
+ =?utf-8?B?R3c3NkxVak5Cc0pjcllONEJNSE5BT3JMc01QeHAyVlFGUzJsclJxSSt4RkZi?=
+ =?utf-8?B?ZHZ2dDFDUUltU2ZaWWYvZm13MTZ1QzhpZDJJdlR1bjJxVXpiL0psVzlhQ3lO?=
+ =?utf-8?B?MWV4T2QvT0RPSEM3Wk1RaThYZXR3TzIyNVZTMGVoRGFGVFNoNmZkTGRmeWtV?=
+ =?utf-8?B?Vzc5M3FQa24xVWE3NG9VbDl1N1lOeVQ0QmV0TXBBblIzWnVkOEk4dzgvV0c2?=
+ =?utf-8?B?V3JickVzV1lOaWY2MDFHYStrTHd3cmVNdjROYjJTbTFEbFh6OWFIQT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: f9d65542-576d-479b-31df-08df462f3740
+X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 11:21:11.6349
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1K88O2heBgPd9tolktzhasO3y6LQmNwjUW/yr88DHkkGMTCfA+RuRuUurBT7U/U04r7bCFK/1Uqx4XfUux3f0A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO7P265MB8543
 
-GpuBuddyInner keeps the C gpu_buddy structure next to a separate
-Mutex<()>, so nothing in the type system ties the data to the lock.
-A TODO asked to replace Mutex<()> with Mutex<Opaque<..>> once
-Mutex::new() accepts a fallible initializer.
+On Wed Nov 18, 2026 at 4:29 PM GMT, Danilo Krummrich wrote:
+> Make the DRM file private data lifetime-parameterized, allowing drivers
+> to borrow from RegistrationData in their per-file data.
+>=20
+> Introduce DriverFile<'a> as a lifetime-parameterized trait that receives
+> both the device and registration data in open(). Parametrize File<D> on
+> the driver type rather than the file data type, deriving the concrete
+> file type through Driver::File<'a>.
+>=20
+> Add inner_with() to access the driver file data from a File<D> reference.
+>=20
+> Ensure file data is always dropped before registration data:
+>=20
+>   - In Registration::drop(), detach driver_priv for all open files under
+>     filelist_mutex, then drop the detached data after releasing the mutex
+>     and wait for file-data destruction in concurrent postclose_callback()
+>     calls via an open_count / WaitQueue pair on drm::Device.
+>=20
+>   - In postclose_callback(), skip the drop if driver_priv has already
+>     been NULLed by the filelist iteration. The NULL write is visible
+>     through the filelist_mutex acquire/release chain in
+>     drm_close_helper().
+>=20
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-That is now possible, so put the Opaque<gpu_buddy> directly inside the
-Mutex. The allocator can then only be reached through the lock guard,
-which lets the compiler enforce that the lock is held. This also
-removes the now unneeded `inner` field from GpuBuddyGuard.
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
-Update the safety comments that referred to the removed `inner` field.
-
-Signed-off-by: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
----
-Changes in v2:
-  - Dropped patch 1/2 ("rust: sync: lock: allow fallible initializers
-    in Lock::new"): the same change is already in linux-next
-    (Philipp Stanner's "rust: sync: Accept errors for Lock payload
-    data"), as Gary pointed out. This patch now depends on it.
-  - Rebased on next-20261118.
-  - Fixed the indentation of the new_mutex!() initializer.
-  - Build-tested on x86_64 (defconfig with CONFIG_RUST=y,
-    CONFIG_GPU_BUDDY=y and CONFIG_NOVA_CORE=y). Not
-    tested at runtime.
-
-v1: https://lore.kernel.org/rust-for-linux/20261114200703.33229-1-mbkchelofficialdev@gmail.com/
-
- rust/kernel/gpu/buddy.rs | 26 +++++++++-----------------
- 1 file changed, 9 insertions(+), 17 deletions(-)
-
-diff --git a/rust/kernel/gpu/buddy.rs b/rust/kernel/gpu/buddy.rs
-index 691bb4062..a85530895 100644
---- a/rust/kernel/gpu/buddy.rs
-+++ b/rust/kernel/gpu/buddy.rs
-@@ -313,16 +313,11 @@ pub struct GpuBuddyParams {
- ///
- /// # Invariants
- ///
--/// The inner [`Opaque`] contains an initialized buddy allocator.
-+/// The `lock` field contains an initialized buddy allocator wrapped in `Opaque`.
- #[pin_data(PinnedDrop)]
- struct GpuBuddyInner {
-     #[pin]
--    inner: Opaque<bindings::gpu_buddy>,
--
--    // TODO: Replace `Mutex<()>` with `Mutex<Opaque<..>>` once `Mutex::new()`
--    // accepts `impl PinInit<T>`.
--    #[pin]
--    lock: Mutex<()>,
-+    lock: Mutex<Opaque<bindings::gpu_buddy>>,
-     /// Cached creation parameters (do not change after init).
-     params: GpuBuddyParams,
- }
-@@ -338,14 +333,13 @@ fn new(params: GpuBuddyParams) -> impl PinInit<Self, Error> {
-         // `gpu_buddy_*` APIs. `try_pin_init!` only completes if all fields succeed,
-         // so the invariant holds when construction finishes.
-         try_pin_init!(Self {
--            inner <- Opaque::try_ffi_init(|ptr| {
-+            lock <- new_mutex!(Opaque::try_ffi_init(|ptr| {
-                 // SAFETY: `ptr` points to valid uninitialized memory from the pin-init
-                 // infrastructure. `gpu_buddy_init` will initialize the structure.
-                 to_result(unsafe {
-                     bindings::gpu_buddy_init(ptr, size, chunk_size.as_usize() as u64)
-                 })
--            }),
--            lock <- new_mutex!(()),
-+            })),
-             params,
-         })
-     }
-@@ -353,7 +347,6 @@ fn new(params: GpuBuddyParams) -> impl PinInit<Self, Error> {
-     /// Lock the mutex and return a guard for accessing the allocator.
-     fn lock(&self) -> GpuBuddyGuard<'_> {
-         GpuBuddyGuard {
--            inner: self,
-             _guard: self.lock.lock(),
-         }
-     }
-@@ -364,7 +357,7 @@ impl PinnedDrop for GpuBuddyInner {
-     fn drop(self: Pin<&mut Self>) {
-         let guard = self.lock();
- 
--        // SAFETY: Per the type invariant, `inner` contains an initialized
-+        // SAFETY: Per the type invariant, `lock` contains an initialized
-         // allocator. `guard` provides exclusive access.
-         unsafe { bindings::gpu_buddy_fini(guard.as_raw()) };
-     }
-@@ -381,14 +374,13 @@ unsafe impl Sync for GpuBuddyInner {}
- ///
- /// The `_guard` holds the lock for the duration of this guard's lifetime.
- struct GpuBuddyGuard<'a> {
--    inner: &'a GpuBuddyInner,
--    _guard: MutexGuard<'a, ()>,
-+    _guard: MutexGuard<'a, Opaque<bindings::gpu_buddy>>,
- }
- 
- impl GpuBuddyGuard<'_> {
-     /// Get a raw pointer to the underlying C `gpu_buddy` structure.
-     fn as_raw(&self) -> *mut bindings::gpu_buddy {
--        self.inner.inner.get()
-+        self._guard.get()
-     }
- }
- 
-@@ -428,7 +420,7 @@ pub fn size(&self) -> u64 {
-     pub fn avail(&self) -> u64 {
-         let guard = self.0.lock();
- 
--        // SAFETY: Per the type invariant, `inner` contains an initialized allocator.
-+        // SAFETY: Per the type invariant, `lock` contains an initialized allocator.
-         // `guard` provides exclusive access.
-         unsafe { (*guard.as_raw()).avail }
-     }
-@@ -463,7 +455,7 @@ pub fn alloc_blocks(
-                 // Lock while allocating to serialize with concurrent frees.
-                 let guard = buddy.lock();
- 
--                // SAFETY: Per the type invariant, `inner` contains an initialized
-+                // SAFETY: Per the type invariant, `lock` contains an initialized
-                 // allocator. `guard` provides exclusive access.
-                 to_result(unsafe {
-                     bindings::gpu_buddy_alloc_blocks(
--- 
-2.56.1
+> ---
+>  drivers/gpu/drm/nova/driver.rs |   2 +-
+>  drivers/gpu/drm/nova/file.rs   |  13 ++-
+>  drivers/gpu/drm/nova/gem.rs    |   8 +-
+>  drivers/gpu/drm/tyr/driver.rs  |   2 +-
+>  drivers/gpu/drm/tyr/file.rs    |  11 ++-
+>  rust/kernel/drm/device.rs      |  31 +++++-
+>  rust/kernel/drm/driver.rs      | 113 +++++++++++++++++++--
+>  rust/kernel/drm/file.rs        | 173 ++++++++++++++++++++++++---------
+>  rust/kernel/drm/gem/mod.rs     |  44 ++++++---
+>  rust/kernel/drm/gem/shmem.rs   |   9 +-
+>  rust/kernel/drm/ioctl.rs       |   6 +-
+>  11 files changed, 322 insertions(+), 90 deletions(-)
 
