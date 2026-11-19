@@ -1,100 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.96.87
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.42
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795087725;
-	b=A6d/+VtIWvSbI5hFFJNsxHxv1HouPe0SafX+FLJzPOKAO9g5PBRFVnaJEe7gcUNmBewu
-	 t03Q/96/3foLwJlPnHvjfZf+yFPi4jv+WQNWc0cN/KaMUz3FLgbBA6HzOZYTXGk/n+5jI
-	 brgnkOxGRGxgyl4UR+DglbI55cQYuxOZwnVpG+c1bRZDh7Eqf9nuxQwWVRckoHPqg1KkP
-	 /Z7ivt5sHS4MhBswWKPgKockM1E4VIJCwl9Xhen4TpUb+algRqqnBdzYMiJaHkfZbE8m2
-	 wtKuQR/ZCQjtaQ6z/6gRUoSM64E2r0y8XaA4XcGNyUCvNrUm9wzkK/JjY0CKkRrdj0Q==
+	t=1795089008;
+	b=GsNcl3wmYNPo5Udfxt8bKJwLdmwA/WpzyvWFRUv1afKfFudHco8N7qxOfzhayGkJaN9c
+	 n7lFlTmdc6Bk+Egw+lF3gMnKFSfOLz1OFtxW5li4s43PajMdwd3W2isDaiApNvkpVJtvz
+	 TEvu4hfFjp4VWhXelyFJkyGkd0pWGTs/C6eehkO5QDTp0WujaCCo5+Zksn4BGOAs2QxJB
+	 Ge/cxV9m0AgJY2bYqtrxmyyxTV1JlDSa/bVBM7Ex5uy4c8m8UPDw5S7Wj+XwQFBmrd+pq
+	 zgUWzW0LAll83TElZ+QHFkBExsIb3KbFo8gToh5xwekWq7a193znueRRSlaXOKra5tA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795087725;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:To:Cc:Subject:
-	 From:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=808J7PNFPIIHz+voB6IbC90ayK3WTI6EeXcC4XBvC/4=;
-	b=yjcdDM6d+awtxmSNhE92plMys1xLKNYp1SyOkSBmXgOIKaPBr+oP/mJmydnx+xbwGiUE
-	 1fxSs/WUQ8L+i5ra9TjO7ormUS8rHigBefGR/8JUIsLEXmq1bMlcPTyijUfM+8nx4AMwm
-	 buyj+b17S9Aijdm8v/SwGvtLsagjIL+eV2aUnr63fOtC8kyXHRCliNAYfK4TBksWXDfbA
-	 d4FFa01zPZGTzLsnDcwKtUP2GrSqL6O3KwIvVNGljf3x5lUKsz0kPscv13XVZi2MCNOP0
-	 tlCqD66lj5uWvd2pEJO0WHm2ykdAkw0tbgvyuuZ3n66LIQhb04p9TjpvWWdohv3RIpg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795089008;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=zOO8IN3WTwfTWmmyHCF/uCzTotxA10dmHaLxKg4Nq4E=;
+	b=cVxgXvfjOsw1KujOLC9+GkQDRFjMXZI4C63VlNPzNhLSI1I1wxpo81F4pgVp2tE6JZTb
+	 abW/JYgKYlKdf9nKwk+eY0WY/MZCfpv3H5lvQ3T1/219DtIIMUGL0CGV/2BOkRgg72Ld5
+	 b3G4+meU2psZOSw9CwNrg4XWaXR+RspQezNgqDmLKGfKp5aJMPGbbr0Q1Gar8EYo8bttT
+	 Ye5C80vEKPeJkUOV92A+yUDAck8wQ9TpCHNavQKKsQkEfN3z8gVZYfJHq4UtoDzU/xkci
+	 oFZQMZt9mj4OYOxcdO1obYzsEC2tni/G8gvHU4jdqiZz0ZH5SOCdCN6bc7lQurC2PCw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=garyguo.net;
-	spf=pass smtp.mailfrom=garyguo.net;
-	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=StpojMvs;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.96.87
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022087.outbound.protection.outlook.com [52.101.96.87])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QQId+XqJ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.42
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80C4606A326;
-	Thu, 19 Nov 2026 11:28:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A80C4606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87290606A32A
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Nov 2026 11:50:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87290606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=StpojMvs
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iXa7WyxFB6oLcAd7Dhi4iM5SrZKmliO4uGmL5jCfFBl/VcpGV9OUlPkxpt61LRz9hntOJPS7m6hltLCq8bBjsfSyjdg1oyetINCMxTVsxfHnKXMHZLWZ6Vpn3GD+6UTvXoWLUYxQORpribMeBtZjpMkUo7mTxdoMRxR9vvGZLEBEog7fDLevTi22VUa5wgna6Hcwxs5Trk1EfgxO8np5D1M9DRa8DFtuKmDdJSMaCC12CjyK9xYc0LClb2SdMaEP8D+ZKGbqejIbMNhXP4qgLERC0d88kqeyivMb/6FOEVEJiwyss2lDdaAAEFdubKH4W3Ce3c2sHVSzEpL1B/n/DQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=808J7PNFPIIHz+voB6IbC90ayK3WTI6EeXcC4XBvC/4=;
- b=FFInbLoxLriq8W+1iQ57sqaZGg8bdGck5Ilz62Rn2qEQjFAIqOcWzmKDvKqWJSVzVoymiqK4m89fKpgUOeazNT2w1FQJl7HUfvR4wcbEBA/bImHZ1MQWAVPIUZdwe55hTOBWd4lW5R/787dQRJxlYxhcvGtWR7r6xrUCqYqoMfFA06093zRPEOVPyIiXqmOvlyBj4/dkHNQDoAr13fkUNzGB5S8BM1FbweRSaubg9ppr8680+cdoEDOtDIxP1dD2lz2tm9mwmIP+6UBG/+zApfspm0zb9KcUa6upco3itBiPxmvRQoVfOSieJkz8EBlIHNG96kVogAWde6EZHUJYEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=808J7PNFPIIHz+voB6IbC90ayK3WTI6EeXcC4XBvC/4=;
- b=StpojMvsTAV8o9kgzJXp111EyDrRk32lpjEMIGhhZ1s/iRXHDOogzpr28b5HMLSUTxY9UNhyLFRSJ/0Ab7/89tKy/7HUvS+kaCQaQQ1o/XbG5LWDNZWcdmJb82bavu0flrgm032IIvhp9I7KnpNtI2/5ENGk8xjnqG49nMkJboo=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
- by CWLP265MB6561.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1dd::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.10; Thu, 19 Nov
- 2026 11:28:40 +0000
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0615.015; Thu, 19 Nov 2026
- 11:28:40 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Nov 2026 11:28:39 +0000
-Message-Id: <DMZ5HM326EKD.1I8KUFD65L91Y@garyguo.net>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Gary Guo" <gary@garyguo.net>
-Cc: <aliceryhl@google.com>, <daniel.almeida@collabora.com>,
- <airlied@gmail.com>, <simona@ffwll.ch>, <lossin@kernel.org>,
- <ojeda@kernel.org>, <boqun@kernel.org>, <bjorn3_gh@protonmail.com>,
- <a.hindborg@kernel.org>, <tmgross@umich.edu>, <tamird@kernel.org>,
- <acourbot@nvidia.com>, <work@onurozkan.dev>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/4] drm/tyr: name resource lifetimes after their types
-From: "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.22.0
-References: <20261118233727.3147222-1-dakr@kernel.org>
- <20261118233727.3147222-2-dakr@kernel.org>
- <DMYTKRS80NRC.18PBQHK9SZ8K9@garyguo.net>
- <DMZ4C3GGD9U0.360KJBSFLEK61@kernel.org>
-In-Reply-To: <DMZ4C3GGD9U0.360KJBSFLEK61@kernel.org>
-X-ClientProxiedBy: LO4P302CA0002.GBRP302.PROD.OUTLOOK.COM
- (2603:10a6:600:2c2::8) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:1cb::9)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QQId+XqJ
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48e09aa5264so1236231f8f.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 19 Nov 2026 03:50:08 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795089007; cv=none;
+        d=google.com; s=arc-20260327;
+        b=g7yeU/7whwZuNH9Ry5ZhK59q+7nE7Q8ctwLmdXi+r+p+XzhsW9V3FkUDGTOF0xH+uS
+         lHdgJmJFJEzWRF18q0oS8GjAQ72rjHDeIlowhYzX5fOkDIn4v7rXDmsYPWciVIJiOV5j
+         4yc0HS67ayiXLgIc5qDlrOgmxryE8j7KEunpRg42MGhkcf/W0abqwW0JxzY26w4qV5Sk
+         0qFEJMItMb6je49Ha9xGf/ADFneqpyXuq6eoD/R+7DgPkM58IMiDh4LlytoAAvioif/e
+         foWimC1OfPPmPBila+67EvkLjElGaCdvWd0C0ff3AvNbVM7OFlMSPAbDnaCLS5WqC4ub
+         urBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zOO8IN3WTwfTWmmyHCF/uCzTotxA10dmHaLxKg4Nq4E=;
+        fh=+E6rA+mLCTNgAzl/p2d3IQI0psrq4JNg5GPznJNgQcc=;
+        b=qTBcb/4Z+9jkKUDecKupCZ00+Y8KD7u9EL3wwmAPWheh7ETIpg9vMzUMnH6jIN0GdE
+         tXmX2NQXbE0YzuljNzaVkju7NTnlRAa6uFvpeDmsPl2KVbbFOyfuETfpfv6AP5gHxY86
+         maa4AMz6DcsU373DU5Q75GurrqOur1zYE6BEKxoZ/xu6LbMVjL8a1N7slaCdBCo6kPDz
+         UjMVrqtyZ3qpY7ieYgjuSpriHTZQnYTCmOpGn4l+drYp0YYdZVyHdohFNlnfsYkzWw1i
+         vjJa+rWMQXAFGV+g6jD7btCtUCh3mwC4JgiVjc3S9aZOkesgFtD9ZB4ewi0l7CYGO8Uq
+         5/yw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795089007; x=1795693807; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zOO8IN3WTwfTWmmyHCF/uCzTotxA10dmHaLxKg4Nq4E=;
+        b=QQId+XqJHc6/Vf9YxDoL4P2Tn4hvgiczGFrDlL7pq03qn8tlsBgLada/OoPp3FAScL
+         0GmXYnijJ2aVhgc2IamhiK0JWHB0pqpXEZrDagZ8aS0bzMEB4/nBrkWqQOmF/J1UHJsU
+         DV0WkOchAR5vtT8DRzUMZaDiT4MNN2o+kBX3Q98vad3roNBRiL5cBD32PMe6SCTvfeY6
+         fZas5wrW1OBVLG4FJ/NjXfRLdiPsCnq07RS3gwWp7C9Gt3cABDbIk6xReHeNRM86pK68
+         BRywyWUNuC2I3t/L6FegbyGHi87AyPauhXFb4jx1NXclspOdORSdXmP6Z7msFX3bhuEy
+         YIYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795089007; x=1795693807;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zOO8IN3WTwfTWmmyHCF/uCzTotxA10dmHaLxKg4Nq4E=;
+        b=GSbEERpc7ZQLlgHVa/D7O5GFaPtceVjRiAGNXJkXh2xY0x7Vs+gYmwW/f3bbVW4v4c
+         4HBXRJJ9uY21xS+7sSbODiCnk/qD8jLNOQd4J8gMem6hypKHinJTKZ10UOT0v3ZH5N7W
+         WN3Raibjw1BSbrzblK9GKT5B+HhrE/BZzAkBml4AtHcGGM8yJ8o3Lyat89EZA0nMrkff
+         uFXVucSQZ6D9rz6gXrehzLNlA4QwkygE36aZ5Ggzge5cKUkHqfVtbH3bh/yJntVSwnJ0
+         VQQp0dMFf2U4Lc4HJI5PH1rNlYf3Q83yhUo5u+nb8e51KolhaMoOSG9dEMyXEnk8YYn8
+         5/lg==
+X-Forwarded-Encrypted: i=1; AL+hErEAP4BxwH9OGi81d1slWKKkl7MzTW9NHMa0EtzoTq3hAvbGxl/709c3quDolYcGwIU3kXhP/s43chY195UEXg==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/YNK+6EtwqrIPUu93YrHNTm6HgWZZVc3/kxbyL1yeEjBpT5lo4
+	iCKkKJZhy8kqBcXLFI+VYwrQlLmriLjqXzkFHeUHfZd0DrRxXoJpCjhfrHpSKsC4f1/XcviNMq+
+	ey22a2Wz+dAWvZyakzgu65+OM5eNLM/vW8FUPSAOu
+X-Gm-Gg: AZFdTZcd0U2boNg3EADuHax/Oyhc9maujG447gNmiKfIGG0BSmWynK9HXsrr42+1KXn
+	RhgbyNstyGUoynOvVUUmE2CB7AF8FR0fNh3nE4B+Owl/jJL0lDLKLGKxVF98hgx9c5VX9+zrUsw
+	Y/GEbsPyZXKPYJ1RHaQDTdN/MEReXkBlyfr1oZohffBiUj2QIFTjyTY1M9b680EAHNX0ls7OmXN
+	sRQ62fMLe+H1gPZet+ZIA74r3j08cq+04at9iHU2y1zjr4ihvdhAnV4D2+bPz+AaTF46CR80QRu
+	RYvJkEUbjL9wdSTKHzLnB/YV9VIlD3pKHpZCE6+YpO2yu/qMesg/pp5uswebf76BeR4QFxPO+6n
+	GZtPrLOd+5dUXyJl2dJTc4HXPiq7Ddg2IL/27VvMveMbnrYR4mMIVBgTqDchzGnzdWE0SjKdRzF
+	bR5tnMmH9gYBYzL1d4ZtmBB7lLTTqQtxVQEsqc6lZSiSlU
+X-Received: by 2002:adf:e183:0:b0:4aa:8de6:6648 with SMTP id
+ ffacd0b85a97d-4aa8de66db5mr1569581f8f.45.1795089006191; Thu, 19 Nov 2026
+ 03:50:06 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -104,104 +105,87 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|CWLP265MB6561:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8e7f43ba-b3e2-4bca-e2f0-08df463042f5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|10070799003|22082099003|18002099003|4143699003|10067099003|261026140227099003|261026121527099003|261028144727099003|261022105027099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	OxRaJOEwJckp3KGQZv8abOsyvx14W+1bLRRRI0dXBdroj+9CXs0E1TmFlb+eMaNlJNPXe9Njc+c7M3Gn2Pn0ayPYhIVdP0Li/Hp4A0cG0B0RXK/tvmnSig5BeWixGBEZ9Fy8MRRMKfOf2XiUGlh5KViAujm8/6X7JA0dcuV/WZHDTT4XTpKqcOIqMGuGU55ygl2hogvOHeeqIXsRNeF5XfS4NG1Q5IpYrn+IqsnYKOfX2os+wJVu/Or/qU8NyOklHppPrq6gGuSTqNpvvBmh58wZHactmkcXNmJvB9yWP1cEKJiVbFtXqG/zE84Y/4GN+rUkXJzg/BhYMV0obzc71D8FPDFu1Avp2FFgprI68ZP9w0bdN6tv70rux+rD1HG3t/CGWuC5ysLC8nHB+MrnVTQqauJaXGZ8ESnBQ9mkmrqc+zwNB1xLNFEmUyd8b3nTNcxL5d3NxDJUeqCrcGQMnLjlzO309jZg22Wnxgke/9WOWydTgn8OZ8536MKrRHjBsZioSKM9Y8t45RsE6CWBzd68AjAhvzuwmjmXom+0qnYLXqEXfiYuHlYod7TWcwreTA33Y/rtSDusXocQW7QHQao4CJqAdn4xzS4PHrI1GqIey8la5+NSqhegZTMrVYPW+mJwpfNSs/ll4NZZ4yORLDAG36OSTKDOfH24z7UolSs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(10070799003)(22082099003)(18002099003)(4143699003)(10067099003)(261026140227099003)(261026121527099003)(261028144727099003)(261022105027099003)(56012099006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TDBBSXNPQ0RNbG1NZGFBd1hYVEdZcEN4L0FTM2dGbzhkUTRtVUtBb0txQU9t?=
- =?utf-8?B?THBvS1FTOEpOQ2FxajZSaDZWeU1ISFpMUUp5c1VOU0U2KytVb0RRQVdnY1NR?=
- =?utf-8?B?OElpWlVQdVZ6MUVNeUY2MTA1WlFFcWg2THJ5QlBuQ2tSb1lGZVFLVzVkOUlr?=
- =?utf-8?B?VFVVMkNCOXdsSjRONFQyTUUreEltMWtLS0ljcURiVHhLc0JCYnVDTWtYbjNZ?=
- =?utf-8?B?enZUQ3FkR2tFUHpwTS9VVVVBYXdqZXlRN1VvQ040aDNVTUpNR2xXL2k4ZzZr?=
- =?utf-8?B?V1YwZTZqMXd0dUxJOW9mekNRSk0rTmU5L25QQVRnWWhxMnRDZ3JzRm91SGtT?=
- =?utf-8?B?L1ZpcnFOc29wS2RGeDhIdS9SQlFVcHRiRWErMURhQlE2T1RjSTBLaXRpTmJK?=
- =?utf-8?B?aWp2Mk5uWE5QeXlVS0VwRTY4YjU4ZFpKdVlrVnY1RG1MUVF4S3pYWUJpb1J0?=
- =?utf-8?B?TVBJY3IwSnRVMnFOdkphTk54UUxkNHRzdGFnVmovVGVkTVZsMm5mMWRGNnlJ?=
- =?utf-8?B?OTBaMklHRS9raWZpQzVZYnd1a0o0VDh5TWhUVklRd2tGNEJsUTJxUko3R0Ur?=
- =?utf-8?B?M1YrUUVHZEpEdlQ3cElDU1dob1ZlcTJ1QUJMeW1NWTNMYlptaS9OUThES1Jo?=
- =?utf-8?B?amVjYTEvR1pyQzJHTElzaUsxYktJcCtVaVV6M0NLUStGb2ZNWU94VTV2NWZs?=
- =?utf-8?B?NkJ0dkFHdVErcVRNWVdqS2Vsbm4rOVdJaldxTGY0aWxGV0o1UXc1dWpzYUxR?=
- =?utf-8?B?MWxpQjc2L2NNbnRkYnU0Mm5kUzNZZWMzbGhqLzRETDJ4clZqQnIzRkcxMGh6?=
- =?utf-8?B?MkcrWGNzQ3JyUlJUTHZQS3VpeHVyVTRTdjF3eGNmYWhTaVRPN0V2T0o2eTdo?=
- =?utf-8?B?UnkwOGhmcXJuOVc5Y09VRjBlR0I4aTVnZUFCTThkZXhaMFQ5V2svNU9UWUFq?=
- =?utf-8?B?MFpvVzJMY25tK2Y4d0t2MlRZQ1BVUDdSN3U3aFRCemM0ZCszcGw3MHRKYXdM?=
- =?utf-8?B?YkhRNHdianljVDJLcnpzQVhEeXBOWWpGaXIrQ05HcGZqL2lTYk1RT295Y0Fn?=
- =?utf-8?B?ZkhJMis0VGpwTGpxVFR2OXNPTFZacWtsV3hMSi8xYWc4anNMTjVpSHBlMGlw?=
- =?utf-8?B?MTVRWEU2ait6aDRWU2I2K3J4bjBzUXpEdjVUdUtPT2hMWHV3NVcvYmZNeE9a?=
- =?utf-8?B?T0NHSEtIQTIvbXU2cXgrVDBpMFV6Nklld3plMjVjd2I5VmcyeTQ1T2s4Z05i?=
- =?utf-8?B?MDMyUk0rNWlVYm12d2hFclFUMHRNWWlvclNMa1NuWE9Ld1pvVG1jWnpuajAr?=
- =?utf-8?B?NDRZU3ROdDVVeE9JL2dnS2x4SURmdnY5OEcrbHd1akZ3ekJGVEtzbzZNUDF3?=
- =?utf-8?B?c1hveUhMUEU3enhKcmVtZ1VGRUZFTElwNzEvMHpneDJpR2lvTnF3Q1JyMURL?=
- =?utf-8?B?VzZEc1ozdzZ1OFVJSkZ1N1lpNUhCcktWa0Rqdmx0RUk0Y0ZUd2lLZm9oTWpC?=
- =?utf-8?B?VmVhVUxPVkFmS3dXYUNSTFViQzZlY0Nvb0lKRURXcHRPaFR5UE1ONk5LRjE4?=
- =?utf-8?B?ZVozL2pONWlCQkZJb2Z2SkRDaHFlUlRXWGhUUTYvQXQrSlNQRCtlWWhrTnRh?=
- =?utf-8?B?ZUpWOExJcGZjWTRkeCtRRjVPY09UQ2NUZ0htR0c5NGRzOWZtSzFWV2wvdG5w?=
- =?utf-8?B?RE9tbXNLUVFnYzlmc1pkM1ZSb3ZwdE5XZFZpNmZFczc1OUpQbFY3azl4c3Zj?=
- =?utf-8?B?MS9PelVvb0dteXh4VzdjZXdrWU0wRU83TXp5RUNSTHJtYmdpM1FDcnAzMlFX?=
- =?utf-8?B?L2p0RThwenFqYVhLSVAzcWFyRFFuTFJvQWR6WXBTOWxQNDRjalZzTHFURDJy?=
- =?utf-8?B?ZXVEWkFyZ3NvdHREN3Q2OVFrbEJuRWVGUUZQbTQ0ckNieTE0MGpGSGVqeGJn?=
- =?utf-8?B?R3h6MzZCekFUUFA2VmNUVWlKN1pLUzFNL09JU1BzdHNIaVpYVUpLeEtMbVND?=
- =?utf-8?B?WFJCUlF5TDM3ekkycDVTT0dGdXd0SGpqdG1ZUkt4NzNaTlI5R0ovTlR1RHgw?=
- =?utf-8?B?cUVSYStKZVFQWUhtVlU2L1Budzczbk84L0pMQWZCZmt6UlkyWWVXWUdXNjNO?=
- =?utf-8?B?MitFY3ZPaWFqSGdYdlF4KzRkd0c5RTdnM0l2bHZnTDRMYW9nczhJdVkyKytQ?=
- =?utf-8?B?UVNMOXBzTHpNRDlQQnNvc0xsdlU0VDVYelFUQkluZ1FNSExEcVZIdFMzQysx?=
- =?utf-8?B?NmU2Y28xTjJoUEVKaG5RQ2FQaWpTaHNRaWxaK1dIMnRRWEt6T0Y0WXUwSzU1?=
- =?utf-8?B?ditEVVRtWmNaSi9iSTNkcW9UWG1JbGwrelgvbEhWbXJDVkZybmVEdz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8e7f43ba-b3e2-4bca-e2f0-08df463042f5
-X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 11:28:40.7078
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Pa9D26UYpWQHS8FGXYI7EQI78/tav/noQKQIRSndOaHnl6FuWiS8ipNZwBVo2Y9TvRa8mTgjyjL1ZtyUirNxwA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6561
+References: <20261118181245.2583303-1-dakr@kernel.org> <20261119111746.3049044-1-aliceryhl@google.com>
+ <DMZ5ER6XTNLG.2ZJOF7F4100XW@garyguo.net>
+In-Reply-To: <DMZ5ER6XTNLG.2ZJOF7F4100XW@garyguo.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 19 Nov 2026 12:49:53 +0100
+X-Gm-Features: Aa3M54oh8HJOrpuOfJ-i5QqnZtSXVPWrGr-cWZKRejJI37TjGzDfWl8zYFwePng
+Message-ID: <CAH5fLghc63zD9c1F437pQiX+ohgSkYQe4nt3xP4gSTsqAVLzBA@mail.gmail.com>
+Subject: Re: [PATCH] rust: drm: remove DRM device private data
+To: Gary Guo <gary@garyguo.net>
+Cc: Danilo Krummrich <dakr@kernel.org>, airlied@gmail.com, simona@ffwll.ch, 
+	daniel.almeida@collabora.com, ojeda@kernel.org, boqun@kernel.org, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, 
+	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu Nov 19, 2026 at 10:34 AM GMT, Danilo Krummrich wrote:
-> On Thu Nov 19, 2026 at 3:08 AM CET, Gary Guo wrote:
->> On Wed Nov 18, 2026 at 11:37 PM GMT, Danilo Krummrich wrote:
->>> The firmware, buffer, VM and MMU types use 'drm for their resource
->>> lifetimes, even though each parameter is local to its type.
->>
->> This doesn't make any sense, a lifetime on a type by definition cannot r=
-efer to
->> a scope of itself.
->>
->> `'sec` is not the lifetime of `Section` and `'fw` is not the lifetime of
->> `Firmware` and I think this is just confusing.
+On Thu, Nov 19, 2026 at 12:25=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> Yes, this was badly phrased. What is actually meant is that e.g. 'fw cons=
-trains
-> how long a Firmware instance can be used.
-
-I think this is weird still. Any lifetime on a type would constrain how lon=
-g an
-instance of that type can be used, that's just type wellformness.
-
-I think what you're saying is basically "I couldn't think of a good name so=
- I
-use the name of the type instead". To me I think using `'a` has the same ef=
-fect
-and is less confusing because reader knows that it is a generic name and is=
- not
-tied to any specific scope.
-
-Best,
-Gary
-
+> On Thu Nov 19, 2026 at 11:17 AM GMT, Alice Ryhl wrote:
+> > On Wed, Nov 18, 2026 at 07:07:35PM +0100, Danilo Krummrich wrote:
+> >> Driver::Data is owned by the reference-counted drm::Device and can
+> >> outlive device unregistration and driver unbind. Driver state belongs =
+in
+> >> RegistrationData, whose lifetime ends with registration teardown.
+> >>
+> >> The intended model is that, after drm_dev_unplug(), surviving DRM
+> >> objects (e.g. through remaining userspace handles) no longer require
+> >> access to the driver state. Thus Driver::RegistrationData is available
+> >> (and sufficient) for all DRM callbacks into the driver.
+> >>
+> >> Remove Driver::Data, its storage and Deref implementation, and the
+> >> unused workqueue implementations that depend on it. Drop the data
+> >> initializer argument from UnregisteredDevice::new() and update its
+> >> callers.
+> >>
+> >> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> >
+> > Makes sense to me. Both in-tree users had `type Data =3D ()` anyway, an=
+d
+> > nothing uses the `WorkItem`/`HasWork` impls on `drm::Device`, so this i=
+s
+> > a pure simplification.
+> >
+> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> >
+> > One small suggestion below.
+> >
+> >> -        release: Some(Device::<T>::release),
+> >> +        release: None,
+> >
+> > [...]
+> >
+> >>  #[repr(C)]
+> >>  pub struct Device<T: drm::Driver, C: DeviceContext =3D Normal> {
+> >>      dev: Opaque<bindings::drm_device>,
+> >> -    data: T::Data,
+> >>      pub(super) registration_data: UnsafeCell<NonNull<T::RegistrationD=
+ata<'static>>>,
+> >>      _ctx: PhantomData<C>,
+> >>  }
+> >
+> > With `release` gone, nothing ever runs `drop_in_place()` on the Rust
+> > side of `Device` anymore. That's fine today since all remaining fields
+> > are trivially droppable, but it is now an implicit requirement on the
+> > struct: anyone adding a field with a `Drop` impl (or a pinned field
+> > that needs a destructor) would silently leak it.
+> >
+> > Could you add a short comment on the struct along the lines of "no
+> > `release` callback is installed, so no field of this struct may require
+> > dropping"? That way the next person adding a field knows they have to
+> > bring back the `release` callback.
+> >
+> > (For what it's worth, I checked the lifetime-parameterized `File`
+> > series [1] against this: `open_count`/`open_count_wq` are both
+> > droppable without a destructor, and the two merge cleanly, so no
+> > ordering constraint there as far as I can tell.)
 >
-> (In the following patch, in TyrDrmRegistrationData, Firmware borrows Mmu.=
- That
-> borrow has its own lifetime, distinct from TyrDrmRegistrationData's 'drm
-> parameter.)
+> Instead of a comment, a const assertion of !needs_drop would be better.
+
+Good idea
+
+Alice
