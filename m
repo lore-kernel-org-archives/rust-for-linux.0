@@ -1,45 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795091733;
-	b=uHVNdBCFwofzEfGY8XNKZPYaBY72t7f9diTzmDH1O/Z/58MV+kzQgL7QKbInFkGXY0yO
-	 AxpggOY09PlfoZDlg4oKd6QQT9kMP2TQ6w+iKVN3UEvdFu7PO9r96mro1vHEWepM9+eMX
-	 2FwguqZrsKf/51GXaY2JQRuUnNthHfVGHgF698lPt9pgZ0cmsvbne8lUp7oqLH8UHdV7h
-	 +9lEGs5kgsGrpvH5t2JBVx5UuPGl8iH0o7I4E+MO0T/dueddW8JjCwJsdrdpM2iTPPzh5
-	 +8V9KjZfaGJnOVw7vEdTN7P5Ty+9EVppdDbqNlO5oPNCiOTtil9WRxpC6KaLcLy1TFA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795091733;
-	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:From:Subject:Cc:To:References:
-	 In-Reply-To;
-	bh=JZwSzmbpLd5nw3ADrG6ZagdEQ6wcWuReHNoHgHSQPmc=;
-	b=ToyaOLzcnJsOR0BicNW625OJdO96Gn3C1w+d/opkhET2xfBe2CsZ92sTAEs36x71mE00
-	 x01QGNN+9xLZj8Jjk+rADXdLDsCg3LFNwMj+amWO2nI/++0wwW0t+1Zav91zyFJrSp1Ym
-	 gRz2epHT3ivm3TOuANkJ6Hzrt8pTVH8eqJHyo5Il8s9wJYMLA+T+w7ObGJnaNOlG4V6o9
-	 c++ddfuICwLtqBbjhZsghpbuCvtccLtqjC/xJWQTRbAZoVpGKoNVuFdjr9+Y6ai2gStDS
-	 ftoQlPg0FQl9GPBl31DuiDZQ3w4ZhbzdAqXd7tJ+89QEj6bobG5aVJY/xcTsiTdaBFA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IIHdUJVr;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.44.135
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795091938;
+	b=ks5Ql/L0/FlufGP+3bkbrUvqdnl90VmTnNRzDWVVA3R8ayOHuiVXA3YUrGsHi3InkMln
+	 iMdnX2nBy7iyzb+XMyvIIFVoe3qoBqgf9LjQ1odbPw9n07PZEHi+EQ8D96+Zjr1y7O0uf
+	 vTr7HVuVn25Rob+TkE1l428Cghe6z1EosTDlgDnGLE8KJPAWj6dFNuzDHrFFuFcdtfDMX
+	 wioWAbjqCV+JoKzjt4VAh2sUB9DWNNji1of5QlDqAacyDmr/yyOANALxOkT8XPMlZrd9p
+	 l6lTSvd6kOW0xjLzf6kEiReJ2gIB0Xlm+3BmstR72/HhYz5QkWcKKTJ7hbpu8YnY99w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795091938;
+	h=DMARC-Filter:Received:Received:X-MS-Exchange-Authentication-Results:
+	 Received-SPF:Received:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:Content-Type:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=olAOl9rlOmSSINGFpRQXmItoI09BaEXrfHFxRDgl1W0=;
+	b=mRF7edmKqXL/85F3pKSVDK6FmwqP3EOxcVf6GF6oMib8pK49C/4rfnFpEXex6sJ74TF6
+	 wT56BDW+I7aANIjJuzKWPtv7/xlB+YE21LE8HT6JFOOi0dNov9GWN+ifd2PQGQh/uN5yS
+	 1KhkIbiIN47h5w8i2N/XPHoWZejuhlMKECDdgX8zaJF0S2GcdFqV8sA15rKyPbLjifhAp
+	 O0g+C/O07cJ79pSY3T4I4GgleVF5aa5BloYZ6o7nOoNPODaWw1eC5m4WVMWpMLTSHj9gA
+	 GX8U1elUgFHh9dWetdXGpxMZHX+mnjkDtSwYyqaSkE5fqBey91luE/DuLjLmQJ1DefQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=cixtech.com;
+	spf=pass smtp.mailfrom=cixtech.com;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.44.135
+Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazon11023135.outbound.protection.outlook.com [40.107.44.135])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84911606A320;
-	Thu, 19 Nov 2026 12:35:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IIHdUJVr
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7D31F000C4;
-	Thu, 19 Nov 2026 12:35:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795091733;
-	bh=JZwSzmbpLd5nw3ADrG6ZagdEQ6wcWuReHNoHgHSQPmc=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To;
-	b=IIHdUJVromNgk06XuE0ek4z2uYmPDN4cm9kJkOcMLBK+zNb1ZzDQeRC1i8jGYixaQ
-	 k2sJ8j0ChtKyYbp2/+XognzOqVmK6nZIjIEwF1iUBiwKIfxk1aQyFl2lmYEo9dlYXq
-	 Rt12i40heUzjSNHvh/nyF6RN3DXMukUjX6e3Okbv6+UeanHgdXJ4iPLndRPB5ZhHLv
-	 SSySjs2IHmu+ymUI1akKPhKClVipDmn5TC6uqXMud7ExPzUfnoZSl0oCo9iWgJF3e2
-	 IaP1SwBJtMSip9ZBGtig16CmHQB1/vmWBpr8Xpm32mtTT0xf1VG/UlBzrROzcgmZ9v
-	 junKwu5ae5aog==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF3C606A32A;
+	Thu, 19 Nov 2026 12:38:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0FF3C606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cixtech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cixtech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uMJbDgazA6sWIl6w08lVYkmsKdlKF3z1teqJiE6UHDR8yJdUkGAS5Up/DSiI1odr6+UVLep1mH0Lbi8/WIpGQKHmq8Od8bCj35qc3nvATnWpaHfTgxEnH3L5VQi8J5AZHHixQFtqWFtywmsFm3OFZUdLaivAiSgade+J4ekg74sUmsPW5gg+4fgGUHMzE5XliAdaTUgP7YGr088O6iyWGmNxyHauiFs3xSDtGEWHlVMbQJ+eU7Gbgbrr4pnkz5XfnTBKvEyAy1KgOZvjLWqOE7ZcEd1k7B1OzK/DBFsIgPHQ0Z0qTKICVOr+7mtp/2xv297BnKYdN9G1oF2gkZLcXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=olAOl9rlOmSSINGFpRQXmItoI09BaEXrfHFxRDgl1W0=;
+ b=tUVPbhX1z1BC7QsBlHP55MrJVvgEgNt0sV/wrTA7yxdyq11WWfZ62n8/RlL3Tu7QiCIKfml368ORF7lWCc2UFmPOsVUHO5n0Z9YmOHl5QHw3mkMRuRFm/EN/bdXz8hMb+o+oSTxPXJGowHqbfnOPOa6srczOGKGgx+YSunIdCKJgXnONeH0CfJiw7IdQlhnQP1fzNU0zhgqWKaQTdQkerD6X7eOPxKN7BDQjynlnvHuJhJUgCx2CXkJ4sqsdr2taWOtBdk29qZn2fQt+V2ZgYjJlgN3D+LkF255nw+0B/9hzex8Ga8cjF+qdSU8rgVPzepN1MyueF6keCjgg6MDFsQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 222.71.101.198) smtp.rcpttodomain=arm.com smtp.mailfrom=cixtech.com;
+ dmarc=bestguesspass action=none header.from=cixtech.com; dkim=none (message
+ not signed); arc=none (0)
+Received: from PS2PR03CA0005.apcprd03.prod.outlook.com (2603:1096:300:5b::17)
+ by SI4PR06MB8874.apcprd06.prod.outlook.com (2603:1096:4:2b1::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.1; Thu, 19 Nov
+ 2026 12:38:54 +0000
+Received: from TY2PEPF0000AB86.apcprd03.prod.outlook.com
+ (2603:1096:300:5b:cafe::97) by PS2PR03CA0005.outlook.office365.com
+ (2603:1096:300:5b::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.662.1 via Frontend Transport; Thu, 19
+ Nov 2026 12:38:53 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 222.71.101.198) smtp.mailfrom=cixtech.com; dkim=none (message not signed)
+ header.d=none;dmarc=bestguesspass action=none header.from=cixtech.com;
+Received-SPF: Pass (protection.outlook.com: domain of cixtech.com designates
+ 222.71.101.198 as permitted sender) receiver=protection.outlook.com;
+ client-ip=222.71.101.198; helo=smtprelay.cixcomputing.com; pr=C
+Received: from smtprelay.cixcomputing.com (222.71.101.198) by
+ TY2PEPF0000AB86.mail.protection.outlook.com (10.167.253.10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.639.5 via Frontend Transport; Thu, 19 Nov 2026 12:38:53 +0000
+Received: from cix (unknown [172.16.66.176])
+	by smtprelay.cixcomputing.com (Postfix) with ESMTPSA id 2B8B3427EFC3;
+	Thu, 19 Nov 2026 20:38:51 +0800 (CST)
+From: Cunyuan Liu <cunyuan.liu@cixtech.com>
+To: boris.brezillon@collabora.com,
+	steven.price@arm.com,
+	liviu.dudau@arm.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	gary.yang@cixtech.com,
+	fugang.duan@cixtech.com,
+	daniel.almeida@collabora.com,
+	aliceryhl@google.com,
+	p.zabel@pengutronix.de,
+	daniel@fooishbar.org
+Cc: dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	cix-kernel-upstream@cixtech.com,
+	robin.wang@cixtech.com,
+	cunyuan.liu@cixtech.com
+Subject: [PATCH v3 0/7] Add initial GPU support for CIX Sky1
+Date: Thu, 19 Nov 2026 20:38:43 +0800
+Message-ID: <20261119123850.2994625-1-cunyuan.liu@cixtech.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -48,179 +111,139 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Nov 2026 13:35:28 +0100
-Message-Id: <DMZ6WRFGHVQI.22OJY1Z1QP2MF@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH] rust: DamFence: Remove warning about unsignaled drop
-Cc: <phasta@kernel.org>, "Sumit Semwal" <sumit.semwal@linaro.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, <linux-media@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-References: <20261112101015.528127-2-phasta@kernel.org>
- <5d466f7c-2e70-4011-be04-9ffdf877b915@amd.com>
- <49298d3a328c1695ea27993f714c20b8a1c05f32.camel@mailbox.org>
- <e2ec8a39-56c3-4274-91ce-60c273904877@amd.com>
- <ab99758408df682c68a3792cc3014b77d6e1c8ab.camel@mailbox.org>
- <c2dd46ea-94d8-4720-af37-897c91809338@amd.com>
- <DMXJ8TBSZJJ4.3HG0OJDI9URTT@kernel.org>
- <8da4a8c0-1740-450c-9cf1-1a7b21d12997@amd.com>
- <DMXMSIQONGUW.1RRNS7I6LACD6@kernel.org>
- <a7f9e0f3-b299-4d40-9230-106003725dc2@amd.com>
-In-Reply-To: <a7f9e0f3-b299-4d40-9230-106003725dc2@amd.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY2PEPF0000AB86:EE_|SI4PR06MB8874:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: 08518d30-5d29-4a2a-f612-08df463a1224
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|376014|7416014|36860700016|23010399003|6133799003|261009223027099003|18002099003|3023799007|261026140227099003|261026121527099003|261028144727099003|921020|261102123227099003|261021121427099003|261021123027099003|261022105027099003|261022075727099003|56012099006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	2Q/oej1YCjtAfgQ3N624IbciPCB/up6HX1kMQaTTqaHh2JNdWkilYPD2Sij+tIKK2PgXYy1SgTMb2+sWsPntoXt7qpp9f5y67vtpHmNp93ANoXMGjI2Ci/HdnKA4j1gcArPy7X8fnn0EDFYH5RWDlrtpP97v50zF4gjU7t4AKpXYo1m4KfVNuByc50Fwd9dTqDw6P2zzgHsGpkgrqcxJVQzlcDTm60KNTlLeJWXtrnHguXEep3LVwiIE7rzq+xjoNZ+lPuIw8+zlYrjwQYA5aMYF0K7tZi/PE6HwoxYdy88UH+tUiC+xno/s31SIF9P002CbJbW2lDHo418ivguCiMkccnvtWBEMEqGA5MIoduK1YPkwm7m9HhF4Glpr5C4ycJwaPFDHK4ofwtAfHg7CFRI5JgJszqAnoGCezAkuqyshwZ7tIGqbBGl7icQZo1mRCOv4ZDElx2TLCa4ETxhgK8ZBJEG0L62HsfixzmruyIVr81lxaubxLMSnyTIAVtxbKJ8A/3W1Q8g5bg4lh5DdjJnJ1PlKItx/SyndBSa7NSsyH4Gya1Cmi3QohExPxPpda7EJ57Yc+jI4BG+8+Z7UqxJWakcJzr8j0X5cde8L4PDxOhMiyZy/POdF0SvTGRpMC5jeAxIHHe9n2VvxJzZN8CLkHg36RpOi4bV9rrKVxytQOv22bcbvLLpmde/WQr/J
+X-Forefront-Antispam-Report:
+	CIP:222.71.101.198;CTRY:CN;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:smtprelay.cixcomputing.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(7416014)(36860700016)(23010399003)(6133799003)(261009223027099003)(18002099003)(3023799007)(261026140227099003)(261026121527099003)(261028144727099003)(921020)(261102123227099003)(261021121427099003)(261021123027099003)(261022105027099003)(261022075727099003)(56012099006)(10067099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	tQy3VUh181nx/ckEwFn9ChGcqlNatWXm24yopBoDaeVEywZwLDrN7E7Hmlruk70BtLfGuvEeG+HF0w/xOltUPc84xrwvve/WutG74A/fEBBtXuGZOcbPogjILzYuyMueexlIeS4auS7Ofxtf6++RRwS5YEVe7dROHQiEeTk3DegwVDFo06852+j1Dl8OMDHegE3Aq7c/lVo8Y56vyVug/W77hvv0ZqJJ/pPNQ+QHkNzgRWEyY1Qpg+C6HFHjn1u0zsag1YfiX3uuxtJKs9ez4EboSWYPfrWtIhU6ftUZUsAordHqnQimDFycPexQILtS5b7GX3uXJ2A/Lwkk/MUQMxdNokn0BYKxdX2v6+qKyAmrLfgc8pTDBm3mbKpr2m/dmdeAZrBD01mwE2coSNBfhuJnz50Nnk3+UEzhBTlZNAiJ0JQnM81vdreOmRDYe9T/
+X-OriginatorOrg: cixtech.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 12:38:53.3076
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 08518d30-5d29-4a2a-f612-08df463a1224
+X-MS-Exchange-CrossTenant-Id: 0409f77a-e53d-4d23-943e-ccade7cb4811
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0409f77a-e53d-4d23-943e-ccade7cb4811;Ip=[222.71.101.198];Helo=[smtprelay.cixcomputing.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	TY2PEPF0000AB86.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SI4PR06MB8874
 
-On Thu Nov 19, 2026 at 10:32 AM CET, Christian K=C3=B6nig wrote:
-> On 11/17/26 17:36, Danilo Krummrich wrote:
->> Drivers often reference count representations of hardware resources and =
-hardware
->> states and hence keep them alive beyond what their actual lifetime shoul=
-d be --
->> even beyond driver unbind.
->
-> Yeah, I agree 100% with that. I know why drivers do this and there are un=
-fortunately really good reason for that.
+This series adds initial support for the Mali GPU on CIX Sky1 and
+enables it on the Radxa Orion O6 board.
 
-I don't think there are good reasons for that.
+The GPU requires an external reset before the driver first accesses
+the hardware. Add optional reset support to Panthor to perform this reset
+during initialization.
 
-Given the below, I assume that you refer to a teardown situation where you
-instruct the hardware to stop and then destroy the representing software
-structure once that actually happened.
+This initial version keeps the PM firmware default clock settings and
+skips devfreq. It does not read OPPs or request a performance level.
+The firmware sets the default GPU frequency to 1 GHz. No devfreq
+governor or GPU cooling device is registered.
 
-But this can't work without synchronization. Drivers live within a bounded
-lifetime model, where they must not keep device resources alive beyond driv=
-er
-unbind. If they do so regardless, that risks UB.
+Without an OPP table, the driver can only run when neither mali-supply
+nor sram-supply is present and the platform provides working clocks and
+power.
 
-IOW, without synchronization you are trading one potential UB against anoth=
-er.
+Configure the system-level cache before L2 power-on using the policies
+from the working CIX Sky1 driver. On Sky1, devices on the MMHUB bus
+cannot access the system-level cache, so buffers shared between the GPU
+and MMHUB devices require a specific system-level cache policy. Without
+this configuration, the GPU display output is corrupted.
 
-The solution is not to reference count device resources and potentially kee=
-p
-them alive beyond the kernel's lifetime constraints, but wait for the hardw=
-are
-to stop in your teardown path before destroying device resources.
+The system-cache support is a separate patch and reads the policies from
+DT. The proposed format is <source-id read-policy write-policy>, so the
+DT only lists sources with nonzero policies. When the property is absent,
+the driver leaves the registers unchanged. The format and zero-default
+semantics are included for review.
 
->> Consequently, it is perfectly reasonable to assume that a driver object =
-that
->> owns device resources (such as DMA memory) will, in its destructor, tear=
- down
->> the hardware to not access any of the resources it owns anymore.
->
-> Exactly that is a pattern I have seen many many times before and I can sa=
-y
-> from experience that it is very prone to human errors as well.
->
-> I have worked extensively with OCaml which to be honest looks like the
-> grandfather of Rust, but Rust does a lot of things better in my opinion.
->
-> See I have like over 30 years of experience with that stuff.
+The series contains seven patches:
+[1/7] drm/panthor: Add optional external reset support
+[2/7] drm/panthor: Allow operation without an OPP table
+[3/7] dt-bindings: gpu: arm,mali-valhall-csf: Add system-cache policies
+[4/7] drm/panthor: Add system-cache allocation policy support
+[5/7] dt-bindings: gpu: Add CIX Sky1 Mali support
+[6/7] drm/panthor: Add CIX Sky1 compatible
+[7/7] arm64: dts: cix: Add GPU support for Sky1 Orion O6
 
-[...]
+Tested on Radxa Orion O6:
+  - Offscreen rendering with pixel readback
+  - kmscube
+  - glmark2 at 1080p
+  - Runtime suspend and resume with a retained EGL context
+  - Reset-worker operations
+  - Module unload and reload
 
->> For instance, think about how your logic would apply to e.g. DMA coheren=
-t
->> allocations.
->>=20
->> Those are allocated with e.g. dma::Coherent::zeroed() and are freed on d=
-rop().
->> They are then owned by whatever object represents the lifetime of the HW=
- using
->> this buffer.
->>=20
->> Following your logic, we'd need to conclude that a dma::Coherent allocat=
-ion
->> needs an explicit free() method independent of its destructor as well, a=
-nd have
->> the destructor print a warning and then call free() anyway.
->
-> Yes correct.
 
-[...]
+Changes in v3:
+  - Split optional reset, no-OPP operation and system-cache support into
+    separate patches, as suggested by Liviu Dudau.
+  - Remove the Sky1-specific skip_devfreq flag. Use the generic no-OPP
+    path.
+    Limit this fallback to configurations without GPU supply properties,
+    retaining probe failure for supplies without an OPP table.
+  - Move system-cache policies to DT and use separate read/write values,
+    as suggested by Liviu Dudau and Daniel Stone. Add explicit source IDs
+    so that unused entries can be omitted.
+  - Validate the architecture, source IDs and policies. Restore the
+    configuration through the common L2 power-on entry.
+  - Drop Conor Dooley's Acked-by because the Sky1 binding now requires
+    the new arm,sysc-alloc property. Please review the updated binding.
 
->> Now, eventually drivers would just call free() from the destructor of th=
-e object
->> owning the dma::Coherent allocation, so we wouldn't win anything.
->
-> No, exactly that's incorrect.
->
-> See the problem is that you rarely can tell HW in a linear or synchronous
-> fashion to stop DMA operations.
->
-> What drivers do instead is to send a request to the HW saying "Please sto=
-p the
-> DMA operation" and the HW answering with a response which takes the same =
-path
-> as the DMA operation itself.
->
-> Only this way you can be sure that there are no more DMA operations in fl=
-ight
-> between the HW and system memory.
+Changes in v2:
+  - Use devm_reset_control_get_optional_exclusive() unconditionally,
+    remove the redundant NULL check before reset_control_reset(), and
+    drop needs_external_reset, as suggested by Philipp Zabel.
+  - Add Conor Dooley's Acked-by to the then-unchanged binding patch.
 
-Sure, but then you have to synchronize on the software side, nothing stops =
-you
-to block the teardown until remaining transfers have stopped. And this is
-exactly what should be done.
 
-Freeing resources underneath the ownership model from asynchronous scopes i=
-s
-clearly not the solution.
+Link to v2:
+https://lore.kernel.org/all/20261109120902.125242-1-cunyuan.liu@cixtech.com/
 
->> More in general, in Rust the object taking ownership of a device resourc=
-e is
->> responsible to deal with the device related state that makes use of this
->> resource regardless.
->>=20
->> Insisting on an explicit method call is not improving anything in this m=
-odel.
->
-> I'm not insisting on an explicit method call.
->
-> What I'm insisting on is that the response from the HW that the DMA opera=
-tion
-> has stopped is signaling the fence.
+Link to v1:
+https://lore.kernel.org/all/20261106104735.1651267-1-cunyuan.liu@cixtech.com/
 
-This is reasonable if there is an asynchronous response.
 
-However, note that the destructor of the object representing the HW state h=
-as to
-wait for all this to finish regardless, as it also owns the actual underlyi=
-ng
-device resources.
+Best regards,
+Cunyuan
 
-There are also cases where there's no asynchronous response; the drivers fo=
-r
-NVIDIA GPUs for instance do synchronous RPCs to tear down runlists, where
-pending jobs don't receive completion events anymore.
+Cunyuan Liu (7):
+  drm/panthor: Add optional external reset support
+  drm/panthor: Allow operation without an OPP table
+  dt-bindings: gpu: arm,mali-valhall-csf: Add system-cache policies
+  drm/panthor: Add system-cache allocation policy support
+  dt-bindings: gpu: Add CIX Sky1 Mali support
+  drm/panthor: Add CIX Sky1 compatible
+  arm64: dts: cix: Add GPU support for Sky1 Orion O6
 
-(The same is true for cases where jobs are queued in a software queue and n=
-ever
-reached the hardware in the first place.)
+ .../bindings/gpu/arm,mali-valhall-csf.yaml    |  79 ++++++++
+ arch/arm64/boot/dts/cix/sky1-orion-o6.dts     |   4 +
+ arch/arm64/boot/dts/cix/sky1.dtsi             |  19 ++
+ drivers/gpu/drm/panthor/panthor_devfreq.c     |  13 +-
+ drivers/gpu/drm/panthor/panthor_device.c      |  13 ++
+ drivers/gpu/drm/panthor/panthor_device.h      |   7 +-
+ drivers/gpu/drm/panthor/panthor_drv.c         |   1 +
+ drivers/gpu/drm/panthor/panthor_gpu.c         | 187 ++++++++++++++++++
+ drivers/gpu/drm/panthor/panthor_gpu.h         |   1 +
+ drivers/gpu/drm/panthor/panthor_gpu_regs.h    |  58 ++++++
+ drivers/gpu/drm/panthor/panthor_hw.c          |  13 ++
+ drivers/gpu/drm/panthor/panthor_hw.h          |   5 +-
+ 12 files changed, 394 insertions(+), 6 deletions(-)
 
-I get your point that the DMA fence kinda is the synchronization primitive =
-to
-wait for, but it can't be generalized that way; the producer (which eventua=
-lly
-is the driver that only signals it on behalf of the hardware) can't always =
-rely
-on that.
 
-> And not that driver tell the HW stop DMA and then continue and dma fence =
-is
-> automatically signaled without explicitly saying that is the signal that =
-DMA
-> operations are stopped.
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+-- 
+2.53.0
 
-That's the point, the destructor of an object that holds device resources c=
-an't
-just tell the HW to stop and go ahead without making sure that the HW is
-actually stopped once the destructor returns regardless.
