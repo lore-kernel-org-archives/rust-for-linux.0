@@ -1,75 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795101440;
-	b=GKPsUuJZ75UkDGKgN2A8a3yi0ztD/VwgHkyvdq/dB3raaDhlIl4SMZ0Whnnb4MoGzlb8
-	 sDxkYyBuTCGvRx3U29dpjSNdC52rZXL+zrXUrdeooRyXaQpCUDdYThx59KOK2YHzFrfaV
-	 0G0MNQxdcWnJlly8FsKxp/eAVJFx5SYWBqRV+ELZEphoyoctsY1rfU7oURHWCUg1PxjGr
-	 hLtkCCZlCXPqwz92PSdOpk43w1LnjqyXL9zqu8E6HAoy/wMq1Y7RmiNURmc0HKASdCNs3
-	 ziEnGEavD9nMnCkvxTsZHeREUDL7t3VAr8ex7VM5lljp89im2xsGQs7qcidqgu5A/tQ==
+	t=1795102489;
+	b=0TX7bWkjXZoxSSBr4FD66ZaGwr87KlKtQG9LuA42BmMUOJwIx51eFXT50QV9SFk9VEdH
+	 Y0FIQYcCmmbKPh8/OCawssmXCWi/9aKk097va/7ky3zvNE+d6wETm4qNKL01UarjKDz4G
+	 B86h3mwYIjsoHGgJVxyI5QIZgMxGrReclrzjIqJ9NR/XsV3WoCJ8/qMAxQIMeDC1mSIos
+	 +51u42EpBPP0bLCCPNPEUyd2vR7eRsbbEsLVkcTvHxExqVL/xvSmgpuhloVmHpnMqXEXn
+	 wc4Ho3EbPDcviPMXRXp4pQh/1MLB6e2DimVzNY2UoO6TecEkSTDEZY2drKegg4Nigfg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795101440;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=SyuDrpmJ1XWa7Wlz59e6x5byHk/40wmc7cULUycDuXU=;
-	b=ImN4TCp9D9WC2tPmxmjwYBd33XEyoANi6YpPXouboYlFZJ+EfJKs8cDMyi/6ofL0pD0Z
-	 8XHTLQqh912dvFZYgTGeNC+ZBBq8Q/dXINwkFdxtTr06IRAq/tlWel1CXCJ9dpIe8uDxM
-	 w4G9PePLUHMdJxqT4vFIC7ea5CIhBgI3ADtuDsijGirqmp4HRbDHBGbCIFkDkZVKWawSe
-	 hjUaLSyCVm9sekiDR9akhgufgEW+LjrQvbzA817qipshBpd2VouT2sXyjk+anD7gM31j3
-	 DasYTjnUYJqlTziP+uWt8mqPLI5P0P1RmWm90id8MCtiQTKXMi17MPC9tGNCB3srdfw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795102489;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
+	 In-Reply-To;
+	bh=ZlsTCsBICLBJ597QEBYNx8FtzkLGCbDoSLusHqWgJeM=;
+	b=fvL5eRuXgF15syU8500zEueK+58w6Eu5bPKVviEMQAIvlFk4185hyIa6Q+vf2yHmMW95
+	 4aRnI8wwGFNxkzg58VNXx8ge/cU3SI4icXk9yqPJM42iDzlyhyuxQGZADX8TiNarn28r0
+	 +3PH73I2CCOeIEgK0HyECam1YVN9LM3DskD3ROABEZlZhqkcfM0OhUHkss00woFV2Nowy
+	 FKJALxe3QP9Ei9D7TF7NmWY14Llj3+yMmTWGxyXyNs3/aZLHQu9xy8FNDLnWPWyiQYe+g
+	 VaMsUTywFsd2QyuWM57O3iNJTRsK0Nf+wwGTpZZQfLJIZbR+8RpCxVcEXmD3VlL+OMg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SZUILlph;
-	arc=none smtp.remote-ip=209.85.128.72
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=em1S4iOC;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E80D606A325
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Nov 2026 15:17:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7E80D606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F5C606A320;
+	Thu, 19 Nov 2026 15:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SZUILlph
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4ba078abd78so17707285e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 19 Nov 2026 07:17:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795101439; x=1795706239; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SyuDrpmJ1XWa7Wlz59e6x5byHk/40wmc7cULUycDuXU=;
-        b=SZUILlphfgXGTDYE08I0YC8MVrpEvtcaFAbcGCcLFbLmTdSpr2hXCd9KEru7b4TsYN
-         hi2Q2IAypjpu0LlG/zbsNNCHF/CtE++P/3i7QQgkmywfT/C2jSOIh69lTS2n+flXdfkR
-         fsk8LU7HO1J968fKLDZ2Ro5h1RwyGNdjHwkHqqsMBopTGBGKLoW+IataHJj5j/nofwM4
-         bz+f71x8khN+jjnhoWl0m4DwKFCVZaMNaf35lOPesszaJVHIP6yiKNxRP3VHtrNjsSRd
-         Q7SzyoUUxgtpLXQxoozSUqKRy9tPYa1pUuEzQylHSu5b3RkZFkjcigYpbeVlYTQGStFv
-         eooA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795101439; x=1795706239;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SyuDrpmJ1XWa7Wlz59e6x5byHk/40wmc7cULUycDuXU=;
-        b=HmitLnTdjC7UvJVz71LqVNPLNNY/mlnTYTEFVsV0/BQrFf3Bgft7QvX4ccWvGyD1Lk
-         EiZF4lE1dXJur789Xxnv7S+KG/x8i1u+4IBvNyFEfQVPzSjWjEvktVF/1xucsbY8qQm8
-         N3RyppBeiAx4M2fn6jae8fHWfXiIM3ZRHlyGxKHa1dCO9VzKeFIjBHynRx4MvnGtjcTn
-         CiJsm1FGBMb9cmJZTPjioUd3khL8dTnVFC92gLOraJ3150P2FhzNjYByj2gjMet8ouu9
-         6LDISTVYlobRXemezKDKqXONNmsyj5GzXGe91UtLWtnBGaIcFXdxb5F7m7Aivv1V8bCa
-         WOxA==
-X-Forwarded-Encrypted: i=1; AL+hErHk3L4wc+3tpQLBh8CmcD4zsVO9pj3PYdPcWHrbajoC8v4GemzdgObplgR7frpXRBCMlcgNM9/NdaNCbQJccQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8LjNytB5ZMzjpJom0OAarmpSZn9g7kSzZ1+YQABwzLHb9GHQbm
-	4+wNG+cuvv9PNEqIEHIIFml3CsLpdjRF7uMvj1vz6ygxzme+oIYqUUmZol2mOdrLuj497jyE3qZ
-	FvQkUaq7uVQJFyjEfrQ==
-X-Received: from wmix24-n2.prod.google.com ([2002:a05:600c:e558:20b0:4bb:5200:da9e])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4ecf:b0:4bb:60da:56af with SMTP id 5b1f17b1804b1-4bb7da391b7mr128329965e9.25.1795101438587;
- Thu, 19 Nov 2026 07:17:18 -0800 (PST)
-Date: Thu, 19 Nov 2026 15:17:17 +0000
-In-Reply-To: <DMZ9I1E2XDQ7.3F0NFO0VNO0BU@garyguo.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=em1S4iOC
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B441F0092A;
+	Thu, 19 Nov 2026 15:34:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795102488;
+	bh=ZlsTCsBICLBJ597QEBYNx8FtzkLGCbDoSLusHqWgJeM=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=em1S4iOCUTv7C881BZNPp9wI9EhYKy2Zy5dF8x8GynqYkmpnkGYDoojwjWSQJXHbv
+	 hsLTQmtJhklrD2YeqpH2NLKbFPU85IJrKjPFQwjKQSBNdD65s5qxkQsyxNVmiR3rLp
+	 9lkxzAG4wDEOSxYR1fCltUl7FYvc+NI7jLN5FS23KFXkCLR0mr75EYeqBr6ZIpnBYX
+	 1XKJPPgQWisvjFNMyL+EMauFGFf3xAFDNE1XhGEPX83zb8VgCIBJcRSuJNLgAbQ4j1
+	 U5jMLtfQ9wGBi9jKsm3p3Qmu3WD5qc5hoRTjXoaQe31EkAW3f21kzbT4QgWCIvTpOi
+	 K/QtJpZrXDdyg==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -79,46 +49,59 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261119-rust-workqueue-v4-0-707c68994940@google.com>
- <20261119-rust-workqueue-v4-1-707c68994940@google.com> <DMZ9I1E2XDQ7.3F0NFO0VNO0BU@garyguo.net>
-X-Mailer: git-send-email 2.56.1.708.g77570a6a1d-goog
-Message-ID: <20261119151717.682282-1-aliceryhl@google.com>
-Subject: Re: [PATCH v4 1/5] rust: workqueue: support stack-allocated work items
-From: Alice Ryhl <aliceryhl@google.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Alice Ryhl <aliceryhl@google.com>, Tejun Heo <tj@kernel.org>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, 
-	John Hubbard <jhubbard@nvidia.com>, Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Nov 2026 16:34:43 +0100
+Message-Id: <DMZAQ0G6LTTB.1CRPNXSYB4QHG@kernel.org>
+Subject: Re: [PATCH] rust: DamFence: Remove warning about unsignaled drop
+Cc: <phasta@kernel.org>, "Sumit Semwal" <sumit.semwal@linaro.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, <linux-media@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20261112101015.528127-2-phasta@kernel.org>
+ <5d466f7c-2e70-4011-be04-9ffdf877b915@amd.com>
+ <49298d3a328c1695ea27993f714c20b8a1c05f32.camel@mailbox.org>
+ <e2ec8a39-56c3-4274-91ce-60c273904877@amd.com>
+ <ab99758408df682c68a3792cc3014b77d6e1c8ab.camel@mailbox.org>
+ <c2dd46ea-94d8-4720-af37-897c91809338@amd.com>
+ <DMXJ8TBSZJJ4.3HG0OJDI9URTT@kernel.org>
+ <8da4a8c0-1740-450c-9cf1-1a7b21d12997@amd.com>
+ <DMXMSIQONGUW.1RRNS7I6LACD6@kernel.org>
+ <a7f9e0f3-b299-4d40-9230-106003725dc2@amd.com>
+ <202dd0c3d515ddfa77a8ec8751badadd31b8a7b0.camel@mailbox.org>
+ <141892f8-180c-4157-8c59-6e69057334f2@amd.com>
+In-Reply-To: <141892f8-180c-4157-8c59-6e69057334f2@amd.com>
 
-On Thu, Nov 19, 2026 at 02:37:17PM +0000, Gary Guo wrote:
-> On Thu Nov 19, 2026 at 2:12 PM GMT, Alice Ryhl wrote:
-> >  __rust_helper void rust_helper_init_work_with_key(struct work_struct *work,
-> >  						  work_func_t func,
-> > -						  bool onstack,
-> >  						  const char *name,
-> >  						  struct lock_class_key *key)
-> >  {
-> > -	__init_work(work, onstack);
-> > +	__init_work(work, object_is_on_stack(work));
-> 
-> Is this fully optimized out if !CONFIG_DEBUG_OBJECTS_WORK?
+On Thu Nov 19, 2026 at 11:47 AM CET, Christian K=C3=B6nig wrote:
+> A dma_fence should *NEVER* signal because you waited for something. Inste=
+ad
+> the dma_fence is what is waited on.
 
-Yes, on normal architectures (checked x86_64 and arm64 with Clang and
-GCC): `get_current()` omits `volatile` and `current->stack` is a plain
-load, so DCE removes all of `object_is_on_stack(work)` once the empty
-`__init_work()` stub is inlined.
+In the end, despite doing it on behalf of the hardware, the driver is the
+producer of the fence. And there are cases where it can't wait on its own f=
+ence,
+because no one is going to signal it other than the driver itself.
 
-The one exception is `ARCH=um` with `CONFIG_SMP=y`, where `get_current()`
-calls an external `uml_curr_cpu()` function without `__attribute_const__`
-(and under `CONFIG_RUST_INLINE_HELPERS`, the dead `mrs`/`movq %gs:...`
-inline asm stays in `helpers.bc` until backend codegen drops it). I can
-wrap it in `if (IS_ENABLED(CONFIG_DEBUG_OBJECTS_WORK))` if I send a v5.
+Assume you have an execution context that is torn down, and also assume the
+hardware supports preemption. Then some of the jobs in the queue might stil=
+l
+signal, but some jobs are not processed anymore and hence are not signaled.
 
-Alice
+For those jobs that did not execute anymore, the fence still has to be sign=
+aled.
+So the driver has to signal them after it waited on the preemption and exec=
+ution
+context teardown is complete and no more operations are in flight.
+
+The same is true for job fences that are in a software queue and never hit =
+the
+queue of the hardware execution context.
