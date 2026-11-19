@@ -1,83 +1,44 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795119852;
-	b=CFO2NXtxWh/DkH8+y+Ux3Riwownz/ZmqgkstTny5F7n23OiVPnB+pfwaAbf+xy9jgb+L
-	 jTcxlP20sVDNdgPVOH2rNbHkQ42zFzfRrNAda2nmMsARz9Ue8RMhaAqpbZ42cBycsZ3Ar
-	 4vFKXxl21uw+0PJ3y0zeFBBztEgf3I99KROkMYttvoiEHBkUFwHB67IorY8Ilax9utDrF
-	 +DgtjayddzVmr1KqjLw8BrygDr+l4CibMiSERXTtnVbiQGWIyj4mjqWwQIrEQkZqLm6Ts
-	 iXZUO4fGcSCHoTBpu5r3YODSN5rBTlSzcpvzQjAohTI5QlRK7COPjqgeNVW47ri82fg==
+	t=1795122642;
+	b=i6rux4s3itFE5PWZzZ3eLG+S4+l6m9f7duXA7PoG0897r6Tj8D51PryqA2fETppyuikX
+	 WTFGRc2BqzJ4meqNx4cXR3FPoOHkBenrryK48+QiCukT5NfXfAtQP5GmS9n+e4kBWn4wV
+	 E7n+LgXWk/dSaxJ9pPJzqZ+1dK6DV7j2EP8FbVB/hTOZBoLCnaQ2RqOiDFEYn1dVurrX/
+	 MIL8WIerjA7enJBp/5RpZSOS1ie8PbVX3CAURlYeAn5hdNG4MN0IYnDw13Va8koWVJKaV
+	 ym3x7ZVJl9Tc55Td9SUgsncUxo6ZgjyICaTnJ07ePomYcePCwLfVCbBhyK0q4FS2BOg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795119852;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:
-	 Organization;
-	bh=NEN0atKg/M3F1a8/0+/P4ZK6rfO9L4rm/xzeeNC7L3Q=;
-	b=Gtx/8W/c9cZreME79uuACmjdlpWnsd/63MkBJNxyEPKALhjyoJHqS4a20+JnUIBbONj1
-	 ePUeeN7k81qn3sL4eFWQ68w+08faJs7/VP7Ayt3VDlJvzK5/oWE5etYMz5kdA9zc4PCRk
-	 EGAmr0cvuYJ32yXQz7AAU8LB6d7vHGNiPpAAjtoEGRHalKiQ0m/HgiJiVfqR+ClQtRB6h
-	 ebHRXgqfT27fFIchke04ecffX8mvZTSHTbn5amQLCDPR22nOkkdSUx8OY/JdOl9NXsMm2
-	 9kV7XCUpvviHZ9EajX206/iAoTw5ggvCmWG/+QdJYxEbi87+G8N0RIYF5LBMELy8cXw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795122642;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:Subject:Cc:From:References:In-Reply-To;
+	bh=/bG8PkjYsvEV7J210y97Xlh7ZvHXMIdtFOS3k8KAa34=;
+	b=DQsSEIXuWY7mHEQfzkFTPxUKdQILKgvpQob/0OuiEjex9eUPa3YwTVUSXUoDdIXCnFI2
+	 4JQqWB7CDGYhQfyEO5PTjR/jLX32pKAu0eaGE8BvhzqtgWf6zloIpFBKKxuYSI3sILom1
+	 utQpPjnc0WCA8J93kzJpki5y/ssg7S9Q8XqxUueC1LLdM4an1+2drQ9Yimz3FKAxKNlup
+	 fVD0WR2akksxZqypQxPgzXwM+yOcDh1A/fHq+jA/nT9PpPD+MiRuN+PjlALtnZHjlY022
+	 YcxAdwE+2yYlXvVRjYT6hfz9684s/ts2dserSQU102lOO50bDmQYCyudJhwtQmvtb9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XAvohrvw;
-	arc=none smtp.remote-ip=198.175.65.10
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kjUDbItY;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E29606E4CA;
-	Thu, 19 Nov 2026 20:24:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66E29606E4CA
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697AF606A325;
+	Thu, 19 Nov 2026 21:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XAvohrvw
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795119851; x=1826655851;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=JCHXofKG4BjXdQuJ/JAqQItB9QfzqxZYzwScTVo02+M=;
-  b=XAvohrvwBGtHvmL2MpPHmtKw9m2VlAXaJIGmCWH340Q3eYBXcbJsE3aQ
-   C1dWIziiQ+HgbLb4C6Wjdb1S2611NUjhBMweXbW9ios/G5aCtJeoNxC9j
-   XIY1LQfeOabTNyBABk2/MOwY4lVjOVw3M1v01USgtOqcqWC21EFvdRN6s
-   DWKP7r2zpB+E1WOB4Bf3ChrcFXOBWF8zyu5938vwAYdOVlYsOjmfyOSEL
-   dvxVc8L48KUXKs7tQNDcZu0H7RFhZ6qAq4z8FkgiQWusan9XCNOMQkw8G
-   x77yvVqMQQJncSI2dl6VO6t/IiBLSja56v+gr/RCnock8qucF/N3MJ/Ed
-   Q==;
-X-CSE-ConnectionGUID: nOqHn7C2QfK12aJyBZNvtw==
-X-CSE-MsgGUID: Ub/P3bynTg+MfQrg4jGFzQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="3903699"
-X-IronPort-AV: E=Sophos;i="6.27,221,1787036400"; 
-   d="scan'208";a="3903699"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 12:24:11 -0800
-X-CSE-ConnectionGUID: excDA9WDTXKDaqLKx4dK6g==
-X-CSE-MsgGUID: TxWBSIFOTV6/yOBNrMYwLg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,221,1787036400"; 
-   d="scan'208";a="10814598"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.61])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 12:24:07 -0800
-Date: Thu, 19 Nov 2026 22:24:04 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
-	". Boqun Feng" <boqun@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kbuild@vger.kernel.org
-Subject: Re: rant on Rust in kernel
-Message-ID: <av9a5P6ciEEjmxbO@ashevche-desk.local>
-References: <avXdJyqNNqopuH2_@ashevche-desk.local>
- <CANiq72nw+g=RTvR-zZh29D0=MOwNYboNSeKkNr_Z4v74Q4hn1w@mail.gmail.com>
- <avc-fQWSvmtHhtCO@ashevche-desk.local>
- <CANiq72=RbzZHgZEMfLkDRQx-_PoxEfgL_Ar8figchde5u5qc=Q@mail.gmail.com>
- <avq_fOVO4dina23a@ashevche-desk.local>
- <CANiq72mWNJ6qpxUrsGHGiRHeqb=uHMzqEuYLOkK50i40T=yHNw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kjUDbItY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D411F000C4;
+	Thu, 19 Nov 2026 21:10:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795122642;
+	bh=/bG8PkjYsvEV7J210y97Xlh7ZvHXMIdtFOS3k8KAa34=;
+	h=Date:Subject:Cc:From:References:In-Reply-To;
+	b=kjUDbItYk/X5Iwau+pwe5JQNajGA1y6zNi7i2z7kKk3dXrxmRWP/1zZZ7jtoD1JMv
+	 gI0xnZM8/dMWEC+c9Tcw0X6k0uFaLn+U7eApaGalOwg9NW+nEFvcskMeAGBBwaooMf
+	 aY0zNBL++PVrGLNdzCAf6FmR26S+B+qdkMUpR6IgaakrkQ/kogNOGJ9jmhd7Y8Uutz
+	 7f8zAc/g3e8irkHWVBZuHhPCNY5vnQjgAg1K11oeiOnDBUvGVaLL5ljpN9xB9UrPvj
+	 YHB3lu1OfXZp/qyqPa6UmJMdUn/Cm7NJD3Cj8+Mtdkg8pKt9oITJ+M7cTuX+B14h3c
+	 qJ33VE60K6QxQ==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -86,30 +47,52 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72mWNJ6qpxUrsGHGiRHeqb=uHMzqEuYLOkK50i40T=yHNw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Nov 2026 22:10:36 +0100
+Message-Id: <DMZHV6PHR3MS.1IMXZ5Z6SK7KJ@kernel.org>
+Subject: Re: [PATCH v3 0/5] rust: sync: add WaitQueue infrastructure
+Cc: <boqun@kernel.org>, <gary@garyguo.net>, <aliceryhl@google.com>,
+ <lyude@redhat.com>, <daniel.almeida@collabora.com>, <work@onurozkan.dev>,
+ <ojeda@kernel.org>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <tmgross@umich.edu>, <tamird@kernel.org>,
+ <acourbot@nvidia.com>, <viro@zeniv.linux.org.uk>, <brauner@kernel.org>,
+ <jack@suse.cz>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20261117001507.1611984-1-dakr@kernel.org>
+ <20261118235039.3176436-1-dakr@kernel.org>
+In-Reply-To: <20261118235039.3176436-1-dakr@kernel.org>
 
-On Mon, Nov 16, 2026 at 10:28:12AM +0100, Miguel Ojeda wrote:
-> On Mon, Nov 16, 2026 at 9:32 AM Andy Shevchenko
-> <andriy.shevchenko@intel.com> wrote:
-> >
-> > You mean for the in-kernel builds or in general? If you are talking for
-> > the former, this needs to be fixed as the version  we supply via LLVM make
-> > parameter (as you can see in my command line examples). Another story if
-> > this is broken on the clang level (but then how kernel is built?).
-> 
-> Hmm... I don't understand what you are asking, sorry. Can you please clarify?
+On Thu Nov 19, 2026 at 12:50 AM CET, Danilo Krummrich wrote:
+> On Tue, 17 Nov 2026 01:14:41 +0100, Danilo Krummrich wrote:
+>> [PATCH v3 0/5] rust: sync: add WaitQueue infrastructure
+>
+> Applied, thanks!
+>
+>   Branch: topic/waitqueue
+>   Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git
+>
+> [1/5] rust: task: add safe schedule_timeout() wrapper
+>       commit: e18830073ae4
+>
+>       [ Use cmp::max() instead of self.max(). - Danilo ]
+>
+> [2/5] rust: sync: add WaitQueue infrastructure
+>       commit: 64b7d9006106
+>
+>       [ Improve short item description of WaitQueue. - Danilo ]
+>
+> [3/5] rust: sync: convert CondVar and PollCondVar to use WaitQueue
+>       commit: 4afe54ecfe50
+> [4/5] rust: sync: condvar: use task::schedule_timeout()
+>       commit: d4645430d9cc
+> [5/5] rust: sync: condvar: add non-exclusive freezable waiting
+>       commit: 4fcb2a2725ba
+>
+> The patches are in the topic/waitqueue topic branch and will be merged in=
+to the
+> corresponding target branch soon.
 
-make LLVM=-$VERSION supplies the version of the compiler, can it be used
-to understand which libraries to take?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Merged into drm-rust-next, thanks!
