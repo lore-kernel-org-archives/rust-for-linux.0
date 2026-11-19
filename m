@@ -1,75 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795106404;
-	b=0KebHOsQYA5l955vSDqVRU8SBWkfbRRJ8qqd3MNfwojNr/0pF/bBMpIpyAdygJEeTY1z
-	 DJI9Uq8YD96R/kJLOi0M6eGIV6vWaFBrVflJ/i1mkLfwSQfDxbxN7QEaygGt2q7MYRdNR
-	 HRXH4c/ngqXlS1KbE+yKf+03LL58UHMaDGw3hpjbmWHHU5HcdC9DYO2ENE46MOJkl2my7
-	 53xz5g/DO4aRG0knFTjrKRPpjgze/jxcZLw6aVMAr/fegoVaKKg8qsQLYXVNfxMkZW8d2
-	 RZJ4mfQwBO/ptMpoeVgprw9ij5EdRG9O15vpy1YhaFsg0v55OHZhyA4kOKAhbzFY0sw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795106404;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=4VzLDqafiDWhFr/DdyeQKRM0NcRyz0FQybaldYQnsfI=;
-	b=4DBYg8RXbCNSN8Hrgq8RXh6SOH+8B2jTOubioZQr7aZpfmotlpKWPnu2ijixrQJ1B/+k
-	 INtRrcqAC5ASRYLObboBkTbWWpGDKcWNIfZtzZoEmdQvrGlFg6AtA9QP96crqAE05lH+X
-	 sOzW4BDcT9EkeXVw/0PAtvv81ptBpd+HUsid2l9Q3fp+jFyrOcHSrRLH0grAiMfAe1m+e
-	 MfmKiZhwGieNFXap4U5VMK5MJcknRYs53DjityKlQuRg+YYfgVO82YuO/INSFdLaEdopf
-	 epNJahsBpzFHoF09Txq6ZloMz+0vU6kMx50v2wDNwD8ofyOcWjilOZiTUCefEIul9IA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eAVFNlJf;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.100.75
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795107394;
+	b=NybyjcE68bm53buHBDGSyXMIvVZPsrFr03Tt61a+NlsB2gTTj87XhTIOeBJ2WhnFv+tb
+	 5CN4ntWsK6YPfW1t+1y41xCD7fJUAmAxeuWCkyfe3R8lqHQGxPEDaOgIsGowSGv8G8fc6
+	 TYQVK29Twn4uCQ6nwFsALLAChG3KbCRCE9ZrK/kjblrTaBQgws/RRVwOLyMP2CLBB5CHV
+	 WFav6ccBf1F4dUDPylbfTiIs5gOcPiReyPDJUSBik72C1qkKRVXUmzLULLeRC0UAAHlcO
+	 WD//M0w28AJ3UmfZJiUkru3rcjhF9OTOIzIxLjScgqMhOIiBTfuXZnipkQkCB5+DgNw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795107394;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
+	 From:To:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=u/I5VogOW00+2tidKC6Ph+ZHaa+Lx/vQibH1pW2vFk0=;
+	b=WPCFrQeffkJ9sIgfnBAU+5Fdq4iaYDEUkwgCAjVR0uiPnhbm3ZzsgHZSkoDiXdfd/Hnx
+	 MDEA0XXkdz4X1IOH02T5QSw9ZcITb91ipmVAjyVVb5WoPFE5DTr4AaQMDZ5cZoHdFnYiN
+	 sEqskfcyipo3oYIhOyd0YvLQefazLjRmuOUISPryQ2DxC4N0q/M+U8600GDb7EzoQdBnd
+	 1R63JnIMHl5vOwtYnqg5YoAWd1v7YZR5M+9gD63DYvKt/yk9EcI7B/JJ/08Q2pfmhvcPJ
+	 1FWzMQt0PkQOV6I7uPZiRFBO7cTRKXnSb0aLy4F6/WukpDtr9KTYgdqf7GoO/24nMUw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=garyguo.net;
+	spf=pass smtp.mailfrom=garyguo.net;
+	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=NV7UdBml;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.100.75
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021075.outbound.protection.outlook.com [52.101.100.75])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44604606A325;
-	Thu, 19 Nov 2026 16:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C23F606A32C;
+	Thu, 19 Nov 2026 16:56:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C23F606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eAVFNlJf
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A232E1F000C6;
-	Thu, 19 Nov 2026 16:40:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795106404;
-	bh=4VzLDqafiDWhFr/DdyeQKRM0NcRyz0FQybaldYQnsfI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eAVFNlJfeKEpL3/1EoXVrCxRiDu8TI68rMxzUh6PyVPkfJHM6mhJtUlPG251K/mka
-	 EmohQMaTJjXvqrIh/PScsUcXS0ekfsl7MlFOs07dLr5sv7T3OtDT9mQTPrU2XNcSdz
-	 2jUATcuZqTkfxQaGMPf4FA3hR9HiPMLfo27Nx9wu1DfalCfN3h/8ci6AegDh77/P19
-	 r1RBBlIcy8FyzZnOyp3JZGZ3fWqjWS+u8TQGd8ocwC1YMmXOyQmLXeCHCKrn199EJW
-	 yIMXO54WsNrzbe7MXbrGJ6klwNF9Z8a6Pl7oc2gK3ynn5DXFkB4n9sRnM23Mc/CNne
-	 3zyrFBDTIYYxw==
-Received: from ams-compute-01.internal (ams-compute-01.internal [10.64.2.61])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 11CA81980066;
-	Thu, 19 Nov 2026 11:40:01 -0500 (EST)
-Received: from ams-frontend-01 ([10.64.2.36])
-  by ams-compute-01.internal (MEProxy); Thu, 19 Nov 2026 11:40:01 -0500
-X-ME-Sender: <xms:YCb_ag4uDpFv27jn8CuOXBWSlmjSm9tRhoOrzPGim8aX3Y3ZfjS0Lg>
-    <xme:YCb_aqrLerbacfGddxYK089spM0P86UjoaoqUHYLaKrvD40CZTKlHrpTe3bbFov-g
-    3N5rxdrmx8UvjxF5ug4IJtzO9GCyWYSjU5josYIAQaXeb5n4eAaZznI>
-X-ME-Received: <xmr:YCb_auKSmnzgaYae-HO4xGpoZPsNEOWRu3byDAEoNTdFoYBf34pzADgAuy0ll66_0A>
-X-ME-Proxy-Cause: dmFkZTGCPjoSuxH0fAr9/QnGtf8k3qsXIbYvox3eF/ev855AN0NnwQRh0s20wnNReHI1mY
-    1MAs9dMfamltZFMfqcy6+GfGyTX7DTk8ofBSdS7O2AMMfY+YbZOv74NA7tjTng5rsio6fM
-    XtC0FXS06fnB4LX3qCH2PP+aSO/+6usSr7B8DOeMITWtWC1smW0U85jJhuwNn94wlYtiqJ
-    0Bptk5nAhgHjEWgvXkd6fr442yCMs9se7hPNXEfwwgtHpUZXMHnHRHfE6rAZ5WfD+qMgzP
-    +jcqdzVRbn3pucq50T05OEQA0SdBnL3lUgJWZ4+XmwYQTgmc2GfatiBA5e4VzS9+8g5WnD
-    LLLJ5hKxn2aE11lvcZIkIotu0LMKbXzm+oiQb1iItFYVu8GSnLRAN0p5vaRWy8E28KH3OS
-    XBYDaHmbJ8VccXQJohUWZMOeGSQIQJzJEPwBRg0ylzXnFnEGAS/GUrRgVL1+Ji2cZlGQO2
-    XG6VP/e9S3ieVC5SEOr83ezGJm0Pqt2LblcRqG/TW0xsQ/YUnJjrFrkasGYlKNw3a9QW2x
-    qnhpHmvwR1Ck8tsXvV6VEpjr9X+1k8LWTLqyv0pydXq+I8touW/KfSnAivDgh2E4aNCks6
-    XzIJ3YEYuZ6O/YrpVItZfMLGTTY8pLMiaUo2rtzKcQTlZofeEllU/gQqwW7w
-X-ME-Proxy: <xmx:YSb_angtOrQ9cdKh5y_zsmvogKSnnwLAkUcZJOUjnPgDq1iA5uW7OQ>
-    <xmx:YSb_an_r9ZfhCeranaw1GK6tWV0JIlirCLc_II0fKPEhsP9idd8L5g>
-    <xmx:YSb_aroVVOQ7xVkFNV9SrhBlj7c9_WUmC-WHnmrZ80exb1F4mHP9-Q>
-    <xmx:YSb_asNlcCzHNrtb9rCsQuCzQaYJ0JqSjzz_HcwNHZ383jiWP07u6A>
-    <xmx:YSb_ap7j7-XMhuElr4Zsoz6DW5WFmRz4yumvWFuIUenOKjyw3leS6wTN>
-Feedback-ID: i78584a88:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 19 Nov 2026 11:39:56 -0500 (EST)
-Message-ID: <44b2b390-e5bf-49ce-995b-724be11a9ff7@kernel.org>
-Date: Thu, 19 Nov 2026 17:39:55 +0100
+	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=NV7UdBml
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XPMFQreCRmh2Mg+EiNXEww3EyfcZi19GkoJ5fZ2JtyX5tN92ZcPZUMpv3RHIjdxsLv05lXiCNGu6Qjw+dZj09pL8n33RSmWpeIT/P8oSv86vY0M/bNFFhO/+DSjgyIJYliamuOumfbpDaAlItzd6I9L8xx2oqecbdCJR1bNwmDpJDc8PKmhW3ju/pC+Txwc7pjfTNLJUkFHsdeLW0l1u6DqP5NIpqOn3jcNN11MoI3Sli9p9tkOkbDng9ZWAujS1iQXJZM2hSGm3CBmuHNFWjJtWh5rFgZUMMuNk7mbsph2HrgC2UdSAFS1Hal4cd8hK4fzYfwzazxo7ggTb/jnVUg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=u/I5VogOW00+2tidKC6Ph+ZHaa+Lx/vQibH1pW2vFk0=;
+ b=hPMd4oR3RenRfA/P9EZRiFhvd8bRN6STrHjh2EnTHfjpIodjhnWBwz+6wO0iGkRCwwip49B67Vg8F5bclJ1dXStoFcMiSGyFSoQMMIBcEyDItvGcDkZ/4jLa2vc6dYHmrVxiuHQvf5zmivpfAso8AQpc2PhSM9rJnZ5UJOtOfg5ICcdW/ad5P7vDNeX3/8BHgCXSi/Q4ZYkVYSK5LkiApfrT3XHOEt4BzE7WZFSkEphxPuGkHT7v5l+DzUH3rTJQrJxaZBqVdlZoSSOMz5FgPWn7gluZKKaTSzSkc72VGWLlxKhdUeLyQcxReLAr2rgX/rHPDCXoClVC9Y6VhnPBbA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u/I5VogOW00+2tidKC6Ph+ZHaa+Lx/vQibH1pW2vFk0=;
+ b=NV7UdBmlYKnuEPsek+tdF4fLixUMdgSlqkEWHDUPLVXilNerWeRqRzfW+buyHOcEFgJNMqUvjNIhAnL1Su85dC898y+BZZg8tIZkTMfhtgvqVcDKuVyUKNZM8HbwB2VJCGdRSoFDQg/nduAqHnBHgo6X8+FAirR4bA2TEvrTsTE=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
+ by CWLP265MB5426.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1c7::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Thu, 19 Nov
+ 2026 16:56:29 +0000
+Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0615.015; Thu, 19 Nov 2026
+ 16:56:29 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Nov 2026 16:56:28 +0000
+Message-Id: <DMZCGLKQFZBA.1YJIMPFJTO7JG@garyguo.net>
+Cc: "Sami Tolvanen" <samitolvanen@google.com>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: drm: gpuvm: rename UniqueRefGpuVm data accessors
+From: "Gary Guo" <gary@garyguo.net>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Matthew Brost" <matthew.brost@intel.com>,
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+X-Mailer: aerc 0.22.0
+References: <20261119-gpuvm-data-rename-v1-1-8eb773435fde@google.com>
+In-Reply-To: <20261119-gpuvm-data-rename-v1-1-8eb773435fde@google.com>
+X-ClientProxiedBy: LO4P265CA0235.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:315::12) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:400:1cb::9)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -79,33 +106,142 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: drm: gpuvm: rename UniqueRefGpuVm data accessors
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Matthew Brost <matthew.brost@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Sami Tolvanen <samitolvanen@google.com>, dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261119-gpuvm-data-rename-v1-1-8eb773435fde@google.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20261119-gpuvm-data-rename-v1-1-8eb773435fde@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|CWLP265MB5426:EE_
+X-MS-Office365-Filtering-Correlation-Id: a31cc567-f1b5-4eca-f169-08df465e0e23
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|7416014|376014|10070799003|1800799024|22082099003|18002099003|6133799003|921020|10067099003|56012099006|261021123027099003|261021121427099003|261102123227099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	hfmORCCjnPraHpzAAzUzGwLwpmpUbLIaM8BjJgow6BAyecBxhJ3BBCLMjlWfcSqGSyFSQfva9eKmARRYnXQSqd97Qfneyfp6YUVIoFaGSFU+dsLkZcA9H5BRyzR0zEOsfYaPW8U/s0/VC04rlmOFnQKp90Ca7WOdF+FemJtTGwqZJtR04eaeXTD4TE9wIuUQr6ZCHxeTZRD8xq74cD/XikVw2QzC4C8t0FNu7axSG1K0QwQWMv91ZlRngvOd736wIJjv+sqDe+ErnwadIJ9GWaGyGdy77eYAp6XWKlqqRY30pFrYJKviFb7L+tENhhGAE/T2tOtgvfDtbX4cMLBfjDhUgDgDIDmsmvtRgG14vfi+9AsPWq4jHWMLOxJiOc3pQnJxNuHlb1i76Ornkrl3UgVJGF8gi1M6pXoGBRhELQtZqA1xOGttQSjFrdNvnHQN5hQV1tgkSncFBQasmz4/xPXN0uhe3horpPQIG2Epqs9xqoMARN/17hsD5FK0QUd0YVabfz8aK/2PORCL4N1ewjtzSDW1wXVX0pfGIaOHJHJr22cXf74sj9O3cd0ZF1tqoyxJmvaTNU5B4o6iqcTSWxqLXP3hvsN0tQN3/AD2dnNAGsGDCNYWHT1+qHfgAlg7Z9HP3FK3bjK7QkP9/cMMuOfY7mnPyBVA8fMqm1UjBPs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(376014)(10070799003)(1800799024)(22082099003)(18002099003)(6133799003)(921020)(10067099003)(56012099006)(261021123027099003)(261021121427099003)(261102123227099003)(261009223027099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eHE0Sk42UVJaSTBzQkdVTTZTM3dzaUFQY1Y3RzhlbTE0UzdwVjNaekd1K3I2?=
+ =?utf-8?B?dWVXZG82Uk1jNFBBWi9SemV3R2lFSC83UFhDcWdCait0Z3UvZkUwdzVlNHFv?=
+ =?utf-8?B?bFR6c0RMR0hmUGpBT1BYZWRMNm5WTThlRWd6UzNLUWl5RVB0NlZORE0wdDVv?=
+ =?utf-8?B?Y0VpdUlaQTM0RmpJV0pyTm0vMERFTndtVE5YOFJkRzNjU0FVVFpaYSs2NDBr?=
+ =?utf-8?B?eFpZUEkyWnVtMTVRbHZoRU9BY0JMZ28xMU5MNksvQ3BlZGpXLzBHVTEzTVda?=
+ =?utf-8?B?M0wzNmhaeXNxeWhKd1BUU2xlWGF0RXg4T3praVBGcXZqVldrcnNRVUJvWVFE?=
+ =?utf-8?B?aW41d3ZSZjQ4QU9zMjNmMXF4Rk1BejZ6dFZaNmV6d0QzQ0lsbTYvbmpmREll?=
+ =?utf-8?B?RVpVYmFmcnAxdkM1ODRvWit6aFRGa2tLaW9kcUlUOVUvcFZTODVUTjFiL0Q2?=
+ =?utf-8?B?QmdDb3RvM0hjZzk3WnF0U2lkYU9OMFBhRE1vT25BZ21oRUFObWwxU29lWmFt?=
+ =?utf-8?B?bkRpdU5hdDhIT2hodEcvQWRoKy9pNGRha2RXZCt1dms3RlMvYlF5Z0NiWnpG?=
+ =?utf-8?B?aUR1b3B0YjRKT1pBNkcrWnVtU3hEVUVaejNpcVpRRVBXMXg3WEx3VzJDbkM5?=
+ =?utf-8?B?RHl2MTlqbnhMVE1rdzNjL05hZzV4SGdHUTdWcW9odHMvdXRUYnlEMlRna0o4?=
+ =?utf-8?B?dkZreGErUi9BVUFKaks4Mmg1RTN0cFZ1b28rSjNONEFzMERnWERLajA2Zkt4?=
+ =?utf-8?B?Nm9zZ01yaW5ERmVYRHgrOWRVYVRRZXhFZVZIbXhmOFNoaHBncU1wR1BRWFZx?=
+ =?utf-8?B?a0oycEVsV0NMb1dmU0dNQ1I0Ylc4UmU4ZGpENjA3aEZQL0hqaU96OGJpWHZC?=
+ =?utf-8?B?cVUwL2RCdkY4MFNYcS93Z2UveitOY1ZDcmwwUmh5bTJ5cWgvcG1zanNLVUVr?=
+ =?utf-8?B?enlZRk9lZ3dxUHpvYjhnVEdYT1ZBZ1A0a0pwRndUdUprVUhaVDhidTRncllB?=
+ =?utf-8?B?cFd5UVNBQnM2aEVvRUFPK3dmd1RFeWJVNTNtVDJPZ3B6TUthUFIzcnBpMFJr?=
+ =?utf-8?B?Q0RSMGtOYjdBNmVtOWdmblQwcGI3MXh5RmlncC91K3RVZ21IcmZ5ZXVVTzF3?=
+ =?utf-8?B?VTVwb0JleTEzSVNxUldhMjBiSFNpVTgzU2lqcjF2SVlyQkozdDNSRmtFcmpK?=
+ =?utf-8?B?Tkt0ZkRwaERoSFo4S3UzK3M5SEJ1OVBka3FKN3czaW1DSEd0Z1U2MWxrZ2s0?=
+ =?utf-8?B?dDNFT2cybHFwdnprR2lTQWR0Wi95dU9Bd2JCRVE0MkdmM3RaZjZraUhuN3E2?=
+ =?utf-8?B?am1nSFd4b2kvQUdQN2gxSXhoM2Z0c2VkU0YvM0V6ZWZuZHEwVytRSW4veGpW?=
+ =?utf-8?B?QmZQeUVjc3VqOE42UWVabG9QWWhlMHBneWg3ckVwZzBaK0R5cEs5R0kwekI4?=
+ =?utf-8?B?YmllYWZncXdrM0s2VHBNSUhhWW44OWhTbWdHLzdKZm9sTzFhK2YzRG1JU1Yr?=
+ =?utf-8?B?RjE5RGhEdDVxRWFvMXJJMmFHSktsTk1Ob29FQkZqcUxFNnZUWHpNM1hGY1Nx?=
+ =?utf-8?B?UHFsTEU2bzhZQ2VMcHNNQWYxVWxrc0RNK1E1TkhJQzNLZDV2dHErVGg3cDds?=
+ =?utf-8?B?K0QyR05RYmxmdGN0empVK3UxRzc0YnFGeFBYMkxLLzBCYldPOEhBUVhaNWNK?=
+ =?utf-8?B?UG9rcnVCdmhxT1FWcFN2V0M2a2NLMUpScGV6dUM5RFpZUWhTTktzNUZxNVd5?=
+ =?utf-8?B?VUR3ZUc4dDFQUTY3TVFESWxNdzNMaGJ4MjIrWVQ0YU1ESFBOYXEwS1FHNE02?=
+ =?utf-8?B?R3A3b3VJcjZUNGJ0ejU1RTh4M0xkZldLNDVkRXFTVTlFUUFXeUVVYUdGS3ZM?=
+ =?utf-8?B?b2UvdzVMSXovS2JWMUVsZUZSb1dpYlUvR0Y0YldmYU1Za1Q5VXRXbDJKVDZ3?=
+ =?utf-8?B?REhZOGVuNFZXRzdxdUtjakpIdXVWQzRTdVRoSkczQ0lRMGFURnQ2WEZZcHIr?=
+ =?utf-8?B?c3hNWGE0am9EWlFGMU9vMVBOM2orRnNQUUd5RFN1WE9nK2dJVnFQckg2Qito?=
+ =?utf-8?B?cmU5QkloMnFpNVlWVGFUWHEyWjZRdjNQc0ZTQ3M1MnFjbFQ4dWhHYTA1QXhB?=
+ =?utf-8?B?MVZtd0UvVTN0YmFTSDdSRGU0bzVtOVBpRnFpMTBkekJ5Wjl5UVpFTGNCU2lo?=
+ =?utf-8?B?Tm9wRmJxa1gwQWw2ZCtnK0pwc3RiSWIrUkluOVUyQjlHaVNjVE1IMXRoOVZx?=
+ =?utf-8?B?NWVsRlZyenJoS0w0eThLTnpVa3gwUzVPd1plVSt0U3I2ZEE3QlRTaWN0aG40?=
+ =?utf-8?B?YnlGZ2VUUUs3UEtwc0xtcGhDT1l5MmNoNmNsaFhCejNHU0FuN2FUUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: a31cc567-f1b5-4eca-f169-08df465e0e23
+X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 16:56:29.0303
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 51Al4v3mNXKj1lifUcP7QdMz7bxayt2S0yNJDTzlWh6ae+N9uAghBxMrL+b7wViMl3thRRYYwNWw7EijcT509g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5426
 
-On 11/19/26 5:36 PM, Alice Ryhl wrote:
+On Thu Nov 19, 2026 at 4:36 PM GMT, Alice Ryhl wrote:
 > `UniqueRefGpuVm` currently names its shared and mutable data accessors
 > `data_ref()` and `data()`, unlike `GpuVmBo::data(&self)` and standard
 > Rust naming conventions. Thus, rename them to `data(&self)` and
 > `data_mut(&mut self)` for consistency.
-> 
-> Link: https://lore.kernel.org/r/20261118111653.448550-1-aliceryhl@google.com
+>
+> Link: https://lore.kernel.org/r/20261118111653.448550-1-aliceryhl@google.=
+com
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Acked-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/kernel/drm/gpuvm/mod.rs    | 4 ++--
+>  rust/kernel/drm/gpuvm/sm_ops.rs | 6 +++---
+>  2 files changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/rust/kernel/drm/gpuvm/mod.rs b/rust/kernel/drm/gpuvm/mod.rs
+> index d9d43d719761..23e73da865fb 100644
+> --- a/rust/kernel/drm/gpuvm/mod.rs
+> +++ b/rust/kernel/drm/gpuvm/mod.rs
+> @@ -311,14 +311,14 @@ fn sm_step_remap<'op, 'ctx>(
+>  impl<T: DriverGpuVm> UniqueRefGpuVm<T> {
+>      /// Access the data owned by this `UniqueRefGpuVm` immutably.
+>      #[inline]
+> -    pub fn data_ref(&self) -> &T {
+> +    pub fn data(&self) -> &T {
+>          // SAFETY: By the type invariants we may access `data`.
+>          unsafe { &*self.0.data.get() }
+>      }
+> =20
+>      /// Access the data owned by this `UniqueRefGpuVm` mutably.
+>      #[inline]
+> -    pub fn data(&mut self) -> &mut T {
+> +    pub fn data_mut(&mut self) -> &mut T {
+>          // SAFETY: By the type invariants we may access `data`.
+>          unsafe { &mut *self.0.data.get() }
+>      }
+> diff --git a/rust/kernel/drm/gpuvm/sm_ops.rs b/rust/kernel/drm/gpuvm/sm_o=
+ps.rs
+> index 742c151b2540..9f3fe7c954fb 100644
+> --- a/rust/kernel/drm/gpuvm/sm_ops.rs
+> +++ b/rust/kernel/drm/gpuvm/sm_ops.rs
+> @@ -381,7 +381,7 @@ impl<T: DriverGpuVm> GpuVm<T> {
+>          match p
+>              .sm_data
+>              .gpuvm
+> -            .data()
+> +            .data_mut()
+>              .sm_step_map(op, p.sm_data.user_context)
+>          {
+>              Ok(OpMapped { .. }) =3D> 0,
+> @@ -402,7 +402,7 @@ impl<T: DriverGpuVm> GpuVm<T> {
+>              op: unsafe { &(*op).__bindgen_anon_1.unmap },
+>              _invariant: PhantomData,
+>          };
+> -        match p.gpuvm.data().sm_step_unmap(op, p.user_context) {
+> +        match p.gpuvm.data_mut().sm_step_unmap(op, p.user_context) {
+>              Ok(OpUnmapped { .. }) =3D> 0,
+>              Err(err) =3D> err.to_errno(),
+>          }
+> @@ -421,7 +421,7 @@ impl<T: DriverGpuVm> GpuVm<T> {
+>              op: unsafe { &(*op).__bindgen_anon_1.remap },
+>              _invariant: PhantomData,
+>          };
+> -        match p.gpuvm.data().sm_step_remap(op, p.user_context) {
+> +        match p.gpuvm.data_mut().sm_step_remap(op, p.user_context) {
+>              Ok(OpRemapped { .. }) =3D> 0,
+>              Err(err) =3D> err.to_errno(),
+>          }
+>
+> ---
+> base-commit: e55a991e09e3b44f0b0d8206bb523dc57c086341
+> change-id: 20261119-gpuvm-data-rename-cf6e0e59f266
+>
+> Best regards,
+
+
