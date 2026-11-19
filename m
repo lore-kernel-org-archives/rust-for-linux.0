@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795078253;
-	b=JXpFzcJ5mtXoYFVcb8GlRbjRBLcNWukjRJ9vQlBm7hsOvIvULlKmVyim9vASCjXP8le0
-	 6587cQSuHL8WT5TIhGEASxzKytM5PQCUPgxruiZkIwsxVHeSGHjvWP/VpbHWi3SwmnoyE
-	 gNKcAnyaUVzBJxNZlw1VODW2zmo3240MBD+yCjoEiZNBkauRcmllYc/UUoSaQIIVAsp4u
-	 TQppXrHv6yZgxrcMIJ426IUAM+F4WYaHrm/7oBcHe1MOeB26KYx9Hpn0AbKJpf4XPT6qV
-	 BR26gYDoQuLm3Uq9t5ousIFBXCz8NpzQAlQRmVWRgrvwLRhV03I2D8Um1002oRxiqbg==
+	t=1795078287;
+	b=2cKqVvwkZPjVolWO3tJItNbOY222k7FYJf88zYGb2JyDIPe2u3EAFpDx3WENDsLWeSFI
+	 Yqe+4Nk1gL50T7aFmGa19h8sM9QlzeyY2VrfnhSo78rcyPGDnCtKJdafH+FcokHlZbTXs
+	 FCgxtDA9RqD84UdCM5R51KsZ8mEySHSkD6fqG1W5guOSUNQaukksFLKcIvSogriTnAc61
+	 B+1ePPKdMd2t5F5zKL79mtOCRtT8Xg8tCQk+9KXLwpN3Azbx3jcbZ19/59EZEsQ3aGXh3
+	 dCfn9/w29e5Nvxko5HgjfP0ZXLks1QBUvrgbIQb6f4NV2i45hGEI7Uk+JjvzGdUOaQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795078253;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795078287;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:In-Reply-To:References:Organization:X-Mailer:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=I7byaYha9tOmOrmXniGUlZOpAIJ77uGP/QLu3nio5yc=;
-	b=TUVqSi1DtNP24nVelG0qTJLMVYPU9pCoq2uXe2jjeQpmjlSsZwAC/09T1UsovG34DFQ3
-	 X8sgyXj/+2+HX2/oEuhYwiKWx5q1uabmXUJwpo3GCpPxuXzI2lqDj2cSl3vHQcVcsdDOf
-	 W9EjYUlHeQFQI+EEX/7YMB623HIOfucR/Uk680z157nmGdtnYniPTc6Pj73CYslXcTQUl
-	 gk+7VQY9RBBejn0AFoxdZvjaFbW6jUQs0VKFSK7LvIkFmMySDzv4pBt2B4E44imiJVFXy
-	 DG93g3/vyBERg8HV9hoKn1NYUW1ps0/vKQTmWZsP27G73G/AxXJfVSaOWkT3qKYoAcQ==
+	bh=BM035ONKEcYf+bEJ12HRI0V9AAvPkICsD+8xOHbMwPc=;
+	b=Cc/MDO4PyHNEa1zuhgRy/KODuTGJpAnF2DkQuteS3/pTBu9sO3n3SrQCiLnWsRK8jZIP
+	 H62zG4+21Wnn1An1GLsgO5uZXvREtQ88DYK21uHE0lG1rQrEtlB0G1oNi0bklC1sQkBHr
+	 nBMAyjKWKeVQa7KNmYjcDXbNlBRDRvOtF47LF6eGhkC48yErEPWg5/7aBypU5+y280y+7
+	 IauX7jC7ZUAeneHbTc90b9vPMUQdBhAv1Ltqq9QK7BYQOOWZIVmUq6RUlVDNBsCctw0G0
+	 FTux0RP3MA9enPko9ma/dz+TxA5BJlCxI/wU5FLBYbPLTHUb62XfjbFEyEM2Xl47pvw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=collabora.com;
 	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=Y0bdvIqm;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=fYpq2ei1;
 	arc=none smtp.remote-ip=148.251.105.195
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4127B606A320;
-	Thu, 19 Nov 2026 08:50:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4127B606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95DF606A325;
+	Thu, 19 Nov 2026 08:51:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C95DF606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=Y0bdvIqm
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=fYpq2ei1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1795078251;
-	bh=t3C0iBCCFtuZQ3rf9c18/aTXJ/Sm+17DkMsX+TVkPhk=;
+	s=mail; t=1795078285;
+	bh=a07pApNrtARcdPXB05UrOdCPM/Guy+QmVvE6TdzbRMQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Y0bdvIqm1Xe26h39NN8buRnMaxlOiyqo+iLCJ0DpnydLsTCsx36X9aE71z5TrOMkr
-	 2ddoP5mpEV8O9xHuYf3P84Ivb531+C62Zm455GB/Q/T9NMik/Q+Ekl2xwquaCK4Ntg
-	 0rij/jva60ChE5BI+uRLtWRKqQqL+pPpGFvSBUH9W5PdebcVmQS4sGHTc+bf41sfK/
-	 SRZGUXiPaGuu4835tncyBA7SG5ixSvSfn9/Micp9Nx4QzjxTbE2ZyT6I++8PD7iHYP
-	 vUaj9kg2A1ML9KL6QhgJ6h5YhkCak6FlV76O6dvrLJPDbaTk2TRfXmNzNH6mLRqQTP
-	 7yNM8GkOQ6tbA==
+	b=fYpq2ei1hRLyj0v6LoRHCY3pAFz80RSjYR+UzA8VykW7QXIArBEgvQy508ltx6msi
+	 AlQtW14ws2YUSYGE7TNkXDizGgZjnsUgfVixM0Tc5TXN+yW9kOSsaHRkzchb82QUwe
+	 gdZriPyHJPmAvU3RIMnuvnQ6GtOnLr7LkLme0GzhzAlxzIkFvoJcJm1XdW4WuEJCb/
+	 /3kjmopDmylaruGmCFjeldddTXN6YssSaQfe85ETmXw+46fC5MyR+GE8UVYdIOxWna
+	 JmcH2FiYFqTJcn3psaFHIKzrK4RHZgs449B+hbqcejb8wb96vws59C9JeqLhHMiya0
+	 +iyqxAhmTl3Zw==
 Received: from fedora1.home (unknown [100.64.0.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 9584E17E0480;
-	Thu, 19 Nov 2026 09:50:50 +0100 (CET)
-Date: Thu, 19 Nov 2026 09:50:45 +0100
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id C1CF617E0ACE;
+	Thu, 19 Nov 2026 09:51:24 +0100 (CET)
+Date: Thu, 19 Nov 2026 09:51:20 +0100
 From: Boris Brezillon <boris.brezillon@collabora.com>
 To: Christian Gmeiner <christian.gmeiner@gmail.com>
 Cc: Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
@@ -61,12 +61,11 @@ Cc: Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
  Zapolskas <lukas.zapolskas@arm.com>, Paul Toadere <paul.toadere@arm.com>,
  dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org, Christian Gmeiner <cgmeiner@igalia.com>
-Subject: Re: [PATCH v2 1/3] drm/panthor: Report the last VM fault through
- VM_GET_STATE
-Message-ID: <20261119095045.100699ca@fedora1.home>
-In-Reply-To: <20261104-panthor-fault-info-v2-v2-1-673b31f3840c@igalia.com>
+Subject: Re: [PATCH v2 3/3] drm/panthor: Bump the driver version to 1.10
+Message-ID: <20261119095120.1e3fc816@fedora1.home>
+In-Reply-To: <20261104-panthor-fault-info-v2-v2-3-673b31f3840c@igalia.com>
 References: <20261104-panthor-fault-info-v2-v2-0-673b31f3840c@igalia.com>
-	<20261104-panthor-fault-info-v2-v2-1-673b31f3840c@igalia.com>
+	<20261104-panthor-fault-info-v2-v2-3-673b31f3840c@igalia.com>
 Organization: Collabora
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -81,176 +80,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 04 Nov 2026 08:52:39 +0100
+On Wed, 04 Nov 2026 08:52:41 +0100
 Christian Gmeiner <christian.gmeiner@gmail.com> wrote:
 
 > From: Christian Gmeiner <cgmeiner@igalia.com>
 > 
-> Keep the raw AS_FAULTSTATUS and AS_FAULTADDRESS of the last fault in
-> the VM and return them through VM_GET_STATE. Userspace decodes the
-> values. No memory is allocated in the fault path.
+> VM_GET_STATE now reports the last VM fault and GROUP_GET_STATE reports
+> the fatal error of each queue. Bump the driver version so userspace
+> can detect this.
 > 
-> The MMU irq handler records the fault under the AS slots lock. The
-> ioctl reads it under the same lock. The VM stores the fault as a
-> struct drm_panthor_vm_fault, which is the uAPI struct, so the ioctl
-> can copy it with one assignment.
-> 
-> The unhandled_fault flag is cleared when the VM is re-activated. The
-> stored fault is not. So userspace can still query it after the group
-> that hit the fault was killed.
-> 
-> Old userspace that passes the shorter struct still works, the DRM core
-> zero-fills the missing tail.
-> 
-> Link: https://lore.kernel.org/r/20251215115457.2137485-4-lukas.zapolskas@arm.com
 > Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
 
 Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 
 > ---
->  drivers/gpu/drm/panthor/panthor_drv.c |  2 ++
->  drivers/gpu/drm/panthor/panthor_mmu.c | 33 +++++++++++++++++++++++++++++++--
->  drivers/gpu/drm/panthor/panthor_mmu.h |  2 ++
->  include/uapi/drm/panthor_drm.h        | 22 ++++++++++++++++++++++
->  4 files changed, 57 insertions(+), 2 deletions(-)
+>  drivers/gpu/drm/panthor/panthor_drv.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
 > diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
-> index dc8d0191aef4..7572cd7d6423 100644
+> index fb5fdf848dec..139654628ec4 100644
 > --- a/drivers/gpu/drm/panthor/panthor_drv.c
 > +++ b/drivers/gpu/drm/panthor/panthor_drv.c
-> @@ -1471,6 +1471,8 @@ static int panthor_ioctl_vm_get_state(struct drm_device *ddev, void *data,
->  	else
->  		args->state = DRM_PANTHOR_VM_STATE_USABLE;
->  
-> +	panthor_vm_get_fault(vm, &args->fault);
-> +
->  	panthor_vm_put(vm);
->  	return 0;
->  }
-> diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
-> index d1c29eec46f2..6fc5f3d381c1 100644
-> --- a/drivers/gpu/drm/panthor/panthor_mmu.c
-> +++ b/drivers/gpu/drm/panthor/panthor_mmu.c
-> @@ -389,6 +389,15 @@ struct panthor_vm {
->  	 */
->  	bool unhandled_fault;
->  
-> +	/**
-> +	 * @fault: Last fault on this VM.
-> +	 *
-> +	 * A new fault overwrites the previous one. Unlike @unhandled_fault,
-> +	 * this is not cleared when the VM is re-activated. Protected by
-> +	 * panthor_mmu::as::slots_lock.
-> +	 */
-> +	struct drm_panthor_vm_fault fault;
-> +
->  	/** @locked_region: Information about the currently locked region currently. */
->  	struct {
->  		/** @locked_region.start: Start of the locked region. */
-> @@ -662,6 +671,19 @@ bool panthor_vm_has_unhandled_faults(struct panthor_vm *vm)
->  	return vm->unhandled_fault;
->  }
->  
-> +/**
-> + * panthor_vm_get_fault() - Get the last fault of a VM
-> + * @vm: VM to query.
-> + * @fault: Returns the last fault, with a zero status if no fault happened.
-> + */
-> +void panthor_vm_get_fault(struct panthor_vm *vm, struct drm_panthor_vm_fault *fault)
-> +{
-> +	struct panthor_device *ptdev = vm->ptdev;
-> +
-> +	guard(mutex)(&ptdev->mmu->as.slots_lock);
-> +	*fault = vm->fault;
-> +}
-> +
->  /**
->   * panthor_vm_is_unusable() - Check if the VM is still usable
->   * @vm: VM to check.
-> @@ -1855,6 +1877,7 @@ static void panthor_mmu_irq_handler(struct panthor_irq *pirq, u32 status)
->  	while (status) {
->  		u32 as = ffs(status | (status >> 16)) - 1;
->  		u32 mask = MMU_INT_AS_FAULT(as);
-> +		struct panthor_vm *vm;
->  		u64 addr;
->  		u32 fault_status;
->  		u32 exception_type;
-> @@ -1895,8 +1918,14 @@ static void panthor_mmu_irq_handler(struct panthor_irq *pirq, u32 status)
->  		 */
->  		gpu_write(mmu->irq.iomem, INT_CLEAR, mask);
->  
-> -		if (ptdev->mmu->as.slots[as].vm)
-> -			ptdev->mmu->as.slots[as].vm->unhandled_fault = true;
-> +		vm = mmu->as.slots[as].vm;
-> +		if (vm) {
-> +			vm->unhandled_fault = true;
-> +			vm->fault = (struct drm_panthor_vm_fault){
-> +				.status = fault_status,
-> +				.address = addr,
-> +			};
-> +		}
->  
->  		/* Disable the MMU to kill jobs on this AS. */
->  		panthor_mmu_as_disable(ptdev, as);
-> diff --git a/drivers/gpu/drm/panthor/panthor_mmu.h b/drivers/gpu/drm/panthor/panthor_mmu.h
-> index abc36e7204be..74f9f5d98c94 100644
-> --- a/drivers/gpu/drm/panthor/panthor_mmu.h
-> +++ b/drivers/gpu/drm/panthor/panthor_mmu.h
-> @@ -11,6 +11,7 @@
->  struct drm_exec;
->  struct drm_sched_job;
->  struct drm_memory_stats;
-> +struct drm_panthor_vm_fault;
->  struct panthor_gem_object;
->  struct panthor_heap_pool;
->  struct panthor_vm;
-> @@ -74,6 +75,7 @@ struct panthor_vm *panthor_vm_pool_get_vm(struct panthor_vm_pool *pool, u32 hand
->  
->  bool panthor_vm_has_unhandled_faults(struct panthor_vm *vm);
->  bool panthor_vm_is_unusable(struct panthor_vm *vm);
-> +void panthor_vm_get_fault(struct panthor_vm *vm, struct drm_panthor_vm_fault *fault);
->  
->  /*
->   * PANTHOR_VM_KERNEL_AUTO_VA: Use this magic address when you want the GEM
-> diff --git a/include/uapi/drm/panthor_drm.h b/include/uapi/drm/panthor_drm.h
-> index a2ff0f4ec691..85e197d7a528 100644
-> --- a/include/uapi/drm/panthor_drm.h
-> +++ b/include/uapi/drm/panthor_drm.h
-> @@ -743,6 +743,20 @@ enum drm_panthor_vm_state {
->  	DRM_PANTHOR_VM_STATE_UNUSABLE,
->  };
->  
-> +/**
-> + * struct drm_panthor_vm_fault - Fault information of a VM.
-> + */
-> +struct drm_panthor_vm_fault {
-> +	/** @status: Raw AS_FAULTSTATUS value, zero if no fault happened. */
-> +	__u32 status;
-> +
-> +	/** @pad: Will be zero on return. */
-> +	__u32 pad;
-> +
-> +	/** @address: Raw AS_FAULTADDRESS value, valid if @status is non-zero. */
-> +	__u64 address;
-> +};
-> +
->  /**
->   * struct drm_panthor_vm_get_state - Get VM state.
+> @@ -1803,6 +1803,8 @@ static void panthor_debugfs_init(struct drm_minor *minor)
+>   * - 1.8 - extends DEV_QUERY_TIMESTAMP_INFO with flags
+>   * - 1.9 - adds DRM_PANTHOR_DEV_QUERY_MMU_INFO query
+>   *       - adds DRM_PANTHOR_VM_BIND_OP_MAP_SPARSE flag
+> + * - 1.10 - extends VM_GET_STATE with the last unhandled VM fault
+> + *        - extends GROUP_GET_STATE with the fatal error of each queue
 >   */
-> @@ -756,6 +770,14 @@ struct drm_panthor_vm_get_state {
->  	 * Must be one of the enum drm_panthor_vm_state values.
->  	 */
->  	__u32 state;
-> +
-> +	/**
-> +	 * @fault: Last fault on this VM.
-> +	 *
-> +	 * A new fault overwrites the previous one. It is not cleared when the
-> +	 * VM is re-activated or after a GPU reset.
-> +	 */
-> +	struct drm_panthor_vm_fault fault;
->  };
+>  static const struct drm_driver panthor_drm_driver = {
+>  	.driver_features = DRIVER_RENDER | DRIVER_GEM | DRIVER_SYNCOBJ |
+> @@ -1816,7 +1818,7 @@ static const struct drm_driver panthor_drm_driver = {
+>  	.name = "panthor",
+>  	.desc = "Panthor DRM driver",
+>  	.major = 1,
+> -	.minor = 9,
+> +	.minor = 10,
 >  
->  /**
+>  	.gem_prime_import_sg_table = panthor_gem_prime_import_sg_table,
+>  	.gem_prime_import = panthor_gem_prime_import,
 > 
 
