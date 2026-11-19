@@ -1,16 +1,16 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.100.75
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.61
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795107394;
-	b=NybyjcE68bm53buHBDGSyXMIvVZPsrFr03Tt61a+NlsB2gTTj87XhTIOeBJ2WhnFv+tb
-	 5CN4ntWsK6YPfW1t+1y41xCD7fJUAmAxeuWCkyfe3R8lqHQGxPEDaOgIsGowSGv8G8fc6
-	 TYQVK29Twn4uCQ6nwFsALLAChG3KbCRCE9ZrK/kjblrTaBQgws/RRVwOLyMP2CLBB5CHV
-	 WFav6ccBf1F4dUDPylbfTiIs5gOcPiReyPDJUSBik72C1qkKRVXUmzLULLeRC0UAAHlcO
-	 WD//M0w28AJ3UmfZJiUkru3rcjhF9OTOIzIxLjScgqMhOIiBTfuXZnipkQkCB5+DgNw==
+	t=1795107543;
+	b=dSgbyF6T+d/SdY46sNy4T6x2Oa0GgI3ww3WOBp1ZjPDdBy0BsV0Db9BwQzwRahTOA+4w
+	 jCYgEi3M36HtbUTgBf2AFU2YXmx9iWaMZmp+7F3G8RzUOcjQIAn3K6OOcuTyeT+Cukfpg
+	 jn259ejHmH22YSS007opO48ukiX9D6omv/Zxr6kN+C6Us/2gWy8xRxUymvcjn81oODjae
+	 4jOjWQNRsLVjZfF7sHvxFg7mENhr+0YrbgmqddM/NVvXu8blSgwXpTVLdFMhGMB3NDYFZ
+	 fuHwjY2o9pJxsPPCz+ZNcl5Y8y7kQA+GxPn7/eW77ErsgB5L4TLCbegH2j7X69voRKA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795107394;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
-	 From:To:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
+	a=rsa-sha256; c=relaxed/relaxed; t=1795107543;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:X-Mailer:Message-ID:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:X-MS-Reactions:X-ClientProxiedBy:
 	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
 	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
 	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
@@ -24,79 +24,94 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=u/I5VogOW00+2tidKC6Ph+ZHaa+Lx/vQibH1pW2vFk0=;
-	b=WPCFrQeffkJ9sIgfnBAU+5Fdq4iaYDEUkwgCAjVR0uiPnhbm3ZzsgHZSkoDiXdfd/Hnx
-	 MDEA0XXkdz4X1IOH02T5QSw9ZcITb91ipmVAjyVVb5WoPFE5DTr4AaQMDZ5cZoHdFnYiN
-	 sEqskfcyipo3oYIhOyd0YvLQefazLjRmuOUISPryQ2DxC4N0q/M+U8600GDb7EzoQdBnd
-	 1R63JnIMHl5vOwtYnqg5YoAWd1v7YZR5M+9gD63DYvKt/yk9EcI7B/JJ/08Q2pfmhvcPJ
-	 1FWzMQt0PkQOV6I7uPZiRFBO7cTRKXnSb0aLy4F6/WukpDtr9KTYgdqf7GoO/24nMUw==
+	bh=hvVU4/1Cj/qARxFBg8GZuuICHIET6gFCCtbp8n6oy90=;
+	b=CgkIX/LkfKv/9oodLL8UdPzkI/W4iISsXSA1U13uprAwTyfl8ljBDFZ2Qr3Aqnaqaw9g
+	 7rU34QXuAISfmVSWImKkmg/NztFd1sBkHWaHmfXLXU7QlGlt4KKag467o8EiM8l7wwDn5
+	 yeyGi2OVMDGFcPZqZRw96SXA2cxJrj+z1N/7M6AtvTfV3afH+NI/QGLg5LwYtABLBj1Mx
+	 IfFN9a5saACf7l3ybhYBe15Lz8KlAEDVYVPfQ67itbTnED1blPv2EfRW9MuJkHEcJ/+on
+	 5R97tEGXMpdBW3NmaR5+gL8URZvyDBiXyK5KTA9ARkbQ76tcDJeyYMIT5LmMGavJ0+Q==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=garyguo.net;
-	spf=pass smtp.mailfrom=garyguo.net;
-	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=NV7UdBml;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.100.75
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021075.outbound.protection.outlook.com [52.101.100.75])
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b="WQSxuSP/";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.61
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012061.outbound.protection.outlook.com [40.107.209.61])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C23F606A32C;
-	Thu, 19 Nov 2026 16:56:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C23F606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7118F606A332;
+	Thu, 19 Nov 2026 16:59:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7118F606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=NV7UdBml
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=WQSxuSP/
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XPMFQreCRmh2Mg+EiNXEww3EyfcZi19GkoJ5fZ2JtyX5tN92ZcPZUMpv3RHIjdxsLv05lXiCNGu6Qjw+dZj09pL8n33RSmWpeIT/P8oSv86vY0M/bNFFhO/+DSjgyIJYliamuOumfbpDaAlItzd6I9L8xx2oqecbdCJR1bNwmDpJDc8PKmhW3ju/pC+Txwc7pjfTNLJUkFHsdeLW0l1u6DqP5NIpqOn3jcNN11MoI3Sli9p9tkOkbDng9ZWAujS1iQXJZM2hSGm3CBmuHNFWjJtWh5rFgZUMMuNk7mbsph2HrgC2UdSAFS1Hal4cd8hK4fzYfwzazxo7ggTb/jnVUg==
+ b=iSkfqGmLeg/c4e/9eGPTneb+/mdWZwMWDS60tbp3aUtv5+/no1jW0yScrJjk1IEc36tKlDCgOwkkM4aEMT3PVbeZ8PelmQ1PDxWllA0I4JyKq6DVmmTNBY4KGQ5By0D5nuujRU1Z3fupFu9ljPpSx6LA54dL3F+miBHKB23+TSIZaWI8PFzY4BBNPffu1V+eBZSzALS5a/raFsySnWMWzfhUlg+LuI8NgzaiXxHXc8jt3uw0Txt4FqLZ1oP/uWIllz5mxxcEpyX+znurRhV2inYCi+aS6A3oR0NeW4GDVyRvO9rOcfoxwQWk/x3G/Io852SLdy7uCdJieBEqX6OalA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u/I5VogOW00+2tidKC6Ph+ZHaa+Lx/vQibH1pW2vFk0=;
- b=hPMd4oR3RenRfA/P9EZRiFhvd8bRN6STrHjh2EnTHfjpIodjhnWBwz+6wO0iGkRCwwip49B67Vg8F5bclJ1dXStoFcMiSGyFSoQMMIBcEyDItvGcDkZ/4jLa2vc6dYHmrVxiuHQvf5zmivpfAso8AQpc2PhSM9rJnZ5UJOtOfg5ICcdW/ad5P7vDNeX3/8BHgCXSi/Q4ZYkVYSK5LkiApfrT3XHOEt4BzE7WZFSkEphxPuGkHT7v5l+DzUH3rTJQrJxaZBqVdlZoSSOMz5FgPWn7gluZKKaTSzSkc72VGWLlxKhdUeLyQcxReLAr2rgX/rHPDCXoClVC9Y6VhnPBbA==
+ bh=hvVU4/1Cj/qARxFBg8GZuuICHIET6gFCCtbp8n6oy90=;
+ b=Z8YgfFCOfzCok8LGZNN+L4rhEG6yitQ0KLzfKKXOmf1hpvrh5XvV+uXmwDEzpYoZ+t1oBZoZXRfmZpPohZa+vZMPGv2KqoW2Xd6+0RcA3wn7Nlj4adms1wY8QqYun4KTmt5oY6vQYTjYo/o2qWj6x13QS42OhiFmkoSnX2bNXNvohOM2G1qGsBkNyEM6ye+7iwCj4h+13WrcOas2wKEpXWjSYYZHcL6syjNUCrv+izlGpAoXuo/6H1vONpEGbJJnOqK0NsxLcOy0Xpwzcr5HJsLrhaAYCniZn9eQ4zbPPLsGyJ/4h2tpsuwO2yp8LFVNjMoxuTllmCx887t9j3DFFQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=u/I5VogOW00+2tidKC6Ph+ZHaa+Lx/vQibH1pW2vFk0=;
- b=NV7UdBmlYKnuEPsek+tdF4fLixUMdgSlqkEWHDUPLVXilNerWeRqRzfW+buyHOcEFgJNMqUvjNIhAnL1Su85dC898y+BZZg8tIZkTMfhtgvqVcDKuVyUKNZM8HbwB2VJCGdRSoFDQg/nduAqHnBHgo6X8+FAirR4bA2TEvrTsTE=
+ bh=hvVU4/1Cj/qARxFBg8GZuuICHIET6gFCCtbp8n6oy90=;
+ b=WQSxuSP/kdOzBb5zRpZDqWwlLG+vmQ626vOdjtTn3WkT/B9DUc1fUZuBxX2N8c2U1z/xGEbslTmKrepX6V5TEOLsVbeRTk2pftlBx2hj+QrBSbt088C48gHed2flDJW8yxAoe1YNapES0w5M3wVxUfPU/9m7gsdCP2mvoIP8fO6kBRkos46rETRdDcTrGcyRcKHKFEji5/h9YyGo7Y2qTWWAyLa6VEP6iE2mRNQPoWB1kP7XRxo+qlemxZPvhQNvZzg/qs/yvzFz90gwXHMUq5RpbiNKH0BIK6wEYc7cNT1YluJRs3bnPp6IsxWdPb7v39ugNeUgyOgLR0F28DvcUg==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
- by CWLP265MB5426.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1c7::12) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by SAEPR12MB181460.namprd12.prod.outlook.com (2603:10b6:802:200::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Thu, 19 Nov
- 2026 16:56:29 +0000
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0615.015; Thu, 19 Nov 2026
- 16:56:29 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Nov 2026 16:56:28 +0000
-Message-Id: <DMZCGLKQFZBA.1YJIMPFJTO7JG@garyguo.net>
-Cc: "Sami Tolvanen" <samitolvanen@google.com>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: drm: gpuvm: rename UniqueRefGpuVm data accessors
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alice Ryhl" <aliceryhl@google.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Matthew Brost" <matthew.brost@intel.com>,
- =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: aerc 0.22.0
-References: <20261119-gpuvm-data-rename-v1-1-8eb773435fde@google.com>
-In-Reply-To: <20261119-gpuvm-data-rename-v1-1-8eb773435fde@google.com>
-X-ClientProxiedBy: LO4P265CA0235.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:315::12) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:1cb::9)
+ 2026 16:59:00 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0615.009; Thu, 19 Nov 2026
+ 16:59:00 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
+ David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Mike Rapoport <rppt@kernel.org>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Matthew Wilcox <willy@infradead.org>, Danilo Krummrich <dakr@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ =?utf-8?b?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
+ Carlos Llamas <cmllamas@google.com>, Igor B <igor.b@beldev.am>,
+ Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v22 0/6] rust: page: add page kinds
+Date: Thu, 19 Nov 2026 11:58:02 -0500
+X-Mailer: MailMate (3.0r7038)
+Message-ID: <3C3421E5-5B7D-42B8-ABD2-185375693D7A@nvidia.com>
+In-Reply-To: <871p8iue5y.fsf@t14s.mail-host-address-is-not-set>
+References: <20261118-page-ownable-v22-0-d63ff73f4075@kernel.org>
+ <37B6D4A8-288E-40E8-9214-EDABBFE49C39@nvidia.com>
+ <871p8iue5y.fsf@t14s.mail-host-address-is-not-set>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-MS-Reactions: disallow
+X-ClientProxiedBy: MN2PR07CA0011.namprd07.prod.outlook.com
+ (2603:10b6:208:1a0::21) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -107,141 +122,177 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|CWLP265MB5426:EE_
-X-MS-Office365-Filtering-Correlation-Id: a31cc567-f1b5-4eca-f169-08df465e0e23
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SAEPR12MB181460:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9207eead-beb0-422a-6c5b-08df465e5cda
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|7416014|376014|10070799003|1800799024|22082099003|18002099003|6133799003|921020|10067099003|56012099006|261021123027099003|261021121427099003|261102123227099003|261009223027099003;
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|23010399003|10067099003|4143699003|5023799004|11063799006|56012099006|261021121427099003|261026121527099003|261028144727099003|261026140227099003|261022105027099003|261102123227099003|22082099003|18002099003|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	hfmORCCjnPraHpzAAzUzGwLwpmpUbLIaM8BjJgow6BAyecBxhJ3BBCLMjlWfcSqGSyFSQfva9eKmARRYnXQSqd97Qfneyfp6YUVIoFaGSFU+dsLkZcA9H5BRyzR0zEOsfYaPW8U/s0/VC04rlmOFnQKp90Ca7WOdF+FemJtTGwqZJtR04eaeXTD4TE9wIuUQr6ZCHxeTZRD8xq74cD/XikVw2QzC4C8t0FNu7axSG1K0QwQWMv91ZlRngvOd736wIJjv+sqDe+ErnwadIJ9GWaGyGdy77eYAp6XWKlqqRY30pFrYJKviFb7L+tENhhGAE/T2tOtgvfDtbX4cMLBfjDhUgDgDIDmsmvtRgG14vfi+9AsPWq4jHWMLOxJiOc3pQnJxNuHlb1i76Ornkrl3UgVJGF8gi1M6pXoGBRhELQtZqA1xOGttQSjFrdNvnHQN5hQV1tgkSncFBQasmz4/xPXN0uhe3horpPQIG2Epqs9xqoMARN/17hsD5FK0QUd0YVabfz8aK/2PORCL4N1ewjtzSDW1wXVX0pfGIaOHJHJr22cXf74sj9O3cd0ZF1tqoyxJmvaTNU5B4o6iqcTSWxqLXP3hvsN0tQN3/AD2dnNAGsGDCNYWHT1+qHfgAlg7Z9HP3FK3bjK7QkP9/cMMuOfY7mnPyBVA8fMqm1UjBPs=
+	X8WHYaO/EUmcJQ56h3UKmhidkcEMbQZyme3bY0QZyO8VkubxoGNQ0j4Znrz+6KgPp8Zt/Pc+TBqixbN9N2W+byhDET56ekCdp7ujg1KIjp283GeXpnxOl/ZFlnI8CKcc/qQcrEspzrwtWCPfltsZQUqDd3e40hx4iY1jrq/+wCQFW3fvyT228maBw2Xvmkvq2vvDHunfnMui4sAK56VJvjq8Fu7QitdHlZk1Toen+gIJJ9x+tMzvBj0+ORi+G5c8ts6P+cfCm/TwLC0OPb84eOUan9mVQ95A24Ij+tvCXgfia89h417rQaBVLiMriN2Iq5Ijs8oNEyHQhQm2XZT0nXMfr+zU758GkfFwK8WKUKXXu5dtkU3mtebGVBJUiNqz0N6dvaNlGa11bq0QUY7PSs+hmIiw2Pd/17fAsKPn1ePuqsmxO//ncsyR1HT9Z0s+TjySEBuNsbWufrunwtK3pzJUSL33L5P0ajgPXo+eaJV+cxU1zfTynw/HW5byeaQAg67wuj1liC679PJhmjxfxXvc9h+kmDC9XyMQhNyA17kZSvPV9KYI22sH6Gbk08fsknN5dU2gHhcn6La29FmRNcfLTjRaaxMcV8NALK6zxdIuru3ZwLumaStKkMxD2YBYnGQzPjL58pTML8OymGhqScJgEKPtpHvMLpxcQbQPb/c=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(376014)(10070799003)(1800799024)(22082099003)(18002099003)(6133799003)(921020)(10067099003)(56012099006)(261021123027099003)(261021121427099003)(261102123227099003)(261009223027099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(23010399003)(10067099003)(4143699003)(5023799004)(11063799006)(56012099006)(261021121427099003)(261026121527099003)(261028144727099003)(261026140227099003)(261022105027099003)(261102123227099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eHE0Sk42UVJaSTBzQkdVTTZTM3dzaUFQY1Y3RzhlbTE0UzdwVjNaekd1K3I2?=
- =?utf-8?B?dWVXZG82Uk1jNFBBWi9SemV3R2lFSC83UFhDcWdCait0Z3UvZkUwdzVlNHFv?=
- =?utf-8?B?bFR6c0RMR0hmUGpBT1BYZWRMNm5WTThlRWd6UzNLUWl5RVB0NlZORE0wdDVv?=
- =?utf-8?B?Y0VpdUlaQTM0RmpJV0pyTm0vMERFTndtVE5YOFJkRzNjU0FVVFpaYSs2NDBr?=
- =?utf-8?B?eFpZUEkyWnVtMTVRbHZoRU9BY0JMZ28xMU5MNksvQ3BlZGpXLzBHVTEzTVda?=
- =?utf-8?B?M0wzNmhaeXNxeWhKd1BUU2xlWGF0RXg4T3praVBGcXZqVldrcnNRVUJvWVFE?=
- =?utf-8?B?aW41d3ZSZjQ4QU9zMjNmMXF4Rk1BejZ6dFZaNmV6d0QzQ0lsbTYvbmpmREll?=
- =?utf-8?B?RVpVYmFmcnAxdkM1ODRvWit6aFRGa2tLaW9kcUlUOVUvcFZTODVUTjFiL0Q2?=
- =?utf-8?B?QmdDb3RvM0hjZzk3WnF0U2lkYU9OMFBhRE1vT25BZ21oRUFObWwxU29lWmFt?=
- =?utf-8?B?bkRpdU5hdDhIT2hodEcvQWRoKy9pNGRha2RXZCt1dms3RlMvYlF5Z0NiWnpG?=
- =?utf-8?B?aUR1b3B0YjRKT1pBNkcrWnVtU3hEVUVaejNpcVpRRVBXMXg3WEx3VzJDbkM5?=
- =?utf-8?B?RHl2MTlqbnhMVE1rdzNjL05hZzV4SGdHUTdWcW9odHMvdXRUYnlEMlRna0o4?=
- =?utf-8?B?dkZreGErUi9BVUFKaks4Mmg1RTN0cFZ1b28rSjNONEFzMERnWERLajA2Zkt4?=
- =?utf-8?B?Nm9zZ01yaW5ERmVYRHgrOWRVYVRRZXhFZVZIbXhmOFNoaHBncU1wR1BRWFZx?=
- =?utf-8?B?a0oycEVsV0NMb1dmU0dNQ1I0Ylc4UmU4ZGpENjA3aEZQL0hqaU96OGJpWHZC?=
- =?utf-8?B?cVUwL2RCdkY4MFNYcS93Z2UveitOY1ZDcmwwUmh5bTJ5cWgvcG1zanNLVUVr?=
- =?utf-8?B?enlZRk9lZ3dxUHpvYjhnVEdYT1ZBZ1A0a0pwRndUdUprVUhaVDhidTRncllB?=
- =?utf-8?B?cFd5UVNBQnM2aEVvRUFPK3dmd1RFeWJVNTNtVDJPZ3B6TUthUFIzcnBpMFJr?=
- =?utf-8?B?Q0RSMGtOYjdBNmVtOWdmblQwcGI3MXh5RmlncC91K3RVZ21IcmZ5ZXVVTzF3?=
- =?utf-8?B?VTVwb0JleTEzSVNxUldhMjBiSFNpVTgzU2lqcjF2SVlyQkozdDNSRmtFcmpK?=
- =?utf-8?B?Tkt0ZkRwaERoSFo4S3UzK3M5SEJ1OVBka3FKN3czaW1DSEd0Z1U2MWxrZ2s0?=
- =?utf-8?B?dDNFT2cybHFwdnprR2lTQWR0Wi95dU9Bd2JCRVE0MkdmM3RaZjZraUhuN3E2?=
- =?utf-8?B?am1nSFd4b2kvQUdQN2gxSXhoM2Z0c2VkU0YvM0V6ZWZuZHEwVytRSW4veGpW?=
- =?utf-8?B?QmZQeUVjc3VqOE42UWVabG9QWWhlMHBneWg3ckVwZzBaK0R5cEs5R0kwekI4?=
- =?utf-8?B?YmllYWZncXdrM0s2VHBNSUhhWW44OWhTbWdHLzdKZm9sTzFhK2YzRG1JU1Yr?=
- =?utf-8?B?RjE5RGhEdDVxRWFvMXJJMmFHSktsTk1Ob29FQkZqcUxFNnZUWHpNM1hGY1Nx?=
- =?utf-8?B?UHFsTEU2bzhZQ2VMcHNNQWYxVWxrc0RNK1E1TkhJQzNLZDV2dHErVGg3cDds?=
- =?utf-8?B?K0QyR05RYmxmdGN0empVK3UxRzc0YnFGeFBYMkxLLzBCYldPOEhBUVhaNWNK?=
- =?utf-8?B?UG9rcnVCdmhxT1FWcFN2V0M2a2NLMUpScGV6dUM5RFpZUWhTTktzNUZxNVd5?=
- =?utf-8?B?VUR3ZUc4dDFQUTY3TVFESWxNdzNMaGJ4MjIrWVQ0YU1ESFBOYXEwS1FHNE02?=
- =?utf-8?B?R3A3b3VJcjZUNGJ0ejU1RTh4M0xkZldLNDVkRXFTVTlFUUFXeUVVYUdGS3ZM?=
- =?utf-8?B?b2UvdzVMSXovS2JWMUVsZUZSb1dpYlUvR0Y0YldmYU1Za1Q5VXRXbDJKVDZ3?=
- =?utf-8?B?REhZOGVuNFZXRzdxdUtjakpIdXVWQzRTdVRoSkczQ0lRMGFURnQ2WEZZcHIr?=
- =?utf-8?B?c3hNWGE0am9EWlFGMU9vMVBOM2orRnNQUUd5RFN1WE9nK2dJVnFQckg2Qito?=
- =?utf-8?B?cmU5QkloMnFpNVlWVGFUWHEyWjZRdjNQc0ZTQ3M1MnFjbFQ4dWhHYTA1QXhB?=
- =?utf-8?B?MVZtd0UvVTN0YmFTSDdSRGU0bzVtOVBpRnFpMTBkekJ5Wjl5UVpFTGNCU2lo?=
- =?utf-8?B?Tm9wRmJxa1gwQWw2ZCtnK0pwc3RiSWIrUkluOVUyQjlHaVNjVE1IMXRoOVZx?=
- =?utf-8?B?NWVsRlZyenJoS0w0eThLTnpVa3gwUzVPd1plVSt0U3I2ZEE3QlRTaWN0aG40?=
- =?utf-8?B?YnlGZ2VUUUs3UEtwc0xtcGhDT1l5MmNoNmNsaFhCejNHU0FuN2FUUT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: a31cc567-f1b5-4eca-f169-08df465e0e23
-X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+	=?utf-8?B?LzhqOGhKbEFGY2ZWdGxEdWdWTmIyTVByS0NvUHE1WmhLN1VURDFSeTZ6cXZK?=
+ =?utf-8?B?YTF2NWUzNWJSa2ZuRHJUTlY1aExJeHpWdU1RZElUek1KUzZDUTBoRVNLVUlY?=
+ =?utf-8?B?MFhNeUJSWDB3eHErMUM4WjNCRm9SRUh3VVNHNTYvckU2emF6KzF6Mm96WllB?=
+ =?utf-8?B?aCttWlpMMEgxTis1Rmw0UkZ6bDBtVXNWenAyVzdOS24xdVhNVjdCQStNQlhs?=
+ =?utf-8?B?RXVqZHMwcmRoWVJEYkRiOTlPVlg3TlFpUWx5Z2sxZ1Zjb1BONFc1emliT3NN?=
+ =?utf-8?B?dGZUcTRmOXBnNXI4MTQ3WEpuWUwrZ1pKS2ZqQThYRkFIVXB1WjhLVUNiaFlm?=
+ =?utf-8?B?d0VSNkl3VVZHNmZtcE9VMjhkaHRzeE9XUGFXTnIxT1Q3UDQvaGNuKzIwaWFX?=
+ =?utf-8?B?aENsYTcxSDN2SU0wRUNKWWdvSEtBRjB4QkkzaXFpOGUxSDcxWkpPdXozOTRC?=
+ =?utf-8?B?WU1mbXJqMXV2VEw5dzNPc2V1OXlxVmdkdTdqclc1ZmNjaDNaUkZDYndWc3l5?=
+ =?utf-8?B?aVFRbVpQbHlHc0FCQ29aRUUwekZuc01jVmxsMEtKUlhVQmk3VWhNWU15ZytD?=
+ =?utf-8?B?VzByRmRleFd4eFdadm1CeTRLaUtRdFk0NnJWdUVsNitVNmZwK2wxL3hNMmJH?=
+ =?utf-8?B?UEswSWEyUXlBL1NxVHJQM3crd0RmbmVWUGgyUFpzZmFRSjZiR3JjWFB1L3BD?=
+ =?utf-8?B?cGN5UnNtdzdibzdTRS9wYm01UnV0NzEyWmN2b1QyTFo3ZWdmSFArdDBFS1ho?=
+ =?utf-8?B?YmRXZ3NZSTM5ZzNJZDdIVExwT3c2RGFELzVIdkI4RytHMHJnZzBBMVZRZXEr?=
+ =?utf-8?B?UlFUSVBsSWZiWnBVOGl2ZHJMQzg3aUlrUzVIY3Z3ZWZwaEh6RUsyRFZCcWIv?=
+ =?utf-8?B?TkVaaGxsNXQwenRSNXdsOEducW5qb1ljekxCcE11NmM5MW9nVElMTmxCWXJz?=
+ =?utf-8?B?V29SVkllZ1pVcVIxMGJKVGkyWG84MmswTVBzcTVSU0xFa3RDZ0N4VGtaRXdt?=
+ =?utf-8?B?YWVEb3l6RXhBYVYrMk81aWgrNzRHSyt0aUNnTlZza3RCMk9POTBFR3BPZXlx?=
+ =?utf-8?B?U3JnV3F2VXk0UGt0dUxEZEtucmVXU2I0RWtVTHNaWENHYkdrSUpmZ3RqTlZm?=
+ =?utf-8?B?V1JPbXJUSmFMcTMzTTB1VGNESFJ0VEcxTXh5bWk5SkZiMmlhcTVCelVLTGty?=
+ =?utf-8?B?S0MwV1RsblF6dTVEZzUwd29BK2tIVmU2QjFHUlp1cGVDYm5MNHFLRTFsdWxx?=
+ =?utf-8?B?aS9RTG9QNW51YS9WZnNQdDl1WXFuSk41T21YM05YZ2tjZmRBWE9FT2dja1RQ?=
+ =?utf-8?B?TXovbi8zV2pOdmUxUW9QU1U5NGZ1TU5Qdk5TM0JLajQzeUpYL0dyOStLcUhK?=
+ =?utf-8?B?dk8rWGhMNFJwcnJUVzYvTmJTZnpHeGdXdDExbVAxR2lwTTQ2bDZGMTFZOURF?=
+ =?utf-8?B?VERnUmxEcEtCeEVMcUtHS1lHZXRhSC9WNEZQMFd5RVF0elRpK3UxbUpPR1hG?=
+ =?utf-8?B?NG51QjVTNWJTVUJNVWJvM09Sb3JIeW5mSzZrZHY3RE9IMkhnU1I0U1VkZGFF?=
+ =?utf-8?B?MGtteTYwVE9qaCtHZWRLemRXYkRna3V0NDBGdk13WDd2QzhLVFlWemk1VXdG?=
+ =?utf-8?B?clZLOXRma3ZxQWhnVzVTZG5GejViUDZlTXV4Rk1RdUZLNWFhekIrQjRSWUJJ?=
+ =?utf-8?B?WElnR2ZpdDliN3ZSQTRLYTVmUXlvUUxqdEZhTFArbDRyU1NKamQ2dnNIOUow?=
+ =?utf-8?B?Q3pNaXpWMmtUdEJtYklGYkk1aTZaTElsYWtVT0ZGdnNwNEV0bm9NcHZnQzZJ?=
+ =?utf-8?B?K3phdHE5bm1DVUQ2Tm5LdUFMU3lmQnVxcGgzSC8vaWF2eGVoN0FJaXpTU1dv?=
+ =?utf-8?B?MGJOSTlCL2J4ZFhDTmt0bGVtOWx1Ym53YUcvYlNLc29QVGtNWXM1T1R2OXRN?=
+ =?utf-8?B?Mmt2Sll2Vzc4Vk0yZHd3dC9BTU02NFZDSmxNdXNBRmliM1lMK1dNWFlDZTVz?=
+ =?utf-8?B?RlMySTNnZ1I4U2dnTk85UkZGZi9mMWpkNThkMUpETVdNa2YxNitXdExRNXFh?=
+ =?utf-8?B?QmoyYW1lMkdrbFRHeXk5MjMvR2JYaFhBYmtZb3FzZ0tLdXNoZHNtSXpuY1dO?=
+ =?utf-8?B?a1dZbStLdzl2TEdlUE96K0dLbHU0azVvdlhUUG9xTEVRQlIyLzQxVTBTc0s5?=
+ =?utf-8?B?WFhXZHVPa29qMlRXb21vbU9vZzhaSW1FQmVPRm5lVTVWdk9Eek90Z3NXOHpt?=
+ =?utf-8?B?U1dRYk1nbit2OFZaZG9rckdpTHRXeVFwcTdsYm9pOURjSVN0R0NYWWpubmFW?=
+ =?utf-8?Q?kbEH4twJTD6KOUtNWH?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9207eead-beb0-422a-6c5b-08df465e5cda
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 16:56:29.0303
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 16:58:41.2792
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 51Al4v3mNXKj1lifUcP7QdMz7bxayt2S0yNJDTzlWh6ae+N9uAghBxMrL+b7wViMl3thRRYYwNWw7EijcT509g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5426
+X-MS-Exchange-CrossTenant-UserPrincipalName: tB5OF5widfB7CmdCiFU77YJR6reU0Em1KstGaBOV/nJIajJa8B2L3qn1feHqO978
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAEPR12MB181460
 
-On Thu Nov 19, 2026 at 4:36 PM GMT, Alice Ryhl wrote:
-> `UniqueRefGpuVm` currently names its shared and mutable data accessors
-> `data_ref()` and `data()`, unlike `GpuVmBo::data(&self)` and standard
-> Rust naming conventions. Thus, rename them to `data(&self)` and
-> `data_mut(&mut self)` for consistency.
->
-> Link: https://lore.kernel.org/r/20261118111653.448550-1-aliceryhl@google.=
-com
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/drm/gpuvm/mod.rs    | 4 ++--
->  rust/kernel/drm/gpuvm/sm_ops.rs | 6 +++---
->  2 files changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/rust/kernel/drm/gpuvm/mod.rs b/rust/kernel/drm/gpuvm/mod.rs
-> index d9d43d719761..23e73da865fb 100644
-> --- a/rust/kernel/drm/gpuvm/mod.rs
-> +++ b/rust/kernel/drm/gpuvm/mod.rs
-> @@ -311,14 +311,14 @@ fn sm_step_remap<'op, 'ctx>(
->  impl<T: DriverGpuVm> UniqueRefGpuVm<T> {
->      /// Access the data owned by this `UniqueRefGpuVm` immutably.
->      #[inline]
-> -    pub fn data_ref(&self) -> &T {
-> +    pub fn data(&self) -> &T {
->          // SAFETY: By the type invariants we may access `data`.
->          unsafe { &*self.0.data.get() }
->      }
-> =20
->      /// Access the data owned by this `UniqueRefGpuVm` mutably.
->      #[inline]
-> -    pub fn data(&mut self) -> &mut T {
-> +    pub fn data_mut(&mut self) -> &mut T {
->          // SAFETY: By the type invariants we may access `data`.
->          unsafe { &mut *self.0.data.get() }
->      }
-> diff --git a/rust/kernel/drm/gpuvm/sm_ops.rs b/rust/kernel/drm/gpuvm/sm_o=
-ps.rs
-> index 742c151b2540..9f3fe7c954fb 100644
-> --- a/rust/kernel/drm/gpuvm/sm_ops.rs
-> +++ b/rust/kernel/drm/gpuvm/sm_ops.rs
-> @@ -381,7 +381,7 @@ impl<T: DriverGpuVm> GpuVm<T> {
->          match p
->              .sm_data
->              .gpuvm
-> -            .data()
-> +            .data_mut()
->              .sm_step_map(op, p.sm_data.user_context)
->          {
->              Ok(OpMapped { .. }) =3D> 0,
-> @@ -402,7 +402,7 @@ impl<T: DriverGpuVm> GpuVm<T> {
->              op: unsafe { &(*op).__bindgen_anon_1.unmap },
->              _invariant: PhantomData,
->          };
-> -        match p.gpuvm.data().sm_step_unmap(op, p.user_context) {
-> +        match p.gpuvm.data_mut().sm_step_unmap(op, p.user_context) {
->              Ok(OpUnmapped { .. }) =3D> 0,
->              Err(err) =3D> err.to_errno(),
->          }
-> @@ -421,7 +421,7 @@ impl<T: DriverGpuVm> GpuVm<T> {
->              op: unsafe { &(*op).__bindgen_anon_1.remap },
->              _invariant: PhantomData,
->          };
-> -        match p.gpuvm.data().sm_step_remap(op, p.user_context) {
-> +        match p.gpuvm.data_mut().sm_step_remap(op, p.user_context) {
->              Ok(OpRemapped { .. }) =3D> 0,
->              Err(err) =3D> err.to_errno(),
->          }
->
-> ---
-> base-commit: e55a991e09e3b44f0b0d8206bb523dc57c086341
-> change-id: 20261119-gpuvm-data-rename-cf6e0e59f266
->
-> Best regards,
+On 18 Nov 2026, at 14:34, Andreas Hindborg wrote:
 
+> Zi Yan <ziy@nvidia.com> writes:
+>
+>> On 18 Nov 2026, at 11:18, Andreas Hindborg wrote:
+>>
+>>> Note: The page patches were part of the `Ownable` series [1] until v21.
+>>> This series continues the version numbering of that series, and it depends
+>>> on v22 of that series for `Ownable`, `Owned` and the split of `RefCounted`
+>>> and `AlwaysRefCounted`.
+>>>
+>>> Not all pages can be treated the same way. A page allocated with
+>>> `alloc_pages()` is managed by the page reference count, and kernel C code
+>>> routinely takes its own references to such a page. A page owned by the
+>>> slab allocator must not have references taken to it, but it can still
+>>> show up in places such as a bio vector. A frozen page has a reference
+>>> count of zero and is exclusively owned by the party that allocated it.
+>>>
+>>> A single `Page` type cannot describe all of these. This series makes
+>>> `Page` generic over a sealed `PageKind` that describes what is known about
+>>> the page:
+>>>
+>>>  - `Page<Base>` is the base kind. Nothing is known about the page
+>>>    beyond the validity of the `struct page`.
+>>>  - `Page<RefCounted>` is the default kind. The page is managed by the
+>>>    page reference count, and `Page<RefCounted>` implements
+>>>    `AlwaysRefCounted`.
+>>>  - `Page<Exclusive>` is a uniquely owned frozen page whose data area
+>>>    follows standard Rust aliasing rules, so the data is available as
+>>>    `&[u8]` and `&mut [u8]`. It is handled through
+>>>    `Owned<Page<Exclusive>>` and is the first in-tree user of `Owned`.
+>>>  - `Page<Frozen>` is a frozen page whose allocation is uniquely owned.
+>>>    Unlike for `Page<Exclusive>`, nothing is known about who accesses the
+>>>    data of the page, so the data is only available through the unsafe
+>>>    raw accessors.
+>>
+>> Why do we need to allocate Page<Frozen> when we can allocate Page<Exclusive>?
+>> To me, Page<Frozen> is an observed page state from a non-owner point
+>> of view.
+>
+> I'm not sure we need it, which is why I added this note:
+>
+>  This currently has no users, but I add it here for completeness. Let's
+>  discuss if we should keep it or not.
+>
+> The difference between the `Page<Frozen>` and `Page<Exclusive>` is that
+> `Page<Exclusive>` has stronger invariants. Namely that the (physical)
+> memory region of the page does not incur data races, and that the page
+> not in highmem. From a Rust point of view, this allows us to obtain a
+> reference to the page contents without jumping through any hoops.
 
+But access to memory region of the page is associated with page table
+mapping or IOMMU mapping (for device, and I assume devices are accessing
+data via virtual addresses instead of physical addresses to avoid further
+complication). It seems that you are trying to use page refcount == 0
+to infer that no page table mapping exists for the page. But how about
+kernel direct map? Anyone with struct page can use kmap_local*()
+to get kernel direct map and access the page content. kmap_local*()
+does not reject frozen pages.
+
+>
+> I do not have a user for a frozen page without these invariants, but I
+> would assume there are use cases?
+
+For the above reason, everything is Page<Frozen>?
+
+>
+>> In core-mm, a page is frozen, when its refcount == 0. The code looking
+>> at the page knows the page is exclusively owned by others. If the code
+>> allocates a frozen page, it will not check its refcount, because
+>> the code knows it has the exclusive ownership of the page. To reflect
+>> this, the code calling alloc_frozen_pages() should just get
+>> Page<Exclusive>
+>
+> Is it always the case that users of frozen pages will use them in such a
+> way that they can guarantee no races to the page contents (physical
+> memory)? They cannot be mapped for DMA access or anything like that -
+> that always requires a refcount?
+
+See kmap_local*() case above.
+
+>
+>> and if the code encounters a Page<Base> and finds it has no refcount,
+>> it should convert it to Page<Frozen> or there should be a method
+>> that accepts PFN and return Page<Frozen> if the page of the PFN has no
+>> refcount, for PFN walkers.
+>
+> We can add conversion functions, that makes sense.
+>
+>>
+>> “the data” mentioned in Page<Exclusive> and Page<Frozen> is struct page
+>> data or the data in the physical frame pointed by Page<...>? If it
+>> is the former, is it better to use metadata?
+>
+> I'm referring to the actual physical memory region that the struct page
+> describes.
+>
+>>
+>> I am new to Rust, so feel free to correct me. Thanks. :)
+>>
+>
+> I'm new to mm, I really appreciate your eyes on this.
+
+Do you mind describing the high level workflow around Page in Rust?
+From my point of view, exclusive page content access is more related
+to page table (including IOMMU page table) than struct page itself.
+struct page ownership is more about the metadata stored in struct
+page for physical memory maintenance.
+
+Best Regards,
+Yan, Zi
