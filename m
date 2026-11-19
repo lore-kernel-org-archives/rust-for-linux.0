@@ -1,78 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795116792;
-	b=sBZ3vPYrOdjnvonvXf1OTGvCXhNudepsLxLGefZJd+YL+X43Vtw1vxaEuDQR58T7gTuD
-	 QlWQZPBEJR29+jp8T2xoWc1J9YBFzoBBEqWrcnUaligw5mZplmJlnfvXjy9ZSFvV1a/A/
-	 0atzIemchk2MShOyjDQI8LJjSAqREd4nlFOSbO57Dcc9fdEsoxu2QcCLJRPRMGfqYo1B5
-	 zpMxarhKX523xhm8uMblCXL6HLAvFYqrM1/+FipC2u9GJSZMawZ2uKRmv61ePLDb5eh1K
-	 U6i9jnos8sTHHqgEubAzj9fMuDLnuvRArXDMrihazpeOzSUAG/sq4cqQuHTXgwmproA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795116792;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=WGZIV5m2cbvbePOeiIg+KiTHMRAB3Uic6UzxfiVJO18=;
-	b=pLiB/NIvWKx5LwDdfYncM/CIDVviV5Ri5/JkfrOhaonwMjKk5Ub9Ei17jRU29rhQ1Ee7
-	 aGwAVFOxySjZUZLVZLwsnC94LPUhTyLhxNGlRVEkrlY/FppuHCQ0SXRI8euoNcaWlJBFB
-	 2AVy38jLFkNPiw5pPDFoT5Fxs5mOsRihizNtYjQLnGdTWJPUK/KazMGc+A2YxLdQexnod
-	 zohE3MYV/BqM9t4BQwix6qoJxA7E8fpkc9dnq1stU1UWfydf/Shhq8tpXQdYxduyHWk+V
-	 7ESSa3d8gCKxSTduvPHvtlHRWjMkvffWIG7oARXA7mE2M+OLLuwnl1uRJ2DOOqkkY2w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CucyDZlR;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=213.97.179.56
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795117182;
+	b=sHU/7EcuecgNKeybuOJCeZFF57vmYXyPYLW3KG+s+Kf3+zYl/z2BZo7oVmBPaHjPHzES
+	 g2NYSqAx2ADa0MqpANUUvjK1MEK1Z5dS+rcO0d8P7GfvSC7q4/rdN9aD+1KcK3Zqojij3
+	 C4w7pWUSaYXHwuBxLqCWXnN2/y5I1B0F9aPT2xE6F5w2V60w3kBvluoSNfh+8Tr15dWvA
+	 kascdsLJg3kg3+eVjacHjJNCs1Xk+GaZu87LvTVR3bazlsP+8wUph58xlqH+VYwd9xxnA
+	 lhGNcdPeAarN4jwipz1NOq3UWQ3eIgnA2aF9rfi67XR92DI/MNYbUcLJFBtIRgrjpfw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795117182;
+	h=DMARC-Filter:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=ULkJYcH9aKX38zM3HpAXEa6rCmb4BClr4apdW+tJtI4=;
+	b=MA7/vpCQsOKJqwSBH4/FzEYOBDKdbSsGeSmH3k3W0MbMxpeEOe3n9tm7jiMGc4GNbwZx
+	 2ul93asLHGuhFsSVyax1ZXMgVdo3tC16nx9/nTaiVzb7akMAhXn4FGMSahW7b7qMex6d1
+	 fH/Jiga3Fqr6yOiVWa2KD6sjJp6Lwg2y1iER3V9O7mwoBO914Bqxrcwm5NGwpPLAfGgYP
+	 tKCUU/kuYKrlUa7tBURtONE0r0oBG/3sHFtqGPF0pw1qFXSCri45kTgnd/8xop1XYo1un
+	 1/Tik+Z7JXHqb9wGC7czlYODjIxxAoX9Uz0YBjutU+7Aa2O0rM7WUg324viTuPly2hA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=igalia.com;
+	spf=pass smtp.mailfrom=igalia.com;
+	dkim=pass header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=bPqbukYu;
+	arc=none smtp.remote-ip=213.97.179.56
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03908606A325;
-	Thu, 19 Nov 2026 19:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D14606A330
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Nov 2026 19:39:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C5D14606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CucyDZlR
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795116791;
-	b=JzzkP1wU0sD+uxGw1mbgpzGvG4568neK3HJVNpKCRrH9XT1Qj1hnyQ0UyYZK6PBOVJGQ
-	 EJsQ0Mxl2VCFLiqHN89rczLHvLUyPaS9kl4fOniH6XxDsVgX0rXYs09WYFzKL9PIr9rl6
-	 f/VpisBKl289ljpvKGorjy+V7ZcFb3QjfZBE9QC0oagjQKhLiXCugIsxNk85+U2LubAId
-	 ikmkFHSmoBwqr8phCXdDd6ll+KAi6RuBRWcAfPtJoeGZ4an4S7ehU9ZOwuHhHIpUO5sDq
-	 7+dy40+iNizBBptQIi1cuxdzXY2IegtyxJWNHmaa1wYQ8bs3pI4epvgvBGOLZkTMeXw==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795116791;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=WGZIV5m2cbvbePOeiIg+KiTHMRAB3Uic6UzxfiVJO18=;
-	b=tT+rAAw0mCmFvg2DV4NoO4i+vYCerxSxAivIBSRhmDOeKwSOUmmyPcW/zcjMUEoQlcWi
-	 Fu71meN9Ro8p5GTqGPWxYcWwMw8ta3SZ7S7/CiXlzF+FKKoR1S4WF9WTuL0yEwNGF8Ign
-	 mO8SaRk30RinvisqXI0ec6iWWQDRWVlsXezvn9I7VBCmdbVmYVlWFjJtFmAHKiIkwOeGS
-	 B2Vp1z4DeYjz+ii9tNc4HNdAGiJl3yMY+k9ctjFZA/l1c77hh2m6R6tgNhzP6COBzpier
-	 /BuZhU43f+Qj6XuKOmKh0M6jv5oNBOcB1rCri5JgaJ8pFrpq9sdNKEYIK/4xbu9C6jw==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 1CD361F000C5;
-	Thu, 19 Nov 2026 19:33:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795116791;
-	bh=WGZIV5m2cbvbePOeiIg+KiTHMRAB3Uic6UzxfiVJO18=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=CucyDZlRvHRwelO89vMwPheVStVONocuuKtat57mgZnbYC/zuxbSDG4eAey7y3ngR
-	 PHMaUUbqLC+OUlRoUbweRq8nFmTnUHP8DKoCKFIzhQX6MX/GvqpV0nqBoaGbdYD/4i
-	 z8Wnj9HeZTkmNg12GssWNQemR8L5B5VwSr4r8eAQPXiFVQ+sqiIhYBsJJFoPbsubAv
-	 NjYB576L7jvTatnp4GjUGxHQ0FvAYO451w9Hu/gKx+F5jDsOEUwkkQenLkI49EEcSa
-	 PNvXiq4l6SelmP++fRr43aRRj6qwagUx+oBZg+1FPP4vHumkG40ItvlXQ865TsuVw4
-	 RQoAyS2oHMvMg==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 8AB864B3D5;
-	Thu, 19 Nov 2026 19:33:10 +0000 (UTC)
-From: Peder Bergan via B4 Relay <devnull+peder.bergan.gmail.com@kernel.org>
-Date: Thu, 19 Nov 2026 20:33:07 +0100
-Subject: [PATCH] rust: bindgen: Preserve sched_statistics alignment
+	dkim=pass (2048-bit key, unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=bPqbukYu
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From:From:Reply-To;
+	bh=ULkJYcH9aKX38zM3HpAXEa6rCmb4BClr4apdW+tJtI4=; t=1795117180; x=2110477180; 
+	b=bPqbukYusC0QXWOKt/PlNb9t2GUSP2QXkbWU5t1cXISs+pmpGC3yzYlG77yhdpy4VYxaH76j8Gq
+	s5Dh59C+c7Jh0bopZTa9q7Dnvdg3aNAu7JTwdew/i5Bm/rKE/qdWv9BwDVFoWk0xPW7OJTfnQeHS8
+	rCMmvaTn6TMAkk7TkS2zbe01wcEYgm7aVLenb2bz6dRFQMhjSircccElez5FBqGjv4zE3bGCRvAkL
+	kkmOR9nvinee1HjX2wFojyoKVSUD0M9ttB7lA1OaW9ZdAovAddVSBmz5V0ZR1TFqKjHjveumYoiVn
+	0562JcAfFtkt+W82lwnUJMXQ2QYFnDT6q0hg==;
+Received: from [179.105.94.163] (helo=[10.0.0.1])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1xU7yn-00000001bU7-3OuI;
+	Thu, 19 Nov 2026 20:39:34 +0100
+From: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+Subject: [PATCH 0/6] drm/panfrost,panthor: Refuse to export WB_MMAP BOs
+Date: Thu, 19 Nov 2026 16:38:15 -0300
+Message-Id: <20261119-pan-drop-dma-buf-hooks-v1-0-6c6f1629e7f9@igalia.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -83,91 +61,105 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261119-fix-schedstats-bindgen-layout-v1-1-0599dd230ffd@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAPJO/2oC/yWMQQ6CMBBFr0Jm7UQKCMGrEBdtGaFGC+lMDYZwd
- 1tdvp//3g5MwRHDtdgh0NuxW3wCdSrAztpPhG5MDFVZtUqpHu9uQ7YzjSxaGI3z40Qen/qzRMG
- yry+mbeqmKztIjTVQEn794fZnjuZBVnI0P4xmQhO0t3Oe4soSSL/OIbKgp03gOL7Z1CCbpgAAA
- A==
-X-Change-ID: 20261119-fix-schedstats-bindgen-layout-0935b6434707
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqEMAxA0atI1hMwyqj1KoOLOk00iG1pUQTx7
+ lNm+Rb/35A5KWcYqxsSn5o1+AJ6VfBdrV8Y1RVDUzcdERmM1qNLIaLbLc6H4BrCltEM0gsZaec
+ 3QYljYtHrP/5Mz/MDF6an9mgAAAA=
+X-Change-ID: 20261119-pan-drop-dma-buf-hooks-98f7f19f3b51
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Faith Ekstrand <faith.ekstrand@collabora.com>, 
+ Boris Brezillon <boris.brezillon@collabora.com>, 
+ Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>, 
+ =?utf-8?q?Adri=C3=A1n_Larumbe?= <adrian.larumbe@collabora.com>, 
+ Liviu Dudau <liviu.dudau@arm.com>, Akash Goel <akash.goel@arm.com>, 
+ Karunika Choo <karunika.choo@arm.com>, 
+ Lukas Zapolskas <lukas.zapolskas@arm.com>, 
+ Chris Diamand <chris.diamand@arm.com>, 
  Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795116790; l=2061;
- i=peder.bergan@gmail.com; s=kernel-contributions;
- h=from:subject:message-id;
- bh=enj6BUb4oRB8IE5yaVUAOv95G/2SRaL0ZVC/+tCgiiM=;
- b=rQs8CAyFUbEYInVCLSgBlAGhq9GORNTkDMbyOCPP/Y82UJOutZ4Y4O+RHHUn0zap6mInfzx3F
- mgGOYtrg3ocBebFeSG9AqC66FX9RCOAL1h+Uq3/fJkAHzUUVQtnKBAD
-X-Developer-Key: i=peder.bergan@gmail.com; a=ed25519;
- pk=39790pn1YZCulHBoUG1uiQI1Hm01EvhBEa2zVrS/yN0=
-X-Endpoint-Received: by B4 Relay for
- peder.bergan@gmail.com/kernel-contributions with auth_id=1395
-X-Original-From: Peder Bergan <peder.bergan@gmail.com>
-Reply-To: peder.bergan@gmail.com
-Content-Transfer-Encoding: 7bit
+ Alice Ryhl <aliceryhl@google.com>
+Cc: kernel-dev@igalia.com, dri-devel@lists.freedesktop.org, 
+ rust-for-linux@vger.kernel.org, 
+ =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3189; i=mcanal@igalia.com;
+ h=from:subject:message-id; bh=Yan1nsrMqmbjshJ/S9xZKYqQsyvHOFJvhtMSHFfwIc4=;
+ b=owEBbQGS/pANAwAKAT/zDop2iPqqAcsmYgBq/1BuykThLrJSkVzBudGsmGQLAGH/H/zqu0828
+ SCU3m9xITuJATMEAAEKAB0WIQT45F19ARZ3Bymmd9E/8w6Kdoj6qgUCav9QbgAKCRA/8w6Kdoj6
+ qtbJCADOY2NOpCkpYyH5j6uRDYrwDy6dE8kZTIk1ipIDOec+WitxSyOD30ruHwg6INwqCCnjoG4
+ Jhu9dp6AMa+MrWrIIBdD8ZYhzVZGkfcbpLJBL0OFDP0WCRoN86JojNyd3YObbvJ14J1lHJamCKc
+ J+bOcgQzl7H0wsqpkgmW6YAh6i0gc0B0FopwSls9MxCPB9oiMXFiGdJUFe4SC3cjfrfzDlq2V1s
+ DfSJE5mla//JR4fmNs+BZohGjXeVDIOAYaxv+S2uQ3J4rYtzPi0DINb8jEtQ9uiJ4Hi34Qb/Hba
+ sMYcXnC32c4vyv/5zTH/UXfBN0Xuw2h27g9hi+ZFtSFngNEt
+X-Developer-Key: i=mcanal@igalia.com; a=openpgp;
+ fpr=F8E45D7D0116770729A677D13FF30E8A7688FAAA
 
-From: Peder Bergan <peder.bergan@gmail.com>
+This series follows up on the discussion in the V3D cached maps series
+[1], about how to handle CPU-cached BOs that are shared through dma-buf.
 
-With CONFIG_SCHEDSTATS disabled, struct sched_statistics is empty but
-still cache-line aligned. Bindgen emits the empty definition without
-that alignment. On affected builds this misplaces fields following
-stats in the generated task_struct. In the reported arm64 build, Rust
-Binder reads the wrong pointer via CurrentTask::mm() and rejects mmap()
-with -EINVAL.
+As pointed by Faith and Boris, when a buffer is shared through dma-buf,
+there's no way to ensure that a client will properly bracket their CPU
+accesses with DMA_BUF_IOCTL_SYNC. With WC mappings, waiting on fences is
+enough to guarantee consistency. However, with WB mappings, a missed sync
+can leave dirty cache lines behind, which another client can end up
+writing over.
 
-Make sched_statistics opaque so bindgen uses the C size and alignment.
-Rust has no callers that access the fields of this type.
+PanVK already keeps WB_MMAP BOs private, so this series only makes the
+kernel enforce the same policy on Panfrost and Panthor. As WB_MMAP BOs can
+no longer be exported, the custom dma_buf_ops providing begin/end_cpu_access()
+are no longer needed for them and are replaced by the default PRIME ops.
 
-Fixes: 313c4281bc9d ("rust: add basic `Task`")
-Closes: https://github.com/Rust-for-Linux/linux/issues/1269
-Cc: stable@vger.kernel.org
-Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
----
-Jules Mercier reported the layout mismatch on arm64.
+- Patch 1 adds the drm_gem_shmem_sync() helper, taken from [2].
+- Patches 2 and 5 refuse to export WB_MMAP BOs in Panfrost and Panthor.
+- Patches 3 and 6 drop the custom dma_buf_ops from Panfrost and Panthor.
+- Patch 4 converts Panfrost to drm_gem_shmem_sync(). V3D will also use it
+  to implement its cached maps, which I'll send in a separate series.
 
-On arm64 with bindgen 0.73.2 and CONFIG_SCHEDSTATS=n, the generated Rust
-binding placed task_struct.mm at offset 1168 while the C layout placed
-it at 1208. After the change both report 1208. The layouts also agree
-with CONFIG_SCHEDSTATS=y, and the Rust kernel crate and Binder driver
-build with Clippy in both configurations.
+Patches 3 and 6 need some extra attention as they aren't a no-op on
+IO-coherent GPUs. In this case, all BOs are CPU-mapped WB, and the custom
+begin/end_cpu_access() could be used to sync the mappings of non-coherent
+importers.
 
-OpenAI Codex assisted with the bindgen change, validation and drafting.
----
- rust/bindgen_parameters | 4 ++++
- 1 file changed, 4 insertions(+)
+However, I decided to send these patches either way because they only
+restore the behavior prior to commits 3ae6637378e6 and 925ad0c26dd8, which
+is what we discussed in [1] (IIUC). Also, Mesa writes through the GEM mmap
+without DMA_BUF_IOCTL_SYNC, so it never relied on these hooks anyway.
 
-diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
-index 5bab3cf063360..2686687555af3 100644
---- a/rust/bindgen_parameters
-+++ b/rust/bindgen_parameters
-@@ -26,6 +26,10 @@
- # warning. We don't need to peek into it anyway.
- --opaque-type spinlock
- 
-+# Bindgen drops the alignment of empty structs. Keep the cache-line alignment
-+# of sched_statistics when CONFIG_SCHEDSTATS is disabled.
-+--opaque-type sched_statistics
-+
- # enums that appear in indirect function calls should specify a cfi type
- --newtype-enum fwctl_rpc_scope
- --with-attribute-custom-enum=fwctl_rpc_scope='#[cfi_encoding="15fwctl_rpc_scope"]'
+Still, if you think this would be problematic, I can drop patches 3 and 6.
 
----
-base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
-change-id: 20261119-fix-schedstats-bindgen-layout-0935b6434707
+The Panthor changes were tested on hardware, but Panfrost changes were
+only compile-tested.
+
+[1] https://lore.kernel.org/dri-devel/20261030-v3d-cached-maps-v1-0-0a6a6b363382@igalia.com/T/
+[2] https://lore.kernel.org/dri-devel/20251126124455.3656651-1-boris.brezillon@collabora.com/
 
 Best regards,
---  
-Peder Bergan <peder.bergan@gmail.com>
+- Maíra
 
+---
+Faith Ekstrand (1):
+      drm/shmem: Add a drm_gem_shmem_sync() helper
+
+Maíra Canal (5):
+      drm/panfrost: Refuse to export WB_MMAP BOs
+      drm/panfrost: Drop custom dma_buf_ops
+      drm/panfrost: Use drm_gem_shmem_sync()
+      drm/panthor: Refuse to export WB_MMAP BOs
+      drm/panthor: Drop custom dma_buf_ops
+
+ drivers/gpu/drm/drm_gem_shmem_helper.c  |  93 +++++++++++++++
+ drivers/gpu/drm/panfrost/panfrost_drv.c |   1 -
+ drivers/gpu/drm/panfrost/panfrost_gem.c | 194 ++------------------------------
+ drivers/gpu/drm/panfrost/panfrost_gem.h |   3 -
+ drivers/gpu/drm/panthor/panthor_drv.c   |   1 -
+ drivers/gpu/drm/panthor/panthor_gem.c   | 120 +-------------------
+ drivers/gpu/drm/panthor/panthor_gem.h   |   4 -
+ include/drm/drm_gem_shmem_helper.h      |  17 +++
+ include/uapi/drm/panfrost_drm.h         |   1 +
+ include/uapi/drm/panthor_drm.h          |   2 +
+ 10 files changed, 126 insertions(+), 310 deletions(-)
+---
+base-commit: 8e2afcd2b57990465f132367fd8fdc2e55c1adad
+change-id: 20261119-pan-drop-dma-buf-hooks-98f7f19f3b51
 
