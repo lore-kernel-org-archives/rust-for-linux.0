@@ -1,75 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795168623;
-	b=IXdj0qNSZwUxKms8H4oDGtT1GaLJUtie3c+aHGYJK3eIv+VvJ2XLGqtXU2J/OdSVD+ev
-	 tEgwB0UU35iFI9TEF9XfRiVQsBLSbXKxAH0OyHVnjMx1BEf+2uktL47y7zAY1JC+RQrp/
-	 FJtHtVySRBx16vUkytTkqWKBBgdHbwglA/7XWyvUeasBPkXKvTu5csGSiZhr9lZKuBlhF
-	 1VCIqsbg/roHv+VgsqHHBQw1klM7+lnV+k7GjzBez44BoDyVT7Z4STNjCZ5mj3uXBzNU1
-	 cEyazWMha1fYxa3ct75nLgiQiwPQzjC1O8RbaR99YRnoYKZjX6t03WKBc/1vRK2TW7g==
+	t=1795170459;
+	b=nbJDJ0SOz9RxMuUjyRtINugZIarGnYLhZBZ0KI1nP0ysxl7ncxBz1x5/wvymd2gt6cGZ
+	 Fv4hRhh9L/L825KeG4DB2xTKasGjKnXDCXoRW0xxBZsJBI0Rcik4uC+WYssRt8WcSUK54
+	 UFXwUbxkmVjJQZPwzoOGvzRFYNdI2NA4R6HjCpfCcAGDbKfJ8BvcSep8arDdD786eA1Rs
+	 cq/Sv3QprUAU9xZk0kltx1AdQgj4zBIEFPOQ0HIAzSZg1hVvsiPh9p0Z9rXDg+DiItXsG
+	 tN0lMaPVDfQXLRmA7vQV41nNdYR+4zBwJId5VsySkmXONZmOjs3l2qIkNjhiaa7z/0Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795168623;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:In-Reply-To:References:Organization:X-Mailer:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=Cg+JYMIbYA1TsfRL6dKXWHelZNK7UqPJlxusfieTFqs=;
-	b=vzIRvggY9lpdcxJjHOLZEAOis+XwB1/EtxIZG70tW+M1f38uThpQ5KQsRJWiMxgvJ2+n
-	 iqqtRvMibfsLs5czQLRZZmJoCFci9LLbwyAlNr9FJbw4Hjs2re14rOtK5dz8ZuR/9wYwZ
-	 YgTumB9+Oc6QD4QryGdHXEPrhfNDLsakzrdmfIIZXaI2ddG/WX21CRVA0tuB4V/jrsu6+
-	 sROezPMzAhvSuEK+6+q39wD54PKVLK8ITzoTb3H5uu+N8OjCSGyxcCnrD4S3ITzuSsyn9
-	 Qqw/F+O1pbeAvjleWpQUyNbeXacfY39qN7YgHLKxANI3edVX8/HyZX+zbeyEdVJIGPA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795170459;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=g59A01+nT81rmoGrrt0KAwfxYB65M8vKSb7GrPuEl1M=;
+	b=jPJrrXmgjyKVe1pScAx/dy3eueGnOUkNuwsdbVXYcHvx1vPmqNVweh74lCRna7ulLqRb
+	 iVy2UD/Z7RP67vb301sUEvYtk3x6AUnGi8MOQI525yn2fKN23Aw2myB7sa3BJUeRIrM11
+	 hypbA2OvVm8y93rTvFtvm600sCDld4H3x+Y4S6Do1dWrai5U459dNj3bK3YrmxiY728M7
+	 ahr3k6FAoaJj7jeu8IFUeQau5WcTA/E4dcy7zgDNJ9joTrghJpUGqj8j7M/eN/GS4oVSF
+	 JsB5lip1d3/gfjgREBms0kKP5PjYbpAEe1F0anRpnsgIUhnynqOzxBigE7if9aP2KkQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=T1TCU7pz;
-	arc=none smtp.remote-ip=148.251.105.195
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GRvzZSzs;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CCC606A326
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Nov 2026 09:57:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74CCC606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2781B606A320;
+	Fri, 20 Nov 2026 10:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=T1TCU7pz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1795168620;
-	bh=kVuErGnzgjCpfRpl9ChLGXyTSW00UJKEHoErDw4aJWk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=T1TCU7pzZKeBzmfnB9+i3hcVq4LBFdMb6uYfuP4tcBM9RkZC6gzfe9quShSZK44/W
-	 XfgMrehpUq7Me1mRcmTHWQ+GMAppSYHRBpkXrj0Y6kFFN2gNtz+70wYT5pLGvRlCEX
-	 vGQvLuoAurkR6uNhDTG4/MP8/8Xt/P9T0OYv+9+OwurJhhDhBc/fqs0RaEz9MYsOsQ
-	 BOXZy1CLoJy83q5pdS+zFUwP9FhadiJ7cb1RaD6ySZzXgn4FVGWFVrPwR0lszhRr+5
-	 s/gOoKYsBRyUFJHaWn2EKdSsga/KfoPBQ/YgOKvy/z4ondc1Q4mC4QtNTraV1NXJaN
-	 CSfOs3HXZ/GHw==
-Received: from fedora1.home (unknown [100.64.0.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id B6CAC17E0630;
-	Fri, 20 Nov 2026 10:56:59 +0100 (CET)
-Date: Fri, 20 Nov 2026 10:56:54 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: =?UTF-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Faith Ekstrand
- <faith.ekstrand@collabora.com>, Rob Herring <robh@kernel.org>, Steven Price
- <steven.price@arm.com>, =?UTF-8?B?QWRyacOhbg==?= Larumbe
- <adrian.larumbe@collabora.com>, Liviu Dudau <liviu.dudau@arm.com>, Akash
- Goel <akash.goel@arm.com>, Karunika Choo <karunika.choo@arm.com>, Lukas
- Zapolskas <lukas.zapolskas@arm.com>, Chris Diamand <chris.diamand@arm.com>,
- Daniel Almeida <daniel.almeida@collabora.com>, Alice Ryhl
- <aliceryhl@google.com>, kernel-dev@igalia.com,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 0/6] drm/panfrost,panthor: Refuse to export WB_MMAP BOs
-Message-ID: <20261120105654.63e1c254@fedora1.home>
-In-Reply-To: <20261119-pan-drop-dma-buf-hooks-v1-0-6c6f1629e7f9@igalia.com>
-References: <20261119-pan-drop-dma-buf-hooks-v1-0-6c6f1629e7f9@igalia.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GRvzZSzs
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2D51F000C0;
+	Fri, 20 Nov 2026 10:27:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795170458;
+	bh=g59A01+nT81rmoGrrt0KAwfxYB65M8vKSb7GrPuEl1M=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=GRvzZSzsZBC5z/3rmX5sZ0B/X9qJ7qZ0gmGYh0a1Pk0dM89zQ5qB/qXZTWeKQ/PtX
+	 L3vyhOOPonnpMY/+zKPoCQ+4wk0ljq98rAYQnPO2TWeKlduN8KuEDHzK5XxwgYaDB1
+	 U5k/auXMn5LQLnQvxmHghyG9P/YdLXtZUbXIk4wFG9fTDLeod5Y177R39JcWH4QqU2
+	 VSHiW5xSsg1riyBLUm8GKkdhJSPuzyHSCArVLv8S87wQgT4F7AN+/siGIgqp/jHGBZ
+	 eYGmMkyTn22vpB2bLTe94qQz+3x1AFb8oyEjGioJwVSV1EPP1tHidV9lX86HFS53S4
+	 gSytm1/obJ5OA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Fri, 20 Nov 2026 11:27:04 +0100
+Subject: [PATCH 05/11] rust: uaccess: take a raw pointer in
+ `UserSliceReader::read_raw`
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -79,100 +53,181 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261120-page-shared-v1-5-66f8c4c62822@kernel.org>
+References: <20261120-page-shared-v1-0-66f8c4c62822@kernel.org>
+In-Reply-To: <20261120-page-shared-v1-0-66f8c4c62822@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Mark Rutland <mark.rutland@arm.com>, Lyude Paul <lyude@redhat.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+ Carlos Llamas <cmllamas@google.com>, Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7215; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=7Usj2yHs1j7uEe8QYeazPmySsi+qcWhq4l4WxUVPh7c=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBrACCGQ2GsusZYa/SRpvegY1XKVuTb+D2T5c2Ud
+ My4dWTvY1uJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCawAghgAKCRD6UCkIqsW9
+ 0JL8D/47AJiHUud8qB957cvnHaQWcJk0uz+HIWg4nbLoy9COaTTPo9e6lgCeWuLXT6Je+Qf6Z19
+ v3vt04QUIDCCZqDw/9lncvwC8FRV2goO5KSwEnb4Rz9iVfkG9WcRCdzcqa0zM+w0pNKki6AymeM
+ MDJ/40GjYOh84FsHZAKkeSDZnA6tq9/rf3pXT/MXLPqhMMz2Ex5z4b+3yPDRwln+EdZqdFGp1Y4
+ SH+81N/i190qkwhDCKCTbAooEjLfWKZ13Nri35/04tKpIgeVBlhVoFRGn0sqaRaYWDZ6MDe9v4D
+ 3G4XWpdNa1hMx4ne9FdjmbfX+R1LeFSuoRYIJhTJG2F3GceVpr62TXzE95B4DlE7DdJRigkcOpt
+ x/X7Umf2FGSRC6qz4pHmPtSNxim3t1t7Iei+U2t4sKFmBjqhyCnaLtfZHL+Zd7WFISaWhKqdr9h
+ JHWAVKPyTmmSjrmqHSquNgCjagOVEIc71vTUI/HuFdgBJItvSGcAe7Sqmjt38Ya4qziXC1GCn3w
+ ubZzZWx1KFmDQP50sCZ8It4A/vtE3Mm4qA7Sz/+0Qfrl7YgA82Ar3eGGxyY6+6XwNWtAtlemp5Y
+ tUFTL6oKDO4DjYkXeGUqTdQCmedvTWH15n649pziTEgUHBgijyzF8UBz5dzX6iNYlPbHQJftpaZ
+ MfDSyq5Hz1aWb3Q==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Hi Maira,
+`UserSliceReader::read_raw()` takes the destination as a mutable slice.
+Thus, it cannot be used to copy into memory that is subject to concurrent
+accesses, such as a page that is mapped to user space, since a mutable
+reference to such memory must not exist.
 
-On Thu, 19 Nov 2026 16:38:15 -0300
-Ma=C3=ADra Canal <mcanal@igalia.com> wrote:
+Change `UserSliceReader::read_raw()` to take the destination as a raw
+pointer and a length, and make it unsafe. The copy is done by
+`copy_from_user()`, which uses byte-wise atomic store instructions for the
+kernel memory, so the destination only has to be valid for atomic writes.
 
-> This series follows up on the discussion in the V3D cached maps series
-> [1], about how to handle CPU-cached BOs that are shared through dma-buf.
->=20
-> As pointed by Faith and Boris, when a buffer is shared through dma-buf,
-> there's no way to ensure that a client will properly bracket their CPU
-> accesses with DMA_BUF_IOCTL_SYNC. With WC mappings, waiting on fences is
-> enough to guarantee consistency. However, with WB mappings, a missed sync
-> can leave dirty cache lines behind, which another client can end up
-> writing over.
->=20
-> PanVK already keeps WB_MMAP BOs private, so this series only makes the
-> kernel enforce the same policy on Panfrost and Panthor. As WB_MMAP BOs can
-> no longer be exported, the custom dma_buf_ops providing begin/end_cpu_acc=
-ess()
-> are no longer needed for them and are replaced by the default PRIME ops.
->=20
-> - Patch 1 adds the drm_gem_shmem_sync() helper, taken from [2].
-> - Patches 2 and 5 refuse to export WB_MMAP BOs in Panfrost and Panthor.
-> - Patches 3 and 6 drop the custom dma_buf_ops from Panfrost and Panthor.
-> - Patch 4 converts Panfrost to drm_gem_shmem_sync(). V3D will also use it
->   to implement its cached maps, which I'll send in a separate series.
->=20
-> Patches 3 and 6 need some extra attention as they aren't a no-op on
-> IO-coherent GPUs. In this case, all BOs are CPU-mapped WB, and the custom
-> begin/end_cpu_access() could be used to sync the mappings of non-coherent
-> importers.
+Update the callers. `UserSliceReader::read_slice()` remains as the safe
+method for copying into a slice.
 
-Ah, I completely forgot about this, thanks for the reminder. If we have
-a system where the GPU is IO-coherent, but the video decoder or the
-display controller isn't, we either need to force CPU-uncached
-mappings for everybody with extra forced syncs on the UMD side for that
-case (right now we assume that IO coherent implies always-WB IIRC), or
-we need CPU access signalization with a proper begin/end_cpu_access()
-implementation to keep things consistent when cross-dev sharing is
-involved. I think this was the very reason I decided to keep the
-begin/end_cpu_access() implementation in panfrost/panthor in the first
-place.
+`Page::copy_from_user_slice_raw()` no longer creates a mutable slice of
+the data of the page, and thus no longer writes to the page with plain
+accesses. Remove the remark about this from its safety requirements.
 
-Note that the same problem can exist if the other device is the
-exporter and is IO coherent, but the GPU isn't. If the exporter were to
-expose CPU mappings as cached without proper sync hooks, we'd face the
-same problem. One way to avoid it would be to never CPU map imported
-buffers in mesa, but IIRC, that's not an option.
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ rust/kernel/page.rs    |  9 ++++-----
+ rust/kernel/uaccess.rs | 47 ++++++++++++++++++++++++++++++++---------------
+ 2 files changed, 36 insertions(+), 20 deletions(-)
 
->=20
-> However, I decided to send these patches either way because they only
-> restore the behavior prior to commits 3ae6637378e6 and 925ad0c26dd8, which
-> is what we discussed in [1] (IIUC). Also, Mesa writes through the GEM mmap
-> without DMA_BUF_IOCTL_SYNC, so it never relied on these hooks anyway.
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index ff191bfcd3f9..643af7cfbef4 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -600,8 +600,7 @@ pub unsafe fn fill_zero_raw(&self, offset: usize, len: usize) -> Result {
+     /// # Safety
+     ///
+     /// * Callers must ensure that this call does not race with a read or write to the same page
+-    ///   that overlaps with this write. This includes byte-wise atomic accesses, as this method
+-    ///   writes to the page with plain accesses.
++    ///   that overlaps with this write.
+     /// * Callers must ensure that no reference to the data of the page that overlaps with this
+     ///   write exists during this call. Such references can be obtained from a
+     ///   [`Page<Exclusive>`], see [`Page::as_slice`].
+@@ -613,9 +612,9 @@ pub unsafe fn copy_from_user_slice_raw(
+     ) -> Result {
+         self.with_pointer_into_page(offset, len, move |dst| {
+             // SAFETY: If `with_pointer_into_page` calls into this closure, then it has performed a
+-            // bounds check and guarantees that `dst` is valid for `len` bytes. Furthermore, we have
+-            // exclusive access to the slice since the caller guarantees that there are no races.
+-            reader.read_raw(unsafe { core::slice::from_raw_parts_mut(dst.cast(), len) })
++            // bounds check and guarantees that `dst` is valid for `len` bytes. The caller
++            // guarantees that there are no races, so `dst` is valid for atomic writes.
++            unsafe { reader.read_raw(dst, len) }
+         })
+     }
+ }
+diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+index f1aecda7a90c..b1df79500b98 100644
+--- a/rust/kernel/uaccess.rs
++++ b/rust/kernel/uaccess.rs
+@@ -252,25 +252,38 @@ pub fn is_empty(&self) -> bool {
+         self.length == 0
+     }
+ 
+-    /// Reads raw data from the user slice into a kernel buffer.
++    /// Reads raw data from the user slice into the kernel memory at `out`.
+     ///
+-    /// For a version that uses `&mut [u8]`, please see [`UserSliceReader::read_slice`].
++    /// The writes to `out` are byte-wise atomic, so they are well-defined even if the memory at
++    /// `out` is concurrently accessed by hardware, by user space, or by other kernel code using
++    /// atomic or volatile accesses. For a safe version that uses `&mut [u8]`, please see
++    /// [`UserSliceReader::read_slice`].
+     ///
+     /// Fails with [`EFAULT`] if the read happens on a bad address, or if the read goes out of
+-    /// bounds of this [`UserSliceReader`]. This call may modify `out` even if it returns an error.
++    /// bounds of this [`UserSliceReader`]. This call may modify the memory at `out` even if it
++    /// returns an error.
++    ///
++    /// Implementation note: this is implemented by the kernel's `copy_from_user()`, which is
++    /// implemented in a way such that byte-wise atomic memory store instructions are used.
+     ///
+     /// # Guarantees
+     ///
+-    /// After a successful call to this method, all bytes in `out` are initialized.
+-    pub fn read_raw(&mut self, out: &mut [MaybeUninit<u8>]) -> Result {
+-        let len = out.len();
+-        let out_ptr = out.as_mut_ptr().cast::<c_void>();
++    /// This method only writes initialized bytes to `out`. After a successful call to this method,
++    /// all `len` bytes at `out` are initialized.
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that `out` is valid for atomic writes for `len` bytes for the duration
++    /// of the call.
++    pub unsafe fn read_raw(&mut self, out: *mut u8, len: usize) -> Result {
+         if len > self.length {
+             return Err(EFAULT);
+         }
+-        // SAFETY: `out_ptr` points into a mutable slice of length `len`, so we may write
+-        // that many bytes to it.
+-        let res = unsafe { bindings::copy_from_user(out_ptr, self.ptr.as_const_ptr(), len) };
++        // SAFETY: By the safety requirements of this function, `out` is valid for atomic writes
++        // for `len` bytes. `copy_from_user()` is a byte-wise atomic operation on the kernel
++        // memory.
++        let res =
++            unsafe { bindings::copy_from_user(out.cast::<c_void>(), self.ptr.as_const_ptr(), len) };
+         if res != 0 {
+             return Err(EFAULT);
+         }
+@@ -284,10 +297,10 @@ pub fn read_raw(&mut self, out: &mut [MaybeUninit<u8>]) -> Result {
+     /// Fails with [`EFAULT`] if the read happens on a bad address, or if the read goes out of
+     /// bounds of this [`UserSliceReader`]. This call may modify `out` even if it returns an error.
+     pub fn read_slice(&mut self, out: &mut [u8]) -> Result {
+-        // SAFETY: The types are compatible and `read_raw` doesn't write uninitialized bytes to
+-        // `out`.
+-        let out = unsafe { &mut *(core::ptr::from_mut(out) as *mut [MaybeUninit<u8>]) };
+-        self.read_raw(out)
++        // SAFETY: `out` is a mutable slice, so it is valid for writing `out.len()` bytes, and
++        // nothing else accesses it during this call. `read_raw` doesn't write uninitialized bytes
++        // to `out`.
++        unsafe { self.read_raw(out.as_mut_ptr(), out.len()) }
+     }
+ 
+     /// Reads raw data from the user slice into a kernel buffer partially.
+@@ -372,7 +385,11 @@ pub fn read_all<A: Allocator>(mut self, buf: &mut Vec<u8, A>, flags: Flags) -> R
+         buf.reserve(len, flags)?;
+ 
+         // The call to `reserve` was successful, so the spare capacity is at least `len` bytes long.
+-        self.read_raw(&mut buf.spare_capacity_mut()[..len])?;
++        let spare = &mut buf.spare_capacity_mut()[..len];
++
++        // SAFETY: `spare` is a mutable slice, so it is valid for writing `spare.len()` bytes, and
++        // nothing else accesses it during this call.
++        unsafe { self.read_raw(spare.as_mut_ptr().cast(), spare.len()) }?;
+ 
+         // SAFETY: Since the call to `read_raw` was successful, so the next `len` bytes of the
+         // vector have been initialized.
 
-Mesa doesn't, but there might be other elements in-between (video
-decoder, and some custom layers analyzing/touching frames from the CPU
-before they're passed to the GPU). I get the "it used to work" argument,
-but I'm worried we're going backwards here. I also hate the fact we're
-going back to a "broken" implementation without even updating the dmabuf
-docs to explain that this sync-around-CPU-access mechanism is
-deprecated/fragile/broken and shouldn't be relied on.
+-- 
+2.54.0
 
->=20
-> Still, if you think this would be problematic, I can drop patches 3 and 6.
 
-I was about to suggest forcing uncached CPU mappings for shareable BOs
-on systems where the GPU is IO coherent, but there's actually no way we
-can know whether a BO will be exported on not on Panfrost (on Panthor
-we at least have this exclusive_vm thing that gives this guarantee). So
-there's actually no way around it, it's either going back to a "broken"
-state (broken in the sense it's not doing what it's supposed to, but no
-one really complained in the past) or keep this sync logic to try to do
-our best (even if it's not entirely safe, especially if the importer
-does crazy stuff like pretending to be UMA when it's not).
-
-Sorry for not having a better answer than: it might be okay, but it
-looks wrong. Every time I tried to understand what's expected from us
-for this shared buffer synchronization, I ended up more confused than
-before...
-
->=20
-> The Panthor changes were tested on hardware, but Panfrost changes were
-> only compile-tested.
-
-Could you prepare a custom gfx-ci kernel [1] so we can check that mesa
-CI is not regressed by this change? I know none of the tests in mesa CI
-would normally hit the removed logic, but better safe than sorry.
-
-Regards,
-
-Boris
-
-[1]https://gitlab.freedesktop.org/gfx-ci/linux
