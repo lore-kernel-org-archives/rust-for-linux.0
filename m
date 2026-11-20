@@ -1,79 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795140554;
-	b=S3Olv+q3waSXvuB1N9SuG1a4hUuwV5lRC69B2qfZOaPJOtrm7tL4TwVSFQVmeGPWLe7b
-	 ykBvm0PXSgTx+oGzZk3ROTmqo7hfrSlvNG5st2DLyNsWh6Li8TQyd9jkMQsM7NHzKG8lC
-	 dtoaG05pWdRoNZexPeCb8mkuw5vc6KhBwykkw0kDyayEEVn98gwEqYGsXiG+z54MQFYCl
-	 GKaWp5aHeS3OQfZwldtrYlcbMtfYX0rODKw4W+RIZZd4ZJ6V81SikSf3Eq7CEJNqUCNb2
-	 f5kRrv8sbXwawI1iS4wBJNcvTlNBn85oJrFaL9z9JUKn0CcE6iyGPJpB37I6qjhm3vw==
+	t=1795140567;
+	b=pRf20R+NfmViauXBcPKV3zjgdCePqGntmQVRthehm7aNkFjPrro2LgGgefCvAtelN0Zz
+	 6RMLOyVIxByuwflwQEzFxoh0noVft8ftuR8+lUfpZCo0rRSOC132MxXY3Baq7oFMGmYBW
+	 3g2rOugr/8dz82u81ZHyQ9cBKSiinqNJEZlUCvjZuUjguGF9vIbYAKv+I9lkVIzQ5PxRc
+	 dpuaN1zTce2mfYAn6VnR7n6bwavOINBNaY0Xyj2u4gtVmy3pbqszVtr3RFxcf1e/PR4jA
+	 V9n+lj1dE4ZL6GIr04RRa9jdduW0IPLVjYEO3IYZcb3l+DGE53F8WqLeXe0qtj/PcrA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795140554;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795140567;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=hDJRjil1ltAhxJ3XyaNtLSv4gvZCPpWRGxuYjAn/YEo=;
-	b=fq63A6vbFGQddjZlbaLSsVu0yAUedUKbfeH8MtzWLovDPoYpE/RuUWwLRGSwuOla6icF
-	 qieT4I/zAaaTuZ8Gd6pUAMdFoE+CiO0gwyNpDo/EWMccePujNIMIrrnkVg2uly3FBLSd5
-	 hAFdLVrYvD/UaG6q7QxmVpzO1K9aNDLtRluyjE+/wxs+XyoWFCeMD0orHOB7bgVN37Ql1
-	 AZHcUvRmAJfu64IZfwgiw5V6/bsR0lgYqgnJN+/OvcsEFL/UpISFYtkV+RR29VM2YwbtY
-	 P/WEB2SvJLixm0eyvUboHL5ez+c3BeVALdO7BDj653/vpeQkZrnIIEICDbw+flBrcRw==
+	bh=f8mTRn/3X3uZEq0um71/dlAedACVCps+ka1nHFg/T/Y=;
+	b=K+AFAZUYoGHWJAnuqnV6v2PQxFc6J7Z/sb8cH3RQYiK1rLeEDL/ImPNZYFbDtHcsnuC5
+	 JQ1byRjdGUS+GygkbgSuo2BQHv9y05iVPtCjMk+PLAMFitionOztRfwq3503iDrtAiJkl
+	 pqLOqkII+s/rF3Qkb8a+qiUE9kgZxgegVVyK8sU7m/u8HOdm6ebM3YOxBWwaLx66cn08N
+	 roz0r4JWC0dNWeemiOvGdf28xR76YQ1bykN5aIPKTMoVyyTo9PNG6j3XuEKVN6WtfzShb
+	 En6nceiq+DbX+06Q/OVovuijBskS2TRviHlL3kJciiWTf6ZIfL3AOeXlRzN36nyNQww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LCs+hBQO;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RjDIxibh;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA20A606A320;
-	Fri, 20 Nov 2026 02:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE9D60A2609;
+	Fri, 20 Nov 2026 02:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LCs+hBQO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E991F000D0;
-	Fri, 20 Nov 2026 02:09:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RjDIxibh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434B81F000D2;
+	Fri, 20 Nov 2026 02:09:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795140554;
-	bh=hDJRjil1ltAhxJ3XyaNtLSv4gvZCPpWRGxuYjAn/YEo=;
+	s=k20260515; t=1795140567;
+	bh=f8mTRn/3X3uZEq0um71/dlAedACVCps+ka1nHFg/T/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LCs+hBQO2DbORs98G0BqPD8rAswX9EkvzRgtmhGF7L8jCF9JLe5BdwCKsYbfoF0Vi
-	 jfEtznJGQS4FG2xG4DIc+zb2vpdJRNDlGtAId1LpRo29oKdkbEaaujmiLKVR/c2kTd
-	 gYkspTgbscoz/hxq9Hb8VjMVc6SgCyWBorYj3MdPwneFymL4apRrQBw95uwUWg5qlQ
-	 1EbKrbecJQZZcNU3qgyYdF8GTJP6Y4tGmz3v54pleNV2SCfJhmIP/vMt+PJiY/ks9c
-	 CP1MfXGsbNNHzXksmZqU8XEWjdlhxlWD6e0YDbCwT5GMWLxIpDcqn0bY81cbzJfinq
-	 y8a+vwIDfykgA==
+	b=RjDIxibhEvzAlmEJz9HG0Qvro2AAMtg8tsedwX8IlxdTKheBfBiyw1hO44ShNjzV1
+	 Dcr7nuxGOWDH0ii9AB79Virf6op7Ml8EK2QTYMVVxJbA8UISERLkHHuTHAbhx20xyl
+	 +unQJ3Celdwe3bM/eJn44fjYxVquTj4nARySmzV5OUbpQLj8sSkQS3uYkw61vz9uQr
+	 rIGKkk7wwS3zPYpJGPyf+iprjVe2cwsl3ecm/ctcp+zoiodL6Vzco0Kl7JNtmrxDNO
+	 vk3lbTwBjvXCI6HuvLzxFr5A41EhIEjxHMNf18M/5qzqFquzwVEeesKkZes38XNkV+
+	 9tN1QzXG5mDNw==
 From: Sasha Levin <sashal@kernel.org>
-To: Gary Guo <gary@garyguo.net>
+To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Sasha Levin <sashal@kernel.org>,
-	Thorsten Leemhuis <linux@leemhuis.info>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	axboe@kernel.dk,
+	hch@lst.de,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@nabladev.com,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com,
-	Miguel Ojeda <ojeda@kernel.org>,
-	RUST <rust-for-linux@vger.kernel.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Joungmin Lee <leejm516@gmail.com>,
-	"Alice C. Munduruca" <alice.munduruca@canonical.com>
-Subject: Re: [PATCH 7.3 0000/2651] 7.3.6-rc1 review
-Date: Thu, 19 Nov 2026 21:08:59 -0500
-Message-ID: <20261120020908.2320910-2-sashal@kernel.org>
+	stable@vger.kernel.org,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	linux-block@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 6.12 0534/1756] block: remove BLK_MQ_F_SHOULD_MERGE
+Date: Thu, 19 Nov 2026 21:09:06 -0500
+Message-ID: <20261120020908.2320910-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <DMYMKQ2PRN7X.WKDSQ4X8JIFB@garyguo.net>
-References: <20261118150247.972732815@linuxfoundation.org> <cb9ff126-7767-4c60-b735-1b7890a247fc@leemhuis.info> <DMYMKQ2PRN7X.WKDSQ4X8JIFB@garyguo.net>
+In-Reply-To: <20261119140830.15616-1-ojeda@kernel.org>
+References: <20261118150030.389817521@linuxfoundation.org> <20261119140830.15616-1-ojeda@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -85,23 +68,14 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 18, 2026 at 08:39:22PM +0000, Gary Guo wrote:
->     [PATCH 7.3 0580/2651] rust: pin-init: internal: init: emit `slot` using mixed site hygiene
->     [PATCH 7.3 0579/2651] rust: pin-init: internal: init: support tuple struct constructor syntax
->     [PATCH 7.3 0578/2651] rust: pin-init: internal: init: support tuple structs in `[pin_]init!`
+On Thu, Nov 19, 2026 at 03:08:30PM +0100, Miguel Ojeda wrote:
+>     error[E0425]: cannot find value `BLK_MQ_F_SHOULD_MERGE` in crate `bindings`
 
-Dropped all three from the 7.3 queue:
-
-  - e30decc3f9a0 ("rust: pin-init: internal: init: emit `slot` using
-    mixed site hygiene")
-  - 3b3ff9034a49 ("rust: pin-init: internal: init: support tuple struct
-    constructor syntax")
-  - d48aa955cb91 ("rust: pin-init: internal: init: support tuple structs
-    in `[pin_]init!`")
-
-The separate rnull/configfs Send/Sync error is fixed by 06dad60393f2
-("rust: block: implement `Send` and `Sync` for `TagSet`"), which is now
-queued ahead of the configfs patch in 7.3 and 6.18.
+Dropped cc76ace465d6 ("block: remove BLK_MQ_F_SHOULD_MERGE") from the 6.12
+queue, along with the swim patches it was queued for: 92353a047637 ("swim:
+Convert to blocking queue") and the swim patches after it (04cb277e6841,
+b736189c93c9, abae04f5bed9 and bbcd3e38a4f3), plus b9c109504853 ("swim: Add
+track zero recalibration delay"). Thanks for the pointer to 31d813a3b8cb.
 
 -- 
 Thanks,
