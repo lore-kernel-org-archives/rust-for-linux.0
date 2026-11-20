@@ -1,75 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795168416;
-	b=yUvnmzsJhgrTd2hEe64ZBTS7yC8FTE64NgxnhSx/m3wpJBva3T5eFfxz5w9xT78lrYm+
-	 EAsJYPTTJu2QOBy0kjOdA6fUCG1ZwxGMg8lOEPyBPXxmAeEDZN/xQNb3jc2qPGweANTIz
-	 mmNwwxCaQHbP9xe1f8c1KjR729359YLZtz41QmPF+/i0BxaNhgqRQqDso4Er14j5k1ktC
-	 LmRpcX9D2PGvHS3tBNeMSD1NDM74bBNkWvAeqY8r9pGjuiCp99ocPB8m4h5Z62/7JQxnA
-	 KG3wzqGJ4wCs4HgtekxLtbHS4eFnUXuYAB846bQD8iFg5NlHlg087h8BrP6YoqMvTmQ==
+	t=1795168623;
+	b=IXdj0qNSZwUxKms8H4oDGtT1GaLJUtie3c+aHGYJK3eIv+VvJ2XLGqtXU2J/OdSVD+ev
+	 tEgwB0UU35iFI9TEF9XfRiVQsBLSbXKxAH0OyHVnjMx1BEf+2uktL47y7zAY1JC+RQrp/
+	 FJtHtVySRBx16vUkytTkqWKBBgdHbwglA/7XWyvUeasBPkXKvTu5csGSiZhr9lZKuBlhF
+	 1VCIqsbg/roHv+VgsqHHBQw1klM7+lnV+k7GjzBez44BoDyVT7Z4STNjCZ5mj3uXBzNU1
+	 cEyazWMha1fYxa3ct75nLgiQiwPQzjC1O8RbaR99YRnoYKZjX6t03WKBc/1vRK2TW7g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795168416;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=wU4LlfzaVTfqT9FAZ2d8xCr1YhlqLtpgo7yVgEhBPXE=;
-	b=RlXhTEFBmpJlG2iGuHUDM+seGHKadSd2YSUc/q4xXyCl/RzHEQH+1Z2rEVNOTqp7fs9A
-	 Qe3/Ik5Myhn8jkZkcu9hzcLZk7zqQzBkVHZY+LhEGR3SXT6hmytAF92ovvpHwyieYWt1m
-	 3atCiHUV0A5YPaJplNw5bVeWEmEOQSPqYoapBTdqjBauyXeAQpF+gzmpF7vvMU/lCj4H7
-	 mSsIM9D9aszkYuDgJNPOVZCZs/FFIiJQkYsPi+a5UjmmTB8TcEE2LbvJaeFr3f2dcQIJ4
-	 4CkYd5TGV/sPxFwKt237tyFT7BBn0vUm3ZSRfD9tgrIbBGOXGk6CKDhNPX9NOZOvtAA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795168623;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:In-Reply-To:References:Organization:X-Mailer:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=Cg+JYMIbYA1TsfRL6dKXWHelZNK7UqPJlxusfieTFqs=;
+	b=vzIRvggY9lpdcxJjHOLZEAOis+XwB1/EtxIZG70tW+M1f38uThpQ5KQsRJWiMxgvJ2+n
+	 iqqtRvMibfsLs5czQLRZZmJoCFci9LLbwyAlNr9FJbw4Hjs2re14rOtK5dz8ZuR/9wYwZ
+	 YgTumB9+Oc6QD4QryGdHXEPrhfNDLsakzrdmfIIZXaI2ddG/WX21CRVA0tuB4V/jrsu6+
+	 sROezPMzAhvSuEK+6+q39wD54PKVLK8ITzoTb3H5uu+N8OjCSGyxcCnrD4S3ITzuSsyn9
+	 Qqw/F+O1pbeAvjleWpQUyNbeXacfY39qN7YgHLKxANI3edVX8/HyZX+zbeyEdVJIGPA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nim6ikRC;
-	arc=none smtp.remote-ip=209.85.128.72
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=T1TCU7pz;
+	arc=none smtp.remote-ip=148.251.105.195
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB72606A325
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Nov 2026 09:53:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FB72606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CCC606A326
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Nov 2026 09:57:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74CCC606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nim6ikRC
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4b0a307487aso3188305e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 20 Nov 2026 01:53:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795168414; x=1795773214; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wU4LlfzaVTfqT9FAZ2d8xCr1YhlqLtpgo7yVgEhBPXE=;
-        b=nim6ikRC/WTAbGXoW7i6eME06QvX3oaPjttXLeBQZz1VaoNrCWK2LmeoHvjzII5zit
-         rNk6PrR1FTkyAI4jenIo0A4ADkkolqv6haLxQL7Mh+HUVTBM8uguxKauGOV2IRmRxLvN
-         dLRz6nacQIy5qL6Oexp5dwKNnpYYZJFZgY5eDGb4SDJuws9+kEagEmGpfE2GAqhPWIb1
-         ecudZGQWG6GkGy0cTTe9Qm4DtrJviIVeg4z8R+idYy/cLQjnrtI3uHnntyEPn3PEIOQx
-         9eeawIsNf12frM0ftKdgGwNNNR7TBIhooEwM76od1gJu+u+rC6QdLGQpm+UzbeeI0xUC
-         FjiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795168414; x=1795773214;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wU4LlfzaVTfqT9FAZ2d8xCr1YhlqLtpgo7yVgEhBPXE=;
-        b=CArrf0p3Tt8CfXZCJNGKCsGh66WFJt3PtdP2y7NGl6cOP8A33DyX1T0BmxJFJ3rNME
-         gpINnt8fUl6Znn5kecPnhrGQqpZ/xmELydTFOn8pdM06j7s4GoZwHFGS5fyRFntQz+5J
-         7Rd4xKP0zRq6dQSs9F9n121HPglZv0I+6NsYu61DG6pcmsRoCL/3ATzzrOFrx45W4sOn
-         79/Nb0uh2ZlvlpK/HYguOvs/zzm80f19ZNmggNbBj+rzKuC+7wr+9x0CT7CXANK1G2qy
-         kFwu+7vS3stRKxCLAA9EAgF5jxqO5INBelZVlBIMl/n3QUmfjuEIGlMu6pSMDXCNjX1v
-         npUg==
-X-Forwarded-Encrypted: i=1; AL+hErEH1l2UUmJcfBLdUOb+ju41uymvqhVRaQKPV8dsF91caxIlcd0q2UY4OOiaR99IHe4fs7BJuSAYDFi3yigDdQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/4blvdjWu6l5YHlXx7XfhB/ShN2a/x3zQUaL/dpncC34Hu1OPa
-	YKroqJu+Vvxb4F1Iz/GU+gdinGkePdJJ80dzMVoLI7q/nN4jD37/aSsJ3fDc/Jz6LOQ524jrxb6
-	W2gcOldtjje6HHQg4Aw==
-X-Received: from wrud2.prod.google.com ([2002:a5d:4f82:0:b0:48e:3c17:c059])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4e4c:b0:4bb:6238:cd81 with SMTP id 5b1f17b1804b1-4bb88807dcemr52539295e9.10.1795168414195;
- Fri, 20 Nov 2026 01:53:34 -0800 (PST)
-Date: Fri, 20 Nov 2026 09:53:33 +0000
-In-Reply-To: <DMZD4TXCZSRX.HN0ETV0FWFIY@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=T1TCU7pz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1795168620;
+	bh=kVuErGnzgjCpfRpl9ChLGXyTSW00UJKEHoErDw4aJWk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=T1TCU7pzZKeBzmfnB9+i3hcVq4LBFdMb6uYfuP4tcBM9RkZC6gzfe9quShSZK44/W
+	 XfgMrehpUq7Me1mRcmTHWQ+GMAppSYHRBpkXrj0Y6kFFN2gNtz+70wYT5pLGvRlCEX
+	 vGQvLuoAurkR6uNhDTG4/MP8/8Xt/P9T0OYv+9+OwurJhhDhBc/fqs0RaEz9MYsOsQ
+	 BOXZy1CLoJy83q5pdS+zFUwP9FhadiJ7cb1RaD6ySZzXgn4FVGWFVrPwR0lszhRr+5
+	 s/gOoKYsBRyUFJHaWn2EKdSsga/KfoPBQ/YgOKvy/z4ondc1Q4mC4QtNTraV1NXJaN
+	 CSfOs3HXZ/GHw==
+Received: from fedora1.home (unknown [100.64.0.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id B6CAC17E0630;
+	Fri, 20 Nov 2026 10:56:59 +0100 (CET)
+Date: Fri, 20 Nov 2026 10:56:54 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: =?UTF-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Faith Ekstrand
+ <faith.ekstrand@collabora.com>, Rob Herring <robh@kernel.org>, Steven Price
+ <steven.price@arm.com>, =?UTF-8?B?QWRyacOhbg==?= Larumbe
+ <adrian.larumbe@collabora.com>, Liviu Dudau <liviu.dudau@arm.com>, Akash
+ Goel <akash.goel@arm.com>, Karunika Choo <karunika.choo@arm.com>, Lukas
+ Zapolskas <lukas.zapolskas@arm.com>, Chris Diamand <chris.diamand@arm.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>, Alice Ryhl
+ <aliceryhl@google.com>, kernel-dev@igalia.com,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 0/6] drm/panfrost,panthor: Refuse to export WB_MMAP BOs
+Message-ID: <20261120105654.63e1c254@fedora1.home>
+In-Reply-To: <20261119-pan-drop-dma-buf-hooks-v1-0-6c6f1629e7f9@igalia.com>
+References: <20261119-pan-drop-dma-buf-hooks-v1-0-6c6f1629e7f9@igalia.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -78,48 +78,101 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261118181245.2583303-1-dakr@kernel.org> <20261119111746.3049044-1-aliceryhl@google.com>
- <DMZ5ER6XTNLG.2ZJOF7F4100XW@garyguo.net> <CAH5fLghc63zD9c1F437pQiX+ohgSkYQe4nt3xP4gSTsqAVLzBA@mail.gmail.com>
- <DMZD4TXCZSRX.HN0ETV0FWFIY@kernel.org>
-X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
-Message-ID: <20261120095333.2135217-1-aliceryhl@google.com>
-Subject: Re: [PATCH] rust: drm: remove DRM device private data
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
-	simona@ffwll.ch, daniel.almeida@collabora.com, ojeda@kernel.org, 
-	boqun@kernel.org, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, tmgross@umich.edu, tamird@kernel.org, 
-	acourbot@nvidia.com, work@onurozkan.dev, nova-gpu@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 19, 2026 at 06:28:07PM +0100, Danilo Krummrich wrote:
-> On Thu Nov 19, 2026 at 12:49 PM CET, Alice Ryhl wrote:
-> > Good idea
-> 
-> Indeed, what do you think about this?
-> 
-> diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-> index 774db3acb15a..8c48dcfdecec 100644
-> --- a/rust/kernel/drm/device.rs
-> +++ b/rust/kernel/drm/device.rs
-> @@ -158,7 +158,11 @@ const fn compute_features() -> u32 {
->          open: Some(drm::File::<T::File>::open_callback),
->          postclose: Some(drm::File::<T::File>::postclose_callback),
->          unload: None,
-> -        release: None,
-> +        release: {
-> +            // The DRM core frees the device without running a Rust destructor.
-> +            const_assert!(!mem::needs_drop::<Device<T, Normal>>());
-> +            None
-> +        },
->          master_set: None,
->          master_drop: None,
->          debugfs_init: None,
+Hi Maira,
 
-Looks good to me.
+On Thu, 19 Nov 2026 16:38:15 -0300
+Ma=C3=ADra Canal <mcanal@igalia.com> wrote:
 
-Alice
+> This series follows up on the discussion in the V3D cached maps series
+> [1], about how to handle CPU-cached BOs that are shared through dma-buf.
+>=20
+> As pointed by Faith and Boris, when a buffer is shared through dma-buf,
+> there's no way to ensure that a client will properly bracket their CPU
+> accesses with DMA_BUF_IOCTL_SYNC. With WC mappings, waiting on fences is
+> enough to guarantee consistency. However, with WB mappings, a missed sync
+> can leave dirty cache lines behind, which another client can end up
+> writing over.
+>=20
+> PanVK already keeps WB_MMAP BOs private, so this series only makes the
+> kernel enforce the same policy on Panfrost and Panthor. As WB_MMAP BOs can
+> no longer be exported, the custom dma_buf_ops providing begin/end_cpu_acc=
+ess()
+> are no longer needed for them and are replaced by the default PRIME ops.
+>=20
+> - Patch 1 adds the drm_gem_shmem_sync() helper, taken from [2].
+> - Patches 2 and 5 refuse to export WB_MMAP BOs in Panfrost and Panthor.
+> - Patches 3 and 6 drop the custom dma_buf_ops from Panfrost and Panthor.
+> - Patch 4 converts Panfrost to drm_gem_shmem_sync(). V3D will also use it
+>   to implement its cached maps, which I'll send in a separate series.
+>=20
+> Patches 3 and 6 need some extra attention as they aren't a no-op on
+> IO-coherent GPUs. In this case, all BOs are CPU-mapped WB, and the custom
+> begin/end_cpu_access() could be used to sync the mappings of non-coherent
+> importers.
+
+Ah, I completely forgot about this, thanks for the reminder. If we have
+a system where the GPU is IO-coherent, but the video decoder or the
+display controller isn't, we either need to force CPU-uncached
+mappings for everybody with extra forced syncs on the UMD side for that
+case (right now we assume that IO coherent implies always-WB IIRC), or
+we need CPU access signalization with a proper begin/end_cpu_access()
+implementation to keep things consistent when cross-dev sharing is
+involved. I think this was the very reason I decided to keep the
+begin/end_cpu_access() implementation in panfrost/panthor in the first
+place.
+
+Note that the same problem can exist if the other device is the
+exporter and is IO coherent, but the GPU isn't. If the exporter were to
+expose CPU mappings as cached without proper sync hooks, we'd face the
+same problem. One way to avoid it would be to never CPU map imported
+buffers in mesa, but IIRC, that's not an option.
+
+>=20
+> However, I decided to send these patches either way because they only
+> restore the behavior prior to commits 3ae6637378e6 and 925ad0c26dd8, which
+> is what we discussed in [1] (IIUC). Also, Mesa writes through the GEM mmap
+> without DMA_BUF_IOCTL_SYNC, so it never relied on these hooks anyway.
+
+Mesa doesn't, but there might be other elements in-between (video
+decoder, and some custom layers analyzing/touching frames from the CPU
+before they're passed to the GPU). I get the "it used to work" argument,
+but I'm worried we're going backwards here. I also hate the fact we're
+going back to a "broken" implementation without even updating the dmabuf
+docs to explain that this sync-around-CPU-access mechanism is
+deprecated/fragile/broken and shouldn't be relied on.
+
+>=20
+> Still, if you think this would be problematic, I can drop patches 3 and 6.
+
+I was about to suggest forcing uncached CPU mappings for shareable BOs
+on systems where the GPU is IO coherent, but there's actually no way we
+can know whether a BO will be exported on not on Panfrost (on Panthor
+we at least have this exclusive_vm thing that gives this guarantee). So
+there's actually no way around it, it's either going back to a "broken"
+state (broken in the sense it's not doing what it's supposed to, but no
+one really complained in the past) or keep this sync logic to try to do
+our best (even if it's not entirely safe, especially if the importer
+does crazy stuff like pretending to be UMA when it's not).
+
+Sorry for not having a better answer than: it might be okay, but it
+looks wrong. Every time I tried to understand what's expected from us
+for this shared buffer synchronization, I ended up more confused than
+before...
+
+>=20
+> The Panthor changes were tested on hardware, but Panfrost changes were
+> only compile-tested.
+
+Could you prepare a custom gfx-ci kernel [1] so we can check that mesa
+CI is not regressed by this change? I know none of the tests in mesa CI
+would normally hit the removed logic, but better safe than sorry.
+
+Regards,
+
+Boris
+
+[1]https://gitlab.freedesktop.org/gfx-ci/linux
