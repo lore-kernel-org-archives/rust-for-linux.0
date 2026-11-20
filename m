@@ -1,54 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795190769;
-	b=edP66guGFNfehSFa+reMC3e9cDD4/WGS4MYMXwf/INZp4Zi+nTqi86Ps1egLRmsnVizp
-	 snyUz0Ry601hk1VXAB8SXWg6nJ5fdquT+PgIuQ4iuCqH6UTqSlKb8AIliQajmM11F52Gf
-	 tPpMQc7Vw3DQ4AUXZrK2s27YPxrK5JiTWvjVPIqiyQ/6hv4QakwH9acU2Qa47CpLM/5CX
-	 Odue3545HdQlMJLoOyDgEpEtLWpM7SBl/tGckhEvNJbPpDay9FFnmiiA7yugxBP3FOgLH
-	 xLAX247zGYYsBXzzK8XFaklu7+fBruOkQswi3jH7CNq8vP4s+7D/pvfkzIphOW4Jm9Q==
+	t=1795191861;
+	b=TuiMHsT68Z40uHY0YVTQirZj38nmxXOHdwHUGlT7ncCz2IJxqUG+VbLFD7DU98k8Gvtn
+	 QG0XA3CBukzKpuDQaRfEfY7UH3uVO3BlBFThciotEv+qQIQTRNu4wlkFz0D+q2sBWEzpw
+	 qBOzBXrnUBjrziEcQGflnRbah7v70tReI2ZTnD7HFagOH8bJbE/jk3GRPKfNgGAnWd50S
+	 +MPVhBZEKP+Kj9JZyJ7qGqgWlVJ+gfiJCgiur75x4M6WGNOeBI018PoRBckDw0vIGLVt0
+	 ggESJ3F2AKd+Nu77yrwritbaS6bAUNStQvHvcFB3tLd8IKaovpAqfFvhKs86J/6y3Mw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795190769;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:From:Content-Language:Autocrypt:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=cB+xUv7w1KY1jdh5E4wnq+1DubRDKcjagVPfCrGkLyM=;
-	b=MH2MSq3xIbcTkUAkKenUG+7vB+GBt+5xRJ8WHf2uIcUZNRZPRf1t1gSWO3O6/yL5Eot2
-	 YKRlNKHNr8GXeIZ4TmZym0JNBiH0CScYs/CxUaiRNjfSkuEZRb0NCRAZYFibYuPR9o/w/
-	 GGky6nB6WFKJnIACdTD5rK7oWO6FDwHeFoCPvlHp1eV8oma+Rf3GZM0a2JJEsHvcyfrBn
-	 KLgCOXanlotV9sJQDv+BgDT4ilB+W/TppDjBJf4odlHMtm1qOczFRbLwQGaxKQI7dHmdc
-	 TG5NuhxqeYxTq1a8WUbIxPMpVCc1qxomEs4BWAo8eruw/jxx5uqtAoAbbW6vEaCfIMA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795191861;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:In-Reply-To:References:Organization:X-Mailer:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=/LMYVtwiPSJPR0eaBUjL6RsttmmMK3oEmB/IsqgRYXY=;
+	b=NlZkvV9oJokrbKTUj9Jg3dmlIQv7VWSUOdGlqL8xgCncl5N4mMxHhxIEjQkSy8JCofqg
+	 hZsCqvD9CTr8VFRuhlSskVM5WYMgeFyAjtK+YLxkDvflKy3+OhodAcYxQiZpVkvztYlEq
+	 S6AxcUJb9raQR7RZhXWcrPcu49iX/EhUeRE/dqpRa7lWneGTRj9tWxJJJe/5AvG0twrJj
+	 n8bQoaf4MVh4nzuW5rIPear0y2LQLdPcbVol0aG7/J++gP4RfhbSZdeNy0sWtkcCrCOpu
+	 PdQd44XCZPTF66kvN5Ed5+z/jD+Tj3ayAuvNGecTxjaNfqObPRwHCYmHBcNBUoHl6vw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=igalia.com;
-	spf=pass smtp.mailfrom=igalia.com;
-	dkim=pass header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=WfD2bv34;
-	arc=none smtp.remote-ip=213.97.179.56
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=d4mOxrkl;
+	arc=none smtp.remote-ip=148.251.105.195
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B288606A320
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Nov 2026 16:06:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B288606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A42606A320
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Nov 2026 16:24:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C0A42606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=WfD2bv34
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:From:Cc:To:Subject:
-	MIME-Version:Date:Message-ID:From:Reply-To;
-	bh=cB+xUv7w1KY1jdh5E4wnq+1DubRDKcjagVPfCrGkLyM=; t=1795190768; x=2110550768; 
-	b=WfD2bv3454Ia89k1TmXSCxms7lnG0j6n2mSowkbFziIQ2ygqKSG4LXQ9ZkqK3G6omplPrFKe7qN
-	u3jZssiHtdrBoe8IhvGoLivFkLiEs2I1XB4/Hq5VzptDp84CcxOrWV2Y2i/K43/uKNmS1p4i49P3h
-	56mYhtYT/rd9k3hii572In1FPVZ+SilIO4+b6dd9oQkImJQuernxH1ljjWYb4XXXz/rZZ52rK6WaB
-	mTWEnnjFYc4wYJBABsVsMPMhdzsH8IA0Ko4wSxh03MZzszsrqO/2uQoR3Dm6LfSINU8zerPLKvIni
-	ShZonWPv1UzNFCOfbl1tX/ZZfFtmdmzO906w==;
-Received: from [179.105.94.163] (helo=[192.168.0.4])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1xUR7e-00000001w50-2e5Q;
-	Fri, 20 Nov 2026 17:05:58 +0100
-Message-ID: <d2aa7dd9-367a-4b6f-8dee-3913b8e5f6a2@igalia.com>
-Date: Fri, 20 Nov 2026 13:05:50 -0300
+	dkim=pass (2048-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=d4mOxrkl
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1795191859;
+	bh=fcy12No5QCrnAOUZgkGdvGdHHMJsgzaVa8BGW+ywOe0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=d4mOxrkl4G40xmOzMt8BiUz7e8/hDKC+KDW9zb4AErCSyAOyv7gtUVLyYCRWNhtKS
+	 8Gwetp6WMHJoDB85pWApNfkzM7hA60b/zFru8Ex4jIaf8hjetkJbP1BdSg1ZM8bXgY
+	 b/9RzRGij0RG1DWK23kUIz84M34sl8fx6KKGw2IC/tlS4WH0AX1n6HEwGY5raJ5V0O
+	 JSW2ykqLQKBIAul3V/tf4RtCB+d0+BWLxlfJIHOj6DLyTyiAl6VxReGzMq2wiI8jjp
+	 hydsziA/0F3PtDa2uDPBZ4qjROXPb6ynmq8SKhlwKzEkNgXSgpinEuOGxb/kKtDvNe
+	 Fz0XstB3lXUvA==
+Received: from fedora1.home (unknown [100.64.0.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 3C74217E0564;
+	Fri, 20 Nov 2026 17:24:18 +0100 (CET)
+Date: Fri, 20 Nov 2026 17:24:15 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: =?UTF-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Faith Ekstrand
+ <faith.ekstrand@collabora.com>, Rob Herring <robh@kernel.org>, Steven Price
+ <steven.price@arm.com>, =?UTF-8?B?QWRyacOhbg==?= Larumbe
+ <adrian.larumbe@collabora.com>, Liviu Dudau <liviu.dudau@arm.com>, Akash
+ Goel <akash.goel@arm.com>, Karunika Choo <karunika.choo@arm.com>, Lukas
+ Zapolskas <lukas.zapolskas@arm.com>, Chris Diamand <chris.diamand@arm.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>, Alice Ryhl
+ <aliceryhl@google.com>, kernel-dev@igalia.com,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 0/6] drm/panfrost,panthor: Refuse to export WB_MMAP BOs
+Message-ID: <20261120172415.2aa235f0@fedora1.home>
+In-Reply-To: <d2aa7dd9-367a-4b6f-8dee-3913b8e5f6a2@igalia.com>
+References: <20261119-pan-drop-dma-buf-hooks-v1-0-6c6f1629e7f9@igalia.com>
+	<20261120105654.63e1c254@fedora1.home>
+	<d2aa7dd9-367a-4b6f-8dee-3913b8e5f6a2@igalia.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -58,99 +81,62 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] drm/panfrost,panthor: Refuse to export WB_MMAP BOs
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Faith Ekstrand <faith.ekstrand@collabora.com>, Rob Herring
- <robh@kernel.org>, Steven Price <steven.price@arm.com>,
- =?UTF-8?Q?Adri=C3=A1n_Larumbe?= <adrian.larumbe@collabora.com>,
- Liviu Dudau <liviu.dudau@arm.com>, Akash Goel <akash.goel@arm.com>,
- Karunika Choo <karunika.choo@arm.com>,
- Lukas Zapolskas <lukas.zapolskas@arm.com>,
- Chris Diamand <chris.diamand@arm.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Alice Ryhl <aliceryhl@google.com>, kernel-dev@igalia.com,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-References: <20261119-pan-drop-dma-buf-hooks-v1-0-6c6f1629e7f9@igalia.com>
- <20261120105654.63e1c254@fedora1.home>
-From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Content-Language: en-US
-Autocrypt: addr=mcanal@igalia.com; keydata=
- xsBNBGcCwywBCADgTji02Sv9zjHo26LXKdCaumcSWglfnJ93rwOCNkHfPIBll85LL9G0J7H8
- /PmEL9y0LPo9/B3fhIpbD8VhSy9Sqz8qVl1oeqSe/rh3M+GceZbFUPpMSk5pNY9wr5raZ63d
- gJc1cs8XBhuj1EzeE8qbP6JAmsL+NMEmtkkNPfjhX14yqzHDVSqmAFEsh4Vmw6oaTMXvwQ40
- SkFjtl3sr20y07cJMDe++tFet2fsfKqQNxwiGBZJsjEMO2T+mW7DuV2pKHr9aifWjABY5EPw
- G7qbrh+hXgfT+njAVg5+BcLz7w9Ju/7iwDMiIY1hx64Ogrpwykj9bXav35GKobicCAwHABEB
- AAHNIE1hw61yYSBDYW5hbCA8bWNhbmFsQGlnYWxpYS5jb20+wsCRBBMBCAA7FiEE+ORdfQEW
- dwcppnfRP/MOinaI+qoFAmcCwywCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQ
- P/MOinaI+qoUBQgAqz2gzUP7K3EBI24+a5FwFlruQGtim85GAJZXToBtzsfGLLVUSCL3aF/5
- O335Bh6ViSBgxmowIwVJlS/e+L95CkTGzIIMHgyUZfNefR2L3aZA6cgc9z8cfow62Wu8eXnq
- GM/+WWvrFQb/dBKKuohfBlpThqDWXxhozazCcJYYHradIuOM8zyMtCLDYwPW7Vqmewa+w994
- 7Lo4CgOhUXVI2jJSBq3sgHEPxiUBOGxvOt1YBg7H9C37BeZYZxFmU8vh7fbOsvhx7Aqu5xV7
- FG+1ZMfDkv+PixCuGtR5yPPaqU2XdjDC/9mlRWWQTPzg74RLEw5sz/tIHQPPm6ROCACFls7A
- TQRnAsMsAQgAxTU8dnqzK6vgODTCW2A6SAzcvKztxae4YjRwN1SuGhJR2isJgQHoOH6oCItW
- Xc1CGAWnci6doh1DJvbbB7uvkQlbeNxeIz0OzHSiB+pb1ssuT31Hz6QZFbX4q+crregPIhr+
- 0xeDi6Mtu+paYprI7USGFFjDUvJUf36kK0yuF2XUOBlF0beCQ7Jhc+UoI9Akmvl4sHUrZJzX
- LMeajARnSBXTcig6h6/NFVkr1mi1uuZfIRNCkxCE8QRYebZLSWxBVr3h7dtOUkq2CzL2kRCK
- T2rKkmYrvBJTqSvfK3Ba7QrDg3szEe+fENpL3gHtH6h/XQF92EOulm5S5o0I+ceREwARAQAB
- wsB2BBgBCAAgFiEE+ORdfQEWdwcppnfRP/MOinaI+qoFAmcCwywCGwwACgkQP/MOinaI+qpI
- zQf+NAcNDBXWHGA3lgvYvOU31+ik9bb30xZ7IqK9MIi6TpZqL7cxNwZ+FAK2GbUWhy+/gPkX
- it2gCAJsjo/QEKJi7Zh8IgHN+jfim942QZOkU+p/YEcvqBvXa0zqW0sYfyAxkrf/OZfTnNNE
- Tr+uBKNaQGO2vkn5AX5l8zMl9LCH3/Ieaboni35qEhoD/aM0Kpf93PhCvJGbD4n1DnRhrxm1
- uEdQ6HUjWghEjC+Jh9xUvJco2tUTepw4OwuPxOvtuPTUa1kgixYyG1Jck/67reJzMigeuYFt
- raV3P8t/6cmtawVjurhnCDuURyhUrjpRhgFp+lW8OGr6pepHol/WFIOQEg==
-In-Reply-To: <20261120105654.63e1c254@fedora1.home>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Boris,
+On Fri, 20 Nov 2026 13:05:50 -0300
+Ma=C3=ADra Canal <mcanal@igalia.com> wrote:
 
-On 20/11/26 06:56, Boris Brezillon wrote:
->>
->> Still, if you think this would be problematic, I can drop patches 3 and 6.
-> 
-> I was about to suggest forcing uncached CPU mappings for shareable BOs
-> on systems where the GPU is IO coherent, but there's actually no way we
-> can know whether a BO will be exported on not on Panfrost (on Panthor
-> we at least have this exclusive_vm thing that gives this guarantee). So
-> there's actually no way around it, it's either going back to a "broken"
-> state (broken in the sense it's not doing what it's supposed to, but no
-> one really complained in the past) or keep this sync logic to try to do
-> our best (even if it's not entirely safe, especially if the importer
-> does crazy stuff like pretending to be UMA when it's not).
-> 
-> Sorry for not having a better answer than: it might be okay, but it
-> looks wrong. Every time I tried to understand what's expected from us
-> for this shared buffer synchronization, I ended up more confused than
-> before...
-> 
+> Hi Boris,
+>=20
+> On 20/11/26 06:56, Boris Brezillon wrote:
+> >>
+> >> Still, if you think this would be problematic, I can drop patches 3 an=
+d 6. =20
+> >=20
+> > I was about to suggest forcing uncached CPU mappings for shareable BOs
+> > on systems where the GPU is IO coherent, but there's actually no way we
+> > can know whether a BO will be exported on not on Panfrost (on Panthor
+> > we at least have this exclusive_vm thing that gives this guarantee). So
+> > there's actually no way around it, it's either going back to a "broken"
+> > state (broken in the sense it's not doing what it's supposed to, but no
+> > one really complained in the past) or keep this sync logic to try to do
+> > our best (even if it's not entirely safe, especially if the importer
+> > does crazy stuff like pretending to be UMA when it's not).
+> >=20
+> > Sorry for not having a better answer than: it might be okay, but it
+> > looks wrong. Every time I tried to understand what's expected from us
+> > for this shared buffer synchronization, I ended up more confused than
+> > before...
+> >  =20
+>=20
+> That makes two of us :)
+>=20
+> I'm okay dropping patches 3 and 6. I decided to send them as suggested
+> in our last discussion, but when I analyzed the IO-coherent case, I also
+> had the impression that this could be a step back.
+>=20
+> V3D doesn't have the IO coherent case, so I can move forward with only
+> Faith's drm_gem_shmem_sync() helper and I won't need the custom
+> dma_buf_ops.
+>=20
+> If possible, could you take a look at patches 1-2 and 4-5? I'd
+> appreciate it.
 
-That makes two of us :)
+They look good to me.
 
-I'm okay dropping patches 3 and 6. I decided to send them as suggested
-in our last discussion, but when I analyzed the IO-coherent case, I also
-had the impression that this could be a step back.
-
-V3D doesn't have the IO coherent case, so I can move forward with only
-Faith's drm_gem_shmem_sync() helper and I won't need the custom
-dma_buf_ops.
-
-If possible, could you take a look at patches 1-2 and 4-5? I'd
-appreciate it.
-
->>
->> The Panthor changes were tested on hardware, but Panfrost changes were
->> only compile-tested.
-> 
-> Could you prepare a custom gfx-ci kernel [1] so we can check that mesa
-> CI is not regressed by this change? I know none of the tests in mesa CI
-> would normally hit the removed logic, but better safe than sorry.
-
-Sure, I'll test the series on Mesa CI (without patches 3 and 6).
-
-Best regards,
-- Maíra
+>=20
+> >>
+> >> The Panthor changes were tested on hardware, but Panfrost changes were
+> >> only compile-tested. =20
+> >=20
+> > Could you prepare a custom gfx-ci kernel [1] so we can check that mesa
+> > CI is not regressed by this change? I know none of the tests in mesa CI
+> > would normally hit the removed logic, but better safe than sorry. =20
+>=20
+> Sure, I'll test the series on Mesa CI (without patches 3 and 6).
+>=20
+> Best regards,
+> - Ma=C3=ADra
+>=20
 
