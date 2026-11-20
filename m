@@ -1,47 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795168037;
-	b=VmVK3Wh5SRuREc1r4RUKgTCWvd35xHtnbryqWsCnh7gT1slLpQQSC9TpQyeIdj3YY83T
-	 Wed1LVHJk+cYnuIaNah6zDR9w/2HWtm4XYin1Kp9gCUEqKPSatfAn+WkoQc0oYDFs/H+d
-	 vAupBEnMYX+p0KN4lAHRS5GzkwrU/X93FKcOJUitAz6RsijBnRJ2Zy2c3UgJQXKkUfcvt
-	 vK7hh8lYbI0i1tcAwjJ6UhBdZUBt7KnwUXabfz8OyZFVRrxI9blx6iNq7/3dFwtcMu6Ae
-	 deJlb99AtVwdOkB7uBf91f6sqJB8ejW/fHyiw8bTsgIF7MypCMUDgSnMhEeBgj1WBiA==
+	t=1795168416;
+	b=yUvnmzsJhgrTd2hEe64ZBTS7yC8FTE64NgxnhSx/m3wpJBva3T5eFfxz5w9xT78lrYm+
+	 EAsJYPTTJu2QOBy0kjOdA6fUCG1ZwxGMg8lOEPyBPXxmAeEDZN/xQNb3jc2qPGweANTIz
+	 mmNwwxCaQHbP9xe1f8c1KjR729359YLZtz41QmPF+/i0BxaNhgqRQqDso4Er14j5k1ktC
+	 LmRpcX9D2PGvHS3tBNeMSD1NDM74bBNkWvAeqY8r9pGjuiCp99ocPB8m4h5Z62/7JQxnA
+	 KG3wzqGJ4wCs4HgtekxLtbHS4eFnUXuYAB846bQD8iFg5NlHlg087h8BrP6YoqMvTmQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795168037;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:Content-Language:To:Cc:References:From:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=9TK8Y60rG8NiKouFkfePiFMpKuLWEFIntD2PEI7ua3I=;
-	b=1KrucGnPAnbXSnq1mwT/UK5ARf+PSZMN7iLIGSU2oQY7rzI4pMhZ/Xo300RQ7kPx/vps
-	 j76BvPyh68gQR6iIteYobJIW0r1YhtsWuvv6gA6qqwHL+BE9iPXFfXW0aPAp33UAeRJ47
-	 8jtQarMpxutQ7u9fUP6FkSVQWfnZ6jvdoDCyQYpmk8a2lPKR7vawTxhN0HdkbzdINbm12
-	 VFYebZgkhFHYn0OpUKkYpbg7vY7iJO982yKGVgKTyuDije9xzMV58eSkLsBUH1VveTqpj
-	 V9zvVkSHNdBrCq/w/8V/MdRL1XJBeWtR4FR8wbDy6eIrc46GBxD8n/V9zBkMhKujkeA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795168416;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=wU4LlfzaVTfqT9FAZ2d8xCr1YhlqLtpgo7yVgEhBPXE=;
+	b=RlXhTEFBmpJlG2iGuHUDM+seGHKadSd2YSUc/q4xXyCl/RzHEQH+1Z2rEVNOTqp7fs9A
+	 Qe3/Ik5Myhn8jkZkcu9hzcLZk7zqQzBkVHZY+LhEGR3SXT6hmytAF92ovvpHwyieYWt1m
+	 3atCiHUV0A5YPaJplNw5bVeWEmEOQSPqYoapBTdqjBauyXeAQpF+gzmpF7vvMU/lCj4H7
+	 mSsIM9D9aszkYuDgJNPOVZCZs/FFIiJQkYsPi+a5UjmmTB8TcEE2LbvJaeFr3f2dcQIJ4
+	 4CkYd5TGV/sPxFwKt237tyFT7BBn0vUm3ZSRfD9tgrIbBGOXGk6CKDhNPX9NOZOvtAA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ne3oG4JV;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nim6ikRC;
+	arc=none smtp.remote-ip=209.85.128.72
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD77F60A2601;
-	Fri, 20 Nov 2026 09:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB72606A325
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Nov 2026 09:53:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FB72606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ne3oG4JV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 095541F000CA;
-	Fri, 20 Nov 2026 09:47:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795168037;
-	bh=9TK8Y60rG8NiKouFkfePiFMpKuLWEFIntD2PEI7ua3I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ne3oG4JVdPmgZgBSBUAKVcKzck0RKZwwGx1CgeztImWh8/N678rI4M0NcrTIpNV6o
-	 944+Pkkq4H6UHhDVeZr77IYLqWP6xQZhRga2edYuWmlonTU0mzGsmtf29GtydGCs4y
-	 VR0ibtZUjU227lmj9HELs0tDPCAeqC3veD4gBssY2SkRPOvKZBN9t5sM0eraTMdr73
-	 aBxr/RSdBVRCKv9QmWl+Bd0Gg2bt9Wb8rSp5+s03Yg8O+bCO8GcA+QRPcwdK+QTiHI
-	 45e6JAlDHwVlIaWRdEB5lmugYhKreo6eAhy+QNwR5MI4k+LHMisYaq9KlTvLQ3n/xl
-	 FQ0KCjAjlurIg==
-Message-ID: <73c18685-8115-4ee5-876d-a276902488aa@kernel.org>
-Date: Fri, 20 Nov 2026 10:47:11 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nim6ikRC
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4b0a307487aso3188305e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 20 Nov 2026 01:53:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795168414; x=1795773214; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wU4LlfzaVTfqT9FAZ2d8xCr1YhlqLtpgo7yVgEhBPXE=;
+        b=nim6ikRC/WTAbGXoW7i6eME06QvX3oaPjttXLeBQZz1VaoNrCWK2LmeoHvjzII5zit
+         rNk6PrR1FTkyAI4jenIo0A4ADkkolqv6haLxQL7Mh+HUVTBM8uguxKauGOV2IRmRxLvN
+         dLRz6nacQIy5qL6Oexp5dwKNnpYYZJFZgY5eDGb4SDJuws9+kEagEmGpfE2GAqhPWIb1
+         ecudZGQWG6GkGy0cTTe9Qm4DtrJviIVeg4z8R+idYy/cLQjnrtI3uHnntyEPn3PEIOQx
+         9eeawIsNf12frM0ftKdgGwNNNR7TBIhooEwM76od1gJu+u+rC6QdLGQpm+UzbeeI0xUC
+         FjiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795168414; x=1795773214;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wU4LlfzaVTfqT9FAZ2d8xCr1YhlqLtpgo7yVgEhBPXE=;
+        b=CArrf0p3Tt8CfXZCJNGKCsGh66WFJt3PtdP2y7NGl6cOP8A33DyX1T0BmxJFJ3rNME
+         gpINnt8fUl6Znn5kecPnhrGQqpZ/xmELydTFOn8pdM06j7s4GoZwHFGS5fyRFntQz+5J
+         7Rd4xKP0zRq6dQSs9F9n121HPglZv0I+6NsYu61DG6pcmsRoCL/3ATzzrOFrx45W4sOn
+         79/Nb0uh2ZlvlpK/HYguOvs/zzm80f19ZNmggNbBj+rzKuC+7wr+9x0CT7CXANK1G2qy
+         kFwu+7vS3stRKxCLAA9EAgF5jxqO5INBelZVlBIMl/n3QUmfjuEIGlMu6pSMDXCNjX1v
+         npUg==
+X-Forwarded-Encrypted: i=1; AL+hErEH1l2UUmJcfBLdUOb+ju41uymvqhVRaQKPV8dsF91caxIlcd0q2UY4OOiaR99IHe4fs7BJuSAYDFi3yigDdQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/4blvdjWu6l5YHlXx7XfhB/ShN2a/x3zQUaL/dpncC34Hu1OPa
+	YKroqJu+Vvxb4F1Iz/GU+gdinGkePdJJ80dzMVoLI7q/nN4jD37/aSsJ3fDc/Jz6LOQ524jrxb6
+	W2gcOldtjje6HHQg4Aw==
+X-Received: from wrud2.prod.google.com ([2002:a5d:4f82:0:b0:48e:3c17:c059])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4e4c:b0:4bb:6238:cd81 with SMTP id 5b1f17b1804b1-4bb88807dcemr52539295e9.10.1795168414195;
+ Fri, 20 Nov 2026 01:53:34 -0800 (PST)
+Date: Fri, 20 Nov 2026 09:53:33 +0000
+In-Reply-To: <DMZD4TXCZSRX.HN0ETV0FWFIY@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -50,153 +78,48 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: alloc: reject offline NUMA nodes in allocator
-Content-Language: en-US
-To: Franklin-Qi <yusq77@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-mm@kvack.org,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
- Uladzislau Rezki <urezki@gmail.com>, Harry Yoo <harry@kernel.org>,
- Georgios Androutsopoulos <georgeandrout13@gmail.com>,
- Vitaly Wool <vitaly.wool@konsulko.se>, stable@vger.kernel.org
-References: <20261120021633.12274-1-yusq77@gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261120021633.12274-1-yusq77@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20261118181245.2583303-1-dakr@kernel.org> <20261119111746.3049044-1-aliceryhl@google.com>
+ <DMZ5ER6XTNLG.2ZJOF7F4100XW@garyguo.net> <CAH5fLghc63zD9c1F437pQiX+ohgSkYQe4nt3xP4gSTsqAVLzBA@mail.gmail.com>
+ <DMZD4TXCZSRX.HN0ETV0FWFIY@kernel.org>
+X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
+Message-ID: <20261120095333.2135217-1-aliceryhl@google.com>
+Subject: Re: [PATCH] rust: drm: remove DRM device private data
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
+	simona@ffwll.ch, daniel.almeida@collabora.com, ojeda@kernel.org, 
+	boqun@kernel.org, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, tmgross@umich.edu, tamird@kernel.org, 
+	acourbot@nvidia.com, work@onurozkan.dev, nova-gpu@lists.linux.dev, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 11/20/26 03:16, Franklin-Qi wrote:
-> NumaNode::new() only checks that the id is in [0, MAX_NUMNODES). Safe
-> Allocator APIs can still forward an offline node into
-> k[v]realloc_node_align(), which may dereference NODE_DATA(nid) == NULL
-> and panic (GPF).
+On Thu, Nov 19, 2026 at 06:28:07PM +0100, Danilo Krummrich wrote:
+> On Thu Nov 19, 2026 at 12:49 PM CET, Alice Ryhl wrote:
+> > Good idea
 > 
-> Reject offline nodes at the shared ReallocFunc boundary for nonzero
-> allocations. Leave NUMA_NO_NODE and zero-sized free/realloc paths
-> unchanged. A residual hotplug TOCTOU remains if a node goes offline
-> after the check; this matches practical C usage for rejecting
-> statically missing nodes from safe Rust.
-
-IIRC we however don't remove node data on offline, so the NULL dereference
-won't happen?
-
-> Fixes: 7760b6421b6c ("rust: add support for NUMA ids in allocations")
-> Cc: stable@vger.kernel.org
-> Reported-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1263
+> Indeed, what do you think about this?
 > 
-> Signed-off-by: Franklin-Qi <yusq77@gmail.com>
-> ---
->  rust/helpers/mm.c              |  6 ++++++
->  rust/kernel/alloc/allocator.rs | 18 ++++++++++++++++++
->  2 files changed, 24 insertions(+)
-> 
-> diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
-> index b5540997b..b61e54e16 100644
-> --- a/rust/helpers/mm.c
-> +++ b/rust/helpers/mm.c
-> @@ -1,6 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0
->  
->  #include <linux/mm.h>
-> +#include <linux/nodemask.h>
->  #include <linux/sched/mm.h>
->  
->  __rust_helper void rust_helper_mmgrab(struct mm_struct *mm)
-> @@ -38,6 +39,11 @@ __rust_helper void rust_helper_mmap_read_unlock(struct mm_struct *mm)
->  	mmap_read_unlock(mm);
->  }
->  
-> +__rust_helper bool rust_helper_node_online(int nid)
-> +{
-> +	return node_online(nid);
-> +}
-> +
->  __rust_helper struct vm_area_struct *
->  rust_helper_vma_lookup(struct mm_struct *mm, unsigned long addr)
->  {
-> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-> index cd4203f27..15e17f598 100644
-> --- a/rust/kernel/alloc/allocator.rs
-> +++ b/rust/kernel/alloc/allocator.rs
-> @@ -101,6 +101,23 @@ unsafe fn call(
->          nid: NumaNode,
->      ) -> Result<NonNull<[u8]>, AllocError> {
->          let size = layout.size();
-> +
-> +        // `NumaNode::new` validates the ID range, not whether the node is online.
-> +        // The C allocation paths require an online node for nonzero allocations.
-> +        // Keep `NUMA_NO_NODE` and zero-sized deallocations unchanged.
-> +        //
-> +        // Residual TOCTOU remains if a node goes offline after this check and
-> +        // before the allocator runs; that matches practical C usage for rejecting
-> +        // statically missing/offline nodes from safe Rust.
-> +        if size != 0 && nid != NumaNode::NO_NODE {
-> +            // SAFETY: The helper only reads the kernel's online-node mask. `nid`
-> +            // is either `NUMA_NO_NODE` (excluded above) or a value in
-> +            // `[0, MAX_NUMNODES)` from `NumaNode::new`.
-> +            if !unsafe { bindings::node_online(nid.0) } {
-> +                return Err(AllocError);
-> +            }
-> +        }
-> +
->          let ptr = match ptr {
->              Some(ptr) => {
->                  if old_layout.size() == 0 {
-> @@ -116,6 +133,7 @@ unsafe fn call(
->          // - `self.0` is one of `krealloc`, `vrealloc`, `kvrealloc` and thus only requires that
->          //   `ptr` is NULL or valid.
->          // - `ptr` is either NULL or valid by the safety requirements of this function.
-> +        // - For nonzero allocations with a specific node, `nid` was checked online above.
->          //
->          // GUARANTEE:
->          // - `self.0` is one of `krealloc`, `vrealloc`, `kvrealloc`.
+> diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
+> index 774db3acb15a..8c48dcfdecec 100644
+> --- a/rust/kernel/drm/device.rs
+> +++ b/rust/kernel/drm/device.rs
+> @@ -158,7 +158,11 @@ const fn compute_features() -> u32 {
+>          open: Some(drm::File::<T::File>::open_callback),
+>          postclose: Some(drm::File::<T::File>::postclose_callback),
+>          unload: None,
+> -        release: None,
+> +        release: {
+> +            // The DRM core frees the device without running a Rust destructor.
+> +            const_assert!(!mem::needs_drop::<Device<T, Normal>>());
+> +            None
+> +        },
+>          master_set: None,
+>          master_drop: None,
+>          debugfs_init: None,
 
+Looks good to me.
+
+Alice
