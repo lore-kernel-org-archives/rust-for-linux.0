@@ -1,113 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.2
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795166161;
-	b=h1AdA0TO/t1NaE8JetU2i4wqE4F0+/fNGZOPHpYW5o/aHXlsS52yQwLPv7Zf69NiMtNF
-	 dgltuJQE4voyjoviqXQlAAN3CIsPyBPbFF2QTqDYuvg6lsbh8cymbE2TEN/E353xhe+gZ
-	 VugvPRg6pK7yivrp51hFGPOke7KEA2XswBt6I0ctEQ03/KodJYDrMCEf9UoO8sz6+4vwO
-	 a4MEh+xgalmInDDLR1+JkBj0lsXN1h/Gc8ilkaFIutOQlEgnK7phbgZXhjhbWun2qybCA
-	 4MyzhuWPaWIkC3i787AN1dG58hngxFANe//JAIYUXw1OFpJlK9Ao9uKBEvLz54dGsHw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795166161;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=5jgvV4gcibRf40b1fBeZeYXU7rHwCs5h2w50tFNfQ9Q=;
-	b=OYMg/y9T2Ohy6kx9uvxo+KuXG0HfCfb8VpHjd88P5fN1XvYxkYDyIE7g2cq3pTTQ/XsO
-	 4peVlBFVCvy6WySpt99kEhFUot575YY8pawydeyfZN6WsKPqF1ULtNot2S8ve684ngHYt
-	 CKRdWCvV7LwVhOhNJ8w/M/1wrjYxjATaGkOIhoitzdmVp8/vgPH4uHVSRoGKGrvCyzwip
-	 m5I3l6feSHDVrVlDRhBmspxNpEi4VVlPYGnZbfIHTY8rofvnWOHgdUELjVExKT4mRCKRR
-	 tPLcLdmCpTVK9ajc6rw+jI25PetLvrUr3UuELV6hA/rDZ7WCwv8DV68FkM2mDYXy2bg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=OIHtzld7;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.2
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010002.outbound.protection.outlook.com [52.101.56.2])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795168037;
+	b=VmVK3Wh5SRuREc1r4RUKgTCWvd35xHtnbryqWsCnh7gT1slLpQQSC9TpQyeIdj3YY83T
+	 Wed1LVHJk+cYnuIaNah6zDR9w/2HWtm4XYin1Kp9gCUEqKPSatfAn+WkoQc0oYDFs/H+d
+	 vAupBEnMYX+p0KN4lAHRS5GzkwrU/X93FKcOJUitAz6RsijBnRJ2Zy2c3UgJQXKkUfcvt
+	 vK7hh8lYbI0i1tcAwjJ6UhBdZUBt7KnwUXabfz8OyZFVRrxI9blx6iNq7/3dFwtcMu6Ae
+	 deJlb99AtVwdOkB7uBf91f6sqJB8ejW/fHyiw8bTsgIF7MypCMUDgSnMhEeBgj1WBiA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795168037;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:Content-Language:To:Cc:References:From:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=9TK8Y60rG8NiKouFkfePiFMpKuLWEFIntD2PEI7ua3I=;
+	b=1KrucGnPAnbXSnq1mwT/UK5ARf+PSZMN7iLIGSU2oQY7rzI4pMhZ/Xo300RQ7kPx/vps
+	 j76BvPyh68gQR6iIteYobJIW0r1YhtsWuvv6gA6qqwHL+BE9iPXFfXW0aPAp33UAeRJ47
+	 8jtQarMpxutQ7u9fUP6FkSVQWfnZ6jvdoDCyQYpmk8a2lPKR7vawTxhN0HdkbzdINbm12
+	 VFYebZgkhFHYn0OpUKkYpbg7vY7iJO982yKGVgKTyuDije9xzMV58eSkLsBUH1VveTqpj
+	 V9zvVkSHNdBrCq/w/8V/MdRL1XJBeWtR4FR8wbDy6eIrc46GBxD8n/V9zBkMhKujkeA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ne3oG4JV;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A55606A320;
-	Fri, 20 Nov 2026 09:16:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 45A55606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD77F60A2601;
+	Fri, 20 Nov 2026 09:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=OIHtzld7
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fHT0qL0lNtxJG8a5Upn0+tP3FJLUzODwbWrKh2pUK+k/hbLfC0HP1tJ448DvTzHDn/b0bvYXOdAIr8/1DpkXgNaonJps4AaX5sMgOTWFN9CNeFXwMroHFVBGhOQGXfigXLM1qvsz2owmBLbedAWpnSdBLNV7Xmhp8sztQkbwvBYa97qXSftZzvbTF15rcixCva43n0bnK647ygevW1b+Z9PXK8lhmnMH+v5+dUtPVaFnE/pGy08jlxaKLoiecDHqf/xkxPV+2XbAlBenXP8D/HHyPcI6QczyVqpjcIQOk1f8jpY//Ky6LvrOElJgya/3r+MWgc9GyrfHnsXAGtc6dw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5jgvV4gcibRf40b1fBeZeYXU7rHwCs5h2w50tFNfQ9Q=;
- b=JIdULeLyTLID1nZj7ADq+F0lCQZiOSwCxW+LTj4jFduoZ/j5DOSLGMQpGdjFoGO4rzpGVfrCU7L3Oio+xdYzuKe7lWQoSOfCxgu1tdbAvTTH0dXWaRpnsdpyMnLwkgK7gVS5NfR2Iv2OT3+5l6xDDBJzehXv9mnFQGHwzKqMXiXeCsqlDVVTDLQHkMqwwRKCP+6iMcZZbT2cCHh8c4XIttdO83wh/olQkzSI6LifjmppBP8ein3nz6bOEe+MU08j9RdrfnJlSiLXksxWgpM8pnNymDGiJZoTx+hcVaYd2zB2kJvdYctZ2U4NYB7pVlm/FiN0fdNtqWfuSQcFo6rQyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5jgvV4gcibRf40b1fBeZeYXU7rHwCs5h2w50tFNfQ9Q=;
- b=OIHtzld7lT7bWc2Ml1EejBmg2IvcB82BxRNp2KefVuW63awkwhC1c7MTpbTV8mAj8n14ftjJ9VS+020WVUkQ9WTZ1tb32YJF//T8C1a8rfJFu+fSt7L8hYJMMwoEiZ4/WF6OBBAB4DsmiIaFRG9PsEaGaPxGoIG61NUwhu9zThc=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by CH8PR12MB999206.namprd12.prod.outlook.com (2603:10b6:610:35a::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Fri, 20 Nov
- 2026 09:15:58 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%3]) with mapi id 15.21.0639.011; Fri, 20 Nov 2026
- 09:15:58 +0000
-Message-ID: <c18fc55a-717f-42a0-b37f-4ed81efd29d1@amd.com>
-Date: Fri, 20 Nov 2026 10:15:47 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: DamFence: Remove warning about unsignaled drop
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: phasta@kernel.org, Sumit Semwal <sumit.semwal@linaro.org>,
- Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261112101015.528127-2-phasta@kernel.org>
- <5d466f7c-2e70-4011-be04-9ffdf877b915@amd.com>
- <49298d3a328c1695ea27993f714c20b8a1c05f32.camel@mailbox.org>
- <e2ec8a39-56c3-4274-91ce-60c273904877@amd.com>
- <ab99758408df682c68a3792cc3014b77d6e1c8ab.camel@mailbox.org>
- <c2dd46ea-94d8-4720-af37-897c91809338@amd.com>
- <DMXJ8TBSZJJ4.3HG0OJDI9URTT@kernel.org>
- <8da4a8c0-1740-450c-9cf1-1a7b21d12997@amd.com>
- <DMXMSIQONGUW.1RRNS7I6LACD6@kernel.org>
- <a7f9e0f3-b299-4d40-9230-106003725dc2@amd.com>
- <202dd0c3d515ddfa77a8ec8751badadd31b8a7b0.camel@mailbox.org>
- <141892f8-180c-4157-8c59-6e69057334f2@amd.com>
- <DMZAQ0G6LTTB.1CRPNXSYB4QHG@kernel.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <DMZAQ0G6LTTB.1CRPNXSYB4QHG@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0087.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cd::11) To SJ0PR12MB5673.namprd12.prod.outlook.com
- (2603:10b6:a03:42b::13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ne3oG4JV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 095541F000CA;
+	Fri, 20 Nov 2026 09:47:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795168037;
+	bh=9TK8Y60rG8NiKouFkfePiFMpKuLWEFIntD2PEI7ua3I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ne3oG4JVdPmgZgBSBUAKVcKzck0RKZwwGx1CgeztImWh8/N678rI4M0NcrTIpNV6o
+	 944+Pkkq4H6UHhDVeZr77IYLqWP6xQZhRga2edYuWmlonTU0mzGsmtf29GtydGCs4y
+	 VR0ibtZUjU227lmj9HELs0tDPCAeqC3veD4gBssY2SkRPOvKZBN9t5sM0eraTMdr73
+	 aBxr/RSdBVRCKv9QmWl+Bd0Gg2bt9Wb8rSp5+s03Yg8O+bCO8GcA+QRPcwdK+QTiHI
+	 45e6JAlDHwVlIaWRdEB5lmugYhKreo6eAhy+QNwR5MI4k+LHMisYaq9KlTvLQ3n/xl
+	 FQ0KCjAjlurIg==
+Message-ID: <73c18685-8115-4ee5-876d-a276902488aa@kernel.org>
+Date: Fri, 20 Nov 2026 10:47:11 +0100
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -117,104 +51,152 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|CH8PR12MB999206:EE_
-X-MS-Office365-Filtering-Correlation-Id: a8d6fef5-1f2a-493c-113b-08df46e6e2ea
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|261022105027099003|10067099003|261022075727099003|4143699003|11063799006|56012099006|261009223027099003|261102123227099003|261021121427099003|261028144727099003|261026140227099003|261026121527099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	RmUkEsmqdkFsYYgrfEiq1dSUPUtw6gG1RagZ73SRrE1knVh/+zoddnW9H16fDnNbQLztQFCXZkw5beZ7sxJOrmkvYmSZS4mL3torHSWp/VE2S2SZ5Z+YNfQhnJ9F9Z0d1pf2x42AE9HPXSGboe1I/NUoUo6vG3jSkrGLeZlruZ1l1WfUAl5l9fsjLXzrVjK9v58hde7PXhW4H8LZnG9PDjQeqGCnpSyCeDZ8Z5VFQ3Uqwb+1nmkuuooXRNWM0/isI/zjH8NM9wGHPvcUg84vv7wb/JL5ynGkLVqWEzbJanjDalGYof/VDEqvnKSQ5PkqlPKhzoln1XZRpSgX3DsYZbXW3SOc+sldbN7w58rW518u12/ly55dQWOmeDeHXZxeSGZh4DfQCP7UfGL//Wuf0So2cL9YUs0f+2Fx4o4P4XrzJdVFm+5DB3BfYpjeUv5m3So/Y5MG22Me2t8MXP77PznVv7RYkQ2Gvv47UkpQpahjoWAvRaSfxaC3BcV8ZQmK+5D9yz+poGXSpYeJPcxDhTQWCw06oxldLJTlhjCuHErRH5UK4/E8XpGEfJM7R3S4q5TEIBoBUoFEwFEJFKcbTRpAnlCo2TJvE41/wCnW3fhQ4abNIU5q0VzgzusDYx6p
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(261022105027099003)(10067099003)(261022075727099003)(4143699003)(11063799006)(56012099006)(261009223027099003)(261102123227099003)(261021121427099003)(261028144727099003)(261026140227099003)(261026121527099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c3RucEVWbVlHbE4wUCtZQ2pOM3BLcmljaUFpdmNTRFlWZlIya21BbFFFUlVu?=
- =?utf-8?B?MVdWaDI5TmZja1NGSStiejAweXJ2bHRkSFhvdjNnMlJ0UG9nL0l6RW9La3JY?=
- =?utf-8?B?TVRZRmoyODFPT1puVmpVeXhNY0ZDZnFPQVNXemF1WDJ4L29FRGhLV0dqS0s1?=
- =?utf-8?B?M3plaUJVOVZRL3F0Sk1tWi82VjNBQ0NMVWZsYXo2cUJ0WXNtZi9GS1lITS9Z?=
- =?utf-8?B?YytnYkNxR3JWdk1sWDBlSHBkdGxJRHNnMnk3d3ZzZFAzQVlXYllWZHVubjR0?=
- =?utf-8?B?WHFpbnlJQk1CaXZrYWliOTZGVVhmZXZVSGhkT2lnL1ZjaFU5UHI0aFhOeDNG?=
- =?utf-8?B?SlZjYUx3S1RtTUsvOU5MdXBTQTR2QmRNQmg1Rm9VTUt4cnNudFp0MXBDcFNT?=
- =?utf-8?B?WE9xKzE0REEyUWhqSDRhc3dycDlab0JmVm8zdVBSWTZhd1VXcDlrTmVmM1E1?=
- =?utf-8?B?LzNESGtZZ1prakoySzhadmhDdllHQUxXbWM0ZWx5Q205T1BvRmYrcUk2WHI1?=
- =?utf-8?B?cUd6cGh1am1iM1pmY1ZzUEdzeHE3MXQzM25GLy9teUVUeFRXbGlQSWJsNkpF?=
- =?utf-8?B?NWhhOC9EQ3Z2WnVtZmR5VEJYWE1YcGxuT3Y1aHlVejhqa1VScUpnVmFiMnNm?=
- =?utf-8?B?UmxsVVZwdUVqcWNVcC9HRko0dEQrV3l2aU1UN0lBL01zMXZ0Q3RYV1hkR09s?=
- =?utf-8?B?WEtBZDJlYUZvWEhyYzJKTm1ubHZHSjhlaGI3S1FUM0dUdHc4OElTVkl1ZmJB?=
- =?utf-8?B?UlVuTTI4T1gvdHVUdmdQNG9FaVU2aGg2QTFzakNwYVgxcnM1TWY2aUlTWkVQ?=
- =?utf-8?B?NmZrV2VVNURTZVdlQStYbUZPSjZBNlArcElqNHg5NUp1RFBycDdpeTBFbjZS?=
- =?utf-8?B?K01pMmNMRW4vd0ZhMkk1TGNmcmdpcVFkOStBVDRxY0dPUkxZbEwySGh4VU5i?=
- =?utf-8?B?eG52QmVURHZQTGVFa3J3VFVJd3RITlNKZzZoN0dUNFIzZStlMGlwbUd5QVRj?=
- =?utf-8?B?K2QySzNxcTlZcTF3aWEwT3QxenNPWWxsOTlrdHVOMUluSlN4OGppbUR3Z2lY?=
- =?utf-8?B?RGtocUUwd0lFWGtVRERiQk5hZHRheWFQNzZ1SWxmc1lXTEVZbi82SjBZTVBJ?=
- =?utf-8?B?SkFXNThwWVRUY1FNRHBMcmJMMndSL2pnbkVJRTVsUG4rVThhelpEbTNobGhO?=
- =?utf-8?B?aHM3RXNjalR4NFZCd3VPaXl3bW9KYmhvdDBIcjNPZklyY2hlV3JPNkF3TXVL?=
- =?utf-8?B?M2NsWURkQkNQTDVMUWFhTWl5VnlZMzl4aWg5SnRKcjQ0YmJWc2s2WnltK0h6?=
- =?utf-8?B?WkVPRUJldnQxb1orMHNndkFlREI5bWtaNjZyM1VPVC94bU9PUVArUGozUURU?=
- =?utf-8?B?UHJmaGdqZlo0OGl4S3JjcXdSS3BUejB1SmE5L05jdFZ1eklsb0NjL3BGcVJG?=
- =?utf-8?B?aWo1VUNWOGN0cUlTeWJqd2FNbWlKQWt5aFEyMzlqSkpvL3FIUXQzVHNBakZ5?=
- =?utf-8?B?STI0cnQ3blpxRmlqYW4zK2t5aDBkN2xGZDZDRzhhUC81cFRaTUpncHVyK1I1?=
- =?utf-8?B?SUU2ZHN1TkR0clhDTGV0a0c5dXl5b0g2U214d09oNVN0aHBCcSt2NTNVZTlK?=
- =?utf-8?B?QjdIZU1ZWFJmY1BacFdtTkM5cGtMYnQ2Nk5lREtXNEZwQXFIeW9EY2NQSDIy?=
- =?utf-8?B?RFVGTXNUQ0todEdBQVE3TWxMMzc0UEFScVJMaG9GTFQ1S1JiWWNxVXNTd043?=
- =?utf-8?B?QlR1LzdSV1RnRlFOZDk4ZU5TWW81YlhCLzRpUHYxbzZDR3RtbkRCU0RDZTRN?=
- =?utf-8?B?R3M0b3pJSnBGM3duTlBadVphMHBvWE9ySTZEbUtaaUVJT3FGTzlWc1JFSkZ3?=
- =?utf-8?B?MGJhM0hMQ0VJM0FNdmJIQkY4bG1DNzRwdVRLMGdoUjlSVXgyQXJacUJMSllP?=
- =?utf-8?B?UzVTb1BKbkUyUFNaVHNoNm9IZjZDdG5tTWR4cXFpVndNQ2IwelBQcTloVkE5?=
- =?utf-8?B?NXc2YUZUbjNiOHhic3czMGZaaHovQWZVNll3SkJlNGZOaEs2MzdqWlBYSTJ1?=
- =?utf-8?B?TVplaTF6aTRkY1VQcmphRGFYUXVCaUdobk9FUW9KNjNNR1p5TlUrQWw1c0Ew?=
- =?utf-8?B?NlRLSW1rZy9ld2JiQjJnVGowOGRvYWlOcUc3WDBJeDlZMFA2ZmM3WEJPZnhE?=
- =?utf-8?B?ellCbGx3dTZ4dnlJKzZXV1NIQ1RVNnZDdldPSmI3aXBrYWFEbEF1SEQvTTV6?=
- =?utf-8?B?c1J4VnBWdXV4UzZTWkZOTXlpNHRjdjN5b0g3Q3hkRWR3QlFrbW9IUnFoU2Fh?=
- =?utf-8?Q?KEbkIXVHcWj4Xn9VII?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a8d6fef5-1f2a-493c-113b-08df46e6e2ea
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR12MB5673.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2026 09:15:57.9750
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +yJ9FA4+GnkjMS7t755KqLI4q+S/5dyJRFTkU/t1eYS+bymJ/h/U5KEnCDlj5cUs
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH8PR12MB999206
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: alloc: reject offline NUMA nodes in allocator
+Content-Language: en-US
+To: Franklin-Qi <yusq77@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org, linux-mm@kvack.org,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Harry Yoo <harry@kernel.org>,
+ Georgios Androutsopoulos <georgeandrout13@gmail.com>,
+ Vitaly Wool <vitaly.wool@konsulko.se>, stable@vger.kernel.org
+References: <20261120021633.12274-1-yusq77@gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20261120021633.12274-1-yusq77@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 11/19/26 16:34, Danilo Krummrich wrote:
-> On Thu Nov 19, 2026 at 11:47 AM CET, Christian König wrote:
->> A dma_fence should *NEVER* signal because you waited for something. Instead
->> the dma_fence is what is waited on.
+On 11/20/26 03:16, Franklin-Qi wrote:
+> NumaNode::new() only checks that the id is in [0, MAX_NUMNODES). Safe
+> Allocator APIs can still forward an offline node into
+> k[v]realloc_node_align(), which may dereference NODE_DATA(nid) == NULL
+> and panic (GPF).
 > 
-> In the end, despite doing it on behalf of the hardware, the driver is the
-> producer of the fence. And there are cases where it can't wait on its own fence,
-> because no one is going to signal it other than the driver itself.
+> Reject offline nodes at the shared ReallocFunc boundary for nonzero
+> allocations. Leave NUMA_NO_NODE and zero-sized free/realloc paths
+> unchanged. A residual hotplug TOCTOU remains if a node goes offline
+> after the check; this matches practical C usage for rejecting
+> statically missing nodes from safe Rust.
+
+IIRC we however don't remove node data on offline, so the NULL dereference
+won't happen?
+
+> Fixes: 7760b6421b6c ("rust: add support for NUMA ids in allocations")
+> Cc: stable@vger.kernel.org
+> Reported-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1263
 > 
-> Assume you have an execution context that is torn down, and also assume the
-> hardware supports preemption. Then some of the jobs in the queue might still
-> signal, but some jobs are not processed anymore and hence are not signaled.
+> Signed-off-by: Franklin-Qi <yusq77@gmail.com>
+> ---
+>  rust/helpers/mm.c              |  6 ++++++
+>  rust/kernel/alloc/allocator.rs | 18 ++++++++++++++++++
+>  2 files changed, 24 insertions(+)
 > 
-> For those jobs that did not execute anymore, the fence still has to be signaled.
-> So the driver has to signal them after it waited on the preemption and execution
-> context teardown is complete and no more operations are in flight.
-
-Oh well that comment made me smile because it confirmed what I wrote :)
-
-How do you wait for the "preemption and execution context teardown is complete and no more operations are in flight" ?
-
-That waiting for DMA context teardown must be done through a dma-fence. That is the whole concept of dma-fences in the first place.
-
-I wish I could enforce that in C somehow but we missed that opportunity when we originally designed the dma-fence and now it is to late because of the fallout and complexity required for such a change.
-
-See the discussion here as well https://lists.freedesktop.org/archives/dri-devel/2025-August/520640.html
-
-I think we are at the point where I need to make clear that practices like signaling fences from a destructor or other IOCTL initiated teardown is a NAK from my side as DMA-buf maintainer.
-
-When you want to push forward with this anyway I think we need to raise this with Dave/Linus to get an answer if such an approach is ok or not.
-
-Cheers,
-Christian.
-
-> The same is true for job fences that are in a software queue and never hit the
-> queue of the hardware execution context.
+> diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
+> index b5540997b..b61e54e16 100644
+> --- a/rust/helpers/mm.c
+> +++ b/rust/helpers/mm.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  
+>  #include <linux/mm.h>
+> +#include <linux/nodemask.h>
+>  #include <linux/sched/mm.h>
+>  
+>  __rust_helper void rust_helper_mmgrab(struct mm_struct *mm)
+> @@ -38,6 +39,11 @@ __rust_helper void rust_helper_mmap_read_unlock(struct mm_struct *mm)
+>  	mmap_read_unlock(mm);
+>  }
+>  
+> +__rust_helper bool rust_helper_node_online(int nid)
+> +{
+> +	return node_online(nid);
+> +}
+> +
+>  __rust_helper struct vm_area_struct *
+>  rust_helper_vma_lookup(struct mm_struct *mm, unsigned long addr)
+>  {
+> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
+> index cd4203f27..15e17f598 100644
+> --- a/rust/kernel/alloc/allocator.rs
+> +++ b/rust/kernel/alloc/allocator.rs
+> @@ -101,6 +101,23 @@ unsafe fn call(
+>          nid: NumaNode,
+>      ) -> Result<NonNull<[u8]>, AllocError> {
+>          let size = layout.size();
+> +
+> +        // `NumaNode::new` validates the ID range, not whether the node is online.
+> +        // The C allocation paths require an online node for nonzero allocations.
+> +        // Keep `NUMA_NO_NODE` and zero-sized deallocations unchanged.
+> +        //
+> +        // Residual TOCTOU remains if a node goes offline after this check and
+> +        // before the allocator runs; that matches practical C usage for rejecting
+> +        // statically missing/offline nodes from safe Rust.
+> +        if size != 0 && nid != NumaNode::NO_NODE {
+> +            // SAFETY: The helper only reads the kernel's online-node mask. `nid`
+> +            // is either `NUMA_NO_NODE` (excluded above) or a value in
+> +            // `[0, MAX_NUMNODES)` from `NumaNode::new`.
+> +            if !unsafe { bindings::node_online(nid.0) } {
+> +                return Err(AllocError);
+> +            }
+> +        }
+> +
+>          let ptr = match ptr {
+>              Some(ptr) => {
+>                  if old_layout.size() == 0 {
+> @@ -116,6 +133,7 @@ unsafe fn call(
+>          // - `self.0` is one of `krealloc`, `vrealloc`, `kvrealloc` and thus only requires that
+>          //   `ptr` is NULL or valid.
+>          // - `ptr` is either NULL or valid by the safety requirements of this function.
+> +        // - For nonzero allocations with a specific node, `nid` was checked online above.
+>          //
+>          // GUARANTEE:
+>          // - `self.0` is one of `krealloc`, `vrealloc`, `kvrealloc`.
 
