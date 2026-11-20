@@ -1,60 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=210.118.77.11
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795182323;
-	b=2/PHmGEvlea11jV4BuHWDl4KFWr2QEOe84ZESyyl5xsHjfPLpFPTO35ZMs1hR29NjlWk
-	 0KGFcQnFMuYstO6D3OIJdKNnSymNT8j53o2Olef09nnRo3YeBt/Uj2bReWh5EIRLJp7X2
-	 wl14YNdk55qvIWscxmOWH4+lE5ZQ1MSNys4gmYi5l91KMCFGnY3SwFGdydw/u0g2IUCDR
-	 St2VQ8oFQpeA5EyWEgpbEpt2/sS3i8hFsSJOucNlq269OiOV5FTOJXkAngi2ANuJXwiVf
-	 zRzZc2A8Ibwd6Xm2bueku8Z+vZm4tKuFQmMR2sbK/ag8hu5TPt1KbC35Zl0Dd/UEDVA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795182323;
-	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
-	 Content-Language:From:In-Reply-To:Content-Transfer-Encoding:
-	 X-CMS-MailID:X-Msg-Generator:Content-Type:X-RootMTR:X-EPHeader:
-	 X-CMS-RootMailID:References;
-	bh=l2Yxm36V5tBhErrcCI/BN9DRDZoU36qNkjQdm2MUH7s=;
-	b=ebee3LKnU5Zk6+ZpiepdmR+pefqrDouTLks6Y+frZWBy6HpwW8KeZGxIkDFFBEad+JcM
-	 OO0w1C2iq54Had4/ZuIzlLuOF6wJ+iXPx0kTvBFhz4ScEouv7FFLR1wfOddqTjpHnxZJj
-	 gtAhterZ3kOLO5UjnsRLbWU7Yzk0TpSGioxYsd4KxIIu+2tywkpqRS8guEz+ZGM9Baln7
-	 9t2wT5X5jKVkjtYySMlPSGprtGMKZXr7D5xKUkly6PGbO03AY5PxHs86LtKd5ijTEDUvt
-	 oBRQnmHpZ4zXFu/fQBl/2LaHVc16ttdI7v2+W+qGdwhCRPsGa/JkfNJxp4aUIHhNS4w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=samsung.com;
-	spf=pass smtp.mailfrom=samsung.com;
-	dkim=pass header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=TLrltDMm;
-	arc=none smtp.remote-ip=210.118.77.11
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.173
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795187253;
+	b=qrm9s3yKoG+s4wLjajwY5o2rjq69/ONsJD7Ekwppu55lwTqrVHpRIGNBUewkc1vi2A51
+	 UYXe6rQusmHDkWKa11keGWVGivQNNZv8kol99od8awQPMyiw2+mk89j/rtQQmXkJggw3F
+	 ZxNneigPm/JJS2ibP1W0E9ilCCE28ave2ZxOPab6Hu0hSjcIwSu7UGuAaQRknt+muhoCq
+	 nNVhPL1ix/zX5UeJj7GOTVzbmKJpFwQrJVzqGoJf5foOFR8wmKALuPxil65+QIljAZvFu
+	 yzZou/2mQvGEq+ua4I8izMEjTzbn6Nqb/4j1u/nsoCiEcQzOAmc3+ILJe8sb35mmLzg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795187253;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=0VIeYKjYJPYfVEKNuXLbK3ZTpB7YLv0Kh1v9qX8Ns0s=;
+	b=Ft8SNvHzSJb8uIdqSYA3u1WRR4T0YwU+1+UzCOevtfnc+eNom8WZ78yGfxNFtLoLC4FP
+	 mqbyaLpcLMxkbiGsUACvl3wXd5buOwHyZ7kdyRvkr1vKEl4P5mHneB6rvi89pnuGORW+y
+	 ijQ3Yt39fvrBYqEwkaP0sgwbgsVnPUByxDAmafwWM/03fKIjG/ZRfgPBBrBks7xMfnYs+
+	 Sh+GnJtfqJcGHnTuh5YerjEnbSMl+mzWVamnlTTUKKk3lXuVozmvaRJXxxXGFrebTV6DG
+	 DqRLomZIF70uxMJNux2NMIT8FlNnEvttsgvS32X9lTB2NawzhrRXQ6guqgG8ljM8O8Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XMCK6jkU;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.173
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4B2606A320
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Nov 2026 13:45:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CD4B2606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AC3606A320
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Nov 2026 15:07:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0AC3606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=TLrltDMm
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20261120134515euoutp01c4d09c89ac79d47adff84511fe461182~pxM3nCBu-0544505445euoutp01h
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Nov 2026 13:45:15 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20261120134515euoutp01c4d09c89ac79d47adff84511fe461182~pxM3nCBu-0544505445euoutp01h
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1795182315;
-	bh=l2Yxm36V5tBhErrcCI/BN9DRDZoU36qNkjQdm2MUH7s=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=TLrltDMm3kWaPUD7IXG44TYhRGqZc1YF0/gxHWAV41SY99aLCg5Lsv4ssabfNKPqm
-	 WDURxLymCHkPe1ispED7y0ERYjfxR+aX6Ez7kZ4BVeANrZ5OYrnCqxn9sZzHKfPe0z
-	 NnAI73XzSbG/Nq2A106Tg+luqWqWkzmD56LLJluU=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20261120134514eucas1p1b2acaadc0f7ee0c943442ea0a6a5a930~pxM3Fyaui2369923699eucas1p1_;
-	Fri, 20 Nov 2026 13:45:14 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20261120134513eusmtip195325329a5fb89c448a965ac7eab3801~pxM2Lxly-0213302133eusmtip1v;
-	Fri, 20 Nov 2026 13:45:13 +0000 (GMT)
-Message-ID: <bf228d28-c6a1-4bb0-b606-489f30eebda6@samsung.com>
-Date: Fri, 20 Nov 2026 14:45:13 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XMCK6jkU
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3adb75e65ecso821531fa.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 20 Nov 2026 07:07:32 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795187251; cv=none;
+        d=google.com; s=arc-20260327;
+        b=M6pxXpfjdil3KhaZz80j/g/toSRbIIFaR70JFGYWqS7czH9PVhVl81MCC971Jlepxn
+         E+y2oyQHw4cgcKHYDUbE58bLYlBylZAroLIu3PobmKSE5fIILzQNdESec3rbRvZN09Z9
+         2qdL31faO9BwIFPoHmPvDMyPFgjTU7y6ty4prYgJVKU2ZNZUAVD7+J+BmIqQ8JJ8+bLz
+         YhrbkPjGfGpJctYHKNxTRG3WQP5j6VCkC+d/z38fzDUVqt7FSFZMfkFs/KHi/HHfQqqq
+         2CVtnw2VvANg7vj9Reaa4WIu+7ROe2+eAN/EQ6fQM05j4RTTufqUwSKzbU9vNvohTbvn
+         5gfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0VIeYKjYJPYfVEKNuXLbK3ZTpB7YLv0Kh1v9qX8Ns0s=;
+        fh=wk2XCFEEn6RiKEnGEHU8cp+6NZuSCDxnvnJ1hkl9Uqo=;
+        b=E0akUflDR8POtiOmytu64Vjb2IO+Twpbo0NmR7LzXpvgHq3XBIylKnXl9zUZMgBb9y
+         MvHL9UmloQgMBmEiNh9fp9n4wmjmp0xPITFG1sxdiPV3gsUROTtkKftCHHE3lpPwjTwu
+         UgTclX8MYhAn4+m6DvqzFptmbMgR9vKG3egJXeaTPyv0fO2BMdl9CLDaC+Aj5zamVMX2
+         DePfqT/M3aQbMKFRUYtcEm92bkAhSBQmAZvmp9nn3QkYsZFDJ6AH61G6zJVtmo3QtoSW
+         wKEw+subQajCCp7zUjI7UbA1/5y2SfFw4ErLA/K5p3T0thgigtL2avUtG7bbT4DTMcJc
+         6nag==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795187251; x=1795792051; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0VIeYKjYJPYfVEKNuXLbK3ZTpB7YLv0Kh1v9qX8Ns0s=;
+        b=XMCK6jkUo7wByooJZtyW7ny3g5DZaDQdNAsIk3UApWv2FlnBhXrVmzZ64OAeqgR9c5
+         duyNkpLRZetZ3LCPXqVMJuXS386vOmXoCNFj69w7n4F/Ig/HkURe3Sr/3I6GJUObY/Rx
+         ipFP4aS7AR/Ic8SpRgM5fDGljWoof2wAZZuCqbbLadp4+dbMRko6M0soNXKYK1Ggd6Gp
+         TyuQl+CZFlUnnZ+fRyzdzjDN7Qx13/uimy0GgXIh2/m2QKSccj22cJ7kpDzwSP0hYDgD
+         MSuV1q/ZEtrQNahjTIZxSkPJl5TMj7A+7BMf97j/fcyFrO7fikF4uIStwPOweRf60bOT
+         p9+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795187251; x=1795792051;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0VIeYKjYJPYfVEKNuXLbK3ZTpB7YLv0Kh1v9qX8Ns0s=;
+        b=pNQ/QkBFl6bIaXgQc93jGrBiBYqgcO46xs4npNpxemf2pAe9+ABbhtuOMFEXQ/TM0Y
+         t/v0OV5l+35DCxSf9svaTnrd8S0kCyqPUjILFFDJ9Ac1SnquyKeMjGHkFD9KXQJyHKpC
+         5hTVoqgFyZTp6s7Wc71nfcBiSCUJzKTvKQvok+S2Xh8iUe0kFfgbylpHKup+cJz1ZgnQ
+         0EMHXMBANiNyZKQIdbL21BkQNGgIqSGDNxjYmJ7M8bQDiZfcLmN1pNzD9SkXoQ+8Qp9j
+         tyoNtv5gPy1BuBA0Xv0cdyeGzjcqC46arAMbXZxS0ebiD1DnuL8Mv+eLFfwwHb+sd2sa
+         nQmw==
+X-Forwarded-Encrypted: i=1; AL+hErFPf5I4vykUWTHkrbSbzrThvl3Zedcu4YjEDeid3uS/SFgePG6t1ncCoa/T/L45IYQjMaTLl/tCl5dbO+hxuw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+5MMRSLSnNPkmo7iMbuww7/baQRFHgx5hcAhSsWL+CIlkP0C0R
+	Hy9RexEOF4mYIyQr35xITOYgpaEvnbQH6iy9VPag08gH3P7RyLGkDBotY5XbiEr/uYGHb2HMgQB
+	RT8QRrKfRnBv3XUcij6qWM5aHkPAjV/E=
+X-Gm-Gg: AZFdTZeijC6Y3BYT8HlGSMDIEvPKeRsAs/P6z/y9DJfLWBoapE9rIhWKp5OEtW6iyhx
+	xZoO5WcP1UiBCOEkef69cpSPaQbTfbJiqEllZPIom9ei8Z7B2wUhomI1ri3Ym6khhH+J4Q6r5ud
+	4FO/sUSdZVCZH6ei0HZAPPR2/GELnSMS0JKkF2SsWW5mKjs0jtY2ytBNIw+v9+Arq4y+aGOglYe
+	lrxsx+qgGrVd6HsoTZGkyh532baISiMXW3bpFMpBfAv6GgCefHk4faeSbvz4PYWb22J31jq04FM
+	1Gwx94rd1gXxl1Ih9NxIlcQZHR5Q8gqmmuBmJC9PyfN5Yq8uy4iztiA6Uwvejg7Eil5G2fFsrGz
+	PNBKsVA6AcQ8Sjom8aUrlULzuBzL6FO/De8Dl2OFZygt2n5aaT/Xv30Fg/Ly83zzmVEgEmkhGJi
+	hwn3v5yMrgTuJQsyzQwkh3nsZi6kqlNXnxx6jO3Fgft7LQNK7zCV0H20XXZ0LCTuq3f4rdp5l+B
+	g13bjSgbQnQThXmNpUTji93q3W1iJJ6s5aVJCPuYh+42grxk19IuxO6APRget53uLLhZ3TS1lA=
+X-Received: by 2002:a05:6512:23a4:b0:5bf:df58:d669 with SMTP id
+ 2adb3069b0e04-5c1bc69bf2cmr1387550e87.1.1795187250808; Fri, 20 Nov 2026
+ 07:07:30 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -64,107 +106,41 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] pwm: th1520: Fix 32-bit build with COMPILE_TEST
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, FUJITA Tomonori
-	<tomo@flapping.org>
-Cc: fustini@kernel.org, guoren@kernel.org, ojeda@kernel.org,
-	wefu@redhat.com, a.hindborg@kernel.org, acourbot@nvidia.com,
-	aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun@kernel.org,
-	chenhan0017.work@gmail.com, dakr@kernel.org, daniel.almeida@collabora.com,
-	gary@garyguo.net, linux-riscv@lists.infradead.org, lossin@kernel.org,
-	tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, FUJITA Tomonori
-	<fujita.tomonori@gmail.com>
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <avsZPKgzc9DIIsh8@monoceros>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20261120134514eucas1p1b2acaadc0f7ee0c943442ea0a6a5a930
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20261116145758eucas1p26d210030d9ab6b4a95fb048f061a8024
-X-EPHeader: CA
-X-CMS-RootMailID: 20261116145758eucas1p26d210030d9ab6b4a95fb048f061a8024
-References: <20261030020209.3833766-1-tomo@flapping.org>
-	<20261030020209.3833766-3-tomo@flapping.org>
-	<CGME20261116145758eucas1p26d210030d9ab6b4a95fb048f061a8024@eucas1p2.samsung.com>
-	<avsZPKgzc9DIIsh8@monoceros>
+References: <20261118-dev-project-vis-v1-0-2a5f433bb516@garyguo.net> <20261118-dev-project-vis-v1-1-2a5f433bb516@garyguo.net>
+In-Reply-To: <20261118-dev-project-vis-v1-1-2a5f433bb516@garyguo.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 20 Nov 2026 16:07:19 +0100
+X-Gm-Features: Aa3M54q27XH1Xp2ep-HlHO7AOSvO61RSJVaTdBeMZuWQ8ApBPaE_qgH_4Z8u1g4
+Message-ID: <CANiq72nNX41q_ZLOUUbyPmPownON1uxCLh=RXsVGBjFmoWhSBg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] rust: pin-init: internal: allow `clippy::large_unopt_stack_frames`
+To: Gary Guo <gary@kernel.org>
+Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Gary Guo <gary@garyguo.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Nov 18, 2026 at 3:31=E2=80=AFPM Gary Guo <gary@kernel.org> wrote:
+>
+> From: Gary Guo <gary@garyguo.net>
+>
+> Since Rust 1.102, Clippy renames `large_stack_frames` to
+> `large_unopt_stack_frames` and make it warn by default. This is a good
+> thing as in such cases pin-init should be used rather than potentially
+> leave unoptimized large moves on stack. However, this also triggers in
+> unexecutable code paths that pin-init generates for field duplication and
+> exhaustiveness checks. Allow it on the generated check closure.
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
+We hit this in stable kernels, so:
 
-On 11/16/26 15:57, Uwe Kleine-König wrote:
-> Hello,
-> 
-> On Fri, Oct 30, 2026 at 11:02:09AM +0900, FUJITA Tomonori wrote:
->> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
->>
->> Fix the following build error on 32-bit ARM with COMPILE_TEST:
->>
->>   ERROR: modpost: drivers/pwm/pwm_th1520.ko: symbol '__aeabi_uldivmod' undefined!
->>
->> The driver divides u64 values when it converts between nanoseconds and
->> clock cycles. On 32-bit ARM, these divisions are compiled to calls to
->> __aeabi_uldivmod, which the kernel does not provide.
->>
->> Use div64_u64() and div64_u64_round_up() for these divisions, in the
->> same way as C drivers use div64_u64() and DIV64_U64_ROUND_UP(). The
->> results do not change.
->>
->> Fixes: 3c180003dffb ("pwm: th1520: Fix missing Kconfig dependencies")
->> Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
->> Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/topic/64bit.20division.20in.20.60pwm_th1520.2Ers.60/near/626825599
->> Suggested-by: Uwe Kleine-König <ukleinek@kernel.org>
->> Assisted-by: LLM
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->> ---
->>  drivers/pwm/pwm_th1520.rs | 8 ++++++--
->>  1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
->> index 728993998446..bd05fe49650e 100644
->> --- a/drivers/pwm/pwm_th1520.rs
->> +++ b/drivers/pwm/pwm_th1520.rs
->> @@ -31,6 +31,10 @@
->>          mem::DevresIoMem,
->>          Io, //
->>      },
->> +    math::{
->> +        div64_u64,
->> +        div64_u64_round_up, //
->> +    },
->>      of,
->>      platform,
->>      prelude::*,
->> @@ -68,13 +72,13 @@ const fn th1520_pwm_fp(n: u32) -> usize {
->>  fn ns_to_cycles(ns: u64, rate_hz: u64) -> u64 {
->>      const NSEC_PER_SEC_U64: u64 = time::NSEC_PER_SEC as u64;
->>  
->> -    ns.saturating_mul(rate_hz) / NSEC_PER_SEC_U64
->> +    div64_u64(ns.saturating_mul(rate_hz), NSEC_PER_SEC_U64)
->>  }
->>  
->>  fn cycles_to_ns(cycles: u32, rate_hz: u64) -> u64 {
->>      const NSEC_PER_SEC_U64: u64 = time::NSEC_PER_SEC as u64;
->>  
->> -    (u64::from(cycles) * NSEC_PER_SEC_U64).div_ceil(rate_hz)
->> +    div64_u64_round_up(u64::from(cycles) * NSEC_PER_SEC_U64, rate_hz)
->>  }
->>  
->>  /// Hardware-specific waveform representation for TH1520.
-> 
-> For me (being at most half-literate in Rust) it looks ok, and I'm fine
-> to let this patch go in together with the first patch of this series via
-> the Rust tree.
-> 
-> @Michal: If you have objections speak up quick!
-> 
-> Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-> 
-> Best regards
-> Uwe
+Cc: stable@vger.kernel.org # 6.12.x (Rust is pinned in older LTSs)
 
-I think the code is good. Thanks !
-
-Reviewed-by: Michal Wilczynski <m.wilczynski@samsung.com>
-
+Cheers,
+Miguel
