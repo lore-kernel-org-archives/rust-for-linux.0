@@ -1,77 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795191861;
-	b=TuiMHsT68Z40uHY0YVTQirZj38nmxXOHdwHUGlT7ncCz2IJxqUG+VbLFD7DU98k8Gvtn
-	 QG0XA3CBukzKpuDQaRfEfY7UH3uVO3BlBFThciotEv+qQIQTRNu4wlkFz0D+q2sBWEzpw
-	 qBOzBXrnUBjrziEcQGflnRbah7v70tReI2ZTnD7HFagOH8bJbE/jk3GRPKfNgGAnWd50S
-	 +MPVhBZEKP+Kj9JZyJ7qGqgWlVJ+gfiJCgiur75x4M6WGNOeBI018PoRBckDw0vIGLVt0
-	 ggESJ3F2AKd+Nu77yrwritbaS6bAUNStQvHvcFB3tLd8IKaovpAqfFvhKs86J/6y3Mw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795191861;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:In-Reply-To:References:Organization:X-Mailer:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=/LMYVtwiPSJPR0eaBUjL6RsttmmMK3oEmB/IsqgRYXY=;
-	b=NlZkvV9oJokrbKTUj9Jg3dmlIQv7VWSUOdGlqL8xgCncl5N4mMxHhxIEjQkSy8JCofqg
-	 hZsCqvD9CTr8VFRuhlSskVM5WYMgeFyAjtK+YLxkDvflKy3+OhodAcYxQiZpVkvztYlEq
-	 S6AxcUJb9raQR7RZhXWcrPcu49iX/EhUeRE/dqpRa7lWneGTRj9tWxJJJe/5AvG0twrJj
-	 n8bQoaf4MVh4nzuW5rIPear0y2LQLdPcbVol0aG7/J++gP4RfhbSZdeNy0sWtkcCrCOpu
-	 PdQd44XCZPTF66kvN5Ed5+z/jD+Tj3ayAuvNGecTxjaNfqObPRwHCYmHBcNBUoHl6vw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=d4mOxrkl;
-	arc=none smtp.remote-ip=148.251.105.195
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795192349;
+	b=Xih52IIMaV++VisoUXBbXQYZVqAYLWJRirN/H1myaj2G1rcLCOKVRJee2aRk9PGcquWl
+	 WJUBKrYmreDN2ZPdiMh4V1nSpt+rB126MT6mWyZp18kCVGVR6Il8vYvuia84y1teFDCBD
+	 N4vSe3oZwd6w7+8U06RX9v8QaXd7JLBwwOKc8ewsM13wEMJq7Vk95LsNkNJDOjd80RxSa
+	 8H6m808AhhHQSYlEbvDQrTcNMD1+HsfjCrk8IaeD+Vg+9n9VZKYqqW8CzD4mgEgxsVvtW
+	 42MycBrPI4w2wbNSnHrJ6DdzGUbfXWmYuogR3fFsJYzSBk/tdls6hOB0MdSl+XvdxXA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795192349;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=xFXT3t1CiYZhcwKGWduI7MEsRw+SOFCG4fBp9+M6zRk=;
+	b=N80kkLfdGPY12Owc7eYaNJztu2mEF0iRFgpQr34bbCKu9HbLDVvTeaE96f4oT5iBaEed
+	 eadwL0BgujzKjBD8+BgmsDFSz2NSNHbTbFqk4kA7mBKubMYzVXdtcDBSWsCl/UARovHDd
+	 5XFmUX0S3cAUmgqwZY/dzt+RIKqtjDY5mEz0K8AaWxNSUZr9MLKDdEWgonmTyOVsNWRAB
+	 /PDoq9PxC6kgzFIg2aqrvEmIAS6l7kKDGcHOFgCHUy8uZHYGLKq+fkiF32o2eQFMfzlpw
+	 GSJ4lroDUBP+iPkTflYL0+3hdzeMQYuSQubcPypYoFRFKjS/Cguaxdl1d8JRZITugDQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XDzsQyRJ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014EB606A331;
+	Fri, 20 Nov 2026 16:32:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XDzsQyRJ
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1795192348;
+	b=bbbrNx2lxXvL3lqiTXNFOOvd5L5OWuoPdkFty4r4QWfeuE2O32tpF2ISjkaqIFxHkvua
+	 p0krKt/EKnN+W0k528v76I4gp8GKOUAAekdU2Zai8wqWzjw1QUelmIfRvxfpjNbUyp8nQ
+	 DDsEvbJPoAObNP32CqDp9twOCdJvMe6n/zafADWIpYy7XAthSHAKZ2NZ5gmC171DAIKL9
+	 2E7CA32tN95MEcLe3JbHYmiWFTx7mWxnDZMmllGt3bGKb6Pomo3V2MTOjhijppFpu5CDI
+	 aU1uejvK5bdP+yXYM4F53anPHLMz3lVuvrsizAp0n2DS6Wkyss6MiWchLiG2rqKaWHQ==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1795192348;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=xFXT3t1CiYZhcwKGWduI7MEsRw+SOFCG4fBp9+M6zRk=;
+	b=GfpWxJAequCRvXM1DsOqb5A0Pm0iVt3fxPWMM6snoOuoHe+EtYJydCOrI4N5t1ssoOWV
+	 Hbb5mhXNeNVjrg66fT+QUxfyJO5Em3TKm0tRCEwUVuxDay+Ik9fw68bayjHI8YJgYkiLw
+	 MfuBGvdfsS2gZ9e2xRfq1Ntq+6WLZfA7UHDKB1rdfwnaXS2TsX4u4iPsA+1fRyoMiX03O
+	 OLNdm6AUxpYg55c/cccRg1IAdnBfSdfMdrizMOR0lcR6HWIOmDqq4d6K1rhZtcUpzJtgb
+	 H8UPBYZepWTreILpYDu51e9ckV7AWcfSgaKFY2rnrr2gpH1T0pM4omnVvWoqnZDSr0Q==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A42606A320
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Nov 2026 16:24:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C0A42606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=d4mOxrkl
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1795191859;
-	bh=fcy12No5QCrnAOUZgkGdvGdHHMJsgzaVa8BGW+ywOe0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=d4mOxrkl4G40xmOzMt8BiUz7e8/hDKC+KDW9zb4AErCSyAOyv7gtUVLyYCRWNhtKS
-	 8Gwetp6WMHJoDB85pWApNfkzM7hA60b/zFru8Ex4jIaf8hjetkJbP1BdSg1ZM8bXgY
-	 b/9RzRGij0RG1DWK23kUIz84M34sl8fx6KKGw2IC/tlS4WH0AX1n6HEwGY5raJ5V0O
-	 JSW2ykqLQKBIAul3V/tf4RtCB+d0+BWLxlfJIHOj6DLyTyiAl6VxReGzMq2wiI8jjp
-	 hydsziA/0F3PtDa2uDPBZ4qjROXPb6ynmq8SKhlwKzEkNgXSgpinEuOGxb/kKtDvNe
-	 Fz0XstB3lXUvA==
-Received: from fedora1.home (unknown [100.64.0.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 3C74217E0564;
-	Fri, 20 Nov 2026 17:24:18 +0100 (CET)
-Date: Fri, 20 Nov 2026 17:24:15 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: =?UTF-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Faith Ekstrand
- <faith.ekstrand@collabora.com>, Rob Herring <robh@kernel.org>, Steven Price
- <steven.price@arm.com>, =?UTF-8?B?QWRyacOhbg==?= Larumbe
- <adrian.larumbe@collabora.com>, Liviu Dudau <liviu.dudau@arm.com>, Akash
- Goel <akash.goel@arm.com>, Karunika Choo <karunika.choo@arm.com>, Lukas
- Zapolskas <lukas.zapolskas@arm.com>, Chris Diamand <chris.diamand@arm.com>,
- Daniel Almeida <daniel.almeida@collabora.com>, Alice Ryhl
- <aliceryhl@google.com>, kernel-dev@igalia.com,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 0/6] drm/panfrost,panthor: Refuse to export WB_MMAP BOs
-Message-ID: <20261120172415.2aa235f0@fedora1.home>
-In-Reply-To: <d2aa7dd9-367a-4b6f-8dee-3913b8e5f6a2@igalia.com>
-References: <20261119-pan-drop-dma-buf-hooks-v1-0-6c6f1629e7f9@igalia.com>
-	<20261120105654.63e1c254@fedora1.home>
-	<d2aa7dd9-367a-4b6f-8dee-3913b8e5f6a2@igalia.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	by smtp.kernel.org (Postfix) with ESMTPS id B8CEA1F000C6;
+	Fri, 20 Nov 2026 16:32:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795192348;
+	bh=xFXT3t1CiYZhcwKGWduI7MEsRw+SOFCG4fBp9+M6zRk=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=XDzsQyRJNzR7qXzq9YFHZZgsaqfXAouys19tTsE8wGKzpFxipIBeG2L5YZU/QZGkO
+	 FnhEdiKnEL/0NCb0EyYCGc+SL6YG7Hrs8PECK7nTaNoDYTTBdKLZYWANmIp+50SO8R
+	 oJtsV2d/wdcOEgE/LllIRS4R2LUdf8wGzjQjd3ElI8EdSWWAk0NHYaC9FmgOKCjYfA
+	 ykuFnnfUW3WE+LAW9hkLMLGTqB+Q8NP2H3RAUzZUPjyFp4O7uF4zQyeAY4WrJdLW7K
+	 f+c4kUSx5SkQoozJyjVsXP48G17FUq0eFtZxP+AUSCk2+DI8porAJf/DX7agK1uibk
+	 1KK1y2ijuQkTw==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 347B64994E;
+	Fri, 20 Nov 2026 16:32:20 +0000 (UTC)
+From: Peder Bergan via B4 Relay <devnull+peder.bergan.gmail.com@kernel.org>
+Date: Fri, 20 Nov 2026 17:32:12 +0100
+Subject: [PATCH] rust: put C helper exports in a dedicated namespace
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -81,62 +82,133 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261120-rust-helper-namespace-v1-1-3b9a05553ff6@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAt2AGsC/yWM0Q6CMBAEf4Xcs420RjH+ivHhKIvUSG3uiiEh/
+ LsUH2ezMwspJEDpVi0k+AYNn7iBPVTkB45PmNBtTK52F2tdbWTSbAa8E8REHqGJPcy5wdWfGqD
+ petrcJOjDvHfvjz/r1L7gc4mVR8sK0wpHP5RpSpoFPB73fsScaV1/Kuql2p4AAAA=
+X-Change-ID: 20261120-rust-helper-namespace-57e8c37ee7df
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+ Aaron Tomlin <atomlin@atomlin.com>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+ Wedson Almeida Filho <wedsonaf@gmail.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795192339; l=3698;
+ i=peder.bergan@gmail.com; s=kernel-contributions;
+ h=from:subject:message-id;
+ bh=5abfNuTCOBRWevTCg/nJxA+AusAhHZG6K5llcZxRyjI=;
+ b=kHhyiIoVhUVvEZ39eIExpOF7QUtA1sz03mr1zCe+6+mUbacftH2am3hofEnCEBIkZ6Y7elFJw
+ 1dEuwYZ8hHfADPm4c37j0mG/eJgltFQ5TJZ0LLUmtyK2jVAim1/mjBu
+X-Developer-Key: i=peder.bergan@gmail.com; a=ed25519;
+ pk=39790pn1YZCulHBoUG1uiQI1Hm01EvhBEa2zVrS/yN0=
+X-Endpoint-Received: by B4 Relay for
+ peder.bergan@gmail.com/kernel-contributions with auth_id=1395
+X-Original-From: Peder Bergan <peder.bergan@gmail.com>
+Reply-To: peder.bergan@gmail.com
+Content-Transfer-Encoding: 7bit
 
-On Fri, 20 Nov 2026 13:05:50 -0300
-Ma=C3=ADra Canal <mcanal@igalia.com> wrote:
+From: Peder Bergan <peder.bergan@gmail.com>
 
-> Hi Boris,
->=20
-> On 20/11/26 06:56, Boris Brezillon wrote:
-> >>
-> >> Still, if you think this would be problematic, I can drop patches 3 an=
-d 6. =20
-> >=20
-> > I was about to suggest forcing uncached CPU mappings for shareable BOs
-> > on systems where the GPU is IO coherent, but there's actually no way we
-> > can know whether a BO will be exported on not on Panfrost (on Panthor
-> > we at least have this exclusive_vm thing that gives this guarantee). So
-> > there's actually no way around it, it's either going back to a "broken"
-> > state (broken in the sense it's not doing what it's supposed to, but no
-> > one really complained in the past) or keep this sync logic to try to do
-> > our best (even if it's not entirely safe, especially if the importer
-> > does crazy stuff like pretending to be UMA when it's not).
-> >=20
-> > Sorry for not having a better answer than: it might be okay, but it
-> > looks wrong. Every time I tried to understand what's expected from us
-> > for this shared buffer synchronization, I ended up more confused than
-> > before...
-> >  =20
->=20
-> That makes two of us :)
->=20
-> I'm okay dropping patches 3 and 6. I decided to send them as suggested
-> in our last discussion, but when I analyzed the IO-coherent case, I also
-> had the impression that this could be a step back.
->=20
-> V3D doesn't have the IO coherent case, so I can move forward with only
-> Faith's drm_gem_shmem_sync() helper and I won't need the custom
-> dma_buf_ops.
->=20
-> If possible, could you take a look at patches 1-2 and 4-5? I'd
-> appreciate it.
+The rust_helper_ prefix marks these C wrappers as Rust implementation
+details. Their exports use the default namespace, so GPL-compatible
+modules can link against them without an explicit import.
 
-They look good to me.
+Export the wrappers in RUST_HELPERS so modpost can detect accidental
+dependencies at build time by flagging a missing namespace import.
+Have module! supply the import when the helpers are exported, since
+inlining and generic instantiation can introduce calls through ordinary
+Rust abstractions.
 
->=20
-> >>
-> >> The Panthor changes were tested on hardware, but Panfrost changes were
-> >> only compile-tested. =20
-> >=20
-> > Could you prepare a custom gfx-ci kernel [1] so we can check that mesa
-> > CI is not regressed by this change? I know none of the tests in mesa CI
-> > would normally hit the removed logic, but better safe than sorry. =20
->=20
-> Sure, I'll test the series on Mesa CI (without patches 3 and 6).
->=20
-> Best regards,
-> - Ma=C3=ADra
->=20
+External modules that call these helpers without module! need to
+declare the import explicitly.
+
+Suggested-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+Link: https://github.com/Rust-for-Linux/linux/issues/216
+Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
+---
+The two Rust sample modules loaded and unloaded under x86-64 QEMU
+with namespace enforcement enabled. Removing the import made modpost
+reject the sample. The exports and imports were also checked with helper
+inlining enabled and disabled.
+
+OpenAI Codex assisted with coding and testing.
+---
+ rust/Makefile         | 4 +++-
+ rust/exports.c        | 2 ++
+ rust/macros/module.rs | 5 +++++
+ 3 files changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/rust/Makefile b/rust/Makefile
+index 0165626decbe7..17c559052e936 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -569,9 +569,10 @@ $(obj)/helpers/helpers.bc $(obj)/helpers/helpers_module.bc: $(src)/helpers/helpe
+ 
+ rust_exports = $(NM) -p --defined-only $(1) | awk '$$2~/(T|R|D|B)/ && $$3!~/__(pfx|cfi|odr_asan)/ { printf $(2),$$3 }'
+ 
++rust_export_macro = EXPORT_SYMBOL_RUST_GPL
+ quiet_cmd_exports = EXPORTS $@
+       cmd_exports = \
+-	$(call rust_exports,$<,"EXPORT_SYMBOL_RUST_GPL(%s);\n") > $@
++	$(call rust_exports,$<,"$(rust_export_macro)(%s);\n") > $@
+ 
+ $(obj)/exports_core_generated.h: $(obj)/core.o FORCE
+ 	$(call if_changed,exports)
+@@ -585,6 +586,7 @@ $(obj)/exports_core_generated.h: $(obj)/core.o FORCE
+ # function either. Therefore, we export all symbols from helpers and bindings.
+ # In the future, this may be revisited to reduce the number of exports after
+ # the compiler is informed about the places codegen is required.
++$(obj)/exports_helpers_generated.h: private rust_export_macro = EXPORT_SYMBOL_RUST_HELPER_GPL
+ $(obj)/exports_helpers_generated.h: $(obj)/helpers/helpers.o FORCE
+ 	$(call if_changed,exports)
+ 
+diff --git a/rust/exports.c b/rust/exports.c
+index 1b52460b0f4ee..fde2a52d2a1ae 100644
+--- a/rust/exports.c
++++ b/rust/exports.c
+@@ -14,6 +14,8 @@
+ #include <linux/export.h>
+ 
+ #define EXPORT_SYMBOL_RUST_GPL(sym) extern int sym; EXPORT_SYMBOL_GPL(sym)
++#define EXPORT_SYMBOL_RUST_HELPER_GPL(sym) \
++	extern int sym; EXPORT_SYMBOL_NS_GPL(sym, "RUST_HELPERS")
+ 
+ #include "exports_core_generated.h"
+ #include "exports_bindings_generated.h"
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index 0a7b9e24c9600..ac3376fa8fb85 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -467,6 +467,11 @@ pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
+         }
+     }
+ 
++    // Inlined kernel code can introduce calls to C helpers in any Rust module.
++    if !cfg!(CONFIG_RUST_INLINE_HELPERS) {
++        modinfo.emit_only_loadable("import_ns", "RUST_HELPERS", false);
++    }
++
+     // Built-in modules also export the `file` modinfo string.
+     let file =
+         std::env::var("RUST_MODFILE").expect("Unable to fetch RUST_MODFILE environmental variable");
+
+---
+base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
+change-id: 20261120-rust-helper-namespace-57e8c37ee7df
+
+Best regards,
+--  
+Peder Bergan <peder.bergan@gmail.com>
+
 
