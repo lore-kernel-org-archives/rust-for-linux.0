@@ -1,78 +1,78 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795195119;
-	b=A3A7MHBLpQ4aPALySdELeveSQ2pCK+piew/BpWtmtRPuBkbZAAqQdsX/zdejRU6O1XjY
-	 o31apYcX1opOj1J9/i8Q+DV96jO+QYBBLkuNYwHJaQbO6wBxbx45lALhp4Y9gSUsmBpjM
-	 nUcS0zDct91H+iGmfvLy98CUuYyk1A52lcYybC+c4LwRczLapVPzKalW/L814cHquT/Ti
-	 Ano7f0azVnl7qsW4wRkwoeaLPujfhhynBg5aYKg7WDU8oAx44hFEg64YvpDJ9WkUpLdkH
-	 4Go7EWakWAVKS9kRQej8f9kgkOHJGrN/4v6u06jzEg18plR59gYb6z3IPBDxhbpQfwA==
+	t=1795195178;
+	b=fm0QHNntoZ5kLNE5Rg27JBndpJQXs05uBiiwy1T+2yO15NnknA1hyi/424HUrZdlZqGe
+	 7k9biDWvNpghoOPeI6xoIXxUiqBH3cjBkQtbqh8yAAUX3XFIyQ3EINYebqTf83wgA3V1D
+	 e0SYe8X9NChk7I0JPLOmDbqCzSVOlv30HtVgArevDLIno9vgPDq95FB2a1kAe6gjiIuJZ
+	 yn+WhZcV3SVhwU/6DiTPqmG09ofnVntxlUeWOL1/RaQOq2JIEmlmZ0YAjVl2uwqB4DrO4
+	 AnOh0sSHFu0Fo3F2ibmsBa0IcwPYFj+dEAEdOAU+c9g8yEqJtZCIkNViLwneZ8oMadQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795195119;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795195178;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=a1X8OcArTajS0cG5wRxnBcw8qQzAyLSvarhTdGhtG7Y=;
-	b=aDV1Ik8WL+bD4qlPoTd5FTt6v0ZO49AhXuDEzxwLQPjh3atxO44c1JzVsa4ITBu+OyFG
-	 tTHmknbbDnZZjkGKvobOUrykoUeJno5mi4Ro8ysrLaxICNTNhUpTfpzG3ExBwtOrEWVSq
-	 +qqii2C0Yf4/okG6/DHDuq15Ke9YPcigkSgpZTCSz4t0s+uwInLUNo6xspns3MGQBKu+X
-	 9qPvxAHiUeBTHs/b9NDVjMrra884PrOALtGssK0g5u4tVfay+bL528lF/HueLCZUghRD+
-	 BmVwp7svXU0BUtJJxZiuUaU7tFaDen7MoehOudcjmia5kSSrAshbwZUbfnHB6iSrzuQ==
+	bh=2zcrVQeVXJas3x9RQbNjgW1QooapoxIa+ujuUqI6vCc=;
+	b=AuP5mFWDGcwVi2Yjq1M7OdYEV/G8VHMwKJAEiufRAFLsfFHxC6/2d6t97dx5/nDJrA2L
+	 rPvUnuAowLv+PKn88ENWD/MOK1r7IjuN0cTFJpIi36e3Y9UJs5vsyCwQJhlsuTt1Pszil
+	 FnQBmJvUCcuyGfaeuf+O8hRdX0FdWwfKxwFfTCTa3YM8D0thUXNkeSeiVidPitfXj6H/N
+	 MHo99uLjll1Dl/B0CdftCLe8yOWzkSPT8eaMpYJVYf4NUAgHny75YZcVxdsPvofPLIoUe
+	 O0k3bryu+YjqsckGoU/LxsmOaU+G9zP0QDtlXwoiIGQiIgthm13h4xN7/0NuHi/us1g==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LaDVRy0r;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z8v1Xxd7;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E57D60A2600;
-	Fri, 20 Nov 2026 17:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8B860A2602;
+	Fri, 20 Nov 2026 17:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LaDVRy0r
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z8v1Xxd7
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795195119;
-	b=IdNnpW8R2xmxtn0qLk5/b/CH7QCe3FssFAIXaelAz8HG/yunMTnzujjsiJK5hxgiHze9
-	 kVbgcXImmG3HhrMjF3jnmb8W/bxqm62j+hq/1UJ2LMB21rswiuseZrLKDvbxTQ2jU5OLM
-	 u2QJDeK6ZZMQXVxE7GesCAVcWx6LZwj6pfP8TYG1KU50tty2rjVX7l6U5J+NxZ2+AriQa
-	 i8tsPNx7qTGZi/roo6aniNVaYGOBu0rFlvJv0B1Zk3Tc7e1hvMNdyBgDzC5YrBSfCLdb+
-	 9AGusRWl4PuI0B52igDzH2EflkAzM1+GgV+C/bVkBJIlLuxiZ4AgPivx9/C7mfsBwpw==
+	t=1795195177;
+	b=SglsH1vQS6IJt8T9y7vRjDen9ftjATSEtb9exhAhK5/C1ZQyLg5TIT5RzqhQgfLdKBXF
+	 X0K9HDDJyqQj2qdxk3IHp2gRBaWhLYVQWoFPl8IJGzvBK0rnhr/wAHypkFEP581pvBXhy
+	 Rj3a5CN1fJzqncf1ucC4mYa5BWPXdgSldiZ4vYF9K+PcEcnkd+pfSfm0Ln1HH81+lmldZ
+	 CAtHLlA2yXeRIfruE5ky7poWNM9nAj2L7jdRCd0/vPuOJ3afTX3dtREgL7g1EHUQCddOB
+	 mdSYVGPSsa3th6RFVsdkDcJIXvXr+uvnA1OTNMfcntf102n9HqpN/SAn1sSqnNvtN0g==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795195119;
+	c=relaxed/relaxed; t=1795195177;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=a1X8OcArTajS0cG5wRxnBcw8qQzAyLSvarhTdGhtG7Y=;
-	b=a1MU19Ob8uVDEemjrjyOCRZAW+cWiekYeMnmJqVSOResJySDAGMcfv6ofmFeCVlQISyy
-	 344s8SeV2+Lwp6N6qyOJZ6TxfY8FQsg5ScJlQZcm+t0TFDx9iC8+ZJIctX95gw4+AQD2o
-	 kjfGJMmbn7SqKekG2QgrWEnXb1cxIkVOwvODrZ4A4FcUpuTZsO5wOn6sPbhzfXFH9rHJg
-	 qtYJz6GB6ClncnCw9Jg6V7ZsMtjs2t1G5EdAnPRAxo5PVTcKlqtlfKIrHLRwSO12iYF50
-	 alm99fMIuj5yg/Tj//lmG+OvFlECVGmpIId4ABtQ0xCvCTPuf2pEHrT0+QJmLBk16dw==
+	bh=2zcrVQeVXJas3x9RQbNjgW1QooapoxIa+ujuUqI6vCc=;
+	b=GJsH9VXqBtv5AiYe1r5Im1qNE1VpeS+eKSUIDDruZkfpmJ/1VxYzHzsKvnWY0vqq86Mu
+	 iU++M8LKexEGjvp3MCEIY8Bdv4A7lp4ZML+jeE/TB86I2q04I72YNVuxMSPSuC6f/ZA8P
+	 bKHkHuPG+41FDFyQ1Xfn6XLzwSx9mJKiMiKWUxJYPte4FXAEyHKSvOpTXkpsWZZkc9S41
+	 7eHJaEOHHoRVtqlCxLWNeJ8xVBorRfXTVG4p0yikxPiXs1tSDVbD9uWrfdDbzcPTSD16v
+	 KM5jnz+TOORlqkrx5ebd4/OCX5F2y9DN1amyL12vZg1A/NNPJlo6rv70dQVince59dw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 4571B1F000C4;
-	Fri, 20 Nov 2026 17:18:33 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 08BE51F000D2;
+	Fri, 20 Nov 2026 17:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795195119;
-	bh=a1X8OcArTajS0cG5wRxnBcw8qQzAyLSvarhTdGhtG7Y=;
+	s=k20260515; t=1795195177;
+	bh=2zcrVQeVXJas3x9RQbNjgW1QooapoxIa+ujuUqI6vCc=;
 	h=From:Date:Subject:To:Cc:Reply-To;
-	b=LaDVRy0r8JQyALWEpEzTDGhqF9B0H6b7dtKqfCnVXICM5EH8OhAPqxnWHUjBMg2qC
-	 fejjT1m3rbbB5V6tyRWQILY8s10RXu0y8U8jWVP5JlPNmvoLSQWBXbNelPmRktTdgr
-	 cij+PdaGQ9HHezZbxbVNN90hYNegAy/BcagU4BgYFQR6EyFINKypOy4JJq+0wZvt5J
-	 Cf1B45BJToGrCloc6b9lIflpFfKP9wM7/Rcbq/pZonTziVyD6rQVwVwd5S64N+bkDU
-	 0X/MXf4NGdLCfhQxHh49pmcnNyShjTT4NF3sDnwQZtVrLwrDbbRdLcNY8FZSxNiG+c
-	 zlkODzihFGQlw==
+	b=Z8v1Xxd7V7e72HcIevlDidUk/qBqw/0ewkze/C9b4Ww0HbcAVMUOl/4NdUxohot3y
+	 Ver4PoVQzC15Ss2Pf3g9248pFcrmeA088+4tkz/0nPzsvGEtNgDa+tab0+BSF67TYx
+	 LwY2rZwn3B8xTZh/vgJYW2aDsidWxKI1I3hwPG+reAnll/uGV9Ie8CsFWX4hqYWIRB
+	 Nx+hgYRVhf1Wsu0jSuv9/Cc+dKCvVSbJbhXelKAjlYTaZdL2pSajyfDPc+TnBJvVY0
+	 tBz5Ke0+un6EcK5y85TgBhFySSBPgoYusZhjvLsntFv5mh1xyIItFXkBItq4fFE+en
+	 dQp0MxhcWNilg==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id C9F764B871;
-	Fri, 20 Nov 2026 17:18:32 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 8E6AA4B867;
+	Fri, 20 Nov 2026 17:19:22 +0000 (UTC)
 From: Peder Bergan via B4 Relay <devnull+peder.bergan.gmail.com@kernel.org>
-Date: Fri, 20 Nov 2026 18:18:30 +0100
-Subject: [PATCH v2] rust: put C helper exports in a dedicated namespace
+Date: Fri, 20 Nov 2026 18:19:17 +0100
+Subject: [PATCH v2] rust: bindgen: Preserve sched_statistics alignment
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -83,19 +83,14 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-rust-helper-namespace-v2-1-14315658f59e@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAOWAAGsC/4WOQQ6DIBREr2JYl1YwaNtV79G4APwITUXCR2Njv
- HvFHqDLN5l5mZUgRAdI7sVKIswO3eh34KeCaCt9D9R1OxNe8poxXtI4YaIW3gEi9XIADFIDFQ1
- cddUANJ0h+zZEMG45vM/2xzipF+iUZbmhJAJVUXptczQFTBHkcDn8HpaUS9ZhGuPneDezLPt3Z
- GaU0UrdZCmEqIypH/0g3fusx4G027Z9ATJI7VTxAAAA
-X-Change-ID: 20261120-rust-helper-namespace-57e8c37ee7df
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
- Miguel Ojeda <ojeda@kernel.org>
-Cc: Alexander Potapenko <glider@google.com>, 
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
- Vincenzo Frascino <vincenzo.frascino@arm.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
+Message-Id: <20261120-fix-schedstats-bindgen-layout-v2-1-1c42e4a996ae@gmail.com>
+X-B4-Tracking: v=1; b=H4sIABSBAGsC/42OTQ6CMBSEr2K69mkLosGV9zAs+vOgNdKSvkI0h
+ rvb4gVcfpOZL/NhhNEhsevuwyIujlzwGar9jmkr/YDgTGZW8eoshGihdy8gbdFQkolAOW8G9PC
+ U7zAn4G3dqPOpPl34hWXHFDEPNv+9+zHN6oE6FWlpKEkIKkqvbYnmiVJEOR7jTAk8vlIpWUcpx
+ Pf2chFF9u+hRYAA3rStMVXN+97chlG650GHkXXrun4BQiKm3wEBAAA=
+X-Change-ID: 20261119-fix-schedstats-bindgen-layout-0935b6434707
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
  Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
  Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
@@ -104,19 +99,19 @@ Cc: Alexander Potapenko <glider@google.com>,
  Tamir Duberstein <tamird@kernel.org>, 
  Alexandre Courbot <acourbot@nvidia.com>, 
  =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
- Aaron Tomlin <atomlin@atomlin.com>, kasan-dev@googlegroups.com, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, 
- Wedson Almeida Filho <wedsonaf@gmail.com>
+ Carlos Llamas <cmllamas@google.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+ Jules Mercier <jules@les-mercier.fr>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795195112; l=4679;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795195162; l=2723;
  i=peder.bergan@gmail.com; s=kernel-contributions;
  h=from:subject:message-id;
- bh=nX0YbO/vtt47+6y4IylipSM71r9O+9xEUx60Z3g64FY=;
- b=qTCg26Oq8Pjxp/oLQvY8MWSA8T9mQh94rZWp9HfgwSRh9oxjB4DdefYwAxmyYbkzevUK6a5Yn
- ivpi0EOBirtC6JIIrzz2MXAZX8yIJdIqYu1XBXqFFK89EROXaU6uqD3
+ bh=u4QY0eOrLq5AnKKXDQlNnc7y1G/bsdbLKO4Tsmnc1Rc=;
+ b=CGjLrC3xrHMMhwNk+60mTkOfXvVww+NtfWTp4WrSpTz699eWkTcZfvLHqQl0ZqdN5766bwcEE
+ 9/I4tueXlvnA7tRsCj0He39kTVlIwcEXrORV3Rogf331Je1IwEuSJFa
 X-Developer-Key: i=peder.bergan@gmail.com; a=ed25519;
  pk=39790pn1YZCulHBoUG1uiQI1Hm01EvhBEa2zVrS/yN0=
 X-Endpoint-Received: by B4 Relay for
@@ -127,115 +122,65 @@ Content-Transfer-Encoding: 7bit
 
 From: Peder Bergan <peder.bergan@gmail.com>
 
-The rust_helper_ prefix marks these C wrappers as Rust implementation
-details. Their exports use the default namespace, so GPL-compatible
-modules can link against them without an explicit import.
+With CONFIG_SCHEDSTATS disabled, struct sched_statistics is empty but
+still cache-line aligned. Bindgen omits the alignment of the empty
+type. Bindgen 0.73.2 also stopped forcing padding before over-aligned
+fields, so fields following stats can be misplaced in the generated
+task_struct. On the reported arm64 build, Rust Binder reads the wrong
+pointer via CurrentTask::mm() and rejects mmap() with -EINVAL.
 
-Export the wrappers in RUST_HELPERS so modpost can detect accidental
-dependencies at build time by flagging a missing namespace import.
-Have module! supply the import when the helpers are exported, since
-inlining and generic instantiation can introduce calls through ordinary
-Rust abstractions.
+Make sched_statistics opaque so bindgen uses the C size and alignment.
+Rust has no callers that access the fields of this type.
 
-The KASAN test links its Rust object into a module whose C object
-supplies the metadata. Import the namespace in that C file when
-building the test as a module with out-of-line Rust helpers. External
-modules that call these helpers without module! also need an explicit
-import.
-
-Suggested-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-Link: https://github.com/Rust-for-Linux/linux/issues/216
+Reported-by: Jules Mercier <jules@les-mercier.fr>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1269
+Link: https://github.com/rust-lang/rust-bindgen/issues/3549
+Tested-by: Jules Mercier <jules@les-mercier.fr>
+Cc: stable@vger.kernel.org # 6.12.x
 Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
 ---
-The modular x86-64 KASAN build failed at modpost on v1 and now passes
-with strict namespace checks. With CONFIG_MODVERSIONS enabled, the
-test module and kernel export record the same checksum for the helper.
+Changes in v2
 
-OpenAI Codex assisted with coding and testing.
----
-Changes in v2:
-- Import RUST_HELPERS in the C metadata for the modular KASAN test
-  when using out-of-line Rust helpers.
-  https://lore.kernel.org/linux-modules/sashiko-outbox-225583@kernel.org/
-- Link to v1: https://patch.msgid.link/20261120-rust-helper-namespace-v1-1-3b9a05553ff6@gmail.com
----
- mm/kasan/kasan_test_c.c | 3 +++
- rust/Makefile           | 4 +++-
- rust/exports.c          | 2 ++
- rust/macros/module.rs   | 5 +++++
- 4 files changed, 13 insertions(+), 1 deletion(-)
+- Explain how the bindgen 0.73.2 padding change exposes the missing alignment.
+- Link the bindgen bug and request stable backports starting with 6.12.x.
+- Credit Jules Mercier's report and OnePlus 6T test, and expand the Binder Cc list.
 
-diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
-index b9e167ed5be32..f8e96c1194e02 100644
---- a/mm/kasan/kasan_test_c.c
-+++ b/mm/kasan/kasan_test_c.c
-@@ -34,6 +34,9 @@
- #define OOB_TAG_OFF (IS_ENABLED(CONFIG_KASAN_GENERIC) ? 0 : KASAN_GRANULE_SIZE)
+I kept the opaque rule unconditional as discussed. On bindgen 0.73.1,
+I found an offset mismatch at task_struct.se before sched_statistics.
+
+I also checked an arm64 6.12.y build with bindgen 0.73.2 and schedstats
+disabled. With the rule applied in the 6.12.y context, the Rust
+task_struct.pid offset moved from 1208 to 1216, matching C.
+
+v1 on lore.kernel.org
+https://lore.kernel.org/rust-for-linux/20261119-fix-schedstats-bindgen-layout-v1-1-0599dd230ffd@gmail.com/
+
+OpenAI Codex assisted with the bindgen change, validation and drafting.
+---
+ rust/bindgen_parameters | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
+index 5bab3cf063360..65c308d4b603b 100644
+--- a/rust/bindgen_parameters
++++ b/rust/bindgen_parameters
+@@ -26,6 +26,12 @@
+ # warning. We don't need to peek into it anyway.
+ --opaque-type spinlock
  
- MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING");
-+#if defined(MODULE) && defined(CONFIG_RUST) && !defined(CONFIG_RUST_INLINE_HELPERS)
-+MODULE_IMPORT_NS("RUST_HELPERS");
-+#endif
- 
- static bool multishot;
- 
-diff --git a/rust/Makefile b/rust/Makefile
-index 0165626decbe7..17c559052e936 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -569,9 +569,10 @@ $(obj)/helpers/helpers.bc $(obj)/helpers/helpers_module.bc: $(src)/helpers/helpe
- 
- rust_exports = $(NM) -p --defined-only $(1) | awk '$$2~/(T|R|D|B)/ && $$3!~/__(pfx|cfi|odr_asan)/ { printf $(2),$$3 }'
- 
-+rust_export_macro = EXPORT_SYMBOL_RUST_GPL
- quiet_cmd_exports = EXPORTS $@
-       cmd_exports = \
--	$(call rust_exports,$<,"EXPORT_SYMBOL_RUST_GPL(%s);\n") > $@
-+	$(call rust_exports,$<,"$(rust_export_macro)(%s);\n") > $@
- 
- $(obj)/exports_core_generated.h: $(obj)/core.o FORCE
- 	$(call if_changed,exports)
-@@ -585,6 +586,7 @@ $(obj)/exports_core_generated.h: $(obj)/core.o FORCE
- # function either. Therefore, we export all symbols from helpers and bindings.
- # In the future, this may be revisited to reduce the number of exports after
- # the compiler is informed about the places codegen is required.
-+$(obj)/exports_helpers_generated.h: private rust_export_macro = EXPORT_SYMBOL_RUST_HELPER_GPL
- $(obj)/exports_helpers_generated.h: $(obj)/helpers/helpers.o FORCE
- 	$(call if_changed,exports)
- 
-diff --git a/rust/exports.c b/rust/exports.c
-index 1b52460b0f4ee..fde2a52d2a1ae 100644
---- a/rust/exports.c
-+++ b/rust/exports.c
-@@ -14,6 +14,8 @@
- #include <linux/export.h>
- 
- #define EXPORT_SYMBOL_RUST_GPL(sym) extern int sym; EXPORT_SYMBOL_GPL(sym)
-+#define EXPORT_SYMBOL_RUST_HELPER_GPL(sym) \
-+	extern int sym; EXPORT_SYMBOL_NS_GPL(sym, "RUST_HELPERS")
- 
- #include "exports_core_generated.h"
- #include "exports_bindings_generated.h"
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 0a7b9e24c9600..ac3376fa8fb85 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -467,6 +467,11 @@ pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
-         }
-     }
- 
-+    // Inlined kernel code can introduce calls to C helpers in any Rust module.
-+    if !cfg!(CONFIG_RUST_INLINE_HELPERS) {
-+        modinfo.emit_only_loadable("import_ns", "RUST_HELPERS", false);
-+    }
++# Bindgen omits the alignment of empty structs. Bindgen 0.73.2 also stopped
++# forcing padding before over-aligned fields, so following fields can be
++# misplaced. Making sched_statistics opaque preserves its C alignment.
++# https://github.com/rust-lang/rust-bindgen/issues/3549
++--opaque-type sched_statistics
 +
-     // Built-in modules also export the `file` modinfo string.
-     let file =
-         std::env::var("RUST_MODFILE").expect("Unable to fetch RUST_MODFILE environmental variable");
+ # enums that appear in indirect function calls should specify a cfi type
+ --newtype-enum fwctl_rpc_scope
+ --with-attribute-custom-enum=fwctl_rpc_scope='#[cfi_encoding="15fwctl_rpc_scope"]'
 
 ---
 base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
-change-id: 20261120-rust-helper-namespace-57e8c37ee7df
+change-id: 20261119-fix-schedstats-bindgen-layout-0935b6434707
 
 Best regards,
 --  
