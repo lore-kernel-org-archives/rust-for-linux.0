@@ -1,45 +1,81 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795175076;
-	b=MntlkXX1AIogHbnt47VZNT6shB+rfJVdxroNNKZppBQCfUHj6DpsHY+9Tu3zfIlsCFKi
-	 BG4ZEANI4vlw5kinTD53ZTlXORgHnutt5cGzlgV3+qY1slwJMM4eE1AinUDyf/OdU4sGU
-	 MY8E7x9FQCbbkgCcAnh2S2pc+l49OG0NeiA9C4fxc9wJuabIW/KiYUHx37wsMje0L9A6f
-	 r4lbY0F8VyVPflmeEHSXgyOT19TToDHm1Jt0nsp0JLduFwyTf2Ke2WAlYoEAOTrh4+bh/
-	 O9SLIxRYFbPDEoNjKXth4VmnYt1FhacLZIviF/2tnJCndYwY4NWf10PHJ5tSveFdIAg==
+	t=1795176047;
+	b=UWSaCGLFWgx10XO1YrEQGwoOute28j22KFwh7s9bFC0dsbkNQSIKyEn1RH8UpuwWjT0w
+	 NJKxW74LjeMWB1ogfYRhE7x5/aFFTwYu9L4P/oJ8OKmcAG2ROOfhO/J9tmKJ/6Xwa1uaX
+	 c9L18UYBYIs3/RvndB1WlvSP+wQGTWTgKJHei0Qbs+TbRclQWx/90Xg0eiXqFxrw3HA5q
+	 hWkc8BWRkJUG1pAcliSJBOHTojs56RkC9fD7cURqjxc6d868N9rosxhq3ucZS6qC2ZE7c
+	 PAjoa/MZxjGf4MWhtn7GqN2WDQ3fEcXBi1ZHLxGFUljolUaAGZVo86R7Ti+wJ2Jhq+A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795175076;
-	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:Cc:To:From:Subject:References:
-	 In-Reply-To;
-	bh=5L7qqB5WaMtNMY9uDK4imR6R5lduwPZOBAPzSNwaOt8=;
-	b=TPLLasjHdufODF0y/4yCUkKh9QUjG0qcb3L+J/kf4k2GOrdjWh/aTYBPYC4C7CxF8NW1
-	 AxJkfaDFiJlNvJeSpHIb//BVWDxI26PyCFvXHDJaIpA+eB14PgyWCLXvgRlphrR0aFw9M
-	 wy+CS12wDGql6dpfykPAt7qefZs67hrFlRqrOKyA3zdgwEmdCa8skenKBPXEh5xIDz2dg
-	 +a26bMArZMoud1rzMz+DinPfm7Z/sCqnGnW12a5LIooY7z+CPq6xrEVhOygm+6ev1+yIa
-	 smjd4zD51NxoUjzJHyKBnDOC48vFC6SZjwegFDR0Y0pXAM3+UOHBpQOrBzMnOZ0pONg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795176047;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=beQWb4LoAtDg8Zy+5AKtlfFZLus+EPwyn9DYxNFG6mU=;
+	b=nY8fMPcLeErqjvAYNJVx1B0AWZNWZG+kJcoPPkkvHYEQ/GwVzjcdE2tagt99qhVwy1h4
+	 OwQcRMOGLUlgnp302kgbrnoocubc2eFTgfPQtLSSoe0TgGM57TDboEzxuRLt3giTd/ryU
+	 MHoVlCj6Fj3nlhDmNSW73W7JTndAV+QdX+pB+45C4X3bSO3pn5sNBtC4jUY2loRQEOCYk
+	 i/9pC6Xx5+MMGvemVVLVzDduWLLD0UfE2IyVRpEsGLaJ3cLCYuUKczTeaD8g5clHfEv+5
+	 Ia8rmu42WHnrUME3R2us90PmLhIuLeisFI2Xqw03GaHa3aYfvH7HXpXUdb1xuu2iyvQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MK02NyNG;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EIYxJwKV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8249960A5BE6;
-	Fri, 20 Nov 2026 11:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111F3606A338;
+	Fri, 20 Nov 2026 12:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MK02NyNG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB791F000EB;
-	Fri, 20 Nov 2026 11:44:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EIYxJwKV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F5811F000CA;
+	Fri, 20 Nov 2026 12:00:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795175076;
-	bh=5L7qqB5WaMtNMY9uDK4imR6R5lduwPZOBAPzSNwaOt8=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To;
-	b=MK02NyNGVt3ebGIuf7j8ititOe/z/miWKxC/cxRWpaUwoqWbdiGhRQvU8OaMCnYwS
-	 j90977RhLU5XEfTut81+FJClZVIn6vGa5AdoBLBiocBd87c89OiQPzCwDmssryaBWy
-	 jaOwv8Ws2Pvbr0/Jqe12F3wSyeJ7/lxSoBcG0C6LMvt46SOWFWgWL7iApA3ZTBxIJQ
-	 r8vv8oHlRieseBk+vxJ0jfn3VoA4zcPO0VuTJ6LhfNzmP2W3B6ufNf/6OJ3ifZDSb3
-	 4NJ14njem1N4mzF1c2R/lShdOdWSJbTlYuq/igCsgM317wLi0DTSRuKHTmukFsh8p7
-	 J5TfXh/NYL1+g==
+	s=k20260515; t=1795176046;
+	bh=beQWb4LoAtDg8Zy+5AKtlfFZLus+EPwyn9DYxNFG6mU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EIYxJwKV6pKOzzIEBuRXOlDo0Y+HodiAO2ZB2R6VQEfoBQ/HvGlDsgCsZZD6G5Czz
+	 6Hw2mEq4W7WWL2M0khcowQ1ijdyhpl4Mf5E6jvjTXU3BGCjU3W7JH3HwTFePuk7BsW
+	 Zf0fcxra0plL9c0eF7Yjpx+CYN7bzoUzk/Q+FqleL9bhb1AcVGEf22bj+ScG5xaNBz
+	 T66Fe3ePBa9AIlYOk+9jLYdZIJzmgdv7gXFnPj3yOg7RrM21kpYHHujoSPlrAH4uP9
+	 arxmZfKtYgbrYZDY/oMy1BhaVWUrcfXk5RMw2HX+ZvgFLWMDcsj5WLUngXGiGzaopt
+	 u7hrJu5tbh8fQ==
+Date: Fri, 20 Nov 2026 13:00:27 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Lyude Paul <lyude@redhat.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Igor Korotin <igor.korotin@linux.dev>, 
+	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, Michal Wilczynski <m.wilczynski@samsung.com>, 
+	Ira Weiny <iweiny@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Johan Hovold <johan@kernel.org>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+	Dave Jiang <dave.jiang@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Markus Probst <markus.probst@posteo.de>
+Cc: Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev, 
+	linux-block@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, linux-serial@vger.kernel.org, 
+	Oliver Mangold <oliver.mangold@pm.me>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: Re: [PATCH v22 4/5] rust: rename `AlwaysRefCounted` to `RefCounted`
+Message-ID: <20261120-belichtet-austoben-januar-9fca976c1371@brauner>
+References: <20261116-unique-ref-v22-0-12029383206d@kernel.org>
+ <20261116-unique-ref-v22-4-12029383206d@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -48,173 +84,13 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 20 Nov 2026 12:44:31 +0100
-Message-Id: <DN00GAPAAQTY.1T9M9U7UAFYC0@kernel.org>
-Cc: <phasta@kernel.org>, "Sumit Semwal" <sumit.semwal@linaro.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, <linux-media@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH] rust: DamFence: Remove warning about unsignaled drop
-References: <20261112101015.528127-2-phasta@kernel.org>
- <5d466f7c-2e70-4011-be04-9ffdf877b915@amd.com>
- <49298d3a328c1695ea27993f714c20b8a1c05f32.camel@mailbox.org>
- <e2ec8a39-56c3-4274-91ce-60c273904877@amd.com>
- <ab99758408df682c68a3792cc3014b77d6e1c8ab.camel@mailbox.org>
- <c2dd46ea-94d8-4720-af37-897c91809338@amd.com>
- <DMXJ8TBSZJJ4.3HG0OJDI9URTT@kernel.org>
- <8da4a8c0-1740-450c-9cf1-1a7b21d12997@amd.com>
- <DMXMSIQONGUW.1RRNS7I6LACD6@kernel.org>
- <a7f9e0f3-b299-4d40-9230-106003725dc2@amd.com>
- <202dd0c3d515ddfa77a8ec8751badadd31b8a7b0.camel@mailbox.org>
- <141892f8-180c-4157-8c59-6e69057334f2@amd.com>
- <DMZAQ0G6LTTB.1CRPNXSYB4QHG@kernel.org>
- <c18fc55a-717f-42a0-b37f-4ed81efd29d1@amd.com>
-In-Reply-To: <c18fc55a-717f-42a0-b37f-4ed81efd29d1@amd.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261116-unique-ref-v22-4-12029383206d@kernel.org>
 
-On Fri Nov 20, 2026 at 10:15 AM CET, Christian K=C3=B6nig wrote:
-> On 11/19/26 16:34, Danilo Krummrich wrote:
->> On Thu Nov 19, 2026 at 11:47 AM CET, Christian K=C3=B6nig wrote:
->>> A dma_fence should *NEVER* signal because you waited for something. Ins=
-tead
->>> the dma_fence is what is waited on.
->>=20
->> In the end, despite doing it on behalf of the hardware, the driver is th=
-e
->> producer of the fence. And there are cases where it can't wait on its ow=
-n fence,
->> because no one is going to signal it other than the driver itself.
->>=20
->> Assume you have an execution context that is torn down, and also assume =
-the
->> hardware supports preemption. Then some of the jobs in the queue might s=
-till
->> signal, but some jobs are not processed anymore and hence are not signal=
-ed.
->>=20
->> For those jobs that did not execute anymore, the fence still has to be s=
-ignaled.
->> So the driver has to signal them after it waited on the preemption and e=
-xecution
->> context teardown is complete and no more operations are in flight.
->
-> Oh well that comment made me smile because it confirmed what I wrote :)
+On Mon, Nov 16, 2026 at 03:21:01PM +0100, Andreas Hindborg wrote:
 
-No, it just seems that way because you ignore everything I write and instea=
-d
-repeat "wait for the DMA fence".
+For the fs and pid_namespace bits:
 
-Again, how can a driver wait for its own fence to be signaled (e.g. through=
- an
-interrupt) when the hardware (or firmware) queue is dead?
-
-> How do you wait for the "preemption and execution context teardown is com=
-plete
-> and no more operations are in flight" ?
-
-I think the generic answer is exactly the same way as if an individual job
-completes, the driver signals the fence for otherwise.
-
-> That waiting for DMA context teardown must be done through a dma-fence. T=
-hat
-> is the whole concept of dma-fences in the first place.
-
-Again, how can this be done if the hardware or firmware queue is dead?
-
-> I wish I could enforce that in C somehow but we missed that opportunity w=
-hen
-> we originally designed the dma-fence and now it is to late because of the
-> fallout and complexity required for such a change.
->
-> See the discussion here as well https://lists.freedesktop.org/archives/dr=
-i-devel/2025-August/520640.html
-
-You ask about whether dma_fence_work_commit_imm() in i915 should exist in t=
-he
-first place. I can't find any subsequent discussion and the function exists=
- in
-i915 till today. What did you intend me to extract from this?
-
-> I think we are at the point where I need to make clear that practices lik=
-e
-> signaling fences from a destructor or other IOCTL initiated teardown is a=
- NAK
-> from my side as DMA-buf maintainer.
->
-> When you want to push forward with this anyway I think we need to raise t=
-his
-> with Dave/Linus to get an answer if such an approach is ok or not.
-
-There's many indicators in this discussion that show me that you probably d=
-on't
-understand Rust enough, or didn't engage with the arguments enough to make =
-such
-a call (mixing up Rust destructors and IOCTL context above is one of them).
-
-At this point, none of this needs an authoritative answer.
-
-That said, maybe it helps to find some similar examples in C. I tried to fi=
-nd
-amdgpu ones. Xe code is probably a better fit as it has firmware queues as =
-well,
-but let's try this first.
-
-amdgpu signales fences in a way that is a destructor too.
-
-[1] was introduced in commit 97ff19462539 ("drm/amdgpu: Implement a new
-userqueue fence driver"), explicitly suggested and reviewed by yourself.
-
-(To me it seems that this signaling loop is unnecessary though, so maybe fa=
-ir
-enough.)
-
-Another example is amdgpu_fence_driver_force_completion() [2], which is cal=
-led
-in many places. One of them has the following callchain:
-
-	amdgpu_pci_remove()
-	  drm_dev_unplug()
-	  amdgpu_driver_unload_kms()
-	    amdgpu_device_fini_hw()
-	      amdgpu_fence_driver_hw_fini()
-	        amdgpu_fence_driver_force_completion()
-	          amdgpu_fence_process()
-	            dma_fence_signal()
-=09
-
-The comment in [3] explicitly says "You can't wait for HW to signal if it's
-gone", which is exactly my point.
-
-The same is true for when a firmware ring is gone (or dead) and the firmwar=
-e
-guarantees that there are no more outstanding transfers.
-
-And then there's of course the case where jobs didn't hit a hardware or fir=
-mware
-queue in the first palce, e.g. in drm_sched_entity_kill().
-
-All of those examples are all destructors.
-
-[1] https://elixir.bootlin.com/linux/v7.3.1/source/drivers/gpu/drm/amd/amdg=
-pu/amdgpu_userq_fence.c#L183
-[2] https://elixir.bootlin.com/linux/v7.3.1/source/drivers/gpu/drm/amd/amdg=
-pu/amdgpu_fence.c#L668
-[3] https://elixir.bootlin.com/linux/v7.3.1/source/drivers/gpu/drm/amd/amdg=
-pu/amdgpu_fence.c#L543
-[4] https://elixir.bootlin.com/linux/v7.3.1/source/drivers/gpu/drm/schedule=
-r/sched_entity.c#L305
-
->> The same is true for job fences that are in a software queue and never h=
-it the
->> queue of the hardware execution context.
+Acked-by: Christian Brauner <brauner@kernel.org>
