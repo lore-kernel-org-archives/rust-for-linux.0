@@ -1,75 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795270371;
-	b=aCMJGUXrOYhINg/Cu4kXRUsR/wR4xY3pkMCJxRyAYpEpqTk9VN0z6mGuDvcZuu4TDpBY
-	 OKrf0R8V3YRGolGd/WvieAXsCVJcSvhKL4lXtyZivdqcz9zqrieZLSIezj018dOTuE8vx
-	 t6bdpA/9IDI4if9d595kx7oVdvvdv3sTjzwfojF6AxcVXxFZPFZCtYx0HYcV7xEquGTNP
-	 MRP3m0Q67ZVVQYdh+wSKRCCxs0eZB8TtW8TfwhafSs+U369cGlQH0VuWzaQjRTeZ1FIsX
-	 VXYKYolGdRjx54jVQjuT/ap97NIaQQ7e49UlSB/aIYVvZAJi5m+I7epwkGvb1D8qI5A==
+	t=1795270373;
+	b=vnewc/MPzvXE3650ZxKV3n+Bhmd78Jp3NxuaD5emGMsK3mzTFgptWUZSkf59D7HAYU5i
+	 mnvZ1g/G0DnnJl3A2vEpIolJ0Azji4i/HSqZxAayUsQrkyVqks9fWzuWZpPayiMivQ05G
+	 ib4caNtWJxOJMCJ6tjWKSmNB4PpHQ7NBcyCFNtB7ihJwC9rI2OcsnuYuTTIfqgDx4BxLf
+	 e9TP/zzvObc9sWdy6ibE5HfIvIOEIqu4j6sJWIls/Tcf/oh244Kqe4IluYtLP8R/0Db39
+	 zrpOg/jF341y/v73odZKUwSlEgSiIchSIH95uHVdZNkmhJ0FKJ5D2+LRpKjqg0EvdAA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795270371;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795270373;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=Jy6Vcdhv2NcktCCVIrJ79GzBwKeJB8AKRYT9ZAytoZ0=;
-	b=ioANLcFEjhN5DSEc6VLntFSQ0B3eJ5BVdBXM5fw878yNvZ35+/+8XBMyRMPJ3PrR3aqE
-	 3ieGFF88PHYQRwWMcAaxHez3kQNPpNrQlS7kGigWAMf+sIzL7vQXjUI/jtBWXDbiGiBwc
-	 /RJLxEUaYrK1Pws2bRHO4Nf8HgH2o68IiGAIHW/4dspT0658nOtrUKy2x73UXJFOm7jkZ
-	 +Nl7ZNUF5yp41PZmQjxVPLv81qunuJH0+0wj9+VWA7SmQjQxiDTuX6msURLxdc2vSrA5Q
-	 ZRomfAXPLwP9zTL919qOa4ZawRe3yKC1/rNOsQQ76C2rm+XGMCESwrt9tY1o4JHxZuw==
+	bh=kwU0uvZlqUjWSWVM4I5jaqBzT9+TKQG4/BkygdKEJxw=;
+	b=V2HB6FYiaitES6pMYhknx/fEpFCkPMLf/77W5ZKAkpY3jbPOGde1hQG1XtWfveszlBRF
+	 5YnFVOMuyLg3DkP9BnQxWUBCqXRtA+uvNNYUZ3g9GewBmSd0fwgW2TkFipSZOaiVqzNFx
+	 xQg7XgFvUZbZoL74eFE5AjpeKG3Bb7qg1AStFvl8FbYR4jrUNuyY4CLNKhbQJyKuNq27b
+	 OYICGBGG2QgCRyteIfmo7313vKE3lPI/3dd9UHaw9UxWChFmuXBEuszg9/Napa+4t7kcj
+	 uJyQD20M62kcC6uNKkQs9y2kD8Gj7GUI+NVgzbH9mQWBByG6uLcsmS1+U50my66LVhg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="H/zb4JNr";
-	arc=none smtp.remote-ip=209.85.128.69
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JQcJisPz;
+	arc=none smtp.remote-ip=209.85.221.69
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4E2606A32C
-	for <rust-for-linux@vger.kernel.org>; Sat, 21 Nov 2026 14:12:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AA4E2606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62864606A33E
+	for <rust-for-linux@vger.kernel.org>; Sat, 21 Nov 2026 14:12:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 62864606A33E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=H/zb4JNr
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4ad3d35e899so14814705e9.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 21 Nov 2026 06:12:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JQcJisPz
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4a589b28bddso1001674f8f.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 21 Nov 2026 06:12:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795270369; x=1795875169; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1795270371; x=1795875171; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Jy6Vcdhv2NcktCCVIrJ79GzBwKeJB8AKRYT9ZAytoZ0=;
-        b=H/zb4JNr3JhpSSqDlS59uvRJAhO+co+VqIY9aORfduKliaaMsb81WAYsG/38OdCY9P
-         zZZW8u9uVJIH9i/YHjnCcz6jGkCG/HXndpOtMLaiz/d525Lb8wKzkWsamKKYd/IBYiXm
-         4864hWN7oSot814FsxJ5M5nhXZ0yn7guXaiUtXzfq36e1l8OQeR/n6kZFcTDwTsgfq6Y
-         1RZnAK1LrewpPxCh87Lmz603d9a8Tg98FAEOAnzzbZK/2jLq/It65TJpzA+U3oNrRGA6
-         XE0WzbKi69WY9XAIJRtuE+0wZI+g3h3ZBYN/5zdZBAYKWxOd7lIIhFxPxnMtZ2HqW5L2
-         0BKg==
+        bh=kwU0uvZlqUjWSWVM4I5jaqBzT9+TKQG4/BkygdKEJxw=;
+        b=JQcJisPzT36Y/JDAtA+YkjBLMmWMGpNHQZ7UScrSWbIpjWomL9t5p6vA2aUSMtHyBN
+         FK/e7m78jEhA4vdUsWX0dRafvn6xiz1jlGkUAwLRVLwKXqmfKoWRYlWvyfwTLiLIz0hA
+         qxJhGOBkCj5wBYf3Hc0xSJQE9dQ3h9DKUxUzh4PU+Fh2XPzxHxLQTldoyigRiNHyHUOB
+         Fn7y02kJVp6WEyfk81d3wLfKgBW9oknUEZtsrdLKPvHtFZQRB9QhCHo8AVifjU/oVoLJ
+         kwFESeJnyGZYgnGCfwTB8ZCuNF4Yx1NGUZf42Y428NW7Brfc8b8GoY7kYuWROhG+Sxp+
+         4EDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795270369; x=1795875169;
+        d=1e100.net; s=20260707; t=1795270371; x=1795875171;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Jy6Vcdhv2NcktCCVIrJ79GzBwKeJB8AKRYT9ZAytoZ0=;
-        b=ZN53IQKGgxI6pYFLk2D4X6OI5yg/QQ9ZSJs7fXVz0qkbmoTPUeagshGzl407YK4Fex
-         R6alsPPs6388xDXKtMtZF3z6h4iQqERjKyayEEMrymaNVNOf4t9tJD2etUF1zwu1mmdU
-         O8j2/BTpmg9mbAJp5ZilBlKXsCYtQcxUAMeqJSmFxclTCpZrStujUT7Ff/nbilcjIUyu
-         J9NXLu4P1yvTWaTuKZ6WJVmWL5WwuXLAKKNB+MA7DJKPDMDIJeJwvPKJkq7A3yDRx0re
-         OduIhITT/IanQlHRVF0Zo5FsXDAljGM/k6EiLRY3ABwtZrURSzNqiDNfnsyiWbNLHkUb
-         59Lw==
-X-Forwarded-Encrypted: i=1; AL+hErG1T3yzdyycD06sB3Dx5OqrCSuxYTD9MiPk0yGAYWztYypjWr9uCMoTMKI5RwyqGysEGqf5bVt6VpqzVfscFA==@vger.kernel.org
-X-Gm-Message-State: APuU4Z99XLVvWzNASFWqsShMUa0UInxBhJMYxTsWZBOgEd/NwHh9Pq9J
-	Xzhuto/OZ156AdUvLg1U4MOH24XGCWABBlPLdTOc9xmBMhEoW2awHjmtmXHv0POtqyrLw0+sErQ
-	A0AEs4jIbOXPIiY38JQ==
-X-Received: from wmdn12.prod.google.com ([2002:a05:600c:294c:b0:4bb:5ea0:79c])
+        bh=kwU0uvZlqUjWSWVM4I5jaqBzT9+TKQG4/BkygdKEJxw=;
+        b=Z6Xfpu6rji16D6+dl0bCBfFoCrCKhLTFA42xRxnKBFUuyNSUl+fmBCuqTd7rl6U/yr
+         SzPpgCqx6sBtqoKGUrQZ1nVd34oS+YSVQmwdhB96O8KDaYbMDRtJkhEnetVWlB7ostMr
+         KRrgZPIFX8YB2IdQv3vH9eog/sTh79kNLJcrT9VIfYE+4lIJtHI4AgYBoDFJG4WaGOJI
+         Xon4qrmLS62ugM95b8NaXUNivOpBn/5HQYKnQDk+zds5bJZo1xc+OGoqK2nnZvvQrXz8
+         JA5UH9XWjkeeqsJVnWv27VAlnuz4b+n6bEcj/5vwEXIE6HrXgmNQGXTYuvGWYWqrdBCr
+         zDaA==
+X-Forwarded-Encrypted: i=1; AL+hErHn9nbzArcB8OBgJn+O+6mDCw4M4r/4gHHQJuAMMKs/s8l7udA2XOA7FNP7P6vhQMcSQQyuTYR+IYxNR7kRJg==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+3FnfGl7EKbP4k1mcsKMqhMMI6+I03GABjYZyML4nT8BvMkSY8
+	3XmVagsQrqjigdJT0rutS1V6pyO6g7xk70tHSa+lV0eHd9TwXEgbGpx3P2hT06s07RDvyVZGL/b
+	m/Ou1KRmZLmUXu4FgAQ==
+X-Received: from wron3.prod.google.com ([2002:adf:f083:0:b0:48d:f857:4141])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:674b:b0:4bb:6847:791f with SMTP id 5b1f17b1804b1-4bb8880f267mr135552605e9.7.1795270368808;
- Sat, 21 Nov 2026 06:12:48 -0800 (PST)
-Date: Sat, 21 Nov 2026 14:12:45 +0000
-In-Reply-To: <20261020-b4-gpu_info_intobytes-v5-0-3e0c7c93223c@collabora.com>
+ 2002:a05:6000:4b1e:b0:48e:7e1f:8cee with SMTP id ffacd0b85a97d-4abb0f3c23bmr13133773f8f.12.1795270370489;
+ Sat, 21 Nov 2026 06:12:50 -0800 (PST)
+Date: Sat, 21 Nov 2026 14:12:46 +0000
+In-Reply-To: <20261119-gpuvm-data-rename-v1-1-8eb773435fde@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -79,31 +79,30 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261020-b4-gpu_info_intobytes-v5-0-3e0c7c93223c@collabora.com>
+References: <20261119-gpuvm-data-rename-v1-1-8eb773435fde@google.com>
 X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
-Message-ID: <20261121141247.142001-1-aliceryhl@google.com>
-Subject: Re: [PATCH v5 0/2] drm/tyr: safely write GpuInfo to userspace
+Message-ID: <20261121141247.142001-2-aliceryhl@google.com>
+Subject: Re: [PATCH] rust: drm: gpuvm: rename UniqueRefGpuVm data accessors
 From: Alice Ryhl <aliceryhl@google.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, 
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Matthew Brost <matthew.brost@intel.com>, 
+	"=?UTF-8?q?Thomas=20Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, Jesung Yang <y.j3ms.n@gmail.com>, dri-devel@lists.freedesktop.org, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, "=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, 
+	Sami Tolvanen <samitolvanen@google.com>, dri-devel@lists.freedesktop.org, 
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Oct 20, 2026 at 04:47:47PM -0700, Deborah Brouwer wrote:
-> This series makes zerocopy and zerocopy_derive available to both the UAPI
-> and bindings crates.
+On Thu, Nov 19, 2026 at 04:36:54PM +0000, Alice Ryhl wrote:
+> `UniqueRefGpuVm` currently names its shared and mutable data accessors
+> `data_ref()` and `data()`, unlike `GpuVmBo::data(&self)` and standard
+> Rust naming conventions. Thus, rename them to `data(&self)` and
+> `data_mut(&mut self)` for consistency.
 > 
-> It derives the zerocopy traits specifically for struct
-> drm_panthor_gpu_info, allowing Tyr to safely copy this struct byte-for-
-> byte into userspace memory.
-> 
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> Link: https://lore.kernel.org/r/20261118111653.448550-1-aliceryhl@google.com
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
 Applied to drm-rust-next. Thanks!
