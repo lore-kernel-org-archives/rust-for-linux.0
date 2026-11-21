@@ -1,70 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.67
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795290086;
-	b=3TUwYhgMVKEd4MUYg1bofiARZN67pRQc4gSzWs6FueTM/4KkQaPOZ2omOXTXuY3+//CE
-	 NA55BctjAhhQBAT2ionolDXhD3UcFRz98D1Xw8QzawAlrF86+PRyUZCjH2pxGtcrlh2tk
-	 GEvFmzmZA1fHyd4zNcti4jrGx7m5lTqKCcgptROY/hThZ07NJjb25Dd8MmEB97wP/F3nd
-	 fi4yGr3M3sOB4W0Ww9Qs4h1/kaKdtfD7lrCNw12nkG4AyNx72e12OI8H6PV4o6q+iWHuk
-	 LfZB+qvEGCxZrh2B3SryVogXHH1XV7HUbK8TxvhDDrh53aWA6xWAPjXa8DC1dvJQRWw==
+	t=1795293519;
+	b=qAXl6C4wYOV3ZzVRwpEXVOgZFAbOHdTbSjE0wr1hchHoTwnvKQm1HswfmU16d1Ojqz1A
+	 BfuZZOLYaVLMJJYkzjogdq4to7M3p2CGK7LVmYTaXJIZeDtl5utp5gZxjJCUe07rK05Wb
+	 8fnSRtf+h/hJZ0o4l/S9eFkVaNpp2HX47MeTXhIruzhrZaa5iInK25E6ZDFJmePooidcs
+	 CqcoqfnzD1FkzmvJSqNaOjVXIlTK2cO4I931GAlsebgX+On89ad4Qd6hYFm7l1Oe/5vVO
+	 d9hVTws/IWYfrs7LOILx8sGpeABrWfDIDtuF03d4E90J6gcSV6vGod2F6eLUgtYmMwg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795290086;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:X-Patch-Reply:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=TA0IsQ5WZgrtFShBb0WWPjs6nBEnRi5bmxyzpqn+RUc=;
-	b=vaumNUO+Su+zdljbwfTt57g70L6agJoEuUlfCyOkjzrOkh8Q1/fYzdtfaAdqqbqyXkHM
-	 HTebaKZoiKaf74r6pAWtv9nWpGfIMqXGUO24/SJV1ql+wmVX3sunVC1+Z+H3LUSGR7aoN
-	 22m2Opmd7fR0CpVMJtK12nKotf7/qVnpSBZF8qNOaz6WPWC7poBM8C6mfBJhPWtWildjA
-	 HmIsqSKvm/hiYYGWkGd8awHjGAwK3E9FVibmGhRkz8XFAuE+1KyqVbe7JeBoxiMDjTe71
-	 5HLDhuZHSPMs3zw2e3VhDm6ZWwEqcQgihwj6huiMg0YNbUU3BBLmQhkZvRpRVwP4nww==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795293519;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 MIME-Version;
+	bh=6FHwlCAX/DDPQXG3Am6fTEBu0QJ9hiclqgt5QIPJaAQ=;
+	b=TrmrCoMSZgYLe1bFSMsgVd31cxEDpfZYYZHSsSIfmcq4cXEtnEzdyVNR9aWGt4CImK88
+	 HRCfRaUH9vE6mclgH1egeNFQSk78qLEdEe8TV+Bo0AWhbecag0xL8CGHyLEDltXfQuvyU
+	 KpU3FjglD+jEOsvHlZtrEJrUHRYRpR6U9Exo2oiobJa92UlfETgkFcACqkQ1/m+AQxc4X
+	 zZhwSMOfdwLnPApivfhN/vOMR85PxEXAkSqd05Nd93bs9tVKsCq/BP9F3R3lZ4OCvjtf+
+	 GFXSFVu5UQJbMJKsifMvj+bkLohiGbHvoqXygz9cjE3v7xrfkZlLJZb38kMlkuqwyCg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MJUJNVSj;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZJYHzlzJ;
+	arc=none smtp.remote-ip=95.215.58.67
+Received: from mta1.migadu.com (out-67.mta1.migadu.com [95.215.58.67])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E29B606A320;
-	Sat, 21 Nov 2026 19:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373F1606A32A
+	for <rust-for-linux@vger.kernel.org>; Sat, 21 Nov 2026 20:38:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 373F1606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MJUJNVSj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB4F1F000CA;
-	Sat, 21 Nov 2026 19:41:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795290086;
-	bh=TA0IsQ5WZgrtFShBb0WWPjs6nBEnRi5bmxyzpqn+RUc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MJUJNVSj2PJwn3eSV8+OeIQAn0OiG/QXGWrv1JbNfS2t0n8/E9Uat3xr3rrWJP9gb
-	 KBh8YbrSWKW8Ju/m5O/vVtlM/lLgRC0OWCpBN2YBu6XcqwzJbeCVf5pgED6nMyFn82
-	 fzMUFGtPbRrwIE2s1ynBmW7bjLsLqpEM5/NCR3fC181CGK8k6+3oKrGK11IxNT9rz9
-	 v/w7/P6mQQqcVhfQ19sA8mbuymBT3Z/aIWC6bgGk3+IMib2ncrnIjXoptLinHba/nf
-	 LEtFOnRs2svMjh/QKvVP/MKZnIjMR4xyi4XAQ8U/AgtrURyiGn0KDzlRGEmVbHge/j
-	 ODOb0A520VcAg==
-From: Danilo Krummrich <dakr@kernel.org>
-To: Gary Guo <gary@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	driver-core@lists.linux.dev,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: doc: mark `Io` as notable trait
-Date: Sat, 21 Nov 2026 20:41:21 +0100
-Message-ID: <20261121194121.510969-1-dakr@kernel.org>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <20261019114811.1105192-1-gary@kernel.org>
-References: <20261019114811.1105192-1-gary@kernel.org>
-X-Patch-Reply: applied
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZJYHzlzJ
+X-Envelope-To: rust-for-linux@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=6FHwlCAX/DDPQXG3Am6fTEBu0QJ9hiclqgt5QIPJaAQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795293516; v=1; x=1795898316;
+ b=ZJYHzlzJE326rGitO+pCAayWjpW0CFYeQfMhFOFf7ajEwkvCk2A3YmNAviUJFMiMzq/ooanI
+ 1I0ud0kdvBsJ2S7z/TJjeb6tjXWtOPFbWD5bG3OQeHDezUShPjgPWqeWAS06rptcgj+lnq4zQ0B
+ ZNQLqInD6/PXs3Dw3wvwslyI=
+X-Envelope-To: rust-for-linux@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 45cd263349750bfa;
+	Sat, 21 Nov 2026 20:38:35 +0000
+X-Mizu-Trace-ID: 45cd263349750bfa
+X-Migadu-Flow: FLOW_OUT
+From: Igor Korotin <igor.korotin@linux.dev>
+To: Andrew Davis <afd@ti.com>, Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Miguel Ojeda <ojeda@kernel.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
+ Onur =?utf-8?q?=C3=96zkan?= <work@onurozkan.dev>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: i2c: Remove use of bindings::i2c_match_id
+Date: Sat, 21 Nov 2026 20:38:35 +0000
+Message-ID: <179529351558.12162.7808461205594973835@linux.dev>
+In-Reply-To: <20261118164404.237865-1-afd@ti.com>
+References: <20261118164404.237865-1-afd@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -74,22 +75,12 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On Mon, 19 Oct 2026 12:48:10 +0100, Gary Guo wrote:
-> [PATCH] rust: doc: mark `Io` as notable trait
+Hi Andrew,
 
-Applied, thanks!
+Acked-by: Igor Korotin <igor.korotin@linux.dev>
 
-  Branch: driver-core-testing
-  Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git
+Taking this through rust-i2c-next.
 
-[1/1] rust: doc: mark `Io` as notable trait
-      commit: 4abd139a3f1f
-
-The patch will appear in the next linux-next integration (typically within 24
-hours on weekdays).
-
-The patch is in the driver-core-testing branch and will be promoted to
-driver-core-next after validation.
+Cheers
+Igor
