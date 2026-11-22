@@ -1,56 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=213.97.179.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795385712;
-	b=k9p3+DgaL/1L7kdO0ldXNveF6PomptmJjctDzATQpdUG9qOCtvvXU9wmwOeiS4x/x/hU
-	 oxyNCrfFCDwQ55j7iaKy/vO2BRJ0jbJ2oMA/0RJJtZWuIKoKG3GAQrjuVbd1XKhyPUO4Q
-	 392ilUvrhfVCJmwLxXoCCYNueNsCTLJWj+YlYaa1bDegSdS6CVdTF+jIyCXnH3dH6cCzx
-	 udET+LZBkFhF4A5I8zJ8mJYldSF+r/ClAvZ8WHlLVaCYpqUqNQoUMYS8VMFw6b6nueLAc
-	 fczww+4uYcvkP35DNAWEmGEniIMmz6D4fgLJyhrQw6coaO7jHC3gl4u7GTUJ3QAaQQQ==
+	t=1795385716;
+	b=ZQIjtEXUmlX4uRxo/3xcg0WdY20zCXyHPRSCdRIYnH9T16do7L82GIzg3vVWgli0MILz
+	 NIRtYHSuISlE5rs3P906wE+aO8Ki8UsrxFQVyDOfvqwCXMxmI8XHqImSMOaUU2E7rDtH3
+	 DWuz0qAiun+vcVafD6/69HBfw3OzZcFi+ZDZIRc7b8bbPCZvVa1wWhUPaFO2tTf6ZA5Oi
+	 13hIPCyaxv056k8gtaYpJo0g3A2A2DzyT6n2eBYApb8ukmSH+J5DkNVqxDJlnaw03WyXx
+	 tJfRz7iXGbz6b4BOA4q8SgumR9RM+qRGoKEMXLLJ2/m+tFB0OQ3JWym4hWoLTaLMyoQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795385712;
-	h=DMARC-Filter:DKIM-Signature:Received:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=jgxZ5udoHe2NUzwiDrLdSwF/Zqy5q5silmN63zU/Dts=;
-	b=fU5UBE+0kl1Ys5iKK+E+GTh/4i0IxiV+jIFHLnpjD2RRC9NHjSkmHxBn1X2ZbcZOc2u4
-	 qwSsEJ1Dsi+q9IYnGho/Mxtjhggf9b4w9KdvRbotk81XThG9/inWr5Y1LL129uqpxixk0
-	 oX0cXoSJrT4uB0DI7E83AxDcKVAGU3+HuYie8dIlTqyYc4djFUngWcoDevFFeg1ur4dcD
-	 bcBPGvm9ogXOb5MuHvf57qzO6pTkxzuOocWTUncPK4P4rMnFQ+l5Av3xTi30XAYF0eR9n
-	 dY/A2Vfrn0xfNHzWrQBxLwMUmQ59XnP6qbvCwXKoZEuc7lvzYZ2wCQC0Jcemi9lHQnA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795385716;
+	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=tZgy2Acviezdj4+o9I81vHvd1Rw5D+LtDPB44OQJRD0=;
+	b=Sgr3de5f0Os74IvZSBFhgoZ2bYQX4RlfiHn9GF14MzSB2TsnnrH9wAw4kd3aC8uMzF8L
+	 2UEgWjw/xrMBAd+zCXROEYOE5UNTxpW8oRJavJAJJe+zJGoADYdHiAJsZtrhr88GnmyrU
+	 8bRmbe6wfP+69iaJyNeHDQ0JXhTw2XZGJ9/NrzmAy+wMxOGldGHi53t8hRbt7OCPO6zoi
+	 KrqGh3gl7JYanFL5KaW8bmnJOsLHBahh6d4pgFBVg3APmFp/y7goCtEcY75vYMLEQyN0z
+	 Zp4TmF1bMHPm/sc4UhRCTrl+ckWXDRfw+UHw8Dri9ZjiXzcsZZXbgDj8K0z5B2eArkQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=igalia.com;
 	spf=pass smtp.mailfrom=igalia.com;
-	dkim=pass header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=iNsMvS0m;
+	dkim=pass header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=mWF8Urru;
 	arc=none smtp.remote-ip=213.97.179.56
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B7A606A31A
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 22:15:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 05B7A606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6DD3606A320
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 22:15:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6DD3606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=iNsMvS0m
+	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=mWF8Urru
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Message-Id:Date:Subject:From:From:Reply-To;
-	bh=jgxZ5udoHe2NUzwiDrLdSwF/Zqy5q5silmN63zU/Dts=; t=1795385710; x=2110745710; 
-	b=iNsMvS0mZJ04e1mvYpCEr+hvf3iRqZxodIXOoe3kMhlwABpVRI/gCOZNRonN9KeseDPxc2/gNha
-	ZufeN+lADzPdQJr8dyEn6KHv+jlSVr///feKxHOq0O1M7R2hf5Iii5dEpCkQufm/fG6kplIycgQX2
-	n/2REG55PptZRlRaUDnKsCPI/DlpSyKF90kwUyHYUH0Peijdlo2LXkJ9dX+FCG2LWlZGlvXvplrof
-	r68jrgddAyLpBrajzrq85+vdm0z1HLzW3hif4a6Ss+MVoj6BuAXUwIReLHbwjnNfzMC+l6rMiHOwY
-	vRXqRqzHd/T/zcc5GYvspTROZTcoJWuGhdIQ==;
+	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Subject:Date:From:From:Reply-To;
+	bh=tZgy2Acviezdj4+o9I81vHvd1Rw5D+LtDPB44OQJRD0=; t=1795385714; x=2110745714; 
+	b=mWF8Urru3RKEbsKt6ORObWhh3pCY+YXoqv3mYzB6FXjq95n9k6q5HXemy2J0hfFx9UtHHxiP+88
+	Y7CCSpKsmejLqoo/XLpguo1XDiCjFT8dPxVxLKYG6ijVUwrLHBAxidZQiabdp8YHcwIQVZX80rra0
+	iYnzKj8epqHaUGMiACJYbepl8HdeXrFnFkqY4rhQOgSR9rlw4+7FLgh2qrYVDmF28fVciuwrcEc7M
+	uqu4oqIXKEuv1b/V4RW4l+I69M/dea8ogs5N4CuWvdpILmXoOFHYnIiAdJt5DiVxlFgm+nRJS43Cs
+	16YF87Y0TckmdMcudJYX16ONz/FPrYMpPP2A==;
 Received: from [179.105.94.163] (helo=[10.0.0.1])
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1xVFps-00000002j1Q-0Y1Z;
-	Sun, 22 Nov 2026 23:15:00 +0100
+	id 1xVFpy-00000002j1Q-2GZX;
+	Sun, 22 Nov 2026 23:15:06 +0100
 From: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Subject: [PATCH v2 0/4] drm/panfrost,panthor: Refuse to export WB_MMAP BOs
-Date: Sun, 22 Nov 2026 19:14:48 -0300
-Message-Id: <20261122-pan-drop-dma-buf-hooks-v2-0-2ed42dce9db6@igalia.com>
+Date: Sun, 22 Nov 2026 19:14:49 -0300
+Subject: [PATCH v2 1/4] drm/shmem: Add a drm_gem_shmem_sync() helper
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -62,11 +61,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNQQ6CMBBFr0Jm7RimxmJdcQ/DokAHJgptWiUaw
- t2tXMDle8l/f4XkorgE12KF6BZJ4ucM6lBAN9p5cCh9ZlCl0kRkMNgZ++gD9pPF9sU4en9PaC5
- cMRk+tWeCPA7Rsbz38K3JPEp6+vjZfxb62b/JhbBE3WkmrYyr2NQy2IfYY+cnaLZt+wJWNjcQv
- QAAAA==
-X-Change-ID: 20261119-pan-drop-dma-buf-hooks-98f7f19f3b51
+Message-Id: <20261122-pan-drop-dma-buf-hooks-v2-1-2ed42dce9db6@igalia.com>
+References: <20261122-pan-drop-dma-buf-hooks-v2-0-2ed42dce9db6@igalia.com>
+In-Reply-To: <20261122-pan-drop-dma-buf-hooks-v2-0-2ed42dce9db6@igalia.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
  David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
@@ -84,78 +81,182 @@ Cc: kernel-dev@igalia.com, dri-devel@lists.freedesktop.org,
  rust-for-linux@vger.kernel.org, 
  =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2877; i=mcanal@igalia.com;
- h=from:subject:message-id; bh=3lRtVBgzw6syYBRQqdWMkBG3bVDnK4PN2Zf0ux5UNxM=;
- b=owEBbQGS/pANAwAKAT/zDop2iPqqAcsmYgBrA2ldx/XSGCfRb9QAwtp7Lb6ZPPIVNh1eJ2Ung
- dIJHJE82VWJATMEAAEKAB0WIQT45F19ARZ3Bymmd9E/8w6Kdoj6qgUCawNpXQAKCRA/8w6Kdoj6
- qqPeB/9SRTOzmC23vEQnhIyQLjn5kRofzayExYFoI9fCkfS2AMULD0F3K7hcGUHXaycJjAr7NK+
- z0nVWw9fbxDbJS+W7O1zV3aQalqbeZcpv9/qDsDW6nycnaENtH5y0HMb4YYAE0bqk5Hn+A22wKw
- oVeDSL0fVLbPhXPmnKqBMV6sU/Ka0aOHAXRetcdNG1KEgg4YrN7UzxBG17Zs3tIIlqjDIlOntaR
- aKCyIBOi6PoWJXeiHfK5J5/i1VdtALrNhc0SEGd2kvFiM525+SlkZnbAkYGQTYXL+HqvQNbZtcR
- Hjt+OV72WhMX66PPvBem+ZoVSmeWhSqWy24xMQU7csf16jP4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5356; i=mcanal@igalia.com;
+ h=from:subject:message-id; bh=mHgl0Na3xpR041r5/wE7OxY53UlFpicQLznYg7tTlW4=;
+ b=owEBbQGS/pANAwAKAT/zDop2iPqqAcsmYgBrA2ld+Z2v2b4U+j4fuvUWeC4+a4bfTs7ADTCBo
+ SusPAelWP6JATMEAAEKAB0WIQT45F19ARZ3Bymmd9E/8w6Kdoj6qgUCawNpXQAKCRA/8w6Kdoj6
+ qtxgB/4+T3PUmsG+d4WUUDwwsR1ybff9BHyxWFcr0NH0VRlkZD/0dSxl3yJnLbo1OJyMCbEth0Q
+ K6RxA6aPOzPCmCP2tGkM2rWWOV7psMVkEwWTFGWEE2U2pkF/oHk2S/NxR9XNV/Kej6gc0R5jGtv
+ EOe41c0PpCphZP1FBAd7oh5mHM2JII/GQLYxAdyTPLwctXIxO8/M77IZVF/N5P3N/SR9PkEyqfj
+ I5uGObqP1Gc9yQSt4bBW/b2eSZnNjWpx+NO3SdYGceb3rjvLGdb8cd7wzMZzEVsdKGHIQfan68a
+ AjmZQtXoUs1Vsh7AcFt3U04pMeCb249qDufqD+Q1wimOvEGm
 X-Developer-Key: i=mcanal@igalia.com; a=openpgp;
  fpr=F8E45D7D0116770729A677D13FF30E8A7688FAAA
 
-This series follows up on the discussion in the V3D cached maps series
-[1], about how to handle CPU-cached BOs that are shared through dma-buf.
+From: Faith Ekstrand <faith.ekstrand@collabora.com>
 
-As pointed by Faith and Boris, when a buffer is shared through dma-buf,
-there's no way to ensure that a client will properly bracket their CPU
-accesses with DMA_BUF_IOCTL_SYNC. With WC mappings, waiting on fences is
-enough to guarantee consistency. However, with WB mappings, a missed sync
-can leave dirty cache lines behind, which another client can end up
-writing over.
+This enables syncing mapped GEM objects between the CPU and GPU via calls
+to dma_sync_*().  It's a bit annoying as it requires walking the sg_table
+so it's best if every driver doesn't hand-roll it.
 
-PanVK already keeps WB_MMAP BOs private, so this series only makes the
-kernel enforce the same policy on Panfrost and Panthor. As discussed in
-v1, the custom dma_buf_ops are kept, as they're still needed for
-IO-coherent GPUs.
-
-- Patch 1 adds the drm_gem_shmem_sync() helper, taken from [2], with
-  locking around the sgt walk and handling of unbacked/purged BOs.
-- Patch 2 converts Panfrost to drm_gem_shmem_sync(). V3D will also use it
-  to implement its cached maps, which I'll send in a separate series.
-- Patches 3 and 4 refuse to export WB_MMAP BOs in Panfrost and Panthor.
-
-The Panthor changes were tested locally on hardware and the series was
-also tested in Mesa CI (Panfrost and Panthor) without regressions.
-
-[1] https://lore.kernel.org/dri-devel/20261030-v3d-cached-maps-v1-0-0a6a6b363382@igalia.com/T/
-[2] https://lore.kernel.org/dri-devel/20251126124455.3656651-1-boris.brezillon@collabora.com/
-
-Best regards,
-- Maíra
-
+Signed-off-by: Faith Ekstrand <faith.ekstrand@collabora.com>
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+[mcanal: rebased on top of drm-misc-next, fixed kernel-doc nits, added a
+resv lock across the sgt walk, and skip unbacked/purged BOs]
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
 ---
-Changes in v2:
+ drivers/gpu/drm/drm_gem_shmem_helper.c | 108 +++++++++++++++++++++++++++++++++
+ include/drm/drm_gem_shmem_helper.h     |  17 ++++++
+ 2 files changed, 125 insertions(+)
 
-- Dropped the patches "[PATCH 3/6] drm/panfrost: Drop custom dma_buf_ops"
-  and "[PATCH 6/6] drm/panthor: Drop custom dma_buf_ops" (Boris Brezillon)
-- [1/4] Dropped Steven Price's R-b, as the locking changed.
-- [1/4] Added a resv lock across the sgt walk, similarly to what's done in
-  panthor_gem_sync() (Sashiko)
-- [1/4] Stop populating pages on purged or unbacked BOs (Sashiko)
-- [2/4] Move right after the drm_gem_shmem_sync() patch, add Fixes: tag
-  and reword the commit message.
-- Link to v1: https://lore.kernel.org/r/20261119-pan-drop-dma-buf-hooks-v1-0-6c6f1629e7f9@igalia.com
+diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+index d654a22a30de..cc3d04d2d58e 100644
+--- a/drivers/gpu/drm/drm_gem_shmem_helper.c
++++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+@@ -901,6 +901,114 @@ struct sg_table *drm_gem_shmem_get_pages_sgt(struct drm_gem_shmem_object *shmem)
+ }
+ EXPORT_SYMBOL_GPL(drm_gem_shmem_get_pages_sgt);
+ 
++/**
++ * drm_gem_shmem_sync - Sync CPU-mapped data
++ * @shmem: shmem GEM object
++ * @offset: Offset into the GEM object
++ * @size: Size of the area to sync
++ * @type: Type of synchronization
++ *
++ * Returns:
++ * 0 on success or a negative error code on failure.
++ */
++int drm_gem_shmem_sync(struct drm_gem_shmem_object *shmem, size_t offset,
++		       size_t size, enum drm_gem_shmem_sync_type type)
++{
++	const struct drm_device *dev = shmem->base.dev;
++	struct sg_table *sgt;
++	struct scatterlist *sgl;
++	unsigned int count;
++	int ret;
++
++	/* Make sure the range is in bounds. */
++	if (offset + size < offset || offset + size > shmem->base.size)
++		return -EINVAL;
++
++	/* Disallow CPU-cache maintenance on imported buffers. */
++	if (drm_gem_is_imported(&shmem->base))
++		return -EINVAL;
++
++	switch (type) {
++	case DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH:
++	case DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE:
++		break;
++
++	default:
++		return -EINVAL;
++	}
++
++	/* Don't bother if it's WC-mapped */
++	if (shmem->map_wc)
++		return 0;
++
++	/* Nothing to do if the size is zero. */
++	if (size == 0)
++		return 0;
++
++	ret = dma_resv_lock_interruptible(shmem->base.resv, NULL);
++	if (ret)
++		return ret;
++
++	/* No CPU mapping can exist without pages, and purged BOs have
++	 * no content to be synced.
++	 */
++	if (!shmem->pages || shmem->madv < 0)
++		goto out_unlock;
++
++	sgt = drm_gem_shmem_get_pages_sgt_locked(shmem);
++	if (IS_ERR(sgt)) {
++		ret = PTR_ERR(sgt);
++		goto out_unlock;
++	}
++
++	for_each_sgtable_dma_sg(sgt, sgl, count) {
++		if (size == 0)
++			break;
++
++		dma_addr_t paddr = sg_dma_address(sgl);
++		size_t len = sg_dma_len(sgl);
++
++		if (len <= offset) {
++			offset -= len;
++			continue;
++		}
++
++		paddr += offset;
++		len -= offset;
++		len = min_t(size_t, len, size);
++		size -= len;
++		offset = 0;
++
++		/* It's unclear whether dma_sync_xxx() is the right API to do CPU
++		 * cache maintenance given an IOMMU can register their own
++		 * implementation doing more than just CPU cache flushes/invalidation,
++		 * and what we really care about here is CPU caches only, but that's
++		 * the best we have that is both arch-agnostic and does at least the
++		 * CPU cache maintenance on a <page,offset,size> tuple.
++		 *
++		 * Also, I wish we could do a single
++		 *
++		 *	dma_sync_single_for_device(BIDIR)
++		 *
++		 * and get a flush+invalidate, but that's not how it's implemented
++		 * in practice (at least on arm64), so we have to make it
++		 *
++		 *	dma_sync_single_for_device(TO_DEVICE)
++		 *	dma_sync_single_for_cpu(FROM_DEVICE)
++		 *
++		 * for the flush+invalidate case.
++		 */
++		dma_sync_single_for_device(dev->dev, paddr, len, DMA_TO_DEVICE);
++		if (type == DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE)
++			dma_sync_single_for_cpu(dev->dev, paddr, len, DMA_FROM_DEVICE);
++	}
++
++out_unlock:
++	dma_resv_unlock(shmem->base.resv);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(drm_gem_shmem_sync);
++
+ /**
+  * drm_gem_shmem_prime_import_sg_table - Produce a shmem GEM object from
+  *                 another driver's scatter/gather table of pinned pages
+diff --git a/include/drm/drm_gem_shmem_helper.h b/include/drm/drm_gem_shmem_helper.h
+index bcbb92f3fe9b..a5def70fae7a 100644
+--- a/include/drm/drm_gem_shmem_helper.h
++++ b/include/drm/drm_gem_shmem_helper.h
+@@ -122,6 +122,23 @@ void drm_gem_shmem_vunmap_locked(struct drm_gem_shmem_object *shmem,
+ 				 struct iosys_map *map);
+ int drm_gem_shmem_mmap(struct drm_gem_shmem_object *shmem, struct vm_area_struct *vma);
+ 
++/**
++ * enum drm_gem_shmem_sync_type - Type of synchronization
++ */
++enum drm_gem_shmem_sync_type {
++	/** @DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH: Flush CPU caches */
++	DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH = 0,
++
++	/**
++	 * @DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE: Flush and
++	 * invalidate CPU caches
++	 */
++	DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE,
++};
++
++int drm_gem_shmem_sync(struct drm_gem_shmem_object *shmem, size_t offset,
++		       size_t size, enum drm_gem_shmem_sync_type type);
++
+ int drm_gem_shmem_pin_locked(struct drm_gem_shmem_object *shmem);
+ void drm_gem_shmem_unpin_locked(struct drm_gem_shmem_object *shmem);
+ 
 
----
-Faith Ekstrand (1):
-      drm/shmem: Add a drm_gem_shmem_sync() helper
-
-Maíra Canal (3):
-      drm/panfrost: Use drm_gem_shmem_sync()
-      drm/panfrost: Refuse to export WB_MMAP BOs
-      drm/panthor: Refuse to export WB_MMAP BOs
-
- drivers/gpu/drm/drm_gem_shmem_helper.c  | 108 ++++++++++++++++++++++++++++++++
- drivers/gpu/drm/panfrost/panfrost_gem.c |  78 +++--------------------
- drivers/gpu/drm/panthor/panthor_gem.c   |   4 ++
- include/drm/drm_gem_shmem_helper.h      |  17 +++++
- include/uapi/drm/panfrost_drm.h         |   1 +
- include/uapi/drm/panthor_drm.h          |   2 +
- 6 files changed, 141 insertions(+), 69 deletions(-)
----
-base-commit: ce335050d9a670491139f5e4337934c3e963e7f4
-change-id: 20261119-pan-drop-dma-buf-hooks-98f7f19f3b51
+-- 
+2.56.0
 
