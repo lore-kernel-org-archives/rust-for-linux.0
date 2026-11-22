@@ -1,102 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.175
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795346487;
-	b=KeFaqrnxdHytyY7/0QLUGF7kXGlwOKljMADW3d+emqCyoEHNPKAAmcaREoNGYuu9aAzl
-	 Z3Csvks24cv1xp3YouOcGKBuIbda+b/Vn9PGpb/ZDvo2S9TDX3r8sW4mtKZWFTwI6+uRy
-	 +1SKk906w9avOLrcj1Lw4wRLVcJ9KvLPZHhdhE9heQSYG869rD1/uYiti7yAk4cVym1XC
-	 lARgStNVxpqDdFulyvOgeUsWu0WisyoHDqrVd83lZ3+orvp7N28tPDYcxnJDwtNxjcdzZ
-	 DbR9VWRBv7Ghcl3P0S0sirEvQMNWmYH0BpoT8hJQQTTIaDb6+Ow3yluOdTt3//aeBCg==
+	t=1795347516;
+	b=JHS582Qd4PgEqps6lc3mGN+6yRunu8Yi8X83J5uHjev51nGMK665++IpvN7H20B+6HLx
+	 xfeSQYXete+I295SyFs+KjeMObj0E+xQUvH1iWMkJgPkRTWgrJCOycOzOhhHBWrilBfDe
+	 mcVxbkduJW6EqMK8cDMr0oafOz9V734BYvugZLjByIk2C2VQQqem/Qv2htVMV8/kvpvqX
+	 p8zuyXsMrRXe2pCJT4F/8FFtaWkpXiNwWZq4atGlSFcLrx6DdqYkcbSH3Q/xsGh5Ab+Aq
+	 5o2QUEk4vpLIBuN0gRnqBAI1sY9/q51TBMbM1HwFlVkYqdiNDKIj528HDN8Hun3GAoA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795346487;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795347516;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=BCdFGEAGi1FkXvjngBIPRRqSI+mSTpjGWxSdX4AZ69g=;
-	b=jHCs0a7t038RasXGoeZxUyN7SBwwPhvXMNpUL36vEUBZXHdyG0QFwGgCpcsqQE2lGRH9
-	 jPVvaRMIRbjL91e/WeOi6GmHw5qb+4wQdoJMNNjW+dIh6JXFaSCsTMs1iLNWLTPB+OPky
-	 am20yxEzMdvja7sX2qEdbvbmW24tjuroF8U4jWiwTJKF+Js1KGSuw418cOAFTMTY1e0HV
-	 rRaU4QxjEwqynfOkeokExbkHbHfwY7eJBDPXKRcFVUPtv6xkj+svA5fsOzzYP1Gg66tO4
-	 I2PzxFmI76ltXAqkxOtlit83p6g8rEz01lmbnQdZAJ9tS+9AU23J+bEzUUyaIIo9TvA==
+	bh=YVm0atOhjR9nDOLlJ4gPFa6rcD+/4hLxU/xQnQlbIes=;
+	b=seDUzxkltFjAnGfD50qA6TNKtcl8PVV8KvJgld+TJp+in7UXZEHvwtv6Sq22wq8uolFB
+	 6EeL1t1i7yN1G6LRvP7dPvcv5qFu2dgB1anZUylWXX/O0qF3Sk+Hsw/o+u2ofLDYmD4Ol
+	 ugDm+/HFF6wBlBPuE1rU/7Tt3x/HOY3Ed80liaVG4mEYqfFFc4Tr2Km9l26VEpTMe8A4S
+	 Oes24IvVLwbXsMpCXFcm5a7ZtdZ9Wrdo/oedViTrakEwW+OzH61sxMC/3XAyRWm1IsrZz
+	 tNytIENB3roWAA8T5rQfaSOJfY/rjD+F8jXeRxg/73XsrNT1+/XJxwbKsO1rTs8/LGA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="Zf056G/Y";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.171
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xHLwRXTv;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.175
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B6E606A32A
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 11:21:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28B6E606A32A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C84606A32A
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 11:38:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 64C84606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Zf056G/Y
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-3adef2bf7acso1903511fa.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 03:21:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795346485; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xHLwRXTv
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-3adef2bf7acso1914591fa.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 03:38:36 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795347514; cv=none;
         d=google.com; s=arc-20260327;
-        b=pMoUQPbhEeFljy4nfUbc8lgw8nkWieEBbpB/8aGNvfBgPq1odx4FgtqS/y8zhnWQTl
-         6EcEpS91yhtrfZa231hAEX9wEpwXLR6WCD7ryJwnL5OXD2/J0gTKTGaYfyEy1j6fzjfF
-         Ss866kk48hvz7RjRktmRB+vZ2iIIMvK1P+n6385FYsqZHWwm+6YpsRRG++EB/cAXTXTR
-         Z3rjzWTwO1OyPaoEDMcmJo371j+EHd5ISlPZ2NEHk4hlkbpdgfmlNXe5uPxKe2DWov9Y
-         zBTul/UrHhDuWZCtIIWH4vpuenxQXG7V9+0CbxTgqJTM8ACK+iQIwmVPo+Y6zU50aThs
-         xUtg==
+        b=Ggyo23/Wr7K3GdmEQs8w6WJGvsqFUyvP61Xr13ULYHLCNtPlWRm5+X4uONksanqrxw
+         e6zJ8PEuwK8RwRqU5GJsCRmOoWwRcaossr9oZ/5Y+GmxxkAMGsyakWs2YKQLyDc8qQZw
+         J2PM7Z1gtdGi/qrvPyA8V/9LHSWhMJi7lq6fzBbqR9Kt3O3qtfyOlOuu60IrZhftQASJ
+         er4uHDfrjDypUeFyp3FrHExQ07bzZwJG5jhXnoJMG8eJGi/gZ8qrxOLuHlKup6Cz8R1J
+         798JEvl5vmuQ+oiF/95g2kuX0HMnjjWuQbso7tqz6mTMQc11edCVYFYJb29UW9SMqu/k
+         6kag==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=BCdFGEAGi1FkXvjngBIPRRqSI+mSTpjGWxSdX4AZ69g=;
-        fh=oirEGwhUVkezDUzlUqXWTY+1obuZlCEBb/a8fPL0Jf0=;
-        b=gDCFmlg2uyFBBj/j/nrfKl+xho0xhEtNfoFTVkUEpDGlJ0sQySP7hxWuO0TPHsbubB
-         TBe33JyDaOxJcibyCg/reiRZZh6Faz6LWzTNKWHzPO56kIzemFYkeAOzP4sT7LUSEghy
-         2/JE21+6SoptyLQdX70pRijqIikOT3hTd1y9PiBpYHSPk2q1au0/JD3C7hl/DUjuH7Tq
-         VgStBiqQ/LMK9XL2m9s575ZMM8khn980BaYRKLi8/d3xlMx0nhmkRGt8xt64VgAWYwMf
-         9yccYGP5TnPTwvm4PslhtZO5ioP2345kPHqiyeuTfsVs7+ihpXKDpbZZk0vfaFEqAP0w
-         NhIQ==;
+        bh=YVm0atOhjR9nDOLlJ4gPFa6rcD+/4hLxU/xQnQlbIes=;
+        fh=VjzzJ2d71/IbkkL6/Oz3Xqtg9DHG+LUFE48GFCCHvKE=;
+        b=OUUeqe7XP2oatVz71X3nKV9Tgng/3KB3LaVoDdYileBvflxj5qM8vzmGWAzBu3YdkZ
+         7gADyH99ms7uu1HKnTGt+c4LyTfqbxiuFbnDBt+XpwbCmLUh/LjGZywGQccs5II1ekRL
+         q5KBYu+tai7twEPWm8mma4MYtJKcj9UmFohJrBDR6yBU5vVUf1NpcH4b8k4aj2ylxzyF
+         iqK9Bk4dHJUc3V6aGuXHOcJKUi6w4fVhP+0vF0Ccu5UeSIF/PCZsfT1SAPGueiQBhK0g
+         L2zAkYSwEJFWUY6XXoK3K8cNFTIyTWdWc7CXXsKbdvgKvjBDMpoXtjE64LGUg0JOrVsB
+         aO7A==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795346485; x=1795951285; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1795347514; x=1795952314; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=BCdFGEAGi1FkXvjngBIPRRqSI+mSTpjGWxSdX4AZ69g=;
-        b=Zf056G/Y+GwGxQXeae6ea0V5lpqHLMoxwIERhMIGNmrPdDZ6cZUEoHU4hrCFI+XQPu
-         DtuuDApe9j2ugyBnKJw8BnIVnu1bY+6E2hAi6GCbeElPeWazvmsDNRdPdzhAF6ch+tB0
-         sDMwQCeoHX/9pKFb9x74e6mnkglRTIN4TILmvm/kkwXU8Fs8C8MyMJgN/jx11Uj9kbTL
-         ado1hj028EW6qS1Am1bSc/OrESnmIvOG2jEH27iyYoz+NJlcYcQMNgVrTjfy1leizNdH
-         NV5DOBaeMdvTr8c7lXA7NsOkseNQGf9CBYJNmJSQWgoHi1iEwAVOSZDfiJbiqFvj4F/t
-         jeCw==
+        bh=YVm0atOhjR9nDOLlJ4gPFa6rcD+/4hLxU/xQnQlbIes=;
+        b=xHLwRXTvIHOPiGdyOWAJZFVHXZ2zx9COFpOESqj/4DrI4UR32A5Zd1mLYswGv75WZ4
+         nsZ4hYcHsCj4EfnxB3iaxLBSBkZ1VZBYmwH5S7Cq73q8HtBoCDQc1jiQvkYzTX+AGfRg
+         NnlAYleyKH3HGWTnph7hRYGbt5khCdOYTPo0kq+QI9jzCS1ACJlhjphZBlhukDCnVoRC
+         cWUTw77cC5R/+S9cvmguAITuS6HRxDofpAYoWWWoMr98EvtAAVSpiElztF5iOBmPdUGy
+         XpoQweGZXljH0GjAwvN4cg+iFcqOPrLJIKwcSUqSOUvci9zXjj562KDDIrdqwEQtrPKg
+         37Ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795346485; x=1795951285;
+        d=1e100.net; s=20260707; t=1795347514; x=1795952314;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=BCdFGEAGi1FkXvjngBIPRRqSI+mSTpjGWxSdX4AZ69g=;
-        b=RILs6AG2lm6y9LtF6rueBliMjGsCHLb4BITbtLXD7/HdZ+j6XzaDp4eBwb6ThOj/JC
-         uvS9Js0pZri7L+ETwWThrIE64CLFV7MMd2y8zpoQkCZmqQZbf3FwJ0BD18oDbuGJKAqH
-         X1ojg9RKCJUtrboFCamNHaktMjDXSBSeutXuYdIekdPWUwNZ3DZ7Zoe1VkCjp0c/e5od
-         E/9wIUkENXOI6F+NYwECTwb8LyCcxMMmk3VGBkgDevHgOG20UbuiAKcZHOfYTuDILhlo
-         tUPDNwMCiPmX9jKW6K4CDpXN+hg/RU0POh98GQ2SHutaahtWI3jYYh8AgQbJPK+QaURt
-         sgLg==
-X-Forwarded-Encrypted: i=1; AL+hErEwbISa0teQwf062uDMnSxNQVrE/BqqfSP3AHq78rW9noxuYxbgts/+SWqvK4EsHKOZlE4goPSxDvAE/uYiZg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z9lDIwanwgS1YvxDMqYzy1CFK71BP2DtKGg64gWWR/w3PEll0Zb
-	gdXZcx5UH/z2GWv2ZOVDnsrEwV0dpkm84VXD6aBPLXZfzuxOTwjC0UP/rnaet/WYaHrE3g348Fr
-	pl2QXYqunv6cTpDwSA+1UDvNW5Zxwx7U=
-X-Gm-Gg: AZFdTZfIJmskUXw+LAPYAMQTfuw4FMy/X2neJS6nEjM5W8AlrRLsWms+jnz4oTCRmjB
-	eEo/+0YenVUCQ55y4p7wtSaOvplVw2+SvAnlKsaKI4n6bDJP3NQhKl/xnyMZLEli9GcDTragx/k
-	eox6KJkB286zGsX2czRq1Iv3lIpd+9AGYky+AcfG7oYwEE3Dm5MlTKcZ9O+UasU+fECbTC9s6aW
-	OvUffiyiiHFD1ctfpWJBbrIWCbm0jAe/qGXePljKNpbjTSmeitKTJswf78MAyszLp1cZZQenzjw
-	6aTRGQ3OHJmtcu0dgtaAwVMcS5o6MSmASinIUIBOoa0hDaVAw28kqH+CCLTF7+4PW1bp2Gf6TCX
-	qp3Q4neCeJ2S/7le6vHwYU3W2xRlQ1fLbzgEFB4ZKqqU9Xxjfj1baAT+cvnYpPeYjrPbCAyMHDA
-	qTGcpNKQLGd1H+DtgZ9VJhMYUghzwEuOdMZct6XuI0UkRDAWM1vzmna8VkyJTijCGKpcfX/usl/
-	hDFxRIDa7V2cWLibVE0fP++NSaQG6VkI4qrjefjlzS/GN5ocjb8iNS0GvI5RGwLD7ebG1qV
+        bh=YVm0atOhjR9nDOLlJ4gPFa6rcD+/4hLxU/xQnQlbIes=;
+        b=D21ATVoxaT/RzDpPHTU7/F3zuyjH/6wzYLmU73NEF+2u3AUyRdnPpqegRSRfHV+A6m
+         UBdb0Qme4cx+9zwqhSZ4DUQiWkJ2atbx8yfpynUI7DxM1overxIpxVgpkX7tdkiqyVrs
+         bW2XCjli874PW1nxFUjnBfFkcLUEWTDcEL460nSLhdlzvfYU0pXgKaXTd8UK5y6UD30k
+         vkCXfkQ5ypBIB6HgXRuG5VMvhpXZaeoobkNMbTrDg34iodlg5WmZbbUn0Xlqaef1fB7B
+         1/mHuauhSqLZb+sI98VcQkSpTYFEHjamBSGrGeB6eByBiSQGaO0RFPezdzGvYrzyY9Sl
+         7hfw==
+X-Forwarded-Encrypted: i=1; AL+hErFeuH5HdDNn6TDW+HyPXkcpy/IznpFOwF97uGmmFiBfPwU+lP/NLbuutW/ij0Pe21wuXDjlTaTK9aS00excZw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+UEnC8aQffAG4JVS3mVpT1PTrqgbM00AZ1nZG4gJXbebmFnVe7
+	NMuGYjfzioPyqneo9NMQc83iXTzkKBZv2LdnyLeXRigQsupcS/MkXwzMgCMZ0GC/xq2SaTUlCKg
+	Hatzrt+nxYQWqLWN2ipYlzw9Ks1TlTsI=
+X-Gm-Gg: AZFdTZfnRYBWrP7b+TwxshpIUUsO23aggVpr43yyqDrHlsZ1HAsbBZeAZLKiQRnoJts
+	/v4bvjriEPrkwy27CGGveXjzd4qFy93jZ7FQe5q/wSAPTOnpFJeCpjS93BNULdoXihEp1IUfZJL
+	KjyRhWh2Rvu4wibpZ/EVH1D2eMWhvjWh6vfd7kJgrhRyg390W7g0MnS1wlVBowu5m2JlPHMf5rA
+	2irIP64cp1MHfTdHr34II1NV9w4cEI56dLwZxssAvpp1mZovZ15n6NXDOMuXNrqh5MZfEFzfhmK
+	e5iTT5aA0agH5w/ySSpcUYJJQKCg6xWymtnowfPkSsxrWI26u7qH7egJDoOhFSxWPDwu9CcNADI
+	hkZZXO9BSUlvYH87KqZtBXJIbzfch2Ov9L78HEjBj9Ssws078yKbKh+1xiR2x0xqZOK5n40N79U
+	nGC2eF9QnJksn6i0xKaDgUwZ9y2yOI9/dhrwESLtVGmMyTOXobyQEuY8LQ6smOS8iFrQfnoA3pZ
+	X9LiaGj5igTJ43rDdD8WJ38+ZE3XpDEhr6AqoFqJlyqfaVIU2OfHDybbITdy0rRijY5HljZ
 X-Received: by 2002:a05:6512:31c3:b0:5bf:e6a1:3115 with SMTP id
- 2adb3069b0e04-5c1bc76a33fmr3359356e87.2.1795346484987; Sun, 22 Nov 2026
- 03:21:24 -0800 (PST)
+ 2adb3069b0e04-5c1bc76a33fmr3371052e87.2.1795347514504; Sun, 22 Nov 2026
+ 03:38:34 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -106,62 +106,44 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261020-b4-dev_query_fixes-v4-0-df66b4c98bc6@collabora.com> <20261121141830.171033-1-aliceryhl@google.com>
-In-Reply-To: <20261121141830.171033-1-aliceryhl@google.com>
+References: <20261120-rust-helper-namespace-v1-1-3b9a05553ff6@gmail.com>
+ <CANiq72kWXzP1SWUvhOT2k-rNjopnySXeBkjwrx63V2QUaLpnGQ@mail.gmail.com> <nh-eaa5d67e-6d05-468f-9f19-273bc5b23ad0@google.com>
+In-Reply-To: <nh-eaa5d67e-6d05-468f-9f19-273bc5b23ad0@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 22 Nov 2026 12:21:12 +0100
-X-Gm-Features: Aa3M54oNJa8cPl_YiVnZHC_82X9FGjy0ARvybs1hSE8ttDDvbfY_eIi5LF9yt98
-Message-ID: <CANiq72n4CLJZ0aZwHJYSnnc58haG05si6+ocibzd07HLgFbAkg@mail.gmail.com>
-Subject: Re: [PATCH v4 0/3] drm/tyr: allow mismatched buffers for dev_query
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Deborah Brouwer <deborah.brouwer@collabora.com>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
+Date: Sun, 22 Nov 2026 12:38:22 +0100
+X-Gm-Features: Aa3M54ofQVSiRzi-fgoVKnLP0jYbT_Rm3zSkFfSi2xtBRiBz58W07aP7BMXi-VY
+Message-ID: <CANiq72mTs=_4wSHAjCJNdOcmODHzPf0ELY6t6vqCNt2E--XYaw@mail.gmail.com>
+Subject: Re: [PATCH] rust: put C helper exports in a dedicated namespace
+To: peder.bergan@gmail.com
+Cc: ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
+	daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com, 
+	work@onurozkan.dev, mcgrof@kernel.org, petr.pavlu@suse.com, 
+	da.gomez@kernel.org, samitolvanen@google.com, atomlin@atomlin.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, wedsonaf@gmail.com, gprocida@google.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 21, 2026 at 3:18=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Sat, Nov 21, 2026 at 6:50=E2=80=AFPM <peder.bergan@gmail.com> wrote:
 >
-> Miguel, are you ok with me taking these uaccess changes through drm-rust-=
-next?
+> 1. Would you prefer I wait for Giuliano's series to land or send v3
+>    with it listed as a prerequisite?
 
-Sure:
+Either way is fine, i.e. in general you can send patches that are
+conditional to other patches (within reason, of course).
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+> 2. Should I keep the KASAN import for v3 or move automatic imports
+>    into modpost in this series?
+> 3. If you prefer modpost, should it add the import only when a module
+>    contains a Rust object and references a RUST_HELPERS export?
 
-A couple notes:
-
-  - rust: uaccess: add UserSliceWriter::clear(): Newline before `//
-SAFETY` comment? I am actually not sure why the newlines are placed
-like that -- if one wants to compress the code, then I would place the
-early exit `if`s adjacent to the variables they check, saving 2 lines:
-
-      let len =3D self.length;
-      if len =3D=3D 0 {
-          return Ok(());
-      }
-
-      // SAFETY: `clear_user` checks the userspace address and range and ha=
-ndles
-      // faults when accessing userspace memory
-      let res =3D unsafe { bindings::clear_user(self.ptr.as_mut_ptr(), len)=
- };
-      if res !=3D 0 {
-          return Err(EFAULT);
-      }
-
-  - rust: uaccess: add method to get UserPtr from u64: Intra-doc link
-on `UserPtr`, and span and intra-doc link on `u64`.
-
-  - drm/tyr: allow userspace buffers to be mismatched: `set_uobj` has
-a bunch of comments, should they be documentation even if private?
+If the `modpost` approach (or similar) works, then I was thinking it
+may not need the manual imports, i.e. the idea is to avoid having to
+write those manual annotations if the automatic way can figure it out
+when to add it. But I didn't actually try it -- maybe I am missing
+something.
 
 Thanks!
 
