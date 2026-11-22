@@ -1,64 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795350346;
-	b=kfunKNm++1Qz4AvU9xJFJqfKzeiKdVk0MjLegtYm5UeNn1lHOeGjEecuHNkFuDiWP9VR
-	 TTJ20s0XmZVJED1tbRT9KCPre2xY8KyHwF5YyQzVJqJCjkRI77tIzUBEh06vT3dAxZhs/
-	 6a9vvRV+WTxiU7roAq13BL/XU1EEYcmop5G8c82twc41/DLUi7NZ9FvRBC8tHq+jLfEne
-	 I/GS6E8v6XlvJT8Q+skpFuh5tNG9/Yl3/LRcfPWR/mpVCXomK+P9z7QfbZUDqoTcPfhwr
-	 jx1XlKSlim75BMEhlqp0cLfYx0YBmtl7jKIlHNLXU+nkZ+tksj88Xg6nTVoB6sxnCcA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795350346;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=pJB7tJzn9xEnQukbyKifEkc3rdZ7N4F140lGpT0ocOk=;
-	b=QiRNPV1cs4aH+qBHkRJSOGnnge0mRN7ItFO7MQrRDZ8d4KRP1lqmsLdZfk4BHkZaWdxW
-	 2tVeIDeT1b/HMl0re7EsGnNBB0I0v0pYbf+LySeND2RvH7gXeh0pj6QJnnFn7PqnQXUxZ
-	 8wixUbvoZbnDeIq+7g5TQKPr4F+KnYLhMD6HPXOdezrSzD88nfgx+btyx5Up+FWuThKBC
-	 c1LDc1J3Rq1gBBcs0HATcmjf7OMymVaOguSa8Gh28sZ936EAVckeO8Sr3f68UVTkDGakh
-	 LyBdeqB3XtJVktXjnrWP6Zc7IcU+uxTpgggA4gSaqNYzwm6Mhybk62ELhdNxrgwjy+Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=llE4Xxag;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.178
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795351082;
+	b=lRQrdo92D2u51O3HBYraA2ngHiBJcvvx56DbYBu+JENf+LR/B1wQBFF6HrpNIXZo57ps
+	 Pr0iT95ncRmzRelObN6sTuLR56BBSW6hFtKKjM/B0kHWUnOIx1m/gHPQdcJBXyn5RcUD6
+	 oflywBP5v8Uc9VAo6pt815Kr6lShBUR7tVR0RqNgTi6TqtuoRnNDYMguHTWyfHfhuLzVE
+	 xQ+ERsFiT/rkQ3Fn+wLuYp+yXCYKdd9t3yprCqZSL+CfsDwGHv2I9VCpPc/UWxlwceAy/
+	 h7eWN0DEdyyY7MFOXrt8s+aTalTRwrQFRp7JFYoKpP8fwRGBKZGLVfCIVL2BZg1Nkiw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795351082;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=sSxa9yEgOlqZ63H+K7FWjY/eznutom2udTRUeQVQF9M=;
+	b=RPy7UEHNVFpHZr4R2FMKDC7wjZdzxBy22M+4OV9xXeFfYuo1Y3eam7Qpgy7SHWH/a/WV
+	 JKVHqUYcxkX2xz6wS5TEh8BGCg4hmH/BLv82+kU/t7z73OaIFOjHGn3H2sYTLSokrXmny
+	 RZvGVSZAhQxDA+pAB0qVA8vHqrOFVpzm8eg2rq5uuqvk4EeNlOidw9hW23lRYngS3b6a5
+	 FMshxK0yOn7Fu+nLj1r8fzYieMQ5QCnJ1IPCqdwKXAPzOcPHg5qObI+n96agozlGaaHuG
+	 cciPdgNZcpnD3QSbvbWKH0GdtTJ5ncAp9MNaf3YJSStGWrdX5BlUTJ3P2R+0aRWJkmA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OxyjyyWl;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.178
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B5B606A320;
-	Sun, 22 Nov 2026 12:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266F1606A320
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 12:38:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 266F1606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=llE4Xxag
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D8671F000C0;
-	Sun, 22 Nov 2026 12:25:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795350346;
-	bh=pJB7tJzn9xEnQukbyKifEkc3rdZ7N4F140lGpT0ocOk=;
-	h=From:To:Cc:Subject:Date;
-	b=llE4XxagBGO2ugmhGTd2lKhOpZP5l2mhEPIpeDG3Fs4msmQGj5yxp6e63lAEPVnxD
-	 zbJGunB5YwBvR6HSu1Y7P8VzhD/xLto1Ko1DTKxBWDp4c1bgopxDpCu0ORPBef2jmp
-	 6jX68sYGy/nvn2RAgPFhaQ5HqRwl7NmAfE+0cK49WdUGieiSUNE30WXv3GFNEo9Pj7
-	 NlZPgNei20sZ26li2YRJTTVYp/kAr1GJFVZtQl78ijuitKo1SZUG07MjgcTG+/GcXs
-	 8RT3Z6yjoWfXbaS1kWRFLaaEk0YvCAAFpm14cFsYRyHMj78+TGPmeEO03XDOHjKQKw
-	 A+OZK78YRcXDg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust fixes for 7.4 (4th)
-Date: Sun, 22 Nov 2026 13:25:25 +0100
-Message-ID: <20261122122525.71959-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OxyjyyWl
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-53639b8903bso31695961cf.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 04:38:01 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795351081; cv=none;
+        d=google.com; s=arc-20260327;
+        b=QvJLZiOpsiN0HHCftSOVPTijGvmnzawZp5ziIRhK5Zkq4YdNYnmG8zWj5dwlyw2LyD
+         H07W57o87ouZEAbDYOfEtACtvkTC3jPrl9bfkzTl7dnZtnvRrekCzz7otkBSTv7MeA19
+         TW0pTeCVxwPztRuYudvP3mULtlf2nPF24mA/a07wttoQjJgQmTH7ZMK0X4m8uhSSifOh
+         VFOcsMAF24tphgkxy7QAdn/55hqtn0PpFzoCoebhcc/QsbfU1Jwsaf/odktbRxu4dNMk
+         28JRoro44KA2uWjehLEp7K7Ta8LD+ZAhw0p7H9gM8gnhKw4XQwCadpdzjuqM2RkrnGdS
+         LxsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sSxa9yEgOlqZ63H+K7FWjY/eznutom2udTRUeQVQF9M=;
+        fh=stDEqcpZm2mUivuVzZpwwJnmVT/QeI/0+oJqRoKEd2Y=;
+        b=TIPC0Jz5wIiZjCn1hrDeY8qBCewlkGGBJlo3wOnrr7VYii5wGm8BfTucCOcib3Qz0b
+         +mGmS9q4fe0bjdUSB5NiEiu7w54C9M7sn163hA5n9SN222A8frTOUCUOy386+v/MXkF1
+         GxAK8p9Kifhb+q2KslkMN4GL2oOOBLBpjWWCCFzsC0HLb5IslaQ9xt/1HT+nHyQUrS7T
+         2yFiriGR/QDQDDYlHajuJpaE3/pMJ1f9mgYAr9Cmmif9qUMXhQzl6aLnkw4HAbEKtgVj
+         6/IBFTz9fXLsaS7AeMYh0PtapIPWVgtnJEpyJFbr4/BXzGHk2bwPKwh8vD97lNBcrK55
+         wv+g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795351081; x=1795955881; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sSxa9yEgOlqZ63H+K7FWjY/eznutom2udTRUeQVQF9M=;
+        b=OxyjyyWlla54w/YItAgCVSV7fGo71ivJZcClFg4EVay4fC/ENqVnGsTAw6GgMYM9Tx
+         gNzZXd1qZ4FE/TSudoUTNisVTE0FxiGpmLPHdREWE+ItnR6/N2pRcC/jyvFUs9xeer6h
+         +3qs1sZ6R1bG/ULNoRXSAVoaMmaznmslAHyy1o4pkzVCEG2fy+6JZtoQo5K4UlWp+9Gb
+         STSvo/gwrNUMxWbiEWdHKYgUdNQOSZ9XS0+mJ631tGxsx9oqmg2G464zjXnst3P5AH1A
+         eY2ZOHwfl5eO/Md62CxOuSqan37W5Yx6KRCBvcm7oDoBYsuCMJz0+IJt5vrOl4cJwXH5
+         owaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795351081; x=1795955881;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sSxa9yEgOlqZ63H+K7FWjY/eznutom2udTRUeQVQF9M=;
+        b=XA9FNXUL+yTITKpoV6rxyhHC70xdwYppAUaJbOmOvcYi8s+xRvFQzjE8hX5g9yzXlT
+         qeyYP1tidLLROUCT5p8SWU4zoLvRau1vinT6DkgYPnOsWczpU+IgruOeKvkIDLNrpwrn
+         +fqA7vDtHodqXphXsNdyruAGzBEbx3OCgXZRnUzMXYvBmfV97+XiIzKxocbPhzEHpzrc
+         fXGYjP7Gq1mZQVqdWyxoUJovAlcVv/4ovPjmHG5xjz94GgJ0EO14sbqsnJ8AKG4Ko3Nk
+         pcuLnY/d0AdjrbvIHa6CkZJ69C2vik02+WTttKvXE+kTgFLfKOJcEWBiaREe+CTmfSwF
+         Ufig==
+X-Gm-Message-State: APuU4Z+yvauuCsJXARDB/SL8IrWPVQCDZ1Bqwd9deowzGgDZGFSJ91Rp
+	RLXaHWKQ4gzSTWjbqS4KjtvBYjeVBmrpGTBKANHqYCelHbngjk/NQe9uDrpkQPpciausvz8A/h6
+	zSxr/tVa/t3AqQ5+Zz3BJRlGuD//XM9I=
+X-Gm-Gg: AZFdTZcMbWScG23reLNs3eQXH9Yf5XQLh/0IP3sXe0mNreyOUHnsXOvygw9cdICkxsI
+	wFrjIAIPvbbmUCBoi2PXOJ2Nz7sX4vbutth41f8H2ZFXrsfhaqp9OvhcXl2/FlNhOBOONw7IN+w
+	lACuSnCBNW1ABv5dp80cYwhx6hPKSbBqJG7Y8zt7wmivPYIb9XqLqpkOxR/9NQALU2vJBLd7G7h
+	yEssbxFEyLvlqB0XQbz1JaLsnS7qi41xOarEdEC+21DfoLsxwxBp9iwjwHph5xhD9hXMjYQIeXa
+	MtFP92EApvGMfeBrj2ksM9gPZsu/qCyMOJhvpNLfLOGCHHqf/K371Lf71HPoYcyDzTy82Utc5Oe
+	QIZhrd0FP42jxsSvER5Xd0h+7DbtHcNA4VF7X
+X-Received: by 2002:ac8:5a0f:0:b0:531:2eb:be76 with SMTP id
+ d75a77b69052e-55d6fcf94aamr171245131cf.22.1795351081084; Sun, 22 Nov 2026
+ 04:38:01 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -68,79 +103,63 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261122072007.14685-1-mbkchelofficialdev@gmail.com>
+ <CANiq72kV0YwG54i6fLSv1Rwtu+3Ks8XUzpdkZohY5tiH6LzhRA@mail.gmail.com> <CA+YDrKBYCB+AzOgDY6M6cczSyVNkY8me9UiYB-tZNz1bbanPnQ@mail.gmail.com>
+In-Reply-To: <CA+YDrKBYCB+AzOgDY6M6cczSyVNkY8me9UiYB-tZNz1bbanPnQ@mail.gmail.com>
+From: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
+Date: Sun, 22 Nov 2026 14:37:49 +0200
+X-Gm-Features: Aa3M54r8LittEhUI_zZQXdsqi47SWLexuaLd5JYLeAxAvAn9FF1NmJfcK0xT63Q
+Message-ID: <CA+YDrKD0sWWxrgC-BaURdyuv=kmuh0HsfV7wYUJ2+-PdFvb9ag@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: gpu: buddy: store the allocator inside the Mutex
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Joel Fernandes <jfern@kernel.org>, 
+	Matthew Auld <matthew.auld@intel.com>, Arun Pravin <arunpravin.paneerselvam@amd.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Linus,
+Hi Miguel,
 
-Please pull these fixes for Rust.
+No reason at all, I accidentally dropped the brackets. Keeping [`Opaque`]
+when applying sounds good, thanks!
 
-They have been in linux-next for two rounds or more.
+Best regards,
+Ivan
 
-No conflicts expected.
-
-Thanks!
-
-Cheers,
-Miguel
-
-The following changes since commit aebb7274476403040d582c61478df8f4a7bf9cd3:
-
-  Linux 7.4-rc3 (2026-11-15 14:30:11 -0800)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.4-4
-
-for you to fetch changes up to 73bdf8773de4af2c2b7f49370191ae6d5aeddea5:
-
-  kbuild: rust: disable function merging unconditionally (2026-11-19 11:28:42 +0100)
-
-----------------------------------------------------------------
-Rust fixes for v7.4 (4th)
-
-Toolchain and infrastructure:
-
- - Disable function merging in all cases to fix broken MODVERSIONS
-   information with gendwarfksyms, wrong backtraces and possibly issues
-   with pahole/BTF due to lost debug information.
-
- - x86: emit the expected 'cs' prefix for RETPOLINE builds by passing
-   the '-Zindirect-branch-cs-prefix' flag we added to 'rustc', which
-   fixes boot failures (with 'spectre_v2=retpoline,lfence') and code
-   corruption (with paranoid FineIBT).
-
- - Fix objtool warnings for the upcoming Rust 1.101.0 (expected
-   2026-12-24) by adding more 'noreturn' functions.
-
-'kernel' crate:
-
- - 'str' module: fix soundness issue in 'Formatter::new()' by tying the
-   returned formatter to the lifetime of its backing buffer.
-
- - 'iov' module: fix soundness issue in 'copy_from_iter_raw()' by tying
-   the returned slice to the lifetime of the output buffer.
-
-   I suggested upstream Rust to introduce a lint for this case of the
-   lifetime elision rule, to avoid repeating this sort of mistake.
-
-----------------------------------------------------------------
-Alice Ryhl (1):
-      kbuild: rust: disable function merging unconditionally
-
-Marwan Mohamed Zein (1):
-      rust: iov: fix return lifetime of `copy_from_iter_raw()`
-
-Miguel Ojeda (2):
-      objtool/rust: add more `noreturn` Rust functions for Rust 1.101.0
-      x86/rust: use `-Zindirect-branch-cs-prefix` for RETPOLINE builds
-
-Peder Bergan (1):
-      rust: str: tie Formatter to its backing buffer
-
- Makefile              | 4 ++--
- arch/x86/Makefile     | 1 +
- rust/Makefile         | 2 +-
- rust/kernel/iov.rs    | 2 +-
- rust/kernel/str.rs    | 4 ++--
- tools/objtool/check.c | 4 ++++
- 6 files changed, 11 insertions(+), 6 deletions(-)
+=D0=B2=D1=81, 22 =D0=BD=D0=BE=D1=8F=D0=B1. 2026=E2=80=AF=D0=B3., 13:55 Ivan=
+ Tverdokhleb <mbkchelofficialdev@gmail.com>:
+>
+> Hi Miguel,
+>
+> No reason at all, I accidentally dropped the brackets. Keeping [`Opaque`]
+> when applying sounds good, thanks!
+>
+> Best regards,
+> Ivan
+>
+>
+> =D0=B2=D1=81, 22 =D0=BD=D0=BE=D1=8F=D0=B1. 2026=E2=80=AF=D0=B3., 12:48 Mi=
+guel Ojeda <miguel.ojeda.sandonis@gmail.com>:
+>>
+>> On Sun, Nov 22, 2026 at 8:20=E2=80=AFAM Ivan Tverdokhleb
+>> <mbkchelofficialdev@gmail.com> wrote:
+>> >
+>> > -/// The inner [`Opaque`] contains an initialized buddy allocator.
+>> > +/// The `inner` field contains an initialized buddy allocator wrapped=
+ in `Opaque`.
+>>
+>> No need for a new version (I just noticed this skimming around), but
+>> please keep the intra-doc link when applying the patch. Or is there a
+>> reason why it is removed?
+>>
+>> Thanks!
+>>
+>> Cheers,
+>> Miguel
