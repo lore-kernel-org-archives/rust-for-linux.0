@@ -1,99 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.178
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795351082;
-	b=lRQrdo92D2u51O3HBYraA2ngHiBJcvvx56DbYBu+JENf+LR/B1wQBFF6HrpNIXZo57ps
-	 Pr0iT95ncRmzRelObN6sTuLR56BBSW6hFtKKjM/B0kHWUnOIx1m/gHPQdcJBXyn5RcUD6
-	 oflywBP5v8Uc9VAo6pt815Kr6lShBUR7tVR0RqNgTi6TqtuoRnNDYMguHTWyfHfhuLzVE
-	 xQ+ERsFiT/rkQ3Fn+wLuYp+yXCYKdd9t3yprCqZSL+CfsDwGHv2I9VCpPc/UWxlwceAy/
-	 h7eWN0DEdyyY7MFOXrt8s+aTalTRwrQFRp7JFYoKpP8fwRGBKZGLVfCIVL2BZg1Nkiw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795351082;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.72
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795352494;
+	b=47rYhwMCdpiYJCaOo83ZGLstm6ExXE/URxeFEKNgeZBuclsZH7KpMU/1jVmm1YbC/YHH
+	 X4B4bIRtl073qHf196z44GfMcV5nY9ZgRnEUeurcJVS/w3CrkGp0Ru7PAWVHY0MrB1T6Q
+	 wJK8HDXsJDBXMLtuW3GaiSmPpzKW7yMhySkgr+UfbMr3SEYtyCZrT1HI4lMXEW53ie3I6
+	 spiHb0c8y6rqg/Ji1BWcXvNJ7BVqwTw2tfw9H67WHkSjgoAgKJcJgJw6gbxwInLWnd2rf
+	 SUWQtaW+10KVCnPWOXNDtJoG9cWkXcywE0dyQe1tkvhjepgKGnrJczjtE39dcQp5MVg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795352494;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=sSxa9yEgOlqZ63H+K7FWjY/eznutom2udTRUeQVQF9M=;
-	b=RPy7UEHNVFpHZr4R2FMKDC7wjZdzxBy22M+4OV9xXeFfYuo1Y3eam7Qpgy7SHWH/a/WV
-	 JKVHqUYcxkX2xz6wS5TEh8BGCg4hmH/BLv82+kU/t7z73OaIFOjHGn3H2sYTLSokrXmny
-	 RZvGVSZAhQxDA+pAB0qVA8vHqrOFVpzm8eg2rq5uuqvk4EeNlOidw9hW23lRYngS3b6a5
-	 FMshxK0yOn7Fu+nLj1r8fzYieMQ5QCnJ1IPCqdwKXAPzOcPHg5qObI+n96agozlGaaHuG
-	 cciPdgNZcpnD3QSbvbWKH0GdtTJ5ncAp9MNaf3YJSStGWrdX5BlUTJ3P2R+0aRWJkmA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OxyjyyWl;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.178
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=dgD6v1f8hqSyKP1pmrAiIRCKNp5vHibGV2DXdSb8jaU=;
+	b=EucZPyuIxg8eeh4wlzF4nKe1nemnIkU3s8zm9T7JjiCXF2ZgK/pPWCXiyMo0qeaA0Fp1
+	 OowR+7lRwv41T3dhRD6I8pikY821knH78V+P2rVQ22w05Hp26CZeYHqKJYLVirJ/kVNVL
+	 gq1sIX+1pWpsTZ08xWQ9gshqXGn9/aLl5GekCwiCkb5GWEvs2FvHp7akizvhkQgfogaaM
+	 1slAVYn+ngIj0Ccmz2q+jpoaXzlgZLEMFT9aCBpKfo4QTEA18OLJRLvkuHYRvjx1rdvnQ
+	 d1tRRK2zDsNl0uN8EsT2FXGHtvK3y2lKQawzn+a6HIHXX61OgvgISrryyvz0q7H6Ezg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iv56wC3d;
+	arc=none smtp.remote-ip=209.85.221.72
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266F1606A320
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 12:38:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 266F1606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DCC606A32C
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 13:01:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81DCC606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OxyjyyWl
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-53639b8903bso31695961cf.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 04:38:01 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795351081; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QvJLZiOpsiN0HHCftSOVPTijGvmnzawZp5ziIRhK5Zkq4YdNYnmG8zWj5dwlyw2LyD
-         H07W57o87ouZEAbDYOfEtACtvkTC3jPrl9bfkzTl7dnZtnvRrekCzz7otkBSTv7MeA19
-         TW0pTeCVxwPztRuYudvP3mULtlf2nPF24mA/a07wttoQjJgQmTH7ZMK0X4m8uhSSifOh
-         VFOcsMAF24tphgkxy7QAdn/55hqtn0PpFzoCoebhcc/QsbfU1Jwsaf/odktbRxu4dNMk
-         28JRoro44KA2uWjehLEp7K7Ta8LD+ZAhw0p7H9gM8gnhKw4XQwCadpdzjuqM2RkrnGdS
-         LxsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sSxa9yEgOlqZ63H+K7FWjY/eznutom2udTRUeQVQF9M=;
-        fh=stDEqcpZm2mUivuVzZpwwJnmVT/QeI/0+oJqRoKEd2Y=;
-        b=TIPC0Jz5wIiZjCn1hrDeY8qBCewlkGGBJlo3wOnrr7VYii5wGm8BfTucCOcib3Qz0b
-         +mGmS9q4fe0bjdUSB5NiEiu7w54C9M7sn163hA5n9SN222A8frTOUCUOy386+v/MXkF1
-         GxAK8p9Kifhb+q2KslkMN4GL2oOOBLBpjWWCCFzsC0HLb5IslaQ9xt/1HT+nHyQUrS7T
-         2yFiriGR/QDQDDYlHajuJpaE3/pMJ1f9mgYAr9Cmmif9qUMXhQzl6aLnkw4HAbEKtgVj
-         6/IBFTz9fXLsaS7AeMYh0PtapIPWVgtnJEpyJFbr4/BXzGHk2bwPKwh8vD97lNBcrK55
-         wv+g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iv56wC3d
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48e29c25101so960175f8f.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 05:01:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795351081; x=1795955881; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sSxa9yEgOlqZ63H+K7FWjY/eznutom2udTRUeQVQF9M=;
-        b=OxyjyyWlla54w/YItAgCVSV7fGo71ivJZcClFg4EVay4fC/ENqVnGsTAw6GgMYM9Tx
-         gNzZXd1qZ4FE/TSudoUTNisVTE0FxiGpmLPHdREWE+ItnR6/N2pRcC/jyvFUs9xeer6h
-         +3qs1sZ6R1bG/ULNoRXSAVoaMmaznmslAHyy1o4pkzVCEG2fy+6JZtoQo5K4UlWp+9Gb
-         STSvo/gwrNUMxWbiEWdHKYgUdNQOSZ9XS0+mJ631tGxsx9oqmg2G464zjXnst3P5AH1A
-         eY2ZOHwfl5eO/Md62CxOuSqan37W5Yx6KRCBvcm7oDoBYsuCMJz0+IJt5vrOl4cJwXH5
-         owaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795351081; x=1795955881;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1795352493; x=1795957293; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sSxa9yEgOlqZ63H+K7FWjY/eznutom2udTRUeQVQF9M=;
-        b=XA9FNXUL+yTITKpoV6rxyhHC70xdwYppAUaJbOmOvcYi8s+xRvFQzjE8hX5g9yzXlT
-         qeyYP1tidLLROUCT5p8SWU4zoLvRau1vinT6DkgYPnOsWczpU+IgruOeKvkIDLNrpwrn
-         +fqA7vDtHodqXphXsNdyruAGzBEbx3OCgXZRnUzMXYvBmfV97+XiIzKxocbPhzEHpzrc
-         fXGYjP7Gq1mZQVqdWyxoUJovAlcVv/4ovPjmHG5xjz94GgJ0EO14sbqsnJ8AKG4Ko3Nk
-         pcuLnY/d0AdjrbvIHa6CkZJ69C2vik02+WTttKvXE+kTgFLfKOJcEWBiaREe+CTmfSwF
-         Ufig==
-X-Gm-Message-State: APuU4Z+yvauuCsJXARDB/SL8IrWPVQCDZ1Bqwd9deowzGgDZGFSJ91Rp
-	RLXaHWKQ4gzSTWjbqS4KjtvBYjeVBmrpGTBKANHqYCelHbngjk/NQe9uDrpkQPpciausvz8A/h6
-	zSxr/tVa/t3AqQ5+Zz3BJRlGuD//XM9I=
-X-Gm-Gg: AZFdTZcMbWScG23reLNs3eQXH9Yf5XQLh/0IP3sXe0mNreyOUHnsXOvygw9cdICkxsI
-	wFrjIAIPvbbmUCBoi2PXOJ2Nz7sX4vbutth41f8H2ZFXrsfhaqp9OvhcXl2/FlNhOBOONw7IN+w
-	lACuSnCBNW1ABv5dp80cYwhx6hPKSbBqJG7Y8zt7wmivPYIb9XqLqpkOxR/9NQALU2vJBLd7G7h
-	yEssbxFEyLvlqB0XQbz1JaLsnS7qi41xOarEdEC+21DfoLsxwxBp9iwjwHph5xhD9hXMjYQIeXa
-	MtFP92EApvGMfeBrj2ksM9gPZsu/qCyMOJhvpNLfLOGCHHqf/K371Lf71HPoYcyDzTy82Utc5Oe
-	QIZhrd0FP42jxsSvER5Xd0h+7DbtHcNA4VF7X
-X-Received: by 2002:ac8:5a0f:0:b0:531:2eb:be76 with SMTP id
- d75a77b69052e-55d6fcf94aamr171245131cf.22.1795351081084; Sun, 22 Nov 2026
- 04:38:01 -0800 (PST)
+        bh=dgD6v1f8hqSyKP1pmrAiIRCKNp5vHibGV2DXdSb8jaU=;
+        b=iv56wC3dgWLzy/CUkTFg/rngzd0mZE1WGaSHNh4sVn4Khgz27rJXENPkXfj0YFWN7q
+         F+QtZpXvyVOEKenuC5kxKqz5/qBg3Bxh1A99159metzO5UTkwn+UvvmB1nc4zNNtagnA
+         TU0MWLVtYztOf+Wsfh8x3v7vIfFwa63ZJLh+Js+SSIVknlJj0vSkKoZt9pfcjwDGwEW2
+         eGbRl7dv1E6j+SXy3iTjFyci7oqA3ut8q8dWGnVlzD0NpBRqgxBcVZpMCEIHEdNKOi4T
+         FuIVi/cPemnemQkGPTTVgHpTOL/ECow56LvE7I91nz3RxEYEoJ1mDRzP6qBZRnua5SRl
+         n4lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795352493; x=1795957293;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dgD6v1f8hqSyKP1pmrAiIRCKNp5vHibGV2DXdSb8jaU=;
+        b=l05EzzJE8xlaZQBYi1d2Xy2dd8Mn0PlEcSVyHW/AOXq0uoxQ9o0HUQAX6kZeL171Vq
+         BSmtV0vBhuh4w9BeuzqTF2LzmV6a1PHrljEhzQqu9q9ETsO2xC0ejGqPu6g2mV488v07
+         rdFred9xDGlUH4wJTiaD6iKgEcXvkEFRmhyaDIJ7aE0kswXT0xHrSk9apsvauwV01f18
+         YYcgFzWqmnHLmeTQ1MzWeR8hnyZeqbnKJTM/FIFQdpocieGyHKHG6wHr6/w9GM5iKKxK
+         HVuFU4cLSmKbNa5giqIlTx4v68/0RAuPyLac3QP6Zok+hryJtq7RyOveBWmGCWfHMOVh
+         fbWg==
+X-Forwarded-Encrypted: i=1; AL+hErHBjt3R0A+sLf1wW6JrgrAJaoquWKYkPi0m/tOtJLNFIxxtsy+vE+j2cTGpvqkFRs8Ajtc1fZoitvICnYM8oQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9vyaKgOvlei+eRWkFiLRrGc0WhuDHAv0xkQ2QcUl/oeNWOUyF7
+	cbKESxAEddsyfWSe0rKibb6Sg86rUaIBdUVLc3+/JzPXZBAzx9mhCIR4M+5xPp2WmmCcRmn/M7Y
+	qqlXUsJpQKDx+7A+/cw==
+X-Received: from wrnv1.prod.google.com ([2002:adf:ebc1:0:b0:4a3:da3d:b9a6])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:188a:b0:4a9:4dfa:c150 with SMTP id ffacd0b85a97d-4abb2910440mr16888311f8f.33.1795352492323;
+ Sun, 22 Nov 2026 05:01:32 -0800 (PST)
+Date: Sun, 22 Nov 2026 13:01:31 +0000
+In-Reply-To: <20261020-b4-dev_query_fixes-v4-0-df66b4c98bc6@collabora.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -102,64 +78,33 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261122072007.14685-1-mbkchelofficialdev@gmail.com>
- <CANiq72kV0YwG54i6fLSv1Rwtu+3Ks8XUzpdkZohY5tiH6LzhRA@mail.gmail.com> <CA+YDrKBYCB+AzOgDY6M6cczSyVNkY8me9UiYB-tZNz1bbanPnQ@mail.gmail.com>
-In-Reply-To: <CA+YDrKBYCB+AzOgDY6M6cczSyVNkY8me9UiYB-tZNz1bbanPnQ@mail.gmail.com>
-From: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
-Date: Sun, 22 Nov 2026 14:37:49 +0200
-X-Gm-Features: Aa3M54r8LittEhUI_zZQXdsqi47SWLexuaLd5JYLeAxAvAn9FF1NmJfcK0xT63Q
-Message-ID: <CA+YDrKD0sWWxrgC-BaURdyuv=kmuh0HsfV7wYUJ2+-PdFvb9ag@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: gpu: buddy: store the allocator inside the Mutex
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, Joel Fernandes <jfern@kernel.org>, 
-	Matthew Auld <matthew.auld@intel.com>, Arun Pravin <arunpravin.paneerselvam@amd.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+Mime-Version: 1.0
+References: <20261020-b4-dev_query_fixes-v4-0-df66b4c98bc6@collabora.com>
+X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
+Message-ID: <20261122130131.1394960-1-aliceryhl@google.com>
+Subject: Re: [PATCH v4 0/3] drm/tyr: allow mismatched buffers for dev_query
+From: Alice Ryhl <aliceryhl@google.com>
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
 	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
 	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	"=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	dri-devel@lists.freedesktop.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Miguel,
+On Tue, Oct 20, 2026 at 05:06:44PM -0700, Deborah Brouwer wrote:
+> Panthor UAPI for DRM_IOCTL_PANTHOR_DEV_QUERY allows userspace to provide
+> a smaller or larger buffer than the kernel needs. Revise Tyr's
+> implementation to match the expected UAPI behaviour.
+> 
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 
-No reason at all, I accidentally dropped the brackets. Keeping [`Opaque`]
-when applying sounds good, thanks!
+Applied to drm-rust-next. Thanks!
 
-Best regards,
-Ivan
+I folded in Miguel's style and doc suggestions when applying.
 
-=D0=B2=D1=81, 22 =D0=BD=D0=BE=D1=8F=D0=B1. 2026=E2=80=AF=D0=B3., 13:55 Ivan=
- Tverdokhleb <mbkchelofficialdev@gmail.com>:
->
-> Hi Miguel,
->
-> No reason at all, I accidentally dropped the brackets. Keeping [`Opaque`]
-> when applying sounds good, thanks!
->
-> Best regards,
-> Ivan
->
->
-> =D0=B2=D1=81, 22 =D0=BD=D0=BE=D1=8F=D0=B1. 2026=E2=80=AF=D0=B3., 12:48 Mi=
-guel Ojeda <miguel.ojeda.sandonis@gmail.com>:
->>
->> On Sun, Nov 22, 2026 at 8:20=E2=80=AFAM Ivan Tverdokhleb
->> <mbkchelofficialdev@gmail.com> wrote:
->> >
->> > -/// The inner [`Opaque`] contains an initialized buddy allocator.
->> > +/// The `inner` field contains an initialized buddy allocator wrapped=
- in `Opaque`.
->>
->> No need for a new version (I just noticed this skimming around), but
->> please keep the intra-doc link when applying the patch. Or is there a
->> reason why it is removed?
->>
->> Thanks!
->>
->> Cheers,
->> Miguel
+Alice
