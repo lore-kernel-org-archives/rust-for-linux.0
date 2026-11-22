@@ -1,49 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795357898;
-	b=TPRUY+B9V2rN+01AX+4vUrqQejFkRxDnJPVUc3rrKZNNkV03GJjoGwNyon9Wjx1QNfje
-	 Z+2WHV8a8q94cOQVsOov1+IXKrl0NUBE1uJQCyv9Efzkl9fRtMItRnMQPIDVep11ELxYP
-	 b6xwDzdE8viH6vymWEf9yqsGvcHfQ3ifjd4RpSTvtUWJESdy+K0DOlCUlEE0LM6Aj20qI
-	 JJcb0vZUQPVvztzcTJQ6ibceIJECVWNyAeBFF+Ps8p52qFsp+Valk1cs/BzC3hhE4zWXm
-	 D04CPpGsdqIFyA8XqJoNJPjO1sPr31RQok+R7ampJgEXEiIB377GlAaiLBjPMAGwYtA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795357898;
-	h=Received:From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-Mailer;
-	bh=kEuos/49BxvXn+7tiGluJ0Y8O79w6clF6lg/iuCdxnc=;
-	b=fUEFF2Q/pnjqApCRuPSbYzv+f2G6VPSD3/meKE00/ltEAVUuHc6VSy7TXTQeKvEJvn1K
-	 6JVuW5rgnUpdvmkNgKjpFZ1ClRbgubtiFHRcqKt/doCq/2VcMLAT4OOhYLTsrixa5hzuo
-	 UVANeY+H6ZDb79/ej4eES0d7PSEtljSr5D6HoHIBTSbyOP3R6UWUU4On7/Ao+Tfu+Ahel
-	 pQbHgXquLIc4nk6IBJVLWdoxIV6DyC8eGZOVDWLA0y/eOcJe6NtisK76ul/at+6a9yDfL
-	 9iZkMHJwAKuhsLmEjtDbBzAJ94YUTixo2Fd/os+DuWxepsvEfC+2qgOH9YXbH5P6EKg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795358499;
+	b=sTcyt2kvtbu03zl4tfhl1MtFtsY0pPO3OXD1OLqKiGRlsu2iq9k0Hk+m7TX6O5FrKifg
+	 U5Q6jtwI5az9/Om3IXNiIPgQ4rGTHHA/oE6nMTwwIjNDb8hzsNELCVUKclrFB2O1DPxQ+
+	 GPIGr2Haux+IswCPFaTYwPFSiPsmT0RBLzzysIhMc842RZQk9ILkcglw+4Ln95JnBYvZ6
+	 J1X4WOXL6oZWXw+IxVTlLHbLi6jV6+NYy4LuRxdO6h4Wg23ad5pWAnyAXec3KhiPBR7qP
+	 OSCsZdClhBDcTFD1qPS45zeuDxCDX60sYuSSd9GQAGMWIlpWsrfpKW9RJokVOPkRtsQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795358499;
+	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
+	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
+	 References:To:X-Mailer:X-ZohoMailClient;
+	bh=OAs13tz1zp/V0FXsNuU43sQnuDXZ2JK6gLC8wvitSVA=;
+	b=q2vnJwrDYck+u5YYbeCGTyQPgjkfydeeDKzAQpN26sIw5uRXb85jU2bsUugCSpDbKRDs
+	 irONPds74uGP8Q17uttlmlKuQub1uoDnX6XYXhrKWd67JSbQpIPsV7cUVSWmODo9oyupS
+	 cDYP9DxuIgm3zEkP8jUceq44s5U3G09liZUuhUTuM+3qmQxNb3Bf6hAQJwHKXBRENUHDm
+	 tMRnvbW2VJcmtbHODc7uGd40RugsAeMH8uKTvmaG7ikCxF7QdicsddJbCh2Wh370Opf5/
+	 h0bYtUkSDV4dI+i4QPG5vy/t+W3uENLhTl8PROx4O7STXugEFAcjTx+a7VZCEzijccA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=iUlw9AP0;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A787606A32A;
-	Sun, 22 Nov 2026 14:31:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C72311F000C0;
-	Sun, 22 Nov 2026 14:31:34 +0000 (UTC)
-From: Gary Guo <gary@garyguo.net>
-To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Gary Guo <gary@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20261118-dev-project-vis-v1-0-2a5f433bb516@garyguo.net>
-References: <20261118-dev-project-vis-v1-0-2a5f433bb516@garyguo.net>
-Subject: Re: [PATCH 0/3] rust: pin-init: reduce visibility of projection
- methods to declutter rustdoc
-Message-Id: <179535789457.2426615.15352202505890903314.b4-ty@b4>
-Date: Sun, 22 Nov 2026 14:31:34 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7843606A320;
+	Sun, 22 Nov 2026 14:41:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7843606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=iUlw9AP0
+ARC-Seal: i=1; a=rsa-sha256; t=1795358467; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=KLZoxImi/gLRc5IEyb5cQvAK0V4Dz41Xb6f+OH0JaW7n/3y+F/jaQRJBJKi9ln56cZ87I7YX3upq/wZkRP3KqZPiIFmiSCxc6f+8o+tda74u6BJ/KCQmMRRvC0A00FpxfN8QkFqipX6l5PWC7cAoDgVV42p+2cFF9T1XKm6Cm8g=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1795358467; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=OAs13tz1zp/V0FXsNuU43sQnuDXZ2JK6gLC8wvitSVA=; 
+	b=NdSm97msQRfBEanTZa4vhVxHcbmj0M76Sb498KU5Awm30rC0SOSPYTTqODJFdxDcRzg4xNGTp5jfeHlk1Eoj6gQdcj07Kxm7SoY+/ysE92a+k7a3E9cCHgBXQxz7763wXvllIGBMsZo/fbkdQqHvykztbFkZLrahlZgB9blTqBQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=iUlw9AP0eZxLbWFQSQ6ZbMipLVn1sRzoht2NE9FRSavf7MpzLAdk6nkgQEp1wA3lxEI3IrrLbKumoE1RPOyWtO6rGWVk5gCFZeL07MlGO9UdMyN0RnWzIC5HxyTP2/elO7y/wuN4VXMVPr56G9r+etB35lzpIX0LPOcneWT+LDo=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=OAs13tz1zp/V0FXsNuU43sQnuDXZ2JK6gLC8wvitSVA=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795358466185585.8202777739539;
+	Sun, 22 Nov 2026 06:41:06 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -52,34 +57,36 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15.2
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH v9 0/2] drm/tyr: GPU reset infrastructure
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20261122-tyr-reset-impl-v9-0-ed42d8f513ec@onurozkan.dev>
+Date: Sun, 22 Nov 2026 11:40:51 -0300
+Cc: linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ dakr@kernel.org,
+ aliceryhl@google.com,
+ airlied@gmail.com,
+ simona@ffwll.ch,
+ ojeda@kernel.org,
+ boqun@kernel.org,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ lossin@kernel.org,
+ a.hindborg@kernel.org,
+ tmgross@umich.edu,
+ boris.brezillon@collabora.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B7A7F936-E696-41F1-8B9D-5A29DFBED07C@collabora.com>
+References: <20261122-tyr-reset-impl-v9-0-ed42d8f513ec@onurozkan.dev>
+To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-ZohoMailClient: External
 
+Hi Onur,
 
-On Wed, 18 Nov 2026 14:31:19 +0000, Gary Guo wrote:
-> Currently all types that use `#[pin_data]` will have projection method
-> generated and visible in rustdoc. But for many types, all fields are
-> private and thus these projection methods are not useful as public APIs.
-> 
-> Thus, compute a least upper bound (LUB) of field visibility and use that as
-> visibility for projection methods instead. This means that if none of the
-> fields are accessible publicly, the projection methods won't be as well and
-> thus will be hidden from rustdoc.
-> 
-> [...]
+We can probably fix the sashiko findings once the Clk typestate patchset
+lands. In any case, what we have so far is good for the time being.
 
-Applied, thanks!
-
-[1/3] rust: pin-init: internal: allow `clippy::large_unopt_stack_frames`
-      commit: 5a2024c03eb697463e738bb216b3d321aa278877
-[2/3] rust: pin-init: internal: use visibility of the most visible field for projection
-      commit: ac4e562262056c02851e33163b19fab9feea6d60
-[3/3] rust: pin-init: internal: hide `HasPinData` impl
-      commit: 5eb5b404e6e7631a986333f00e7b3b18aafcfaa8
-
-Best regards,
--- 
-Gary Guo <gary@garyguo.net>
-
+=E2=80=94 Daniel=
