@@ -1,103 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795332021;
-	b=bR/VmuHvP0KJwG8QcbqWhCmRML+hQwBOIy1TLa0u8uNIoMRGSszxFZwAuMODC9GI1Y3c
-	 pyjWUhPuQ7fe86PkT9cwMJhWo3JILNW5Drpp3uAjudZU8Z4QgyeZ/sgVvwnt7yrhDWz1v
-	 FxxzwsZbJefI6oiI1OYRSsebE3WtiMvdsxzCWB5n0pQ8sU8EjEHtd0tTDXjqqZI5rTkyk
-	 c9KuyP+WlhL/CH8VWYs6Jxcn0oRXY2+rhf1WIEZI8DNdkWcgt2uf2uM0zyj78bNSb3Uo2
-	 SDM9q9ahfCVGtPtEgpXfuqNsDxhFYhbJknjkmZELR92lp06lYHxgmKtX3kMDnLaeIaA==
+	t=1795337957;
+	b=TKQR60i77JQy+sAVe66hwop9j3PcLrqc0XX4DcjUC1QReIE5HJMGLqVeZXY2aKerq/yt
+	 dwS1kFxK7ygSHQFwpQ8Gtm00PVzUVWeRycbMfaICZ7/yVOdcXeXDsGHJwDUR4xKfmTXF0
+	 ObJgeTZ17+vO4ghNQIh56LfOGeBdMAk1pONA041JciJbD3zmG+31kb9eqk7yvMd9pno9I
+	 XRDAoWyHATikezLpHN63KFSls2xZlYmm8gd4g1BiH3qms/zuN4svsr9WiWqQyAyh4EI6v
+	 asGwmStYcHlrr6/3HH4R0S6pSTjwfGQOaPs2uyVGEL2f33E+KAEsNBkrfRi+cMfxwFQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795332021;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795337957;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=o8re6EZDSI55b5voUbfOtCkCAeZWYZ3ND/N+XRqjIEk=;
-	b=lHV9ig77LXrHYPupM1nUPd9L8kTntuu07YE/uM383aE+WX4gEK7VlG78ZDlWMdcd/OOr
-	 Ks+YS3eLmZXpUwzPkBP8T9lVguWdMPnOVDS2c30mtqAq7vF95mcBDrWk3qAbkH+XfaqnM
-	 RGm6hoeuw8tK83GeDYjdXSwHtmHrVYiW02XyFhnxtqIwxDXythmdO9Nw2RFn6gHOuth2G
-	 sq5plQp6zyodII4LkpPgBlLDBAZ8Z6gU8AEWZHE4doCd4d6xzN+vbieHCUxIAv0WvAskS
-	 tRhoC6UQy5Ev54f6R+chJ+8AAal227KWtWnwT9dahRFuXoZfu4spF1hCgG0GcNwDNMw==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=bt+vNC5Ck7Tec+thZqwOgrn1YnZYE8U6h78l2ePZXOA=;
+	b=ZBIHFyVlGpmqEnMJb9jBmd8XgsLCj10RjL3xB3fHNBh1KDQP6X6R0qG6p2rdPSJBNou2
+	 KhryZelSDJyZTGE++rh3w+qBF8exOOCBuX1l/GqbB5BfkNuyPs22pH3VYCP6AE+Ft8RAL
+	 ++IASrHwelqAhVnLLEMJ+OLIW4BPd8OticTPW/yVNokzR6dta13kT3JNWC3xYoBC/peO8
+	 OSqtBB0zojBj+L9BaMjXChbvW6tMW3L61pFOYck8T+oHmkZnjpzuu439AzEK9j8/Aeyk5
+	 RHC0FlucKN6FEU/lW4b8AwfcMvelXam7VN4hWaZyaWZci+ctUBOXeN6i9mSJHKcXFfA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cH97aJVW;
-	arc=none smtp.remote-ip=209.85.208.177
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="QFzXp/q7";
+	arc=none smtp.remote-ip=209.85.221.70
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8EF606A320
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 07:20:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B8EF606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6D6606A320
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 08:59:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2C6D6606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cH97aJVW
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3ae1fd4252fso21694271fa.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 21 Nov 2026 23:20:19 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QFzXp/q7
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-499ca65ae87so937561f8f.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 00:59:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795332018; x=1795936818; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=o8re6EZDSI55b5voUbfOtCkCAeZWYZ3ND/N+XRqjIEk=;
-        b=cH97aJVWovm41WlI45cwQsdm55JlT3VpwAynwiHVFVp+Y/nPDgX4dM/o5c99ucCxqM
-         iNB6SD8eVvxZrNLfVN3plWQr2Tm+RDLymEYdBe8lYy9uh+t4rRDW1iuwexJpAx9911l9
-         CI7grKfelZdpT7IaMIflkMEiPzD8b2QlnHvb65jBnMdFn7evMypnRwzxiwQFsK1B9dS4
-         2rGq+KXE/vji0bxBewfzrw+mBzVTyKTR+Lwl0o32QBNo3MIXp9ZH97eC6yVa4eJJ0Z6M
-         950QQqqLxsMkfer2kHc5v509PW1Q8D4smrShxkVLZcNsHiWWbUZjfywZqbV+5c4Y+/dc
-         X+5w==
+        d=google.com; s=20260707; t=1795337955; x=1795942755; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=bt+vNC5Ck7Tec+thZqwOgrn1YnZYE8U6h78l2ePZXOA=;
+        b=QFzXp/q7PjWMZ28Y5Lr1/zoEik8SAq7sQPaC2qab1BUi7I8P8CErBtSXnqgJ6bfcAn
+         qlWesCnZGgYG57AyXZcqgnUxXJCjdDOpHNcpbxl/crBBZHC3M99jWrlapZoLe9ovnPZs
+         D6UBasDTgAbTtS+SMr8QHOAYbjrxluF3EXNkd/fUhlAYuXV7JagRA/4PGB52eijAHMxm
+         hME/U6XOSwQBdF7nlokjH+HzR8KP96cNyzFc3c1F6hcqcMslUh/CVAatsXUvBuV2jR2N
+         KXq41sSuZdGvpOpHW799q+JV5dKhtf1kRMALmBRee64ppY9+zrXrsnS/L2auAvu116Vp
+         V/Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795332018; x=1795936818;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=o8re6EZDSI55b5voUbfOtCkCAeZWYZ3ND/N+XRqjIEk=;
-        b=KpTxbWaWGzp6oiektq8idAlVxbEvySQ4is8srStOfIGI7lDPQGmF2X1NHsN7wzoqgy
-         NziYo/PoNNf4MDoHMtLNjy5TeiSYqa6U8vIJsARcjVMdv74w5hKy7sIGyeId7kRjSgfu
-         bZQZ5J1SXR5Gm0uCUQOLuU+x8SukmGPiVithCbF/Pt9uZ23tHkF3U45aotAEaOPar3Xj
-         3IUhEeBjDwhBaLg2AtgRNsKhAH8obrxLvF5QiIQCKFCIxIWQ3fGKH2U2hd8ENvD0CxT6
-         vqzOzEYqVdJ7sdMZzW2Ik0cyziiHL36mpv0YECXvzeK0pBSY4FHkjoj3me5iStmrkfQa
-         H68A==
-X-Gm-Message-State: APuU4Z/lXqxa5c6+88tS2xO/KX8rKThU0M3zqBkyWjiLRwneTU87DHwN
-	yJ/4aaKAz9xN27kBdf28/WakXt7XF8brOhDL6zdCJTtNdrrrQUi2Vfx/iPbSoQU8TGL+nA==
-X-Gm-Gg: AZFdTZeK2IGegeDs6YpOJMGsO7SjcBPFwvtoKvnWiJYEYMXtbniMiJrv3BUauHgPKzS
-	fLZD7jpvJF8oupkprEOL/D3jYT/HqTdoJ4cgD45ubcg7Sof/SLKIZaj8811hh6h9WPt3raoO/hb
-	KpF5sWsppiGYz6ugtkZMs7VN5vWga4R0SPfeQzmRNdu1ZR2xnwa3dDIOlCV4pcWOFj3sJ4G2N9G
-	07nGwfLrWvdN3GTeEtljvYPmYijQWOMztSytVtFNuPUHOKxTLx8/DRaXF+/EIvIC5j/JaqK6NcZ
-	4bPLjPe1KhUkhqw/5EzFgOVXGtuh80wBDCP4y5dYHNONzZDI1IcjFD4ywlg/HaF43WoBR/wT1B+
-	VcAiQumwLZ6hSGk4okYsXHDHv2daCyBXz5fH8LQIK336OY2HgrX4nZ2t//oV/oHXgbiZY+EafkU
-	UlHJcY7yk4ejGsIOfYhpR72TkVYBDoJoKUnrsFgkJTV5rS6aivtpPnK2QU/d1c4x4LXekxoCa9l
-	7/ccH2Zrtvr1fLbAJ66FwSix2q78n+pnkzeDhca0DZzbyeaH6K4LaH5sy+wWagwH4WR4B/Tzjsu
-	GGTzK9Uqc364iks/kvqRdwIjgMKmQArxE7eHs/FouFfX/+sj2l09rv7P4w==
-X-Received: by 2002:a05:651c:b28:b0:39c:624d:82b9 with SMTP id 38308e7fff4ca-3ae7f9a073amr23677191fa.4.1795332017916;
-        Sat, 21 Nov 2026 23:20:17 -0800 (PST)
-Received: from archlinux ([194.28.181.64])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3ae804ee2bfsm21914051fa.9.2026.11.21.23.20.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Nov 2026 23:20:17 -0800 (PST)
-From: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: Joel Fernandes <jfern@kernel.org>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Arun Pravin <arunpravin.paneerselvam@amd.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH v3] rust: gpu: buddy: store the allocator inside the Mutex
-Date: Sun, 22 Nov 2026 09:20:07 +0200
-Message-ID: <20261122072007.14685-1-mbkchelofficialdev@gmail.com>
-X-Mailer: git-send-email 2.56.1
+        d=1e100.net; s=20260707; t=1795337955; x=1795942755;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bt+vNC5Ck7Tec+thZqwOgrn1YnZYE8U6h78l2ePZXOA=;
+        b=V1UC1ghYWNSnV14RZ8Xq12G5BMgA8y2MpWViiXWeefr61QN/A3tTmEMdiZoldyr6FX
+         Kp5vhVqc/PrgP0KFvSwiqP2T9Z+KK7dndWKtlK4HTyqtA0o8L5qgMqs8wK5Z+dZk7rgx
+         YNKHBGVE7WBDLHwjShCAKDOHi0//vJghqIC/szBz6DGpmd6CvNBx7QitIkpqH1f/153u
+         AD0AHyM0gWJlLgCH6MyV03lMFZTfxNQECdY5WNARt1B/yr6XwNnMRpDvtRonh7P7N8pv
+         B0tninBb4bDSzN/gx2PoNY3hFzLiX6v8gPGo66Wwdfwz8u7CVL66MGBdlFB/NTGJIt0m
+         K0vQ==
+X-Forwarded-Encrypted: i=1; AL+hErHfUB29ajFsBV+b87gWVKNGw8uauB6sb9dMeSxWm3RSpWFzIruRh6qIhmosK1eyGqK0tdcfNZ3G85VEjtMvng==@vger.kernel.org
+X-Gm-Message-State: APuU4Z91LuNQzXSaD2S3eIvViQeZNlTa2+xF+PhzPORJTmwwz8ObPeRd
+	cT8WmU/vgtlGQaPDTJk0D4CDNNKpah1ggdVc6ciIWop3Kddx781zfnq8m7rLpLA0uvBEVeOOZj+
+	RR5n1YNhWz4LPqEG+vQ==
+X-Received: from wrrv2.prod.google.com ([2002:a5d:43c2:0:b0:48c:4566:c9eb])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:1e50:b0:48e:60a7:e0bd with SMTP id ffacd0b85a97d-4abb2ecf9afmr12805799f8f.17.1795337955311;
+ Sun, 22 Nov 2026 00:59:15 -0800 (PST)
+Date: Sun, 22 Nov 2026 08:59:14 +0000
+In-Reply-To: <20261122-tyr-reset-impl-v9-1-ed42d8f513ec@onurozkan.dev>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -106,113 +79,40 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20261122-tyr-reset-impl-v9-0-ed42d8f513ec@onurozkan.dev> <20261122-tyr-reset-impl-v9-1-ed42d8f513ec@onurozkan.dev>
+X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
+Message-ID: <20261122085914.1094403-1-aliceryhl@google.com>
+Subject: Re: [PATCH v9 1/2] drm/tyr: add GPU reset infrastructure
+From: Alice Ryhl <aliceryhl@google.com>
+To: "=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>
+Cc: Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	dakr@kernel.org, daniel.almeida@collabora.com, airlied@gmail.com, 
+	simona@ffwll.ch, ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, boris.brezillon@collabora.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-GpuBuddyInner keeps the C gpu_buddy structure next to a separate
-Mutex<()>, so nothing in the type system ties the data to the lock.
-A TODO asked to replace Mutex<()> with Mutex<Opaque<..>> once
-Mutex::new() accepts a fallible initializer.
+On Sun, Nov 22, 2026 at 08:40:32AM +0300, Onur =C3=96zkan wrote:
+> Add support for scheduling GPU resets on a dedicated workqueue. Track
+> the reset state to avoid queueing another reset while one is already
+> pending or in progress.
+>
+> Use an SRCU based gate with mutex-protected reader admission to block
+> hardware accesses while reset work runs and wait for current users
+> before resetting.
+>
+> Stop new reset requests during teardown and drain any queued or running
+> reset work before releasing the device resources.
+>
+> This is the initial reset infrastructure only. It is not wired to a reset
+> source yet as those will follow in separate work.
+>
+> Link: https://gitlab.freedesktop.org/panfrost/linux/-/work_items/28
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
 
-That is now possible, so put the Opaque<gpu_buddy> directly inside the
-Mutex. The allocator can then only be reached through the lock guard,
-which lets the compiler enforce that the lock is held. This also
-removes the now unneeded `inner` field from GpuBuddyGuard.
-
-Signed-off-by: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
-Reviewed-by: Joel Fernandes <jfern@kernel.org>
----
-Changes in v2:
-  - Dropped patch 1/2 ("rust: sync: lock: allow fallible initializers
-    in Lock::new"): the same change is already in linux-next
-    (Philipp Stanner's "rust: sync: Accept errors for Lock payload
-    data"), as Gary pointed out. This patch now depends on it.
-  - Rebased on next-20261118.
-  - Fixed the indentation of the new_mutex!() initializer.
-  - Build-tested on x86_64 (defconfig with CONFIG_RUST=y,
-    CONFIG_GPU_BUDDY=y and CONFIG_NOVA_CORE=y). Not
-    tested at runtime.
-
-Changes in v3:
-  - Kept the name `inner` for the mutex field instead of renaming it
-    to `lock`. (Danilo)
-  - The SAFETY comment updates from v2 are gone, as the field keeps its
-    original name.
-  - Collected Reviewed-by from Joel.
-
-v1: https://lore.kernel.org/rust-for-linux/20261114200703.33229-1-mbkchelofficialdev@gmail.com/
-v2: https://lore.kernel.org/rust-for-linux/20261119111850.33270-1-mbkchelofficialdev@gmail.com/
-
- rust/kernel/gpu/buddy.rs | 22 +++++++---------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
-
-diff --git a/rust/kernel/gpu/buddy.rs b/rust/kernel/gpu/buddy.rs
-index 691bb4062..4e08ec319 100644
---- a/rust/kernel/gpu/buddy.rs
-+++ b/rust/kernel/gpu/buddy.rs
-@@ -313,16 +313,11 @@ pub struct GpuBuddyParams {
- ///
- /// # Invariants
- ///
--/// The inner [`Opaque`] contains an initialized buddy allocator.
-+/// The `inner` field contains an initialized buddy allocator wrapped in `Opaque`.
- #[pin_data(PinnedDrop)]
- struct GpuBuddyInner {
-     #[pin]
--    inner: Opaque<bindings::gpu_buddy>,
--
--    // TODO: Replace `Mutex<()>` with `Mutex<Opaque<..>>` once `Mutex::new()`
--    // accepts `impl PinInit<T>`.
--    #[pin]
--    lock: Mutex<()>,
-+    inner: Mutex<Opaque<bindings::gpu_buddy>>,
-     /// Cached creation parameters (do not change after init).
-     params: GpuBuddyParams,
- }
-@@ -338,14 +333,13 @@ fn new(params: GpuBuddyParams) -> impl PinInit<Self, Error> {
-         // `gpu_buddy_*` APIs. `try_pin_init!` only completes if all fields succeed,
-         // so the invariant holds when construction finishes.
-         try_pin_init!(Self {
--            inner <- Opaque::try_ffi_init(|ptr| {
-+            inner <- new_mutex!(Opaque::try_ffi_init(|ptr| {
-                 // SAFETY: `ptr` points to valid uninitialized memory from the pin-init
-                 // infrastructure. `gpu_buddy_init` will initialize the structure.
-                 to_result(unsafe {
-                     bindings::gpu_buddy_init(ptr, size, chunk_size.as_usize() as u64)
-                 })
--            }),
--            lock <- new_mutex!(()),
-+            })),
-             params,
-         })
-     }
-@@ -353,8 +347,7 @@ fn new(params: GpuBuddyParams) -> impl PinInit<Self, Error> {
-     /// Lock the mutex and return a guard for accessing the allocator.
-     fn lock(&self) -> GpuBuddyGuard<'_> {
-         GpuBuddyGuard {
--            inner: self,
--            _guard: self.lock.lock(),
-+            _guard: self.inner.lock(),
-         }
-     }
- }
-@@ -381,14 +374,13 @@ unsafe impl Sync for GpuBuddyInner {}
- ///
- /// The `_guard` holds the lock for the duration of this guard's lifetime.
- struct GpuBuddyGuard<'a> {
--    inner: &'a GpuBuddyInner,
--    _guard: MutexGuard<'a, ()>,
-+    _guard: MutexGuard<'a, Opaque<bindings::gpu_buddy>>,
- }
- 
- impl GpuBuddyGuard<'_> {
-     /// Get a raw pointer to the underlying C `gpu_buddy` structure.
-     fn as_raw(&self) -> *mut bindings::gpu_buddy {
--        self.inner.inner.get()
-+        self._guard.get()
-     }
- }
- 
--- 
-2.56.1
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
