@@ -1,76 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795337958;
-	b=run8MKuVsC5+XnWlWLa3dyfqKqGYDiNHE2TUrpuThGk78dS5wu8i3vr+cyS8h4VyNEYm
-	 5OpiWMcYBQfWEAiBZ8H+8Y4Z93LXFBsRKi8YXXLt6aIK87WhbRX4Xj/c8jW51wKeDMciU
-	 co/a8rH05M9c+5jkiMbOgRIsn3xW0+0opwRtpZTmvKjNsHsZDs9TaKmsD8+dSz1+yCfzW
-	 mGRSNsJuxhizUV+WGMvfeGrBHY7l+Bs0XG6EWR72weHYt2kUqNS3oo+acyg/smqtUk02l
-	 q5OE5lYkw4l7DETAUzhfIfSULpY5x7CDpzjMAUi6ifZKI7YDwKXzTWiWjcKZlZOP8/g==
+	t=1795337960;
+	b=kP6Kudt9TV7GVwuxfy8wOvjWeop9JZ+D37CYh5dFTC9b44ao7DlUGGIQQNllMpSwYNpT
+	 Vd9hFjVqDZdxxPcD0a1Wl2mClK/LFpM0B6r9zqq137D4S4BpmGEUiRut3snCLCyz1BRAu
+	 L48K/opMimonBhZGJiTc7T3NxBOTaJFUwctvcFJISY4elnCJQURsOEsBdCU620lDrebGw
+	 O6NhSIkvZ+zi+OhvcHsPZtcGu84QmX/16uX1cAv+m7F5IT9gf4dI7wDq45tiwizwLuIpV
+	 xJYEomBI0RPGjLQ15GcBwgO8eKcMsmBvifzLiToTDbmg0Js59qLBZKJsXUb/WAg+Lpg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795337958;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795337960;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=G2sUKEpp9UCq//DjZnGDoTE+Lw96P7JUYjiRFoz38Vk=;
-	b=J1n/A6TzWRtBm0+zwVr6gJZxztEwCzv0BRM9vlM4bsma4fERenY0JkB07mBZ13ppQ5US
-	 dlpH4PBptDiIj/eAa1GS9UCWp0dh913SZ1fSJr+XQeJuC603Me++NB+CcqJIzb2+2WNoY
-	 l9sAZPz95oLHok/dWwMu7LPRqBN0u2wVXbpTn2TdGZVOnQeuThr3XqX3Lqh+ts3LDXPEf
-	 q1ltMrFvLZWCd5mTw2Tnbu35mwm6rFjtKI+gbYVl/YW7xaBHYH2ZUVmxsrj1KveQNAxdj
-	 61gyKH/QE4BV5vpBg6zPzuJUtlKm0AnLALKoMXLCpci4zg7dTGEB3EAxXlijw3C7ifw==
+	bh=2xtn5830lTNiRdDIiYhj5d/UObB+cYcE2nyc42dKa0Y=;
+	b=x6sa/kbKiENCZ+Ndqq4uWW5ms1mAvI1Rv2EQtmPeBGK4DpBdgsSnCYK9FCOwmVm+lvBs
+	 SBeZatbn/mmzQpIBm7hfw7+dcURQf6/rOlYc7+fBXWr2+hzfIS009GKmfwb829f/riv9I
+	 +brZhD9FrBczaaeVes5yd8cTaZp3aSpoTXShBXUWB1/jkH2oLyT74wNrV4bxr0cw/0g5w
+	 U8K7W3ITwPhAGrBebkEKuJO07jFs7n8kcsNrXCplWJ8IrN4BJIvE51c47DLYIiuBwTe5q
+	 VDCCgaDCzmGBomep3wqzMeCmoP3IDTMUxTzus7Fm7Rcc1cFM2kj3DY9sYAdLg3pUFaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="M/DA+iUE";
-	arc=none smtp.remote-ip=209.85.221.69
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hEtQQnKy;
+	arc=none smtp.remote-ip=209.85.128.72
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DE7606A339
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 08:59:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 64DE7606A339
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2887606A336
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 08:59:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F2887606A336
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=M/DA+iUE
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48e0389d6f9so1318708f8f.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 00:59:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hEtQQnKy
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4bb66fc3aa6so21939765e9.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 00:59:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795337957; x=1795942757; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1795337958; x=1795942758; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=G2sUKEpp9UCq//DjZnGDoTE+Lw96P7JUYjiRFoz38Vk=;
-        b=M/DA+iUEfZH/RTuJV4mophhfeAOFmY/wKP2WaYyLAjRtxbEjeZ1kirf2SBA88/0aUo
-         YSypVD//LfRhnXdqjJNjNX8Fkoh2uYvp2lLQ/EaQMk3TpksjRn/2XUlc1HVrQkRwZ/zS
-         FvJwEcIPOXcdw+VLcg9/DWchUzU0IatILZ6uM2PFc8GokZkAX+Zeo3ZfJw9rBv+5Tgpk
-         ELcn0+BQdXRghiesPne1hWUo5WCRqAK/9azw9J5g8ah0CDnLRYWS08NIkx0pFm16z8wl
-         naRKHqKSYI3B9fdsqf1kAK+p2Hqbxkler90om1+RqtiJW84NmRnYPCvzdhj2x4pLYXkD
-         x5JA==
+        bh=2xtn5830lTNiRdDIiYhj5d/UObB+cYcE2nyc42dKa0Y=;
+        b=hEtQQnKyJBzQvrv9WjCE8H3ZqU7wxX9gLJ1UcKPQR+IZWM/wTKSvsT2HgH7xMmt3kC
+         IvVjvIbmukDLON9fqxY9Gk+Pazv2bPzDnqexJMe4Gunc0duIWYumQkbM190W0BI4eoy9
+         96FP9vMch+B3jdiFgaXEApDt84ci9kDrdQEG1x73Jf2aeLqfv+2STFMBD0IyuP70u9CV
+         18/wfBCy6FPdTJv3X148uzHCzh/WHsS+X+j5w8x9RmqpT+0qDxTMeacONggx0F6UAguw
+         wjS3NOjLZts/DOj46iZrA1TioBcGnRgieGdDWs3/gm5WfR/qKSHoW1AwZIZ5r+03wWEC
+         C5GQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795337957; x=1795942757;
+        d=1e100.net; s=20260707; t=1795337958; x=1795942758;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=G2sUKEpp9UCq//DjZnGDoTE+Lw96P7JUYjiRFoz38Vk=;
-        b=047XuloRtAKdskAjlUWwYv05X/hY12xi44yv4crjKUO5Eo488OedW6S2PsU3hhEEZj
-         uUXW+JwCZ1mEQefRGT4ODF0xQ5GO9RuBbCNqmhaEBoRyNSRGKwds+hCckOgfuzpnf4iH
-         QnI46Jhte5jBo+Z0ndM4tgWrJy/4/N8GT7dN+8j02udNhebQTevuZka+lKBtvscSqeG+
-         k//jkK0OYxxUWe9MqOnjtmLZdMfRV0P1i9iwCdBU3XtLjyMFLu7XSAYfzxQH1pFVTts8
-         5Kg8Zc6+2ILM0B9iNRFkfNw8oIckaCz0xeiYxDOCaytpxmainOSMlrwJEaYzCo9COyg2
-         O1RQ==
-X-Forwarded-Encrypted: i=1; AL+hErEn6thetnd9rwE25Ku1enc0PXxXuG4l7BHQS7X3/zjwmsMRd7/alOsrUjpQPrpKB/AEhAslQlFg3R1m2JOO0Q==@vger.kernel.org
-X-Gm-Message-State: APuU4Z9k7sFrzLSJf5pon8k489yn2Vh6IH6U67I0LyaoVJrqx6LqfX6N
-	AogDNI583WZx+OBCApNWJmJ9Rkp4JIRvipogUCvqrnUS4xzKKHxOikkqGWH3/ey153Z4vzJi8vY
-	G2Rb/Ed7Fnl9DOhdbkw==
-X-Received: from wrsv4.prod.google.com ([2002:a5d:4a44:0:b0:4a5:aaa3:3335])
+        bh=2xtn5830lTNiRdDIiYhj5d/UObB+cYcE2nyc42dKa0Y=;
+        b=fB/WaOSFVAIX+6rH+jccFt8K76YhrBxife5Dq2ZT0qQZq1GK2fVQi/CI8ZNO9c2mk8
+         sWBT10NdR+doBC67CH+kEnZWUMHqqH/f4F7Zk0ULxBZsDifq7CTfgRUs0ytRV276JQ9r
+         Vf35bH/f+8MQIIl4V/iCy9WxdcGotzon3biqqptdjQQPGrm4VYmS4wkC6hVlH2JG7wp+
+         fy8Zqdrjd1fTY5oOJ2hAYEMptgqevu75rot2T18uwoi6I8q1MAQ4XkcRGvvgUXjE3wiA
+         Pjqlv4zCu4ohrqeQpQhuA6T/GkUZDW/3AwGfpCH0cIl9PzN8wu+mcgiAorivO8/rrnTQ
+         WXMQ==
+X-Forwarded-Encrypted: i=1; AL+hErGBRidMpTD6f58D2jytHz8/48twQ1bA8lyLd788lkRCTSIyp3yrG3MwWdojT6S2EYEwuKJjlzn8QbjxZldgkw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/4rKLUlJRNBPO+imWNYPh55Gjkx1O2OG5QM9fJ8edJn/1b2FQU
+	2YI4MMlbMyBn9vyOcywQMPFoR6v0TzvAO2WmazNkFsOLcoOXI4Jr/rmWc7X+QUsi/40gH5gPHus
+	kzsN/Rpw1jhrQnmvd9g==
+X-Received: from wmmo19.prod.google.com ([2002:a05:600c:613:b0:4a2:1824:f77d])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4f0d:b0:4bb:5c97:f4b1 with SMTP id 5b1f17b1804b1-4bb8881941bmr192603305e9.24.1795337956685;
- Sun, 22 Nov 2026 00:59:16 -0800 (PST)
-Date: Sun, 22 Nov 2026 08:59:15 +0000
-In-Reply-To: <20261122-tyr-reset-impl-v9-2-ed42d8f513ec@onurozkan.dev>
+ 2002:a05:600c:4f42:b0:4bb:5c5c:8130 with SMTP id 5b1f17b1804b1-4bb8881c726mr211965125e9.5.1795337958222;
+ Sun, 22 Nov 2026 00:59:18 -0800 (PST)
+Date: Sun, 22 Nov 2026 08:59:17 +0000
+In-Reply-To: <20261122-tyr-reset-impl-v9-0-ed42d8f513ec@onurozkan.dev>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -80,10 +80,10 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261122-tyr-reset-impl-v9-0-ed42d8f513ec@onurozkan.dev> <20261122-tyr-reset-impl-v9-2-ed42d8f513ec@onurozkan.dev>
+References: <20261122-tyr-reset-impl-v9-0-ed42d8f513ec@onurozkan.dev>
 X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
-Message-ID: <20261122085915.1094533-1-aliceryhl@google.com>
-Subject: Re: [PATCH v9 2/2] drm/tyr: put iomem behind the hardware gate
+Message-ID: <20261122085917.1094675-1-aliceryhl@google.com>
+Subject: Re: [PATCH v9 0/2] drm/tyr: GPU reset infrastructure
 From: Alice Ryhl <aliceryhl@google.com>
 To: "=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>
 Cc: Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
@@ -95,20 +95,15 @@ Cc: Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Nov 22, 2026 at 08:40:33AM +0300, Onur =C3=96zkan wrote:
-> Move iomem mapping into HwGate and pass Arc<HwGate> to components that
-> access hardware. Callers obtain HwAccessGuard before accessing the iomem
-> so the reset worker waits for ongoing accesses.
->
-> Acquire the gate once per address-space operation and pass the guarded
-> iomem reference to its helpers. This prevents nested gate acquisition
-> from deadlocking with reset and keeps each operation protected throughout=
-.
-> Clone the gate Arc before acquiring the guard so mutating helpers can
-> retain their mutable self receivers.
->
-> Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+On Sun, Nov 22, 2026 at 08:40:31AM +0300, Onur =C3=96zkan wrote:
+> Changes since v8:
+> - Use workqueue v4 [1].
+> - Drop "drm/tyr: clear stale IRQ state before soft reset" (applied on
+>   drm-rust-next already).
+> - Minor fixes (Alice's notes on v8).
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Thanks for the updates! Both patches look good to me now; I've left my
+Reviewed-by on them and we can apply this series to drm-rust-next once
+the OwnedQueue/ScopedWork workqueue dependency lands.
+
+Alice
