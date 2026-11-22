@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795391962;
-	b=Ea4qlUtY1Teq0+hJ3Lxj8/nafOEajTragOzJdT6+bl/tmGZGzRomgEGI5B8rJNkmMYUF
-	 YOHT0TaZ8DA4HsMJAiANOREIq8Bc7fHb9Hf5jSSkv9y+Jpnt/pryW74AXlpa39cQUIQYM
-	 SiRVZnLCxG1Cio2pEOgUuUFS6Hh52JSy2jEZ5JVyerOUuL1w6YWtWf+wmoJpdF3al4bam
-	 tOpjtyzKATY4wcEmJM6h5ZOOnjvF7UGtxMw5A0MSqvWx1+U4sNgMhuLO8rTvFnWCUM60D
-	 llJlAAfz/ImBmdqyt3xwVS3cBCGMMjc5hec1emY6+t8lc182agnQHOJHJ/hAH84s3ww==
+	t=1795391967;
+	b=eNgSMniUTt9+o6jnN17C7RFDrGDyGdx3WgjUCVz+AoCiqRUBaK0AJNK5bZXc69KIUiyj
+	 xzFG9DweAHCIcAHW5nGkoCAxfOge7WoDufso8DWxxsUDEfFVEWlJ7xT9U7iW+CAF63f5e
+	 7m8CJ3OThERf4KScaMr0SINSW4TwJVmuTcH0e6rg2qLVttZhpzYM8rZT3pN2LFyvQD9Gb
+	 C4rv9roUD4sEOjT82qS4qNsj3aIweQw9JyAA/C79D7jY0RMR11nRAkNcapOjwufyqOahn
+	 b8lDy+5I4sA6nFnO/o2Xfq13Y2Upcb1DPQoGuALYJmi5z/rJiiGFEpUKZt1ignxmJrQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795391962;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795391967;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=7M8NPSyIu5zyrKo+IM6G4ntT9OQ7yZBQQTdskzVMyBM=;
-	b=Kc/TNNj97wZmo0E5QrjBChjDSxMzat1uJmtnOjjYtZV1IkUbfd5a0YZdLgmsDTyKChWA
-	 tZJTaeBmPyumONwA8iE05G/71GNZWQJZV7+Owd2NHyAvjhfRYji28NXrdbY4FtWQJRZdp
-	 ICLVVZF5mE9SeYSLz0ivUDRyTcy0+Q8i5fSuJcfxjJJW9ZZJKi3WsndlA8r9MwmpQwmJl
-	 vdeptkZ4o3W9olMhFvwah8XRsTFb3yiB8mTlrDVkxGv3ZCR3s3ytsjoG4g5qZ/4ctR6NS
-	 e8xWToB8X546S4BpkGaQG0rVHi+DP1KOyKiE3yppvHpxEO3RNMvzYspbnl4NeUx+c0g==
+	bh=6YYhm9IxKJacmBRPk1BwBojwdCvDw+zld1+t11skAg0=;
+	b=hjVKkvHLHGIwd7F2Y1A6cr5dossm86HlmHayVCIRxRZTET0UJ/wr4vbPkFyrHEWKlhmK
+	 eLSb0e14Rned/zYb52t1PuQE4LhW9L713dcdEkZJjE3sc2I9arobJWbR6x2Q8hFya2czZ
+	 nFkWUuq0jU6vkPh9ALyQ6gQvjXN5qDmOZ3wiX0vrrPiweMgQgClZdC6Adp69QaK2nleFK
+	 5zue9Zq1t/uvEzeygu2Jmp2lgGYQlG1eBQ0A/0WAmaMHyOQdrlstNVhPJn8pd5n4ZraEJ
+	 v9Ba7Ee73szyffRvPsdOCakSYp/pPF3+A4tBNTwJJbsZTP+Vnl+zPAmnuOsniC+0xGA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--irogers.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=l4ptuOO6;
-	arc=none smtp.remote-ip=209.85.215.198
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lMjtMZth;
+	arc=none smtp.remote-ip=74.125.82.199
+Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02645606A6A2
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 23:59:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 02645606A6A2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDCA60A263E
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 23:59:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DBDCA60A263E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=l4ptuOO6
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cddf142187aso1267737a12.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 15:59:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lMjtMZth
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-30bcb065bfdso3111251eec.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 15:59:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795391959; x=1795996759; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1795391965; x=1795996765; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7M8NPSyIu5zyrKo+IM6G4ntT9OQ7yZBQQTdskzVMyBM=;
-        b=l4ptuOO6+cSg9ZP/UeGF6VNshSMDKoGHOCSnuIPxBMa966FS/4DGGg9c11L7Usk6E4
-         2eeVMldUtGh61IZc5Xku52JVK193kwLTD/9GPxVuR7A3GTwrTt+lPNjk9LGfT/gBsWDn
-         STGCza0E/ZBIB83ujJ6/G1QGl4W4RbHnZu6UPipzw9fKTo5DmcQtJ4uDMKPa/G2koH8z
-         M90uvM5fbAQdlEnFGWRr8PM00Awdug/cA2UvHKWyjSsx4EhhVvJbV353Y3hLgDvyezAz
-         SoUnbKqrAHzJAT1zXKBjclh4kav0jbMmRfnxYZa4KNdDw4q6LGcBXuuHzjxuJnycIipr
-         SqBw==
+        bh=6YYhm9IxKJacmBRPk1BwBojwdCvDw+zld1+t11skAg0=;
+        b=lMjtMZthZUXpKfPu5kZBCNp7gCDCM6UH/QcNlg9HxpmrR6mKVVBMNgQz2treNcuJXs
+         Ld1fELdksbMZfOmGDYHRDv4YIwHxhdR3DxL4m0rSJdJF7kdNtxNOOsi24GUXXZ8WLFld
+         5dA9UXX+mPu/9toRKZKIBQJUe5wzI6aWLvXx0Vam3k7GbMhTlZkcekzMl7WR4P8yAyRI
+         FZHLcwVTLLOyNaHvB2691/eUnlZqoyPlLbrdzYJ1gQjrVOsuZHigVUOn1VCGUmTTHDsq
+         w2g2qLFgFRDEnzyQSBKOw60U+UluUX0I+QKYDb4Fx0/a9wWJBYRZXlEr5Mkb8AauB2x5
+         INCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795391959; x=1795996759;
+        d=1e100.net; s=20260707; t=1795391965; x=1795996765;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=7M8NPSyIu5zyrKo+IM6G4ntT9OQ7yZBQQTdskzVMyBM=;
-        b=CUFb6okg1gL719+BuRpJRXPzWYInE491DokKV00ZwA64lapYu8rx/JPwsSFQUIrJyB
-         Zg0XNOxvjJecupXJpd7XG/+KjyOeeNhWkeWMcIJsDZ/gc7dMx1UcPcs7BRtBNMMSeVNy
-         7enc2tK+JIr4uXc0b+/05G3PvFXbf/9IUQNlby0SUrdU/wKz9stbpTgwvizyW9ZmiZPC
-         5/VnCe5exsokNYMnnxcPEvPqvo3v6i167a/7npoGkBDE6LtZmiTwyBtwHVtfpdZdiq/Y
-         3SlVXlcIj7y+cpZb62LuVW0xhVee3kGerAuGVBK+poddFzv674NfW+76T6HUqK5/cHxO
-         enZw==
-X-Forwarded-Encrypted: i=1; AL+hErEzuK06s7c4fbSc3yisPvUBhk0qIvUnlhnxIj9UpySIZs0g4f0BB7xeMztyVQGDrn08hW2qp5CXK9NSW7B2LA==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8pNnbomlaRLs3VKQr35L9pXPjOhlHpvtA67+6GMgziOwCmmxMm
-	YMIIE7u+eVey7dQTxLutmcPWZQBaP2WaaZCQfe52rL7IZyfXtxGp8J8nEWE2dOCiGxL0CDdwBq5
-	X3Civ8dwNBg==
-X-Received: from pjbbk11.prod.google.com ([2002:a17:90b:80b:b0:3b4:1df5:9b9])
- (user=irogers job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4b:b0:3b4:1265:740b
- with SMTP id 98e67ed59e1d1-3b41c9cf6efmr7890602a91.28.1795391958939; Sun, 22
- Nov 2026 15:59:18 -0800 (PST)
-Date: Sun, 22 Nov 2026 15:57:55 -0800
+        bh=6YYhm9IxKJacmBRPk1BwBojwdCvDw+zld1+t11skAg0=;
+        b=muYcS62smgvi8pvkyf+1hBi2AQrq5xOjrbA5MLIXMz1gLRcJ5z7GRMSH2xhN76LB8I
+         rcyo2SMyUSBEggauMeFY+YNkSjAQOJ+4FeLW5u1vPNF7ipeskYoVVDdu5tV00GuB54n7
+         P0t4H9ZRcSDcJBymMNpEsLvhcF3f56nInK2fF6HQKHTZtYuYST79PKNGkXRiZSI2vUei
+         zIDCM3l+2ybLlhyfL78g/pqQ4S7ETf4qG+cCNOehRfOb6JIiL+M2ifED76UPCAi82Juq
+         faeUxlB4YgcN0thFDYM7Ec6bJenwaFDHWHHT7U3Q3dIi6B1d3K1uSMS5rW4T9oV0aIaQ
+         Zb2Q==
+X-Forwarded-Encrypted: i=1; AL+hErGWqYfqmD2TcU61JI7xkQfAKfUo0CQqLSJP+bWoeT/z0MMMNggyXAa92192Bk4v6xuApRoi6ysheZZ6Y081FA==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Ku/VtpPJzJjK6WzaKipp1XIoxKrboZTGwnEzBXGFBCPkKrY4j
+	cn1Rfx3BETjRWHLCZS2G6l8ulxQOiIoV31PEyZL+K/FBM1vYlUq4P5zo5ZqHIwiJphesSbPDOYm
+	YYpSKKcvr3Q==
+X-Received: from dybqo16.prod.google.com ([2002:a05:7301:6790:b0:36a:de0:d28a])
+ (user=irogers job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7300:6da7:b0:384:5885:2f81
+ with SMTP id 5a478bee46e88-3856c0c7c05mr14446912eec.5.1795391964567; Sun, 22
+ Nov 2026 15:59:24 -0800 (PST)
+Date: Sun, 22 Nov 2026 15:57:57 -0800
 In-Reply-To: <20261122235757.3456048-1-irogers@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -81,8 +81,9 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261122235757.3456048-1-irogers@google.com>
 X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
-Message-ID: <20261122235757.3456048-10-irogers@google.com>
-Subject: [RFC PATCH v1 09/11] riscv/unwind: Add Minimal DWARF CFI kernel unwinder
+Message-ID: <20261122235757.3456048-12-irogers@google.com>
+Subject: [RFC PATCH v1 11/11] scripts: Add eh_frame_min.py .eh_frame coverage
+ and size analyzer
 From: Ian Rogers <irogers@google.com>
 To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
 	linux-arch@vger.kernel.org
@@ -102,1302 +103,973 @@ Cc: jpoimboe@kernel.org, rostedt@goodmis.org, peterz@infradead.org,
 	dylanbhatch@google.com, Ian Rogers <irogers@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add CONFIG_UNWINDER_DWARF_CFI for 64-bit MMU-enabled RISC-V kernels in
-arch/riscv/kernel/stacktrace.c, enabling frame-pointer-free kernel stack
-unwinding and HAVE_RELIABLE_STACKTRACE (arch_stack_walk_reliable()):
+Add an optional standalone developer inspection script
+(scripts/eh_frame_min.py, not invoked by Kbuild) to analyze ELF32/ELF64
+relocatable objects (.o, .ko), vmlinux images, user-space executables,
+and shared libraries across x86_64, i386, arm64, arm, and riscv.
 
- - Gate ARCH_WANT_FRAME_POINTERS and FRAME_POINTER on
-   !UNWINDER_DWARF_CFI, build kernel C and Rust objects with
-   asynchronous unwind tables and -fomit-frame-pointer, link vmlinux
-   with --eh-frame-hdr, and suppress unwind tables in purgatory and the
-   EFI libstub.
- - Index SHF_ALLOC loadable module .eh_frame sections via
-   dwarf_cfi_mod_alloc() and dwarf_cfi_mod_free_rcu() in
-   arch/riscv/kernel/module.c.
- - Annotate return_to_handler() and arch_rethook_trampoline() with
-   .cfi_* directives, key rethook shadow stacks on entry SP (CFA) rather
-   than s0, and implement walk_stackframe_cfi(),
-   arch_stack_walk_reliable(), and bounds-checked
-   riscv_unwind_perf_caller_regs() across task, IRQ, and overflow
-   stacks, supporting RVC 16-bit call sites (pc - 2), ftrace_caller /
-   return_to_handler / rethook recovery, BPF JIT and trampoline frame
-   records, handle_exception / ret_from_fork_asm / head.S root
-   terminations, and call_on_irq_stack() transitions.
+It reports .text / .eh_frame / .eh_frame_hdr / .sframe / .orc_unwind
+section sizes, simulated minified .eh_frame savings, Minimal DWARF FDE
+coverage (and breakdown of any unsupported opcodes), kept FP/RA vs.
+ignored GPR register rules, maximum DW_CFA_remember_state depth, and top
+DWARF CFA opcode counts.
+
+Example usage:
+  $ ./scripts/eh_frame_min.py vmlinux
+  $ ./scripts/eh_frame_min.py mm/vmscan.o kernel/fork.o
+  $ ./scripts/eh_frame_min.py /bin/bash /lib/x86_64-linux-gnu/libc.so.6
+  $ ./scripts/eh_frame_min.py --minify /tmp/eh_frame.min mm/vmscan.o
 
 Signed-off-by: Ian Rogers <irogers@google.com>
 ---
- arch/riscv/Kconfig                            |   5 +-
- arch/riscv/Kconfig.debug                      |  16 +
- arch/riscv/Makefile                           |  15 +-
- arch/riscv/include/asm/module.h               |  22 +
- arch/riscv/include/asm/perf_event.h           |  15 +
- arch/riscv/include/asm/stacktrace.h           |  11 +
- arch/riscv/kernel/Makefile                    |   4 +
- arch/riscv/kernel/entry.S                     |   2 +
- arch/riscv/kernel/mcount-dyn.S                |   6 +-
- arch/riscv/kernel/mcount.S                    |  34 +-
- arch/riscv/kernel/module.c                    |   9 +
- arch/riscv/kernel/probes/rethook.c            |  13 +-
- arch/riscv/kernel/probes/rethook_trampoline.S |  30 +
- arch/riscv/kernel/stacktrace.c                | 732 +++++++++++++++++-
- arch/riscv/kernel/vmlinux.lds.S               |  13 +
- arch/riscv/purgatory/Makefile                 |   3 +-
- drivers/firmware/efi/libstub/Makefile         |   4 +-
- 17 files changed, 919 insertions(+), 15 deletions(-)
+ scripts/eh_frame_min.py | 938 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 938 insertions(+)
+ create mode 100755 scripts/eh_frame_min.py
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 84b61c755db3..14d64a3fa33c 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -83,7 +83,7 @@ config RISCV
- 	select ARCH_USES_CFI_TRAPS if CFI
- 	select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH if MMU
- 	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT if MMU
--	select ARCH_WANT_FRAME_POINTERS
-+	select ARCH_WANT_FRAME_POINTERS if !UNWINDER_DWARF_CFI
- 	select ARCH_WANT_GENERAL_HUGETLB if !RISCV_ISA_SVNAPOT
- 	select ARCH_WANT_HUGE_PMD_SHARE if 64BIT
- 	select ARCH_WANT_LD_ORPHAN_WARN
-@@ -101,7 +101,7 @@ config RISCV
- 	select CPU_PM if CPU_IDLE || HIBERNATION || SUSPEND
- 	select DYNAMIC_FTRACE if FUNCTION_TRACER
- 	select EDAC_SUPPORT
--	select FRAME_POINTER if PERF_EVENTS || (FUNCTION_TRACER && !DYNAMIC_FTRACE)
-+	select FRAME_POINTER if !UNWINDER_DWARF_CFI && (PERF_EVENTS || (FUNCTION_TRACER && !DYNAMIC_FTRACE))
- 	select FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY if DYNAMIC_FTRACE
- 	select FUNCTION_ALIGNMENT_8B if DYNAMIC_FTRACE_WITH_CALL_OPS
- 	select GENERIC_ARCH_TOPOLOGY
-@@ -195,6 +195,7 @@ config RISCV
- 	select HAVE_PERF_USER_STACK_DUMP
- 	select HAVE_POSIX_CPU_TIMERS_TASK_WORK
- 	select HAVE_REGS_AND_STACK_ACCESS_API
-+	select HAVE_RELIABLE_STACKTRACE if UNWINDER_DWARF_CFI
- 	select HAVE_RETHOOK
- 	select HAVE_RSEQ
- 	select HAVE_RUST if RUSTC_SUPPORTS_RISCV && CC_IS_CLANG
-diff --git a/arch/riscv/Kconfig.debug b/arch/riscv/Kconfig.debug
-index eafe17ebf710..afc8be5ec97f 100644
---- a/arch/riscv/Kconfig.debug
-+++ b/arch/riscv/Kconfig.debug
-@@ -1 +1,17 @@
-+# SPDX-License-Identifier: GPL-2.0-only
+diff --git a/scripts/eh_frame_min.py b/scripts/eh_frame_min.py
+new file mode 100755
+index 000000000000..6a64563a7c40
+--- /dev/null
++++ b/scripts/eh_frame_min.py
+@@ -0,0 +1,938 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0-only OR MIT
++"""
++Offline ELF .eh_frame / Minimal DWARF CFA coverage and size analyzer.
 +
-+config UNWINDER_DWARF_CFI
-+	bool "Minimal DWARF CFI kernel unwinder"
-+	depends on 64BIT && MMU
-+	depends on (!FUNCTION_TRACER || DYNAMIC_FTRACE_WITH_ARGS) && !SHADOW_CALL_STACK
-+	select HAVE_MOD_ARCH_SPECIFIC if MODULES
-+	select UNWIND_DWARF_CFI
-+	select UNWIND_TABLES
-+	help
-+	  This option enables the Minimal DWARF Call Frame Information (CFI)
-+	  unwinder for kernel stack traces on 64-bit RISC-V.  It interprets a
-+	  strictly bounded subset of compiler-generated .eh_frame /
-+	  .eh_frame_hdr tables matching SFrame's stack state model without
-+	  requiring frame pointers.
++Note: This script is a standalone developer/benchmarking inspection tool and
++is NOT invoked during Kbuild (which uses the standalone C host tool in
++scripts/min_eh_frame.c when CONFIG_UNWINDER_DWARF_CFI_MINIFY=y).
 +
- source "arch/riscv/kernel/tests/Kconfig.debug"
-diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-index 44f5a439741a..ffa8842e7959 100644
---- a/arch/riscv/Makefile
-+++ b/arch/riscv/Makefile
-@@ -7,6 +7,9 @@
- #
- 
- LDFLAGS_vmlinux := -z norelro
-+ifeq ($(CONFIG_UNWINDER_DWARF_CFI),y)
-+	LDFLAGS_vmlinux += --eh-frame-hdr
-+endif
- ifeq ($(CONFIG_RELOCATABLE),y)
- 	LDFLAGS_vmlinux += -shared -Bsymbolic -z notext
- 	KBUILD_CFLAGS += -fPIE
-@@ -96,8 +99,18 @@ ifeq ($(CONFIG_CMODEL_MEDANY),y)
- 	KBUILD_CFLAGS += -mcmodel=medany
- endif
- 
--# Avoid generating .eh_frame sections.
-+# Avoid generating .eh_frame sections unless runtime unwind tables are enabled.
-+ifeq ($(CONFIG_UNWIND_TABLES),y)
-+KBUILD_CFLAGS += -fasynchronous-unwind-tables
-+KBUILD_AFLAGS += -fasynchronous-unwind-tables
-+ifeq ($(CONFIG_UNWINDER_DWARF_CFI),y)
-+KBUILD_CFLAGS += -fomit-frame-pointer
-+KBUILD_RUSTFLAGS += -Cforce-unwind-tables=y -Zuse-sync-unwind=n
-+KBUILD_RUSTFLAGS += $(if $(call rustc-min-version,109800),,-Zllvm_module_flag=uwtable:u32:2:max)
-+endif
-+else
- KBUILD_CFLAGS += -fno-asynchronous-unwind-tables -fno-unwind-tables
-+endif
- 
- # The RISC-V attributes frequently cause compatibility issues and provide no
- # information, so just turn them off.
-diff --git a/arch/riscv/include/asm/module.h b/arch/riscv/include/asm/module.h
-index 0f3baaa6a9a8..ff783889774b 100644
---- a/arch/riscv/include/asm/module.h
-+++ b/arch/riscv/include/asm/module.h
-@@ -11,18 +11,40 @@ struct module;
- unsigned long module_emit_got_entry(struct module *mod, unsigned long val);
- unsigned long module_emit_plt_entry(struct module *mod, unsigned long val);
- 
-+struct mod_dwarf_cfi_index;
++It parses ELF32/ELF64 relocatable objects (.o, .ko), vmlinux images, user
++executables, and shared libraries across x86_64, i386, arm64, arm, and riscv,
++reporting:
++  - .text, .eh_frame, .eh_frame_hdr, .sframe, and .orc_unwind section sizes
++  - Simulated minified .eh_frame + .eh_frame_hdr sizes and byte savings
++  - Minimal DWARF CFA FDE coverage (supported vs. unsupported FDEs & reasons)
++  - Kept FP/RA register rules vs. ignored general-purpose register spill ops
++  - Maximum DW_CFA_remember_state nesting depth and top DWARF CFA opcodes
 +
- #ifdef CONFIG_MODULE_SECTIONS
- struct mod_section {
- 	Elf_Shdr *shdr;
- 	int num_entries;
- 	int max_entries;
- };
-+#endif
- 
-+#if defined(CONFIG_MODULE_SECTIONS) || defined(CONFIG_UNWINDER_DWARF_CFI)
- struct mod_arch_specific {
-+#ifdef CONFIG_MODULE_SECTIONS
- 	struct mod_section got;
- 	struct mod_section plt;
- 	struct mod_section got_plt;
-+#endif
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+	struct mod_dwarf_cfi_index __rcu *dwarf_cfi_index;
-+#endif
- };
-+#endif
++Example usage (from the kernel tree root, invoke via ./scripts/eh_frame_min*):
++  1. Analyze a built vmlinux image (with or without build-time minification):
++       $ eh_frame_min.py vmlinux
 +
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+void riscv_unwind_module_init(struct module *mod, void *eh_frame,
-+			      size_t eh_frame_size);
-+void riscv_unwind_module_cleanup(struct module *mod);
-+#else
-+static inline void riscv_unwind_module_init(struct module *mod, void *eh_frame,
-+					    size_t eh_frame_size) {}
-+static inline void riscv_unwind_module_cleanup(struct module *mod) {}
-+#endif
++  2. Compare multiple kernel objects, loadable modules, or cross-arch builds:
++       $ eh_frame_min.py mm/vmscan.o kernel/fork.o fs/ext4/inode.o
++       $ eh_frame_min.py build_arm64/vmlinux build_riscv/vmlinux
 +
-+#ifdef CONFIG_MODULE_SECTIONS
- 
- struct got_entry {
- 	unsigned long symbol_addr;	/* the real variable address */
-diff --git a/arch/riscv/include/asm/perf_event.h b/arch/riscv/include/asm/perf_event.h
-index bcc928fd3785..cfe95b9106e5 100644
---- a/arch/riscv/include/asm/perf_event.h
-+++ b/arch/riscv/include/asm/perf_event.h
-@@ -12,6 +12,20 @@
- #include <linux/perf_event.h>
- #define perf_arch_bpf_user_pt_regs(regs) (struct user_regs_struct *)regs
- 
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+void riscv_unwind_perf_caller_regs(struct pt_regs *regs, unsigned long pc,
-+				   unsigned long caller_ip, unsigned long sp,
-+				   unsigned long fp);
++  3. Analyze existing user-space binaries and shared libraries:
++       $ eh_frame_min.py /bin/bash /lib/x86_64-linux-gnu/libc.so.6
 +
-+#define perf_arch_fetch_caller_regs(regs, __ip) do {			\
-+	unsigned long __here_pc, __here_fp;				\
-+	asm volatile("1: auipc %0, 0\n\t"				\
-+		     "mv %1, s0"					\
-+		     : "=r" (__here_pc), "=r" (__here_fp));		\
-+	riscv_unwind_perf_caller_regs((regs), __here_pc, (__ip),	\
-+				      current_stack_pointer, __here_fp);\
-+} while (0)
-+#else
- #define perf_arch_fetch_caller_regs(regs, __ip) { \
- 	(regs)->epc = (__ip); \
- 	(regs)->s0 = (unsigned long) __builtin_frame_address(0); \
-@@ -19,5 +33,6 @@
- 	(regs)->status = SR_PP; \
- }
- #endif
-+#endif
- 
- #endif /* _ASM_RISCV_PERF_EVENT_H */
-diff --git a/arch/riscv/include/asm/stacktrace.h b/arch/riscv/include/asm/stacktrace.h
-index b1495a7e06ce..5a7b77367041 100644
---- a/arch/riscv/include/asm/stacktrace.h
-+++ b/arch/riscv/include/asm/stacktrace.h
-@@ -15,6 +15,17 @@ extern void notrace walk_stackframe(struct task_struct *task, struct pt_regs *re
- 				    bool (*fn)(void *, unsigned long), void *arg);
- extern void dump_backtrace(struct pt_regs *regs, struct task_struct *task,
- 			   const char *loglvl);
-+extern char _start[];
-+asmlinkage void ret_from_fork_kernel_asm(void);
-+asmlinkage void ret_from_fork_user_asm(void);
-+extern unsigned long ret_from_fork_asm_end;
-+#ifdef CONFIG_IRQ_STACKS
-+extern unsigned long call_on_irq_stack_end;
-+#endif
-+#ifdef CONFIG_DYNAMIC_FTRACE_WITH_ARGS
-+void ftrace_caller_saved(void);
-+void ftrace_caller_restore(void);
-+#endif
- 
- static inline bool on_thread_stack(void)
- {
-diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
-index f54c336bf547..f2e1f342e3d7 100644
---- a/arch/riscv/kernel/Makefile
-+++ b/arch/riscv/kernel/Makefile
-@@ -42,8 +42,12 @@ CFLAGS_REMOVE_patch.o	= $(CC_FLAGS_FTRACE)
- CFLAGS_REMOVE_sbi.o	= $(CC_FLAGS_FTRACE)
- CFLAGS_REMOVE_return_address.o	= $(CC_FLAGS_FTRACE)
- CFLAGS_REMOVE_sbi_ecall.o = $(CC_FLAGS_FTRACE)
-+CFLAGS_REMOVE_stacktrace.o = $(CC_FLAGS_FTRACE)
- endif
- 
-+KASAN_SANITIZE_stacktrace.o := n
-+KCOV_INSTRUMENT_stacktrace.o := n
++  4. Emit a standalone minified .eh_frame section blob for differential tests:
++       $ eh_frame_min.py --minify /tmp/eh_frame.min mm/vmscan.o
 +
- always-$(KBUILD_BUILTIN) += vmlinux.lds
- 
- obj-y	+= head.o
-diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
-index 61b7a7716697..0a37ac12128c 100644
---- a/arch/riscv/kernel/entry.S
-+++ b/arch/riscv/kernel/entry.S
-@@ -374,6 +374,7 @@ SYM_CODE_START(ret_from_fork_user_asm)
- 	move a0, sp /* pt_regs */
- 	call ret_from_fork_user
- 	j ret_from_exception
-+SYM_INNER_LABEL(ret_from_fork_asm_end, SYM_L_GLOBAL)
- SYM_CODE_END(ret_from_fork_user_asm)
- 
- #ifdef CONFIG_IRQ_STACKS
-@@ -410,6 +411,7 @@ SYM_FUNC_START(call_on_irq_stack)
- 	addi	sp, sp, STACKFRAME_SIZE_ON_STACK
- 
- 	ret
-+SYM_INNER_LABEL(call_on_irq_stack_end, SYM_L_GLOBAL)
- SYM_FUNC_END(call_on_irq_stack)
- #endif /* CONFIG_IRQ_STACKS */
- 
-diff --git a/arch/riscv/kernel/mcount-dyn.S b/arch/riscv/kernel/mcount-dyn.S
-index 082fe0b0e3c0..06c26725a830 100644
---- a/arch/riscv/kernel/mcount-dyn.S
-+++ b/arch/riscv/kernel/mcount-dyn.S
-@@ -85,7 +85,7 @@
- 	addi	sp, sp, -FREGS_SIZE_ON_STACK
- 	REG_S	t0,  FREGS_EPC(sp)
- 	REG_S	x1,  FREGS_RA(sp)
--#ifdef HAVE_FUNCTION_GRAPH_FP_TEST
-+#if defined(HAVE_FUNCTION_GRAPH_FP_TEST) || defined(CONFIG_UNWINDER_DWARF_CFI)
- 	REG_S	x8,  FREGS_S0(sp)
- #endif
- 	REG_S	x6,  FREGS_T1(sp)
-@@ -113,7 +113,7 @@
- 	.macro RESTORE_ABI_REGS
- 	REG_L	t0, FREGS_EPC(sp)
- 	REG_L	x1, FREGS_RA(sp)
--#ifdef HAVE_FUNCTION_GRAPH_FP_TEST
-+#if defined(HAVE_FUNCTION_GRAPH_FP_TEST) || defined(CONFIG_UNWINDER_DWARF_CFI)
- 	REG_L	x8, FREGS_S0(sp)
- #endif
- 	REG_L	x6,  FREGS_T1(sp)
-@@ -183,6 +183,7 @@ SYM_FUNC_START(ftrace_caller)
- #endif
- #endif
- 	SAVE_ABI_REGS
-+SYM_INNER_LABEL(ftrace_caller_saved, SYM_L_GLOBAL)
- 	PREPARE_ARGS
- 
- #ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
-@@ -193,6 +194,7 @@ SYM_INNER_LABEL(ftrace_call, SYM_L_GLOBAL)
- 	jalr	ra, 0(ra)
- #endif
- 	RESTORE_ABI_REGS
-+SYM_INNER_LABEL(ftrace_caller_restore, SYM_L_GLOBAL)
- #ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- 	bnez	t1, ftrace_caller_direct
- #endif
-diff --git a/arch/riscv/kernel/mcount.S b/arch/riscv/kernel/mcount.S
-index da4a4000e57e..c13aa07cdb04 100644
---- a/arch/riscv/kernel/mcount.S
-+++ b/arch/riscv/kernel/mcount.S
-@@ -27,8 +27,17 @@
- 	 */
- 	.macro SAVE_RET_ABI_STATE
- 	addi	sp, sp, -FREGS_SIZE_ON_STACK
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+	.cfi_def_cfa_offset FREGS_SIZE_ON_STACK
-+#endif
- 	REG_S	ra, FREGS_RA(sp)
- 	REG_S	s0, FREGS_S0(sp)
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+	.cfi_offset s0, FREGS_S0 - FREGS_SIZE_ON_STACK
-+	la	t0, return_to_handler
-+	REG_S	t0, FREGS_EPC(sp)
-+	.cfi_offset ra, FREGS_EPC - FREGS_SIZE_ON_STACK
-+#endif
- 	REG_S	a0, FREGS_A0(sp)
- 	REG_S	a1, FREGS_A1(sp)
- 	addi	s0, sp, FREGS_SIZE_ON_STACK
-@@ -41,11 +50,16 @@
- 	.endm
- 
- 	.macro RESTORE_RET_ABI_STATE
--	REG_L	ra, FREGS_RA(sp)
- 	REG_L	s0, FREGS_S0(sp)
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+	.cfi_restore s0
-+#endif
- 	REG_L	a0, FREGS_A0(sp)
- 	REG_L	a1, FREGS_A1(sp)
- 	addi	sp, sp, FREGS_SIZE_ON_STACK
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+	.cfi_def_cfa_offset 0
-+#endif
- 	.endm
- 
- SYM_TYPED_FUNC_START(ftrace_stub)
-@@ -69,13 +83,27 @@ SYM_FUNC_START(return_to_handler)
-  *
-  * So alternatively we check the *old* frame pointer position, that is, the
-  * value stored in -16(s0) on entry, and the s0 on return.
-+ *
-+ * Under CONFIG_UNWINDER_DWARF_CFI, FREGS_EPC(sp) is seeded with
-+ * &return_to_handler before ftrace_return_to_handler() overwrites fregs->epc
-+ * with the popped caller PC, allowing walk_stackframe_cfi() to unwind cleanly
-+ * both before and after current->curr_ret_stack is decremented.
-  */
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+	.cfi_startproc
-+#endif
- 	SAVE_RET_ABI_STATE
- 	mv	a0, sp
- 	call	ftrace_return_to_handler
--	mv	a2, a0
-+	mv	ra, a0
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+	.cfi_same_value ra
-+#endif
- 	RESTORE_RET_ABI_STATE
--	jalr	a2
-+	ret
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+	.cfi_endproc
-+#endif
- SYM_FUNC_END(return_to_handler)
- #endif
- 
-diff --git a/arch/riscv/kernel/module.c b/arch/riscv/kernel/module.c
-index 1961135689db..93092b17b53a 100644
---- a/arch/riscv/kernel/module.c
-+++ b/arch/riscv/kernel/module.c
-@@ -902,5 +902,14 @@ int module_finalize(const Elf_Ehdr *hdr,
- 	if (s)
- 		apply_module_alternatives((void *)s->sh_addr, s->sh_size);
- 
-+	s = find_section(hdr, sechdrs, ".eh_frame");
-+	if (s && (s->sh_flags & SHF_ALLOC))
-+		riscv_unwind_module_init(me, (void *)s->sh_addr, s->sh_size);
++Example output:
++  === build_arm64/vmlinux (arm64) ===
++    .text size              : 18,500,228 B
++    Original .eh_frame      :  2,294,092 B  (1 CIEs, 69,765 FDEs)
++    Original .eh_frame_hdr  :    558,132 B  (combined: 2,852,224 B)
++    Minified .eh_frame      :  2,285,920 B  (1 CIEs, -0.4% vs .eh_frame)
++    Minified + .eh_frame_hdr:  2,844,052 B  (-0.3% combined)
++    FDE bytecode payload    :  1,108,067 B -> 953,348 B (avg 13.7 B/FDE)
++    .sframe section         :  2,938,460 B
++    Minimal DWARF coverage  : 69,765 / 69,765 FDEs (100.00%)
++    Register ops kept/skip  : 125,630 kept (FP/RA), 0 ignored (other GPRs/args)
++    Max remember_state depth: 1
++"""
 +
- 	return 0;
- }
++import argparse
++import os
++import struct
++import sys
++from collections import Counter
 +
-+void module_arch_cleanup(struct module *mod)
-+{
-+	riscv_unwind_module_cleanup(mod);
-+}
-diff --git a/arch/riscv/kernel/probes/rethook.c b/arch/riscv/kernel/probes/rethook.c
-index 5c27c1f50989..1ae3faf48218 100644
---- a/arch/riscv/kernel/probes/rethook.c
-+++ b/arch/riscv/kernel/probes/rethook.c
-@@ -10,7 +10,10 @@
- /* This is called from arch_rethook_trampoline() */
- unsigned long __used arch_rethook_trampoline_callback(struct pt_regs *regs)
- {
--	return rethook_trampoline_handler(regs, regs->s0);
-+	unsigned long frame = IS_ENABLED(CONFIG_UNWINDER_DWARF_CFI) ?
-+			      regs->sp : regs->s0;
-+
-+	return rethook_trampoline_handler(regs, frame);
- }
- 
- NOKPROBE_SYMBOL(arch_rethook_trampoline_callback);
-@@ -18,7 +21,13 @@ NOKPROBE_SYMBOL(arch_rethook_trampoline_callback);
- void arch_rethook_prepare(struct rethook_node *rhn, struct pt_regs *regs, bool mcount)
- {
- 	rhn->ret_addr = regs->ra;
--	rhn->frame = regs->s0;
-+	/*
-+	 * With -fomit-frame-pointer under CONFIG_UNWINDER_DWARF_CFI, nested
-+	 * functions share s0; key the rethook node on the function's entry SP
-+	 * (its DWARF CFA), which matches regs->sp at arch_rethook_trampoline.
-+	 */
-+	rhn->frame = IS_ENABLED(CONFIG_UNWINDER_DWARF_CFI) ?
-+		     regs->sp : regs->s0;
- 
- 	/* replace return addr with trampoline */
- 	regs->ra = (unsigned long)arch_rethook_trampoline;
-diff --git a/arch/riscv/kernel/probes/rethook_trampoline.S b/arch/riscv/kernel/probes/rethook_trampoline.S
-index c3aa8d8cf5af..50c68105c76b 100644
---- a/arch/riscv/kernel/probes/rethook_trampoline.S
-+++ b/arch/riscv/kernel/probes/rethook_trampoline.S
-@@ -78,9 +78,27 @@
- 	REG_L x31, PT_T6(sp)
- 	.endm
- 
-+/*
-+ * Under CONFIG_UNWINDER_DWARF_CFI, PT_EPC(sp) is seeded with
-+ * &arch_rethook_trampoline before rethook_trampoline_handler() overwrites
-+ * regs->epc with the restored caller PC prior to running rethook handlers,
-+ * enabling reliable CFI unwinding across kretprobe and fprobe return hooks.
-+ */
- SYM_CODE_START(arch_rethook_trampoline)
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+	.cfi_startproc
-+#endif
- 	addi sp, sp, -(PT_SIZE_ON_STACK)
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+	.cfi_def_cfa_offset PT_SIZE_ON_STACK
-+#endif
- 	save_all_base_regs
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+	.cfi_offset s0, PT_S0 - PT_SIZE_ON_STACK
-+	la t0, arch_rethook_trampoline
-+	REG_S t0, PT_EPC(sp)
-+	.cfi_offset ra, PT_EPC - PT_SIZE_ON_STACK
-+#endif
- 
- 	move a0, sp /* pt_regs */
- 
-@@ -88,9 +106,21 @@ SYM_CODE_START(arch_rethook_trampoline)
- 
- 	/* use the result as the return-address */
- 	move ra, a0
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+	.cfi_same_value ra
-+#endif
- 
- 	restore_all_base_regs
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+	.cfi_restore s0
-+#endif
- 	addi sp, sp, PT_SIZE_ON_STACK
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+	.cfi_def_cfa_offset 0
-+#endif
- 
- 	ret
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+	.cfi_endproc
-+#endif
- SYM_CODE_END(arch_rethook_trampoline)
-diff --git a/arch/riscv/kernel/stacktrace.c b/arch/riscv/kernel/stacktrace.c
-index c7555447149b..05f846c14787 100644
---- a/arch/riscv/kernel/stacktrace.c
-+++ b/arch/riscv/kernel/stacktrace.c
-@@ -6,16 +6,22 @@
- 
- #include <linux/export.h>
- #include <linux/kallsyms.h>
-+#include <linux/module.h>
-+#include <linux/perf_event.h>
-+#include <linux/rcupdate.h>
-+#include <linux/rethook.h>
- #include <linux/sched.h>
- #include <linux/sched/debug.h>
- #include <linux/sched/task_stack.h>
- #include <linux/stacktrace.h>
- #include <linux/ftrace.h>
-+#include <linux/unwind_dwarf_cfi.h>
- 
-+#include <asm/irq_stack.h>
-+#include <asm/module.h>
-+#include <asm/sections.h>
- #include <asm/stacktrace.h>
- 
--#ifdef CONFIG_FRAME_POINTER
--
- /*
-  * This disables KASAN checking when reading a value from another task's stack,
-  * since the other task could be running on another CPU and could have poisoned
-@@ -35,6 +41,726 @@
- extern asmlinkage void handle_exception(void);
- extern unsigned long ret_from_exception_end;
- 
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+
-+static const struct dwarf_cfi_arch riscv_cfi_arch = {
-+	.ws	= sizeof(unsigned long),
-+	.sp_reg	= 2,	/* sp (x2) */
-+	.fp_reg	= 8,	/* s0/fp (x8) */
-+	.ra_reg	= 1,	/* ra (x1) */
-+};
-+
-+#ifdef CONFIG_MODULES
-+/**
-+ * riscv_unwind_module_init() - Build Minimal DWARF CFI index for a module
-+ * @mod: Module being loaded.
-+ * @eh_frame: Pointer to the module's SHF_ALLOC .eh_frame section.
-+ * @eh_frame_size: Size in bytes of @eh_frame.
-+ *
-+ * Scans and sorts the module's FDEs and publishes the index to
-+ * @mod->arch.dwarf_cfi_index for RCU-protected lockless unwinding.
-+ */
-+void riscv_unwind_module_init(struct module *mod, void *eh_frame,
-+			      size_t eh_frame_size)
-+{
-+	struct mod_dwarf_cfi_index *idx;
-+
-+	idx = dwarf_cfi_mod_alloc(eh_frame, eh_frame_size, &riscv_cfi_arch);
-+	if (idx)
-+		rcu_assign_pointer(mod->arch.dwarf_cfi_index, idx);
++# DWARF register numbers per ELF e_machine (drap = transient stack-realign scratch regs)
++ARCH_REGS = {
++    62: {"name": "x86_64", "sp": 7, "fp": 6, "ra": 16, "drap": {1, 2, 5, 10, 13}},  # EM_X86_64
++    3:  {"name": "i386",   "sp": 4, "fp": 5, "ra": 8,  "drap": {1, 2}},              # EM_386
++    40: {"name": "arm",    "sp": 13, "fp": 11, "ra": 14, "drap": set()},             # EM_ARM
++    183: {"name": "arm64", "sp": 31, "fp": 29, "ra": 30, "drap": set()},             # EM_AARCH64
++    243: {"name": "riscv", "sp": 2, "fp": 8, "ra": 1, "drap": set()},                # EM_RISCV
 +}
 +
-+/**
-+ * riscv_unwind_module_cleanup() - Unpublish and RCU-free module DWARF CFI index
-+ * @mod: Module being unloaded or cleaned up after a failed load.
-+ */
-+void riscv_unwind_module_cleanup(struct module *mod)
-+{
-+	struct mod_dwarf_cfi_index *idx;
++DW_CFA_nop                          = 0x00
++DW_CFA_set_loc                      = 0x01
++DW_CFA_advance_loc1                 = 0x02
++DW_CFA_advance_loc2                 = 0x03
++DW_CFA_advance_loc4                 = 0x04
++DW_CFA_offset_extended              = 0x05
++DW_CFA_restore_extended             = 0x06
++DW_CFA_undefined                    = 0x07
++DW_CFA_same_value                   = 0x08
++DW_CFA_register                     = 0x09
++DW_CFA_remember_state               = 0x0a
++DW_CFA_restore_state                = 0x0b
++DW_CFA_def_cfa                      = 0x0c
++DW_CFA_def_cfa_register             = 0x0d
++DW_CFA_def_cfa_offset               = 0x0e
++DW_CFA_def_cfa_expression           = 0x0f
++DW_CFA_expression                   = 0x10
++DW_CFA_offset_extended_sf           = 0x11
++DW_CFA_def_cfa_sf                   = 0x12
++DW_CFA_def_cfa_offset_sf            = 0x13
++DW_CFA_val_offset                   = 0x14
++DW_CFA_val_offset_sf                = 0x15
++DW_CFA_val_expression               = 0x16
++DW_CFA_AARCH64_negate_ra_state      = 0x2d
++DW_CFA_GNU_args_size                = 0x2e
++DW_CFA_GNU_negative_offset_extended = 0x2f
 +
-+	idx = rcu_replace_pointer(mod->arch.dwarf_cfi_index, /*ptr=*/NULL,
-+				  /*c=*/true);
-+	dwarf_cfi_mod_free_rcu(idx);
++OPCODE_NAMES = {
++    0x00: "DW_CFA_nop",
++    0x01: "DW_CFA_set_loc",
++    0x02: "DW_CFA_advance_loc1",
++    0x03: "DW_CFA_advance_loc2",
++    0x04: "DW_CFA_advance_loc4",
++    0x05: "DW_CFA_offset_extended",
++    0x06: "DW_CFA_restore_extended",
++    0x07: "DW_CFA_undefined",
++    0x08: "DW_CFA_same_value",
++    0x09: "DW_CFA_register",
++    0x0a: "DW_CFA_remember_state",
++    0x0b: "DW_CFA_restore_state",
++    0x0c: "DW_CFA_def_cfa",
++    0x0d: "DW_CFA_def_cfa_register",
++    0x0e: "DW_CFA_def_cfa_offset",
++    0x0f: "DW_CFA_def_cfa_expression",
++    0x10: "DW_CFA_expression",
++    0x11: "DW_CFA_offset_extended_sf",
++    0x12: "DW_CFA_def_cfa_sf",
++    0x13: "DW_CFA_def_cfa_offset_sf",
++    0x14: "DW_CFA_val_offset",
++    0x15: "DW_CFA_val_offset_sf",
++    0x16: "DW_CFA_val_expression",
++    0x2d: "DW_CFA_negate_ra_state/window_save",
++    0x2e: "DW_CFA_GNU_args_size",
++    0x2f: "DW_CFA_GNU_negative_offset_extended",
 +}
 +
-+/**
-+ * riscv_dwarf_cfi_module_find() - Look up Minimal DWARF CFI in loadable modules
-+ * @pc: Kernel instruction pointer to evaluate.
-+ * @row: Output evaluated Minimal DWARF CFI row.
-+ *
-+ * Uses rcu_read_lock_sched_notrace() and rcu_dereference_raw() so lookups are
-+ * safe inside noinstr stack walks and NMI contexts.
-+ *
-+ * Return: 0 on success, -ENOENT if @pc is not in a module FDE, or a negative
-+ * errno on invalid FDE bytecode.
-+ */
-+static __always_inline int
-+riscv_dwarf_cfi_module_find(unsigned long pc, struct dwarf_cfi_row *row)
-+{
-+	struct mod_dwarf_cfi_index *idx;
-+	struct module *mod;
-+	int ret;
++DW_EH_PE_omit     = 0xff
++DW_EH_PE_absptr   = 0x00
++DW_EH_PE_uleb128  = 0x01
++DW_EH_PE_udata2   = 0x02
++DW_EH_PE_udata4   = 0x03
++DW_EH_PE_udata8   = 0x04
++DW_EH_PE_sleb128  = 0x09
++DW_EH_PE_sdata2   = 0x0a
++DW_EH_PE_sdata4   = 0x0b
++DW_EH_PE_sdata8   = 0x0c
++DW_EH_PE_pcrel    = 0x10
++DW_EH_PE_indirect = 0x80
 +
-+	rcu_read_lock_sched_notrace();
-+	mod = __module_address(pc);
-+	if (!mod) {
-+		rcu_read_unlock_sched_notrace();
-+		return -ENOENT;
-+	}
-+	idx = rcu_dereference_raw(mod->arch.dwarf_cfi_index);
-+	ret = dwarf_cfi_mod_eval(idx, pc, &riscv_cfi_arch, row);
-+	rcu_read_unlock_sched_notrace();
-+	return ret;
-+}
-+#else
-+static __always_inline int
-+riscv_dwarf_cfi_module_find(unsigned long pc, struct dwarf_cfi_row *row)
-+{
-+	return -ENOENT;
-+}
-+#endif /* CONFIG_MODULES */
 +
-+/**
-+ * riscv_dwarf_cfi_find() - Evaluate Minimal DWARF CFI for core or module @pc
-+ * @pc: Kernel instruction pointer to look up.
-+ * @row: Output evaluated Minimal DWARF CFI row.
-+ *
-+ * Return: 0 on success, -ENOENT if no FDE covers @pc, or a negative errno on
-+ * malformed CFI data.
-+ */
-+static __always_inline int
-+riscv_dwarf_cfi_find(unsigned long pc, struct dwarf_cfi_row *row)
-+{
-+	size_t hdr_size = __stop_eh_frame_hdr - __start_eh_frame_hdr;
-+	int err;
++def read_uleb128(buf, pos, end):
++    val = 0
++    shift = 0
++    while pos < end:
++        b = buf[pos]
++        pos += 1
++        val |= (b & 0x7f) << shift
++        if not (b & 0x80):
++            return val, pos
++        shift += 7
++        if shift > 63:
++            raise ValueError("ULEB128 overflow")
++    raise ValueError("Truncated ULEB128")
 +
-+	err = dwarf_cfi_unwind_eh_frame_hdr(__start_eh_frame_hdr, hdr_size,
-+					    __start_eh_frame, __stop_eh_frame,
-+					    pc, &riscv_cfi_arch, row);
-+	if (!err)
-+		return 0;
 +
-+	return riscv_dwarf_cfi_module_find(pc, row);
-+}
++def read_sleb128(buf, pos, end):
++    val = 0
++    shift = 0
++    while pos < end:
++        b = buf[pos]
++        pos += 1
++        val |= (b & 0x7f) << shift
++        shift += 7
++        if not (b & 0x80):
++            if b & 0x40:
++                val |= -(1 << shift)
++            return val, pos
++        if shift > 63:
++            raise ValueError("SLEB128 overflow")
++    raise ValueError("Truncated SLEB128")
 +
-+/**
-+ * riscv_fgraph_recover() - Recover original return address from ftrace_graph
-+ * @task: Task being unwound.
-+ * @graph_idx: Shadow-stack index cursor for ftrace_graph_ret_addr().
-+ * @pc: Candidate return address (potentially &return_to_handler).
-+ * @cfa: Callee frame's Canonical Frame Address (entry SP).
-+ * @ra_slot: Stack slot where @pc was saved (overridden when DYNAMIC_FTRACE_WITH_ARGS).
-+ *
-+ * Return: Restored caller PC if @pc matched &return_to_handler, or @pc.
-+ */
-+static __always_inline unsigned long
-+riscv_fgraph_recover(struct task_struct *task, int *graph_idx,
-+		     unsigned long pc, unsigned long cfa,
-+		     unsigned long *ra_slot)
-+{
-+#if defined(CONFIG_FUNCTION_GRAPH_TRACER) && defined(CONFIG_DYNAMIC_FTRACE_WITH_ARGS)
-+	unsigned long fregs_addr = cfa - ALIGN(sizeof(struct __arch_ftrace_regs),
-+					       STACK_ALIGN);
 +
-+	ra_slot = &((struct __arch_ftrace_regs *)fregs_addr)->ra;
-+#endif
-+	return ftrace_graph_ret_addr(task, graph_idx, pc, ra_slot);
-+}
++def encode_uleb128(val):
++    if val < 0:
++        raise ValueError("Negative ULEB128")
++    out = bytearray()
++    while True:
++        b = val & 0x7f
++        val >>= 7
++        if val:
++            b |= 0x80
++        out.append(b)
++        if not val:
++            break
++    return bytes(out)
 +
-+/**
-+ * riscv_recover_ret_addr() - Recover ftrace_graph and rethook return addresses
-+ * @task: Task being unwound.
-+ * @graph_idx: Shadow-stack cursor for ftrace_graph_ret_addr().
-+ * @kr_cur: Shadow-list cursor for rethook_find_ret_addr().
-+ * @pc: Candidate return address to recover.
-+ * @cfa: Callee frame's Canonical Frame Address (entry SP).
-+ * @ra_slot: Stack slot where @pc was saved (or NULL if still in ra).
-+ *
-+ * Recovers original caller PCs across both ftrace_graph and rethook shadow
-+ * stacks in either hooking order, keying rethook lookups on @cfa (matching
-+ * arch_rethook_prepare() under CONFIG_UNWINDER_DWARF_CFI).
-+ *
-+ * Return: Restored caller PC, or 0 if recovery failed.
-+ */
-+static __always_inline unsigned long
-+riscv_recover_ret_addr(struct task_struct *task, int *graph_idx,
-+		       struct llist_node **kr_cur, unsigned long pc,
-+		       unsigned long cfa, unsigned long *ra_slot)
-+{
-+	pc = riscv_fgraph_recover(task, graph_idx, pc, cfa, ra_slot);
-+#ifdef CONFIG_RETHOOK
-+	if (is_rethook_trampoline(pc)) {
-+		pc = rethook_find_ret_addr(task, cfa, kr_cur);
-+		if (!pc || is_rethook_trampoline(pc))
-+			return 0;
-+	}
-+#endif
-+	pc = riscv_fgraph_recover(task, graph_idx, pc, cfa, ra_slot);
-+#ifdef CONFIG_FUNCTION_GRAPH_TRACER
-+	if (pc == (unsigned long)return_to_handler)
-+		return 0;
-+#endif
-+	return pc;
-+}
 +
-+#define RISCV_STACK_TASK	BIT(0)
-+#define RISCV_STACK_IRQ		BIT(1)
-+#define RISCV_STACK_OVERFLOW	BIT(2)
++def encode_sleb128(val):
++    out = bytearray()
++    more = True
++    while more:
++        b = val & 0x7f
++        val >>= 7
++        if (val == 0 and not (b & 0x40)) or (val == -1 and (b & 0x40)):
++            more = False
++        else:
++            b |= 0x80
++        out.append(b)
++    return bytes(out)
 +
-+/**
-+ * riscv_stack_bounds() - Validate that [@addr, @addr + @size) lies on a stack
-+ * @task: Task whose stacks are checked.
-+ * @addr: Start virtual address of the stack access.
-+ * @size: Access size in bytes.
-+ * @out_low: Output lower bound of the matched stack.
-+ * @out_high: Output upper bound of the matched stack.
-+ *
-+ * Checks @task's task stack, and when unwinding @current in non-preemptible
-+ * context, also checks the per-CPU IRQ and vmap overflow stacks.
-+ *
-+ * Return: RISCV_STACK_* bit for the matched stack, or 0 if out of bounds.
-+ */
-+static __always_inline unsigned int
-+riscv_stack_bounds(struct task_struct *task, unsigned long addr,
-+		   size_t size, unsigned long *out_low,
-+		   unsigned long *out_high)
-+{
-+	unsigned long low, high;
 +
-+	low = (unsigned long)task_stack_page(task);
-+	high = low + THREAD_SIZE;
-+	if (addr >= low && addr < high && addr + size >= addr &&
-+	    addr + size <= high) {
-+		*out_low = low;
-+		*out_high = high;
-+		return RISCV_STACK_TASK;
-+	}
++def encoded_ptr_size(enc, addr_size):
++    if enc == DW_EH_PE_omit:
++        return 0
++    fmt = enc & 0x0f
++    if fmt == DW_EH_PE_absptr:
++        return addr_size
++    if fmt in (DW_EH_PE_udata2, DW_EH_PE_sdata2):
++        return 2
++    if fmt in (DW_EH_PE_udata4, DW_EH_PE_sdata4):
++        return 4
++    if fmt in (DW_EH_PE_udata8, DW_EH_PE_sdata8):
++        return 8
++    return None
 +
-+	if (task == current && !preemptible()) {
-+#ifdef CONFIG_IRQ_STACKS
-+		low = (unsigned long)raw_cpu_read(irq_stack_ptr);
-+		high = low + IRQ_STACK_SIZE;
-+		if (low && addr >= low && addr < high && addr + size >= addr &&
-+		    addr + size <= high) {
-+			*out_low = low;
-+			*out_high = high;
-+			return RISCV_STACK_IRQ;
-+		}
-+#endif
-+#ifdef CONFIG_VMAP_STACK
-+		low = (unsigned long)raw_cpu_ptr(overflow_stack);
-+		high = low + OVERFLOW_STACK_SIZE;
-+		if (addr >= low && addr < high && addr + size >= addr &&
-+		    addr + size <= high) {
-+			*out_low = low;
-+			*out_high = high;
-+			return RISCV_STACK_OVERFLOW;
-+		}
-+#endif
-+	}
 +
-+	return 0;
-+}
++def read_encoded_ptr(buf, pos, end, enc, addr_size, sec_vaddr):
++    if enc == DW_EH_PE_omit:
++        return 0, pos
++    orig_pos = pos
++    fmt = enc & 0x0f
++    if fmt == DW_EH_PE_absptr:
++        fmt_str = "<Q" if addr_size == 8 else "<I"
++        val = struct.unpack_from(fmt_str, buf, pos)[0]
++        pos += addr_size
++    elif fmt == DW_EH_PE_udata2:
++        val = struct.unpack_from("<H", buf, pos)[0]
++        pos += 2
++    elif fmt == DW_EH_PE_sdata2:
++        val = struct.unpack_from("<h", buf, pos)[0]
++        pos += 2
++    elif fmt == DW_EH_PE_udata4:
++        val = struct.unpack_from("<I", buf, pos)[0]
++        pos += 4
++    elif fmt == DW_EH_PE_sdata4:
++        val = struct.unpack_from("<i", buf, pos)[0]
++        pos += 4
++    elif fmt == DW_EH_PE_udata8:
++        val = struct.unpack_from("<Q", buf, pos)[0]
++        pos += 8
++    elif fmt == DW_EH_PE_sdata8:
++        val = struct.unpack_from("<q", buf, pos)[0]
++        pos += 8
++    elif fmt == DW_EH_PE_uleb128:
++        val, pos = read_uleb128(buf, pos, end)
++    elif fmt == DW_EH_PE_sleb128:
++        val, pos = read_sleb128(buf, pos, end)
++    else:
++        raise ValueError(f"Unsupported pointer format 0x{enc:02x}")
 +
-+#ifdef CONFIG_PERF_EVENTS
-+/**
-+ * riscv_unwind_perf_caller_regs() - Populate caller pt_regs for perf events
-+ * @regs: Output pt_regs initialized for the caller frame.
-+ * @pc: Current instruction pointer inside the function invoking perf_fetch_caller_regs.
-+ * @caller_ip: Target caller instruction pointer to record in @regs->epc.
-+ * @sp: Current stack pointer corresponding to @pc.
-+ * @fp: Current s0 value corresponding to @pc.
-+ *
-+ * Steps one frame via Minimal DWARF CFI at @pc so @regs->sp, @regs->s0, and
-+ * @regs->epc reflect the caller's stack state under -fomit-frame-pointer.
-+ */
-+void riscv_unwind_perf_caller_regs(struct pt_regs *regs, unsigned long pc,
-+				   unsigned long caller_ip, unsigned long sp,
-+				   unsigned long fp)
-+{
-+	unsigned long cur_low = 0, cur_high = 0, low = 0, high = 0;
-+	struct llist_node *kr_cur = NULL;
-+	struct dwarf_cfi_row row;
-+	int graph_idx = 0;
++    adj = enc & 0x70
++    if adj == DW_EH_PE_pcrel:
++        val = (sec_vaddr + orig_pos + val) & ((1 << (addr_size * 8)) - 1)
++    elif adj != 0x00:
++        raise ValueError(f"Unsupported pointer adjustment 0x{enc:02x}")
++    return val, pos
 +
-+	regs->epc = caller_ip;
-+	regs->ra = 0;
-+	regs->s0 = fp;
-+	regs->sp = sp;
-+	regs->status = SR_PP;
 +
-+	if ((sp & (sizeof(long) - 1)) ||
-+	    !riscv_stack_bounds(current, sp, /*size=*/0, &cur_low, &cur_high))
-+		return;
++def parse_elf_sections(data):
++    if data[:4] != b"\x7fELF":
++        raise ValueError("Not an ELF file")
++    ei_class = data[4]
++    ei_data = data[5]
++    if ei_data != 1:
++        raise ValueError("Only little-endian ELF supported")
++    if ei_class == 2:
++        addr_size = 8
++        _, e_machine, _, _, _, e_shoff, _, _, _, _, e_shentsize, e_shnum, e_shstrndx = (
++            struct.unpack_from("<HHIQQQIHHHHHH", data, 16)
++        )
++        sh_fmt = "<IIQQQQIIQQ"
++    elif ei_class == 1:
++        addr_size = 4
++        _, e_machine, _, _, _, e_shoff, _, _, _, _, e_shentsize, e_shnum, e_shstrndx = (
++            struct.unpack_from("<HHIIIIIHHHHHH", data, 16)
++        )
++        sh_fmt = "<IIIIIIIIII"
++    else:
++        raise ValueError(f"Unknown ELF class {ei_class}")
 +
-+	if (riscv_dwarf_cfi_find(pc, &row))
-+		return;
++    sections = {}
++    if e_shoff == 0:
++        raise ValueError("ELF has no section headers")
 +
-+	switch (row.cfa_base) {
-+	case DWARF_CFI_BASE_SP:
-+		sp += row.cfa_off;
-+		break;
-+	case DWARF_CFI_BASE_FP:
-+		sp = fp + row.cfa_off;
-+		break;
-+	case DWARF_CFI_BASE_FP_INDIRECT: {
-+		unsigned long cfa_addr = fp + row.cfa_off;
++    if e_shnum == 0 or e_shstrndx == 0xffff:
++        sh0 = struct.unpack_from(sh_fmt, data, e_shoff)
++        if e_shnum == 0:
++            e_shnum = sh0[5]
++        if e_shstrndx == 0xffff:
++            e_shstrndx = sh0[6]
 +
-+		if ((cfa_addr & (sizeof(long) - 1)) ||
-+		    !riscv_stack_bounds(current, cfa_addr, sizeof(long),
-+					&low, &high) ||
-+		    low != cur_low)
-+			return;
-+		sp = READ_ONCE(*(unsigned long *)cfa_addr);
-+		break;
-+	}
-+	default:
-+		return;
-+	}
++    if e_shnum == 0 or e_shstrndx >= e_shnum:
++        raise ValueError("ELF has invalid section header counts")
 +
-+	if ((sp & (sizeof(long) - 1)) || sp < cur_low || sp > cur_high)
-+		return;
++    shdrs = []
++    for i in range(e_shnum):
++        off = e_shoff + i * e_shentsize
++        shdrs.append(struct.unpack_from(sh_fmt, data, off))
 +
-+	if (row.fp_rule == DWARF_CFI_RULE_OFFSET) {
-+		unsigned long fp_addr = sp + row.fp_off;
++    shstr_off = shdrs[e_shstrndx][4]
++    shstr_sz = shdrs[e_shstrndx][5]
++    shstrtab = data[shstr_off : shstr_off + shstr_sz]
 +
-+		if ((fp_addr & (sizeof(long) - 1)) ||
-+		    !riscv_stack_bounds(current, fp_addr, sizeof(long),
-+					&low, &high) ||
-+		    low != cur_low)
-+			return;
-+		fp = READ_ONCE(*(unsigned long *)fp_addr);
-+	} else if (row.fp_rule == DWARF_CFI_RULE_FP_OFFSET) {
-+		unsigned long fp_addr = fp + row.fp_off;
++    for sh in shdrs:
++        sh_name_idx = sh[0]
++        sh_type = sh[1]
++        sh_addr = sh[3]
++        sh_offset = sh[4]
++        sh_size = sh[5]
++        end_idx = shstrtab.find(b"\x00", sh_name_idx)
++        name = shstrtab[sh_name_idx:end_idx].decode("utf-8", errors="replace")
++        # SHT_NOBITS == 8
++        sec_bytes = b"" if sh_type == 8 else data[sh_offset : sh_offset + sh_size]
++        if name in sections:
++            # Accumulate sizes for multi-section objects (e.g. .text.*)
++            prev_addr, prev_sz, prev_b = sections[name]
++            sections[name] = (prev_addr, prev_sz + sh_size, prev_b)
++        else:
++            sections[name] = (sh_addr, sh_size, sec_bytes)
 +
-+		if ((fp_addr & (sizeof(long) - 1)) ||
-+		    !riscv_stack_bounds(current, fp_addr, sizeof(long),
-+					&low, &high) ||
-+		    low != cur_low)
-+			return;
-+		fp = READ_ONCE(*(unsigned long *)fp_addr);
-+	}
++    return e_machine, addr_size, sections
 +
-+	caller_ip = riscv_recover_ret_addr(current, &graph_idx, &kr_cur,
-+					   caller_ip, sp, /*ra_slot=*/NULL);
-+	if (caller_ip)
-+		regs->epc = caller_ip;
-+	regs->sp = sp;
-+	regs->s0 = fp;
-+}
-+EXPORT_SYMBOL_GPL(riscv_unwind_perf_caller_regs);
-+#endif /* CONFIG_PERF_EVENTS */
 +
-+/**
-+ * walk_stackframe_cfi() - Unwind a RISC-V kernel stack via Minimal DWARF CFI
-+ * @task: Target task to unwind (NULL defaults to current).
-+ * @regs: Optional starting register state (rejected when @require_reliable).
-+ * @fn: Callback invoked for each unwound PC; returning false stops the walk.
-+ * @arg: Opaque cookie passed to @fn.
-+ * @require_reliable: When true, reject exception boundaries, unannotated leaf
-+ *                    fallbacks, and non-CFI frame-pointer guesses.
-+ *
-+ * Return: 0 on clean stack termination (or early callback stop when
-+ * !@require_reliable), or -EINVAL when a reliable walk cannot be guaranteed.
-+ */
-+static __always_inline int
-+walk_stackframe_cfi(struct task_struct *task, struct pt_regs *regs,
-+		    bool (*fn)(void *, unsigned long), void *arg,
-+		    bool require_reliable)
-+{
-+	unsigned long fp, sp, pc, ra = 0;
-+	bool ra_valid = false, exact_pc = false, unreliable = false;
-+	struct llist_node *kr_cur = NULL;
-+	unsigned int used_stacks = 0;
-+	int graph_idx = 0;
-+	int level = 0;
++def parse_cie(buf, entry_off, body_off, entry_end, addr_size, sec_vaddr):
++    pos = body_off
++    version = buf[pos]
++    pos += 1
++    nul = buf.find(b"\x00", pos, entry_end)
++    if nul < 0:
++        raise ValueError("Unterminated CIE augmentation string")
++    aug = buf[pos:nul].decode("ascii", errors="replace")
++    pos = nul + 1
 +
-+	if (!task)
-+		task = current;
++    if version == 4:
++        addr_size = buf[pos]
++        seg_size = buf[pos + 1]
++        pos += 2
++        if seg_size != 0:
++            raise ValueError("Non-zero segment selector size")
 +
-+	if (regs) {
-+		if (require_reliable)
-+			return -EINVAL;
-+		fp = frame_pointer(regs);
-+		sp = kernel_stack_pointer(regs);
-+		pc = instruction_pointer(regs);
-+		ra = regs->ra;
-+		ra_valid = !!ra;
-+		exact_pc = true;
-+	} else if (task == current) {
-+		asm volatile("1: auipc %0, 0\n\t"
-+			     "mv %1, s0"
-+			     : "=r"(pc), "=r"(fp));
-+		sp = current_stack_pointer;
-+		ra = (unsigned long)__builtin_return_address(0);
-+		ra_valid = true;
-+		exact_pc = true;
-+		level = -1;
-+	} else {
-+		fp = task->thread.s[0];
-+		sp = task->thread.sp;
-+		pc = task->thread.ra;
-+	}
++    code_align, pos = read_uleb128(buf, pos, entry_end)
++    data_align, pos = read_sleb128(buf, pos, entry_end)
++    if version == 1:
++        ra_reg = buf[pos]
++        pos += 1
++    else:
++        ra_reg, pos = read_uleb128(buf, pos, entry_end)
 +
-+	for (;;) {
-+		unsigned long lookup_pc, cfa, next_pc, next_fp = fp;
-+		unsigned long cur_low = 0, cur_high = 0, low = 0, high = 0;
-+		unsigned long tsk_low = (unsigned long)task_stack_page(task);
-+		unsigned int cur_stk, next_stk;
-+		struct dwarf_cfi_row row;
-+		int err;
++    fde_enc = DW_EH_PE_absptr
++    lsda_enc = DW_EH_PE_omit
++    has_z = False
++    is_signal = False
++    has_indirect = False
 +
-+		if (!pc) {
-+			if (exact_pc && ra_valid && !require_reliable) {
-+				pc = ra;
-+				ra_valid = false;
-+				exact_pc = false;
-+				unreliable = true;
-+				continue;
-+			}
-+			return require_reliable ? -EINVAL : 0;
-+		}
++    if aug.startswith("z"):
++        has_z = True
++        aug_len, pos = read_uleb128(buf, pos, entry_end)
++        aug_end = pos + aug_len
++        ap = pos
++        for ch in aug[1:]:
++            if ch == "L":
++                lsda_enc = buf[ap]
++                if lsda_enc != DW_EH_PE_omit and (lsda_enc & DW_EH_PE_indirect):
++                    has_indirect = True
++                ap += 1
++            elif ch == "P":
++                p_enc = buf[ap]
++                ap += 1
++                if p_enc & DW_EH_PE_indirect:
++                    has_indirect = True
++                _, ap = read_encoded_ptr(buf, ap, aug_end, p_enc & ~DW_EH_PE_indirect, addr_size, sec_vaddr)
++            elif ch == "R":
++                fde_enc = buf[ap]
++                if fde_enc & DW_EH_PE_indirect:
++                    has_indirect = True
++                ap += 1
++            elif ch == "S":
++                is_signal = True
++            elif ch == "B":
++                # BTI / PAC key on arm64
++                pass
++            else:
++                raise ValueError(f"Unknown CIE augmentation '{ch}' in '{aug}'")
++        pos = aug_end
++    elif aug != "":
++        raise ValueError(f"Unsupported non-z CIE augmentation '{aug}'")
 +
-+		/*
-+		 * Boot and secondary CPU idle tasks enter C code from
-+		 * .head.text ([_start, _stext)), which precedes _stext.
-+		 */
-+		if (is_idle_task(task) &&
-+		    sp >= (unsigned long)task_pt_regs(task) &&
-+		    sp <= tsk_low + THREAD_SIZE &&
-+		    pc >= (unsigned long)_start &&
-+		    pc < (unsigned long)_stext)
-+			return 0;
++    return {
++        "offset": entry_off,
++        "version": version,
++        "aug": aug,
++        "addr_size": addr_size,
++        "code_align": code_align,
++        "data_align": data_align,
++        "ra_reg": ra_reg,
++        "fde_enc": fde_enc,
++        "lsda_enc": lsda_enc,
++        "has_z": has_z,
++        "is_signal": is_signal,
++        "has_indirect_fde": bool(fde_enc & DW_EH_PE_indirect),
++        "insns": bytes(buf[pos:entry_end]),
++    }
 +
-+		if (!__kernel_text_address(pc))
-+			return require_reliable ? -EINVAL : 0;
 +
-+		if (sp == (unsigned long)task_pt_regs(task) &&
-+		    pc >= (unsigned long)ret_from_fork_kernel_asm &&
-+		    pc < (unsigned long)&ret_from_fork_asm_end) {
-+			if (level++ >= 0 && !fn(arg, pc))
-+				return require_reliable ? -EINVAL : 0;
-+			return 0;
-+		}
++def decode_and_minify_insns(insns, cie, arch, init_row=None, is_cie=False):
++    """
++    Decode CFI instructions, validate against Minimal DWARF subset, and emit
++    minified instructions keeping only PC advances and {CFA(SP|FP), FP, RA}.
++    """
++    sp_reg = arch["sp"]
++    fp_reg = arch["fp"]
++    ra_reg = cie["ra_reg"]
++    tracked_regs = {fp_reg, ra_reg}
 +
-+		if (level++ >= 0 && !fn(arg, pc))
-+			return require_reliable ? -EINVAL : 0;
++    pos = 0
++    end = len(insns)
++    op_counts = Counter()
++    ignored_reg_ops = 0
++    kept_reg_ops = 0
++    max_state_depth = 0
++    reasons = []
 +
-+		if (pc >= (unsigned long)handle_exception &&
-+		    pc < (unsigned long)&ret_from_exception_end) {
-+			struct pt_regs *er = (struct pt_regs *)sp;
-+			unsigned long status, next_sp, next_ra;
++    if init_row is None:
++        row = {
++            "cfa_reg": None,
++            "cfa_off": 0,
++            "fp": ("same", 0),
++            "ra": ("same", 0),
++            "ra_signed": False,
++        }
++    else:
++        row = dict(init_row)
 +
-+			if (sp & (sizeof(long) - 1))
-+				return -EINVAL;
-+			cur_stk = riscv_stack_bounds(task, sp, sizeof(*er),
-+						     &cur_low, &cur_high);
-+			if (!cur_stk)
-+				return -EINVAL;
-+			status = READ_ONCE_TASK_STACK(task, er->status);
-+			if ((status & SR_PP) == 0)
-+				return 0;
-+			if (require_reliable)
-+				return -EINVAL;
++    cie_base_row = dict(row)
++    state_stack = []
 +
-+			next_pc = READ_ONCE_TASK_STACK(task, er->epc);
-+			next_sp = READ_ONCE_TASK_STACK(task, er->sp);
-+			next_fp = READ_ONCE_TASK_STACK(task, er->s0);
-+			next_ra = READ_ONCE_TASK_STACK(task, er->ra);
-+			if (next_sp & (sizeof(long) - 1))
-+				return -EINVAL;
-+			next_stk = riscv_stack_bounds(task, next_sp,
-+						      sizeof(long),
-+						      &low, &high);
-+			if (!next_stk)
-+				return -EINVAL;
-+			if (low == cur_low) {
-+				if (next_sp <= sp)
-+					return -EINVAL;
-+			} else {
-+				if (used_stacks & next_stk)
-+					return -EINVAL;
-+				used_stacks |= cur_stk;
-+			}
-+			pc = next_pc;
-+			sp = next_sp;
-+			fp = next_fp;
-+			ra = next_ra;
-+			ra_valid = true;
-+			exact_pc = true;
-+			unreliable = true;
-+			continue;
-+		}
++    # Stream of abstract events: ("adv", delta_units) or ("op", raw_bytes, new_row_snapshot)
++    events = []
++    pending_adv = 0
 +
-+		lookup_pc = exact_pc ? pc : pc - 2;
-+		err = riscv_dwarf_cfi_find(lookup_pc, &row);
-+		if (err) {
-+#ifdef CONFIG_DYNAMIC_FTRACE_WITH_ARGS
-+			if (lookup_pc >= (unsigned long)ftrace_caller_saved &&
-+			    lookup_pc < (unsigned long)ftrace_caller_restore &&
-+			    (!exact_pc || !require_reliable)) {
-+				size_t fsize = ALIGN(sizeof(struct __arch_ftrace_regs),
-+						     STACK_ALIGN);
-+				struct __arch_ftrace_regs *fregs = (void *)sp;
++    def emit_op(raw_bytes):
++        nonlocal pending_adv
++        if pending_adv > 0 and not is_cie:
++            events.append(("adv", pending_adv))
++            pending_adv = 0
++        events.append(("op", raw_bytes))
 +
-+				if ((sp & (sizeof(long) - 1)) ||
-+				    !riscv_stack_bounds(task, sp, fsize,
-+							&cur_low, &cur_high) ||
-+				    READ_ONCE_TASK_STACK(task, fregs->sp) != sp + fsize)
-+					return -EINVAL;
-+				pc = READ_ONCE_TASK_STACK(task, fregs->epc);
-+				fp = READ_ONCE_TASK_STACK(task, fregs->s0);
-+				ra = READ_ONCE_TASK_STACK(task, fregs->ra);
-+				sp += fsize;
-+				ra_valid = true;
-+				exact_pc = true;
-+				if (!pc)
-+					return -EINVAL;
-+				continue;
-+			}
-+#endif
-+#ifdef CONFIG_IRQ_STACKS
-+			/*
-+			 * call_on_irq_stack() saves {fp, ra} below s0 on the
-+			 * task stack before switching sp to irq_stack_ptr.
-+			 */
-+			if (!require_reliable &&
-+			    task == current && !preemptible() &&
-+			    !(used_stacks & RISCV_STACK_TASK) &&
-+			    pc >= (unsigned long)call_on_irq_stack &&
-+			    pc < (unsigned long)&call_on_irq_stack_end) {
-+				unsigned long irq_low =
-+					(unsigned long)raw_cpu_read(irq_stack_ptr);
++    while pos < end:
++        op = insns[pos]
++        pos += 1
++        hi = op & 0xc0
++        lo = op & 0x3f
 +
-+				if (irq_low && sp > irq_low &&
-+				    sp <= irq_low + IRQ_STACK_SIZE &&
-+				    fp && !(fp & 0x7) &&
-+				    fp >= tsk_low + sizeof(struct stackframe) &&
-+				    fp <= tsk_low + THREAD_SIZE) {
-+					struct stackframe *fr =
-+						(struct stackframe *)fp - 1;
-+					unsigned long old_fp = fp;
++        if hi == 0x40:
++            op_counts["DW_CFA_advance_loc"] += 1
++            pending_adv += lo
++            continue
++        if hi == 0x80:
++            op_counts["DW_CFA_offset"] += 1
++            reg = lo
++            uoff, pos = read_uleb128(insns, pos, end)
++            off = uoff * cie["data_align"]
++            if reg in tracked_regs:
++                kept_reg_ops += 1
++                key = "fp" if reg == fp_reg else "ra"
++                if row[key] != ("off", off):
++                    row[key] = ("off", off)
++                    emit_op(bytes([0x80 | reg]) + encode_uleb128(uoff))
++            else:
++                ignored_reg_ops += 1
++            continue
++        if hi == 0xc0:
++            op_counts["DW_CFA_restore"] += 1
++            reg = lo
++            if reg in tracked_regs:
++                kept_reg_ops += 1
++                key = "fp" if reg == fp_reg else "ra"
++                if row[key] != cie_base_row[key]:
++                    row[key] = cie_base_row[key]
++                    emit_op(bytes([0xc0 | reg]))
++            else:
++                ignored_reg_ops += 1
++            continue
 +
-+					next_fp = READ_ONCE_TASK_STACK(task, fr->fp);
-+					next_pc = READ_ONCE_TASK_STACK(task, fr->ra);
-+					next_pc = riscv_recover_ret_addr(task,
-+							&graph_idx, &kr_cur,
-+							next_pc, old_fp,
-+							&fr->ra);
-+					if (!next_pc)
-+						return 0;
-+					used_stacks |= RISCV_STACK_IRQ;
-+					fp = next_fp;
-+					pc = next_pc;
-+					sp = old_fp;
-+					ra_valid = false;
-+					exact_pc = false;
-+					unreliable = true;
-+					continue;
-+				}
-+			}
-+#endif
-+			if (exact_pc && ra_valid && !require_reliable &&
-+			    pc >= (unsigned long)_stext &&
-+			    pc < (unsigned long)_etext) {
-+				pc = riscv_recover_ret_addr(task, &graph_idx,
-+							    &kr_cur, ra, sp,
-+							    /*ra_slot=*/NULL);
-+				if (!pc)
-+					return 0;
-+				ra_valid = false;
-+				exact_pc = false;
-+				unreliable = true;
-+				continue;
-+			}
++        name = OPCODE_NAMES.get(op, f"DW_CFA_unknown_0x{op:02x}")
++        op_counts[name] += 1
 +
-+			/*
-+			 * Fallback to frame-pointer record at (fp - 16) for
-+			 * JITed BPF programs and BPF trampolines.
-+			 */
-+			if (!require_reliable && !(sp & 0x7) &&
-+			    riscv_stack_bounds(task, sp, /*size=*/0, &cur_low,
-+					       &cur_high) &&
-+			    !(fp & 0x7) &&
-+			    fp >= sp + sizeof(struct stackframe) &&
-+			    fp <= cur_high) {
-+				struct stackframe *fr = (struct stackframe *)fp - 1;
-+				unsigned long old_fp = fp;
++        if op == DW_CFA_nop:
++            continue
++        elif op == DW_CFA_advance_loc1:
++            pending_adv += insns[pos]
++            pos += 1
++        elif op == DW_CFA_advance_loc2:
++            pending_adv += struct.unpack_from("<H", insns, pos)[0]
++            pos += 2
++        elif op == DW_CFA_advance_loc4:
++            pending_adv += struct.unpack_from("<I", insns, pos)[0]
++            pos += 4
++        elif op == DW_CFA_def_cfa:
++            reg, pos = read_uleb128(insns, pos, end)
++            uoff, pos = read_uleb128(insns, pos, end)
++            if reg not in (sp_reg, fp_reg) and reg not in arch["drap"]:
++                reasons.append(f"def_cfa non-SP/FP reg={reg}")
++            if row["cfa_reg"] != reg or row["cfa_off"] != uoff:
++                row["cfa_reg"] = reg
++                row["cfa_off"] = uoff
++                emit_op(bytes([DW_CFA_def_cfa]) + encode_uleb128(reg) + encode_uleb128(uoff))
++        elif op == DW_CFA_def_cfa_sf:
++            reg, pos = read_uleb128(insns, pos, end)
++            soff, pos = read_sleb128(insns, pos, end)
++            off = soff * cie["data_align"]
++            if reg not in (sp_reg, fp_reg) and reg not in arch["drap"]:
++                reasons.append(f"def_cfa_sf non-SP/FP reg={reg}")
++            if row["cfa_reg"] != reg or row["cfa_off"] != off:
++                row["cfa_reg"] = reg
++                row["cfa_off"] = off
++                emit_op(bytes([DW_CFA_def_cfa_sf]) + encode_uleb128(reg) + encode_sleb128(soff))
++        elif op == DW_CFA_def_cfa_register:
++            reg, pos = read_uleb128(insns, pos, end)
++            if not isinstance(row["cfa_reg"], int):
++                reasons.append("def_cfa_register without reg+off CFA")
++            if reg not in (sp_reg, fp_reg) and reg not in arch["drap"]:
++                reasons.append(f"def_cfa_register non-SP/FP reg={reg}")
++            if row["cfa_reg"] != reg:
++                row["cfa_reg"] = reg
++                emit_op(bytes([DW_CFA_def_cfa_register]) + encode_uleb128(reg))
++        elif op == DW_CFA_def_cfa_offset:
++            uoff, pos = read_uleb128(insns, pos, end)
++            if not isinstance(row["cfa_reg"], int):
++                reasons.append("def_cfa_offset without reg+off CFA")
++            if row["cfa_off"] != uoff:
++                row["cfa_off"] = uoff
++                emit_op(bytes([DW_CFA_def_cfa_offset]) + encode_uleb128(uoff))
++        elif op == DW_CFA_def_cfa_offset_sf:
++            soff, pos = read_sleb128(insns, pos, end)
++            off = soff * cie["data_align"]
++            if not isinstance(row["cfa_reg"], int):
++                reasons.append("def_cfa_offset_sf without reg+off CFA")
++            if row["cfa_off"] != off:
++                row["cfa_off"] = off
++                emit_op(bytes([DW_CFA_def_cfa_offset_sf]) + encode_sleb128(soff))
++        elif op == DW_CFA_offset_extended:
++            reg, pos = read_uleb128(insns, pos, end)
++            uoff, pos = read_uleb128(insns, pos, end)
++            off = uoff * cie["data_align"]
++            if reg in tracked_regs:
++                kept_reg_ops += 1
++                key = "fp" if reg == fp_reg else "ra"
++                if row[key] != ("off", off):
++                    row[key] = ("off", off)
++                    raw = (bytes([0x80 | reg]) + encode_uleb128(uoff) if reg < 64
++                           else bytes([DW_CFA_offset_extended]) + encode_uleb128(reg) + encode_uleb128(uoff))
++                    emit_op(raw)
++            else:
++                ignored_reg_ops += 1
++        elif op == DW_CFA_offset_extended_sf:
++            reg, pos = read_uleb128(insns, pos, end)
++            soff, pos = read_sleb128(insns, pos, end)
++            off = soff * cie["data_align"]
++            if reg in tracked_regs:
++                kept_reg_ops += 1
++                key = "fp" if reg == fp_reg else "ra"
++                if row[key] != ("off", off):
++                    row[key] = ("off", off)
++                    emit_op(bytes([DW_CFA_offset_extended_sf]) + encode_uleb128(reg) + encode_sleb128(soff))
++            else:
++                ignored_reg_ops += 1
++        elif op == DW_CFA_GNU_negative_offset_extended:
++            reg, pos = read_uleb128(insns, pos, end)
++            uoff, pos = read_uleb128(insns, pos, end)
++            off = -uoff * cie["data_align"]
++            if reg in tracked_regs:
++                kept_reg_ops += 1
++                key = "fp" if reg == fp_reg else "ra"
++                if row[key] != ("off", off):
++                    row[key] = ("off", off)
++                    emit_op(bytes([DW_CFA_GNU_negative_offset_extended]) +
++                            encode_uleb128(reg) + encode_uleb128(uoff))
++            else:
++                ignored_reg_ops += 1
++        elif op == DW_CFA_restore_extended:
++            reg, pos = read_uleb128(insns, pos, end)
++            if reg in tracked_regs:
++                kept_reg_ops += 1
++                key = "fp" if reg == fp_reg else "ra"
++                if row[key] != cie_base_row[key]:
++                    row[key] = cie_base_row[key]
++                    raw = bytes([0xc0 | reg]) if reg < 64 else bytes([DW_CFA_restore_extended]) + encode_uleb128(reg)
++                    emit_op(raw)
++            else:
++                ignored_reg_ops += 1
++        elif op == DW_CFA_undefined:
++            reg, pos = read_uleb128(insns, pos, end)
++            if reg in tracked_regs:
++                kept_reg_ops += 1
++                key = "fp" if reg == fp_reg else "ra"
++                row[key] = ("undef", 0)
++                emit_op(bytes([DW_CFA_undefined]) + encode_uleb128(reg))
++            else:
++                ignored_reg_ops += 1
++        elif op == DW_CFA_same_value:
++            reg, pos = read_uleb128(insns, pos, end)
++            if reg in tracked_regs:
++                kept_reg_ops += 1
++                key = "fp" if reg == fp_reg else "ra"
++                row[key] = ("same", 0)
++                emit_op(bytes([DW_CFA_same_value]) + encode_uleb128(reg))
++            else:
++                ignored_reg_ops += 1
++        elif op == DW_CFA_remember_state:
++            emit_op(bytes([DW_CFA_remember_state]))
++            state_stack.append((dict(row), len(events) - 1))
++            max_state_depth = max(max_state_depth, len(state_stack))
++            if len(state_stack) > 4:
++                reasons.append(f"remember_state depth={len(state_stack)} > 4")
++        elif op == DW_CFA_restore_state:
++            if not state_stack:
++                reasons.append("unmatched restore_state")
++            else:
++                saved_row, rem_idx = state_stack.pop()
++                if saved_row != row:
++                    row = saved_row
++                    emit_op(bytes([DW_CFA_restore_state]))
++                else:
++                    # Nothing in {CFA, FP, RA} changed inside remember/restore!
++                    # If remember_state is only followed by adv, elide the pair.
++                    elided = False
++                    if rem_idx < len(events) and events[rem_idx] == ("op", bytes([DW_CFA_remember_state])):
++                        if all(ev[0] == "adv" for ev in events[rem_idx + 1:]):
++                            extra_adv = sum(ev[1] for ev in events[rem_idx + 1:])
++                            del events[rem_idx:]
++                            pending_adv += extra_adv
++                            elided = True
++                    if not elided:
++                        emit_op(bytes([DW_CFA_restore_state]))
++        elif op == DW_CFA_GNU_args_size:
++            _, pos = read_uleb128(insns, pos, end)
++            ignored_reg_ops += 1
++        elif op == DW_CFA_AARCH64_negate_ra_state and arch["name"] == "arm64":
++            row["ra_signed"] = not row["ra_signed"]
++            emit_op(bytes([DW_CFA_AARCH64_negate_ra_state]))
++        elif op == DW_CFA_def_cfa_expression:
++            expr_len, pos = read_uleb128(insns, pos, end)
++            expr = insns[pos : pos + expr_len]
++            pos += expr_len
++            # Fixed DRAP / sigframe pattern: DW_OP_breg(FP|SP) <sleb128>, DW_OP_deref
++            if (len(expr) >= 3 and expr[-1] == 0x06 and
++                expr[0] in (0x70 + fp_reg, 0x70 + sp_reg)):
++                soff, epos = read_sleb128(expr, 1, len(expr) - 1)
++                if epos == len(expr) - 1:
++                    kind = "fp_indirect" if expr[0] == (0x70 + fp_reg) else "sp_indirect"
++                    row["cfa_reg"] = (kind,)
++                    row["cfa_off"] = soff
++                    emit_op(bytes([DW_CFA_def_cfa_expression]) + encode_uleb128(len(expr)) + expr)
++                    continue
++            reasons.append(name)
++        elif op in (DW_CFA_expression, DW_CFA_val_expression):
++            reg, pos = read_uleb128(insns, pos, end)
++            expr_len, pos = read_uleb128(insns, pos, end)
++            expr = insns[pos : pos + expr_len]
++            pos += expr_len
++            if reg == sp_reg:
++                if (op == DW_CFA_expression and len(expr) >= 2 and
++                    expr[0] == (0x70 + sp_reg) and row["cfa_reg"] == ("sp_indirect",)):
++                    soff, epos = read_sleb128(expr, 1, len(expr))
++                    if epos == len(expr) and soff == row["cfa_off"]:
++                        ignored_reg_ops += 1
++                        continue
++                reasons.append(f"{name} r{reg}")
++                continue
++            if reg not in tracked_regs:
++                ignored_reg_ops += 1
++                continue
++            # Fixed DRAP / sigframe save pattern: DW_CFA_expression(FP|RA, DW_OP_breg(FP|SP) <sleb128>)
++            if (op == DW_CFA_expression and len(expr) >= 2 and
++                expr[0] in (0x70 + fp_reg, 0x70 + sp_reg)):
++                soff, epos = read_sleb128(expr, 1, len(expr))
++                if epos == len(expr) and (reg == fp_reg or expr[0] == (0x70 + sp_reg)):
++                    kept_reg_ops += 1
++                    rule = "fp_off" if expr[0] == (0x70 + fp_reg) else "sp_off"
++                    row["fp" if reg == fp_reg else "ra"] = (rule, soff)
++                    emit_op(bytes([DW_CFA_expression]) + encode_uleb128(reg) +
++                            encode_uleb128(len(expr)) + expr)
++                    continue
++            reasons.append(f"{name} r{reg}")
++        elif op == DW_CFA_register:
++            r1, pos = read_uleb128(insns, pos, end)
++            r2, pos = read_uleb128(insns, pos, end)
++            if r1 in tracked_regs or r1 == sp_reg:
++                reasons.append(f"DW_CFA_register r{r1}->r{r2}")
++            else:
++                ignored_reg_ops += 1
++        elif op == DW_CFA_val_offset:
++            r1, pos = read_uleb128(insns, pos, end)
++            _, pos = read_uleb128(insns, pos, end)
++            if r1 in tracked_regs or r1 == sp_reg:
++                reasons.append(f"DW_CFA_val_offset r{r1}")
++            else:
++                ignored_reg_ops += 1
++        elif op == DW_CFA_val_offset_sf:
++            r1, pos = read_uleb128(insns, pos, end)
++            _, pos = read_sleb128(insns, pos, end)
++            if r1 in tracked_regs or r1 == sp_reg:
++                reasons.append(f"DW_CFA_val_offset_sf r{r1}")
++            else:
++                ignored_reg_ops += 1
++        elif op == DW_CFA_set_loc:
++            _, pos = read_encoded_ptr(insns, pos, end, cie["fde_enc"], cie["addr_size"], 0)
++            reasons.append("DW_CFA_set_loc")
++        else:
++            reasons.append(name)
++            break
 +
-+				next_fp = READ_ONCE_TASK_STACK(task, fr->fp);
-+				next_pc = READ_ONCE_TASK_STACK(task, fr->ra);
-+				if (exact_pc && ra_valid &&
-+				    !(next_pc & 0x7) &&
-+				    next_pc >= old_fp && next_pc <= cur_high) {
-+					/* Leaf BPF prog without saved ra */
-+					fp = next_pc;
-+					pc = ra;
-+				} else {
-+					next_pc = riscv_recover_ret_addr(task,
-+							&graph_idx, &kr_cur,
-+							next_pc, old_fp,
-+							&fr->ra);
-+					if (!next_pc)
-+						return 0;
-+					fp = next_fp;
-+					pc = next_pc;
-+				}
-+				sp = old_fp;
-+				ra_valid = false;
-+				exact_pc = false;
-+				unreliable = true;
-+				continue;
-+			}
++    # Coalesce consecutive ("adv", d) events and drop trailing ("adv", d)
++    while events and events[-1][0] == "adv":
++        events.pop()
 +
-+			if (exact_pc && ra_valid && !require_reliable) {
-+				pc = riscv_recover_ret_addr(task, &graph_idx,
-+							    &kr_cur, ra, sp,
-+							    /*ra_slot=*/NULL);
-+				if (!pc)
-+					return 0;
-+				ra_valid = false;
-+				exact_pc = false;
-+				unreliable = true;
-+				continue;
-+			}
-+			return -EINVAL;
-+		}
++    min_bytes = bytearray()
++    acc_adv = 0
++    for kind, payload in events:
++        if kind == "adv":
++            acc_adv += payload
++        else:
++            if acc_adv > 0:
++                if acc_adv <= 0x3f:
++                    min_bytes.append(0x40 | acc_adv)
++                elif acc_adv <= 0xff:
++                    min_bytes.extend([DW_CFA_advance_loc1, acc_adv])
++                elif acc_adv <= 0xffff:
++                    min_bytes.append(DW_CFA_advance_loc2)
++                    min_bytes.extend(struct.pack("<H", acc_adv))
++                else:
++                    min_bytes.append(DW_CFA_advance_loc4)
++                    min_bytes.extend(struct.pack("<I", acc_adv))
++                acc_adv = 0
++            min_bytes.extend(payload)
 +
-+		if (row.ra_rule == DWARF_CFI_RULE_UNDEFINED)
-+			return require_reliable ? -EINVAL : 0;
++    return {
++        "row": row,
++        "min_insns": bytes(min_bytes),
++        "op_counts": op_counts,
++        "ignored_reg_ops": ignored_reg_ops,
++        "kept_reg_ops": kept_reg_ops,
++        "max_state_depth": max_state_depth,
++        "unsupported_reasons": reasons,
++    }
 +
-+		if ((sp & (sizeof(long) - 1)) ||
-+		    !riscv_stack_bounds(task, sp, /*size=*/0, &cur_low,
-+					&cur_high))
-+			return -EINVAL;
 +
-+		switch (row.cfa_base) {
-+		case DWARF_CFI_BASE_SP:
-+			cfa = sp + row.cfa_off;
-+			break;
-+		case DWARF_CFI_BASE_FP:
-+			cfa = fp + row.cfa_off;
-+			break;
-+		case DWARF_CFI_BASE_FP_INDIRECT:
-+			if (((fp + row.cfa_off) & (sizeof(long) - 1)) ||
-+			    !riscv_stack_bounds(task, fp + row.cfa_off,
-+						sizeof(long), &low, &high) ||
-+			    low != cur_low)
-+				return -EINVAL;
-+			cfa = READ_ONCE_TASK_STACK(task,
-+				*(unsigned long *)(fp + row.cfa_off));
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
++def build_minimal_cie_bytes(cie, min_cie_insns, align=4):
++    aug = b"zRS\x00" if cie["is_signal"] else b"zR\x00"
++    fde_enc = DW_EH_PE_pcrel | DW_EH_PE_sdata4
++    body = bytearray()
++    body.append(1)  # CIE version 1
++    body.extend(aug)
++    body.extend(encode_uleb128(cie["code_align"]))
++    body.extend(encode_sleb128(cie["data_align"]))
++    body.append(cie["ra_reg"])
++    body.append(1)  # augmentation data length = 1 ('R')
++    body.append(fde_enc)
++    body.extend(min_cie_insns)
++    # Total record is 4 (length) + 4 (CIE_id=0) + len(body), pad to align
++    rem = (8 + len(body)) % align
++    if rem:
++        body.extend(b"\x00" * (align - rem))
++    return struct.pack("<II", 4 + len(body), 0) + bytes(body)
 +
-+		if ((cfa & (sizeof(long) - 1)) || cfa < cur_low || cfa > cur_high)
-+			return -EINVAL;
 +
-+		if (row.fp_rule == DWARF_CFI_RULE_OFFSET) {
-+			unsigned long fp_addr = cfa + row.fp_off;
++def build_minimal_fde_bytes(min_fde_insns, cie_offset_from_here, init_loc_rel=0, pc_range=0, align=4):
++    body = bytearray()
++    body.extend(struct.pack("<iI", init_loc_rel, pc_range))
++    body.append(0)  # zR augmentation data length = 0
++    body.extend(min_fde_insns)
++    rem = (8 + len(body)) % align
++    if rem:
++        body.extend(b"\x00" * (align - rem))
++    return struct.pack("<II", 4 + len(body), cie_offset_from_here) + bytes(body)
 +
-+			if ((fp_addr & (sizeof(long) - 1)) ||
-+			    !riscv_stack_bounds(task, fp_addr, sizeof(long),
-+						&low, &high) ||
-+			    low != cur_low)
-+				return -EINVAL;
-+			next_fp = READ_ONCE_TASK_STACK(task, *(unsigned long *)fp_addr);
-+		} else if (row.fp_rule == DWARF_CFI_RULE_FP_OFFSET) {
-+			unsigned long fp_addr = fp + row.fp_off;
 +
-+			if ((fp_addr & (sizeof(long) - 1)) ||
-+			    !riscv_stack_bounds(task, fp_addr, sizeof(long),
-+						&low, &high) ||
-+			    low != cur_low)
-+				return -EINVAL;
-+			next_fp = READ_ONCE_TASK_STACK(task, *(unsigned long *)fp_addr);
-+		}
++def analyze_elf(path, out_min_path=None):
++    with open(path, "rb") as f:
++        data = f.read()
 +
-+		if (row.ra_rule == DWARF_CFI_RULE_SAME) {
-+			if (!ra_valid) {
-+				/*
-+				 * Non-struct_ops BPF trampolines push a
-+				 * synthetic parent frame record above the
-+				 * inner traced-function frame record.
-+				 */
-+				if (!require_reliable && unreliable &&
-+				    row.cfa_base == DWARF_CFI_BASE_SP &&
-+				    row.cfa_off == 0 &&
-+				    fp == sp + sizeof(struct stackframe) &&
-+				    fp <= cur_high) {
-+					struct stackframe *fr =
-+						(struct stackframe *)fp - 1;
-+					unsigned long old_fp = fp;
++    e_machine, addr_size, sections = parse_elf_sections(data)
++    if e_machine not in ARCH_REGS:
++        raise ValueError(f"Unsupported ELF e_machine={e_machine}")
++    arch = ARCH_REGS[e_machine]
 +
-+					next_fp = READ_ONCE_TASK_STACK(task, fr->fp);
-+					next_pc = READ_ONCE_TASK_STACK(task, fr->ra);
-+					next_pc = riscv_recover_ret_addr(task,
-+							&graph_idx, &kr_cur,
-+							next_pc, old_fp,
-+							&fr->ra);
-+					if (!next_pc)
-+						return 0;
-+					sp = old_fp;
-+					fp = next_fp;
-+					pc = next_pc;
-+					ra_valid = false;
-+					exact_pc = false;
-+					continue;
-+				}
-+				return -EINVAL;
-+			}
-+			if (cfa < sp)
-+				return -EINVAL;
-+			next_pc = riscv_recover_ret_addr(task, &graph_idx,
-+							 &kr_cur, ra, cfa,
-+							 /*ra_slot=*/NULL);
-+		} else if (row.ra_rule == DWARF_CFI_RULE_OFFSET) {
-+			unsigned long *ra_p = (unsigned long *)(cfa + row.ra_off);
++    if ".eh_frame" not in sections:
++        print(f"{path}: no .eh_frame section found")
++        return
 +
-+			if (cfa <= sp ||
-+			    ((unsigned long)ra_p & (sizeof(long) - 1)) ||
-+			    !riscv_stack_bounds(task, (unsigned long)ra_p,
-+						sizeof(long), &low, &high) ||
-+			    low != cur_low)
-+				return -EINVAL;
-+			next_pc = READ_ONCE_TASK_STACK(task, *ra_p);
-+			next_pc = riscv_recover_ret_addr(task, &graph_idx,
-+							 &kr_cur, next_pc, cfa,
-+							 ra_p);
-+		} else {
-+			return -EINVAL;
-+		}
++    eh_vaddr, eh_size, eh_buf = sections[".eh_frame"]
++    eh_hdr_size = sections.get(".eh_frame_hdr", (0, 0, b""))[1]
++    sframe_size = sections.get(".sframe", (0, 0, b""))[1]
++    orc_size = (sections.get(".orc_unwind", (0, 0, b""))[1] +
++                sections.get(".orc_unwind_ip", (0, 0, b""))[1])
++    text_size = sum(sz for name, (_, sz, _) in sections.items() if name.startswith(".text") or name in (".init.text", ".exit.text"))
 +
-+		if (!next_pc)
-+			return require_reliable ? -EINVAL : 0;
++    cies = {}
++    cie_init_rows = {}
++    min_eh_stream = bytearray()
++    min_cie_offsets = {}
 +
-+		sp = cfa;
-+		fp = next_fp;
-+		pc = next_pc;
-+		ra_valid = false;
-+		exact_pc = row.signal;
-+	}
-+}
++    total_cies = 0
++    total_fdes = 0
++    supported_fdes = 0
++    unsupported_fdes = 0
++    unsupported_breakdown = Counter()
++    total_op_counts = Counter()
++    total_orig_insn_bytes = 0
++    total_min_insn_bytes = 0
++    total_ignored_ops = 0
++    total_kept_ops = 0
++    max_depth_seen = 0
 +
-+noinline void notrace walk_stackframe(struct task_struct *task,
-+				      struct pt_regs *regs,
-+				      bool (*fn)(void *, unsigned long),
-+				      void *arg)
-+{
-+	walk_stackframe_cfi(task, regs, fn, arg, /*require_reliable=*/false);
-+}
++    pos = 0
++    end = len(eh_buf)
++    while pos + 4 <= end:
++        length = struct.unpack_from("<I", eh_buf, pos)[0]
++        entry_off = pos
++        pos += 4
++        if length == 0:
++            break
++        if length == 0xffffffff:
++            length = struct.unpack_from("<Q", eh_buf, pos)[0]
++            pos += 8
++        entry_end = pos + length
++        cie_id = struct.unpack_from("<I", eh_buf, pos)[0]
 +
-+noinline noinstr int arch_stack_walk_reliable(stack_trace_consume_fn consume_entry,
-+					      void *cookie,
-+					      struct task_struct *task)
-+{
-+	return walk_stackframe_cfi(task, /*regs=*/NULL, consume_entry, cookie,
-+				   /*require_reliable=*/true);
-+}
++        if cie_id == 0:
++            total_cies += 1
++            cie = parse_cie(eh_buf, entry_off, pos + 4, entry_end, addr_size, eh_vaddr)
++            res = decode_and_minify_insns(cie["insns"], cie, arch, is_cie=True)
++            cie["unsupported_reasons"] = list(res["unsupported_reasons"])
++            cies[entry_off] = cie
++            cie_init_rows[entry_off] = res["row"]
++            total_op_counts.update(res["op_counts"])
 +
-+#elif defined(CONFIG_FRAME_POINTER)
++            cie_key = (cie["code_align"], cie["data_align"], cie["ra_reg"], cie["is_signal"], res["min_insns"])
++            if not cie["unsupported_reasons"] and not cie["has_indirect_fde"] and cie_key not in min_cie_offsets:
++                min_cie_offsets[cie_key] = len(min_eh_stream)
++                min_eh_stream.extend(build_minimal_cie_bytes(cie, res["min_insns"], align=4))
++            cie["min_key"] = cie_key
++        else:
++            total_fdes += 1
++            cie_off = pos - cie_id
++            cie = cies[cie_off]
++            fpos = pos + 4
++            init_loc, fpos = read_encoded_ptr(eh_buf, fpos, entry_end, cie["fde_enc"], addr_size, eh_vaddr)
++            range_enc = cie["fde_enc"] & 0x0f
++            pc_range, fpos = read_encoded_ptr(eh_buf, fpos, entry_end, range_enc, addr_size, 0)
++            if cie["has_z"]:
++                aug_len, fpos = read_uleb128(eh_buf, fpos, entry_end)
++                fpos += aug_len
++            fde_insns = eh_buf[fpos:entry_end]
++            total_orig_insn_bytes += len(fde_insns)
 +
- static inline int fp_is_valid(unsigned long fp, unsigned long sp)
- {
- 	unsigned long low, high;
-@@ -102,7 +828,7 @@ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 	}
- }
- 
--#else /* !CONFIG_FRAME_POINTER */
-+#else /* !CONFIG_FRAME_POINTER && !CONFIG_UNWINDER_DWARF_CFI */
- 
- void notrace walk_stackframe(struct task_struct *task,
- 	struct pt_regs *regs, bool (*fn)(void *, unsigned long), void *arg)
-diff --git a/arch/riscv/kernel/vmlinux.lds.S b/arch/riscv/kernel/vmlinux.lds.S
-index 1f4f8496941a..f2bd07e08d5e 100644
---- a/arch/riscv/kernel/vmlinux.lds.S
-+++ b/arch/riscv/kernel/vmlinux.lds.S
-@@ -125,6 +125,19 @@ SECTIONS
- 		*(.srodata*)
- 	}
- 
-+#ifdef CONFIG_UNWINDER_DWARF_CFI
-+	.eh_frame_hdr : ALIGN(4) {
-+		__start_eh_frame_hdr = .;
-+		*(.eh_frame_hdr)
-+		__stop_eh_frame_hdr = .;
-+	}
-+	.eh_frame : ALIGN(8) {
-+		__start_eh_frame = .;
-+		*(.eh_frame)
-+		__stop_eh_frame = .;
-+	}
-+#endif
++            res = decode_and_minify_insns(fde_insns, cie, arch, init_row=cie_init_rows[cie_off])
++            total_op_counts.update(res["op_counts"])
++            total_min_insn_bytes += len(res["min_insns"])
++            total_ignored_ops += res["ignored_reg_ops"]
++            total_kept_ops += res["kept_reg_ops"]
++            max_depth_seen = max(max_depth_seen, res["max_state_depth"])
 +
- 	. = ALIGN(SECTION_ALIGN);
- 	_data = .;
- 
-diff --git a/arch/riscv/purgatory/Makefile b/arch/riscv/purgatory/Makefile
-index b0358a78f11a..29c23c58b26c 100644
---- a/arch/riscv/purgatory/Makefile
-+++ b/arch/riscv/purgatory/Makefile
-@@ -60,8 +60,9 @@ targets += purgatory.ro purgatory.chk
- # These are adjustments to the compiler flags used for objects that
- # make up the standalone purgatory.ro
- 
--PURGATORY_CFLAGS_REMOVE := -mcmodel=kernel
-+PURGATORY_CFLAGS_REMOVE := -mcmodel=kernel -fasynchronous-unwind-tables -funwind-tables
- PURGATORY_CFLAGS := -mcmodel=medany -ffreestanding -fno-zero-initialized-in-bss
-+PURGATORY_CFLAGS += -fno-asynchronous-unwind-tables -fno-unwind-tables
- PURGATORY_CFLAGS += $(DISABLE_KSTACK_ERASE) -DDISABLE_BRANCH_PROFILING
- PURGATORY_CFLAGS += -fno-stack-protector -g0
- 
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index d62dabfdc1c3..19c2822eb302 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -30,7 +30,9 @@ cflags-$(CONFIG_ARM)		+= -DEFI_HAVE_STRLEN -DEFI_HAVE_STRNLEN \
- 				   -DEFI_HAVE_MEMCHR -DEFI_HAVE_STRRCHR \
- 				   -DEFI_HAVE_STRCMP -fno-builtin -fpic \
- 				   $(call cc-option,-mno-single-pic-base)
--cflags-$(CONFIG_RISCV)		+= -fpic -DNO_ALTERNATIVE -mno-relax
-+cflags-$(CONFIG_RISCV)		+= -fpic -DNO_ALTERNATIVE -mno-relax \
-+				   -fno-unwind-tables \
-+				   -fno-asynchronous-unwind-tables
- cflags-$(CONFIG_LOONGARCH)	+= -fpie
- 
- cflags-$(CONFIG_EFI_PARAMS_FROM_FDT)	+= -I$(srctree)/scripts/dtc/libfdt
++            reasons = list(cie["unsupported_reasons"]) + list(res["unsupported_reasons"])
++            if cie["has_indirect_fde"]:
++                reasons.append("indirect_fde_encoding")
++
++            if not reasons:
++                supported_fdes += 1
++                min_cie_off = min_cie_offsets[cie["min_key"]]
++                fde_id_pos = len(min_eh_stream) + 4
++                init_rel = (init_loc - (eh_vaddr + len(min_eh_stream) + 8)) if eh_vaddr else 0
++                if not (-0x80000000 <= init_rel <= 0x7fffffff):
++                    init_rel = 0
++                min_eh_stream.extend(
++                    build_minimal_fde_bytes(res["min_insns"], fde_id_pos - min_cie_off, init_rel, pc_range, align=4)
++                )
++            else:
++                unsupported_fdes += 1
++                for r in set(reasons):
++                    unsupported_breakdown[r] += 1
++
++        pos = entry_end
++
++    min_eh_stream.extend(b"\x00\x00\x00\x00")  # terminator
++    min_eh_hdr_size = 12 + supported_fdes * 8
++
++    if out_min_path:
++        with open(out_min_path, "wb") as outf:
++            outf.write(min_eh_stream)
++
++    pct_cov = (100.0 * supported_fdes / total_fdes) if total_fdes else 100.0
++    orig_total = eh_size + eh_hdr_size
++    min_total = len(min_eh_stream) + min_eh_hdr_size
++    savings_pct = (100.0 * (1.0 - len(min_eh_stream) / eh_size)) if eh_size else 0.0
++    total_savings_pct = (100.0 * (1.0 - min_total / orig_total)) if orig_total else 0.0
++
++    print(f"=== {path} ({arch['name']}) ===")
++    print(f"  .text size              : {text_size:10,d} B")
++    print(f"  Original .eh_frame      : {eh_size:10,d} B  ({total_cies} CIEs, {total_fdes:,d} FDEs)")
++    print(f"  Original .eh_frame_hdr  : {eh_hdr_size:10,d} B  (combined: {orig_total:,d} B)")
++    print(f"  Minified .eh_frame      : {len(min_eh_stream):10,d} B  ({len(min_cie_offsets)} CIEs, -{savings_pct:.1f}% vs .eh_frame)")
++    print(f"  Minified + .eh_frame_hdr: {min_total:10,d} B  (-{total_savings_pct:.1f}% combined)")
++    print(f"  FDE bytecode payload    : {total_orig_insn_bytes:10,d} B -> {total_min_insn_bytes:,d} B "
++          f"(avg {total_min_insn_bytes / max(supported_fdes, 1):.1f} B/FDE)")
++    if sframe_size:
++        print(f"  .sframe section         : {sframe_size:10,d} B")
++    if orc_size:
++        print(f"  .orc_unwind + _ip       : {orc_size:10,d} B")
++    print(f"  Minimal DWARF coverage  : {supported_fdes:,d} / {total_fdes:,d} FDEs ({pct_cov:.2f}%)")
++    print(f"  Register ops kept/skip  : {total_kept_ops:,d} kept (FP/RA), {total_ignored_ops:,d} ignored (other GPRs/args)")
++    print(f"  Max remember_state depth: {max_depth_seen}")
++    if unsupported_breakdown:
++        print("  Unsupported FDE reasons :")
++        for r, cnt in unsupported_breakdown.most_common():
++            print(f"    - {r}: {cnt}")
++    print("  Top DWARF CFA opcodes   :")
++    for op_name, cnt in total_op_counts.most_common(10):
++        print(f"    - {op_name:34s}: {cnt:8,d}")
++    print()
++
++
++def main():
++    epilog = (
++        "Examples:\n"
++        "  %(prog)s vmlinux\n"
++        "  %(prog)s mm/vmscan.o kernel/fork.o\n"
++        "  %(prog)s /bin/bash /lib/x86_64-linux-gnu/libc.so.6\n"
++        "  %(prog)s --minify /tmp/eh_frame.min mm/vmscan.o\n"
++    )
++    ap = argparse.ArgumentParser(
++        description="Analyze ELF .eh_frame coverage and size for Minimal DWARF CFI",
++        epilog=epilog,
++        formatter_class=argparse.RawDescriptionHelpFormatter,
++    )
++    ap.add_argument("files", nargs="+", help="ELF files (.o, .ko, vmlinux, DSO, executable) to analyze")
++    ap.add_argument("--minify", metavar="OUT", help="Write minified .eh_frame binary for the first file")
++    args = ap.parse_args()
++
++    for idx, path in enumerate(args.files):
++        out_p = args.minify if idx == 0 else None
++        analyze_elf(path, out_min_path=out_p)
++
++
++if __name__ == "__main__":
++    main()
 -- 
 2.56.1.750.gf70dc682cf-goog
 
