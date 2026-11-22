@@ -1,78 +1,78 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795321705;
-	b=sS40gd/NMyab/571fW0nCIecqIX2y17Twdg+lUNSeX2DI6obogpZCu1+00LeVOHKB9qO
-	 K6T/9TMtqV9VpXqQ20SMdEMNabaafbyRRhocTVl4dlJaL1x3OfolpPQHbaXLGAHxdijTc
-	 ZvjUY1AYs4wAYuoBWmPDLTlYsVbyaYkxr47Av/Px4Kq5gm3UKr+A3aDmc5OXOzKAGlE1Z
-	 tZ/+ZAH855Q3DFf369ZbTJqC4FovWsy4k8aVpJJd+LArBsQl4xhqXjtquZO5jt56oe0N2
-	 Ti42BJvWYIn3yY/CPsSEe9hwt5E5yoMvfUMGT8orgGd+DomAQZTSa9fOnyMvsiiYbfg==
+	t=1795321727;
+	b=Rb72LwH+2wNUrpBu2PLmoLka5+664/jk6UjnxypIJACNYcJ22d/1MZ3yzZTzolNZD7Ha
+	 J9/aRWPsGUuaIeAorJw6ZKniXXS1ILfoQV19SAH1UO1WoqI6kp44yUf/DZZg74K+EVs1Z
+	 WDNDwdrHeje2iU21g8My+mc5rHQO4BevpJT1u5L3v8FlXM/fJHVvTfqOleGgaaLoXg60t
+	 aDh5zu6W8wfaoQvFGN9zKV01yZdUG9jIudIXwIcj7iIUqyDDeTL+QIX2AWV8eU0bHF+B/
+	 23JdGYPV1DvSqSLtx5DkYWoTEm+wTNjSXegS5kVZImk1Gpr2GLcJox2rnIfskkaflbw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795321705;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795321727;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=qIENcXcsXDQ9ZgrTaWKLrjR+qyFqEiW4ZYJCFWa3s6c=;
-	b=XUfdRyYvkR2nnMJfjTY/Y/5m/ToGusCr2mOTxx7wf7xVCOFv01kNqoXHEOofnxWfGd0s
-	 cKUnrcMZhWje8uKLbhnFAv5GDEK9l0Nkn2acU/0ZceCR9oH8JiKO8FLqL17xaU1lvrOmg
-	 9UYQjBCBLow0+5RrUa+2FvGbgfnMfnJFrisnrUWz1+cZtSSuQ5D25NbqKFaKSdZEoFKz2
-	 0auvASrZs1kLV5CCHY60Zfeavu3IJtvtoiPUK+Tkfl3E/CgcbIjlaS40/OAxE22F2e2B6
-	 WG09Xk1qKU/0+oDKnWfB40TdC6DroUwVuTxmHOgfw4MC0idQDPyk9IAnod6yRjiJc1g==
+	bh=y2qxE36zRL/+keonplCFJrbzI2/JvjqxX0EKnczf5J0=;
+	b=AgNtuptJLlOU3Iez50uWSfxjdLH33fcP+zTEiCbV15uIx0mZQVgEQWpkZBYigD56OuAw
+	 Sh++0guxghvKUvop2tAP7MmEF34IZ4m4FVhSUrWLVf7qSqdYEUj9a3HyD09ce02i5Dqdw
+	 TnkrwpmCeQcm4G52qjNMi6M/WUZvC0tGOMbzNw6Ic+eld/BFrLYG0kPcYB3htH4rE28it
+	 X45MY/KN5LcOeE3IhWF8k/zRBLp+KoNuQ9zx0/ROJJvKjwn45JTc5dk7ksK0Zeo7Ag57M
+	 LRZhVmBsNSRV67i2LfwjZnnqiHLTN6JPoTP4WvU94BFel6AQ6bsFKLQFvGwrs+O0BfA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="lhr/wpa1";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cGXXVPgi;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AEC606A32A;
-	Sun, 22 Nov 2026 04:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E80606A320;
+	Sun, 22 Nov 2026 04:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lhr/wpa1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cGXXVPgi
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795321704;
-	b=pX3Sy7M95oyPtZySXzBKi+iHnXcYKVNH7GOkoMXZZC9oxCNKRog4fszx4ThaHJ5js0wC
-	 vBn19epApXMO06GG9b52TwH+0a2v4dUVT5/zM8T0ZJXWR8G7R+RWWDeOnu965JPEq1Ogz
-	 m/Pj9oK8dn+nMfm3A7TJI7OfPfaWF6RCeWk7hWAVy9aZIxhoIN7XZbIfCj5X/4pLjlGub
-	 FiDQHdpcVRAkdIa+pGjbXaOS3wyQHyu8IktHyMrCbN9BXpQbgLyBE6vF94C+2kqGyVV+O
-	 szKkB0qL4ueJVd560oZfMXvVFlDC4xVRTTHGVqhVP531gLuzE1PthIchNjz8SO20KUQ==
+	t=1795321726;
+	b=GhTozJET0cHV5tzA1fYjX2GjB2THG+8/qp71b8hYnBC2Di+wvYNEC/7vrVSpebZGMhaD
+	 Mby/Bid6GGDUg1JBdmZyq/wjYWeg0Hb2rjiEdF4SxJM6Dfq/Qz6FHPb/yGIXP2picUcCg
+	 +v4bOaxZgUjieRsgn/Drba6srlREZB9WiSMTvqViU2+stl4Js5+KmDBtkY9ZRaUwJl2TL
+	 tbs3vn6NToCbOy9nRDhaD4j5j6aO7SD4Vc4SQyyK0fMCQqXbPwZweWm8T63NXg/mU6Vgf
+	 WKg/CeX+9kuNeCYJqDB+F4Fw9s9BNu/lHo+b24J8KgPx5Fibj/zfz4X+e92MjQcaKiw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795321704;
+	c=relaxed/relaxed; t=1795321726;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=qIENcXcsXDQ9ZgrTaWKLrjR+qyFqEiW4ZYJCFWa3s6c=;
-	b=nXTXCSEwwVs9MDSphN6xlle+uDyVDvz2j013ZXIJD3lhnqYdN12Pph0C2Q066Sd9W4pT
-	 /7U9zOkr6QexRy812jutDWW6s6klYRJVxcgL+Vvbo2Q2lzf1PFR/S/zdwU3GrIuiMK+We
-	 xKMWmuj8BRlOsJ/oAcd7vsEJflJrR/CRsrbYb6eUWRmmpiDO7KU6HMRd4tEsmp0Y0A2jv
-	 0ESHq9evSJNWn0+YeLt31ITAxOjE3deYUpRbX1hZmfhWrmTL+xc9jx9wUoewPOXGJ9xG8
-	 10AsUgSitt6L7FTZ/xsO9x6nF5SBExrfrljLhNg6IogJRL/5uV11jL1NE96SFNKx/0A==
+	bh=y2qxE36zRL/+keonplCFJrbzI2/JvjqxX0EKnczf5J0=;
+	b=K4ZAmGOLpTZaHGGhlaX+0xrLKUSXUPQ3Nd4PbSHHXZT4NgTCjvv790603rRYlYePziDF
+	 ZMdCc7q5I3zoL3H6E9Myijkq9EQMNDEjX3X3iDBv0KJ1X+xxKejMGjfwU5n+m3ccpCmlK
+	 Wd8frxgjgirb0t5s2W7DzYeR2XOX91rWA1pTym7m1oduM4FdPVn/7IDQvS3ahIXf+nqah
+	 zDZQcA2XzblvK403hT5VUJlchXRGBW625LyrR6hgtMy/vlHiPkxZh5e+gEjNMLNXS9OtQ
+	 1jR1UvxNdUktUY7hKVJklMvxqa2UyAuI+MfNpB+gYkhBpB7OQlTPIK2jjHyUGYos9ag==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 127821F000D0;
-	Sun, 22 Nov 2026 04:28:23 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 31DC31F000CA;
+	Sun, 22 Nov 2026 04:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795321704;
-	bh=qIENcXcsXDQ9ZgrTaWKLrjR+qyFqEiW4ZYJCFWa3s6c=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=lhr/wpa1/VWDbK2vhk65OU/XHsTdUqOlVxi+Qny6FKIVigqUe0NqkR2sVXShka9Ey
-	 kfOJG7pJi3qMKHBiigOs08/EI0dgEVARDmsu2VoRw1CP72VtXTo9OB4BVVW4S7e6zc
-	 2cQbyIojpJhSq5GNt0XYwzEFP3gk71wRMQbUchPFheORlS0iFdG38NJ+bjx3EOvPRO
-	 JJS/yNO5eEaBU52kLWgiRffkk7lpwbMVEj/+k0V0ugEVIrGPZD7IFYaDWgDuX+PEDE
-	 DJ/YUrLxVzUiqExnF02bI/HsIzzxT5nWD0nu+LLfiIoNv00FjTF+0oCQYORTdHFdxH
-	 NCE+EYsERnffQ==
+	s=k20260515; t=1795321726;
+	bh=y2qxE36zRL/+keonplCFJrbzI2/JvjqxX0EKnczf5J0=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=cGXXVPgiBqFN3DqSYiAuGc2A9MPIDTTnR24PDQ1kiwY8JyaBwatPblQQ8tw04OIv0
+	 jvIT4eZZIituy0MGlP90+xCi8LBeRyAmLdMfzJpiitW0p7RmQzEbb1yXUDlCQ6e2T6
+	 t5xQZICNMg/hUFY337pL8fQyMDKn9aboG47OeuI9auAaNcpT9yq2lYoqWyoN2jP+7H
+	 g4LJS1MO++xejGa9vTc47rdqqvF+A2bzOrQgdqiU+Q4kZ8h+NqfH66HeBo6Zl4yAp4
+	 mGC+/Mv2nY7SZyQnkIb6GTK5BD1rnyCmZgLjtFHd8INdRD2xFKZJOBrYTQS04cW4yj
+	 MloBJQN/oHTvg==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 96CA54BEF2;
-	Sun, 22 Nov 2026 04:28:22 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id BA75A4BEAC;
+	Sun, 22 Nov 2026 04:28:44 +0000 (UTC)
 From: Nick Dowsett via B4 Relay <devnull+nick42d.gmail.com@kernel.org>
-Date: Sun, 22 Nov 2026 12:28:17 +0800
-Subject: [PATCH 4/4] rust: wmi: add Buffer and Device::invoke_method()
+Date: Sun, 22 Nov 2026 12:28:37 +0800
+Subject: [PATCH] rust: dmi: add basic DMI matching abstraction
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -83,9 +83,11 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261122-rust-wmi-v1-4-63111d9e824c@gmail.com>
-References: <20261122-rust-wmi-v1-0-63111d9e824c@gmail.com>
-In-Reply-To: <20261122-rust-wmi-v1-0-63111d9e824c@gmail.com>
+Message-Id: <20261122-rust-dmi-v1-1-4ace9449f872@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXM3QpAQBCG4VvRHNsyk4hbkQN2B6P8tIOU3LvF4
+ VPv912g7IUVyugCz4eoLHMAxhHYoZl7NuKCgRLKEAmN33UzbhJj08JRkqLLmSDkq+dOzu+qqn/
+ r3o5st3cP9/0AnUtalWwAAAA=
+X-Change-ID: 20261121-rust-dmi-c49d2041d7e2
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -96,16 +98,15 @@ To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
  Tamir Duberstein <tamird@kernel.org>, 
  Alexandre Courbot <acourbot@nvidia.com>, 
  =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Armin Wolf <W_Armin@gmx.de>
-Cc: =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- platform-driver-x86@vger.kernel.org, Nick Dowsett <nick42d@gmail.com>
+ Jean Delvare <jdelvare@suse.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Nick Dowsett <nick42d@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795321700; l=5545;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795321724; l=5742;
  i=nick42d@gmail.com; h=from:subject:message-id;
- bh=VW4iRI5cDRDRluz4CYZ2xuelFH93Nr8DBnHhhhSeFjE=;
- b=bqfy+MYcO5ooFuXfwQE7sB0dvrGN1BN/VE0CjFx1xy5WtFBl1ZncUb6DzRL9wFhBcAItpIGXx
- g+PCl93MbP8CBlMo+aWVGVBPOnpQwWvowCbB8NiKblKPbRNCdM47wil
+ bh=9G3/E9jT/UzLfTWZvVpYFROflcNVLqmMfVcVZgIE+t4=;
+ b=y7Th2tkxpzNZlf21IfTlLTq4qnP59QU26spqGBOPw0MAWYHz/D+kBJ4NKvrtAWKt35frxfM33
+ 4Daz5oQmO/KAHJrND5Z3UX1nQGhpy3ZQYD60ymYLfrrRdKkFgkuAtYM
 X-Developer-Key: i=nick42d@gmail.com; a=ed25519;
  pk=1uIkNexEofzEXNN3Y3QW5z8IrgjWaP0yH6Es51jxWOg=
 X-Endpoint-Received: by B4 Relay for nick42d@gmail.com/default with
@@ -116,150 +117,161 @@ Content-Transfer-Encoding: 7bit
 
 From: Nick Dowsett <nick42d@gmail.com>
 
-- Adds safe \`wmi::Buffer\` RAII abstraction wrapping an owned
-
-  \`struct wmi_buffer\`.
-
-- Implement \`Device::invoke_method()\` - safe abstraction for
-
-  \`wmidev_invoke_method\`.
-
-- Also implement \`Sync\` for \`Device<device::Bound>\`.
+Exposes `linux/dmi.h` to bindgen, adds MAINTAINERS entry and adds an MVP
+of `kernel::dmi` module.
 
 Signed-off-by: Nick Dowsett <nick42d@gmail.com>
 ---
- rust/kernel/wmi.rs | 98 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 97 insertions(+), 1 deletion(-)
+This patch adds an initial Rust abstraction for DMI, exposing
+`dmi::Field` and `get_system_info()`.
 
-diff --git a/rust/kernel/wmi.rs b/rust/kernel/wmi.rs
-index 09712cbc1c93..d97c8cb7cbf7 100644
---- a/rust/kernel/wmi.rs
-+++ b/rust/kernel/wmi.rs
-@@ -17,7 +17,9 @@
- };
- use core::{
-     marker::PhantomData,
--    ptr::NonNull, //
-+    ops::Deref,
-+    ptr::NonNull,
-+    slice, //
- };
+It is intended as a minimal prerequisite for the `clevo-laptop` Rust
+platform driver (submitted separately), which needs to check
+`dmi::Field::BoardName`.
+
+Review note for RFL reviewers:
+`dmi::get_system_info` is currently marked safe under the assumption that
+Rust code is always called after DMI is initialised. Would be keen to
+have this validated. Alternatively I think a minimal patch to C could
+actually make this safe earlier if required.
+---
+ MAINTAINERS                     |  1 +
+ rust/bindings/bindings_helper.h |  1 +
+ rust/kernel/dmi.rs              | 82 +++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |  1 +
+ 4 files changed, 85 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 44540a1eb2b8..92a227e2345e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7977,6 +7977,7 @@ F:	Documentation/ABI/testing/sysfs-firmware-dmi-tables
+ F:	drivers/firmware/dmi-id.c
+ F:	drivers/firmware/dmi_scan.c
+ F:	include/linux/dmi.h
++F:	rust/kernel/dmi.rs
  
- /// Type alias for [`driver::Registration<Adapter<T>>`], the registration of
-@@ -222,6 +224,11 @@ unsafe impl Send for Device<device::Normal> {}
- // - All methods on `&device::Device<Normal>` are thread safe.
- unsafe impl Sync for Device<device::Normal> {}
- 
-+// SAFETY:
-+// - As per `&Device<Normal>`, but `&Device<Bound>` also has the method `invoke_method()`,
-+//   which wraps the internally synchronised `bindings::wmidev_invoke_method()`.
-+unsafe impl Sync for Device<device::Bound> {}
+ DOCUMENTATION
+ M:	Jonathan Corbet <corbet@lwn.net>
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 3791af0aadc7..ed4ce2ca351d 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -56,6 +56,7 @@
+ #include <linux/dma-fence.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dma-resv.h>
++#include <linux/dmi.h>
+ #include <linux/errname.h>
+ #include <linux/ethtool.h>
+ #include <linux/fdtable.h>
+diff --git a/rust/kernel/dmi.rs b/rust/kernel/dmi.rs
+new file mode 100644
+index 000000000000..410a1a84ce08
+--- /dev/null
++++ b/rust/kernel/dmi.rs
+@@ -0,0 +1,82 @@
++// SPDX-License-Identifier: GPL-2.0
 +
- // SAFETY:
- // - By the type invariant, all instances of `Device` are reference-counted.
- // - Increments to the reference count keep the object alive in memory at least
-@@ -248,6 +255,70 @@ fn as_raw(&self) -> *mut bindings::wmi_device {
-     }
- }
- 
-+impl Device<device::Bound> {
-+    /// Calls `wmidev_invoke_method`.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{device::Bound, prelude::*, wmi};
-+    /// const METHOD_ID: u32 = 0xB105;
-+    /// const METHOD_ARGS: [u8; 1] = [0];
-+    /// fn method_returning_u32(wdev: &wmi::Device<Bound>) -> Result<u32> {
-+    ///     let output: wmi::Buffer = wdev
-+    ///         .invoke_method(0, METHOD_ID, &METHOD_ARGS, size_of::<u32>())?;
-+    ///     let output_as_bytes: [u8; 4] = output
-+    ///         .get(..size_of::<u32>())
-+    ///         .and_then(|buf| buf.try_into().ok())
-+    ///         .ok_or(ENODATA)?;
-+    ///     let output_u32 = u32::from_le_bytes(output_as_bytes);
-+    ///     dev_dbg!(wdev.as_ref(), "WMI output: {}\n", output_u32);
-+    ///     Ok(output_u32)
-+    /// }
-+    /// ```
-+    pub fn invoke_method(
-+        &self,
-+        instance: u8,
-+        method_id: u32,
-+        input: &[u8],
-+        min_output_size: usize,
-+    ) -> Result<Buffer> {
-+        let mut out_buf = bindings::wmi_buffer::default();
-+        let in_buf = bindings::wmi_buffer {
-+            length: input.len(),
-+            // NOTE1: Even if the input slice is empty, this will create a dangling pointer
-+            // rather than a null pointer as Rust references are always non-null.
-+            // NOTE2: The input parameter to wmidev_invoke_method is expected to be read-only,
-+            // however, we cast to a mutable pointer here purely to meet the type definition of
-+            // `wmi_buffer`.
-+            data: input.as_ptr().cast_mut().cast::<c_void>(),
-+        };
-+        // SAFETY:
-+        // - By type invariants, `self.as_raw()` points to a valid, live `wmi_device`.
-+        // - `out_buf` and `in_buf` are pointers to valid, live `wmi_buffer`s.
-+        // - `in_buf` contains a pointer to an allocation behind a Rust reference (which therefore
-+        //   lives as long as this method call) with length less than or equal to the allocation
-+        //   size, or contains a dangling pointer with length 0.
-+        // - The allocation in `in_buf` will not be mutated - the C implementation declares the in
-+        //   parameter as const.
-+        let status = unsafe {
-+            bindings::wmidev_invoke_method(
-+                self.as_raw(),
-+                instance,
-+                method_id,
-+                &raw const in_buf,
-+                &raw mut out_buf,
-+                min_output_size,
-+            )
-+        };
-+        error::to_result(status)?;
++//! Abstractions for DMI (Desktop Management Interface).
++//!
++//! C header: [`include/linux/dmi.h`](srctree/include/linux/device-id/dmi.h)
 +
-+        // On success, `wmidev_invoke_method` returns a `wmi_buffer`
-+        // satisfying `Buffer`'s invariants, which we hand to the caller as the
-+        // new owner.
-+        Ok(Buffer(out_buf))
-+    }
-+}
- impl<Ctx: device::DeviceContext> AsRef<device::Device<Ctx>> for Device<Ctx> {
-     fn as_ref(&self) -> &device::Device<Ctx> {
-         // SAFETY:
-@@ -263,3 +334,28 @@ fn as_ref(&self) -> &device::Device<Ctx> {
-         unsafe { device::Device::from_raw(&raw mut (*self.as_raw()).dev) }
-     }
- }
++use crate::{
++    bindings,
++    prelude::*, //
++};
 +
-+/// An owned, 8-byte aligned output buffer.
++/// Corresponds to each DMI identifier type from [`enum dmi_field`].
 +///
-+/// # Invariants
-+/// - `self.0.data` is a pointer to an 8-byte aligned owned buffer of length
-+///   at least `self.0.length` and freeable with `kfree()`.
-+pub struct Buffer(bindings::wmi_buffer);
-+impl Deref for Buffer {
-+    type Target = [u8];
-+    fn deref(&self) -> &[u8] {
-+        if self.0.length == 0 {
-+            return &[];
++/// # Invariant
++///
++/// Each variant must correspond to a valid [`enum dmi_field`] variant.
++///
++/// [`enum dmi_field`]: srctree/include/linux/device-id/dmi.h
++#[repr(u32)]
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++#[expect(missing_docs, reason = "C version of these consts are undocumented")]
++pub enum Field {
++    None = bindings::dmi_field_DMI_NONE,
++    BiosVendor = bindings::dmi_field_DMI_BIOS_VENDOR,
++    BiosVersion = bindings::dmi_field_DMI_BIOS_VERSION,
++    BiosDate = bindings::dmi_field_DMI_BIOS_DATE,
++    BiosRelease = bindings::dmi_field_DMI_BIOS_RELEASE,
++    EcFirmwareRelease = bindings::dmi_field_DMI_EC_FIRMWARE_RELEASE,
++    SysVendor = bindings::dmi_field_DMI_SYS_VENDOR,
++    ProductName = bindings::dmi_field_DMI_PRODUCT_NAME,
++    ProductVersion = bindings::dmi_field_DMI_PRODUCT_VERSION,
++    ProductSerial = bindings::dmi_field_DMI_PRODUCT_SERIAL,
++    ProductUuid = bindings::dmi_field_DMI_PRODUCT_UUID,
++    ProductSku = bindings::dmi_field_DMI_PRODUCT_SKU,
++    ProductFamily = bindings::dmi_field_DMI_PRODUCT_FAMILY,
++    BoardVendor = bindings::dmi_field_DMI_BOARD_VENDOR,
++    BoardName = bindings::dmi_field_DMI_BOARD_NAME,
++    BoardVersion = bindings::dmi_field_DMI_BOARD_VERSION,
++    BoardSerial = bindings::dmi_field_DMI_BOARD_SERIAL,
++    BoardAssetTag = bindings::dmi_field_DMI_BOARD_ASSET_TAG,
++    ChassisVendor = bindings::dmi_field_DMI_CHASSIS_VENDOR,
++    ChassisType = bindings::dmi_field_DMI_CHASSIS_TYPE,
++    ChassisVersion = bindings::dmi_field_DMI_CHASSIS_VERSION,
++    ChassisSerial = bindings::dmi_field_DMI_CHASSIS_SERIAL,
++    ChassisAssetTag = bindings::dmi_field_DMI_CHASSIS_ASSET_TAG,
++    OemString = bindings::dmi_field_DMI_OEM_STRING,
++}
++
++/// Returns the DMI string for `field`, or [`None`] if unavailable or `CONFIG_DMI` is disabled.
++///
++/// # Examples
++///
++/// ```
++/// # use kernel::dmi::{self, Field};
++/// if let Some(vendor) = dmi::get_system_info(Field::SysVendor) {
++///     pr_debug!("Vendor string is {vendor}");
++/// }
++/// ```
++pub fn get_system_info(field: Field) -> Option<&'static CStr> {
++    // NOTE: This can be upgraded to cfg-select post Rust 1.95.
++    #[cfg(CONFIG_DMI)]
++    {
++        // SAFETY:
++        // - `field` is a valid variant of `enum dmi_field`.
++        // - `dmi_get_system_info` is safe to call after DMI has been set up during init.
++        //   This occurs during `setup_arch` on x86/loongarch/mips and `core_initcall`
++        //   on arm64/riscv - before any Rust code is run.
++        let ptr = unsafe { bindings::dmi_get_system_info(field as c_int) };
++        if ptr.is_null() {
++            return None;
 +        }
-+        // SAFETY: By the type invariant, `self.0.length != 0` guarantees `self.0.data`
-+        // points to an owned buffer of length at least `self.0.length`.
-+        unsafe { slice::from_raw_parts(self.0.data.cast::<u8>(), self.0.length) }
++        // SAFETY: If non-null, `dmi_get_system_info` returns a C string that
++        // lives for the life of the kernel.
++        Some(unsafe { CStr::from_char_ptr(ptr) })
++    }
++    #[cfg(not(CONFIG_DMI))]
++    {
++        // Squash `unused_variables` error.
++        let _ = field;
++        None
 +    }
 +}
-+impl Drop for Buffer {
-+    fn drop(&mut self) {
-+        // SAFETY: By the type invariant, `self.0.data` is exclusively owned and
-+        // freeable with `kfree()`.
-+        unsafe { bindings::kfree(self.0.data) };
-+    }
-+}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 1ab41129d557..22f10c5d97e8 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -69,6 +69,7 @@
+ pub mod dma;
+ #[cfg(CONFIG_DMA_SHARED_BUFFER)]
+ pub mod dma_buf;
++pub mod dmi;
+ pub mod driver;
+ #[cfg(CONFIG_DRM = "y")]
+ pub mod drm;
 
--- 
-2.56.1
+---
+base-commit: 4843f6873f7c4835e62f2c73ba0fd538e57a2f22
+change-id: 20261121-rust-dmi-c49d2041d7e2
+
+Best regards,
+--  
+Nick Dowsett <nick42d@gmail.com>
 
 
