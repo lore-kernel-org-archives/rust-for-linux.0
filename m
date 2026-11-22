@@ -1,54 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795358499;
-	b=sTcyt2kvtbu03zl4tfhl1MtFtsY0pPO3OXD1OLqKiGRlsu2iq9k0Hk+m7TX6O5FrKifg
-	 U5Q6jtwI5az9/Om3IXNiIPgQ4rGTHHA/oE6nMTwwIjNDb8hzsNELCVUKclrFB2O1DPxQ+
-	 GPIGr2Haux+IswCPFaTYwPFSiPsmT0RBLzzysIhMc842RZQk9ILkcglw+4Ln95JnBYvZ6
-	 J1X4WOXL6oZWXw+IxVTlLHbLi6jV6+NYy4LuRxdO6h4Wg23ad5pWAnyAXec3KhiPBR7qP
-	 OSCsZdClhBDcTFD1qPS45zeuDxCDX60sYuSSd9GQAGMWIlpWsrfpKW9RJokVOPkRtsQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795358499;
-	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
-	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
-	 References:To:X-Mailer:X-ZohoMailClient;
-	bh=OAs13tz1zp/V0FXsNuU43sQnuDXZ2JK6gLC8wvitSVA=;
-	b=q2vnJwrDYck+u5YYbeCGTyQPgjkfydeeDKzAQpN26sIw5uRXb85jU2bsUugCSpDbKRDs
-	 irONPds74uGP8Q17uttlmlKuQub1uoDnX6XYXhrKWd67JSbQpIPsV7cUVSWmODo9oyupS
-	 cDYP9DxuIgm3zEkP8jUceq44s5U3G09liZUuhUTuM+3qmQxNb3Bf6hAQJwHKXBRENUHDm
-	 tMRnvbW2VJcmtbHODc7uGd40RugsAeMH8uKTvmaG7ikCxF7QdicsddJbCh2Wh370Opf5/
-	 h0bYtUkSDV4dI+i4QPG5vy/t+W3uENLhTl8PROx4O7STXugEFAcjTx+a7VZCEzijccA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=iUlw9AP0;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795365298;
+	b=Q1DS5QBo/UBrfq0z83LYuuYTCK/wvgnBam3kgr8IeOvde0invSvW2VZdBI9PCBnVoafg
+	 f+XE+NEFRq0XkCGu6uuSNrFoOWScxjiJKHiruQ4M0IIGixsZ+TLyO10hwBcUF69wvlTSV
+	 4+uoC/kgsIJBzpF73hk8TzhnxfZDKP33ZyVP5xVpazqr86F86gOpqTRmBqsmbp4aOpnym
+	 cy8uw1jVuKZV8UdZKmZSWdLhWxLKxEMothCSzCsk6xjPrvgew3wiH7ATeZ9uezgLKvby4
+	 D1nTzR/ZmV0HuCrIKff2PZ9THTjItrA/1VI0WApVO19ETfEs0YHsJ2t+Rqs4ksWoQ1w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795365298;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:X-Patch-Reply:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=frqLSKxdb4TD6+ImaJKDNUJhKNAv5G/KX6Pf1cnjYIk=;
+	b=PksJqtxfPvmsNkcF44PLH/8CZEcUgQQWdLhTRlCHZ8PhIaVAe7DE6grYroW1GXfusYPs
+	 XPiLO75fe+kQJGYhfsdRFw6vaFjWRfH2bXbBNJCs36xyLjjVgtRjdpQBsxBwFRpD5Aypl
+	 VbPBdKTauN+tf2BOjyjYWwCnJiBkvi9g7L5Kl1EUrbnnrUoW/mnBiq9ZWQuRHfCozZgr8
+	 qgQTJ0iRpCn/JA4cfphprsPYYu3L9oejmtgOhsiqsrs6Z7RU+LEiGZf+0o9ayMuNxGSgv
+	 R9Ncnwko3CfvMnPCoyax96ebWvBD+/az09PNi+VyzOnwpsYXHORjF6NSyeWD5kg0paA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KZuWbp7z;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7843606A320;
-	Sun, 22 Nov 2026 14:41:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7843606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F8F606A32A;
+	Sun, 22 Nov 2026 16:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=iUlw9AP0
-ARC-Seal: i=1; a=rsa-sha256; t=1795358467; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=KLZoxImi/gLRc5IEyb5cQvAK0V4Dz41Xb6f+OH0JaW7n/3y+F/jaQRJBJKi9ln56cZ87I7YX3upq/wZkRP3KqZPiIFmiSCxc6f+8o+tda74u6BJ/KCQmMRRvC0A00FpxfN8QkFqipX6l5PWC7cAoDgVV42p+2cFF9T1XKm6Cm8g=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1795358467; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=OAs13tz1zp/V0FXsNuU43sQnuDXZ2JK6gLC8wvitSVA=; 
-	b=NdSm97msQRfBEanTZa4vhVxHcbmj0M76Sb498KU5Awm30rC0SOSPYTTqODJFdxDcRzg4xNGTp5jfeHlk1Eoj6gQdcj07Kxm7SoY+/ysE92a+k7a3E9cCHgBXQxz7763wXvllIGBMsZo/fbkdQqHvykztbFkZLrahlZgB9blTqBQ=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=iUlw9AP0eZxLbWFQSQ6ZbMipLVn1sRzoht2NE9FRSavf7MpzLAdk6nkgQEp1wA3lxEI3IrrLbKumoE1RPOyWtO6rGWVk5gCFZeL07MlGO9UdMyN0RnWzIC5HxyTP2/elO7y/wuN4VXMVPr56G9r+etB35lzpIX0LPOcneWT+LDo=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=OAs13tz1zp/V0FXsNuU43sQnuDXZ2JK6gLC8wvitSVA=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1795358466185585.8202777739539;
-	Sun, 22 Nov 2026 06:41:06 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KZuWbp7z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538FD1F000C6;
+	Sun, 22 Nov 2026 16:34:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795365298;
+	bh=frqLSKxdb4TD6+ImaJKDNUJhKNAv5G/KX6Pf1cnjYIk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=KZuWbp7zHOTaHce3aX8HCT+nYzblWSjnop8TvVDgDh9Z3fgKmHY6C6cGtgt+keq/O
+	 hAskLZs8J6d9+Fvmw91DrnOGAiHcTjhHromX2DRA6QeQI3bYCqVaQwd8ijnh4LTquk
+	 MbY+Q29TuhB7v64uiI17NAdH37QUjkIUtMjSajcxHgzKYWdikCaCxCX0vCprt+kmYO
+	 qSuewqezcSIfxIYq/8TUJOeoS8o0aHPBiAYT+ZeadGy4juSllYpW619Sf5P1lZHzd5
+	 2Bn6ggpDEWtvrLZE7kVXLnpKS9rlkYGXQtD+PbzABMV8UCv+9y5affZnHFdjJz8Dwl
+	 ci0GPNAk/SKhQ==
+From: Danilo Krummrich <dakr@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: acourbot@nvidia.com,
+	aliceryhl@google.com,
+	abdiel.janulgue@gmail.com,
+	daniel.almeida@collabora.com,
+	robin.murphy@arm.com,
+	a.hindborg@kernel.org,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	tmgross@umich.edu,
+	tamird@kernel.org,
+	work@onurozkan.dev,
+	driver-core@lists.linux.dev,
+	nova-gpu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: (subset) [PATCH 1/2] rust: scatterlist: tie owned tables to the device's bound lifetime
+Date: Sun, 22 Nov 2026 17:34:52 +0100
+Message-ID: <20261122163452.927512-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.56.1
+In-Reply-To: <20261114234324.82387-1-dakr@kernel.org>
+References: <20261114234324.82387-1-dakr@kernel.org>
+X-Patch-Reply: applied
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -57,36 +76,25 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v9 0/2] drm/tyr: GPU reset infrastructure
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20261122-tyr-reset-impl-v9-0-ed42d8f513ec@onurozkan.dev>
-Date: Sun, 22 Nov 2026 11:40:51 -0300
-Cc: linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- dakr@kernel.org,
- aliceryhl@google.com,
- airlied@gmail.com,
- simona@ffwll.ch,
- ojeda@kernel.org,
- boqun@kernel.org,
- gary@garyguo.net,
- bjorn3_gh@protonmail.com,
- lossin@kernel.org,
- a.hindborg@kernel.org,
- tmgross@umich.edu,
- boris.brezillon@collabora.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B7A7F936-E696-41F1-8B9D-5A29DFBED07C@collabora.com>
-References: <20261122-tyr-reset-impl-v9-0-ed42d8f513ec@onurozkan.dev>
-To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Onur,
+On Sun, 15 Nov 2026 00:42:53 +0100, Danilo Krummrich wrote:
+> [PATCH 1/2] rust: scatterlist: tie owned tables to the device's bound lifetime
 
-We can probably fix the sashiko findings once the Clk typestate patchset
-lands. In any case, what we have so far is good for the time being.
+Applied, thanks!
 
-=E2=80=94 Daniel=
+  Branch: driver-core-testing
+  Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git
+
+[1/2] rust: scatterlist: tie owned tables to the device's bound lifetime
+      commit: 0504beeb95d1
+
+      [ Remove stale documentation. - Danilo ]
+
+The patch will appear in the next linux-next integration (typically within 24
+hours on weekdays).
+
+The patch is in the driver-core-testing branch and will be promoted to
+driver-core-next after validation.
