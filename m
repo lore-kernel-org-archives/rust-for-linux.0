@@ -1,75 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.72
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795352494;
-	b=47rYhwMCdpiYJCaOo83ZGLstm6ExXE/URxeFEKNgeZBuclsZH7KpMU/1jVmm1YbC/YHH
-	 X4B4bIRtl073qHf196z44GfMcV5nY9ZgRnEUeurcJVS/w3CrkGp0Ru7PAWVHY0MrB1T6Q
-	 wJK8HDXsJDBXMLtuW3GaiSmPpzKW7yMhySkgr+UfbMr3SEYtyCZrT1HI4lMXEW53ie3I6
-	 spiHb0c8y6rqg/Ji1BWcXvNJ7BVqwTw2tfw9H67WHkSjgoAgKJcJgJw6gbxwInLWnd2rf
-	 SUWQtaW+10KVCnPWOXNDtJoG9cWkXcywE0dyQe1tkvhjepgKGnrJczjtE39dcQp5MVg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795352494;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=dgD6v1f8hqSyKP1pmrAiIRCKNp5vHibGV2DXdSb8jaU=;
-	b=EucZPyuIxg8eeh4wlzF4nKe1nemnIkU3s8zm9T7JjiCXF2ZgK/pPWCXiyMo0qeaA0Fp1
-	 OowR+7lRwv41T3dhRD6I8pikY821knH78V+P2rVQ22w05Hp26CZeYHqKJYLVirJ/kVNVL
-	 gq1sIX+1pWpsTZ08xWQ9gshqXGn9/aLl5GekCwiCkb5GWEvs2FvHp7akizvhkQgfogaaM
-	 1slAVYn+ngIj0Ccmz2q+jpoaXzlgZLEMFT9aCBpKfo4QTEA18OLJRLvkuHYRvjx1rdvnQ
-	 d1tRRK2zDsNl0uN8EsT2FXGHtvK3y2lKQawzn+a6HIHXX61OgvgISrryyvz0q7H6Ezg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iv56wC3d;
-	arc=none smtp.remote-ip=209.85.221.72
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795352559;
+	b=XK9T9Yt+5DCzj+K9x65VdMkZRQ0MhKyV1npjq0kwKQ97958Bb1l6X4F6OWYd+zNcOXWV
+	 mUow7amO0H6ju8dlvvKb7dMd+ZeC1MVLDEzEmPLc9TbS21uzULpiaFHpatrh/3UclTyEZ
+	 pu5/Hr/68+Lvzk3N0+HT5E2Vhf0nMEQir9KOy07v2LwvkshnYr6/uvKyfW4PTf0CelSsv
+	 4UjHdZCoMtq5npqwMP7YicqrSKBAhN4NNeSKXV7RIiv2p33XjoRpfMfWsuwN/Rh7f33q9
+	 FLI7Q2C/5XTXb4GJAUrMzu2FKuB7MxyqSnEwBV4M/ktgalACu9//IFR0FdFtCzxxhug==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795352559;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received;
+	bh=fLY13jsDHwyISc0dUN6ky1XIrU70a0A/B3o74OtR93o=;
+	b=en4hvhbBOpxh1qeJPpBK77XhsEoRk4/SOckaWcsE1OkZKwkPXA0u49MAlqKYJcDbbP43
+	 /yAbkBsaEHuXSeoOG6Ofd+/cfzPuYsphSw2bmMO1EwPERiRKwsupnD0BZ27yNepyYsdKk
+	 yN+bvdPKfg5c28vmfgEIf5WAeRVeO3prAxuvHNPStLyk9vJda+a7FkOzFWORHAgE+R1Ab
+	 TCDKYNnBm00VAWxqSdXaM54VMAEYdp2858oLTZgICsbyJqHGESIWXttb6gUWzuWkqI2RN
+	 TPyy4yWAqPm1hsixWifoL8F2f8CdCn4QGi12UYxPvB7cf/fiIHOP22XaN8fqhuLZ2BQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=korg header.b=ZelDTsnh;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9A0606A32C;
+	Sun, 22 Nov 2026 13:02:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=korg header.b=ZelDTsnh
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1795352558;
+	b=OQXtrvLV/Aadczg3MmMHlzkPGWHsVT1j6kg48SN4fBClXecMNrSPk9pyKoQdBgQZEOyi
+	 COQaGDY1uwL/Pr21ZGR0I+MxbPsaT8oA1qeWwdM6Q+Efiq4WY+hZICJZRFtR5zpoQ5aRN
+	 Z/dftzx8kUVeZb+/pCTKKnPBHhLeHETX7NdLv9BhV0qeUUKmSREM6RicdmapVQ9gOoHJW
+	 bUfJsxGKFE8gZnRN1wXv/RcOrkTVW6kVNn4yGRjEJoKYcd6ze3cfAHXjZFE06W3kYz/Ia
+	 cCUgYqB5OJbUXreDsS1xA66V9dXDWIO60ggeOusIFukmHPCiiyRnb8QvZuZck5vsMgQ==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1795352558;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received;
+	bh=fLY13jsDHwyISc0dUN6ky1XIrU70a0A/B3o74OtR93o=;
+	b=iTZq73lBHxIwosi3zfYS6s0es5JBhKXf9XjEHIHyEkFXP27mPt/bBqw/j07EtL8T/4L1
+	 iA6mWHiVXvrR4vaLngvTojAzqMFRNoP2Z0bXgr5wOBaF5xwsx3mNrr9zoLZsXwSd5qU9H
+	 QadInIy+k/UF33G7h3VjVFHv7L1O1pT8Lxma0NEewITgvmiys3fScqWOuvLUjb8Xea84/
+	 DLI3sO5z4wVYB/0HEHh6zbiXNU1ZnU1u5EdSNl9zCMgGNde9Af8aqdv4szaBwZjqD/kR2
+	 hCnbb9ogvJMdFIL69K2fVmnnnGGK2UcYkSojrLQHomojKRfC4Az7V19XKJy8OsmlzIg==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DCC606A32C
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 13:01:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81DCC606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iv56wC3d
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48e29c25101so960175f8f.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 05:01:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795352493; x=1795957293; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dgD6v1f8hqSyKP1pmrAiIRCKNp5vHibGV2DXdSb8jaU=;
-        b=iv56wC3dgWLzy/CUkTFg/rngzd0mZE1WGaSHNh4sVn4Khgz27rJXENPkXfj0YFWN7q
-         F+QtZpXvyVOEKenuC5kxKqz5/qBg3Bxh1A99159metzO5UTkwn+UvvmB1nc4zNNtagnA
-         TU0MWLVtYztOf+Wsfh8x3v7vIfFwa63ZJLh+Js+SSIVknlJj0vSkKoZt9pfcjwDGwEW2
-         eGbRl7dv1E6j+SXy3iTjFyci7oqA3ut8q8dWGnVlzD0NpBRqgxBcVZpMCEIHEdNKOi4T
-         FuIVi/cPemnemQkGPTTVgHpTOL/ECow56LvE7I91nz3RxEYEoJ1mDRzP6qBZRnua5SRl
-         n4lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795352493; x=1795957293;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dgD6v1f8hqSyKP1pmrAiIRCKNp5vHibGV2DXdSb8jaU=;
-        b=l05EzzJE8xlaZQBYi1d2Xy2dd8Mn0PlEcSVyHW/AOXq0uoxQ9o0HUQAX6kZeL171Vq
-         BSmtV0vBhuh4w9BeuzqTF2LzmV6a1PHrljEhzQqu9q9ETsO2xC0ejGqPu6g2mV488v07
-         rdFred9xDGlUH4wJTiaD6iKgEcXvkEFRmhyaDIJ7aE0kswXT0xHrSk9apsvauwV01f18
-         YYcgFzWqmnHLmeTQ1MzWeR8hnyZeqbnKJTM/FIFQdpocieGyHKHG6wHr6/w9GM5iKKxK
-         HVuFU4cLSmKbNa5giqIlTx4v68/0RAuPyLac3QP6Zok+hryJtq7RyOveBWmGCWfHMOVh
-         fbWg==
-X-Forwarded-Encrypted: i=1; AL+hErHBjt3R0A+sLf1wW6JrgrAJaoquWKYkPi0m/tOtJLNFIxxtsy+vE+j2cTGpvqkFRs8Ajtc1fZoitvICnYM8oQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z9vyaKgOvlei+eRWkFiLRrGc0WhuDHAv0xkQ2QcUl/oeNWOUyF7
-	cbKESxAEddsyfWSe0rKibb6Sg86rUaIBdUVLc3+/JzPXZBAzx9mhCIR4M+5xPp2WmmCcRmn/M7Y
-	qqlXUsJpQKDx+7A+/cw==
-X-Received: from wrnv1.prod.google.com ([2002:adf:ebc1:0:b0:4a3:da3d:b9a6])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:188a:b0:4a9:4dfa:c150 with SMTP id ffacd0b85a97d-4abb2910440mr16888311f8f.33.1795352492323;
- Sun, 22 Nov 2026 05:01:32 -0800 (PST)
-Date: Sun, 22 Nov 2026 13:01:31 +0000
-In-Reply-To: <20261020-b4-dev_query_fixes-v4-0-df66b4c98bc6@collabora.com>
+	by smtp.kernel.org (Postfix) with ESMTPS id 478121F000CA;
+	Sun, 22 Nov 2026 13:02:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=korg;
+	t=1795352558; bh=fLY13jsDHwyISc0dUN6ky1XIrU70a0A/B3o74OtR93o=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=ZelDTsnh0jTVITwkwTRcnMUYrgAMoJ2bw2JOdmrS4rUr5iGAXdCWZdqHNcu1cgyLI
+	 qpf5ZS7Cg445g7lwjj02kmVPR+Lddwa3uH1ojfNanB54sJJcyJL6Vp1tGNF22rKD08
+	 Qk0PTQVWENCZ88sXHkhFfstM5YrY2/IkJkPG1aSU=
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id BAD634C04C;
+	Sun, 22 Nov 2026 13:02:33 +0000 (UTC)
+From: Alvin Sun <alvin.sun@linux.dev>
+Date: Sun, 22 Nov 2026 20:50:20 +0800
+Subject: [PATCH v7 01/10] rust: sizes: add SZ_4G constant
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -78,33 +76,87 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261020-b4-dev_query_fixes-v4-0-df66b4c98bc6@collabora.com>
-X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
-Message-ID: <20261122130131.1394960-1-aliceryhl@google.com>
-Subject: Re: [PATCH v4 0/3] drm/tyr: allow mismatched buffers for dev_query
-From: Alice Ryhl <aliceryhl@google.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20261122-tyr-ioctls-v7-1-3a2af624b992@linux.dev>
+References: <20261122-tyr-ioctls-v7-0-3a2af624b992@linux.dev>
+In-Reply-To: <20261122-tyr-ioctls-v7-0-3a2af624b992@linux.dev>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Lyude Paul <lyude@redhat.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Johan Hovold <johan@kernel.org>
+Cc: Sami Tolvanen <samitolvanen@google.com>, rust-for-linux@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, driver-core@lists.linux.dev, 
+ Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795352551; l=1808;
+ i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
+ bh=RC5TQEMWPe7CGSe6NzYoBKUAxyypO/SjxFkEThrMEs0=;
+ b=oGHlUQ2rqNH/9SAV3u9g5qPE39Tt2xAEycsWcCAcejYwOq0VP1Tj/mkBTW4U/7VibI911425I
+ Lx2FOfl/Oo0CzSZQ6pzAeeyfDfByZSK9RK1x0ua4I6cbNXWcB6Lfk9h
+X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
+ pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
+X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
+ auth_id=684
 
-On Tue, Oct 20, 2026 at 05:06:44PM -0700, Deborah Brouwer wrote:
-> Panthor UAPI for DRM_IOCTL_PANTHOR_DEV_QUERY allows userspace to provide
-> a smaller or larger buffer than the kernel needs. Revise Tyr's
-> implementation to match the expected UAPI behaviour.
-> 
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+SZ_4G is used by Tyr when splitting the GPU VA range into
+user and kernel regions. Add a LargeSizeConstants trait, implemented
+for u64 since SizeConstants only covers sizes that fit in a u32.
 
-Applied to drm-rust-next. Thanks!
+Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/bindings/bindings_helper.h |  1 +
+ rust/kernel/sizes.rs            | 12 ++++++++++++
+ 2 files changed, 13 insertions(+)
 
-I folded in Miguel's style and doc suggestions when applying.
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 3791af0aadc73..fd39cc954eaba 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -116,6 +116,7 @@ const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
+ const size_t RUST_CONST_HELPER_ARCH_KMALLOC_MINALIGN = ARCH_KMALLOC_MINALIGN;
+ const size_t RUST_CONST_HELPER_PAGE_SIZE = PAGE_SIZE;
+ const size_t RUST_CONST_HELPER_GENLMSG_DEFAULT_SIZE = GENLMSG_DEFAULT_SIZE;
++const unsigned long long RUST_CONST_HELPER_SZ_4G = SZ_4G;
+ const gfp_t RUST_CONST_HELPER_GFP_ATOMIC = GFP_ATOMIC;
+ const gfp_t RUST_CONST_HELPER_GFP_KERNEL = GFP_KERNEL;
+ const gfp_t RUST_CONST_HELPER_GFP_KERNEL_ACCOUNT = GFP_KERNEL_ACCOUNT;
+diff --git a/rust/kernel/sizes.rs b/rust/kernel/sizes.rs
+index 188e00c2b8b46..760d26ebe6ff6 100644
+--- a/rust/kernel/sizes.rs
++++ b/rust/kernel/sizes.rs
+@@ -177,3 +177,15 @@ impl SizeConstants for $first {
+ }
+ 
+ define_sizes!(u32, u64, usize);
++
++/// Large size constants (≥ 4 GiB).
++///
++/// Only implemented for [`u64`].
++pub trait LargeSizeConstants {
++    /// `0x1_0000_0000`.
++    const SZ_4G: Self;
++}
++
++impl LargeSizeConstants for u64 {
++    const SZ_4G: Self = bindings::SZ_4G;
++}
 
-Alice
+-- 
+2.43.0
+
+
