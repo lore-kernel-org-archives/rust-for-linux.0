@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=213.97.179.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795385716;
-	b=ZQIjtEXUmlX4uRxo/3xcg0WdY20zCXyHPRSCdRIYnH9T16do7L82GIzg3vVWgli0MILz
-	 NIRtYHSuISlE5rs3P906wE+aO8Ki8UsrxFQVyDOfvqwCXMxmI8XHqImSMOaUU2E7rDtH3
-	 DWuz0qAiun+vcVafD6/69HBfw3OzZcFi+ZDZIRc7b8bbPCZvVa1wWhUPaFO2tTf6ZA5Oi
-	 13hIPCyaxv056k8gtaYpJo0g3A2A2DzyT6n2eBYApb8ukmSH+J5DkNVqxDJlnaw03WyXx
-	 tJfRz7iXGbz6b4BOA4q8SgumR9RM+qRGoKEMXLLJ2/m+tFB0OQ3JWym4hWoLTaLMyoQ==
+	t=1795385720;
+	b=l3jzKpoBxCiGPK/tqkctclMq0KBmrcStNSvHD2ClfAvS+BkURg+S7vRTdX4bNa3Sh+9s
+	 yTJl/2/SmAQANI6nYu+pbrAhL7OM31hYi2WF/gYsq8cPiMja5revJXoHSww93vNoGe7Lj
+	 pLrCdVJpr1XnUBY/UC93syjM+hnECL8G4lvmdAdzImydgO5eGyYNQwtZyt67EtOA6aoJ0
+	 GQcOcSUqojLiHbcIqBsXnEl3qujur85++/vJ+QmeZWX4OcgCa+KCin+H9xkGx2Kvinq/D
+	 zPx74KYwdis2dKWrtte9/KmPb8Xnn/GKhkPItuRQDQ2X+d/B15chM+bCKse2dF9bAPQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795385716;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795385720;
 	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=tZgy2Acviezdj4+o9I81vHvd1Rw5D+LtDPB44OQJRD0=;
-	b=Sgr3de5f0Os74IvZSBFhgoZ2bYQX4RlfiHn9GF14MzSB2TsnnrH9wAw4kd3aC8uMzF8L
-	 2UEgWjw/xrMBAd+zCXROEYOE5UNTxpW8oRJavJAJJe+zJGoADYdHiAJsZtrhr88GnmyrU
-	 8bRmbe6wfP+69iaJyNeHDQ0JXhTw2XZGJ9/NrzmAy+wMxOGldGHi53t8hRbt7OCPO6zoi
-	 KrqGh3gl7JYanFL5KaW8bmnJOsLHBahh6d4pgFBVg3APmFp/y7goCtEcY75vYMLEQyN0z
-	 Zp4TmF1bMHPm/sc4UhRCTrl+ckWXDRfw+UHw8Dri9ZjiXzcsZZXbgDj8K0z5B2eArkQ==
+	bh=NrK9/r4SJF3jAwZM8JqYqYC1DRFMvOtMUQh9jZZynaM=;
+	b=Lg4v4Ep/XvsWgJWXpqDW3efMC15/stXxIuEYu2S7FBVUpl5X2KKfwIN2d2vJRWKYqI2U
+	 U+o11V+aIC36knJ2Hed+cXre/rX4R7H5lYXGoW8NSFnokirz2+VkJ8OYf9UMSH9nIo8Ak
+	 Etbuv9oecRCUc3SGuqP3AsBVM9t0f0TVlqKUvZfQLRWoypDsGeDRM3qjJI/nSxxGxHI8I
+	 nh4iiFdgQXz8iP8SL9SGwYAispzrF5dr5f2AMCJlQ2I4NbcDfV3nBlu4p6GX3u/3IhpQZ
+	 YdvXXay5Wffa6L8W/65tyqrqAOoS2pVxEW4lx07L3vUbNMlQBqLYe1HNBU05f/nUIVw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=igalia.com;
 	spf=pass smtp.mailfrom=igalia.com;
-	dkim=pass header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=mWF8Urru;
+	dkim=pass header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=gKnxcWsQ;
 	arc=none smtp.remote-ip=213.97.179.56
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6DD3606A320
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 22:15:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6DD3606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34586606A31D
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 22:15:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 34586606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=mWF8Urru
+	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=gKnxcWsQ
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
 	MIME-Version:Subject:Date:From:From:Reply-To;
-	bh=tZgy2Acviezdj4+o9I81vHvd1Rw5D+LtDPB44OQJRD0=; t=1795385714; x=2110745714; 
-	b=mWF8Urru3RKEbsKt6ORObWhh3pCY+YXoqv3mYzB6FXjq95n9k6q5HXemy2J0hfFx9UtHHxiP+88
-	Y7CCSpKsmejLqoo/XLpguo1XDiCjFT8dPxVxLKYG6ijVUwrLHBAxidZQiabdp8YHcwIQVZX80rra0
-	iYnzKj8epqHaUGMiACJYbepl8HdeXrFnFkqY4rhQOgSR9rlw4+7FLgh2qrYVDmF28fVciuwrcEc7M
-	uqu4oqIXKEuv1b/V4RW4l+I69M/dea8ogs5N4CuWvdpILmXoOFHYnIiAdJt5DiVxlFgm+nRJS43Cs
-	16YF87Y0TckmdMcudJYX16ONz/FPrYMpPP2A==;
+	bh=NrK9/r4SJF3jAwZM8JqYqYC1DRFMvOtMUQh9jZZynaM=; t=1795385719; x=2110745719; 
+	b=gKnxcWsQI6/Kdu8xOBTwsmdvkz/Q2kNtqh8yImD7CX5TKfPLyqWPugNCiaSrHlayqOs3evFKflW
+	FyiqwrAbzmtLNoDgYc+ylX/bGYygDmuqtW3jTzerPBbicTubieup123sSZUbIlGM6f7SjO3VbJGZZ
+	IIgww9RfBJF+bMyb/ouaUuD3FgnPACVjErZphv2fcRIrtrwQ2MhjwSbMaPbb/FV77nwl4KTTU9w6K
+	8IFULmt56KCHlUGm/uedWMmuG/RMG4DtGJ9jevb97A7IqdTDkkhj9pIiFvMXcQptdbaMsE38/vMGb
+	Us3CZNw6HwcjtNSYjy200LGlXnKHW3P/ZFYA==;
 Received: from [179.105.94.163] (helo=[10.0.0.1])
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1xVFpy-00000002j1Q-2GZX;
-	Sun, 22 Nov 2026 23:15:06 +0100
+	id 1xVFq4-00000002j1Q-3s6a;
+	Sun, 22 Nov 2026 23:15:13 +0100
 From: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Date: Sun, 22 Nov 2026 19:14:49 -0300
-Subject: [PATCH v2 1/4] drm/shmem: Add a drm_gem_shmem_sync() helper
+Date: Sun, 22 Nov 2026 19:14:50 -0300
+Subject: [PATCH v2 2/4] drm/panfrost: Use drm_gem_shmem_sync()
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -61,7 +61,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261122-pan-drop-dma-buf-hooks-v2-1-2ed42dce9db6@igalia.com>
+Message-Id: <20261122-pan-drop-dma-buf-hooks-v2-2-2ed42dce9db6@igalia.com>
 References: <20261122-pan-drop-dma-buf-hooks-v2-0-2ed42dce9db6@igalia.com>
 In-Reply-To: <20261122-pan-drop-dma-buf-hooks-v2-0-2ed42dce9db6@igalia.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -81,181 +81,128 @@ Cc: kernel-dev@igalia.com, dri-devel@lists.freedesktop.org,
  rust-for-linux@vger.kernel.org, 
  =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5356; i=mcanal@igalia.com;
- h=from:subject:message-id; bh=mHgl0Na3xpR041r5/wE7OxY53UlFpicQLznYg7tTlW4=;
- b=owEBbQGS/pANAwAKAT/zDop2iPqqAcsmYgBrA2ld+Z2v2b4U+j4fuvUWeC4+a4bfTs7ADTCBo
- SusPAelWP6JATMEAAEKAB0WIQT45F19ARZ3Bymmd9E/8w6Kdoj6qgUCawNpXQAKCRA/8w6Kdoj6
- qtxgB/4+T3PUmsG+d4WUUDwwsR1ybff9BHyxWFcr0NH0VRlkZD/0dSxl3yJnLbo1OJyMCbEth0Q
- K6RxA6aPOzPCmCP2tGkM2rWWOV7psMVkEwWTFGWEE2U2pkF/oHk2S/NxR9XNV/Kej6gc0R5jGtv
- EOe41c0PpCphZP1FBAd7oh5mHM2JII/GQLYxAdyTPLwctXIxO8/M77IZVF/N5P3N/SR9PkEyqfj
- I5uGObqP1Gc9yQSt4bBW/b2eSZnNjWpx+NO3SdYGceb3rjvLGdb8cd7wzMZzEVsdKGHIQfan68a
- AjmZQtXoUs1Vsh7AcFt3U04pMeCb249qDufqD+Q1wimOvEGm
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3626; i=mcanal@igalia.com;
+ h=from:subject:message-id; bh=ry5WZonfag3R2iYp6kbiStBXwZxqNwSRvxUM5zYxctA=;
+ b=owEBbQGS/pANAwAKAT/zDop2iPqqAcsmYgBrA2leWB2k31mdfCb7Rqs6hOZ6szq/sXqkQQzXv
+ PXz/+4kPkyJATMEAAEKAB0WIQT45F19ARZ3Bymmd9E/8w6Kdoj6qgUCawNpXgAKCRA/8w6Kdoj6
+ qqB6B/9gzdu8RXkVh34Hxhc/mlUDuoApgnZGKgUUiDMpJh+xnGWirSpak/cWfYRa+UD1qcT1a/9
+ vZX200KIQDnrhzPN7JaFbzFH73sH8ViKBgRunirq3UuoDyPDWWEyZ84usB1AtPWuU48TKDAOBvy
+ 7sdj/Y+AfK5nJWmcuOimIuKM1sgLWZRA7ndvJw8vbRC6CHjQwnoHh3qt9SwB1NMFDkPifh7+suy
+ OXOPlN4J7/Y0j0/0H7i6wDBaH2L8LbK7brDJBo3yhU/HqEg++dw7pBmDENZRe5JwN7DFJXyM27h
+ NZp9mEhH236PXoxfBTLAAWZBHLLP1GwFZpHniYK0oO0dbqxz
 X-Developer-Key: i=mcanal@igalia.com; a=openpgp;
  fpr=F8E45D7D0116770729A677D13FF30E8A7688FAAA
 
-From: Faith Ekstrand <faith.ekstrand@collabora.com>
+panfrost_gem_sync() walks the shmem sgt without holding the resv lock,
+so the shrinker can purge a BO and free the sgt during the walk. It also
+repopulates purged BOs, allocating memory the shrinker can no longer
+reclaim.
 
-This enables syncing mapped GEM objects between the CPU and GPU via calls
-to dma_sync_*().  It's a bit annoying as it requires walking the sg_table
-so it's best if every driver doesn't hand-roll it.
+The common helper drm_gem_shmem_sync() has the same functionality as
+panfrost_gem_sync(), but it also handles the mentioned cases. Translate
+the Panfrost UAPI sync type to the common shmem type and use the helper
+instead.
 
-Signed-off-by: Faith Ekstrand <faith.ekstrand@collabora.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-[mcanal: rebased on top of drm-misc-next, fixed kernel-doc nits, added a
-resv lock across the sgt walk, and skip unbacked/purged BOs]
+Fixes: 7be45f548976 ("drm/panfrost: Add a PANFROST_SYNC_BO ioctl")
 Signed-off-by: Maíra Canal <mcanal@igalia.com>
 ---
- drivers/gpu/drm/drm_gem_shmem_helper.c | 108 +++++++++++++++++++++++++++++++++
- include/drm/drm_gem_shmem_helper.h     |  17 ++++++
- 2 files changed, 125 insertions(+)
+ drivers/gpu/drm/panfrost/panfrost_gem.c | 74 +++------------------------------
+ 1 file changed, 5 insertions(+), 69 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
-index d654a22a30de..cc3d04d2d58e 100644
---- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-+++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-@@ -901,6 +901,114 @@ struct sg_table *drm_gem_shmem_get_pages_sgt(struct drm_gem_shmem_object *shmem)
- }
- EXPORT_SYMBOL_GPL(drm_gem_shmem_get_pages_sgt);
+diff --git a/drivers/gpu/drm/panfrost/panfrost_gem.c b/drivers/gpu/drm/panfrost/panfrost_gem.c
+index 518f24549b9d..8c0facd498d7 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_gem.c
++++ b/drivers/gpu/drm/panfrost/panfrost_gem.c
+@@ -555,84 +555,20 @@ int
+ panfrost_gem_sync(struct drm_gem_object *obj, u32 type, u32 offset, u32 size)
+ {
+ 	struct panfrost_gem_object *bo = to_panfrost_bo(obj);
+-	struct drm_gem_shmem_object *shmem = &bo->base;
+-	const struct drm_device *dev = shmem->base.dev;
+-	struct sg_table *sgt;
+-	struct scatterlist *sgl;
+-	unsigned int count;
+-
+-	/* Make sure the range is in bounds. */
+-	if (offset + size < offset || offset + size > shmem->base.size)
+-		return -EINVAL;
+-
+-	/* Disallow CPU-cache maintenance on imported buffers. */
+-	if (drm_gem_is_imported(&shmem->base))
+-		return -EINVAL;
++	enum drm_gem_shmem_sync_type shmem_type;
  
-+/**
-+ * drm_gem_shmem_sync - Sync CPU-mapped data
-+ * @shmem: shmem GEM object
-+ * @offset: Offset into the GEM object
-+ * @size: Size of the area to sync
-+ * @type: Type of synchronization
-+ *
-+ * Returns:
-+ * 0 on success or a negative error code on failure.
-+ */
-+int drm_gem_shmem_sync(struct drm_gem_shmem_object *shmem, size_t offset,
-+		       size_t size, enum drm_gem_shmem_sync_type type)
-+{
-+	const struct drm_device *dev = shmem->base.dev;
-+	struct sg_table *sgt;
-+	struct scatterlist *sgl;
-+	unsigned int count;
-+	int ret;
-+
-+	/* Make sure the range is in bounds. */
-+	if (offset + size < offset || offset + size > shmem->base.size)
-+		return -EINVAL;
-+
-+	/* Disallow CPU-cache maintenance on imported buffers. */
-+	if (drm_gem_is_imported(&shmem->base))
-+		return -EINVAL;
-+
-+	switch (type) {
-+	case DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH:
-+	case DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE:
+ 	switch (type) {
+ 	case PANFROST_BO_SYNC_CPU_CACHE_FLUSH:
++		shmem_type = DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH;
 +		break;
-+
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	/* Don't bother if it's WC-mapped */
-+	if (shmem->map_wc)
-+		return 0;
-+
-+	/* Nothing to do if the size is zero. */
-+	if (size == 0)
-+		return 0;
-+
-+	ret = dma_resv_lock_interruptible(shmem->base.resv, NULL);
-+	if (ret)
-+		return ret;
-+
-+	/* No CPU mapping can exist without pages, and purged BOs have
-+	 * no content to be synced.
-+	 */
-+	if (!shmem->pages || shmem->madv < 0)
-+		goto out_unlock;
-+
-+	sgt = drm_gem_shmem_get_pages_sgt_locked(shmem);
-+	if (IS_ERR(sgt)) {
-+		ret = PTR_ERR(sgt);
-+		goto out_unlock;
-+	}
-+
-+	for_each_sgtable_dma_sg(sgt, sgl, count) {
-+		if (size == 0)
-+			break;
-+
-+		dma_addr_t paddr = sg_dma_address(sgl);
-+		size_t len = sg_dma_len(sgl);
-+
-+		if (len <= offset) {
-+			offset -= len;
-+			continue;
-+		}
-+
-+		paddr += offset;
-+		len -= offset;
-+		len = min_t(size_t, len, size);
-+		size -= len;
-+		offset = 0;
-+
-+		/* It's unclear whether dma_sync_xxx() is the right API to do CPU
-+		 * cache maintenance given an IOMMU can register their own
-+		 * implementation doing more than just CPU cache flushes/invalidation,
-+		 * and what we really care about here is CPU caches only, but that's
-+		 * the best we have that is both arch-agnostic and does at least the
-+		 * CPU cache maintenance on a <page,offset,size> tuple.
-+		 *
-+		 * Also, I wish we could do a single
-+		 *
-+		 *	dma_sync_single_for_device(BIDIR)
-+		 *
-+		 * and get a flush+invalidate, but that's not how it's implemented
-+		 * in practice (at least on arm64), so we have to make it
-+		 *
-+		 *	dma_sync_single_for_device(TO_DEVICE)
-+		 *	dma_sync_single_for_cpu(FROM_DEVICE)
-+		 *
-+		 * for the flush+invalidate case.
-+		 */
-+		dma_sync_single_for_device(dev->dev, paddr, len, DMA_TO_DEVICE);
-+		if (type == DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE)
-+			dma_sync_single_for_cpu(dev->dev, paddr, len, DMA_FROM_DEVICE);
-+	}
-+
-+out_unlock:
-+	dma_resv_unlock(shmem->base.resv);
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(drm_gem_shmem_sync);
-+
- /**
-  * drm_gem_shmem_prime_import_sg_table - Produce a shmem GEM object from
-  *                 another driver's scatter/gather table of pinned pages
-diff --git a/include/drm/drm_gem_shmem_helper.h b/include/drm/drm_gem_shmem_helper.h
-index bcbb92f3fe9b..a5def70fae7a 100644
---- a/include/drm/drm_gem_shmem_helper.h
-+++ b/include/drm/drm_gem_shmem_helper.h
-@@ -122,6 +122,23 @@ void drm_gem_shmem_vunmap_locked(struct drm_gem_shmem_object *shmem,
- 				 struct iosys_map *map);
- int drm_gem_shmem_mmap(struct drm_gem_shmem_object *shmem, struct vm_area_struct *vma);
+ 	case PANFROST_BO_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE:
++		shmem_type = DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE;
+ 		break;
+-
+ 	default:
+ 		return -EINVAL;
+ 	}
  
-+/**
-+ * enum drm_gem_shmem_sync_type - Type of synchronization
-+ */
-+enum drm_gem_shmem_sync_type {
-+	/** @DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH: Flush CPU caches */
-+	DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH = 0,
-+
-+	/**
-+	 * @DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE: Flush and
-+	 * invalidate CPU caches
-+	 */
-+	DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE,
-+};
-+
-+int drm_gem_shmem_sync(struct drm_gem_shmem_object *shmem, size_t offset,
-+		       size_t size, enum drm_gem_shmem_sync_type type);
-+
- int drm_gem_shmem_pin_locked(struct drm_gem_shmem_object *shmem);
- void drm_gem_shmem_unpin_locked(struct drm_gem_shmem_object *shmem);
+-	/* Don't bother if it's WC-mapped */
+-	if (shmem->map_wc)
+-		return 0;
+-
+-	/* Nothing to do if the size is zero. */
+-	if (size == 0)
+-		return 0;
+-
+-	sgt = drm_gem_shmem_get_pages_sgt(shmem);
+-	if (IS_ERR(sgt))
+-		return PTR_ERR(sgt);
+-
+-	for_each_sgtable_dma_sg(sgt, sgl, count) {
+-		if (size == 0)
+-			break;
+-
+-		dma_addr_t paddr = sg_dma_address(sgl);
+-		size_t len = sg_dma_len(sgl);
+-
+-		if (len <= offset) {
+-			offset -= len;
+-			continue;
+-		}
+-
+-		paddr += offset;
+-		len -= offset;
+-		len = min_t(size_t, len, size);
+-		size -= len;
+-		offset = 0;
+-
+-		/* It's unclear whether dma_sync_xxx() is the right API to do CPU
+-		 * cache maintenance given an IOMMU can register their own
+-		 * implementation doing more than just CPU cache flushes/invalidation,
+-		 * and what we really care about here is CPU caches only, but that's
+-		 * the best we have that is both arch-agnostic and does at least the
+-		 * CPU cache maintenance on a <page,offset,size> tuple.
+-		 *
+-		 * Also, I wish we could do a single
+-		 *
+-		 *      dma_sync_single_for_device(BIDIR)
+-		 *
+-		 * and get a flush+invalidate, but that's not how it's implemented
+-		 * in practice (at least on arm64), so we have to make it
+-		 *
+-		 *      dma_sync_single_for_device(TO_DEVICE)
+-		 *      dma_sync_single_for_cpu(FROM_DEVICE)
+-		 *
+-		 * for the flush+invalidate case.
+-		 */
+-		dma_sync_single_for_device(dev->dev, paddr, len, DMA_TO_DEVICE);
+-		if (type == PANFROST_BO_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE)
+-			dma_sync_single_for_cpu(dev->dev, paddr, len, DMA_FROM_DEVICE);
+-	}
+-
+-	return 0;
++	return drm_gem_shmem_sync(&bo->base, offset, size, shmem_type);
+ }
  
+ void
 
 -- 
 2.56.0
