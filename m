@@ -1,105 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795366604;
-	b=BntWJV9pSKepBlIsMVkq/L+klARTJq/G15c4+V3SvC76wdHKyUlDkuSP+ZcpUo24sse6
-	 4KHZh5EF1nto4cQxaT1eVuVNcz4ghikO3mybPtnoRGvNtTa+pndanta9dJ2FoVm1xlYHL
-	 u0BT1vfzyDq7nAuy6XyxNBeWWl7K1cY4Tua103qME1hocPflMNPQqyaGD4su/An0vI0qI
-	 AN29+eXmhwLR51ndkqAbxcCgZXSIVaHE4TlMk1uNNiruPSp/55RfuGftKSUeU6LbGKQ0/
-	 YmuiPKyq4IGwoJMZc3KARKzolszyLXkW930WG1cw7P2z+zJippFr8LQUpwZsV6BdW2A==
+	t=1795366740;
+	b=0sIUz4BXImO9xyzPcBjkKQnmiKe4I0YpJwSXwkt8nhBDidIeaNy1q7GksmKaBAEm9vJq
+	 C07BEXtLgs4otVCXuSTN7iCbkvTFsyBYDdaP5BcYTOsnoye9iuZ95zuHnar8+rGvYQgVf
+	 DtjNzKYZoF70LPFq1YdN8KmH+NtPb6XHTx1hTLPBcVH7fV2q3YB7nx4eYwEyFqqLc882s
+	 59/hMZW+CqEjBvvLfW8y3hNoIAg5AxT/ryfVNpSqLsIVgkehh7StPSEOmmqkT2j1TvXZn
+	 wkN7rkUqrTMz61G4wzI7iJaI+NvS/kEMZGCJ0QCdf4pkn7gWcQL1TIE6OHh/4GWyQtg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795366604;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=GELrYH8zBYivy4PxMXXze6BPTMvfthUEBjTosoYnJTc=;
-	b=dnVxGq7wA52/8Oel//jWMP0MpM3uqOTzVdVH3lZ89v3TXzvThyHvU3O/w1iS83JpSpyI
-	 smy2ZlDOrPP/F1ubGcY3/hLXrdzd5cAvqVyhOxlGjHurbjsWZpdcLKFXKVRkGw/MCa3Fs
-	 F5+CEKwjrmrFjD6a2XEolsrQ4DySR9ROsIgwohrTjdPraF5AYyE+SYOH2U9zFw8C2l6L8
-	 dgMvl2+RfK+HUjRjDFuf8CsOPb4Nc6+q+fCnTgduQHkEjj/yPfZTbzMYdowfiElLoPPYA
-	 SefTU5DDyTv0+VkRiY5iyYMJ2ZPBUEymyyu/VqnxCwmtZe0d5p8vDDsD1XV4a2IgbYA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795366740;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=5KT/akQqJfPobK/Gnh5/Clx5Z1xrij4GwAcSxJvS7Gg=;
+	b=5VPPrwbNU8cJVN3cKyuqonfsQI0v8LeJ7h9wfmckUzuMhUVe1Z3BE7RWQLd4FcJPE3kQ
+	 fMxAPlBKew5kIacwGvoU8a+3DGedhw2EuPMa34z4OBFSCwcOgFyrJgBllJkUwlLYN/sJF
+	 eoGaKQ5P8K8Fr3yBtZlOa6JGVfdiblzA0YrvlyMSfUXfKUqEFdbhQGhmtt3tqUj2jp0Vi
+	 pyHq7KNuDO9frg3obmiYbk+0iRSeE4WrTWbkQqjJawMvZBVTMZtmDMc6HjKZCbn9gOxCz
+	 /5VKZOb+VprNgWIRDPgNlMqvnQOdKtlQplA4cnWikMogIaAR5hHiFbbfelCEG0LZK+g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0zHGVscF;
-	arc=none smtp.remote-ip=209.85.222.169
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FXHnsUQz;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6262B606A320
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 16:56:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6262B606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CE3606A320;
+	Sun, 22 Nov 2026 16:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0zHGVscF
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-945e6d9ceeaso239724885a.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 08:56:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795366603; x=1795971403; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GELrYH8zBYivy4PxMXXze6BPTMvfthUEBjTosoYnJTc=;
-        b=0zHGVscFwJeaq32+axXyvuYPW3svBiVjLFTsk9Sb1nKxysCyACPp6SSLwcPgJRK00B
-         zOm30roWW/hUXxE0/0yJsjm3b4qgWOtucvjqrIJKF5fwbbIlDwTUPr8IBOh2hhGDRCLL
-         IZCaXnkkr2bF0TY0g5D609oDf7fh+Q573+yQaJFQaa+QLL7MFe2gVF6yHFyJh/czy1N2
-         GEIcadj73HUT1fDOjw+26Ek5If7UR77M0esLOzixBxKJSgbVJeEUpcDq8n3h+71zsb0s
-         Sr3YrcJ1zgf5GwvJ1gwETRoRiR1j/6PHXGMvwGL9Gc4RR33rtRZ69yvqY10F+pKfxai6
-         O0EA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795366603; x=1795971403;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GELrYH8zBYivy4PxMXXze6BPTMvfthUEBjTosoYnJTc=;
-        b=lBcjMWf7su/xqhTlRoH8S1u+gpwjuF6yczjqwKu8afn/bYacFNsLk7wPpbT24R3Tyy
-         4GzGuwoFhxV40Nv7kSw96pPPsLtR9+diHH0eMSFpgThWELfLVhCq29f8W2NkhLssYTfX
-         w076Opm3LMopPCVu+QK7fCDGHIavw47uzILfj6SDnsbcy4e6Mqsg5ve22mMEf8C6SAWf
-         qtnmVVqQWSyx2oeIyz9jmj1FAc4AaPOpkkLQE3/QA8+k3RV7QmqSaS0e+RSi4BhTMLUx
-         2ofHssblzdLPiScdjq+OEqbfS9R/psG/3ZQ30B9xiL4Zc9ypWRi8Cy3V1kj9h+pw8x1x
-         apyw==
-X-Forwarded-Encrypted: i=1; AL+hErHcya52kNx8J35WHHTPmT8V+Q9pMCVISO+hmRxRrVSZxphleoZWrr5bPLg+X9O1hrqk9WmarvLbQ/jpC9lI2g==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+RV/qfh7HyVpOLTu/kqQ+O67kmb/UfkKxLSReT2vloO8csZz5O
-	M5T8D6GHLjZk1RXPVuwDZENSRfgCBZsAdSptWo21j9e+QyqjwpmBWbD/nuOwyPs5
-X-Gm-Gg: AZFdTZfaYkpTqb+Lsqy+T57CKcDsyc+4XZKqUNeLEMWfbPTFfhSLly915aJfLlyGpNF
-	wLahYPEGIraLlb04wgXS2fYn6PzRsZ2NltHY0aZY5Pu6lEWrYPHoDhox9MEc5d04xAJW50y2OYm
-	C6pD216zuZ66YBE//lw0rm6Prq0fNqU38zuWMarCq0NdTg0G4R8QAcG1ziu8VLTm3t9ia7fn2Q4
-	UWL03zzvpdgxTm0i/a+vVNKhTUpuiUzrnp9cleUEe4ED8++NIbeFW/j91Rk0DjqSVT45wAnKgxI
-	8PmEBBCtdryv8BqMIQjUGixmw0BXFstwDynnmECQstO2mXMFye00FNSVEXsTdEwA29qZkkQ7A9n
-	2841g5Bcg08L/4p7ATCy/HcZmtt8fNsGI9x9GJjgDDE3lDY+Rx56aOwgWPGYW6SkVG43uXQ/lo4
-	UiYcPwaQE/jaJoE9OELeDU1fenqXkuqn7ZOR1w8JKD+jZDs74zMtqmaHKfKLgc6aeTiSGk2Z3e9
-	K0/rKppiOYSwrHBMW1uvZmYLvKmP5tlj5zWGBELYnV8JpDaHiffTcCaXFVEZ0WaKZ11NoDtPsrs
-	rknIKiSwRRHoU3SsrRFjTs9kVw3NA/KSyKrb+TlQS2riFjdoHQ==
-X-Received: by 2002:a05:620a:6910:b0:944:12d5:fd45 with SMTP id af79cd13be357-949bab2a96bmr1590306385a.70.1795366603309;
-        Sun, 22 Nov 2026 08:56:43 -0800 (PST)
-Received: from tofu.taila6b446.ts.net ([128.210.0.165])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-949bb349db3sm629367985a.7.2026.11.22.08.56.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2026 08:56:43 -0800 (PST)
-From: Georgios Androutsopoulos <georgeandrout13@gmail.com>
-To: mcgrof@kernel.org,
-	dakr@kernel.org
-Cc: ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	daniel.almeida@collabora.com,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	driver-core@lists.linux.dev,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Georgios Androutsopoulos <georgeandrout13@gmail.com>
-Subject: [RFC PATCH] rust: firmware: diagnose insufficient modinfo buffer capacity
-Date: Sun, 22 Nov 2026 11:56:09 -0500
-Message-ID: <20261122165609.1914670-1-georgeandrout13@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FXHnsUQz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC811F000CA;
+	Sun, 22 Nov 2026 16:58:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795366739;
+	bh=5KT/akQqJfPobK/Gnh5/Clx5Z1xrij4GwAcSxJvS7Gg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FXHnsUQz4t7cbWldltOLuYKWx2ib4DEnDlS0X1/37hYfx67vp4xhRzJ4D///TI44H
+	 IoITN0O0k81L9PzfpD1mHulb/0ZdkWyAHIj0zb/UUSFmwiBvL/K7NZZr1KGk911T4T
+	 +rcJsMkmweKZULlb4Tpu7u8clHRH1mUk29bZvQkat/3xJ671m6Br76/+Hl4XjugTli
+	 4G1tsk3tVoSqtFwN/+5cxVaqf+qhz0ROZ532Rt0jtQSBRUyRxlvTML9rPEOBM+/AjD
+	 x/hCivPUnUzK6IRZ1CChBXzeUdJojejhtY9W641lkeEMl7fFzA9XrZ7s8GevVL7Hfp
+	 fK2l+w1y/3QMQ==
+Date: Sun, 22 Nov 2026 17:58:56 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Cunyuan Liu <cunyuan.liu@cixtech.com>
+Cc: boris.brezillon@collabora.com, steven.price@arm.com, 
+	liviu.dudau@arm.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	gary.yang@cixtech.com, fugang.duan@cixtech.com, daniel.almeida@collabora.com, 
+	aliceryhl@google.com, p.zabel@pengutronix.de, daniel@fooishbar.org, 
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, cix-kernel-upstream@cixtech.com, 
+	robin.wang@cixtech.com
+Subject: Re: [PATCH v3 3/7] dt-bindings: gpu: arm,mali-valhall-csf: Add
+ system-cache policies
+Message-ID: <20261122-greedy-cuddly-hog-06c4ac@quoll>
+References: <20261119123850.2994625-1-cunyuan.liu@cixtech.com>
+ <20261119123850.2994625-4-cunyuan.liu@cixtech.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -109,39 +63,62 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261119123850.2994625-4-cunyuan.liu@cixtech.com>
 
-`ModInfoBuilder::push_internal()` tracks the required length even when
-the buffer is too small, but `push_module_name()` can still index past
-its end. During const evaluation, this reports an out-of-bounds index
-rather than the capacity constraint.
+On Thu, Nov 19, 2026 at 08:38:46PM +0800, Cunyuan Liu wrote:
+> Describe system-cache allocation policies for Mali GPUs with SYSC_ALLOC
+> registers. The policy depends on how the GPU is integrated with the rest
+> of the system and belongs in DT rather than a platform table in the driver.
 
-Check the capacity explicitly with `build_error!` so the failure
-reports the violated constraint.
+Explain why.
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1271
-Signed-off-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
----
- rust/kernel/firmware.rs | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-index a18f8b84f3e3..54c6a13714c5 100644
---- a/rust/kernel/firmware.rs
-+++ b/rust/kernel/firmware.rs
-@@ -339,6 +339,10 @@ const fn push_module_name(self) -> Self {
-             this = this.push_internal(module_name.to_bytes_with_nul());
- 
-             if N != 0 {
-+                if this.n > N {
-+                    crate::build_error!("Modinfo buffer too small for module name.");
-+                }
-+
-                 // Re-use the space taken by the NULL terminator and swap it with the '.' separator.
-                 this.buf[this.n - 1] = b'.';
-             }
+> 
+> Use entries containing a source ID and separate read and write policies.
+> When the property is present, omitted sources use L2 allocation. Without
+> the property, the driver leaves the register settings unchanged.
+> 
+> Signed-off-by: Cunyuan Liu <cunyuan.liu@cixtech.com>
+> ---
+>  .../bindings/gpu/arm,mali-valhall-csf.yaml    | 24 +++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml b/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
+> index 8eccd4338a2b..4d50427edd87 100644
+> --- a/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
+> +++ b/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
+> @@ -97,6 +97,30 @@ properties:
+>  
+>    dma-coherent: true
+>  
+> +  arm,sysc-alloc:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-matrix
+> +    minItems: 1
+> +    maxItems: 32
+> +    items:
+> +      items:
+> +        - description: GPU internal source ID
+> +          minimum: 0
+> +          maximum: 31
+> +        - description: Read allocation policy
+> +          enum: [0, 2, 3, 4, 5]
+> +        - description: Write allocation policy
+> +          enum: [0, 2, 3, 4, 5]
+> +    description:
+> +      System-cache allocation policies for GPU architecture 11.0.3 and later.
+> +      Each entry contains a source ID, a read policy and a write policy.
+> +      Source IDs must be unique. Reserved source IDs and access directions
+> +      not supported by the GPU must use zero policies. Policy values are
+> +      0 for L2 allocation, 2 for never allocate, 3 for always allocate,
+> +      4 for partial allocation and 5 for L2 partial allocation. When present,
+> +      all source policies start at zero and the listed entries override them.
+> +      Omitted sources therefore use L2 allocation. If absent, the register
+> +      defaults are preserved.
 
-base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
--- 
-2.47.3
+Looks like integration specific, so implied by the compatible.
+
+Best regards,
+Krzysztof
 
