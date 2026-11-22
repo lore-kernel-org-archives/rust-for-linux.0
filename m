@@ -1,79 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795322144;
-	b=Pehot08C+e1hxaozXN9a4G6lT0GAqdYP9a7qgvyg4Kx3D9REflfZcxCubrG68va9UwV/
-	 AHXn9cyvIW70Ig2po+P8jngNPuoNBqOeV50R5souzsa6HjiLizoS96YHbCd9KM3ckS2uo
-	 dM6hCXsXDEksiV2IRXEqrnLvrCr424I5pbQLq7hvU7t3OO0E/0WCVtG8F1BbXrL9i3Zwf
-	 rwLsAHD3tPMytZUPLhfVnVmXI2XAYYBcjV04yRMG+ADEXJ7pf942Uhkp2ly55+d26DQ/v
-	 i4WG/BxA2Fxpp15a72hHTNI9vcwf1B4yC09BznRSjQcVkD66CtkMfyo2Cxc/obhHFnQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795322144;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=6w1KSDkRJhlso48nKJo/NCKPKTEqmQ7kzzIZEMGYM1I=;
-	b=btO1DHpRC5Izm+nq5tE8iSLSN3vC98bpHqQtmqPgdeyWMKlSfwtCfaSZp1l0WPimwf/y
-	 DTtPvOJ7xdrV/N1x7ae8x1ri1OWgwtJUYpAoxlS0YMiiPFlhxPttsWbyyLAz2pgiWQY+9
-	 r8w3vgYDA5VoT/hms7kMZcFlbc3rZX8rFP4EukbsTf8NY/0NGVzZh6yZyBAsRqmj4OnVL
-	 M11gmzGPTFMnzM5pIpWh6svXhJsJoKeUNIY1F0SSdbHtw3V90U284D7M9bhH5ClutqLQ6
-	 +/SQ1TX/h+p8b6nfndQrEBYdoltgHHwumfB4l6Ttp0ImBT45d6PE72IGHQmKh3IQUtw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JJ6J0RPC;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5662606A695;
-	Sun, 22 Nov 2026 04:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JJ6J0RPC
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795322144;
-	b=qRB3SnO976tTMBjGppYAD1V1i69UI5OO6FckXXGWg00+F+G+k7LxvKW1rKLmLCGw52h+
-	 JGUZKErhdNppT2Oo342dLRBGbqrvpnGdk8p9zpsJXQjVkyzWLS95bIzGOK3gHnVpeG8hE
-	 MgN0kiDJIEucPaH2k4L6jLbJTgmV0l9rtHZ445R4D85nioDiJRmOP3w/GwqwBw+0oMoIi
-	 9d+gMbsAi9sfKW6eGU7Vefd0OiBUDDc+mMc6FG786uewDiCpW3nPjtV0ANmGOhTtxM5hF
-	 Dk5JWReb5kWULE9a3C56GsWeiBli6awYW7bLAO5Ii7UGDYCMD2ukaePU6Pfrx/8iovw==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795322144;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=6w1KSDkRJhlso48nKJo/NCKPKTEqmQ7kzzIZEMGYM1I=;
-	b=kgdBZyquGKJQW6UsWOGl4QvSxQlmvkJBbimw71TeYeBb23ZsXH9lad0y2HDeXMek5rJb
-	 MujHqUtfklppES2Rhlz2AsPYz3N4WvhDEVKRgZwY2ei+vCrNUaYqZLEsaqm9Fj8bRPM2t
-	 YOuQkoRa0dkE3kG+jyGE0N27FhntbVUi52N2EXqQcXVu6PzH4nA48w+A+kteSkUvjjF3k
-	 YgLN1gWyPR/0sMMNlge34c3c2G9nkQT2unfjpazBSoFHcZK+9mSt1vxaqFPFi3xDE83ii
-	 75ZAwjxc/ZoQ8FtJwJXRN9Uqr2hcsJPH9781wBApNZfjyOdcC+UaIkkOYeqES+CvQ1A==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795323308;
+	b=xaUW1Y6l9m0AI+GR3gzaOd9Sqgs9GVwTU/qOqxs45z6C7c+xrHBKU5knSeMfh3vjh+fb
+	 cKxtipmX20FRBzShHJ8qd1iS9N2bNR4TySX2HPsoOQMVlSMKIEcz/GrlwsishZiuVSAbN
+	 9f2TqzHKpthJ/5cx/VU5A+7xu+FaoAm76WAmwcapWK40SXUhonOzDr57ay1mmTfwt/dIR
+	 p72dHhbTA/TeOySy+0izn03MhN/beTvHNdwVDuwmtRuCydz48jZaa4w5Yu3z6OwzmUIKn
+	 tIs5w25MJDVoje5cF0b4DOIeOeHHWo1o6HMrzZVtxbzz8QfFTl1NXWiUcbsLGmp5HuA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795323308;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Mime-Version:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
+	 From:To:X-Mailer:References:In-Reply-To;
+	bh=zo5hV3nq2vAzOrfwjLwLFQ7iNUuGgnQAdTEhOY7Nk04=;
+	b=SbBVRwfFx/FKlw0iaCpNSGSJwKsj/vNCIkMtJqN4j4jIQiLumSNkxRZRl9DclgkDg4+I
+	 cJEjx3HLEDi5n2PAfFvIu7o4cPjWeul95QqiiZkYMZNNO+me2SkMGSDnqKZ1VFYo6SeV9
+	 gA+z1IOoJxzVF/GsqVSqpH5PKcG9YHjqLHNgsnBVG5cyXhfC9n0LhdwIrtCBqFCsZu3Cg
+	 0BrtfAXyUySXzo77Qk4FAKhV3Z1DSuWyX/InScW6s8MHAQUNTwHicmZ8SqkvVNBIUrJam
+	 xuwbJ+gClFOlJfqOEQ5QAguTL3M4+l7UQIooPb4ihMHLydJzlvFFHPVIclzHM8tzzuA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OTGCWyKF;
+	arc=none smtp.remote-ip=74.125.82.172
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id B96921F000C4;
-	Sun, 22 Nov 2026 04:35:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795322144;
-	bh=6w1KSDkRJhlso48nKJo/NCKPKTEqmQ7kzzIZEMGYM1I=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=JJ6J0RPCNC89lA72ejLOujbNO+KkgnS7o8khwTH+3atP+nqBqqxKxPdCz0Mu5YZQO
-	 eAJ8VWJha1PyBfkMq1I4J3MdO12JNa8YlK8GZJipsoqxux6JMacR1MX5ZbwW+o5cQf
-	 qnNQeHty0R2aEf6OZ52muSLxKuY+q0oJ8Q0/Ulq3BNVru9CXfra4Bh/G8hyWw+vh/1
-	 ZGNud3btzo1Olfei5AkKUamkcQBq71FzHEAS37ialzFUnphez4wywITpWQba5OXrjH
-	 vNRxD88yR/xAUblSgswH6EriJZSLZ8l96RL2Sz24gulXJ/znTuPjQ8VgBFmpU/IXUC
-	 ggO88xGcK87gQ==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 471C84BF03;
-	Sun, 22 Nov 2026 04:35:42 +0000 (UTC)
-From: Nick Dowsett via B4 Relay <devnull+nick42d.gmail.com@kernel.org>
-Date: Sun, 22 Nov 2026 12:35:40 +0800
-Subject: [PATCH 3/4] platform/x86: clevo-laptop: probe keyboard backlight
- type and detect 5-step white backlight
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352E1606A330
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Nov 2026 04:55:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 352E1606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OTGCWyKF
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-33fb4680717so6175701eec.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 21 Nov 2026 20:55:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795323307; x=1795928107; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=zo5hV3nq2vAzOrfwjLwLFQ7iNUuGgnQAdTEhOY7Nk04=;
+        b=OTGCWyKFZuWdrwICzH5qhVzKeOyJZX3Tp/aufBzZVXieQiqgUo5wteOFtFPdjtlKok
+         WtDXfQ0iE+Qn9vpdtYbTMD4dgNj21yFzDR/XE/Qz8ECFPcEDtZIQBClS4VIw5O7kIxMq
+         Fnk1zdSl3DtWUqMLXE0RhM3+OCObFnUUWdAtwOEsFK1vVZn8Niho68PM2rBjXId+Mx05
+         RkdBhm+QMYkUNzC+dUElcjwUtvb9BNAE+QSNkWBbO4Pe5f76LBoSj9rztyGFHKQjT7EP
+         mYR7TrfjKAosJwhZGqn4k8JwtrqibMZJuSrLILemOh0b+LCjInJC/lWJ7Mh7Xjc0BJaJ
+         M17A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795323307; x=1795928107;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zo5hV3nq2vAzOrfwjLwLFQ7iNUuGgnQAdTEhOY7Nk04=;
+        b=gBcTbaD8LNt2Bez5PLmsGfRQk4n5rBlbAWLe1hXCDFZdNZWKC0Ttmc5L+OmnB28h+Z
+         5/NwlXZQVJ2Wvw1/8sPQH3FzBHYOJ+WnXu+EsiOWDYhyflJye83s+36mehPuYBXIcT/o
+         sR+PSei/f+owJGRZSpeZq2X/A6ERpYmiOQXFMs0RBl+coD/c91gI7bnmcoWczJIgQSRn
+         vmnMjXAs1hLahgcbwv1PW0OTDhn02zR0rf2As4TTM2liPdIEeaB/m9ibcJ3l+/9ReA02
+         vjGdpAz18ZaZTzV942qJ43UwbmRfQnCcNzc9f5iCU+72RDJ8OdsLa4mYp92nWDxaeZTs
+         le4g==
+X-Gm-Message-State: APuU4Z8a6qtya7VBs6pBYk7JARTWmJBQKGiMk84upESGJmbHv4/kRO7e
+	/6iweQbl/Z+kBhhyuTVZvymmXebLdE46lCQssl1pFlxhgJa4I1E4z8GB
+X-Gm-Gg: AZFdTZc0OLwQaUHrg6alqYxglPEOpZJUI5vWDraYkaQOTbn1huDuIoz+l6MpamHYYnv
+	wRkdO8LfUFFTa9+LOBg+HnINKBF9DRI0SbLCnXRTaBCmHgmgjyeppal1dFj15sM+KxV14FH1IRd
+	8iOtyj7tEt43HZhmwp1YKwJHiTdOxEU2zHC/Ba29WydfHHzoEjfJ/aaMWnnvMhCtyZrDsURRQu9
+	ChPrwpHbJujGAzxV7zsDAkT0pukl5Y9EsCGwcyR8FN14+U2e28UxNuWSXuISDhLSQtLGEb6+imk
+	mJ5sb6HlP8jXastE/HyuoQf+ZHKnEnxCq2usSPsv0YeHNDO8z3xI3dOFda3JuWz7g7nn8m0QZt9
+	3L5arwLCGmv7vGlO9EhE/cGggN0QnEAM/BBN0WhPFod+L1LJo3kJhnx3MTYNEKp9q0ks3C/i++O
+	Sp5yNks8v/TQY9f0nvcouo+36yZULldpzAWRhnOHnLxyh9/E3QqNqZCIU0us/RNWkMHvHCgYckb
+	62/+0uIXuJU2dl5vv4+6OS681azGhHq40QUH+6hqGwaS3u3dDYe/elLyyrR4eYzUQ3SbA+Wnnx5
+	R9cnjrLdGWkiv3+uIMqrxI31ARajkv7Pf3v6MdHrKBO3hxuVI014J6/lxEVLrYsFJhhLNxE=
+X-Received: by 2002:a05:7300:d090:b0:386:8bd2:da2c with SMTP id 5a478bee46e88-3868bd2db9amr5813273eec.2.1795323307243;
+        Sat, 21 Nov 2026 20:55:07 -0800 (PST)
+Received: from localhost (61-245-143-184.3df58f.per.nbn.aussiebb.net. [61.245.143.184])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3866f299d0bsm15989477eec.19.2026.11.21.20.54.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 21 Nov 2026 20:55:06 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -82,231 +86,46 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261122-clevo-laptop-v1-3-881debf4d4b0@gmail.com>
-References: <20261122-clevo-laptop-v1-0-881debf4d4b0@gmail.com>
-In-Reply-To: <20261122-clevo-laptop-v1-0-881debf4d4b0@gmail.com>
-To: Hans de Goede <hansg@kernel.org>, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: Armin Wolf <W_Armin@gmx.de>, Werner Sembach <wse@tuxedocomputers.com>, 
- linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, Nick Dowsett <nick42d@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795322140; l=6319;
- i=nick42d@gmail.com; h=from:subject:message-id;
- bh=zhmmGSNR3OSLrzhCCRTFeuk7Hl8QAWk96pymxiIpueQ=;
- b=yvR0HYD40/ncdu8Rn5vvHwCpW32+HFnym+lcwVUt/kQXf8VZqAtjZ/zw+rWOd5Q9J8uHsgisK
- 23wRgPoV2+YDpdkCiVYPzx0Bzf6TkwdzJy0afKrKMCGMniDJIrPfdyd
-X-Developer-Key: i=nick42d@gmail.com; a=ed25519;
- pk=1uIkNexEofzEXNN3Y3QW5z8IrgjWaP0yH6Es51jxWOg=
-X-Endpoint-Received: by B4 Relay for nick42d@gmail.com/default with
- auth_id=1596
-X-Original-From: Nick Dowsett <nick42d@gmail.com>
-Reply-To: nick42d@gmail.com
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 22 Nov 2026 12:54:55 +0800
+Message-Id: <DN1GZS7LQ7BN.34S0SPYOQLG1M@gmail.com>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-leds@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH v28 0/4] rust: leds: Add led classdev abstractions
+From: "Nick Dowsett" <nick42d@gmail.com>
+To: "Markus Probst" <markus.probst@posteo.de>, "Lee Jones" <lee@kernel.org>,
+ "Pavel Machek" <pavel@kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Dave Ertman" <david.m.ertman@intel.com>,
+ "Leon Romanovsky" <leon@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Tamir Duberstein" <tamird@kernel.org>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ "Ira Weiny" <iweiny@kernel.org>
+X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
+References: <20261113-rust_leds-v28-0-b8cf2f74fa57@posteo.de>
+In-Reply-To: <20261113-rust_leds-v28-0-b8cf2f74fa57@posteo.de>
 
-From: Nick Dowsett <nick42d@gmail.com>
+Hi Markus,
 
-- Add `GetSpecs` and `GetBiosFeatures2` EC queries and `KbBacklightType`
-  detection (with retries and BIOS features fallback for older devices).
-- Restrict probe to the supported 5-step white keyboard backlight.
+Thanks for these abstrations - I'm using `led::Normal` / `LedOps` in a
+new Rust platform driver (`clevo-laptop`) for Clevo laptop keyboard
+backlight, just submitted here:
 
-Signed-off-by: Nick Dowsett <nick42d@gmail.com>
----
- drivers/platform/x86/clevo-laptop.rs | 125 +++++++++++++++++++++++++++++++++++
- 1 file changed, 125 insertions(+)
+https://lore.kernel.org/all/20261122-clevo-laptop-v1-0-881debf4d4b0@gmail.c=
+om/
 
-diff --git a/drivers/platform/x86/clevo-laptop.rs b/drivers/platform/x86/clevo-laptop.rs
-index 289b30c478ec..6f08bf295c07 100644
---- a/drivers/platform/x86/clevo-laptop.rs
-+++ b/drivers/platform/x86/clevo-laptop.rs
-@@ -13,6 +13,10 @@
-     device,
-     dmi,
-     prelude::*,
-+    time::{
-+        delay::fsleep,
-+        Delta, //
-+    },
-     wmi, //
- };
- 
-@@ -24,7 +28,12 @@
- /// DMI board name allowlist, restricted to tested boards since the WMI GUID is not
- /// unique.
- const SUPPORTED_BOARDS: &[&CStr] = &[c"NLx0AU"];
-+const CLEVO_EC_CMD_GET_SPECS: u8 = 0x0D;
- const CLEVO_EC_CMD_GET_BIOS_FEATURES_1: u8 = 0x52;
-+const CLEVO_EC_CMD_GET_BIOS_FEATURES_2: u8 = 0x7A;
-+const CLEVO_BIOS_FEATURE_CODE_WHITE_ONLY_KB: u32 = 0x4000_0000;
-+const CLEVO_BIOS_FEATURE_CODE_3_ZONE_RGB_KB: u32 = 0x0040_0000;
-+const CLEVO_BIOS_FEATURE_CODE_WHITE_ONLY_KB_MAX_5: u32 = 0x4000;
- const CLEVO_EC_WMI_INSTANCE: u8 = 0;
- 
- module! {
-@@ -89,6 +98,17 @@ fn probe<'bound>(
- 
-             backend.query(GetBiosFeatures1).map_err(|_| ENODEV)?;
- 
-+            // MVP: Only the NL57AU 5-step white backlight is supported.
-+            if backend.detect_backlight_type()? != Some(KbBacklightType::FixedColor) {
-+                return Err(ENODEV);
-+            }
-+            let has_white_5 = backend
-+                .query(GetBiosFeatures2)
-+                .is_ok_and(|feat2| feat2.has_white_only_kb_max_5());
-+            if !has_white_5 {
-+                return Err(ENODEV);
-+            }
-+
-             Ok(try_pin_init!(WmiDriver {}))
-         })
-     }
-@@ -127,6 +147,61 @@ fn query<Q>(&self, query: Q) -> Result<Q::Output>
-             }
-         }
-     }
-+    /// Detect backlight type e.g white.
-+    fn detect_backlight_type(&self) -> Result<Option<KbBacklightType>> {
-+        const MAX_RETRIES: usize = 3;
-+        const RETRY_SLEEP_DURATION: Delta = Delta::from_millis(50);
-+
-+        for attempt in 0..MAX_RETRIES {
-+            if attempt != 0 {
-+                pr_debug!(
-+                    "KbBacklightType::None probably wrong, retrying - attempt {} of {}\n",
-+                    attempt,
-+                    MAX_RETRIES - 1
-+                );
-+                fsleep(RETRY_SLEEP_DURATION);
-+            }
-+            if let Ok(specs) = self.query(GetSpecs) {
-+                let backlight_type = specs.kb_backlight_type();
-+                if backlight_type != Ok(None) {
-+                    return backlight_type.map_err(|_| ENODEV);
-+                }
-+            }
-+        }
-+
-+        // Check for devices <= Intel 8th gen (only white only, 3 zone RGB,
-+        // or no backlight on these devices)
-+        let feat1 = self.query(GetBiosFeatures1).map_err(|_| ENODEV)?;
-+        if feat1.has_3_zone_rgb_kb() {
-+            Ok(Some(KbBacklightType::ThreeZoneRgb))
-+        } else if feat1.has_white_only_kb() {
-+            Ok(Some(KbBacklightType::FixedColor))
-+        } else {
-+            Ok(None)
-+        }
-+    }
-+}
-+
-+/// Keyboard backlight type - e.g Fixed Color
-+#[derive(PartialEq)]
-+#[repr(u8)]
-+enum KbBacklightType {
-+    FixedColor = 0x01,
-+    ThreeZoneRgb = 0x02,
-+    OneZoneRgb = 0x06,
-+    PerKeyRgb = 0xF3,
-+}
-+impl KbBacklightType {
-+    const fn from_raw(raw: u8) -> Result<Option<Self>, u8> {
-+        match raw {
-+            0x01 => Ok(Some(KbBacklightType::FixedColor)),
-+            0x02 => Ok(Some(KbBacklightType::ThreeZoneRgb)),
-+            0x06 => Ok(Some(KbBacklightType::OneZoneRgb)),
-+            0xF3 => Ok(Some(KbBacklightType::PerKeyRgb)),
-+            0x00 => Ok(None),
-+            other => Err(other),
-+        }
-+    }
- }
- 
- /// Args for a command sent to the EC.
-@@ -144,8 +219,12 @@ fn as_bytes(&self) -> &[u8] {
-     }
- }
- 
-+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+struct GetSpecs;
- #[derive(Debug, Clone, Copy, PartialEq, Eq)]
- struct GetBiosFeatures1;
-+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+struct GetBiosFeatures2;
- 
- impl EcQuery for GetBiosFeatures1 {
-     type Output = BiosFeatures1;
-@@ -163,10 +242,56 @@ fn deserialize_output(output: &[u8]) -> Result<Self::Output> {
-         Ok(feat)
-     }
- }
-+impl EcQuery for GetBiosFeatures2 {
-+    type Output = BiosFeatures2;
-+    fn cmd(&self) -> u8 {
-+        CLEVO_EC_CMD_GET_BIOS_FEATURES_2
-+    }
-+    fn args(&self) -> EcMethodArgs {
-+        EcMethodArgs::Scalar(0)
-+    }
-+    fn deserialize_output(output: &[u8]) -> Result<Self::Output> {
-+        let (feat, _) = BiosFeatures2::read_from_prefix(output).map_err(|_| ENODATA)?;
-+        Ok(feat)
-+    }
-+}
-+impl EcQuery for GetSpecs {
-+    type Output = Specs;
-+    fn cmd(&self) -> u8 {
-+        CLEVO_EC_CMD_GET_SPECS
-+    }
-+    fn args(&self) -> EcMethodArgs {
-+        EcMethodArgs::Scalar(0)
-+    }
-+    fn deserialize_output(output: &[u8]) -> Result<Self::Output> {
-+        let (specs, _) = Specs::read_from_prefix(output).map_err(|_| ENODATA)?;
-+        Ok(specs)
-+    }
-+}
- 
- #[derive(Debug, Clone, Copy, PartialEq, Eq, FromBytes)]
- struct BiosFeatures1(u32);
-+#[derive(Debug, Clone, Copy, PartialEq, Eq, FromBytes)]
-+struct BiosFeatures2(u32);
-+#[derive(Debug, Clone, Copy, PartialEq, Eq, FromBytes)]
-+struct Specs([u8; 16]);
- 
- impl BiosFeatures1 {
-     const INVALID: Self = Self(0xFFFF_FFFF);
-+    const fn has_white_only_kb(self) -> bool {
-+        (self.0 & CLEVO_BIOS_FEATURE_CODE_WHITE_ONLY_KB) != 0
-+    }
-+    const fn has_3_zone_rgb_kb(self) -> bool {
-+        (self.0 & CLEVO_BIOS_FEATURE_CODE_3_ZONE_RGB_KB) != 0
-+    }
-+}
-+impl BiosFeatures2 {
-+    const fn has_white_only_kb_max_5(self) -> bool {
-+        (self.0 & CLEVO_BIOS_FEATURE_CODE_WHITE_ONLY_KB_MAX_5) != 0
-+    }
-+}
-+impl Specs {
-+    const fn kb_backlight_type(&self) -> Result<Option<KbBacklightType>, u8> {
-+        KbBacklightType::from_raw(self.0[0x0F])
-+    }
- }
+Verified on a Clevo/Metabox NL57AU laptop.
 
--- 
-2.56.1
+Tested-by: Nick Dowsett <nick42d@gmail.com>
 
-
+Kind regards,
+Nick
