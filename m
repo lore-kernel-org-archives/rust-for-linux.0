@@ -1,78 +1,44 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795430829;
-	b=qBmSB1HlWCKhq39gqX9Mb4sT+fzlIbl35v+hhwA8CQvogLkmx+ogr9ViW0FPVoJqx9EG
-	 sFocpOop844XxFhLYg5+zz2/tpCLl1CQVFTyIWbl/fy+Y7HL8khdNJZM9vDchxj/vgxy+
-	 KCm0fEsANEY+M3azBU3PL4pgHx7Utmz4izBNx11BXmFxNGHkecoAXNxYXCoFyehaadgo1
-	 Ew+MnRAQPfHGynHLszFv0Rlzhn6S29m2/t8T5V5nSBupYUJua1zcPG+qbMY3Qx/7JrN5M
-	 A2TNVuKDIZg2137qBmodxQSxgz5XR9Gw1K9Feck3BdqayK3LVMOsMKrrc4BN9deCBnA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795430829;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=lJTNJvK/vFyDGMC4BFIud7Ij0yzJ3uEUnuTL/MBh418=;
-	b=Lz5ldXnrf1d0Rd7CewVi6J/fZPUBGyldWNflCZOr/DSaIIeDbxBLgYCUwkPDqkv2kj7t
-	 wmeAB6WWEOaNw/SQEwmNqueSb1ID40sPimlc4XxXqfxrJYwpWnLvxpgMpZFXDd4RtHreZ
-	 A3jOXN5ICtPHHd/l1+iTEf53nLV+JmOhnoboMKmMgpwfesxgNNbjYVW9wiZZwanf1z/TW
-	 5KAjG6hPJaDYp5jOqiPmD6suBgx4Vl/fiLogDZMqJZ7wIcWcknJhur/guZXR43TL5Ax/3
-	 8Shb0LsW2hXpUJM0Bmx0OKjuc+uNSKMZInmG6IUSAh6172RmPa8JxzzMeOZ5KJWHiUQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iicDxWmx;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.29.242.92
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795441004;
+	b=SoG2Lf+VkRWKsnsvFWNom7TuWrtzY8dScjwtSZOoDB5oVmnij/lbNK/2W/sU2hZYWUja
+	 KMiE4letEVlg0AapWvLbN2PLVlUCKpczDIWkNZqM8zFDLIe05cyX58C4J+WmiI8LSK6mg
+	 A/KYJdQjY1LDhwFvRQsxEKAudpAuZjYCgzXaIcopB/QonHLeDZctLbcDW6Fb4Asycnsb3
+	 YG3zXvvacf641CSnPUR10h+d4Dq8qX0vtwuBq6R56Fgb0tZCWWGqZ9XBcoKMwHs4bWdYI
+	 C/nlZLWSGVYqjDtF9RZRAtGO0BbwLPLyqkyrI83dgNZmRvk6Qrb84P4p8Qri/UOCR9Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795441004;
+	h=DMARC-Filter:Received:X-Spam-Checker-Version:X-Spam-Level:
+	 X-Spam-Status:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=y/nCsxkWyXe3O5VybGTqAIZn5ysyqxCBdpnc+YD/Bxw=;
+	b=mpIqgkjlHMQs+/jIBXzTdQfpThotJqIsk1QXL7keLGZEGcTPJuwf20jc32F1g4UvmqyA
+	 jU7atn2GC45NUfjTPDoAGfMw9PFn+soHttbRJ7hxFRy+5QIdbZkdedWK/uo2StNdzYrUZ
+	 CVBhlR4UvdvAaBo24AJHurkfchRE1kyOcwd7DRVbMaDr2XrKWHHr4d5D+e3NGT5fJlqBI
+	 LRCISrUpPMgz5xwoik5sSvTD5hMFOejhFsPWnNLrnYDdmdFgrO3EDi78ME8arlSAuBWBT
+	 ERxGZ7qcQOrVr17j2Uv061SkF4nyvDcGwMHhK1ZNPPptWTffhQNB5WKjbdy4/afLk7Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=davidgow.net;
+	spf=pass smtp.mailfrom=davidgow.net;
+	arc=none smtp.remote-ip=203.29.242.92
+Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40B9606A31A;
-	Mon, 23 Nov 2026 10:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iicDxWmx
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795430829;
-	b=vfUW8StOGUneAjYjMNtnjbWTUPyJNQRH9cHqN4GPtnfbyNvnUsr2YZwqzpffdneMvyJV
-	 p43gEjfE9chlxjUvHyUBF8fR0mGc1axnAl1/+jXrMKvz56JKUEaVFwwiTjb9Q9SA1ysww
-	 qNUMkwz/bEjgxZiSpGauZImt7bwwp87j12OWj6vWE32l0FrgS1hTaJdLLl8n8LnKdrxPd
-	 KTcfxapa8FxkUQ2DqNpcETdr9PSTt9FcxZAxpilYi4j8gwgAcDDTPaYHPIR8fVKD4G33q
-	 v9X61MKXcDuWxEb23Q9srTs9AdUFcTkhny2iQbwLVA1GTNp7W6eZWNp5jeg1vL0YIRQ==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795430829;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=lJTNJvK/vFyDGMC4BFIud7Ij0yzJ3uEUnuTL/MBh418=;
-	b=qzcqVeGk8cj73swTK5RhHPHSTkpFUaCsyyiw9VAgkHvqIJLAxBtroCdFzH9Y36C6mL2i
-	 6D0rG+n/cZIqZrJVkUwv6Y89oAZwqW/w9nMfXQ/JZGOm/YcAwZBfdvLXndDke3HLVKWac
-	 4NV5DPmZoh3G2h3EhUMOu9jNJC0u2XrAN2ljjxfobM2UOZULyEmi40vMHMb+ejjtiQXe2
-	 +l7aro1bWM8FsDOwT9Br2k6chQdkQsOkq+/xEhnMPEfPMocni69Zg324AQSRUIa/y1jns
-	 4Fy3A+EUsz3pvAw9E2XB5Y4ssC/CQLWUFll0OTeYAcNoOX+u832EGAHSCdU9Zd1UZQg==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 993371F000C0;
-	Mon, 23 Nov 2026 10:47:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795430829;
-	bh=lJTNJvK/vFyDGMC4BFIud7Ij0yzJ3uEUnuTL/MBh418=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=iicDxWmxS0Wd7KWS36yTRzZAZVxdqoK0Ve6dlzrBNlvx4/TWZxrz80RLDtgBUFuSa
-	 50VP9yQgKuQcU8DAw8dAzaWBExZpFehlO3ePkWNu8CGiFqrSJfcNGGMetkUCnja3AY
-	 6Ju6Ga/BK0CN6YzMKWKwXTXVWhfMSlwrnY90HowDQBXAcr+I+xSV+/68TbrIBzALlF
-	 iprn42nQt0YDQ9vJhTr2JTuf+ilLHj5Pmyx/ncQ2DJ76qf4Ev6MBQCve4Jz0CQFhsn
-	 2vyOif91X+us+dsBKgEW9cLSnAmpx0b51hwgQcZH3QSmvDP5kpVKt06aYmI6RWo3fm
-	 rQ03ZoXLEmw4Q==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 276D94C423;
-	Mon, 23 Nov 2026 10:47:03 +0000 (UTC)
-From: Peder Bergan via B4 Relay <devnull+peder.bergan.gmail.com@kernel.org>
-Date: Mon, 23 Nov 2026 11:46:58 +0100
-Subject: [PATCH v3] rust: put C helper exports in a dedicated namespace
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067B3606A321;
+	Mon, 23 Nov 2026 13:36:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 067B3606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidgow.net
+Received: by sphereful.davidgow.net (Postfix, from userid 119)
+	id F2A29200DFD; Mon, 23 Nov 2026 21:36:40 +0800 (AWST)
+X-Spam-Level: 
+Received: from [IPV6:2001:8003:8802:7000::41b] (unknown [IPv6:2001:8003:8802:7000::41b])
+	by sphereful.davidgow.net (Postfix) with ESMTPSA id 7C9C2200DF1;
+	Mon, 23 Nov 2026 21:36:34 +0800 (AWST)
+Message-ID: <0e68f60e-e9e0-4443-8189-72180ff07a14@davidgow.net>
+Date: Mon, 23 Nov 2026 21:36:31 +0800
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -82,231 +48,605 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261123-rust-helper-namespace-v3-1-b83e2923324b@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAKEZBGsC/42QwW6FIBBFf8WwLq8CAmqa5v1H0wXgoDQqFtS0e
- Xn/XtCkadJFm1ndydyTO/eGIgQHEbXFDQXYXXR+ToI9FMgMau4Buy5pREsqCKElDltc8QDjAgH
- PaoK4KAOYS6gNkwCysyh5lwDWfRzcl9dTx02/gVkzLF9oFQHroGYz5FXGPv7CJluA95jvBxdXH
- z6PoDvJ3L8y7QQTzHSjSs45s1Zc+0m58WL8hHKmnf6LQhOFVIxwwWvLG/hJuZ+vpYxbam49/0X
- JGtXRXFs8nXhC03BCL0TIklUyMfsleOM6de2970fIwOfvYpKY3NoWWqjGKlYZqEgtjRZNxwyva
- 1Vpba1hxADvdG1TlPsXEvqpwswBAAA=
-X-Change-ID: 20261120-rust-helper-namespace-57e8c37ee7df
-To: Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
- Nicolas Schier <nsc@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
- Aaron Tomlin <atomlin@atomlin.com>, rust-for-linux@vger.kernel.org, 
- linux-kbuild@vger.kernel.org, linux-modules@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Wedson Almeida Filho <wedsonaf@gmail.com>, 
- Giuliano Procida <gprocida@google.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795430822; l=7943;
- i=peder.bergan@gmail.com; s=kernel-contributions;
- h=from:subject:message-id;
- bh=nZ0NjEBZ990zQIlXVxBFgN/g8WkVDdpgNRTJN2ixXEs=;
- b=9ix/Ys9EtXKgSNM40MJy7DNpB9HTMGLqhOxzyrbpi3OU/QRslYPIvbIAxDAhi6F3vE+Y/8jAY
- FYxK3s4dpWGBVibSQd9+uOugPX/dahWNWSXQ+a3yUyQbrqbMPWV0Bc3
-X-Developer-Key: i=peder.bergan@gmail.com; a=ed25519;
- pk=39790pn1YZCulHBoUG1uiQI1Hm01EvhBEa2zVrS/yN0=
-X-Endpoint-Received: by B4 Relay for
- peder.bergan@gmail.com/kernel-contributions with auth_id=1395
-X-Original-From: Peder Bergan <peder.bergan@gmail.com>
-Reply-To: peder.bergan@gmail.com
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] rust: kunit: add #[should_panic] support
+To: nico.antinori.7@gmail.com, Alice Ryhl <aliceryhl@google.com>,
+ Benno Lossin <lossin@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Brendan Higgins <brendan.higgins@linux.dev>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>,
+ Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?Q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>
+Cc: Shuah Khan <skhan@linuxfoundation.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Burak Emir <burak.emir@gmail.com>, Rae Moar <raemoar63@gmail.com>,
+ Tamir Duberstein <tamird@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Yury Norov <yury.norov@gmail.com>, kunit-dev@googlegroups.com,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20261113-rust_kunit_v6_send-v3-0-0d7832c07166@gmail.com>
+ <20261113-rust_kunit_v6_send-v3-1-0d7832c07166@gmail.com>
+Content-Language: en-US
+From: David Gow <david@davidgow.net>
+In-Reply-To: <20261113-rust_kunit_v6_send-v3-1-0d7832c07166@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-From: Peder Bergan <peder.bergan@gmail.com>
+Le 14/11/2026 à 02:20, 'Nicolás Antinori via B4 Relay' via KUnit 
+Development a écrit :
+> From: Nicolás Antinori <nico.antinori.7@gmail.com>
+> 
+> KUnit tests in Rust are written using user-space like syntax. This patch
+> adds support for the `#[should_panic]` attribute, enabling the user to
+> test conditions that are expected to cause a panic and report the test
+> as successful.
+> 
+> Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
+> ---
 
-The rust_helper_ prefix marks these C wrappers as Rust implementation
-details. Export them in RUST_HELPERS so modpost can detect accidental
-dependencies at build time.
+Okay -- this looks good to go to me. Thanks very much for all of your 
+effort!
 
-Rust generics and inlining can introduce calls through ordinary Rust
-abstractions. Have Kbuild mark modular Rust objects when the helpers
-are out of line. The marker survives composite module linking and is
-discarded at the final link.
+I'm not 100% happy with how pushing the attributes into struct kunit has 
+balooned into all of the different kunit_init_test() call, but I think 
+all of the other options are either worse, or involve even more invasive 
+refactoring. (That being said, I do think this might be the thing which 
+finally makes me look into refactoring how we handle the struct kunit / 
+struct kunit_case dichotomy better... :-))
 
-When an eligible module uses an export from RUST_HELPERS provided by
-vmlinux, have modpost generate the import unless the module already
-declares it. This covers mixed-language modules such as kasan_test,
-whose module metadata comes from C.
+It's also definitely working on all of the architectures I test now, so 
+that's a relief.
 
-Suggested-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/216
-Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
----
-This patch applies on top of Giuliano Procida's v5 series converting
-the Rust exports to assembly.
-https://lore.kernel.org/rust-for-linux/20261112121512.1670347-1-gprocida@google.com/
+Reviewed-by: David Gow <david@davidgow.net>
 
-In a strict x86-64 build with DWARF-based module versioning, I
-verified that modpost generated the import for modular KASAN and the
-Rust samples that reference helpers. I also confirmed that modpost
-rejects an external C-only module that uses a helper without
-importing RUST_HELPERS.
+Cheers,
+-- David
 
-OpenAI Codex assisted with coding, the commit message and build validation.
----
-Changes in v3:
-- Generate the namespace exports on top of the assembly conversion.
-- Use simply expanded Make assignments for the literal export formats.
-- Generate imports in modpost for modules with Rust objects that use
-  the helpers. Drop the module! and KASAN-specific imports.
-- Link to v2: https://patch.msgid.link/20261120-rust-helper-namespace-v2-1-14315658f59e@gmail.com
----
- rust/Makefile          |  5 ++++-
- scripts/Makefile.build |  4 +++-
- scripts/mod/modpost.c  | 20 ++++++++++++++++----
- scripts/mod/modpost.h  |  3 +++
- 4 files changed, 26 insertions(+), 6 deletions(-)
-
-diff --git a/rust/Makefile b/rust/Makefile
-index db1690c87e9b0..a6fce0d830ba4 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -569,9 +569,10 @@ $(obj)/helpers/helpers.bc $(obj)/helpers/helpers_module.bc: $(src)/helpers/helpe
- 
- rust_exports = $(NM) -p --defined-only $(1) | awk '$$2~/(T|R|D|B)/ && $$3!~/__(pfx|cfi|odr_asan)/ { printf $(2),$$3 }'
- 
-+rust_export_format := "EXPORT_SYMBOL_GPL(%s)\n"
- quiet_cmd_exports = EXPORTS $@
-       cmd_exports = \
--	$(call rust_exports,$<,"EXPORT_SYMBOL_GPL(%s)\n") > $@
-+	$(call rust_exports,$<,$(rust_export_format)) > $@
- 
- $(obj)/exports_core_generated.h: $(obj)/core.o FORCE
- 	$(call if_changed,exports)
-@@ -585,6 +586,8 @@ $(obj)/exports_core_generated.h: $(obj)/core.o FORCE
- # function either. Therefore, we export all symbols from helpers and bindings.
- # In the future, this may be revisited to reduce the number of exports after
- # the compiler is informed about the places codegen is required.
-+$(obj)/exports_helpers_generated.h: private rust_export_format := \
-+	"EXPORT_SYMBOL_NS_GPL(%s, \"RUST_HELPERS\")\n"
- $(obj)/exports_helpers_generated.h: $(obj)/helpers/helpers.o FORCE
- 	$(call if_changed,exports)
- 
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 873a9ed62a181..d9c49e0ce8a4e 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -364,13 +364,15 @@ rust_common_cmd = \
- # i.e. the outputs we would get for the different single targets (e.g. `.ll`)
- # would not match each other.
- 
-+# Mark modular Rust objects so modpost can identify them after a composite link.
- quiet_cmd_rustc_o_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
-       cmd_rustc_o_rs = $(rust_common_cmd) --emit=$(if $(CONFIG_RUST_INLINE_HELPERS),llvm-bc=$(patsubst %.o,%.bc,$@),obj=$@) $< \
- 	$(if $(CONFIG_RUST_INLINE_HELPERS),;$(LLVM_LINK) --internalize --suppress-warnings $(patsubst %.o,%.bc,$@) \
- 		$(objtree)/rust/helpers/helpers$(if $(part-of-module),_module).bc -o $(patsubst %.o,%.m.bc,$@); \
- 		$(CC) $(CLANG_FLAGS) $(filter-out $(CC_FLAGS_LTO),$(KBUILD_CFLAGS)) \
- 		$(CC_FLAGS_RUST_INLINE_HELPERS) -Wno-override-module -c $(patsubst %.o,%.m.bc,$@) -o $@ \
--		$(cmd_ld_single)) \
-+		$(cmd_ld_single), \
-+		$(if $(part-of-module),; $(OBJCOPY) --add-section .discard.rust_helpers=/dev/null $@)) \
- 	$(cmd_objtool)
- 
- define rule_rustc_o_rs
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index 75374c64b8cc7..209a33e9ec8f9 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -29,6 +29,7 @@
- #include "../../include/linux/license.h"
- 
- #define MODULE_NS_PREFIX "module:"
-+#define RUST_HELPERS_NAMESPACE "RUST_HELPERS"
- 
- static bool module_enabled;
- /* Are we using CONFIG_MODVERSIONS? */
-@@ -534,6 +535,8 @@ static int parse_elf(struct elf_info *info, const char *filename)
- 		} else if (!strcmp(secname, ".no_trim_symbol")) {
- 			info->no_trim_symbol = (void *)hdr + sechdrs[i].sh_offset;
- 			info->no_trim_symbol_len = sechdrs[i].sh_size;
-+		} else if (!strcmp(secname, ".discard.rust_helpers")) {
-+			info->has_rust_object = true;
- 		}
- 
- 		if (sechdrs[i].sh_type == SHT_SYMTAB) {
-@@ -1617,6 +1620,7 @@ static void read_symbols(const char *modname)
- 	}
- 
- 	if (!mod->is_vmlinux) {
-+		mod->has_rust_object = info.has_rust_object;
- 		license = get_modinfo(&info, "license");
- 		if (!license)
- 			mod_error(mod, "missing MODULE_LICENSE()\n");
-@@ -1797,10 +1801,15 @@ static void check_exports(struct module *mod)
- 
- 		if (!verify_module_namespace(exp->namespace, basename) &&
- 		    !contains_namespace(&mod->imported_namespaces, exp->namespace)) {
--			modpost_log(!allow_missing_ns_imports, mod,
--				    "module uses symbol '%s' from namespace '%s', but does not import it.\n",
--				    exp->name, exp->namespace);
--			add_namespace(&mod->missing_namespaces, exp->namespace);
-+			if (mod->has_rust_object && exp->module->is_vmlinux &&
-+			    !strcmp(exp->namespace, RUST_HELPERS_NAMESPACE)) {
-+				mod->add_rust_helpers_import = true;
-+			} else {
-+				modpost_log(!allow_missing_ns_imports, mod,
-+					    "module uses symbol '%s' from namespace '%s', but does not import it.\n",
-+					    exp->name, exp->namespace);
-+				add_namespace(&mod->missing_namespaces, exp->namespace);
-+			}
- 		}
- 
- 		if (!mod->is_gpl_compatible && exp->is_gpl_only)
-@@ -2143,6 +2152,9 @@ static void write_mod_c_file(struct module *mod)
- 	add_extended_versions(&buf, mod);
- 	add_depends(&buf, mod);
- 
-+	if (mod->add_rust_helpers_import)
-+		buf_printf(&buf, "\nMODULE_IMPORT_NS(\"%s\");\n", RUST_HELPERS_NAMESPACE);
-+
- 	buf_printf(&buf, "\n");
- 	list_for_each_entry_safe(alias, next, &mod->aliases, node) {
- 		buf_printf(&buf, "MODULE_ALIAS(\"%s\");\n", alias->str);
-diff --git a/scripts/mod/modpost.h b/scripts/mod/modpost.h
-index 666beca685e48..58709cdd6ff25 100644
---- a/scripts/mod/modpost.h
-+++ b/scripts/mod/modpost.h
-@@ -126,6 +126,8 @@ struct module {
- 	bool seen;
- 	bool has_init;
- 	bool has_cleanup;
-+	bool has_rust_object;
-+	bool add_rust_helpers_import;
- 	char	     srcversion[25];
- 	// Missing namespace dependencies
- 	struct list_head missing_namespaces;
-@@ -149,6 +151,7 @@ struct elf_info {
- 	unsigned int modinfo_len;
- 	char         *no_trim_symbol;
- 	unsigned int no_trim_symbol_len;
-+	bool has_rust_object;
- 
- 	/* support for 32bit section numbers */
- 
-
----
-base-commit: b6a9fa34ce4187cb69d3c588a4bbffc31ce5db8f
-change-id: 20261120-rust-helper-namespace-57e8c37ee7df
-prerequisite-message-id: <20261112121512.1670347-1-gprocida@google.com>
-prerequisite-patch-id: 7b267dee3ce26971877fd38d926d288ec5ebceea
-prerequisite-patch-id: 803b08369cbc3be752a8173381f29272b02a52d5
-prerequisite-patch-id: e3377b86c82f833182ad5e9aff7c1a32c889ed50
-prerequisite-patch-id: 9ada5f687d87e2cbbe26870986d94afeef7dcc10
-
-Best regards,
---  
-Peder Bergan <peder.bergan@gmail.com>
-
+>   Documentation/rust/testing.rst |  8 ++++-
+>   drivers/of/overlay_test.c      |  6 +++-
+>   include/kunit/test.h           |  9 ++++-
+>   lib/kunit/attributes.c         | 18 ++++++++++
+>   lib/kunit/kunit-test.c         | 36 ++++++++++++++++----
+>   lib/kunit/platform-test.c      |  6 +++-
+>   lib/kunit/string-stream-test.c |  9 ++++-
+>   lib/kunit/test.c               | 10 ++++--
+>   rust/kernel/kunit.rs           | 32 ++++++++++++++++++
+>   rust/kernel/lib.rs             | 43 +++++++++++++++++++++--
+>   rust/macros/kunit.rs           | 77 +++++++++++++++++++++++++++++-------------
+>   11 files changed, 215 insertions(+), 39 deletions(-)
+> 
+> diff --git a/Documentation/rust/testing.rst b/Documentation/rust/testing.rst
+> index 73046523a9a27393648cb4aeaeb055b745357c6d..6a82ac5885cecfd2e12839c64fdbf50428502344 100644
+> --- a/Documentation/rust/testing.rst
+> +++ b/Documentation/rust/testing.rst
+> @@ -169,8 +169,14 @@ And if we run it, the kernel log would look like::
+>   	    ok 1 test_f
+>   	ok 1 rust_kernel_mymod
+>   
+> +To test code paths that are expected to produce a Rust panic, the
+> +``#[should_panic]`` attribute can be used. When this attribute is used, tests
+> +that produce a panic (either with ``panic!`` or an ``assert!``) will pass.
+> +
+>   Like documentation tests, the ``assert!`` and ``assert_eq!`` macros are mapped
+> -back to KUnit and do not panic. Similarly, the
+> +back to KUnit and do not panic. The exception is tests marked with
+> +``#[should_panic]``, which use the standard Rust ``assert!``/``assert_eq!``
+> +macros so that failed assertions are handled by the panic logic. Similarly, the
+>   `? <https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator>`_
+>   operator is supported, i.e. the test functions may return either nothing (i.e.
+>   the unit type ``()``) or ``Result`` (i.e. any ``Result<T, E>``). For instance:
+> diff --git a/drivers/of/overlay_test.c b/drivers/of/overlay_test.c
+> index c787524c5a887cdf87e5acc98982733e02feb847..55df32ea1e5b947e23968afd17b0ed1ca9ed5088 100644
+> --- a/drivers/of/overlay_test.c
+> +++ b/drivers/of/overlay_test.c
+> @@ -63,6 +63,10 @@ static void of_overlay_apply_kunit_cleanup(struct kunit *test)
+>   	struct platform_device *pdev;
+>   	struct device *dev;
+>   	struct device_node *np;
+> +	struct kunit_attributes attr = {
+> +		.speed = KUNIT_SPEED_NORMAL,
+> +		.rust_should_panic = false,
+> +	};
+>   
+>   	of_root_kunit_skip(test);
+>   	if (!IS_ENABLED(CONFIG_OF_OVERLAY))
+> @@ -70,7 +74,7 @@ static void of_overlay_apply_kunit_cleanup(struct kunit *test)
+>   	if (!IS_ENABLED(CONFIG_OF_EARLY_FLATTREE))
+>   		kunit_skip(test, "requires CONFIG_OF_EARLY_FLATTREE for root node");
+>   
+> -	kunit_init_test(&fake, "fake test", NULL);
+> +	kunit_init_test(&fake, "fake test", NULL, &attr);
+>   	KUNIT_ASSERT_EQ(test, fake.status, KUNIT_SUCCESS);
+>   
+>   	KUNIT_ASSERT_EQ(test, 0,
+> diff --git a/include/kunit/test.h b/include/kunit/test.h
+> index 31d549578f8ec113bef9b5d72bc9355c07fce3c0..43c48a1b3684f5ca7ed237a7606a22d7d0c9fb31 100644
+> --- a/include/kunit/test.h
+> +++ b/include/kunit/test.h
+> @@ -83,6 +83,7 @@ enum kunit_speed {
+>   /* Holds attributes for each test case and suite */
+>   struct kunit_attributes {
+>   	enum kunit_speed speed;
+> +	bool rust_should_panic;
+>   };
+>   
+>   /**
+> @@ -355,6 +356,9 @@ struct kunit {
+>   	char status_comment[KUNIT_STATUS_COMMENT_SIZE];
+>   	/* Saves the last seen test. Useful to help with faults. */
+>   	struct kunit_loc last_seen;
+> +
+> +	/* The attributes associated with the test */
+> +	struct kunit_attributes *attr;
+>   };
+>   
+>   static inline void kunit_set_failure(struct kunit *test)
+> @@ -369,7 +373,10 @@ const char *kunit_filter_glob(void);
+>   char *kunit_filter(void);
+>   char *kunit_filter_action(void);
+>   
+> -void kunit_init_test(struct kunit *test, const char *name, struct string_stream *log);
+> +void kunit_init_test(struct kunit *test,
+> +		     const char *name,
+> +		     struct string_stream *log,
+> +		     struct kunit_attributes *attr);
+>   
+>   int kunit_run_tests(struct kunit_suite *suite);
+>   
+> diff --git a/lib/kunit/attributes.c b/lib/kunit/attributes.c
+> index 6d7a53af94a9acf3cf336409462059b972efeb22..8a9dc526b3cb2d363d42087f8666a03e9bc2bc4b 100644
+> --- a/lib/kunit/attributes.c
+> +++ b/lib/kunit/attributes.c
+> @@ -246,6 +246,16 @@ static void *attr_is_init_get(void *test_or_suite, bool is_test)
+>   		return ((void *) suite->is_init);
+>   }
+>   
+> +static void *attr_rust_should_panic_get(void *test_or_suite, bool is_test)
+> +{
+> +	struct kunit_case *test = is_test ? test_or_suite : NULL;
+> +
+> +	if (test)
+> +		return ((void *) test->attr.rust_should_panic);
+> +	else
+> +		return ((void *) NULL);
+> +}
+> +
+>   /* List of all Test Attributes */
+>   
+>   static struct kunit_attr kunit_attr_list[] = {
+> @@ -272,6 +282,14 @@ static struct kunit_attr kunit_attr_list[] = {
+>   		.filter = attr_bool_filter,
+>   		.attr_default = (void *)false,
+>   		.print = PRINT_SUITE,
+> +	},
+> +	{
+> +		.name = "rust_should_panic",
+> +		.get_attr = attr_rust_should_panic_get,
+> +		.to_string = attr_bool_to_string,
+> +		.filter = attr_bool_filter,
+> +		.attr_default = (void *)false,
+> +		.print = PRINT_NEVER,
+>   	}
+>   };
+>   
+> diff --git a/lib/kunit/kunit-test.c b/lib/kunit/kunit-test.c
+> index 126e30879dad652d5b236aeb13d4406a4ddbab00..e2219e1e37501406ae7991895483fb28872f4339 100644
+> --- a/lib/kunit/kunit-test.c
+> +++ b/lib/kunit/kunit-test.c
+> @@ -186,7 +186,7 @@ static void kunit_resource_test_init_resources(struct kunit *test)
+>   {
+>   	struct kunit_test_resource_context *ctx = test->priv;
+>   
+> -	kunit_init_test(&ctx->test, "testing_test_init_test", NULL);
+> +	kunit_init_test(&ctx->test, "testing_test_init_test", NULL, ctx->test.attr);
+>   
+>   	KUNIT_EXPECT_TRUE(test, list_empty(&ctx->test.resources));
+>   }
+> @@ -539,12 +539,19 @@ static void kunit_resource_test_action_ordering(struct kunit *test)
+>   static int kunit_resource_test_init(struct kunit *test)
+>   {
+>   	struct kunit_test_resource_context *ctx = kzalloc_obj(*ctx);
+> +	struct kunit_attributes *ctx_test_attr;
+>   
+>   	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
+>   
+>   	test->priv = ctx;
+>   
+> -	kunit_init_test(&ctx->test, "test_test_context", NULL);
+> +	ctx_test_attr = kzalloc_obj(*ctx_test_attr, GFP_KERNEL);
+> +	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx_test_attr);
+> +
+> +	ctx_test_attr->speed = KUNIT_SPEED_NORMAL;
+> +	ctx_test_attr->rust_should_panic = false;
+> +
+> +	kunit_init_test(&ctx->test, "test_test_context", NULL, ctx_test_attr);
+>   
+>   	return 0;
+>   }
+> @@ -553,6 +560,7 @@ static void kunit_resource_test_exit(struct kunit *test)
+>   {
+>   	struct kunit_test_resource_context *ctx = test->priv;
+>   
+> +	kfree(ctx->test.attr);
+>   	kunit_cleanup(&ctx->test);
+>   	kfree(ctx);
+>   }
+> @@ -666,8 +674,12 @@ static struct kunit_suite kunit_log_test_suite = {
+>   static void kunit_status_set_failure_test(struct kunit *test)
+>   {
+>   	struct kunit fake;
+> +	struct kunit_attributes attr = {
+> +		.speed = KUNIT_SPEED_NORMAL,
+> +		.rust_should_panic = false,
+> +	};
+>   
+> -	kunit_init_test(&fake, "fake test", NULL);
+> +	kunit_init_test(&fake, "fake test", NULL, &attr);
+>   
+>   	KUNIT_EXPECT_EQ(test, fake.status, (enum kunit_status)KUNIT_SUCCESS);
+>   	kunit_set_failure(&fake);
+> @@ -677,8 +689,12 @@ static void kunit_status_set_failure_test(struct kunit *test)
+>   static void kunit_status_mark_skipped_test(struct kunit *test)
+>   {
+>   	struct kunit fake;
+> +	struct kunit_attributes attr = {
+> +		.speed = KUNIT_SPEED_NORMAL,
+> +		.rust_should_panic = false,
+> +	};
+>   
+> -	kunit_init_test(&fake, "fake test", NULL);
+> +	kunit_init_test(&fake, "fake test", NULL, &attr);
+>   
+>   	/* Before: Should be SUCCESS with no comment. */
+>   	KUNIT_EXPECT_EQ(test, fake.status, KUNIT_SUCCESS);
+> @@ -715,8 +731,12 @@ static void kunit_current_test(struct kunit *test)
+>   static void kunit_current_fail_test(struct kunit *test)
+>   {
+>   	struct kunit fake;
+> +	struct kunit_attributes attr = {
+> +		.speed = KUNIT_SPEED_NORMAL,
+> +		.rust_should_panic = false,
+> +	};
+>   
+> -	kunit_init_test(&fake, "fake test", NULL);
+> +	kunit_init_test(&fake, "fake test", NULL, &attr);
+>   	KUNIT_EXPECT_EQ(test, fake.status, KUNIT_SUCCESS);
+>   
+>   	/* Set current->kunit_test to fake test. */
+> @@ -881,8 +901,12 @@ static void kunit_stub_test(struct kunit *test)
+>   		void *real_fn_addr;
+>   		void *replacement_addr;
+>   	} *stub_ctx;
+> +	struct kunit_attributes attr = {
+> +		.speed = KUNIT_SPEED_NORMAL,
+> +		.rust_should_panic = false,
+> +	};
+>   
+> -	kunit_init_test(&fake_test, "kunit_stub_fake_test", NULL);
+> +	kunit_init_test(&fake_test, "kunit_stub_fake_test", NULL, &attr);
+>   	KUNIT_ASSERT_EQ(test, fake_test.status, KUNIT_SUCCESS);
+>   	KUNIT_ASSERT_EQ(test, list_count_nodes(&fake_test.resources), 0);
+>   
+> diff --git a/lib/kunit/platform-test.c b/lib/kunit/platform-test.c
+> index e3debb8fbcef36f22418310ae6a0c14be0859ce3..4e60079a8a0bc1a0de6954dab2c8ca09985e9dd9 100644
+> --- a/lib/kunit/platform-test.c
+> +++ b/lib/kunit/platform-test.c
+> @@ -71,8 +71,12 @@ static void kunit_platform_device_add_cleans_up(struct kunit *test)
+>   	const int id = -1;
+>   	struct kunit fake;
+>   	struct device *dev;
+> +	struct kunit_attributes attr = {
+> +		.speed = KUNIT_SPEED_NORMAL,
+> +		.rust_should_panic = false,
+> +	};
+>   
+> -	kunit_init_test(&fake, "kunit_platform_device_add_fake_test", NULL);
+> +	kunit_init_test(&fake, "kunit_platform_device_add_fake_test", NULL, &attr);
+>   	KUNIT_ASSERT_EQ(test, fake.status, KUNIT_SUCCESS);
+>   
+>   	pdev = kunit_platform_device_alloc(&fake, name, id);
+> diff --git a/lib/kunit/string-stream-test.c b/lib/kunit/string-stream-test.c
+> index 7734e33156f9456eebfdca5b82972c010fb4e7df..3f43fb3dc144dfa3f7890ff9c47b08d7e9045e1e 100644
+> --- a/lib/kunit/string-stream-test.c
+> +++ b/lib/kunit/string-stream-test.c
+> @@ -122,11 +122,18 @@ static void string_stream_resource_free_test(struct kunit *test)
+>   {
+>   	struct string_stream_test_priv *priv = test->priv;
+>   	struct kunit *fake_test;
+> +	struct kunit_attributes *fake_attr;
+>   
+>   	fake_test = kunit_kzalloc(test, sizeof(*fake_test), GFP_KERNEL);
+>   	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, fake_test);
+>   
+> -	kunit_init_test(fake_test, "string_stream_fake_test", NULL);
+> +	fake_attr = kunit_kzalloc(test, sizeof(*fake_attr), GFP_KERNEL);
+> +	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, fake_attr);
+> +
+> +	fake_attr->speed = KUNIT_SPEED_NORMAL;
+> +	fake_attr->rust_should_panic = false;
+> +
+> +	kunit_init_test(fake_test, "string_stream_fake_test", NULL, fake_attr);
+>   	fake_test->priv = priv;
+>   
+>   	/*
+> diff --git a/lib/kunit/test.c b/lib/kunit/test.c
+> index 09e3dabfac0c945b2608feb88c1b1d46fb807edc..0ef869385c435f2394db629301f62916b840064b 100644
+> --- a/lib/kunit/test.c
+> +++ b/lib/kunit/test.c
+> @@ -351,7 +351,10 @@ static void kunit_init_params(struct kunit *test)
+>   	test->params_array.elem_size = 0;
+>   }
+>   
+> -void kunit_init_test(struct kunit *test, const char *name, struct string_stream *log)
+> +void kunit_init_test(struct kunit *test,
+> +		     const char *name,
+> +		     struct string_stream *log,
+> +		     struct kunit_attributes *attributes)
+>   {
+>   	spin_lock_init(&test->lock);
+>   	INIT_LIST_HEAD(&test->resources);
+> @@ -359,6 +362,7 @@ void kunit_init_test(struct kunit *test, const char *name, struct string_stream
+>   	test->log = log;
+>   	if (test->log)
+>   		string_stream_clear(log);
+> +	test->attr = attributes;
+>   	test->status = KUNIT_SUCCESS;
+>   	test->status_comment[0] = '\0';
+>   	kunit_init_params(test);
+> @@ -724,7 +728,7 @@ kunit_run_param_test(struct kunit_suite *suite, struct kunit_case *test_case,
+>   			.param_index = ++test->param_index,
+>   			.parent = test,
+>   		};
+> -		kunit_init_test(&param_test, test_case->name, NULL);
+> +		kunit_init_test(&param_test, test_case->name, NULL, &test_case->attr);
+>   		param_test.log = test_case->log;
+>   		kunit_run_case_catch_errors(suite, test_case, &param_test);
+>   
+> @@ -764,7 +768,7 @@ kunit_run_one_test(struct kunit_suite *suite, struct kunit_case *test_case,
+>   	struct kunit test = { .param_value = NULL, .param_index = 0 };
+>   	struct kunit_result_stats param_stats = { 0 };
+>   
+> -	kunit_init_test(&test, test_case->name, test_case->log);
+> +	kunit_init_test(&test, test_case->name, test_case->log, &test_case->attr);
+>   	if (test_case->status == KUNIT_SKIPPED) {
+>   		/* Test marked as skip */
+>   		test.status = KUNIT_SKIPPED;
+> diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+> index 25ff272d29b2b3f192a3968481c1d5417df4335b..be02b9e4ae70f4913a5074c512d4adf78e34335c 100644
+> --- a/rust/kernel/kunit.rs
+> +++ b/rust/kernel/kunit.rs
+> @@ -209,6 +209,7 @@ pub const fn kunit_case(
+>           name: kernel::str::as_char_ptr_in_const_context(name),
+>           attr: kernel::bindings::kunit_attributes {
+>               speed: kernel::bindings::kunit_speed_KUNIT_SPEED_NORMAL,
+> +            rust_should_panic: false,
+>           },
+>           generate_params: None,
+>           status: kernel::bindings::kunit_status_KUNIT_SUCCESS,
+> @@ -284,6 +285,7 @@ macro_rules! kunit_unsafe_test_suite {
+>                       exit: None,
+>                       attr: ::kernel::bindings::kunit_attributes {
+>                           speed: ::kernel::bindings::kunit_speed_KUNIT_SPEED_NORMAL,
+> +                        rust_should_panic: false,
+>                       },
+>                       status_comment: [0; 256usize],
+>                       debugfs: ::core::ptr::null_mut(),
+> @@ -335,8 +337,20 @@ pub fn in_kunit_test() -> bool {
+>   #[cfg(CONFIG_RUST_KUNIT_SELFTEST)]
+>   #[kunit_tests(rust_kernel_kunit)]
+>   mod tests {
+> +    #![expect(clippy::assertions_on_constants, reason = "Testing failure behavior")]
+> +
+>       use super::*;
+>   
+> +    struct TestStruct;
+> +
+> +    impl TestStruct {
+> +        // This assert does not get replaced with kunit_assert, since this is not a #[test]
+> +        // function.
+> +        pub(crate) fn escaped_assert() {
+> +            assert!(false);
+> +        }
+> +    }
+> +
+>       #[test]
+>       fn rust_test_kunit_example_test() {
+>           assert_eq!(1 + 1, 2);
+> @@ -347,6 +361,24 @@ fn rust_test_kunit_in_kunit_test() {
+>           assert!(in_kunit_test());
+>       }
+>   
+> +    #[test]
+> +    #[should_panic]
+> +    fn rust_test_kunit_panic_in_kunit_test() {
+> +        panic!("This test should panic and pass");
+> +    }
+> +
+> +    #[test]
+> +    #[should_panic]
+> +    fn rust_test_assert_false_success_with_should_panic() {
+> +        assert!(false)
+> +    }
+> +
+> +    #[test]
+> +    #[should_panic]
+> +    fn rust_test_should_panic_with_escaped_assert() {
+> +        TestStruct::escaped_assert();
+> +    }
+> +
+>       #[test]
+>       #[cfg(not(all()))]
+>       fn rust_test_kunit_always_disabled_test() {
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 1ab41129d557a97c09b4fb1bfc6aadb4250156a7..ba9e1a07aab8cf1f91d44c09e3a8e2291781d32a 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -179,13 +179,52 @@ impl ModuleMetadata for LocalModule {
+>   }
+>   
+>   #[cfg(not(testlib))]
+> -#[panic_handler]
+> -fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
+> +#[inline]
+> +fn bug_on_panic(info: &core::panic::PanicInfo<'_>) -> ! {
+>       pr_emerg!("{}\n", info);
+>       // SAFETY: FFI call.
+>       unsafe { bindings::BUG() };
+>   }
+>   
+> +#[cfg(all(not(testlib), not(CONFIG_KUNIT = "y")))]
+> +#[panic_handler]
+> +fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
+> +    bug_on_panic(info);
+> +}
+> +
+> +#[cfg(all(not(testlib), CONFIG_KUNIT = "y"))]
+> +#[panic_handler]
+> +fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
+> +    // SAFETY: This function is safe to call even if CONFIG_KUNIT=n. If a null pointer is returned,
+> +    // the panic is handled same as if CONFIG_KUNIT=n.
+> +    let kunit_test = unsafe { ::bindings::kunit_get_current_test() };
+> +    if kunit_test.is_null() {
+> +        bug_on_panic(info);
+> +    } else {
+> +        // SAFETY: We are in the else branch of kunit_test.is_null() condition, meaning that
+> +        // `::bindings::kunit_get_current_test()` returned a kunit struct successfully.
+> +        let test_attributes = unsafe { (*kunit_test).attr };
+> +        if test_attributes.is_null() {
+> +            use crate::str::CStrExt as _;
+> +            // SAFETY: Test name should be set by KUnit framework at this stage.
+> +            let test_str = unsafe { str::CStr::from_char_ptr((*kunit_test).name.cast()) };
+> +            pr_emerg!("Test case {} has no attributes\n", test_str);
+> +            bug_on_panic(info);
+> +        }
+> +        // SAFETY: We already tested that test_attributes.is_null() is false, meaning that it is
+> +        // safe to retrieve its attributes.
+> +        else if unsafe { (*test_attributes).rust_should_panic } {
+> +            // SAFETY: We are in the else branch of kunit_test.is_null() condition, meaning that
+> +            // `::bindings::kunit_get_current_test()` returned a kunit struct successfully.
+> +            unsafe {
+> +                bindings::__kunit_abort(kunit_test);
+> +            };
+> +        } else {
+> +            bug_on_panic(info);
+> +        }
+> +    }
+> +}
+> +
+>   /// Produces a pointer to an object from a pointer to one of its fields.
+>   ///
+>   /// If you encounter a type mismatch due to the [`Opaque`] type, then use [`Opaque::cast_into`] or
+> diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
+> index e9152b9d51f9450b7e549e2e1629b5fc5f485a28..ac7495deab17d6579e3f213b7018516c9ca68425 100644
+> --- a/rust/macros/kunit.rs
+> +++ b/rust/macros/kunit.rs
+> @@ -106,25 +106,40 @@ pub(crate) fn kunit_tests(test_suite: Ident, mut module: ItemMod) -> Result<Toke
+>               .cloned()
+>               .collect();
+>   
+> -        // Before the test, override usual `assert!` and `assert_eq!` macros with ones that call
+> -        // KUnit instead.
+> +        let should_panic = f
+> +            .attrs
+> +            .extract_if(.., |attr| attr.path().is_ident("should_panic"))
+> +            .count()
+> +            > 0;
+> +
+> +        // Inside the test, override usual `assert!` and `assert_eq!` macros with ones that call
+> +        // KUnit instead unless the test should panic. For tests expected to panic, assertions are
+> +        // not overwritten so they can be handled by the Rust's panic handler.
+>           let test_str = test.to_string();
+> -        processed_items.push(parse_quote! {
+> -            #[allow(unused)]
+> -            macro_rules! assert {
+> -                ($cond:expr $(,)?) => {{
+> -                    kernel::kunit_assert!(#test_str, $cond);
+> -                }}
+> -            }
+> -        });
+> -        processed_items.push(parse_quote! {
+> -            #[allow(unused)]
+> -            macro_rules! assert_eq {
+> -                ($left:expr, $right:expr $(,)?) => {{
+> -                    kernel::kunit_assert_eq!(#test_str, $left, $right);
+> -                }}
+> -            }
+> -        });
+> +        if !should_panic {
+> +            f.block.stmts.insert(
+> +                0,
+> +                parse_quote! {
+> +                    #[allow(unused)]
+> +                    macro_rules! assert {
+> +                        ($cond:expr $(,)?) => {{
+> +                            kernel::kunit_assert!(#test_str, $cond);
+> +                        }}
+> +                    }
+> +                },
+> +            );
+> +            f.block.stmts.insert(
+> +                0,
+> +                parse_quote! {
+> +                    #[allow(unused)]
+> +                    macro_rules! assert_eq {
+> +                        ($left:expr, $right:expr $(,)?) => {{
+> +                            kernel::kunit_assert_eq!(#test_str, $left, $right);
+> +                        }}
+> +                    }
+> +                },
+> +            );
+> +        }
+>   
+>           // Add back the test item.
+>           processed_items.push(Item::Fn(f));
+> @@ -134,25 +149,41 @@ macro_rules! assert_eq {
+>               &CString::new(test_str.as_str()).expect("identifier cannot contain NUL"),
+>               test.span(),
+>           );
+> +        let assertion = if should_panic {
+> +            quote!(
+> +                let _ = #test();
+> +                ::kernel::kunit::err(::kernel::prelude::fmt!(
+> +                    "    Expected {} to panic\n", #test_str
+> +                ));
+> +                (*_test).status = ::kernel::bindings::kunit_status_KUNIT_FAILURE;
+> +            )
+> +        } else {
+> +            quote!(
+> +                use ::kernel::kunit::is_test_result_ok;
+> +                kernel::kunit_assert!(#test_str, is_test_result_ok(#test()));
+> +            )
+> +        };
+>           processed_items.push(parse_quote! {
+>               unsafe extern "C" fn #kunit_wrapper_fn_name(_test: *mut ::kernel::bindings::kunit) {
+>                   (*_test).status = ::kernel::bindings::kunit_status_KUNIT_SKIPPED;
+>   
+> +
+>                   // Append any `cfg` attributes the user might have written on their tests so we
+>                   // don't attempt to call them when they are `cfg`'d out. An extra `use` is used
+>                   // here to reduce the length of the assert message.
+>                   #(#cfg_attrs)*
+>                   {
+>                       (*_test).status = ::kernel::bindings::kunit_status_KUNIT_SUCCESS;
+> -                    use ::kernel::kunit::is_test_result_ok;
+> -                    assert!(is_test_result_ok(#test()));
+> +                    #assertion
+>                   }
+>               }
+>           });
+>   
+> -        test_cases.push(quote!(
+> -            ::kernel::kunit::kunit_case(#test_cstr, #kunit_wrapper_fn_name)
+> -        ));
+> +        test_cases.push(quote!({
+> +            let mut case = ::kernel::kunit::kunit_case(#test_cstr, #kunit_wrapper_fn_name);
+> +            case.attr.rust_should_panic = #should_panic;
+> +            case
+> +        }));
+>       }
+>   
+>       let num_tests_plus_1 = test_cases.len() + 1;
+> 
 
