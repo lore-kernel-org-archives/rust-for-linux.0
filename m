@@ -1,64 +1,64 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795441884;
-	b=kU839MMV4eys/XaDUORf1DB5/eoPSc8dMUWiR+P7qcwavYpf6uHqrP0mMpB6+dkVzuoe
-	 UrSfSBsDbZBbJGyavHYa4YkqN3sFtAS2DbPhGcn9i6LPkeA1r4C+yIHaAV9DRfusyYf1h
-	 Dj0wlc8JkaTOBxXgLSFUKHxV2kDuqjPp8VuS35j84fkwMn/fWQdEF5z/PBLW8XyiAuBaH
-	 bp4dZiqTocZUJMpVZ8CmBFnWEPR/EjGoM0ztU6Ah2YVwjoG8PQZcyB7DO4ohBqFKRQ4wo
-	 xQMh22b8hLvoIV9JjSg5YUoUpmwsrftfq5nJ1Ji8irBhzUsXOTPOQ0dCaDobU1U1rCw==
+	t=1795441886;
+	b=3bhX/Z+4Gr9wOVZ6I41izoJa+HVnsBKxK0l+4VbKTh0naJ0gQ66fZaBCCP0v6Q4kx6F3
+	 AecBwkIJl9tzOUCzHL9FUia+Xlioz8v4ylZH851Y014rmoFIbU4x+LOngmydlxV7p4BSn
+	 ncvePRQbMocP2DfewsLRcnPR/b191yBOIlElRTEOru9RZ2tTAeW6R4FegH+Ovbfy8arCm
+	 WRvymxOueZgj6vOKywbHucv8kKMKFEZECaEjAVEvroR2Qce3fpy360v9J0DoP2uOls+Lp
+	 4zBHXNeEO9eqosyDN5xwh48a/52TsJi0jWNNbowpvWkJAsx8RELI12e6kHEfiVnDLhA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795441884;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795441886;
 	h=DMARC-Filter:From:DKIM-Signature:DKIM-Signature:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Developer-Signature:X-Developer-Key;
-	bh=Guhg1K0FMFBPE0u0CIJl3O+ZgtOjrn7cr+GEqqxWqko=;
-	b=j04+4wsZWelRDRDC5S+bAAx2CEQctfHrYsGhgMb0p8pgHCUFRgxu7ghIJ3EvksUKthe4
-	 253g8PzD49cxfpfWlvU+0CUCme+NldfFAvmwrALIg8s9utW09RDFIJko6gpJ08hfNz15C
-	 FKvbmFH2bY73m4+mrN+iHRblpjpENan4crDoHsauGVnm9WSilQLB8ajuaiH2CS2m/rOIz
-	 /MV2MlUG3UpNoMLESYYhN8fCLepFpgrQF7tH+7MXE/ulRgiSS7EGwQ1eMSVr/UjmFlB6K
-	 Fe3IhDe73R3cASD/3K3ZZ4xbsebLVighkxheOIF9rimgN1O6m8iE4yeiI4TDljQLW+Q==
+	bh=4eFtOIUXlB/3zrN30y5Vr5c5KdL9zNbkcXs+QwRBLLo=;
+	b=iaMyTmLicGhZrkCyteDbFf/BCsXJW3dX60qjLl+6sm2WFCuy57E9ZxSP8mLbgts4GV1o
+	 ln/LPbao/a7YqfQ+HjMaiug1R0bvGVE5rQPuljep3Geiqrvc/LCauZ7TdPR37J5zLDG5I
+	 QO8pnEMTyjoEFBOTFn4k2kIdW2pPagErlk2QbE3pr/Gkv+IF5ZIGMv9rFoXf7u8wl6Y/T
+	 N+fli3WhK+YWwHhBIiB2OErwJM4BWaApeoCd9lWyPaGTwurAEomskAP/yajFCSBqkMNI2
+	 LY4x8p0/fzIH9qj0OFP0SWPpibqUCbSR9SK2XmOSDVw+01DWR3b+sYp1cQB9HcuTm1g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linutronix.de;
 	spf=pass smtp.mailfrom=linutronix.de;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=NuQxcyBf;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Ee7e9mzF;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=y2qrpUFH;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=XY2hGy4c;
 	arc=none smtp.remote-ip=193.142.43.55
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB01606A6A7;
-	Mon, 23 Nov 2026 13:51:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8FB01606A6A7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4978360A2604;
+	Mon, 23 Nov 2026 13:51:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4978360A2604
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=NuQxcyBf;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Ee7e9mzF
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=y2qrpUFH;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=XY2hGy4c
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1795441881;
+	s=2020; t=1795441883;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Guhg1K0FMFBPE0u0CIJl3O+ZgtOjrn7cr+GEqqxWqko=;
-	b=NuQxcyBfhV7EAPhhJJ0IrWwI8Sg6agHEvml/ui+39lfH4IvCvHOhVb3sTcEszxrptDYhzM
-	KOTWGp0s724CoC63fsCVglfZK3pNCVB8Dpc4O3J+oZJetwugA7rRVDeJweiqPTc8fFxGvo
-	RmhJHmEu3rwm40c8zSLI4bxEI1qi65sJ8cASKE5pWCVY38ce3oB6mbJaStD5r9bHbVd18/
-	R42vVr0ltwptVz13BPAw5JmRofzhPG5tYJKVGp3gS5RHItjXpfpb6NKiTXVnBsh/nC0c3b
-	8kgM8WRRit79N6lKDO5GVLdWFOxuL3Rdld+lG35LGAQjhk+TpvfZuqpuvy+zig==
+	bh=4eFtOIUXlB/3zrN30y5Vr5c5KdL9zNbkcXs+QwRBLLo=;
+	b=y2qrpUFHjyo+0pMBHaWwUhYXbTJNPIcVR4whnZwubVPwGrLaE+1Mmk2Mwi5WKuQDu7n6iK
+	IxT3kxQpnVBBexAnF0ihS5lfLDaFO2yZB/xnwdS5zoFeUyigBfLzBR9hxvT3x4gDmc+6ZJ
+	flIELvpITzh8VhPCfJya5ZOTnXK/xiterHEPXNFbpa5f+Qizmz2LKuMplLRNcmsaccPT71
+	bzlF810zu1Rww5Diqxf9sA0ClHmhjYZs9LcDI8M2QN/FteZKxNbWWCxFnzgO4x1Y2LXygE
+	/0EP1KSgGHVkf/dr39ZaV3wh4xEEjOL8onok1E/zu4qmvtjdVXNW+2xfMnH4iQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1795441881;
+	s=2020e; t=1795441883;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Guhg1K0FMFBPE0u0CIJl3O+ZgtOjrn7cr+GEqqxWqko=;
-	b=Ee7e9mzFD85deKLGcm8e5YD0L+U1o17HaFbybIhTLTjFkWWkRB4gFePrbUFQEhupkaPgbn
-	0vbj4CqmhgO4CrAg==
-Date: Mon, 23 Nov 2026 14:50:55 +0100
-Subject: [PATCH v6 04/11] arm64: vdso: Enable the vdsocheck tool
+	bh=4eFtOIUXlB/3zrN30y5Vr5c5KdL9zNbkcXs+QwRBLLo=;
+	b=XY2hGy4cWmay/FFPNrPlsYtYrkhSLiBVvC67xaDxTH8uahrD+vR0WYB/jdZNhsfoWk9NzD
+	rmVwXtqSDk1V2JAg==
+Date: Mon, 23 Nov 2026 14:50:57 +0100
+Subject: [PATCH v6 06/11] riscv: vdso: Enable the vdsocheck tool
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -70,7 +70,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261123-vdso-absolute-reloc-v6-4-161e218dd217@linutronix.de>
+Message-Id: <20261123-vdso-absolute-reloc-v6-6-161e218dd217@linutronix.de>
 References: <20261123-vdso-absolute-reloc-v6-0-161e218dd217@linutronix.de>
 In-Reply-To: <20261123-vdso-absolute-reloc-v6-0-161e218dd217@linutronix.de>
 To: Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -112,11 +112,11 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  Arnaldo Carvalho de Melo <acme@redhat.com>, 
  Peter Zijlstra <peterz@infradead.org>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795441872; l=2617;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795441872; l=3576;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=ORz4l21C1iPuk7FCAsvH2byEFW0UweMz0824cCTy53M=;
- b=q7DXOLJiNCyz2OBeq2mHIOnoqJ70WoExeUnEefxSG/lSMIqTsqHDcIrncJ9VEiIXA1Umw12+U
- OOQlmf3HB4zBZUGjar3eMCLr8sFDPZAeV+wIvbVyQBy37Hse7yPcaaY
+ bh=MntGa2c7F/hFX8g0jBZrZAZFlve/PN+fivtH3qTBWPk=;
+ b=E0OeOrGeIR7bOANcC60kOQeCX/ghNoL4OOe/6jVEwOUqPM8BuZA5TNCH2kWGUvAnrKk1cra32
+ Sqyo9hLfgFEAlCARi9PB7WSaGZbX9p2AcUfrE8XdPahGDH8DoZdd3Qg
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
@@ -126,62 +126,77 @@ with the vDSO which need to be worked around.
 
 Wire it up for the architecture.
 
-The compat vDSO will be handled by the existing 32-bit ARM configuration.
-
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- arch/arm64/Kconfig              |  1 +
- arch/arm64/kernel/vdso/Makefile |  4 ++--
- lib/vdso/check/vdsocheck.rs     | 12 ++++++++++++
- 3 files changed, 15 insertions(+), 2 deletions(-)
+ arch/riscv/Kconfig              |  1 +
+ arch/riscv/kernel/vdso/Makefile |  4 ++--
+ lib/vdso/check/vdsocheck.rs     | 26 ++++++++++++++++++++++++++
+ 3 files changed, 29 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 1075bc661833..df22b4ed5e29 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -258,6 +258,7 @@ config ARM64
- 	select TRACE_IRQFLAGS_NMI_SUPPORT
- 	select HAVE_SOFTIRQ_ON_OWN_STACK
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index e7891a2a89da..2a0f5fbcd7e3 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -226,6 +226,7 @@ config RISCV
+ 	select THREAD_INFO_IN_TASK
+ 	select TRACE_IRQFLAGS_SUPPORT
+ 	select UACCESS_MEMCPY if !MMU
++	select VDSO_CHECK if MMU
+ 	select VDSO_DATASTORE if MMU
+ 	select VDSO_GETRANDOM if MMU && 64BIT
  	select USER_STACKTRACE_SUPPORT
-+	select VDSO_CHECK
- 	select VDSO_GETRANDOM
- 	select VMAP_STACK
- 	help
-diff --git a/arch/arm64/kernel/vdso/Makefile b/arch/arm64/kernel/vdso/Makefile
-index f6619e1cb2ce..5d8c34c7be51 100644
---- a/arch/arm64/kernel/vdso/Makefile
-+++ b/arch/arm64/kernel/vdso/Makefile
-@@ -61,7 +61,7 @@ targets += vdso.lds
- CPPFLAGS_vdso.lds += -P -C -U$(ARCH)
+diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
+index c023046a3fd7..b15039d0309e 100644
+--- a/arch/riscv/kernel/vdso/Makefile
++++ b/arch/riscv/kernel/vdso/Makefile
+@@ -75,7 +75,7 @@ endif
+ $(obj)/$(vdso_o): $(obj)/$(vdso_so)
  
- # Link rule for the .so file, .lds has to be first
--$(obj)/vdso.so.dbg: $(obj)/vdso.lds $(obj-vdso) FORCE
-+$(obj)/vdso.so.dbg: $(obj)/vdso.lds $(obj-vdso) $(vdsocheck) FORCE
- 	$(call if_changed,vdsold_and_vdso_check)
- 
- # Strip rule for the .so file
-@@ -79,4 +79,4 @@ include/generated/vdso-offsets.h: $(obj)/vdso.so.dbg FORCE
- 
- # Actual build commands
- quiet_cmd_vdsold_and_vdso_check = LD      $@
--      cmd_vdsold_and_vdso_check = $(cmd_ld); $(cmd_vdso_check)
-+      cmd_vdsold_and_vdso_check = $(cmd_ld_vdso); $(cmd_vdso_check)
+ # link rule for the .so file, .lds has to be first
+-$(obj)/$(vdso_so_dbg): $(obj)/$(vdso_lds) $(obj-vdso) FORCE
++$(obj)/$(vdso_so_dbg): $(obj)/$(vdso_lds) $(obj-vdso) $(vdsocheck) FORCE
+ 	$(call if_changed,vdsold_and_check)
+ LDFLAGS_$(vdso_so_dbg) = -shared -soname=linux-vdso.so.1 \
+ 	--build-id=sha1 --eh-frame-hdr
+@@ -97,7 +97,7 @@ include/generated/$(vdso_offsets): $(obj)/$(vdso_so_dbg) FORCE
+ # The DSO images are built using a special linker script
+ # Make sure only to export the intended __vdso_xxx symbol offsets.
+ quiet_cmd_vdsold_and_check = VDSOLD  $@
+-      cmd_vdsold_and_check = $(LD) $(CFI_FULL) $(ld_flags) -T $(filter-out FORCE,$^) -o $@.tmp && \
++      cmd_vdsold_and_check = $(LD) $(CFI_FULL) $(ld_flags) -T $(filter-out FORCE $(vdsocheck),$^) -o $@.tmp && \
+                    $(OBJCOPY) $(patsubst %, -G __vdso_%, $(vdso-syms)) $@.tmp $@ && \
+                    rm $@.tmp && \
+                    $(cmd_vdso_check)
 diff --git a/lib/vdso/check/vdsocheck.rs b/lib/vdso/check/vdsocheck.rs
-index e28ee59a900d..0d5ceaca34d7 100644
+index da58ff220eab..37455d326110 100644
 --- a/lib/vdso/check/vdsocheck.rs
 +++ b/lib/vdso/check/vdsocheck.rs
-@@ -57,6 +57,18 @@ fn allowed_relocations_for_machine(machine: u16) -> Option<AllowedRelocations<'s
+@@ -96,6 +96,32 @@ fn allowed_relocations_for_machine(machine: u16) -> Option<AllowedRelocations<'s
              ..Default::default()
          }
          .into(),
-+        bindings::EM_AARCH64 => AllowedRelocations {
++        bindings::EM_RISCV => AllowedRelocations {
 +            in_object_file: &[
-+                260, /* R_AARCH64_PREL64 */
-+                261, /* R_AARCH64_PREL32 */
-+                262, /* R_AARCH64_PREL16 */
-+                273, /* R_AARCH64_LD_PREL_LO19 */
-+                274, /* R_AARCH64_ADR_PREL_LO21 */
-+                283, /* R_AARCH64_CALL26 */
++                16, /* R_RISCV_BRANCH */
++                17, /* R_RISCV_JAL */
++                18, /* R_RISCV_CALL */
++                19, /* R_RISCV_CALL_PLT */
++                23, /* R_RISCV_PCREL_HI20 */
++                24, /* R_RISCV_PCREL_LO12_I */
++                25, /* R_RISCV_PCREL_LO12_S */
++                33, /* R_RISCV_ADD8 */
++                34, /* R_RISCV_ADD16 */
++                35, /* R_RISCV_ADD32 */
++                36, /* R_RISCV_ADD64 */
++                37, /* R_RISCV_SUB8 */
++                38, /* R_RISCV_SUB16 */
++                39, /* R_RISCV_SUB32 */
++                40, /* R_RISCV_SUB64 */
++                43, /* R_RISCV_ALIGN */
++                44, /* R_RISCV_RVC_BRANCH */
++                45, /* R_RISCV_RVC_JUMP */
++                51, /* R_RISCV_RELAX */
++                57, /* R_RISCV_32_PCREL */
 +            ],
 +            ..Default::default()
 +        }
