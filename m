@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795476886;
-	b=lTiUNv7WIllYiyFsEueviiKQvy4wuQxhwwj9IAZYNlhY+c+YJGhXAua47UCa/S2SMVEQ
-	 O6xhWdehCuBupN0lCFGDVj0YKxDLvSlHwk5DbyF5OEsLr7Jr88DyI1jrOyTwERS8O32KO
-	 Gcg6e2EwCNN4BIcnqDeJ2amyJSjFRjFLlEthw17IV03FVvWxhcYdN2bkx2JNK/etHIDo+
-	 336uzuDTukdtth+tZn8/BiP0TOXAGp6SChNF71RIixmQtpmElpLN9OELZGozRyVFe45sD
-	 D3Wy745ZrWNzRjC90/5HidVuHUgOtYH2kGIiaNF/Dy2kIu9SUP/IxMtVsrPrC5OQvJg==
+	t=1795477763;
+	b=MtKRS2SE12FpP6yE3YZUoYI5z4xYFkfbnDJax/CbLcZUtrNgqft3MgbOUrC7Ah5gXweT
+	 9ay2lK3joyHIH9cQc8vIcdjaLi6KuAhDA8XWs7ONqQIbO2ufZ53IGgse/ROVBON3HpUEo
+	 OwiDhKP8sClQb2y9vt5bGL4s902P5K6MqZZ4PrGzrDA7SGXIT51KbhdgrJfNx5S0QwaTE
+	 RLHpZzGIv1lmyE8CLuCOPysTNbTotQTsAV0Vg+mHyXSwvOkHxESGz3ZC0bCb6ejW1dmax
+	 IYKm/tLN68DfmNycjP/Oj2QcSBYCG+kJ7yysLmtN3rBSvvb/0Ekk4M53dbwyiLJOmKw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795476886;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795477763;
 	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
+	 Content-Type:Date:Message-Id:Cc:To:From:Subject:References:
 	 In-Reply-To;
-	bh=M049hmYuN5qF5uwfxWxXskRFqZo5GkBg0PYDvcM6N54=;
-	b=ub+4P2YntpSWsn9lA8ONs1PYWwAgT9c/vPkJJVtlLZMTFcJl7Ie6aClHQEtP+Grxy9Yt
-	 zh1m3AO7LzKhiPiIzmJoMDX9RG4hkME6LKzq1051ZncqtAg6i7mBGH7PfYrCbNL7N5PxN
-	 Ff9zFex0QZOOlR+kIarAaWy1MuVUDB0sBBeD8xUYhDlORJzah0d9NQGpJnh7slxPet/tO
-	 Gsigb6FPf+MqV1FhCt4ZfV5bH9sLX2E7ZsLm8VJyiVJ603LSGkamy+FrtVhUPAhk8Pgn9
-	 vWsd5DTcw4DzwypyzVCsdJCTopczfK9oD7Bu3OiIp4Aa2B5suChaKFkBHMFx7dTfZQQ==
+	bh=sAXNrWbDbP7ysg441+6RZE6+jFTIZd3JkPpVhxHYPgs=;
+	b=IZNd0AN0dObamRGyWAYuhkT9CqzNur1vXWID2oCGjqo62Ho3eqVaTWKM8VWn7g1pte+U
+	 Q7LUkdbTPwcAn559jPou6YGIkeXlwvWvIgqzHcZAa3MmcDv1OzQsuH0VATEVqbW6Pp2Tm
+	 g9xbqUq+tMIoigQtKnZmKgpidxHsTz9KWo5reRANN3ooMIB/iAux1F2I59Odv6rs+jUVB
+	 lVfKnYO7VPapDY691+48+8adoTaWK4kePYdLg4cpO2uZmep4f4ITQrWb4HGnNcppSLv4f
+	 yCdbnVbgMhZyhcn8GDTwhyDFt1C59Q+6PZcfXMuDE2Cqltj8MJ9Y+VV2NmVkM82o54A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NLlPyhnd;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f6gtS408;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D830606A31E;
-	Mon, 23 Nov 2026 23:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADFA606A31E;
+	Mon, 23 Nov 2026 23:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NLlPyhnd
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20C51F000EC;
-	Mon, 23 Nov 2026 23:34:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f6gtS408
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 318A01F000C6;
+	Mon, 23 Nov 2026 23:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795476886;
-	bh=M049hmYuN5qF5uwfxWxXskRFqZo5GkBg0PYDvcM6N54=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=NLlPyhndXl2QTZXG5fFUgcyOQZxZ2wtIvkDr6ej1xKbwpAlAFSEJgUjcnrPtWThEi
-	 7Gx6OcP8YAWuud4a6WQ8eSWobD6kMGsZAp7bKkS6Q3/jWz6ytNWgwqz4Omsx2ew2ni
-	 DZMknCjhu13EWyZhR0q0cNNHd7KXKI9WhOAoamNacOWZDzJ0xkOxKsGIi1+uCqYK38
-	 l5Koe9esjm1/chHfSDWQUKYHdT4rOcRvVTnpnTx4itHFEN1H25+ERMU2rZ6/WlHH5x
-	 DbEWZm0hOEnZb0MkpsRYbnbElVp4klGAaEmEuTJooC9gGn/wFRVPWUGmB6TO+EoPuk
-	 YIAWZeto4B8CQ==
+	s=k20260515; t=1795477762;
+	bh=sAXNrWbDbP7ysg441+6RZE6+jFTIZd3JkPpVhxHYPgs=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To;
+	b=f6gtS408v2vNyAEMKpsOCu+0RDvmsVoB3kxhsZNNVWzBL0NfRDnzliSks/xqdXzwv
+	 XJiXA5TcMEdf7BDqF0QnQD235fvkGFLsyebML2Rmhmg5kdUfXAODOSeNRhUEBrlCfh
+	 tyv+1Wz61EYtrfOc7Ix2nfI5o36w8w8EyULCiN0BCqEchf7r0+30CyJLPD9ak0tLRo
+	 C1H+u3fxoeNIyLza93rnczJtxgcO/0ebfxysluULlEkV8W7eZGvOT4kYwj85pE32kZ
+	 DPLwGIcLqjISiPx5Lkvcc9asLsbT/HI4csQgv4UYZSxjXle9Kv5oeGRqwBuCIKSTNR
+	 Mf0gvM14dPPZA==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -51,102 +51,52 @@ Precedence: list
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 24 Nov 2026 00:34:41 +0100
-Message-Id: <DN2ZFO94BZMF.2XTCCKEUDLZSB@kernel.org>
-Subject: Re: [PATCH 0/4] drm/tyr: use pin-init self-referential support
-Cc: <aliceryhl@google.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
- <lossin@kernel.org>, <gary@garyguo.net>, <ojeda@kernel.org>,
- <boqun@kernel.org>, <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <tamird@kernel.org>, <acourbot@nvidia.com>,
- <work@onurozkan.dev>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>
+Date: Tue, 24 Nov 2026 00:49:17 +0100
+Message-Id: <DN2ZQV0NPYW5.2D6Z4TNR45UAF@kernel.org>
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Abdiel Janulgue" <abdiel.janulgue@gmail.com>,
+ "Robin Murphy" <robin.murphy@arm.com>, "Andreas Hindborg"
+ <a.hindborg@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, <rust-for-linux@vger.kernel.org>,
+ <driver-core@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <nova-gpu@lists.linux.dev>, <linux-kernel@vger.kernel.org>
+To: "Matteo Kloiber" <kernel@matt3o12.de>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20261118233727.3147222-1-dakr@kernel.org>
- <084F476A-BD3F-4FAA-B47C-E875B542AA1B@collabora.com>
-In-Reply-To: <084F476A-BD3F-4FAA-B47C-E875B542AA1B@collabora.com>
+Subject: Re: [RFC PATCH 0/3] rust: dma: require device configuration before
+ DMA
+References: <20261123203926.1787169-1-kernel@matt3o12.de>
+In-Reply-To: <20261123203926.1787169-1-kernel@matt3o12.de>
 
-On Mon Nov 23, 2026 at 11:20 PM CET, Daniel Almeida wrote:
-> Hi Danilo,
->
-> Thanks for doing this.
->
-> I spoke with Gary about this topic at Kangrejos and again a couple of wee=
-ks
-> ago. What worries me is that we might introduce some restrictions that mi=
-ght
-> paint us into a corner. IOW: we have significant downstream work, and I w=
-onder
-> whether it will work with this series after whatever refactors are needed=
-.
+Hi Matteo,
 
-The reason for the existence of the converted reference counts hasn't been =
-that
-reference counting was needed as an ownership model, it just was that we ha=
-ven't
-had a way to express borrowing from sibling fields that are already guarant=
-eed
-to be longer lived in any case.
 
-The distinction is between A having an independent owner that keeps it aliv=
-e for
-all B consumers, so the Bs can borrow A, and the Bs collectively owning A, =
-so A
-is destroyed when the last B releases it. Reference counting expresses the
-latter ownership model. Both can still be subject to lifetime bounds.
+On Mon Nov 23, 2026 at 9:39 PM CET, Matteo Kloiber wrote:
+> Matteo Kloiber (3):
 
-In the majority of cases, drivers acquire device resources in stages, keepi=
-ng
-earlier resources alive until their dependants have been torn down. Where
-ownership follows this hierarchy, borrowing can express those relationships
-without reference counting.
+Thanks for working on this!
 
-> To start with, Alvin's VM_BIND ioctl series [0] will need some changes, s=
-ince
-> it keeps the VM pool in the file data. I think this is doable if we move =
-the
-> pool into the registration data and have each file hold only an index to =
-its
-> own entry?  i.e.: something like an XArray<Pool<Vm>> indexed by a number
-> associated with the drm::File. Same for the group pool later. Is this wha=
-t you
-> had in mind?
+A few notes below, ahead of a proper review.
 
-No, the changes do not force XArray<Pool<Vm>> to be moved into the registra=
-tion
-data; drm::File private data can borrow from DRM registration data. It can =
-(and
-should) stay in the drm::File private data.
+>   rust: pci, platform: pass InitTokens to probe()
+>   gpu: nova-core: build Gpu inside pin_init_scope
 
-(I'm also working on a generalization of this, as it is a repeating pattern=
- in
-drivers. We want driver private data associated with an ioctl, e.g.  VM_CRE=
-ATE,
-which is shorter lived than the drm::File data and hence shorter lived than=
- the
-drm::RegistrationData.
+I want to avoid wrapping everything in pin_init_scope(). Now that we have
+pin-init self-ref, we can just store dma::Handle in Gpu itself and then bor=
+row
+it from GspResources.
 
-Concurrent ioctls associated with a handle to this data, i.e. the VM in thi=
-s
-example, need to be drained on either VM_DESTROY or drm::File private data
-destruction, e.g.  caused by unregistration through driver unbind.)
+>   rust: dma: require device configuration before DMA
 
-> Anything storing a KernelBo will also have to be outside of the file data=
-,
-> IIUC, since it now stores a &Vm. Also, downstream we defer KernelBo drops=
- to a
-> workqueue, because they can happen in the fence signalling path. I suppos=
-e we
-> can keep doing that using ScopedWork/ScopedQueue?
+I think this should be broken down in multiple patches, e.g.
 
-I assume you refer to the Vm that lives in Firmware. If so, drm::File priva=
-te
-data can borrow from it, as Firmware lives in the DRM registration data.
-
-The teardown has to happen in ScopedWork regardless, as they all carried de=
-vice
-resource induced lifetimes already and hence can't go into unbounded work
-anyway.
+  1. Introduce Setup, Params, and Handle.
+  2. Convert drivers to configure DMA and retain/pass the handle.
+  3. Change each DMA API to require a handle, converting all callers.
+  4. Remove the obsolete setters.
 
 Thanks,
 Danilo
