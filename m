@@ -1,54 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795451733;
-	b=2jzO/IaQP9Oi14WYTCt+swFXqPqf4zU1F7Swwc/etHcF34wxob7ylawxGN0/rZj/Km9T
-	 cZ+G70MqEMs82B+RLGXTO0Wa2RpINEVTm3Hd6tPdgr9IGpAG0851kNHKRR2V1r7DcnDsu
-	 q+5lgn3O0JbD41AX5C8enkI2yr05FmNhRlZ2xJGeU8yPgj4+IY9D8WGvdKPH8BXTrwEgf
-	 kpANOlc2xVDRkiXIIFBbDQ0heAqNK4DzinqIeiO9LLDSNRZFyHnBf2CqJ3IqlVYPtiRXb
-	 qiBOUFz17roQS0wavTkGElxZePgiuO3jn9lvnYXC3SUtzq8wVovoA0FHtIr2/C6cz7g==
+	t=1795452224;
+	b=PEjz2TlLpmZ2H/PbroPmy7x3h3JleJmKaS+Sxvg1DIGaQzho6NN1BjDwQr1d7kulgKzW
+	 +N7hUhvHjjFVl2ZlZj6T08TdlQScZN5dzVzneEfLfYRs7hWLuvXfpPFnhqnu4aBJj4R//
+	 9E2oZk3zCpX9sw07O1Kid0dNynB7UmnM4TiRDiRTlPOilvjtbf4E+VymguSgfRhxGaCcc
+	 xinTRxQv6bfGnXMn0zhbZZJjXYd2P0z4uYmp9cnydTDMWf6fAYZlRLMpgb0Vfy2lYpQ1H
+	 OROUwPa8Dd78XfilkqDTqfWGH7tOBhdcQwrUKv3wJNWbnZlVDxGjZMk8dGN+DhIffSw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795451733;
-	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
-	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
-	 References:To:X-Mailer:X-ZohoMailClient;
-	bh=QonMcWfZhIMNw5CEeHP+f4vnHBs+VjAaV445fAEQw3U=;
-	b=1MrK3ZIDOOhMLE4fo6KwQoXUxTwJpVDG3YL2vf3NXno+d+KQF4yhmHB3R/UTyI67L69x
-	 sSu8O1PV6VHpzDI/zrzv7sgpZYnz4YVD3xpgfbjnJhzkEl11vV3eRei2q6jQGTToP/9Y4
-	 hb3Arwi61m3grLOj4cxnlKTmfHjA6lNUXopsphoqimuYpkIMuFhQHyYpEX+rR89QJU2TB
-	 taqAjZfn8qUAY84Noj4dCy3MZ0IOJUoAaUo3Vd6PvNXq8wpKzQuwPa0EBV7KT5//BrztR
-	 Nsu9zHqGt1yX4UqotHirslWI6I+AeRPoaXut80jkgdeIG5Yl5z8rnFzsVfUqmd2lVKQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795452224;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=wZfV6HS/qzi3zEP4C85VmFm7lcaH2SB1YkYHOpfY92E=;
+	b=366+cLVFXE1zxpXjBpfkBRXdQ9VYYpnMPk9DO4NEJtOIOR7TsgY8s3TSuHaimUTpY5DL
+	 KKdjrygB0ccVfRnACi2sw4GP17zHfhyM99DRhtJpKtjZ/N9wo+ptF/BV5faOTwZoUPLhA
+	 OqQ7apJJ0/6yWyrIH+hUgH96OoUViLcr6gFzphJVwiE5hO+Nmf8AWJMqoAOoeDmT1YDDS
+	 hfaadRnx7CurjlRsG53og0fneW4cRBYVFPlSZmMtb7875rF32hjhthX2rTsqqeMuJpgJr
+	 n1HIFjsxmY9E0y6P1uKlEDG8jVHLeEPVE5mW6F1+qW4NFGWeDN9R9suTKdbvic7bxdg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=GAI6E7T6;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kJt+T1Qd;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E775E606A31E;
+	Mon, 23 Nov 2026 16:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kJt+T1Qd
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1795452223;
+	b=tFlFlpw7sxx4mA4ML9ZCBpU/UO90iM78QXM/lmGKH7/PsBPWZLvT8VLoAKuKIhyFdkiD
+	 cqusHPth84teO6y9/dxKldwMMzTWaRRV0BAvlOyE+I/gCLtJofP738/bjpj8SiZQPzk9s
+	 sgfmm7Ky7TWszwqI9jPWe2oriLz2HA1A91yEkmrCX8A0xYRd1lpAc7TociKUMq06y+7Ux
+	 gLzRLF0NoSpC9mkig/+NLmGg8VYJPshxaf6NpCgxWkAprZuYa4gRIlxzboeRuXi1r+lWL
+	 0am8/AtNxz7QMVPVUzKLTmqdM8IXlz1BOr7CEiBiyf2NQ4yKqquwQlLMBZv3A9T9A8Q==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1795452223;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=wZfV6HS/qzi3zEP4C85VmFm7lcaH2SB1YkYHOpfY92E=;
+	b=D/GODMlU2BhpJTUuzISNzojAKzvhUJZi++Q8m59q27NxIe/eBRxXOrLaVvvmBDUaO1H7
+	 hpMMS7+qRU5VLTpjjhuTxgNl276k7EdOzXIJ1M92pk64U0RY14xyS1XVwcQaAL3aaZFZF
+	 fmFjpCzgc1YFMRWKFEfKMV3ptr1Oz54HHC8HVHSuRhUl+/Pmyb90KGO8xEjURFYPYC8Fu
+	 bI3ML/loAHoWAtZWY87vToSYWnnMZ9L0e6lWhBp0M8ojF0sI5TPsi++unlN5Rfnelbc3U
+	 3rBMddNnh+qgFBhZI5AI/zHS/HfZLwOtGZR0IGlQZT22aE/7PLXSYgNKXiUmTT59B9A==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593C4606A31E;
-	Mon, 23 Nov 2026 16:35:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 593C4606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=GAI6E7T6
-ARC-Seal: i=1; a=rsa-sha256; t=1795451652; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ZbOvI+mjMOJdnFUKfoizUppJ6Ex6hbrHj2jxYtGHugqpZ/j92pi6Tu8fPa6z+YesJmcS5LTOgGJXZUsQEQZeANA77QkFFntTa8oUCzlsIRNbUxNOQscyMFVdMuM9wp1aeymCBkDSvpK6lYGDi7Ry7l5QcSyo0GF5tP1Us9l4sho=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1795451652; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=QonMcWfZhIMNw5CEeHP+f4vnHBs+VjAaV445fAEQw3U=; 
-	b=eueo9JlUODZxmwySjUsVy3NbbUU3IYimCIEQg5PbyjbjMsD/n4RzU9wTVwSr13IHzmxhOyT9Dr/ukXJqbz6vbb7xT/EH+DjjWoI9wZWEnsaR5adGXRNq3fdI0PRVX9q86X6sV9j2TzQ2/MJsY3Jg68cMCskDUSgt8s1xS1AijdY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=GAI6E7T6ob6Nh6q2zHxKPJSqCvgf5vpe25pUS58M/13XUUw2gND7vz4tmSwlpFi/h7R/lAgfsRj9i+/r7Totl7fqnIyBRHU7OcXoxH3I7xTnNpAO3NAWGfg3QFMRRlMi5Tc6rS84L8JVg1WvfeNHFhFhPe5TjibnvVfcQD9RHpQ=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=QonMcWfZhIMNw5CEeHP+f4vnHBs+VjAaV445fAEQw3U=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1795451645257569.0456820205015;
-	Mon, 23 Nov 2026 08:34:05 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	by smtp.kernel.org (Postfix) with ESMTPS id CF3381F000C4;
+	Mon, 23 Nov 2026 16:43:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795452223;
+	bh=wZfV6HS/qzi3zEP4C85VmFm7lcaH2SB1YkYHOpfY92E=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=kJt+T1QdLLvMGg/11I24/sExriindH5912O4v3P7EusxvgEGJcFZFJ8r7BBb/QJlw
+	 KeewuQ30VEXNTR20xHisdWx6LWejOsx64gyARJBHI269TIPTGP//z91BIfe4E7NKPJ
+	 mCh12a5IvG4oqdUbGyFY60tXzWCHE6Ace7f6BOpqL5f2WyYK6onRd2oC5Kqc2G1y6Z
+	 YMG22nmZYp1HnRRl/F7NypnmDEqcurCDyw7s5oPDQa9rYJ8h0NuB6LAXAXoTbxRg3C
+	 wrVvEXJdX+7N1QxYzovftRfXkdAqyOO7jdtKBEHdbvH1mN8OUHL6LJzuOWmZSCgtWG
+	 qydqz9t7EoGbA==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 4D18A4C55A;
+	Mon, 23 Nov 2026 16:43:35 +0000 (UTC)
+From: Peder Bergan via B4 Relay <devnull+peder.bergan.gmail.com@kernel.org>
+Date: Mon, 23 Nov 2026 17:43:32 +0100
+Subject: [PATCH v3] rust: bindgen: Preserve sched_statistics alignment
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -57,156 +81,99 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v6 3/7] rust: clk: use the type-state pattern
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <179519333138.3795820.61438010297111723.b4-review@b4>
-Date: Mon, 23 Nov 2026 13:33:47 -0300
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Michal Wilczynski <m.wilczynski@samsung.com>,
- Drew Fustini <fustini@kernel.org>,
- Guo Ren <guoren@kernel.org>,
- Fu Wei <wefu@redhat.com>,
- =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Stephen Boyd <sboyd@kernel.org>,
- Brian Masney <bmasney+clk@redhat.com>,
- Jerome Brunet <jbrunet+clk@baylibre.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- linux-riscv@lists.infradead.org,
- linux-pwm@vger.kernel.org,
- linux-clk@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- Boris Brezillon <boris.brezillon@collabora.com>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Maurice Hieronymus <mhi@mailbox.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <4FF31142-6624-4A90-9BE2-F654D896EF22@collabora.com>
-References: <20261013-clk-type-state-v6-0-a5e9977b3509@collabora.com>
- <20261013-clk-type-state-v6-3-a5e9977b3509@collabora.com>
- <179519333138.3795820.61438010297111723.b4-review@b4>
-To: Jerome Brunet <jbrunet@baylibre.com>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261123-fix-schedstats-bindgen-layout-v3-1-ef7e83c32b42@gmail.com>
+X-B4-Tracking: v=1; b=H4sIADNtBGsC/43OQW7CMBAF0KsgrzvFdkKQu+o9qi7G9iRxRRzkc
+ SIQyt1rw4YdLP/oz9O/CaYUiMXX7iYSrYHDHEtoPnbCjRgHguBLFlrqTilloA8XYDeS54yZwYb
+ oB4pwwuu8ZJCmOdiubdqjPIpinBOVh7v/8/vIvNg/crmitWGRCWzC6MZ6Ws6cE+G0TwtniHTJt
+ TQGznO63leuqmLvDloVKJAHY7zXjex7/z1MGE6fbp5EHbTqJ03LV5oumnKtphaN6ZCetW3b/gG
+ FBdU5TwEAAA==
+X-Change-ID: 20261119-fix-schedstats-bindgen-layout-0935b6434707
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Carlos Llamas <cmllamas@google.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+ Jules Mercier <jules@les-mercier.fr>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795452214; l=2194;
+ i=peder.bergan@gmail.com; s=kernel-contributions;
+ h=from:subject:message-id;
+ bh=BRNvzNrAOE8SCJYrQje8ClEabdCLlvZJpmkzsmH/zvc=;
+ b=hvkGi2TTDZ5rlFhFS9Sj0TO7Yv3elJsXxiwEWUuUy1v46bGKVG2U1hni9P6f4iGj54YI5wpcU
+ 02BmMXJGqIiBrB9Eps8k5D56uMKDNX3AMpRzcykH7ZknPalLBFaALjG
+X-Developer-Key: i=peder.bergan@gmail.com; a=ed25519;
+ pk=39790pn1YZCulHBoUG1uiQI1Hm01EvhBEa2zVrS/yN0=
+X-Endpoint-Received: by B4 Relay for
+ peder.bergan@gmail.com/kernel-contributions with auth_id=1395
+X-Original-From: Peder Bergan <peder.bergan@gmail.com>
+Reply-To: peder.bergan@gmail.com
+Content-Transfer-Encoding: 7bit
 
-Hi Jerome,
+From: Peder Bergan <peder.bergan@gmail.com>
 
+With CONFIG_SCHEDSTATS disabled, struct sched_statistics is empty but
+still cache-line aligned. Bindgen omits the alignment of the empty
+type. Bindgen 0.73.2 also stopped forcing padding before over-aligned
+fields, so fields following stats can be misplaced in the generated
+task_struct. On the reported arm64 build, Rust Binder reads the wrong
+pointer via CurrentTask::mm() and rejects mmap() with -EINVAL.
 
-> On 20 Nov 2026, at 13:48, Jerome Brunet <jbrunet@baylibre.com> wrote:
->=20
->> clk.prepare();
->> clk.enable();
->> clk.enable();
->=20
-> This particular sequence is indeed allowed in C. I don't get why it =
-should not
-> be ? (in general and/or in rust)
->=20
-> If you dis-allow this in rust, the 2 sides drift apart, don't they ?
-> I mean they start behaving differently. I suppose this is not =
-something
-> desirable ?
+Make sched_statistics opaque so bindgen uses the C size and alignment.
+Rust has no callers that access the fields of this type.
 
+Reported-by: Jules Mercier <jules@les-mercier.fr>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1269
+Link: https://github.com/rust-lang/rust-bindgen/issues/3549
+Tested-by: Jules Mercier <jules@les-mercier.fr>
+Cc: stable@vger.kernel.org # 6.12.x
+Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
+---
+Changes in v3:
 
-The problem with the current API is that it does not enforce a proper
-order for the calls, i.e.: prepare() -> enable() -> disable() ->
-unprepare().
+- I generalized the comment to cover any types listed below it.
+- Link to v2: https://lore.kernel.org/rust-for-linux/20261120-fix-schedstats-bindgen-layout-v2-1-1c42e4a996ae@gmail.com/
 
-For example, getting a clk and repeatedly disabling it is allowed:
+OpenAI Codex assisted with the bindgen change, validation and drafting.
+---
+ rust/bindgen_parameters | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-while true {
-  clk.disable();
-}
+diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
+index 5bab3cf063360..ef9379312fce9 100644
+--- a/rust/bindgen_parameters
++++ b/rust/bindgen_parameters
+@@ -26,6 +26,12 @@
+ # warning. We don't need to peek into it anyway.
+ --opaque-type spinlock
+ 
++# Bindgen omits the alignment of empty structs. Bindgen 0.73.2 also stopped
++# forcing padding before over-aligned fields, so following fields can be
++# misplaced. Making the types below opaque preserves their C alignment.
++# https://github.com/rust-lang/rust-bindgen/issues/3549
++--opaque-type sched_statistics
++
+ # enums that appear in indirect function calls should specify a cfi type
+ --newtype-enum fwctl_rpc_scope
+ --with-attribute-custom-enum=fwctl_rpc_scope='#[cfi_encoding="15fwctl_rpc_scope"]'
 
-There is also a problem of balancing the refcounts. As you can see from
-the example above, it is trivial to have a decrement without a
-corresponding increment, or the other way around.
+---
+base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
+change-id: 20261119-fix-schedstats-bindgen-layout-0935b6434707
 
-What this series aims to do is use Rust's type system to address the two
-points above by enforcing a legal transition between states using a
-small FSM via this "typestate" technique. As a bonus, this also solves
-the balancing problem, because each state owns the appropriate count.
+Best regards,
+--  
+Peder Bergan <peder.bergan@gmail.com>
 
-With this series, the broken example above doesn=E2=80=99t even compile =
-anymore.
-
-Note that taking more than one count is still possible. Patch 4 adds
-guards for that: each enable_guard() does a clk_enable(), and the
-matching clk_disable() happens when that guard goes away. So the
-sequence you quoted can still be written. What you can no longer do is
-call disable() without having called enable() first, or forget to
-release the prepare/enabled counts you acquired.
-
-Notice that this doesn't, in and of itself, preclude the usage of the
-old API. Someone can add a new state that allows the old behavior, as a
-Clk<Unknown> or some other name, but if so, they should provide a user,
-and we should _really_ ensure that their usecase can't be adequately
-described by the safer API above.
-
-So no, I do not think it is a deviation from C, more like a safer
-veneer, because Rust makes it much easier for us to provide one.
-
-
-
->=20
->>=20
->> And nothing gets undone on drop().
->>=20
->> c) It does not let a user express the state of the clk through the
->> type system. For example, there is currently no way to encode that a =
-Clk is
->> enabled via the type system alone.
->>=20
->> Following the Regulator abstraction, switch this abstraction to use =
-the
->> type-state pattern instead. It solves both a) and b) by establishing =
-a
->> number of states and the valid ways to transition between them. It =
-also
->> automatically undoes any call to clk_get(), clk_prepare() and =
-clk_enable()
->> as applicable on drop(), so users do not have to do anything special
->> before Clk goes out of scope.
->=20
-> So the point the is automatically clean-up (as in disable()) clock =
-when they
-> go out of scope ? In C, the equivalent would be calling clk_put() with =
-a non
-> NULL enable/prepare count. We do complain loudly when this happen. I =
-don't
-> people should encouraged to not actively care for this.
->=20
-> --=20
-> Jerome
-
-Actually, the point would be to forbid this using the type system. By
-using the new types, the abstraction knows which counts it must
-release before calling clk_put.
-
-IOW, a Clk<Enabled> knows, on drop, that it must release one count of
-enable, and one count of prepare before clk_put is called. Clk<Prepared>
-knows it must release one count of prepare before clk_put is called, and
-Clk<Unprepared> can simply call clk_put directly. The type states make
-the situation you described unrepresentable in Rust.
-
-This is not new on the C side either: devm_clk_get_enabled() already
-runs clk_disable_unprepare() and clk_put() on its own when the device
-is unbound. Here the same happens when the value goes away.
-
-=E2=80=94 Daniel
 
