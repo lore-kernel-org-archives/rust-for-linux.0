@@ -1,58 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795445943;
-	b=qezMRQmsY3aecA9kBDtyAmVYKEKZFsfckGbnWFysBX/d2JTyMgEbEpyqGxa4sa8SQl+5
-	 FM9ezDGWWxVDpEwQTKk87o33KbnIMZZ6g89k5tJ9BCijBbfGpTsfuV7CCT0qfzvLUz/9/
-	 6W6pWS4HwRnWc5yZpwZ6CbS7LjbcIA7q0sPVJF7gaJ9B5QQTRdUlF4lm4Nr+dCVX0yysh
-	 Cb6tZLsfIY5VlMONrCJlZi4Zq6NU8kkdgcmEEdcCfeCRKoPboOmZTcG27icG5je3Ryawb
-	 FLDWqdQlU3e62fhsEhDMkIVcaPNJyJZ94DYr22Twe48OAMdLvOWE05Tn3cxeheFPJcw==
+	t=1795448636;
+	b=w7oUvmjCzmIPW9+iJ6xXp2TiJpkN3xhbl4+G7gOS+aplHs+FOlAi3SfNvixLI79XPA8B
+	 1W69SHTk+r9IKzhuhRINsFCIUBn2UnVc+U/gUKN1j4BG6ItMWxc4pLC7qQYAYT+X3RB60
+	 NK6PK0Cdh2AWX/PWcflahfR35RdB7Mcx3mm3hflb0EaRje1yWcgsxS/kJqZg4q/L4YSPc
+	 b7gFH+YT8q4KWHm/a6QV+7r/cosmz+uB+JksN1u5BRPVL6lKHXXQvHDp+vNlpHjc24Ugl
+	 TiMXyuytU0n/jKbAdKGe8KKxPxsqs/j1qi9fJwWUOZzzIzY+57cEU5sgUtLHLUWQHvw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795445943;
-	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer;
-	bh=gfh7HY5MvHfK7G5e/YDxV3sk1y732YaeuIzJ1R2+Oko=;
-	b=HqXONgB8LIjlm102AZKTo0GiA08c5JdZT+9y5My4NEC9kuZ7xdJFEBkTEtKfwzjNQFUS
-	 9Bo2htr5KXAopbiy0Y9HKSAtMN5jSOcYyhv64NQ51tDy889tJznATKlmCh+T6cXC5Jtnq
-	 gGYt8J7KHmAxZouVasZ6Bz7CpII3kYRkLC6xdHXrx0PiQr52yv/iivIuAKOguU3cb4mjm
-	 zzTqsYPK1RpNn8YKJEkGMfbXmJszCE0hweFZ5M4DFgXmEbartInOO3n1romDS3Oo1EJqT
-	 eIXp4QabWCS4z9FJcs3rIbwchCUkKarYC0/UrowLKYF7HyMW+iNA7IUEoru/pwdeIXw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795448636;
+	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer;
+	bh=hBPO8PLZh/UMuGqLsh8NXe6Y8zhuf+A17Ivj1B29j0w=;
+	b=ud6sQ72ELWgYjtXAnktU17SsqmM9/Dw1Ge17BQCqW1E8o5k3cxh+cne3K37aogwsVlbZ
+	 aqdgmbG4Fi99Tr4DuTBczGypks4icJyQTW/ZcMyoCZjQj115I8Nh5QaJI79tFgzpNrDx9
+	 ged7hQZXEqmpVu5lvJBQtX73syb7b0k734U4CaT1rwkGE7a1I3/OPZicpPpwP4JjGo8GA
+	 WHn5Up83gmLtRzyOh7iba25j+7Ptujugs1wz+2yEKEKvU+yuxfXPQaGYJoIi9u7SlKule
+	 G6aAqjG2j8gLET9cIDECaTtoBaqg0Jf31dRBWh1D4IjtzRY+Pr5OwRXZuUiNn/BUh9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=XiUbwmb6;
-	arc=none smtp.remote-ip=148.251.105.195
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iyOa9O5u;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A138606A686;
-	Mon, 23 Nov 2026 14:59:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7A138606A686
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758A2606A31A;
+	Mon, 23 Nov 2026 15:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=XiUbwmb6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1795445940;
-	bh=uB7AxCXnP6snebE3RQFdQmWQFCw5EAP/cVbppSNycLM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=XiUbwmb6hJzFNosfQmy1vYNrq3y9khMHSdyNBgI/Zz9BNVOZEoguzqIOs16Z2SQfx
-	 CvQHz62Sah4UOFvQM0bLryoA7S2ur8EcdnunX/kWgiegshYY2hpXsB4vjmkXtzKscf
-	 A0wFIWRv7+IjbYh0xJ8Kai+Er6CB494BrxxxmtFXdZu10LQAOyhVXZdZ4aSK6JeUdx
-	 jrmXupT5IrXuLpo0lTngs4IiN8pA6061oQWLXwRdMyg5xsPZfMFyiLfzeqxiV0aAhB
-	 nuKGnN/dBQf6+pvs1haRa1G9z0sWuTKXDD2K7tJktwsrznsWs/HSFtJ7n96pds965a
-	 6FSHlhTLzcC3w==
-Received: from laura.lan (unknown [100.64.0.215])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 37D6617E0EB0;
-	Mon, 23 Nov 2026 15:59:00 +0100 (CET)
-From: Laura Nao <laura.nao@collabora.com>
-Date: Mon, 23 Nov 2026 15:58:46 +0100
-Subject: [PATCH v7 2/3] drm/tyr: add TyrIrq threaded IRQ wrapper
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iyOa9O5u
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB5C1F000C4;
+	Mon, 23 Nov 2026 15:43:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795448636;
+	bh=hBPO8PLZh/UMuGqLsh8NXe6Y8zhuf+A17Ivj1B29j0w=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=iyOa9O5u1hxkBN1iYeKSim3KOhj5jcUJNMQDYXDnqEGOmkJAMGeQLrzTFh+WHpntx
+	 K9OOvxxzjl/Gl0PvdxP/UjAT1CWNjcoq2ZOneGSusAJrVZ9VP/fOoxIf10b+nHAYzi
+	 StubXUlwEjKuzg/YW4RhCym6lkQYF6qrDRTz1IUVXl59jzKgZtfboNav3YeXY+qk26
+	 7gsSgU/EiYkcQqCoTPiyu9qpfqAtnXhK//EFtHDaVs4anY3dcqWJ3IrAtLkVRYaQpf
+	 HRNLIEihnz/7iJkFyCWrAs3j0Rwg0E7Rwdyz+szoCV774CKQb9TDQcTW0R3qTCQhrC
+	 Z1ycA4RAGW+PQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Matthew Wilcox <willy@infradead.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+ Daniel Gomez <da.gomez@samsung.com>, Tamir Duberstein <tamird@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>
+In-Reply-To: <20261120-xarray-entry-send-v6-2-1f69d7385f70@kernel.org>
+References: <20261120-xarray-entry-send-v6-2-1f69d7385f70@kernel.org>
+Subject: Re: [PATCH v6 02/12] rust: xarray: add debug format for
+ `StoreError`
+Message-Id: <179544862193.2286374.1413505668892113541.b4-ty@b4>
+Date: Mon, 23 Nov 2026 16:43:41 +0100
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -64,341 +77,21 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-tyr-irq-v2-v7-2-4e172e58e28c@collabora.com>
-References: <20260728-tyr-irq-v2-v7-0-4e172e58e28c@collabora.com>
-In-Reply-To: <20260728-tyr-irq-v2-v7-0-4e172e58e28c@collabora.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>, 
- Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- rust-for-linux@vger.kernel.org, kernel@collabora.com, 
- Laura Nao <laura.nao@collabora.com>, 
- Deborah Brouwer <deborah.brouwer@collabora.com>
-X-Mailer: b4 0.12.0
+X-Mailer: b4 0.16-dev
 
-Introduce a generic TyrIrq threaded IRQ wrapper along with the
-TyrIrqTrait trait describing the operations required to handle a
-Tyr interrupt source.
 
-Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-Signed-off-by: Laura Nao <laura.nao@collabora.com>
----
- drivers/gpu/drm/tyr/irq.rs           | 270 +++++++++++++++++++++++++++++++++++
- drivers/gpu/drm/tyr/reset/hw_gate.rs |   1 -
- drivers/gpu/drm/tyr/tyr.rs           |   1 +
- 3 files changed, 271 insertions(+), 1 deletion(-)
+On Fri, 20 Nov 2026 14:10:13 +0100, Andreas Hindborg wrote:
+> Add a `Debug` implementation for `StoreError<T>` to enable better error
+> reporting and debugging. The implementation only displays the `error`
+> field and omits the `value` field, as `T` may not implement `Debug`.
 
-diff --git a/drivers/gpu/drm/tyr/irq.rs b/drivers/gpu/drm/tyr/irq.rs
-new file mode 100644
-index 000000000000..4a065c6272c5
---- /dev/null
-+++ b/drivers/gpu/drm/tyr/irq.rs
-@@ -0,0 +1,270 @@
-+// SPDX-License-Identifier: GPL-2.0 or MIT
-+
-+//! Threaded IRQ wrapper shared by all Tyr interrupt sources.
-+#![allow(dead_code)]
-+use core::marker::PhantomPinned;
-+
-+use kernel::{
-+    device::Bound,
-+    interrupt::LocalInterruptDisabled,
-+    irq::{
-+        Flags,
-+        IrqReturn,
-+        ThreadedHandler,
-+        ThreadedIrqReturn,
-+        ThreadedRegistration, //
-+    },
-+    platform,
-+    prelude::*,
-+    sync::{
-+        atomic::{
-+            ordering:: {
-+                Full,
-+                Release, //
-+            },
-+            Atomic,
-+            AtomicType, //
-+        },
-+        Arc,
-+        SpinLockIrq, //
-+    }, //
-+};
-+
-+use crate::{
-+    driver::IoMem,
-+    reset::HwGate, //
-+};
-+
-+/// Trait describing the operations required to service a Tyr interrupt source.
-+pub(crate) trait TyrIrqTrait: Sync {
-+    /// Returns the masked interrupt status.
-+    fn read_status(&self, io: &IoMem<'_>) -> u32;
-+
-+    /// Clears all bits in the mask register, disabling the interrupt sources.
-+    fn clear_mask(&self, io: &IoMem<'_>);
-+
-+    /// Sets the mask register to re-enable the interrupt sources.
-+    fn reenable_mask(&self, io: &IoMem<'_>);
-+
-+    /// Returns the raw interrupt status, regardless of the current mask.
-+    fn read_raw_status(&self, io: &IoMem<'_>) -> u32;
-+
-+    /// Clears the given bits in the interrupt status register.
-+    fn clear_status(&self, io: &IoMem<'_>, status: u32);
-+
-+    /// Returns the bitmask of interrupt sources handled by this instance.
-+    fn mask(&self) -> u32;
-+
-+    /// Handles the given pending, unmasked interrupt bits.
-+    fn handle(&self, status: u32);
-+}
-+
-+/// State shared between a [`TyrIrq`] and its [`TyrIrqRegistration`], used to
-+/// coordinate the primary handler, the threaded handler, and teardown.
-+#[derive(Clone, Copy, PartialEq, Eq)]
-+#[repr(i32)]
-+enum IrqState {
-+    /// Active and ready to process new events.
-+    Active = 0,
-+    /// A primary handler has claimed a pending event and the threaded handler is running, or
-+    /// about to run, to service it.
-+    Processing,
-+    // Being deregistered: the mask has been, or is being, cleared, and no
-+    // handler may re-enable it.
-+    Unregistering,
-+}
-+
-+// SAFETY: `IrqState` and `i32` has the same size and alignment, and it's round-trip
-+// transmutable to `i32`.
-+unsafe impl AtomicType for IrqState {
-+    type Repr = i32;
-+}
-+
-+/// A threaded IRQ wrapper shared by all Tyr interrupt sources.
-+#[pin_data]
-+pub(crate) struct TyrIrq<'a, T: TyrIrqTrait> {
-+    /// The interrupt source.
-+    irq: T,
-+    /// Shared gate that coordinates hardware access with GPU reset.
-+    hw: Arc<HwGate<'a>>,
-+    /// Current state.
-+    state: Atomic<IrqState>,
-+    #[pin]
-+    lock: SpinLockIrq<()>,
-+    #[pin]
-+    _pin: PhantomPinned,
-+}
-+
-+impl<'a, T: TyrIrqTrait> TyrIrq<'a, T> {
-+    /// Requests a threaded IRQ registration for `irq`, using `name` to look up the interrupt.
-+    /// Returns the shared [`IrqState`] alongside the registration.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must not `mem::forget()` the resulting registration or otherwise prevent its
-+    /// [`Drop`] implementation from running.
-+    unsafe fn request(
-+        pdev: &'a platform::Device<Bound>,
-+        name: &'static CStr,
-+        irq: T,
-+        hw: Arc<HwGate<'a>>,
-+    ) -> Result<impl PinInit<ThreadedRegistration<'a, Self>, Error> + 'a>
-+    where
-+        T: 'a,
-+    {
-+        let state = Atomic::new(IrqState::Active);
-+
-+        let handler = try_pin_init!(Self {
-+            irq,
-+            hw,
-+            state,
-+            lock <- kernel::new_spinlock_irq!(()),
-+            _pin: PhantomPinned,
-+        });
-+
-+        // SAFETY: The caller guarantees the resulting registration will not be leaked.
-+        let registration =
-+            unsafe { pdev.request_threaded_irq_by_name(Flags::SHARED, name, name, handler) };
-+
-+        // Clear the status and unmask once the handler has been
-+        // successfully registered.
-+        Ok(registration.pin_chain(|reg| {
-+            let handler = reg.handler();
-+            let hw_guard = handler.hw.access();
-+            let io = hw_guard.iomem();
-+            let irq = &handler.irq;
-+            irq.clear_status(io, irq.mask());
-+            irq.reenable_mask(io);
-+            Ok(())
-+        }))
-+    }
-+}
-+
-+impl<T: TyrIrqTrait> ThreadedHandler for TyrIrq<'_, T> {
-+    fn handle(&self) -> ThreadedIrqReturn {
-+        // SAFETY: `handle()` is the hard IRQ handler, so interrupts are already
-+        // disabled.
-+        let token = unsafe { LocalInterruptDisabled::assume_disabled() };
-+        let _guard = self.lock.lock_with(token);
-+
-+        // Only proceed if still `Active`. If `Unregistering`, the IRQ is being
-+        // torn down and must not be handled.
-+        if self
-+            .state
-+            .cmpxchg(IrqState::Active, IrqState::Processing, Full)
-+            .is_err()
-+        {
-+            return ThreadedIrqReturn::None;
-+        }
-+
-+        let Some(hw_guard) = self.hw.try_access_atomic() else {
-+            let _ = self
-+                .state
-+                .cmpxchg(IrqState::Processing, IrqState::Active, Full);
-+            return ThreadedIrqReturn::None;
-+        };
-+        let io = hw_guard.iomem();
-+
-+        let masked_status = self.irq.read_status(io);
-+
-+        if masked_status == 0 {
-+            // Go back to `Active`, unless the IRQ is being torn down.
-+            let _ = self
-+                .state
-+                .cmpxchg(IrqState::Processing, IrqState::Active, Full);
-+            return ThreadedIrqReturn::None;
-+        }
-+
-+        self.irq.clear_mask(io);
-+        ThreadedIrqReturn::WakeThread
-+    }
-+
-+    fn handle_threaded(&self) -> IrqReturn {
-+        let mut ret = IrqReturn::None;
-+
-+        loop {
-+            let hw_guard = self.hw.access();
-+            let io = hw_guard.iomem();
-+            let raw_status = self.irq.read_raw_status(io) & self.irq.mask();
-+            if raw_status == 0 {
-+                break;
-+            }
-+            self.irq.clear_status(io, raw_status);
-+            drop(hw_guard);
-+            self.irq.handle(raw_status);
-+            ret = IrqReturn::Handled;
-+        }
-+
-+        // Only re-enable the mask if still `Processing`. If `Unregistering`, the
-+        // IRQ is being torn down and must stay masked.
-+        let hw_guard = self.hw.access();
-+        let _guard = self.lock.lock();
-+        if self
-+            .state
-+            .cmpxchg(IrqState::Processing, IrqState::Active, Full)
-+            .is_ok()
-+        {
-+            self.irq.reenable_mask(hw_guard.iomem());
-+        }
-+
-+        ret
-+    }
-+}
-+
-+// A [`ThreadedRegistration`] for a Tyr interrupt source and its state.
-+
-+// Unlike a bare [`ThreadedRegistration`], dropping this type is always
-+// safe to do while the device remains on a shared IRQ line: its `Drop`
-+// implementation masks the interrupt source, and notifies teardown via the
-+// shared [`IrqState`], before the inner [`ThreadedRegistration`] is
-+// dropped and deregisters the handler.
-+#[pin_data(PinnedDrop)]
-+pub(crate) struct TyrIrqRegistration<'a, T: TyrIrqTrait> {
-+    #[pin]
-+    registration: ThreadedRegistration<'a, TyrIrq<'a, T>>,
-+}
-+
-+#[pinned_drop]
-+impl<T: TyrIrqTrait> PinnedDrop for TyrIrqRegistration<'_, T> {
-+    fn drop(self: Pin<&mut Self>) {
-+        // Flag teardown and mask the interrupt source, before
-+        // `self.registration`'s own `PinnedDrop` runs next and calls `free_irq()`.
-+        // This prevents the hardware from asserting the interrupt again once it is
-+        // deregistered. `free_irq()` itself waits for any handler already in
-+        // flight to complete, and having already flagged `Unregistering`, such a
-+        // handler will not re-enable the mask (see `TyrIrq::handle_threaded`).
-+        let handler = self.registration.handler();
-+        let hw_guard = handler.hw.access();
-+        let _guard = handler.lock.lock();
-+        handler.state.store(IrqState::Unregistering, Release);
-+        handler.irq.clear_mask(hw_guard.iomem());
-+    }
-+}
-+
-+impl<'a, T: TyrIrqTrait> TyrIrqRegistration<'a, T> {
-+    /// Requests a threaded IRQ registration for `irq`, using `name` to look up the interrupt.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must not `mem::forget()` the resulting registration or otherwise prevent its
-+    /// [`Drop`] implementation from running.
-+    pub(crate) unsafe fn request(
-+        pdev: &'a platform::Device<Bound>,
-+        name: &'static CStr,
-+        irq: T,
-+        hw: Arc<HwGate<'a>>,
-+    ) -> Result<Pin<KBox<Self>>>
-+    where
-+        T: 'a,
-+    {
-+        // SAFETY: The caller guarantees the resulting registration will not be leaked.
-+        let registration = unsafe { TyrIrq::request(pdev, name, irq, hw) }?;
-+
-+        KBox::try_pin_init(
-+            try_pin_init!(Self {
-+                registration <- registration,
-+            }),
-+            GFP_KERNEL,
-+        )
-+    }
-+}
-diff --git a/drivers/gpu/drm/tyr/reset/hw_gate.rs b/drivers/gpu/drm/tyr/reset/hw_gate.rs
-index 40b38f07c472..2157b4b8ba78 100644
---- a/drivers/gpu/drm/tyr/reset/hw_gate.rs
-+++ b/drivers/gpu/drm/tyr/reset/hw_gate.rs
-@@ -76,7 +76,6 @@ pub(crate) fn access(&self) -> HwAccessGuard<'_, 'hw> {
-     ///
-     /// Returns `None` while the reset worker owns the hardware, in which case
-     /// the caller must skip its hardware access.
--    #[expect(dead_code)]
-     pub(crate) fn try_access_atomic(&self) -> Option<HwAccessGuard<'_, 'hw>> {
-         let srcu = self.srcu.read_lock();
- 
-diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
-index 9d995650be81..b112cc8a5573 100644
---- a/drivers/gpu/drm/tyr/tyr.rs
-+++ b/drivers/gpu/drm/tyr/tyr.rs
-@@ -12,6 +12,7 @@
- mod fw;
- mod gem;
- mod gpu;
-+mod irq;
- mod mmu;
- mod regs;
- mod reset;
+Applied, thanks!
 
+[02/12] rust: xarray: add debug format for `StoreError`
+        commit: fe0612239662b50da2fb7b95409be1f3aa7a2f1f
+
+Best regards,
 -- 
-2.39.5
+Andreas Hindborg <a.hindborg@kernel.org>
+
 
