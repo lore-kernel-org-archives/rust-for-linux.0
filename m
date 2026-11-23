@@ -1,84 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.180
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795424723;
-	b=5Y3ZfG+iXrKnHVmRe+L7EF6fhU4iN5so9mDTVjlido0NNK8RCNAau+vhkoOUDjCFlD0e
-	 +shfQKDtnwR392HOh+xu0x8nG2CEE631H2hgVsTj94kzAOzbE+zuM7338nmtjtVzpnIqb
-	 3q5G2doUSgQFu++a3srqSggo3C7zqS1mH3lQ+CAAI/XyJKbby5C8a6Flyvrjoj8BNejlW
-	 zBV2YE8Zxd1pDEIkOe9KeQety5EexS8PSssUWEMdnIAVrwYFbwEn2DXpDIpbc9r7gTyI6
-	 sHWXFDjCwAVVrp4Jjrb0DWHAC7e/p268Y2hc/TVzFa7rFmSgUIHMOOHxuC60ZTrZDzA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795424723;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.49
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795430521;
+	b=jZ2F/436O1XafHD4EcBzrlYqmonBe/bOBIeg/hgReVKqN2i+eHzE7EFNGQVIGY5M43OM
+	 4iETNpbDjm3QbSBSzZis+mlTysDKoqi5Nov1gVp+bTitrnx6jy9engQL4gIxYqusViECH
+	 wAJxZlRmMORgcdR5AxuxVfaEU0NaVldCNDrQwr/ws6BDgpUB5fYQwlmp5FCfxDRn1cVEY
+	 s8K+56L5HTSV/GPnNM9s/+YSwj2rVA0vmONlEZJGfJdA8IZXxI3amFoKxUcy6goAftdLW
+	 i9UVAHWO5mF+uM5lX/UAFsYll9YvsBJb5yub6y2qXuo3lNtV35b+eJ7ivCFQAiPQN9A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795430521;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
-	bh=sdj/skV0mpKyTKeONzZHXUjijG59MmM3EwIg7zBy5qY=;
-	b=M1mrOOuKML7NHXNLV+6umWq3935VyEhHkGZhsMS+IQ9gNc3XMDHTFlFTnk6iPwtN+MCd
-	 y+VYgbbx4mLcHISaWXUXBdJFCk9L2imCfDljvLEWDpD5hJwsGYk44MsVmOgm0exirO/3q
-	 g05qoTn3OFCtXy2HuVKwObUezDyqJgufPh3GuKyRUwm1pcPK8BESHFZG4wdr6vB6mlKdn
-	 G2TTDN7kz+k0o7tS5uy9IJEPqaw0tdsqXXeu+iq5VhHIcE5QKHQJ5/flqVFxG9+WNpKra
-	 /R8nlZN9I8VWuzu/eLt5zkoTO2AIP28Z5VlQ1hTEFg8cScUitxKxHbrOuxpQMXmrSJA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=XhoOrqJDbQt9SAfQacKyOATjFJfF+l8LSMbumVFvOZs=;
+	b=XAvjyIxI94Fw31um03Dpw6gukvfyWFIU/dJnhZt3CCqiViyoiO11tEFRBUTs5BTzrLFE
+	 IAaYo5kYDtaxNbv4tldnXNDlL8uO1BG9ZZBRkt/qwGVaJGONCnox3wh0COvUyLCsHzTTi
+	 Ln2k+CpQgO1TlPY3DebhqY8NH3pRChnYHWptwbs8KOSZf/bmiseUbO3IaQJJtQ8AiLtmR
+	 ZSFSBvKrnE1YSyIUU9gkUhH8ThVEBF2psMS+meRq0DQIwfeDdrfrM4q/7QgGKUpTfOTGc
+	 ilhBUexjkBHJrbAY82QCTHrTM43lWt2KrQwNXQmpOVDWpCMHfXsZrb6dwXYdTsO+k6A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=CP5Fp1Z0;
-	arc=none smtp.remote-ip=209.85.215.180
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Z5CxacYG;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.49
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACE2606A31A
-	for <rust-for-linux@vger.kernel.org>; Mon, 23 Nov 2026 09:05:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2ACE2606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4DA606A31A
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Nov 2026 10:42:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A4DA606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=CP5Fp1Z0
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cd6acc50b8dso1463623a12.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 Nov 2026 01:05:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Z5CxacYG
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-9213f004a14so38510966d6.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 Nov 2026 02:42:00 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795430519; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Da4M3NVSbdXJukF6emqac1IG2oUzqfJZEi24ZbsQcrie+4hjCBBd3GBEVQbZIftWnl
+         CV3gWp6faW8agMZcOuS7db5m0H9trM+w3H7JRpcU8isLrMxwGaIeXZuoPa2NoLwUy4is
+         IjoPaBkZCKtNnBr/dviGFCuaQlttHNo7V2GjqL+0TWXJvoZEpg2fBdm430lck1TkZ00a
+         P4WW+sUX9ZjrZ6pgrK5jZ3t8hyXA+vw8azB7eXz8V3Z7ckLKvob/89iFRMkub6uKzvkF
+         iSvw+6HbWwRp9V2rdmkb/T/Zls8szPgD5TCcYr9+iulfwpRr/2+d9h/IdNpxZ+kxW24c
+         C9bg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XhoOrqJDbQt9SAfQacKyOATjFJfF+l8LSMbumVFvOZs=;
+        fh=rc1WIbX7RNe9yf3HUYeB92kFvW8TMDymdDE4q4rUK/U=;
+        b=VruZ0E+eCCX7rD4a7yV0KzHJE4JvqPfPHjjG8lnQ6uF/rjO4mLPjJZZoAJq2af6Dan
+         3HZhDE3LDRcQzJuTbsmYkeS7QPEbndpDplu2VkwdYKaJFRAZbVyh+J/AdarP6UVd5o7B
+         9EBLX7wg+GaNwiYKcbRbhYmZdMf/bMaVR5wDR3ZNJpzV+G+kKB3Oi1YC4Q8yTorofH9e
+         hAXOdHxBjyrJJPG6dMspf3Re9qwYTN39GSWz6BD9JB1gnxMYzMt67CWFdRn8aQ3fPw9g
+         rHS+qnKo+uItrTxaRrXA2g1IL1kEXN+vKFFQ9qDlOe1OKK8IeTXaLjsqcbtW9wFbUjsh
+         4CkA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795424722; x=1796029522; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=sdj/skV0mpKyTKeONzZHXUjijG59MmM3EwIg7zBy5qY=;
-        b=CP5Fp1Z0OTm9YV6uS9BaUVOY+zJomUbWcAMKXIzj2y612TJDfZ25vEIS+VmYWXez23
-         VDnAEbDV5DpVUCZj+npRw9NNibggYayrF1QqCoXqHsCWlL40VP867e/Kl5RyRywQ8EQf
-         z0YekvZWsBCJsqD3gLJtgAeTaP1ZiflXHERvK3rb8cR5+zaaG+LidlwR0bmbXJpIwaCM
-         9HhWXKPnZNsTLc8m0QzUm2H335p/vt9o6Yi73YYuLEYfjSuMUTSgzZuqWJbuTF/8TPeW
-         v6S5FYECOL8FBqvc17m3SsUP2yjNIWhivGAir9hbMSnHwy6yluZPABuf49zwLJBABggI
-         BMZA==
+        d=gmail.com; s=20260707; t=1795430519; x=1796035319; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XhoOrqJDbQt9SAfQacKyOATjFJfF+l8LSMbumVFvOZs=;
+        b=Z5CxacYGLdDZfWQi7Wf+MgYhdyZwtmj6v+wKj/cqXCivpLpznNmXgFehz7Nwh0xkGL
+         gy/sbiTOkNoGikmc7ltFeguF1ea3nBF7BVtCMzhCUDwZBysjy2O0+bQRaSQbvyG8bAwS
+         zCKJVjAWUU11ttlfwdD4z6pIQayqwJBY7ETjR+tSgHAe26t5FlXmCLb75jD4DJSkQeZJ
+         94dw5RbjhZ0rJWXd+cO9nrMnNVx0K18luGQ2CTciDORvn6jMcK0tUk0Grb0IYcK9EF0i
+         h0aRnoa9s6e4Q0ULSdg/bXA7exHruIRgSZEku/Rs/BpK+0Nf6XxuWDC4+r0BQZI0L7LM
+         ncWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795424722; x=1796029522;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1795430519; x=1796035319;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sdj/skV0mpKyTKeONzZHXUjijG59MmM3EwIg7zBy5qY=;
-        b=my9Ephsxt0SKdL7PUZFedJjZyse6uyxgjnE++ttIQ5LE1erAXV5xGsz3mecqLCBbOp
-         oZUxDCUVEl7AL+o14TA66xpzBD0X71xDdu4szt/jwkSvkHXfVjLfU7GXdGYyGs7A9skT
-         fkmF7WmN6pKoRK+SnyOd/6wQiD19TsEBs7aVVKmLqWDVoOjKC6E2Uogt/Uvq6yaEapnV
-         5VOqMudTUwqjsheaNd9ufZl9QEkdKXlV9zyAnQACk2PTsbJQ6aoHz9SKytElYoDcJQtY
-         LvQ2d6OhE8UlX9U55Gcuj/AEyfJQuaX2dT5zPjkhJy77iwD4d03VoeDyYg77vVZcmFKH
-         Xk8Q==
-X-Forwarded-Encrypted: i=1; AL+hErFg35yD2LyUP2d2DEAOnvt5ByJdpE3RhsjJCuklgPkLic6Lwv5IZbJgHsZJgz9Io3cIluf3brnxN4idu3bTmg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z9dOZ/dmDSbczaTUt6gjD8gw1MAoeVdXNXaC+KmZOfuzVnyYc9E
-	3QAB+LVrMknEDRPX4uDftgIQS0jwl1vXX3KGCRePKb0pxsLgwEWbviw7
-X-Gm-Gg: AZFdTZdS38Yf+ue8YKl5k10CdCD942EUGq8tmmfqgYA68jeToXgivxO63GhNFapWbSo
-	bFwNPoU+ce/bc39YRaNOuXLKpasj8gXG8iHKW/TUT1kj3aDPRil3lu+TbugospuY5EnwEC2JcSj
-	OKN+6x6i0PyfEE3gEfnZ7spI6Cklh8sckMtdwDtaHCFfjIpcQVBtp6Jpf9mvTKV+FoLmCDbRJlB
-	qPoYTnVYHZpmsVn7vw/CU1aHagBjR/x/QlsKRXA1M9pOecrh1xtj9PopELBfGegQcQq+Ko2EvUp
-	tNAX1hEiJ5shGBu3GxYeW/emgpFoc6pNuYTn9a2glyH0J19nNfpaQLOudqGlhlx7KAXY1yzBZBZ
-	lxDhx5y1xbccdik7cdTIu2xiGzQIvIWYxIng9NdgFarcHkO5oet3nBARbKiBLStK+aFWLWm/upQ
-	qjAy/D5UAzDCm/1q8Hx+a0SxYdZtYuRWPWX184/IkXk3WvB/kpW6ERlin6SeG1ICIGAKQ1ECpfC
-	vM8IozJ5Jto8EIhOYu0cAYkS3R9Kk1z/xPUWIXztQyTmLKdkNLe9j8CTJOW7Wa2+P5CCdylbJAB
-	kPJE91eVkFwXD1Uig26q0G8D2LI=
-X-Received: by 2002:a17:90a:e70c:b0:3b1:ba59:56a1 with SMTP id 98e67ed59e1d1-3b41c939b8cmr9271983a91.39.1795424722320;
-        Mon, 23 Nov 2026 01:05:22 -0800 (PST)
-Received: from localhost ([2001:8004:1ef0:7a2c:4a7e:bc9b:e9d9:4205])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41aab4729sm16760336a91.0.2026.11.23.01.05.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Nov 2026 01:05:21 -0800 (PST)
+        bh=XhoOrqJDbQt9SAfQacKyOATjFJfF+l8LSMbumVFvOZs=;
+        b=HMmCaptBBknPQOJLrVoOreVv+zbd0NwklNBRjsCQbkQpW4PomV315rfoDu0ucd8IOW
+         otKIGkEIRem4fNfBDCm1JEfAzW/WiR4Q8GEchFwIb6IT943mCQna8ns8Yes08f5KyOMc
+         +5LHdR2/Be8PwGdR0q9T2vWn/+xi7BIln8Nx1PLKC4WyNXs2W4KNLLBcLxpsfYMqPoxi
+         MRJZpVoVusB2/m5bdxkSLN0Boxz/y3BSGOT232v4gwo7s1VfH8t4YFi89FJ8fZWJ0rS0
+         TqGCF9tEoc6gzP/na2QFyUdkGHGJ+KWC3YmdcL6xtjHv62ESLFVjMKg2qcuEo4dI+SZn
+         uJnA==
+X-Gm-Message-State: APuU4Z/3nw1a6IJ81Oh1/cdk3zgjhhAUmzh5XT0hBoHLGHi63C8pPMB9
+	//TfKF1zNbq8z1+AJF01rJoEjrqVvvGmjEFgLWHyfQss4Jk/rA4Abs9eJ4khRE7bJJePF5ep3He
+	Tbb0usEkyqqdJxOow21iMu7nJH00Yg/DnnyUNN4qfiWGk
+X-Gm-Gg: AZFdTZdW72gw53JORytkQztCA403y0xwzyl71Fq4u6EN9uGLASV04EtrV5YOmaCOWw3
+	P15z4SiQdYAutIuyep2uAakrUDQFjE35nh6ruc+lXZw6F2mmA5t3Tvp1UBlwwJyK7JT1VSAqa37
+	EY6l/WKhToJT9tBrmCZy6PEYw4oqDe7C0u2CPZVOGGKiqH68e1TGqKxNovcwoTnxTKbflTXj1wM
+	0nGkoI7maHcFZoG/pPvLI/rtwtUg6foayEOOt9sb7rWILQNBvfFL9KWJ3w3+3yaIRC+TyDeF5nf
+	+8BZulWYGYPHKWifzZybv7S/AdlontRcCQIH+RTpR++MxK0Wr3Z45s1VaZYVKMBRCTlEpBzDIc0
+	bqt06DUDlRwd91vW4vCLOY7TBkZHh8mrkdETs
+X-Received: by 2002:a05:620a:2b85:b0:93e:722b:1f79 with SMTP id
+ af79cd13be357-949bab1bf5amr1751787985a.53.1795430519485; Mon, 23 Nov 2026
+ 02:41:59 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -87,51 +102,75 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20261116195011.24156-1-mbkchelofficialdev@gmail.com>
+In-Reply-To: <20261116195011.24156-1-mbkchelofficialdev@gmail.com>
+From: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
+Date: Mon, 23 Nov 2026 12:41:48 +0200
+X-Gm-Features: Aa3M54pS9yahJSWNN-tmF89We6qpc300mvM1QgNITUbjosx0r9KSgFaBXaiPrgY
+Message-ID: <CA+YDrKDJDWT0Z=iNpnjtTFQH8VK811XJf8KFyQ_QJ_j_gxaATA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: sync: atomic: Update safety requirements for `AtomicAdd`
+To: rust-for-linux@vger.kernel.org
+Cc: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Gary Guo <gary@garyguo.net>, 
+	Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 23 Nov 2026 17:05:06 +0800
-Message-Id: <DN2GXVEC38QI.5BTEQWF3UY9C@gmail.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Jean Delvare"
- <jdelvare@suse.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] rust: dmi: add basic DMI matching abstraction
-From: "Nick Dowsett" <nick42d@gmail.com>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Nick Dowsett"
- <nick42d@gmail.com>
-X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
-References: <20261122-rust-dmi-v1-1-4ace9449f872@gmail.com>
- <CANiq72mFCq01A_=B0gyaut1rPWeECOdDwP6pD3FBv7n4oH6TWg@mail.gmail.com>
- <DN260E1QVCJA.2PKN1JODEAOB0@gmail.com>
- <CANiq72kRX4fECZGjEXKsSE=bwT0XsozE3+GPpvmOPZ117B1_zg@mail.gmail.com>
-In-Reply-To: <CANiq72kRX4fECZGjEXKsSE=bwT0XsozE3+GPpvmOPZ117B1_zg@mail.gmail.com>
 
-On Mon Nov 23, 2026 at 9:10 AM AWST, Miguel Ojeda wrote:
-> On Mon, Nov 23, 2026 at 1:31=E2=80=AFAM Nick Dowsett <nick42d@gmail.com> =
-wrote:
->>
->> Just checking here - is this still applicable for doctests? I copied
->> some of the example from another subsystem. There could be some
->> conciseness benefits from not doing this here?
+Hi,
+
+Gentle ping on this series. Is there anything I should change?
+
+Thanks,
+Ivan
+
+=D0=BF=D0=BD, 16 =D0=BD=D0=BE=D1=8F=D0=B1. 2026=E2=80=AF=D0=B3. =D0=B2 21:5=
+0, Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>:
 >
-> Yeah, it keeps the rule simple (everything does the same thing) and
-> also helps others get accustomed to the style when reading examples.
-> In any case, for the example above it is hidden, so it doesn't matter
-> much for the rendered form.
+> The `# Safety` comment on `AtomicAdd` contained an unresolved TODO and a
+> broken sentence ("...to must yield...") without properly defining
+> `wrapping_add`. Remove the TODO, fix the phrasing, and define it as
+> wrapping two's-complement addition (`v.wrapping_add(delta)`), which
+> accurately reflects the behavior of the underlying integer primitives
+> since `AtomicImpl` itself has no `wrapping_add` method.
 >
-> (And, ideally, one day, `rustfmt` will be able to apply our formatting
-> to the examples, so it would create a bigger diff if we don't follow
-> the vertical formatting anyway.)
-
-Sounds reasonable to me, no problems. This amendment will be in v2.
-
-Nick=20
-
-
+> Signed-off-by: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
+> ---
+>  rust/kernel/sync/atomic.rs | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+>
+> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+> index 6d27898add42..5f6491fafd34 100644
+> --- a/rust/kernel/sync/atomic.rs
+> +++ b/rust/kernel/sync/atomic.rs
+> @@ -127,10 +127,11 @@ pub unsafe trait AtomicType: Sized + Copy {
+>  ///
+>  /// # Safety
+>  ///
+> -// TODO: Properly defines `wrapping_add` in the following comment.
+> -/// `wrapping_add` any value of type `Self::Repr::Delta` obtained by [`S=
+elf::rhs_into_delta()`] to
+> -/// any value of type `Self::Repr` obtained through transmuting a value =
+of type `Self` to must
+> -/// yield a value with a bit pattern also valid for `Self`.
+> +/// Given a value `v` of type `Self::Repr` obtained by transmuting a val=
+ue of type [`Self`], and
+> +/// a value `delta` of type `<Self::Repr as AtomicImpl>::Delta` obtained=
+ by
+> +/// [`Self::rhs_into_delta()`], the wrapping two's-complement addition o=
+f `delta` to `v` (that is,
+> +/// `v.wrapping_add(delta)` on primitive integer types) must yield a val=
+ue with a bit pattern also
+> +/// valid for [`Self`].
+>  pub unsafe trait AtomicAdd<Rhs =3D Self>: AtomicType {
+>      /// Converts `Rhs` into the `Delta` type of the atomic implementatio=
+n.
+>      fn rhs_into_delta(rhs: Rhs) -> <Self::Repr as AtomicImpl>::Delta;
+> --
+> 2.56.1
+>
