@@ -1,54 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795472818;
-	b=hnXHf+kkd+HwyIYLRTgbE9tjolvwkmGPcoMkq1gpPqSBgjVQAITOWtMp/IvcjHsU0hHJ
-	 NG8zMVHjVmiscEJl4W0Jv6PYGZsZaLQNxcIYHAjFFi+1lGgyb1MrxR1JGbbeO42x6LcvY
-	 XMaLi6si7kV2ietcQoa8BtfUNTXSXQmZ5CprXLOBp9vNnyE5Vb0j8SxK7ij3ODmJlctwX
-	 c9ckDi4ajiM1CAmy/1AuJI6o2TeAJTUjMCYO8zt+PnBpHyWNBOTMrRW3hDE90vyhQ7zT3
-	 mEIEQerOD/KzajYHYMvlscVeKRbpDt3ipfJEGboO1QaFYdRNVhhnJGLSKCQ4NAo5Keg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795472818;
-	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
-	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
-	 References:To:X-Mailer:X-ZohoMailClient;
-	bh=k9AdsQ75C4VFTI3Ny+V7EnE4MQOaiUpfZxRopOuTcOg=;
-	b=WvrHR1H7bG6JFZGP4x/vggBtxM7tuz472wsQC4QyegQrUmcMoUwJbBlKDvSMEJXAw4cA
-	 HLAPVMetHx404gckp0Q1oH+ALMG4c6ZlNH/B800HVWuC+OCIh3gRYW1NqIMZw9+qMY+oB
-	 5dba67Q002OgLIzmhM8PIxXYboPetElkQOFMyN6umX0ZSIX11dok/OVsE776mdOMLVMgi
-	 9DymWGmMQDiSCMuGUAyasuGRWBEkkL/NSWsG2r9Sv+4Pttx0rl+H4VGf1D1yG8++KZffe
-	 ho+W+U3oUbWJug6Gh35lFn7pv/pfeEZBlcsd5WmeFjIEcXExDvuJStKFrV+fwGaAp2g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=E8ilBHpW;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.49
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795472822;
+	b=l379hHa/DrV3dKCESYpA8/1/4zLwbqrjhguwXUGLC03ODA+l6hciAWNSOJn5haF5Ne1B
+	 xqZ4PpP+e+Z7vBviYaFxiSWk6qGjG8z749+fK7s/D3GLSE3ny8U8VzLfJyTfj4/B5FQZ4
+	 fJ5YEZW77O2oNK0ss7IwKo09aTXp9YLlX6OiMd7v/Ybggl9dXbT/YfmHio2aJYpppMIH5
+	 mU/mL7MCsjUopXy2mlAixrBS9YBmVuVLPulUXyWNQ8Mi9HVXs3r/CtMNJ+/SCnFamIn/y
+	 zJYLWSTzDm1oP0pkUgBa5X4/4QT5C0WVlk3ffzMtaIhrRLSdAcBlukKRWTRYJ6OoVYQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795472822;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Date:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
+	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key;
+	bh=jfGbsdBX2Mvxzr2Wtx175xx4xQStNQ0eUZXCme1c1Vo=;
+	b=IKLSUhx/O1c+V2TboJ5gUVqg5ghJOj58Bhf+tz655zKAQuu/5Wb6AZ6dPlJBV3v+HCjw
+	 F+7py+iHIDfpatsxKIwZTJEDO1wNWhoYf2oMjrmK77SZPLBUPVQYJ3PYmhPgt1E5Yu4C7
+	 6H2KvUchbphQud2abS+bm9GJdLn3KFUJUCzNJZb3r/ZLdzWTcesFDIw7cfcF9AcRii9IF
+	 lcRwhysJVtngxWGioWY7ayw84lVa2tCgnds9OjZD6NBvHnj8XPAQXQTUinG4ItVj0AUCz
+	 OpNqp7pITpAkr21xJ9pS6ql6nQ5BXT0/D9PKeUS54qQGpE7Dplq1IgzCqqZWw1yHeJA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=koUG4bpF;
+	arc=none smtp.remote-ip=209.85.219.49
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7C9606A31E
-	for <rust-for-linux@vger.kernel.org>; Mon, 23 Nov 2026 22:26:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BC7C9606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDD1606A33F
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Nov 2026 22:27:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2EDD1606A33F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=E8ilBHpW
-ARC-Seal: i=1; a=rsa-sha256; t=1795472763; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=lk7EJhzpaJ+wBBDlEn8gJKP6rvwE0AtPPiz+pvSeF/ou0sYTpM/2tE6Q3jybpYsHS0U+31NxkENAEc5pooCC9EP0r8mbtXd6zC9yXMaNlu/HdyQcjkAFUSNTt00zLypAg7dQHdoHwsgghNa6Ko7+UIZlpE3jNzNXf8ApUtr0NF0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1795472763; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=k9AdsQ75C4VFTI3Ny+V7EnE4MQOaiUpfZxRopOuTcOg=; 
-	b=kahc7bT71Pn0fa82ABYYPL3CTo9qsUQ5ZFG93poNOET3MDSkzQq38u4zkH8sHwY3W/nqufIdbwL8DJyw5vObWDXdaY7LWLKYx3aYqgVQLYiNKj75IsPAaA08SRX2C5RX0sjpNhpr4BWtDRHA9PkMAybOILeQVjWVPosK4lrN0lM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=E8ilBHpWN4kfzwkBtr/JbRk2uHTFGzIxZhxtrvR5QU9bRZxskkCKuPd/+x8HxzPKNTbk/DTFidImiP3pjbz0VL+lp7JbmWYbshCVjPWrNwj5zmb667M6ECACgsrOh9Z5v7rfzBJBDIIqOvfJZZT2AXjNDGWjlYabS8p9gBQyztk=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=k9AdsQ75C4VFTI3Ny+V7EnE4MQOaiUpfZxRopOuTcOg=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1795472760727373.83086376046344;
-	Mon, 23 Nov 2026 14:26:00 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=koUG4bpF
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-91f0274f88cso53613196d6.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 Nov 2026 14:27:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795472820; x=1796077620; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=jfGbsdBX2Mvxzr2Wtx175xx4xQStNQ0eUZXCme1c1Vo=;
+        b=koUG4bpFoOw905e3gI81+803t7YepcQxyROkM1o3yHaO/xoL+NpIysBNPV2SWJy3zc
+         v4Ccm3WF3y2wqk3wYyhz2I1mXCvDPNpEuo1lrjwvES5FKD3H8JKZ7+naFQ2KmIpEJl16
+         /FYae572jcq8gGfQfsR6JRb4vhAugpKpCaadhIhu5E+MN7WxHZLLMc4s9xxHthpGR29G
+         qdJSs6PQ8h0TWwV2J0i+qApLLtwnbTWHTT72dUx0g0cZLG5Nb71VIyYbHjF32a5/VGod
+         +j9xW9oFe9Q0Mer/7W6f1sOQloF9oZIgsp2LR0TPpSvXcgGOqnzniCKSfTpW0yUXbT+R
+         lBlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795472820; x=1796077620;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=jfGbsdBX2Mvxzr2Wtx175xx4xQStNQ0eUZXCme1c1Vo=;
+        b=SSoItUqjegsuzH27aD/Qe1sSsHMN1OTTkFHKq8unCprROhbg3BNCJlA/Wk4PmmJySh
+         Yu/okxCjv4fsm/+QmDcQF9H7YWCnQmRSQYWezxe+Su1N3h3HYedpgKJvBfnzlvd7qDrp
+         J6lGkeGPegVqU6cD1oZmz4V7oOm04oZdXOESNdpBlG/HhzEg08g44gbqp46ikAwPLCcY
+         8pmhQv8CnKamrk2SPf63pIdty9OTeJpqFqC62O/QP/sUUzrObfNG1Yf/KfF5WZhEBmcU
+         dib5BS1kZo5I/7g//7XNG74C+Qi3VnPyXSPjABWB0f88oEEdQbOpX0fEECw/t+fJy3r3
+         txTQ==
+X-Gm-Message-State: APuU4Z8D3w7BvP3pfI8By7ls53JYbONTnQO08g+c3B13C1FwkItjbKSJ
+	aLTzHuemi5gAEBrYwA4p1dp2RQku8PLATErzAxKH6Ean68Y79XijOefse1PGhNYhEA8=
+X-Gm-Gg: AZFdTZc11ruksWxHB/iYhgem92TRSidqwKI0FQGOu0XCUoOkEm5T7PQbp2piT0nO7Qj
+	5TPDkQDTDNyuBaioFsq1SSfvqyaKYWfSwqSwQNrzz8vHQBr+xxRHe6TsJH/e7GfdQIQ15+ixWqh
+	kN80+RQEL46AULE+IQS+/s4Sr7tCiEJb9TTz/v3t0bensY6HmI5sRG2dZ5S7jrHvW/sza+T//17
+	QIgg7n9kDW8lCTx+sfTvfTU4nyh681CofkDk9RQXhAzHOqYGUToYpTgM4UCRcOSz+3x5d6u6IB0
+	1CMRJ8VCFRm+vr7zXm5tvXxU4WOoIqXVy9Z6gCN8NrDT/x0dFrqorQyW2eIu+JEITepM9MnMGgZ
+	cD36A1IoLHWis9tMgljcZDjpWSK18MND0WyTkaQBZ4ftidehYQSMK/wSm0Ls5PFokkp5+1yQv1x
+	EXITTMz55RIOENJCClOcDpxx8rdg8YqZwBwrxMuDgZ8wU9Y08UK55NfL2nXgLPqBC05rIHIzWTc
+	RkUh8TVMi8CrD2L1z37KgoDqeS0DuWToPzykH0M+mQd1EvhJhdihogMEbkVk6P8PeSXZcH/eepZ
+	ZJ20+X0pn9a22/GlOcXouEJGWNXaJYf38U4sZ1BAe14DM8bz9OmVhM48qo1A62IVAU/+3Xxzkj6
+	n5dfv9tMbNYpn0Gz1Fy4Lav9+6oP2QudddYY=
+X-Received: by 2002:a05:6214:2dc4:b0:91e:9309:ee5e with SMTP id 6a1803df08f44-92134bab602mr245693216d6.56.1795472819936;
+        Mon, 23 Nov 2026 14:26:59 -0800 (PST)
+Received: from t480.homenet.telecomitalia.it (host-188-12-196-19.business.telecomitalia.it. [188.12.196.19])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-921366d853esm110323466d6.27.2026.11.23.14.26.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Nov 2026 14:26:59 -0800 (PST)
+From: Andrea Tontini <andreatontinidev@gmail.com>
+Date: Mon, 23 Nov 2026 23:26:53 +0100
+Subject: [PATCH] rust: workqueue: fix SAFETY comments in Pin<KBox<T>> run()
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -57,52 +90,80 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v7 00/10] drm/tyr: add VM and BO ioctl support
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20261122-tyr-ioctls-v7-0-3a2af624b992@linux.dev>
-Date: Mon, 23 Nov 2026 19:25:42 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Lyude Paul <lyude@redhat.com>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Johan Hovold <johan@kernel.org>,
- Sami Tolvanen <samitolvanen@google.com>,
- rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- driver-core@lists.linux.dev,
- Ke Sun <sunke@kylinos.cn>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <1103933C-C9A7-48C8-8890-449313716EB5@collabora.com>
-References: <20261122-tyr-ioctls-v7-0-3a2af624b992@linux.dev>
-To: Alvin Sun <alvin.sun@linux.dev>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261123-rust-workqueue-safety-comment-v1-1-48e4f9b35c30@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MTQrCMBAG0KuUWTtgBivFq4iLtvmiQZroTOIPp
+ Xc3uHybt5JBI4xO3UqKV7SYU4PbdTTfxnQFR99MspejcyKs1Qq/s96fFRVsY0D58pyXBanwYfI
+ YgvSD74Xa8VCE+Pn/58u2/QB1EaHbbwAAAA==
+X-Change-ID: 20261122-rust-workqueue-safety-comment-4bde8f258d52
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Tejun Heo <tj@kernel.org>, 
+ "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+Cc: rust-for-linux@vger.kernel.org, 
+ Andrea Tontini <andreatontinidev@gmail.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795472816; l=2205;
+ i=andreatontinidev@gmail.com; s=20261122; h=from:subject:message-id;
+ bh=POTJhzMsVUOpjiKPXaYKUKNX4hOhIfKflOm+rJFFZ60=;
+ b=GM5VEudTukWFUrHwy5jZ8RCWzbMlLM03jVnLCgCRRzo7i2SHZzqKYzzxAoERlN04LpSMz+z/J
+ ib4JfsUKbSbAQYTVxiuOcIuq5qE1qMW/XDX9qwgp3nlqSW9wCRpD91q
+X-Developer-Key: i=andreatontinidev@gmail.com; a=ed25519;
+ pk=CSxLgnuNkToPv3MqxjqIH6dTDQnEZ+6YXgIW0U5bhEM=
 
-Alvin, can we have your thoughts on this [0]?
+The `WorkItemPointer` implementation for `Pin<KBox<T>>` was copied from
+the `Arc<T>` implementation, and the SAFETY comments in its `run()`
+function still claim that the pointer comes from `Arc::into_raw`.
 
-See my reply, which is directly applicable to your patchset [1].
+However, the matching `RawWorkItem::__enqueue` implementation for
+`Pin<KBox<T>>` obtains the pointer from `KBox::into_raw`, which is also
+what makes the subsequent `KBox::from_raw` call sound.
 
-=E2=80=94 Daniel
+Update the comments to reference the correct function. No functional
+change.
 
-[0] =
-https://lore.kernel.org/rust-for-linux/084F476A-BD3F-4FAA-B47C-E875B542AA1=
-B@collabora.com/T/#m14abaa8f4cffe0475a8ee9c1387d61c077ff7533
-[1] =
-https://lore.kernel.org/rust-for-linux/084F476A-BD3F-4FAA-B47C-E875B542AA1=
-B@collabora.com/
+This patch was prepared with the help of an AI coding assistant (Claude
+Code), which found the mismatch and wrote the change; it was reviewed
+and build-tested with CLIPPY=1 by the submitter.
 
+Fixes: 47f0dbe8fdc2 ("rust: workqueue: implement `WorkItemPointer` for pointer types")
+Signed-off-by: Andrea Tontini <andreatontinidev@gmail.com>
+---
+ rust/kernel/workqueue.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index a872f9fffb90..3815f08dfc0e 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -890,9 +890,9 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
+     unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
+         // The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
+         let ptr = ptr.cast::<Work<T, ID>>();
+-        // SAFETY: This computes the pointer that `__enqueue` got from `Arc::into_raw`.
++        // SAFETY: This computes the pointer that `__enqueue` got from `KBox::into_raw`.
+         let ptr = unsafe { T::work_container_of(ptr) };
+-        // SAFETY: This pointer comes from `Arc::into_raw` and we've been given back ownership.
++        // SAFETY: This pointer comes from `KBox::into_raw` and we've been given back ownership.
+         let boxed = unsafe { KBox::from_raw(ptr) };
+         // SAFETY: The box was already pinned when it was enqueued.
+         let pinned = unsafe { Pin::new_unchecked(boxed) };
+
+---
+base-commit: 4405c18c95d2d0f99f6c581ef0ee8591a1aa6ccd
+change-id: 20261122-rust-workqueue-safety-comment-4bde8f258d52
+
+Best regards,
+--  
+Andrea Tontini <andreatontinidev@gmail.com>
 
