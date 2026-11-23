@@ -1,109 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795475188;
-	b=h2KzNvGYcJOeGA0Tc5lCQ5+DrOz/Rum7jDF1z3F1/ZgGRuWjYh+kRA9G5qrFoIa2fGXa
-	 /uRrtPI8TQnKAxLL7h3WLd9btX7qkH5Ibj+/kJ3W0DdGfnzap5NcMwgs/wUowSYMcZJAV
-	 ux2C9LJY8pyII4IBmTWGI75kGeLe0LJQrxofvzZ9C0uGm8hiSOYPsw7h6yCY1exr6Gh7c
-	 dlIgqegYr9FEF0tp/7IpxtAUHd+gs0PI+Rq6z/4Ruj3wfrLx1zvYlqmgySPbU7VdV8nTj
-	 DPivo39tfCIZE3UA6AE3elVzYShLhBD319p0cbCfl2Y34wdf59ZOK6i16OSr5V+butg==
+	t=1795476886;
+	b=lTiUNv7WIllYiyFsEueviiKQvy4wuQxhwwj9IAZYNlhY+c+YJGhXAua47UCa/S2SMVEQ
+	 O6xhWdehCuBupN0lCFGDVj0YKxDLvSlHwk5DbyF5OEsLr7Jr88DyI1jrOyTwERS8O32KO
+	 Gcg6e2EwCNN4BIcnqDeJ2amyJSjFRjFLlEthw17IV03FVvWxhcYdN2bkx2JNK/etHIDo+
+	 336uzuDTukdtth+tZn8/BiP0TOXAGp6SChNF71RIixmQtpmElpLN9OELZGozRyVFe45sD
+	 D3Wy745ZrWNzRjC90/5HidVuHUgOtYH2kGIiaNF/Dy2kIu9SUP/IxMtVsrPrC5OQvJg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795475188;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=umX51t+2vvQvnn/vRHnudssMt2lYCcNqFYn0hYVrUj4=;
-	b=O+74TLMdxvVphd9LTnoTX+FYpKoZ89klv5FhX82ZXOxJH3s8WiSx0pzEPKQVdMvJ1+FW
-	 9Uc5O9F66x5Q98i8hxCS8cqRZthOCDBceXFRstaD7hB7PUWsJR2xlk0iC4Ap/eVTGbOz8
-	 bqo/UyjK9NeMq4K2GGNCE0Wge1vxSqeXhx6H6UKAhpdKex7eBz1b5W2Q3Az9r12bBHECW
-	 j056nrggHFrS4Gcr/XT4LF6NN0JI3SSxuxdwszuNroGR+TSYwL/l0px/CQ0Wj+ozMNdtW
-	 ZgoHPv6IPUwdoy02DTvUWKD9TnXQ9WCowofHxc9VcijGmu/9hLvie1TDB/TQIx4RfPQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795476886;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
+	 In-Reply-To;
+	bh=M049hmYuN5qF5uwfxWxXskRFqZo5GkBg0PYDvcM6N54=;
+	b=ub+4P2YntpSWsn9lA8ONs1PYWwAgT9c/vPkJJVtlLZMTFcJl7Ie6aClHQEtP+Grxy9Yt
+	 zh1m3AO7LzKhiPiIzmJoMDX9RG4hkME6LKzq1051ZncqtAg6i7mBGH7PfYrCbNL7N5PxN
+	 Ff9zFex0QZOOlR+kIarAaWy1MuVUDB0sBBeD8xUYhDlORJzah0d9NQGpJnh7slxPet/tO
+	 Gsigb6FPf+MqV1FhCt4ZfV5bH9sLX2E7ZsLm8VJyiVJ603LSGkamy+FrtVhUPAhk8Pgn9
+	 vWsd5DTcw4DzwypyzVCsdJCTopczfK9oD7Bu3OiIp4Aa2B5suChaKFkBHMFx7dTfZQQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bYw304wu;
-	arc=none smtp.remote-ip=209.85.167.41
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NLlPyhnd;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E06606A31E
-	for <rust-for-linux@vger.kernel.org>; Mon, 23 Nov 2026 23:06:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61E06606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D830606A31E;
+	Mon, 23 Nov 2026 23:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bYw304wu
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5be4fea434bso4534638e87.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 Nov 2026 15:06:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795475186; x=1796079986; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=umX51t+2vvQvnn/vRHnudssMt2lYCcNqFYn0hYVrUj4=;
-        b=bYw304wuhUM0vfU89L5+9XOkJTd1KluYpeAmqtBffGvNeA9Y87s/cNLAix8nApaLmo
-         9HCdf/V3Bh3wiwrMD1jQLhGkSiRzW09vtc3uomJVEyo4IISJZzk2LEQ9zw9sgbjaQ/vW
-         v4p3GLRYRHBtiJZlKm/4svrZuZ5VVyjhYnQ7qLnY788PvPyjTe22cg/MC8SV92MNDX0Z
-         QVJsLTMjfUN/P0ymMxLBcMyhWO9VjISqlMn1+GVsm7onBqaVj1R3gj9xOsZKkb0qr+9S
-         YPSDiwTugGzP1n7TR6E8rGb6zOnLn4dbPV94LAFdbwv1+K8xUBl7U2hPxgigSwvxxqKo
-         rZ8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795475186; x=1796079986;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=umX51t+2vvQvnn/vRHnudssMt2lYCcNqFYn0hYVrUj4=;
-        b=QbiAEcaBajmKO0NiW73FjdTx4JMErho4Le9hV0R7bs2e/0QD/b44DRIoPZK2+ETuSK
-         f6HMzidcJcs2ymEMcEXoLTSXZCrJOKnKh/RXHDdPAd+sJymAiPHFR97xrims46pj4rCq
-         AjI6ODjZN/9uYmbJirTFPob2Yf+NnNYKtMkBLDG4N9qLHA87iRTqZlmeS9Z1knKHg+1c
-         UwRwJ5/m2xeof2mJBDQyqK51RucKJnb4FXkv41/BfmJj8Ux5+PtnvNvIQPA5vl2ZWxMJ
-         SlKTHpmj3oHrrq+cx0mxQTO350rvUV8bemfILwBN2swKBpv1UjQ0y9DEv85IYIXdhZAZ
-         pyEQ==
-X-Forwarded-Encrypted: i=1; AL+hErFhwXtG3/wDZE6NtmcEAZ+3Z4H2Qc5HdhrqJ/AavV0MOmzTpUc+avvpY2/AZuaLKiR730+Pbwfy5Xldqq9ezA==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8f32cX6IeFD27AR0t1sTXNFu3663/+arVa/l52BrdQJuVEr7pN
-	R48xXg+tjcNYyTzHu0Hw0zlVf4kZu+ci+LC0TMSo2PYiLb2wTtGwqDRY
-X-Gm-Gg: AZFdTZdRW7NUADR43SlsjmXLDSGp6XG6bUuHDEbLfVOzKcyC6+Aq7qe3fHVKFKNBocM
-	In3vmV+G6Teq+Z6qkoSEcPlz0GB5cIvnO7/60ODI4qfsJUfv7rdu/gplolmad0J+038ChZLPIsx
-	kEJxuxsqYHh5IAPcFyB4MWjGOa2uC2f8LRanZigko6Pedwd5rZNUXIcfYPUyn3GckxGIx2hNdZ7
-	2oxg2YZQ4K8KlBx8O9Peow7xQ9CUyWM49ckw4teKRYNpE5i/vtOO/7cLlcMQB62tsqFw8OEUxZS
-	SSu8wbC/5JzBSg9pbXOUzuVbbCtZ6fk0VyZESG5cdPAS1wcSWmuplQVhBEKcxUHEA/0fODl29Zc
-	DQzjnBdIVzVry+EJszlhoV6OtN0meNQPvyu+FtcdKiqbqYLVNpiUb5YSkEnSIU0EGvy/iPhI4iD
-	TFT7fCbNdlW2suXXcMjchKxj3nEgx4WvJki2Tyc8BtmrC1QiqVsVXBn/OsqaePKpsdsHAagqaRH
-	FVCSQyMpryiJ9RF8xfQ1iwpkOdwuriELo5NoPDY65SYz/4hvSWWzm+AXuDsg3JlSPkr12otzIdo
-	uwC8zLmPBa5otw1XKioLTMm9OEMK6d5Eig==
-X-Received: by 2002:a05:6512:a96:b0:5bf:fc1b:561 with SMTP id 2adb3069b0e04-5c1b74acaf4mr3644137e87.0.1795475186305;
-        Mon, 23 Nov 2026 15:06:26 -0800 (PST)
-Received: from Swift-SFG16-72 ([141.105.129.181])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3ae8055106asm36984711fa.32.2026.11.23.15.06.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 15:06:24 -0800 (PST)
-From: Ivan Borovyk <saref012@gmail.com>
-To: dakr@kernel.org,
-	ojeda@kernel.org
-Cc: abdiel.janulgue@gmail.com,
-	daniel.almeida@collabora.com,
-	robin.murphy@arm.com,
-	a.hindborg@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	driver-core@lists.linux.dev,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ivan Borovyk <saref012@gmail.com>
-Subject: [PATCH v2] samples: rust_dma: add missing newline in dev_info! call
-Date: Tue, 24 Nov 2026 01:06:17 +0200
-Message-ID: <20261123230618.375172-1-saref012@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261123010430.365536-1-saref012@gmail.com>
-References: <20261123010430.365536-1-saref012@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NLlPyhnd
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20C51F000EC;
+	Mon, 23 Nov 2026 23:34:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795476886;
+	bh=M049hmYuN5qF5uwfxWxXskRFqZo5GkBg0PYDvcM6N54=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=NLlPyhndXl2QTZXG5fFUgcyOQZxZ2wtIvkDr6ej1xKbwpAlAFSEJgUjcnrPtWThEi
+	 7Gx6OcP8YAWuud4a6WQ8eSWobD6kMGsZAp7bKkS6Q3/jWz6ytNWgwqz4Omsx2ew2ni
+	 DZMknCjhu13EWyZhR0q0cNNHd7KXKI9WhOAoamNacOWZDzJ0xkOxKsGIi1+uCqYK38
+	 l5Koe9esjm1/chHfSDWQUKYHdT4rOcRvVTnpnTx4itHFEN1H25+ERMU2rZ6/WlHH5x
+	 DbEWZm0hOEnZb0MkpsRYbnbElVp4klGAaEmEuTJooC9gGn/wFRVPWUGmB6TO+EoPuk
+	 YIAWZeto4B8CQ==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -112,42 +48,105 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 24 Nov 2026 00:34:41 +0100
+Message-Id: <DN2ZFO94BZMF.2XTCCKEUDLZSB@kernel.org>
+Subject: Re: [PATCH 0/4] drm/tyr: use pin-init self-referential support
+Cc: <aliceryhl@google.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
+ <lossin@kernel.org>, <gary@garyguo.net>, <ojeda@kernel.org>,
+ <boqun@kernel.org>, <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <tamird@kernel.org>, <acourbot@nvidia.com>,
+ <work@onurozkan.dev>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20261118233727.3147222-1-dakr@kernel.org>
+ <084F476A-BD3F-4FAA-B47C-E875B542AA1B@collabora.com>
+In-Reply-To: <084F476A-BD3F-4FAA-B47C-E875B542AA1B@collabora.com>
 
-The dev_info! call in PinnedDrop::drop() lacks a trailing newline in its
-format string, unlike the other dev_info!() calls in the file. End the
-format string with '\n' for consistency with the dev_*!() and pr_*!()
-macro conventions.
+On Mon Nov 23, 2026 at 11:20 PM CET, Daniel Almeida wrote:
+> Hi Danilo,
+>
+> Thanks for doing this.
+>
+> I spoke with Gary about this topic at Kangrejos and again a couple of wee=
+ks
+> ago. What worries me is that we might introduce some restrictions that mi=
+ght
+> paint us into a corner. IOW: we have significant downstream work, and I w=
+onder
+> whether it will work with this series after whatever refactors are needed=
+.
 
-Fixes: 5444799d701c ("samples: rust: dma: add sample code for SGTable")
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1139
-Signed-off-by: Ivan Borovyk <saref012@gmail.com>
----
- Changes in v2:
-- Correct the commit message: the modified call is in PinnedDrop::drop(),
-  not in probe()
-- Reword the rationale: consistency with the pr_*!()/dev_*!() macro
-  conventions rather than log concatenation
-- Add Fixes: tag
+The reason for the existence of the converted reference counts hasn't been =
+that
+reference counting was needed as an ownership model, it just was that we ha=
+ven't
+had a way to express borrowing from sibling fields that are already guarant=
+eed
+to be longer lived in any case.
 
- samples/rust/rust_dma.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The distinction is between A having an independent owner that keeps it aliv=
+e for
+all B consumers, so the Bs can borrow A, and the Bs collectively owning A, =
+so A
+is destroyed when the last B releases it. Reference counting expresses the
+latter ownership model. Both can still be subject to lifetime bounds.
 
-diff --git a/samples/rust/rust_dma.rs b/samples/rust/rust_dma.rs
-index ffb693544673..b4b161896517 100644
---- a/samples/rust/rust_dma.rs
-+++ b/samples/rust/rust_dma.rs
-@@ -129,7 +129,7 @@ fn drop(self: Pin<&mut Self>) {
-         for (i, entry) in self.sgt.iter().enumerate() {
-             dev_info!(
-                 self.pdev,
--                "Entry[{}]: DMA address: {:#x}",
-+                "Entry[{}]: DMA address: {:#x}\n",
-                 i,
-                 entry.dma_address(),
-             );
--- 
-2.53.0
+In the majority of cases, drivers acquire device resources in stages, keepi=
+ng
+earlier resources alive until their dependants have been torn down. Where
+ownership follows this hierarchy, borrowing can express those relationships
+without reference counting.
 
+> To start with, Alvin's VM_BIND ioctl series [0] will need some changes, s=
+ince
+> it keeps the VM pool in the file data. I think this is doable if we move =
+the
+> pool into the registration data and have each file hold only an index to =
+its
+> own entry?  i.e.: something like an XArray<Pool<Vm>> indexed by a number
+> associated with the drm::File. Same for the group pool later. Is this wha=
+t you
+> had in mind?
+
+No, the changes do not force XArray<Pool<Vm>> to be moved into the registra=
+tion
+data; drm::File private data can borrow from DRM registration data. It can =
+(and
+should) stay in the drm::File private data.
+
+(I'm also working on a generalization of this, as it is a repeating pattern=
+ in
+drivers. We want driver private data associated with an ioctl, e.g.  VM_CRE=
+ATE,
+which is shorter lived than the drm::File data and hence shorter lived than=
+ the
+drm::RegistrationData.
+
+Concurrent ioctls associated with a handle to this data, i.e. the VM in thi=
+s
+example, need to be drained on either VM_DESTROY or drm::File private data
+destruction, e.g.  caused by unregistration through driver unbind.)
+
+> Anything storing a KernelBo will also have to be outside of the file data=
+,
+> IIUC, since it now stores a &Vm. Also, downstream we defer KernelBo drops=
+ to a
+> workqueue, because they can happen in the fence signalling path. I suppos=
+e we
+> can keep doing that using ScopedWork/ScopedQueue?
+
+I assume you refer to the Vm that lives in Firmware. If so, drm::File priva=
+te
+data can borrow from it, as Firmware lives in the DRM registration data.
+
+The teardown has to happen in ScopedWork regardless, as they all carried de=
+vice
+resource induced lifetimes already and hence can't go into unbounded work
+anyway.
+
+Thanks,
+Danilo
