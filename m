@@ -1,72 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795506110;
-	b=pHU28TV1utirpQoUnSf29q2nw1tOznCoEZAsX4tEmbk9gceRRjtOxOb8dzlr6eaB/kEY
-	 5hyObzRk3rAXLIpiM3cADoEU7To5f+GAGs5x1LZmEyv7metqF5ixqs6dd4oLDQX8M8L4S
-	 GuSe8eRGCvTbE8u0/1cdi6oW/Zlgd3wn282l2YSucereyiMgwsq3NadcDGLdadQNZoZMq
-	 6DHAG1orVZMIL8WrL2nfiSEgmjstXJfg34wDr6WCXHkt4ClS2KPSKUuOX0XmPdX/eYOuz
-	 T+zXgcI+7qu3/8pgJC/8Fcr0uZChVq7NBCfPpo0avxJNHUITm/xbIJVQ5+kzlTey+XQ==
+	t=1795510231;
+	b=cPkAHAdCCWpUEdr/0LrWZwvxit9e7Wi5dIjhhnI8XL9FjOQTK3aYKxf/rtQI5Lp7oE1t
+	 rhU+F1fY5bwHfbeWkhfgtQSuDlDwzDs5/fFp1h9g/MiNuAPSBkI4ssWtcEMhmELDKxkcm
+	 QTP4Cx09GQR0hO2PabyIMcVm1ZF8nMOIkm3Nmt3rC0cECtFonI0REB9FQC/ZltGtN8kIc
+	 xz0oZ4d4RrHnAOPWRxJp+GsAOvAbcJtmB/ji8XPBvxdJzBGi5Ln38CQKvGkf4Sl7eRMmq
+	 f9doKAfS3JXUsMQR7/YWQ4PJONuE/HUpOta74JBljOfKvkBEmGlFVeS1OqsLURmEE5A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795506110;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795510231;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-Developer-Key:
-	 X-Developer-Signature:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=ynYM9+Qap+tlYRlfmOG6w4Tj1+4gfNqhSqD8Yw1/wNg=;
-	b=Th24qiwWkX+6IY6RF6dlcMwYsNd3Fg0jsz0saQ9+Qq2mkonnQJi5ocmNO+81VXdEdfYE
-	 D6mG576XaPH5J/lCt3pm5h36t0xn+lT79MirQOJGfgMU6iJsX54ZmtANAEd4vTfqgxryM
-	 XOlQVnQy58zx1ww3HueFy+lQP7l1R2NyziyetOwewN75t5gbXEFf/Vnd9Seh+7vdwib/E
-	 +R3LyskN96PO/bWmaKu18Lv9k/MSubVxN0YX+Fn4f0Ljbq+h40wy0fGzIxNBpmTYfI9fT
-	 psdxTVnHNpEwQKZMNHJl1rXfwzVVNhbhGxY3+mYUufhreMqPnR692GcaXZhX2VLLfoA==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Content-Type:Date:Message-Id:Subject:From:To:Cc:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:X-Correlation-ID;
+	bh=Ytx/MmCKq4L7Gfy8rXv0iAOzT1xtWn9s97+5u9XXrhk=;
+	b=CjRrukUmnHEOWF7lyZnSumaAlD/LvmqAjMEPXzC+Wb2JmSpnYd+AsArNT0mLO8mm6Uwn
+	 zwj5XR7N4T8CYRdMDqLwj5AqBnErEpmOFpigrrUx0s8/6+9ulH9KCHzMvZzFr0ZZYpewL
+	 XsWVlYGd5SpMVXBPcVPw1Z4d6UhPrWxwizbPxCqvPRROksWhHNvT9phtgMO2Z4ZquJ1nq
+	 zmQTzrjzFvKlYup6V2fgOnwcOBkjO3bx+9wb5BNPwGDcHZj3Z7UAI/eGnLgRBDVPHHand
+	 CbMT6lfXVWqN6cpRVR23gCxxkhfUpw2lFFSyJqcQkt+Sfrb3nXgAjq8l+lOXh7S3JOw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--ardb.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Okr2dcTu;
-	arc=none smtp.remote-ip=209.85.221.70
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IwghTiG1;
+	arc=none smtp.remote-ip=209.85.214.175
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C345606A31E
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Nov 2026 07:41:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C345606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA008606A322
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Nov 2026 08:50:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AA008606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Okr2dcTu
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-49034831bb3so2564260f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 Nov 2026 23:41:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IwghTiG1
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2f046b0adc0so21894215ad.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 24 Nov 2026 00:50:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795506109; x=1796110909; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ynYM9+Qap+tlYRlfmOG6w4Tj1+4gfNqhSqD8Yw1/wNg=;
-        b=Okr2dcTuPTk6IeAbq2zF+KqbXJ/8knWkvc+FPfiEAzuQ+bOxHtdLOYZys0X4TXwDqh
-         FiWRX5HZe4OVgPf3BFbmpgKvc6SzWpK4cbI7qCLF3bS3S4CCd40waMs/yd7qPPKWyz6l
-         XonBvqwD6TeSxu14Ii93FwHtT8gDe6HNGpa+1W30W2H11GqpzxGc8Pn2IOorGDVFlnou
-         WOdEJUPHP1oH9mztmrr3aDrJvnZgL9kTeKyj8pk9AWw7b61xb6nUUlEmxMnGPYHfLogj
-         LhUcRyohYwEkALp1q6e6JzImB9hegnoj2CaKeiLRjtN5Lol5krfj2YXzfGkvZmtMekHY
-         LimA==
+        d=gmail.com; s=20260707; t=1795510230; x=1796115030; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:cc:to
+         :from:subject:message-id:date:content-type:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ytx/MmCKq4L7Gfy8rXv0iAOzT1xtWn9s97+5u9XXrhk=;
+        b=IwghTiG1toayCj+xAgXK+k7p1cSV2MCa+Uh7VOhYwrBfMiEnGgj4R1SOZ2YePkWuTc
+         MbW1zL6qvozZ64o0mUz1nYj+fb14MAiqrC27FUOBPpI/cUTF5OuDKxqIYzyYeLKzRREt
+         2kCkUzFyn/3v28hWN2TK14tfcvCwIa7S4V2IIz0+wQC4TBQBDmsermQN4UJcrx6rvmNn
+         3/8EAkX6z6f/OcFNpD6sl61nEAfMG+Cn7o3TLFbJSysmk5yloxbhfyhRTOtKJworbsI2
+         kSzvraXhHu9f5uQpVccYhvXqnpMImKthFTZhjpLF8YOFlrn9HJvNREJIS4dgqHA0ZxQS
+         k6zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795506109; x=1796110909;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
+        d=1e100.net; s=20260707; t=1795510230; x=1796115030;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:cc:to
+         :from:subject:message-id:date:content-type:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ynYM9+Qap+tlYRlfmOG6w4Tj1+4gfNqhSqD8Yw1/wNg=;
-        b=OenPKXWKDYBRqvaklzpAMrxcSVUoWkc/XjbVZh3aX/r4WQC/KmZEVLxjXNjaE37ykO
-         AEY1byGUE8UfS/FWUcbEzp8ZnBp09GeeB5X8v6BbLkFteXUuhvGQdIvcz3fb9W/cERB+
-         CjjWi752xOJ97zw1AxZJkgyZri24cJauTfxYHkZ/y99IBnx2OE7sfj9Xo/FeZYGIJTqy
-         8bdQquWHcS77+fsd/ET85T5EdriiP29AXGvHkb77zemTiRumBCxXUpeLnb1SJ51BNt7b
-         42xRkQomwiFPpZy6kys/Gmhim/StWGAoHkF2dmQPeNbDgZkqZvhVdE34v1fthDctC0zo
-         d5Dw==
-X-Gm-Message-State: APuU4Z/JoedCi8uxPYtYj+dXj8DnLXvB184KqLKHilpZpCHGnUNu51bY
-	vSbkTvWDikFNvgeSLseSzYDqnnXNX2+DWk0ep4B5xashVs9ok/b4/L8gx5W2d8fm9TAQ+/DmQA=
-	=
-X-Received: from wmmu7.prod.google.com ([2002:a05:600c:c7:b0:4bb:51ec:41e0])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:4e87:b0:4a3:59c9:a758
- with SMTP id 5b1f17b1804b1-4bb88922c81mr282055355e9.32.1795506108368; Mon, 23
- Nov 2026 23:41:48 -0800 (PST)
-Date: Tue, 24 Nov 2026 08:41:39 +0100
+        bh=Ytx/MmCKq4L7Gfy8rXv0iAOzT1xtWn9s97+5u9XXrhk=;
+        b=zSCi19yD7BNXnfTjwJ86OGL3GjrZPElOAlYt39onLXHJ8hbuNmx1sTtflW7DN75TQ1
+         J7XMt/+8IoUF7uU9du5j7Mf0IjfJnkorzCi4bOOnAKurcRFv9XsTg6QTKpzUifuD3rWr
+         K+UkhvGk7fNhRn8ElF5zP7fQ1BFuY+bnRbM2gczRXQT51KhUH79HHCM28fD1C04bxHXL
+         Hd4+onDFCgrwVE+hxBbdUaUwCMSbQdR173sLvJEL4ga/uPge0Is5vInH5sout6OuQebh
+         zEsv+bmxXDSkfGzutn0S1fRHYKzpOoNSUbmwSt5b59ss5NBCbqZLjy23zTeYrc8xKikv
+         T25g==
+X-Forwarded-Encrypted: i=1; AL+hErFbxH6XgXhOXlP4XKMPf5+c8Ux91PwRjGDKekgv1oRVIzuejnuNdrHMD4z3ZSVzATh37rbDTTBwb82o7ryIXQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8/OlQ0EyTC+G+3wXaWJVievHIE43IedYF4AO5B42SSnB1IRkse
+	R1kIERaF3bX6C3UyMuXCP6j/fwVyTMbmFEzHWa0XL2paDXG2Fnx2hzir
+X-Gm-Gg: AZFdTZdEHizaq9a8kwOAkMXvHXOweweuFQdQpBUqJv+PZqe97gGC0h0JAAQsDUnzB/V
+	j/Cc+/xIKVNYcq/OO2Mh6ZOVON0G312MERGGTERtqSOFwIzVmPjZ2mS58OkdlFJ0LnPdqXV7vdM
+	MMXzAOcEnC9vlJ95dSDRQy2+scINTTnkhRh/3HqtnzSJahFTvrNSlHo2Fh8f+TTNTHHkEIF9Lkk
+	M4zWRymghgIMBGPVoCDRPjBcySuZO4vRfZV6S9NSqR7lZ5X9j+90aPhySP6FZD08ECxIy5cJYsa
+	s1u8F7qsr8Pr8Jh2KVLAYBaJo4LKhUcFGLO5/q1R6QtsoknV/q+gdh8On1YfH/G2Cnxl8G5qIFn
+	P1rGY+Fi35Gfqa0TUhgn2Fzxct5iUPM33duYb8MGVnJ4PAjwdWZkqgCzhsGT65Iqzyyk0ZsK/Ah
+	It1/g56aukrDa6jcFF29ms05k+NCZnoIRacGgpMGeHDWn6UMKOzXpi0mCcyoL1bijDpgMP9bBzX
+	cfzwCd1DwZ3PPTC3ajp8c3NpavoGfkonFkHeR4T5elK6L32UK53wZai9txqbgaMgGr3kjC15FqA
+	6SPGl96OG6rJ7uMVrph0te260A==
+X-Received: by 2002:a17:902:d54f:b0:2ed:21fb:e762 with SMTP id d9443c01a7336-2f03f118afdmr122301645ad.12.1795510229878;
+        Tue, 24 Nov 2026 00:50:29 -0800 (PST)
+Received: from localhost ([2001:8004:1ee0:986a:826:47b4:7374:22bb])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f03f146b84sm65630815ad.71.2026.11.24.00.50.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Nov 2026 00:50:29 -0800 (PST)
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 24 Nov 2026 16:50:16 +0800
+Message-Id: <DN3B92I0MGTB.BJYABJ1HG9XS@gmail.com>
+Subject: Re: [PATCH 1/4] platform/x86: clevo-laptop: add minimal WMI driver
+ skeleton and Kbuild plumbing
+From: "Nick Dowsett" <nick42d@gmail.com>
+To: "Werner Sembach" <wse@tuxedocomputers.com>, <nick42d@gmail.com>, "Hans
+ de Goede" <hansg@kernel.org>, =?utf-8?q?Ilpo_J=C3=A4rvinen?=
+ <ilpo.jarvinen@linux.intel.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>
+Cc: "Armin Wolf" <W_Armin@gmx.de>, <linux-kernel@vger.kernel.org>,
+ <platform-driver-x86@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+In-Reply-To: <b5f96ec9-ee4c-44c8-8451-9f40bed43290@tuxedocomputers.com>
+References: <20261122-clevo-laptop-v1-0-881debf4d4b0@gmail.com>
+ <20261122-clevo-laptop-v1-1-881debf4d4b0@gmail.com>
+ <b5f96ec9-ee4c-44c8-8451-9f40bed43290@tuxedocomputers.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -75,89 +110,74 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3281; i=ardb@kernel.org;
- h=from:subject; bh=VKxpYpmeXmmfqFoZsK4/R6FwAHNhn1NqRuPhJkwFzw8=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIZvVfnNM2U5OwYaCVXtfn7rT8jem4QH7LKW3t1N/MQSb9
- LaI/lzRUcrCIMbFICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACZizcXIMK/Mb5d8QUagYYbN
- EtZw+69VRv9YmKIuua5hstj76MiFH4wMr8oOh2zjiPul0nt6zpTDO1wPcV4LPCuju/XZiqUxTw/ UsQAA
-X-Mailer: git-send-email 2.56.1.831.g720f3f5937-goog
-Message-ID: <20261124074138.450793-2-ardb+git@google.com>
-Subject: [PATCH] kbuild: rust: Pass $(modkern_cflags) when compiling
- inline-helper bitcode
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-kbuild@vger.kernel.org
-Cc: rust-for-linux@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>, 
-	Matthew Maurer <mmaurer@google.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Correlation-ID: <DN30VXQ0GPTS.KZ91F75HTGGQ@gmail.com>
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On Mon Nov 23, 2026 at 10:12 PM AWST, Werner Sembach wrote:
+>> diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
+>> index 9ce384e0475e..18aa4550c9f4 100644
+>> --- a/drivers/platform/x86/Kconfig
+>> +++ b/drivers/platform/x86/Kconfig
+>> @@ -1059,6 +1059,23 @@ config OXP_EC
+>> =C2=A0
+>> =C2=A0 source "drivers/platform/x86/tuxedo/Kconfig"
+>> =C2=A0
+>> +config CLEVO_LAPTOP
+>> +=C2=A0=C2=A0 tristate "Clevo Laptop Platform Driver"
+>> +=C2=A0=C2=A0 depends on RUST
+>> +=C2=A0=C2=A0 depends on ACPI_WMI=3Dy
+>> +=C2=A0=C2=A0 depends on DMI
+>> +=C2=A0=C2=A0 depends on LEDS_CLASS
+>> +=C2=A0=C2=A0 help
+>> +=C2=A0=C2=A0=C2=A0=C2=A0 This driver provides platform support for Clev=
+o barebones and
+>> +=C2=A0=C2=A0=C2=A0=C2=A0 rebranded laptops (Tuxedo, Metabox, Sager, XMG=
+, etc.).
+>> +=C2=A0=C2=A0=C2=A0=C2=A0 Currently only Clevo NLx0AU boards (e.g. Metab=
+ox Edge NL57AU)
+>> +=C2=A0=C2=A0=C2=A0=C2=A0 with a 5-step white keyboard backlight are sup=
+ported over WMI.
+>> +=C2=A0=C2=A0=C2=A0=C2=A0 It is intended to be extended with additional =
+Clevo models and
+>> +=C2=A0=C2=A0=C2=A0=C2=A0 EC features over time.
+>> +
+>> +=C2=A0=C2=A0=C2=A0=C2=A0 To compile this driver as a module, choose M h=
+ere: the module
+>> +=C2=A0=C2=A0=C2=A0=C2=A0 will be called clevo-laptop.
+>> +
+>=20
+> TUXEDO is officially all caps.
+>=20
+> Technically all clevo barebones are rebranded and it is sometimes more th=
+en just
+> rebranding.
+>=20
+> Maybe just drop everything behind the "and".
 
-When CONFIG_RUST_INLINE_HELPERS=y, rustc emits LLVM bitcode instead of
-an object file, llvm-link merges the C helpers bitcode, and Clang
-compiles the combined bitcode into the final object file.
+No concerns from my side, happy to amend this in v2. Please have a think
+also about how you would like code license attributed to TUXEDO.
 
-While rustc receives $(modkern_rustflags) via $(rust_flags) and the
-helper bitcode files are compiled with $(modkern_cflags) via $(c_flags),
-the Clang invocation that performs final code generation in both
-cmd_rustc_library and cmd_rustc_o_rs only passes $(KBUILD_CFLAGS) and
-omits $(modkern_cflags).
+>> +impl kernel::InPlaceModule for ClevoLaptopModule {
+>> +=C2=A0=C2=A0=C2=A0 fn init(module: &'static ThisModule) -> impl PinInit=
+<Self, Error> {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pin_init::pin_init_scope(mov=
+e || {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if d=
+mi::get_system_info(dmi::Field::BoardName)
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 .is_none_or(|board| !SUPPORTED_BOARDS.contains(&board=
+))
+>=20
+> We most likely need more complex matching here in the future.
+>=20
+> Is dmi_system_id table matching available in rust for the linux kernel?
 
-As a result, target-specific built-in and module codegen flags in
-KBUILD_CFLAGS_KERNEL / CFLAGS_KERNEL and KBUILD_CFLAGS_MODULE /
-CFLAGS_MODULE (such as -ffunction-sections and -fdata-sections under
-CONFIG_LD_DEAD_CODE_DATA_ELIMINATION, or architecture-specific code
-model and relocation flags that override defaults in KBUILD_CFLAGS) are
-lost during final code generation.
+Not currently, but I believe this would be a relatively straightforward
+binding to write if needed, or it may even be idiomatic to write the
+complex matching directly in this driver since Rust makes iteration
+and string matching simpler. I'd consider this out-of-scope for the MVP
+unless you have some other tested boards with the same requirements as
+the NLx0AU.
 
-Pass $(modkern_cflags) alongside $(KBUILD_CFLAGS) when compiling the
-merged bitcode in both cmd_rustc_library and cmd_rustc_o_rs.
-
-Fixes: 3a2486cc1da5 ("kbuild: rust: provide an option to inline C helpers into Rust")
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
-Cc: Gary Guo <gary@garyguo.net>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Matthew Maurer <mmaurer@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-
- rust/Makefile          | 2 +-
- scripts/Makefile.build | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/rust/Makefile b/rust/Makefile
-index 0ac9ab28cc2b..49b139639339 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -657,7 +657,7 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
- 		-Zunstable-options \
- 	$(if $(link_helper),;$(LLVM_LINK) --internalize --suppress-warnings $(patsubst %.o,%.bc,$@) \
- 		$(obj)/helpers/helpers$(if $(part-of-module),_module).bc -o $(patsubst %.o,%.m.bc,$@); \
--		$(CC) $(CLANG_FLAGS) $(filter-out $(CC_FLAGS_LTO),$(KBUILD_CFLAGS)) \
-+		$(CC) $(CLANG_FLAGS) $(filter-out $(CC_FLAGS_LTO),$(KBUILD_CFLAGS) $(modkern_cflags)) \
- 		$(CC_FLAGS_RUST_INLINE_HELPERS) -Wno-override-module -c $(patsubst %.o,%.m.bc,$@) -o $@ \
- 		$(cmd_ld_single)) \
- 	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@) \
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 6127feb970c6..2e03e960387f 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -368,7 +368,7 @@ quiet_cmd_rustc_o_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
-       cmd_rustc_o_rs = $(rust_common_cmd) --emit=$(if $(CONFIG_RUST_INLINE_HELPERS),llvm-bc=$(patsubst %.o,%.bc,$@),obj=$@) $< \
- 	$(if $(CONFIG_RUST_INLINE_HELPERS),;$(LLVM_LINK) --internalize --suppress-warnings $(patsubst %.o,%.bc,$@) \
- 		$(objtree)/rust/helpers/helpers$(if $(part-of-module),_module).bc -o $(patsubst %.o,%.m.bc,$@); \
--		$(CC) $(CLANG_FLAGS) $(filter-out $(CC_FLAGS_LTO),$(KBUILD_CFLAGS)) \
-+		$(CC) $(CLANG_FLAGS) $(filter-out $(CC_FLAGS_LTO),$(KBUILD_CFLAGS) $(modkern_cflags)) \
- 		$(CC_FLAGS_RUST_INLINE_HELPERS) -Wno-override-module -c $(patsubst %.o,%.m.bc,$@) -o $@ \
- 		$(cmd_ld_single)) \
- 	$(cmd_objtool)
--- 
-2.56.1.831.g720f3f5937-goog
-
+Cheers Nick
