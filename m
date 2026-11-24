@@ -1,116 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795520296;
-	b=yv8kGwWl0aux/o6XzzpG/PrR8QPf8f+1aqudipNZ0Al/bMukYnag56aThLaiMtx9Wblg
-	 LOB1KBuoK6iEVAO2zbUK7FLKpsegNLGC6d4kEYZW/f0e7Fr/tnqobGwGx5kODYsvQ9m+t
-	 JJZIgaNatAF7mOykEcCu4exyGbKsrHRV3PzITOhVS1eciOOjgvr/PDbzrFxE0QPwHe4eU
-	 eEAt+UvYjW6plJnGZBLYz52J3L1UOXxwAqmM/p9y/tD5V2E6X64mCxL6EsdWg86+5XXO7
-	 8YqtJOeelAbaW6a9Y75bhZHWiCRKLYB03x/UqRCwMckXyeVD30g/W9vGg3f1dqzfpaA==
+	t=1795522412;
+	b=Vq2cbCjB6ITydX94g6YRcYV+JtfxsjR0E4NfXDg69uZO08sErX1zj9g46dx/ANlrynH2
+	 1MI2evxb7M7WsH7s+OIkiOD6ZOhM8Lb1qnOqslED5ivm64PyCToi4uPp4G9lzaOfqP/3Y
+	 LslwsIU+eiMAOJRhEIxSUtey6qiUSbki7MPw5tezDhVTC3auDmr3Xc/vjU+3Qy5L87h8q
+	 wbt06sG4uga4ijunxJs+SUr3GkLHcG7Iv29Dg3D4P+fHSGBj3kcyntfEbbSGJasJdv64S
+	 mCxrCxCD75FmcG8b6By1rNsq8VPzaMtQ+xo+j2xol5fs2avIXih51PxZvkx8fHcdeqA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795520296;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=LBS6RLC7nr5rY+9EC1CBYV3oWXOpIUvumoRNMJiBILE=;
-	b=IXZBmDF6D7k8ex0js24tkutNN2OY3V/y/Sfp82IXWeFyTBHAFiLwcTlgOtiSzvk7BsWH
-	 Oi483kpoksxdcTUqf+ujZC+E+5EBlwO8T3xplIGp+Bev4vIaK4i3y+P/u6FgnYljpcdFR
-	 BvYDJgtBERsDR1aiwzZtNIn2KUiME+Q9ZKX4XLWMp5ZLDLZQrpsHgIAFrEra0Y0trJZD0
-	 II8sw17SLIqHajqpT2pbFYdYdSD4y9CQ+SEVW92pbOxt1fyweHcMR6BRFYXxVu+3ruzf7
-	 4koHOapWy1CbqNA1HOi3PM2DZWzXyPZ8kfGOsuJSDOtWrhX0Q1RixECb5C7HknL2Chg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795522412;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=9txfLV0X7J+AJlocBX4pn0cSS8Iiklmn56A4kBLwtUM=;
+	b=YVutpOFtA6LiObPn9rlxSPFQwRXws2r4hKbTe24Eu2o0Sd5VbryG+cGxnRTuFIuhS4wm
+	 TqtH6LBPL7wue32sDRjq3gmP7tykf7KKGFLwgIl08lcdp86y4jaxKmcom4X1Xn5LPh3NC
+	 utIqVnTdPVnestDXYCOhfXIe//VLQ6DUD5U6i49DAKOimDs2rkpv2wRCpOiRqZYUQNs8P
+	 yb448ppocYdfZsLgosfrtgSirgLCBtGOKCy6d+CIkMNKjQbYZ2x+m4AjdMJsZ1TQcoJev
+	 WJ2diLfLVFcRHnWZkogUePMxPb4GMrdy1H1ZOUhuaGlQiC0BtAJk3wOIG0hZKVITA7g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=jannau.net;
-	spf=pass smtp.mailfrom=jannau.net;
-	dkim=pass header.d=jannau.net header.i=@jannau.net header.a=rsa-sha256 header.s=fm2 header.b=Ml2HHjIV;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=yRlToY6r;
-	arc=none smtp.remote-ip=103.168.172.151
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=YsgMZmDi;
+	arc=none smtp.remote-ip=209.85.128.70
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E99606A681
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Nov 2026 11:38:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 31E99606A681
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC1E606A321
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Nov 2026 12:13:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2BC1E606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=jannau.net header.i=@jannau.net header.a=rsa-sha256 header.s=fm2 header.b=Ml2HHjIV;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=yRlToY6r
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfout.phl.internal (Postfix) with ESMTP id 58D9EEC0D0E
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Nov 2026 06:38:15 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Tue, 24 Nov 2026 06:38:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1795520295;
-	 x=1795606695; bh=LBS6RLC7nr5rY+9EC1CBYV3oWXOpIUvumoRNMJiBILE=; b=
-	Ml2HHjIVLBmi22/cQDI2PU6Tpq2FEdQKpw3kauuTJM5FBoD8AV3ZXLBJVA16EKAg
-	UpSFCJci6HvS+QYL0Nh9Cn9563Yr67tiZXwYLVzQVdM9Zyl1Qmgco7K2LAhjZ9vG
-	I1zOXLGL9ZDty1f3UnF/rOibRsEsjvBnrBZJR5khZUnVlbiHFP3fBb+5D2OhWbOt
-	z/5iOuexMKNqngPWOxu+E8OTeIWWoqvv4CR3UIizAbUiuFQrIJdE2jZq7EVNJsQb
-	HWXzQsJBKL+SYcGmOJNVq7HN9L9zc1+XbCwv3fAquB3Sbx/EueJ+2yQZahlC1hR1
-	WZnlEXNPSQA5EduZUsA8Ow==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795520295; x=
-	1795606695; bh=LBS6RLC7nr5rY+9EC1CBYV3oWXOpIUvumoRNMJiBILE=; b=y
-	RlToY6r9RVKdw3T0oHPku3hnFba/+xHI26C3lL6YknlOsXrRy9qNyxmzmA9SUcKn
-	hTr30fQh/UnClOVsFIXrwGMjGzIxCeD9peY1KCYVeTLIHg7mP91MBM6HGnMZBIk6
-	6dyZR/CFFTQ0EeCJIfvHU4zYuZL+mA/xUWjT1ogoVgTt6qYcK/uI8+ITiZwftS0m
-	OcWQbWIBft0ZXD7tyjp5jY+InE+7HvqRAIQ/JDGCIp8qMD1UD+1ceVFjIG7wx3Gz
-	3iEOVMrcApMfe2Tl7YyNmitJJfq8xFL8ESrcp7Wm6cwZI3skbzsb7uYOgtC0Axoq
-	qlZT0oTmKlxzIMPiVyTVg==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=jannau.net a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1795520295; d=jannau.net;
-	mf=PGpAamFubmF1Lm5ldD4=;
-	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm2:rsa-sha256:MoZGkbXq9dsifWuM5AHs4lZnxYor1M4ZnnFxaL2dECgQ8xe
-	sLnZZRYROus/+j5MxS1rZBkbD0V4V2A6CcpUsqS0lqJLf8Safl1RwXRzlIwyL27x
-	bcAGtaGRMZa5Knwi75WOes5lLZpJQGQngDaAEkp2pEWIqOPVDVUZGJoi2uNTZl7Z
-	wZl6sIVhyvPEiCoLFwdA88SYYqUkuN9rMNM88GkksdpSTm7XTvhsgh/uG72iZklj
-	nOx/NOdfGItqeear2gMzgKtut33baOGt5qA7BBfF10+dL9mjgtRjucQNdkk6RIW/
-	evrq8zM5QTIkTCyQg93qPr2Tdk7NNB53azCufvQ==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:p1f7ejuhjRxJdgmNxQxQXaN7NqyiljR/JdO1ok1Uhn8=:LQel8x6QtVyh/7CIDEVkPyteoYgugqgpOlb8FoB6o2k=;
-X-ME-Sender: <xms:JncFa8apghQkp6cv5WRydIpQSnXdx2pRYRbtCS5XwPatW6G8QEzYWA>
-    <xme:JncFa4fkYj7Z8w7A3Q3LZwo6kLg7Yu4tEgakiRzKk2wWtTFIsXoaZ97Gb3EZLDp9c
-    yaOWPplJT1Ilh1seLQv84e9rdBw7vsZfnWO7Y0CBg_MPHzDyDwsIg0>
-X-ME-Received: <xmr:JncFa55saF6nPYWtTR7cPJqCZ_UapqLvb5FX23Tv3afNWrz8bjwrsqMUn-sulpIikRXCJ4YNaTVS8v75GIzhTSSml7zc55Op23hl9w>
-X-ME-Proxy-Cause: dmFkZTEi1u8ZMwVyqOiTzaB5nCgQcMSKjrx2d8uxxaZVl2DDoMbectsBXLn1EPTO3E1O/O
-    K4nOoNpYML5hUgCFInvffe60Gbw2e3155wRkpnYBsWVK36LeQEWj6rHA4TjwwV3W05Wlnc
-    v3iXUk56hHbGe/bPS/wVWMHL5dS6ObItRFggCiA5xVLRjV31YVX7em8YkRNv/H2DvA69is
-    zRCzcZ9lIiCv/o1/PdqCcFGNyU0DjuMrllWRGVTahiHlwQySUlP9qHvPzBbSZBk2OyDCSn
-    EaXOnzefw4JMsq8ZHTzWueE+oVLNCozuLarSAdSMJhJYFDkycjqzbqRNET9y1X7hwJ00pS
-    Z6d0Y/Ndj/BNGBx8tSvwOt8sf2YpEHAiN/FW1ceaGqVmmoZTCghnWYqskUV8WRL6+ttn2V
-    DrKW7m5dGHZuf9ZM6F3NNYC56fiDx2ocTHh33LGJow5AV6vLCC6Wcd7fpFWQIcEfqLMTLg
-    FCadx28S3oZyORQr6VSstrOKdnis/CNv321UmREt/VhF0jNPh+QHR8ab5ViepNhieBh6XC
-    TGGAjmmQt71QfDVYBzo8TmQuvmHFGOelLGFqgWMIio7Xq0x1jkecJ10Bnz5iPWqfuT7K7w
-    7FbDt37+ERFpDNQ/enh3FW0I08KbxTuI2alifz2nUtj0OJ21hcynDFexzRhg
-X-ME-Proxy: <xmx:JncFa0V5jnwh5zLXJNPGuNmQt_Bjf6pTxKSkgdKqGWUTxCaYk7ER7Q>
-    <xmx:JncFawZciskPwj9K_2wARH3KDKNW20IPs8OMlUW3_4RGTgTaLStBng>
-    <xmx:JncFazwrY5IgW9enruc4Zo9PjB0lRV--hDELAy_wya2loQRUC-hvYg>
-    <xmx:JncFa9KoJXvMausp7xB3nftvFu0BrAw2uql98pfHcc-hgVZxFDDixA>
-    <xmx:J3cFa2arXdMTeICI8KvrzyDY2NWV-Qgx5Qh1J6cd0PcZPPPOvsdkQF30>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 24 Nov 2026 06:38:14 -0500 (EST)
-From: Janne Grunau <j@jannau.net>
-Date: Tue, 24 Nov 2026 12:37:47 +0100
-Subject: [PATCH v2 5/5] rust: drm: gem: shmem: Do not free SG table of
- imported objects
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=YsgMZmDi
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4ba078abd78so28781155e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 24 Nov 2026 04:13:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795522409; x=1796127209; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9txfLV0X7J+AJlocBX4pn0cSS8Iiklmn56A4kBLwtUM=;
+        b=YsgMZmDiQbEqjVJRBimGhvLGwr9kzHj9glkDjgCVetBle1OrRe66JT2A0wAoDOJlVH
+         3eKtFaYlR3COaFP7I/pHY1t8i9hQGp7K5EqlwMLpxS0/3XEv74X92iuLuCqG8QX6il7q
+         kxoYjIvqquTnoKXVyJ72GFWMyDlIOjTrV1z04jHYs1a3vXYdoOUq2rHc8At8o4Dsn4MH
+         e1YWey657bbBZm42gXftzDS94wKDaAbUCOuEPOmQRcTQgJzH4bjlgFN62yBYHdzAasdG
+         14cuZ44P62LK117RMeK1ZJCVP9A8fBDkyM9/uACc8LIXi/lDaHSu6B4E9tl0HW4IX3WO
+         77zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795522409; x=1796127209;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9txfLV0X7J+AJlocBX4pn0cSS8Iiklmn56A4kBLwtUM=;
+        b=m/jU2slzOwXDZdQ9jhdJmJnF+U1+++c7i1QC/dj1jJJglA4WRWBgo6K2NWpWFLp9on
+         My5+AccI1TlRxS6xKBmGrIk9B6aAoyCKUoCQIry34+GSbCE0M3O3yPc9eHLewgYCfydT
+         p5jGl5Uxl+g8w6cxOPLJhoZVh9MPPUdf6Dr6lXmlR4SjeUtm76je9kHRm1ems0dv/Heb
+         Z3fzxC2srFuHrNREhFk4O7oKgAt/7ZS2fCGmXXVyfH7LQL2qzwJTS2uHjhipxUV7qpcl
+         3BUHoSrw3G8eRiQPd0oWXBOJNSUJwcRlNqFpl7I92InFZlT3Hm2wNonWYGS4rCrnS4Zn
+         T50w==
+X-Forwarded-Encrypted: i=1; AL+hErHAm7m3VZhkgyYX99e955zqVV9rgQuE9GqW5PLHTN/I04Oid04yxmFdObxh4lwKDGMcI/5ljdE06DxyPiAKbw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+z+h+fIZVFeuzrXqdaXxSqIoXFcgHZUaz3LcltN88BgSoThhL+
+	EIL6fCJ/Kh/MfmY4W2zcC8TXPusaaYuyj8wphUqbNhnEkUWN3xjwhYT7opvCk6NtgIrSC0bEU7q
+	/HG1XQG8BUCzIwlrwSw==
+X-Received: from wmcn6.prod.google.com ([2002:a05:600c:c0c6:b0:4a2:853:1e95])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:154c:b0:4a2:729:f7ce with SMTP id 5b1f17b1804b1-4bb8881c378mr304628095e9.8.1795522409266;
+ Tue, 24 Nov 2026 04:13:29 -0800 (PST)
+Date: Tue, 24 Nov 2026 12:13:27 +0000
+In-Reply-To: <20261122191322.929005-1-inguyen@fit.vut.cz>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -119,72 +78,49 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261124-rust-drm-gem-shmem-imported-sgt-v2-5-000f7a9ccb8d@jannau.net>
-References: <20261124-rust-drm-gem-shmem-imported-sgt-v2-0-000f7a9ccb8d@jannau.net>
-In-Reply-To: <20261124-rust-drm-gem-shmem-imported-sgt-v2-0-000f7a9ccb8d@jannau.net>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Sami Tolvanen <samitolvanen@google.com>, Lyude Paul <lyude@redhat.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev, 
- Janne Grunau <j@jannau.net>, stable+noautosel@kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1315; i=j@jannau.net;
- s=yk2025; h=from:subject:message-id;
- bh=LQel8x6QtVyh/7CIDEVkPyteoYgugqgpOlb8FoB6o2k=;
- b=owGbwMvMwCW2UNrmdq9+ahrjabUkhmzWcvGaDf592rKZU7iPZvXFLdZ8umHys6ltrtOfPe1+O
- slYM+JLRykLgxgXg6yYIkuS9ssOhtU1ijG1D8Jg5rAygQxh4OIUgIm06DP8s79kwhC2jXuWoL5F
- +ekXoq/vnjr2yrvVu+5O2l9vbWmFB4wMU1svndvcvv05l/Frx7XX+hjly4/u/1XyVu6VLl/r0RY
- rHgA=
-X-Developer-Key: i=j@jannau.net; a=openpgp;
- fpr=8B336A6BE4E5695E89B8532B81E806F586338419
+Mime-Version: 1.0
+References: <20261122191322.929005-1-inguyen@fit.vut.cz>
+X-Mailer: git-send-email 2.56.1.831.g720f3f5937-goog
+Message-ID: <20261124121328.3253693-1-aliceryhl@google.com>
+Subject: Re: [PATCH] rust_binder: only remove a node from the tree if it is
+ still there
+From: Alice Ryhl <aliceryhl@google.com>
+To: Nguyen Le Duy <inguyen@fit.vut.cz>
+Cc: Alice Ryhl <aliceryhl@google.com>, gregkh@linuxfoundation.org, arve@android.com, 
+	tkjos@android.com, brauner@kernel.org, cmllamas@google.com, ojeda@kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-GEM shmem objects imported through gem_prime_import_sg_table wrapping
-drm_gem_shmem_prime_import_sg_table() do not own their SG table.
-SGTableMap::drop() must not free it since it will be freed on exporter
-side once the DMAbuf is not used anymore.
+On Sun, Nov 22, 2026 at 08:13:22PM +0100, Nguyen Le Duy wrote:
+> --- a/drivers/android/binder/node.rs
+> +++ b/drivers/android/binder/node.rs
+> @@ -636,7 +636,7 @@ impl Node {
+>          }
+>          if no_active_inc_refs && !weak {
+>              // Remove the node if there are no references to it.
+> -            guard.remove_node(self.ptr);
+> +            guard.remove_node(self);
+>          }
+>          drop(guard);
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Fixes: 616c229ab010 ("rust: drm: gem: Introduce shmem::Object::sg_table()")
-Cc: <stable+noautosel@kernel.org> # no in-tree users
-Signed-off-by: Janne Grunau <j@jannau.net>
----
- rust/kernel/drm/gem/shmem.rs | 4 ++++
- 1 file changed, 4 insertions(+)
+Nice catch, thanks for tracking this down!
 
-diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
-index d6977673e21a..d935384f5c1e 100644
---- a/rust/kernel/drm/gem/shmem.rs
-+++ b/rust/kernel/drm/gem/shmem.rs
-@@ -611,9 +611,13 @@ impl<T: DriverObject> Drop for SGTableMap<T> {
-     fn drop(&mut self) {
-         // SAFETY: `obj` is always valid via our type invariants
-         let obj = unsafe { self.obj.as_ref() };
-+        if obj.is_imported() {
-+            return;
-+        }
-         let _lock = DmaResvGuard::new(obj);
- 
-         // SAFETY: We acquired the lock needed for calling this function above
-+        // and the GEM object is not imported.
-         unsafe { bindings::__drm_gem_shmem_free_sgt_locked(obj.as_raw_shmem()) };
-     }
- }
+Instead of still running `do_work_locked()` on a node that was already
+deleted and checking the tree in `remove_node()`, perhaps `Node::do_work()`
+should simply be a no-op if the node has been deleted?
 
--- 
-2.56.1
+If we track `is_deleted: bool` in `NodeInner` (set when `do_work_locked()`
+removes the node from `ProcessInner::nodes`), then when the stale `Node`
+work item later runs `Node::do_work()`, it can clear the `delivery_state`
+flags and return `Ok(true)` early without entering `do_work_locked()` or
+touching `nodes` at all (and `Node::cancel()` can skip re-queueing a
+deleted node as well).
 
+Since `do_work_locked()` only removes the node when `active_inc_refs == 0`
+and `!weak`, any required `BR_RELEASE`/`BR_DECREFS` was already sent when
+the node was deleted, and no new references can be acquired afterward.
+
+What do you think?
+
+Alice
