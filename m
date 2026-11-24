@@ -1,54 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795561479;
-	b=RP60PCI3Jjb1Xc8OB6YqT9d5deSFXBn7nRJRJ58fSrygekvyK7Oc01efib/MgU9i+/BH
-	 HzrHtw/RyLT/syUtE5ge2QRsTQ/uTD39CrpYs7/AAYG8j+v85NniC3Wk1jzSlpyV7RuzQ
-	 xcUvJ2ZNEryfRpZeyKD8ixEYhaTZ7OeliXchb0isedb3iMQawNVb+L4NRg8XddierRCwq
-	 D7no5NDC+GNbmRkKbzAt+uARg+N0ZeztDs80XBUb8QK7oyZhraBENU0FuMvEQYTQfhSn7
-	 MR8O1ABUafIpRQjNj0CcSk8jYBnbGTpO+iX9SGLmLmEot8c0d9wNtFw3rkrB3Veip8Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795561479;
-	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
-	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
-	 References:To:X-Mailer:X-ZohoMailClient;
-	bh=2ZI2PMlWOi8d0sJS2pMmeUrpaerAHWJIYWoUU7w6+Do=;
-	b=h4L4sGEiL6enkVN4AgaI7vDTjO57d9fd6RbFB4OcKAoQR1WmoCNnWK81yzocRMjTQMgM
-	 HJjjq3LhbTaTADlAdo8EmaRpv6tRQROtXEKmdzcSv2+HbSYgEY0WsYsuHnX2DeCJNfEmD
-	 T9+sEO6FljScMDAsJ84YW8wg2qCRcR3RICHbG5q+5g7AnhgScmRtGwaxeVfgBTHaYFao4
-	 Q/+2DsAJjPQeVMuyNsmBP+GU/mN2JFxX+pWBSopXZYKA9STaj+GlzrPCaYUUFgz+5Dpir
-	 mA6q0QEv3F1GteswqTFjtchibBl7D6uMI6mdCgRcsR28qzEtnBAnMPJIBd7nuQ5JK/w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=ckO2gDgk;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.182
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795562296;
+	b=lu7jjyx3iRpeVt/PopmyR5eDPdbQejtbkrDnCz6hNr/hhhgeqMiKF+KCc1iMa8a5xIHM
+	 2OO+dgN4ScDleoZ+VDbtBMACgB+jOkOI2biNugFEDdiCpsbXB0eDUGkt6yj6bco4SNa9d
+	 Du+gK2Ao5fA7n/ZtvXKnM6jidSpxEiI6gTaWLsMH6H4k5cC8CAA2tNPg5AEjMgwRQ7Glq
+	 t5vyA2Dh4xKbaUvTNdRJMYLpqszckjyOFeYeC/ZKGTROqGBzbZVoMtbs7xyoGHyWM5FK1
+	 8kjVzhED0V38ZZMuQFFoNHzlj9jsZs6giOrDz18siJe1n+wuk2btdh9GCzQBwwKvA2A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795562296;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=tYh8DQKbiETTaVJq9yQgdC4K/jMzt2M4sjI+EyJr+h4=;
+	b=dRjPHTgmw5bONwQWaTVZfOAa446O2AHF2/oVhd3+4EGhqeBeRU/HbX5Oo4Gd6JDPJkvF
+	 6/Rm3BeUm/hiWXwUkZKsBYQTnxu9ViUKMGgnmORVt1RC/+Fb/+B2c2BRxvgNbJfHAkmS9
+	 sAXsSVPJiYc2ii3qtPSCal/iJXtapLNzeYLzSh5q38PVD3/v7KAjvR5bClrK/mwA+RfWs
+	 mSGt7ytbTs2c/9scs+j6APUWA+7Obm/Rj15vt/vq+hPquulWIm9i9bw+8kGXkkZRjdwPs
+	 IkgIXNrp4sEOh20k0YbQPq7JtOJ+sDdcuZcuqRXUb+Ilx03tJ/ZSx47pe/k8ZHLLQmg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hE4bSa9w;
+	arc=none smtp.remote-ip=209.85.160.182
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168B2606A31E;
-	Tue, 24 Nov 2026 23:04:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 168B2606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0CF6606A31E
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Nov 2026 23:18:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F0CF6606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=ckO2gDgk
-ARC-Seal: i=1; a=rsa-sha256; t=1795561450; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=SUe5/Jj/3I9NWOEFXaYcPp9uBrJ8eG9uaepsfhFBqMZ3jZx+2Dxk/mtmYh7Godt6LUxHFcYQOvFOoSvpM8SeDy+F1L4/rCftyKNN28xf95JEcZQ8qHow906Piq7TaoybWjNtXNKHwN3ng37+ynqWivT7jELXT9gtVVqLYUiYmwc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1795561450; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=2ZI2PMlWOi8d0sJS2pMmeUrpaerAHWJIYWoUU7w6+Do=; 
-	b=ThkirTkKbnMX4YVIkjNmpJzrs66wNSFxHI/RwDH/U79pv5F6s6Wj9aonu6ZKedSIredB5Dxp7pc5jGp3qvHNvDausMNon5sTQdasca/TWjEs/nD9mVDbJF4418abCy4hjVSaJee5N6pgYRAyn3azf8NjXy/rFl8ygeloP/FeZ58=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=ckO2gDgk/gybC1D14RZLNHsaK9ZN9LtGnGUenuNevZI/dRsLZAGycWhE59LCOd5fgnMT276G9zHV7xaZcc7bu8pfKdVk/oaiuFqQCOXZoehNpWtH47w8wSwQrG9Qi8RN4dTe/pn6zuQtVX65zwjOkynNvZ12TNjKZ7LHdTLbioU=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=2ZI2PMlWOi8d0sJS2pMmeUrpaerAHWJIYWoUU7w6+Do=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1795561448079315.65968283457187;
-	Tue, 24 Nov 2026 15:04:08 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hE4bSa9w
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-55be673e029so991681cf.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 24 Nov 2026 15:18:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795562295; x=1796167095; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tYh8DQKbiETTaVJq9yQgdC4K/jMzt2M4sjI+EyJr+h4=;
+        b=hE4bSa9wgMc5JM80e/QGqpr6OLPMNLJuOlAsIpcTIuSkCeNwSglPdNXIcxLIHOwE6j
+         yd6P08ZnnL42ogei4dEu8g6XNqRQT8SBdjDEjO9uYwFrj4JzSxYcvQ0agRqnYK9C52He
+         /1rEors4xObnUGFqxEz3w97iUwo5uueqDIj1ogz/6UKBRIcRPeJl0gxqsoWxCkneqabq
+         6Lw6YEIXK8WTbHIklZyui25SvF0mb2br+LV+H17y2N2OibnyM5RVOCcZqKbUTdXlKikP
+         4yxzB+bb2/+0viadqaRyaH+g0Kg8V8P9BfbmgBrs5j+ZxRX3FYU4ZQOUxPoauUo8mvF0
+         BzGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795562295; x=1796167095;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tYh8DQKbiETTaVJq9yQgdC4K/jMzt2M4sjI+EyJr+h4=;
+        b=DgZiRnNYwkuYr+vd5i4ySMEsfZrolvjXYJCZLxZePyz7yrQyD5FKBWMjjGzf9q4/y+
+         TXsbBKnfrnHxkQXmhcaNgwatuzf7AdX3dKc480EY6A/tqWBoRzxGp5Zku1IhiIWuMSoS
+         oVZxKYtv/eZSXeW/n2HAaly08TO/TUqVsvTLNbBH1U8fXi77KNdlfLue0GCk8XZtKBNe
+         nYnzsYHGaBAWdUsOZ3hFuotVwL3xDyrCuRDT7OVkdhGQYbwffYuDi4HN+MghTq6IQD/u
+         fBPvAHAI7CeeB23imwfYsG78yqjsa54Dfa5Irb4CjDjCD1F9y9IthtUANqf97yEmDcPj
+         v+2Q==
+X-Forwarded-Encrypted: i=1; AL+hErGOIMyt9ehweb7SaMqL9sUJPyPbE5+gb5m0m6Ugt9FCrzPsg8exhWMQqoRrzd7Wqt2wbycr86An9wFvSfgTDA==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9M7DabVxkmZCIyxBiGgzZjCC/dvWZJLFR90D8Yoaod0L57kEhF
+	vJN3LId8xtx0GNPiq8XqGNZuRCCtyLg64Z8/NWdLFB1/9ycH8im7k7M+zeaO47k5Pw==
+X-Gm-Gg: AZFdTZeIkKoD9eKrCKcoTc8EOl4OWtWLqLRKWr7GSo7S3UYsJ5qlnH/N8LfFdHXw+5n
+	pckHu5jroL34LIXWuMA53vpODqtkzLkv7EguSNTZyJshglsDycnx5i2uP/iKoGbWpgaIN6WY1Ev
+	m4UD/ug+bmerMIv/FPeYAkU9q3LzAp3dpbfdBqgYg9eOEAwA9QA9ByJUI1eJB2/IqCSBLbSrouG
+	1GXPWHerxsK1Kp1FmricE5Pq5KBE/sTd4X/0pcAX6GIrCkUSPNZoXSJi0gABJetdPbcaTZiZxwg
+	5gAdGrrFrPozF/uUu+DP0NlQjTJDPa59c0+mXYiUmVr0zG7GtKo+ikC3EC6ESX+OC+WovdEDafH
+	rFOMv8kllLj86zkxgjkFpnS10JdtswF5vXyBtlv05f9CeX2vCwzreAWix9Wwyx5wj10J5MErd2p
+	beuceAEiP0ytJgpeAUv6KGBanLOtylXnURMje1xMTmatf0k5/l/s26zslc0usthIHOoLgIomWyd
+	GWe+003MedJhS0UWeTmjp5OT8hPfeF6na8SQWsuZFuCCn8LZCnL0jy/gi7IkUNUZ5QnQ1fZ+Ndy
+	Usl/zpewnQa2rhP3AO5N7ddyCFyGalpaxhh6hO1XFMysuCJJScUGehFzXNAcR3DlhsynJ4P6
+X-Received: by 2002:ac8:5cd5:0:b0:55b:d494:187f with SMTP id d75a77b69052e-55d881708admr66731661cf.5.1795562294169;
+        Tue, 24 Nov 2026 15:18:14 -0800 (PST)
+Received: from google.com (15.79.125.34.bc.googleusercontent.com. [34.125.79.15])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d7888fb27sm137434701cf.25.2026.11.24.15.18.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2026 15:18:13 -0800 (PST)
+Date: Tue, 24 Nov 2026 23:18:07 +0000
+From: Sami Tolvanen <samitolvanen@google.com>
+To: Giuliano Procida <gprocida@google.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
+	Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	linux-modules@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Aaron Tomlin <atomlin@atomlin.com>
+Subject: Re: [PATCH v5 0/4] clean up EXPORT_SYMBOL_RUST_GPL
+Message-ID: <20261124231807.GA1736509@google.com>
+References: <20261112121512.1670347-1-gprocida@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -57,165 +110,42 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH 0/4] drm/tyr: use pin-init self-referential support
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <DN2ZFO94BZMF.2XTCCKEUDLZSB@kernel.org>
-Date: Tue, 24 Nov 2026 20:03:50 -0300
-Cc: aliceryhl@google.com,
- airlied@gmail.com,
- simona@ffwll.ch,
- lossin@kernel.org,
- gary@garyguo.net,
- ojeda@kernel.org,
- boqun@kernel.org,
- bjorn3_gh@protonmail.com,
- a.hindborg@kernel.org,
- tmgross@umich.edu,
- tamird@kernel.org,
- acourbot@nvidia.com,
- work@onurozkan.dev,
- dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <BF029262-22D0-41EB-884B-8C64C6BAEBB8@collabora.com>
-References: <20261118233727.3147222-1-dakr@kernel.org>
- <084F476A-BD3F-4FAA-B47C-E875B542AA1B@collabora.com>
- <DN2ZFO94BZMF.2XTCCKEUDLZSB@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112121512.1670347-1-gprocida@google.com>
 
+On Thu, Nov 12, 2026 at 12:15:08PM +0000, Giuliano Procida wrote:
+> This is a complete rework of the previous series to switch to assembly
+> as suggested by Gary Guo <gary@garyguo.net> in a review comment.
+> 
+> The first change in this series is a miniscule safety fix that will be
+> obsoleted once the Nova driver Rust symbol handling is itself cleaned
+> up.
+> 
+> The second and third changes switch symbol export to assembly.
+> 
+> The fourth change tweaks a related test file.
+> 
+> Giuliano Procida (4):
+>   kbuild: respect skip_gendwarfksyms in cmd_gensymtypes_S
+>   rust: convert exports.c to assembly
+>   gpu: nova-core: convert nova_core_exports.c to assembly
+>   scripts/sbom: update rust export macro in nm parser test
+> 
+>  drivers/gpu/Makefile                                 | 11 ++++++-----
+>  .../{nova_core_exports.c => nova_core_exports.S}     |  8 +++-----
+>  rust/Makefile                                        |  2 +-
+>  rust/{exports.c => exports.S}                        | 12 +++++-------
+>  scripts/Makefile.build                               |  4 ++--
+>  scripts/sbom/tests/cmd_graph/test_savedcmd_parser.py |  2 +-
+>  6 files changed, 18 insertions(+), 21 deletions(-)
+>  rename drivers/gpu/nova-core/{nova_core_exports.c => nova_core_exports.S} (62%)
+>  rename rust/{exports.c => exports.S} (72%)
 
+This version looks good to me too. I agree that using assembly seems
+cleaner.
 
-> On 23 Nov 2026, at 20:34, Danilo Krummrich <dakr@kernel.org> wrote:
->=20
-> On Mon Nov 23, 2026 at 11:20 PM CET, Daniel Almeida wrote:
->> Hi Danilo,
->>=20
->> Thanks for doing this.
->>=20
->> I spoke with Gary about this topic at Kangrejos and again a couple of =
-weeks
->> ago. What worries me is that we might introduce some restrictions =
-that might
->> paint us into a corner. IOW: we have significant downstream work, and =
-I wonder
->> whether it will work with this series after whatever refactors are =
-needed.
->=20
-> The reason for the existence of the converted reference counts hasn't =
-been that
-> reference counting was needed as an ownership model, it just was that =
-we haven't
-> had a way to express borrowing from sibling fields that are already =
-guaranteed
-> to be longer lived in any case.
->=20
-> The distinction is between A having an independent owner that keeps it =
-alive for
-> all B consumers, so the Bs can borrow A, and the Bs collectively =
-owning A, so A
-> is destroyed when the last B releases it. Reference counting expresses =
-the
-> latter ownership model. Both can still be subject to lifetime bounds.
->=20
-> In the majority of cases, drivers acquire device resources in stages, =
-keeping
-> earlier resources alive until their dependants have been torn down. =
-Where
-> ownership follows this hierarchy, borrowing can express those =
-relationships
-> without reference counting.
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
 
-Yeah, I understand the premise of self-ref pin init. My worry is =
-precisely
-whether most/all of the shared resources can indeed be modeled as a =
-borrow on a
-sibling or parent field. Especially resources created by userspace like =
-user VMs
-and CSF groups (equivalent to nouveau channels), or deferred work.
-
-For example, your series does not have to consider user VMs because they =
-are
-not implemented yet. I wonder whether they can work under the proposed =
-plan,
-since user VMs will borrow the MMU, but struct Mmu is stored in the
-registration data. Previously that was trivially solvable with Arc. =
-You're
-saying this is possible under the code you're proposing? Because at =
-first
-glance this looks like a shortening of 'iomem to 'a (from =
-DriverFile<'a>),
-which I assume the compiler would reject due to invariance?
-
->=20
->> To start with, Alvin's VM_BIND ioctl series [0] will need some =
-changes, since
->> it keeps the VM pool in the file data. I think this is doable if we =
-move the
->> pool into the registration data and have each file hold only an index =
-to its
->> own entry?  i.e.: something like an XArray<Pool<Vm>> indexed by a =
-number
->> associated with the drm::File. Same for the group pool later. Is this =
-what you
->> had in mind?
->=20
-> No, the changes do not force XArray<Pool<Vm>> to be moved into the =
-registration
-> data; drm::File private data can borrow from DRM registration data. It =
-can (and
-> should) stay in the drm::File private data.
->=20
-> (I'm also working on a generalization of this, as it is a repeating =
-pattern in
-> drivers. We want driver private data associated with an ioctl, e.g.  =
-VM_CREATE,
-> which is shorter lived than the drm::File data and hence shorter lived =
-than the
-> drm::RegistrationData.
->=20
-> Concurrent ioctls associated with a handle to this data, i.e. the VM =
-in this
-> example, need to be drained on either VM_DESTROY or drm::File private =
-data
-> destruction, e.g.  caused by unregistration through driver unbind.)
->=20
->> Anything storing a KernelBo will also have to be outside of the file =
-data,
->> IIUC, since it now stores a &Vm. Also, downstream we defer KernelBo =
-drops to a
->> workqueue, because they can happen in the fence signalling path. I =
-suppose we
->> can keep doing that using ScopedWork/ScopedQueue?
->=20
-> I assume you refer to the Vm that lives in Firmware. If so, drm::File =
-private
-> data can borrow from it, as Firmware lives in the DRM registration =
-data.
->=20
-> The teardown has to happen in ScopedWork regardless, as they all =
-carried device
-> resource induced lifetimes already and hence can't go into unbounded =
-work
-> anyway.
-
-FWIW I meant both that one and user VMs (WIP), we map KernelBos into =
-both
-downstream.
-
-This seems like another instance of what I asked above. If you confirm =
-this is
-indeed possible even with the invariance I mentioned, then fine, I =
-guess.
-
-To be honest, however, I must admit that the more I look into it and try =
-to
-understand the code, the more it looks like an improvement over the =
-Devres
-approach we have downstream.
-
-=E2=80=94 Daniel
-
+Sami
