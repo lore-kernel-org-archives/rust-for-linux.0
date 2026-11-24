@@ -1,98 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795558909;
-	b=dloCBrbKiXPG55bbNRjDppqLu1hSuteOszeAKNyk3BtTJRmLmzlEHFQ/CFKq1WoSL3+Q
-	 pis0O5kd6iagfYva6TXz03RGSmZ/jqIXGjFjzgKdXEOGcRHMsvlkKzmDNbpHKJQWh+oXo
-	 Kqgc6KCsptgyHp89kJABUKkmh1x98Jy4ENomUN4bEvghMGIJLhKb9ioaLmtwRsE1l5DYX
-	 JjbaCkVbWE3QdyLwKb9xnVh7GQhJ8WyGNiSEWIsNZ9PZpfMr/blIMw5oBmJT7yDOBWLUh
-	 ++iVe0Jsd0XxJuhwGCOB+wsYYoYyoB+fj+SwPoA4Zs7Dnt1b02Rk8HdsquKdcwuXwwQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795558909;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:X-Patch-Reply:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=oKVvl+Rf2neqQIoPuWXSrWxr2CVrLHBFoRvvQa6Paew=;
-	b=Y2jK20de/GWEkkNXE1zqqDyk8LHc9NZMfVu9awSuxgvG8rJ/vCwfJ9w4hDC9XiZRkoPX
-	 C9HBNnE2otGTgJSbGYyV6S3RS7J5/l3Z/W7MSJPIy3/zzeIcbAwFNRVKzDcPvZPU1XRna
-	 5P1tL6FuKYaCMhRUllTlcLWkncOWBcTKZd19rErwYkKgrmMFB38u52w0jQdG+TCr+Cdfq
-	 iM/Bpqg2byBZ0Xk5GIrC6YFSztWxsO1ezfcVtHxNwYcssjHGg5Du03CRBNpavXgdrVw7d
-	 czLmqLNykbVtQAednr39fQog5NdMc1V/6bT5oO+bA1+T4BQZWFQpsFKoXddgeGpfEsQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IrYN+lxG;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795561479;
+	b=RP60PCI3Jjb1Xc8OB6YqT9d5deSFXBn7nRJRJ58fSrygekvyK7Oc01efib/MgU9i+/BH
+	 HzrHtw/RyLT/syUtE5ge2QRsTQ/uTD39CrpYs7/AAYG8j+v85NniC3Wk1jzSlpyV7RuzQ
+	 xcUvJ2ZNEryfRpZeyKD8ixEYhaTZ7OeliXchb0isedb3iMQawNVb+L4NRg8XddierRCwq
+	 D7no5NDC+GNbmRkKbzAt+uARg+N0ZeztDs80XBUb8QK7oyZhraBENU0FuMvEQYTQfhSn7
+	 MR8O1ABUafIpRQjNj0CcSk8jYBnbGTpO+iX9SGLmLmEot8c0d9wNtFw3rkrB3Veip8Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795561479;
+	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
+	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
+	 References:To:X-Mailer:X-ZohoMailClient;
+	bh=2ZI2PMlWOi8d0sJS2pMmeUrpaerAHWJIYWoUU7w6+Do=;
+	b=h4L4sGEiL6enkVN4AgaI7vDTjO57d9fd6RbFB4OcKAoQR1WmoCNnWK81yzocRMjTQMgM
+	 HJjjq3LhbTaTADlAdo8EmaRpv6tRQROtXEKmdzcSv2+HbSYgEY0WsYsuHnX2DeCJNfEmD
+	 T9+sEO6FljScMDAsJ84YW8wg2qCRcR3RICHbG5q+5g7AnhgScmRtGwaxeVfgBTHaYFao4
+	 Q/+2DsAJjPQeVMuyNsmBP+GU/mN2JFxX+pWBSopXZYKA9STaj+GlzrPCaYUUFgz+5Dpir
+	 mA6q0QEv3F1GteswqTFjtchibBl7D6uMI6mdCgRcsR28qzEtnBAnMPJIBd7nuQ5JK/w==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=ckO2gDgk;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57307606A31E;
-	Tue, 24 Nov 2026 22:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168B2606A31E;
+	Tue, 24 Nov 2026 23:04:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 168B2606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IrYN+lxG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11ABE1F000D0;
-	Tue, 24 Nov 2026 22:21:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795558908;
-	bh=oKVvl+Rf2neqQIoPuWXSrWxr2CVrLHBFoRvvQa6Paew=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IrYN+lxGsElt2tX2RKLt0jlr8DGHREKvRQCsdfuzj4oSeVObDlg+GTaS4E4ItmK/O
-	 GTnQEl9OeUwZ8FLbgZlBuY7mktztTpKEo8DxWIkN7obYttTBrSW0QSdccKOFGDLSAb
-	 cuSoVic+zf16VLR/VqHem6u9YOXinT1xxIq2ogCMd22cS27piSIXouNYQ1nYVdj/d5
-	 9y3dS+qAw6B6y3NiEqErSqa1lTbyuxe/u39MKemD/VBpbvnlXEFS6sPkIjmXQpC/qV
-	 rjIasUIJiWdEtLcZo6YTpq1iwphq14J0UeqU/nx/GX/zMYnM98sZ7kHGy8Il7LvmXg
-	 EeI37NNYWXCLg==
-From: Danilo Krummrich <dakr@kernel.org>
-To: Simon Song <xinmengs@nvidia.com>
-Cc: dakr@kernel.org,
-	acourbot@nvidia.com,
-	kvm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	nova-gpu@lists.linux.dev,
-	linux-pci@vger.kernel.org,
-	alex@shazbot.org,
-	jgg@nvidia.com,
-	yishaih@nvidia.com,
-	skolothumtho@nvidia.com,
-	kevin.tian@intel.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	jhubbard@nvidia.com,
-	ecourtney@nvidia.com,
-	cjia@nvidia.com,
-	smitra@nvidia.com,
-	kjaju@nvidia.com,
-	alkumar@nvidia.com,
-	ankita@nvidia.com,
-	aniketa@nvidia.com,
-	kwankhede@nvidia.com,
-	targupta@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	zhiwang@kernel.org,
-	zhiw@nvidia.com,
-	boqun@kernel.org,
-	daniel.almeida@collabora.com,
-	tamird@kernel.org,
-	work@onurozkan.dev,
-	jgg@ziepe.ca,
-	bhelgaas@google.com,
-	kwilczynski@kernel.org,
-	dri-devel@lists.freedesktop.org,
-	peter@colberg.org
-Subject: Re: (subset) [PATCH v3 0/9] Rust VFIO PCI support and NVIDIA vGPU driver
-Date: Tue, 24 Nov 2026 23:21:36 +0100
-Message-ID: <20261124222136.2363532-1-dakr@kernel.org>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <20261119215046.2892839-1-xinmengs@nvidia.com>
-References: <20261119215046.2892839-1-xinmengs@nvidia.com>
-X-Patch-Reply: applied
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=ckO2gDgk
+ARC-Seal: i=1; a=rsa-sha256; t=1795561450; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=SUe5/Jj/3I9NWOEFXaYcPp9uBrJ8eG9uaepsfhFBqMZ3jZx+2Dxk/mtmYh7Godt6LUxHFcYQOvFOoSvpM8SeDy+F1L4/rCftyKNN28xf95JEcZQ8qHow906Piq7TaoybWjNtXNKHwN3ng37+ynqWivT7jELXT9gtVVqLYUiYmwc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1795561450; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=2ZI2PMlWOi8d0sJS2pMmeUrpaerAHWJIYWoUU7w6+Do=; 
+	b=ThkirTkKbnMX4YVIkjNmpJzrs66wNSFxHI/RwDH/U79pv5F6s6Wj9aonu6ZKedSIredB5Dxp7pc5jGp3qvHNvDausMNon5sTQdasca/TWjEs/nD9mVDbJF4418abCy4hjVSaJee5N6pgYRAyn3azf8NjXy/rFl8ygeloP/FeZ58=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=ckO2gDgk/gybC1D14RZLNHsaK9ZN9LtGnGUenuNevZI/dRsLZAGycWhE59LCOd5fgnMT276G9zHV7xaZcc7bu8pfKdVk/oaiuFqQCOXZoehNpWtH47w8wSwQrG9Qi8RN4dTe/pn6zuQtVX65zwjOkynNvZ12TNjKZ7LHdTLbioU=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=2ZI2PMlWOi8d0sJS2pMmeUrpaerAHWJIYWoUU7w6+Do=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795561448079315.65968283457187;
+	Tue, 24 Nov 2026 15:04:08 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -101,34 +57,165 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH 0/4] drm/tyr: use pin-init self-referential support
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <DN2ZFO94BZMF.2XTCCKEUDLZSB@kernel.org>
+Date: Tue, 24 Nov 2026 20:03:50 -0300
+Cc: aliceryhl@google.com,
+ airlied@gmail.com,
+ simona@ffwll.ch,
+ lossin@kernel.org,
+ gary@garyguo.net,
+ ojeda@kernel.org,
+ boqun@kernel.org,
+ bjorn3_gh@protonmail.com,
+ a.hindborg@kernel.org,
+ tmgross@umich.edu,
+ tamird@kernel.org,
+ acourbot@nvidia.com,
+ work@onurozkan.dev,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <BF029262-22D0-41EB-884B-8C64C6BAEBB8@collabora.com>
+References: <20261118233727.3147222-1-dakr@kernel.org>
+ <084F476A-BD3F-4FAA-B47C-E875B542AA1B@collabora.com>
+ <DN2ZFO94BZMF.2XTCCKEUDLZSB@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-ZohoMailClient: External
 
-On Thu, 19 Nov 2026 13:50:35 -0800, Simon Song wrote:
-> [PATCH v3 0/9] Rust VFIO PCI support and NVIDIA vGPU driver
 
-Applied, thanks!
 
-  Branch: topic/pci-sriov-7.5-rc1
-  Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git
+> On 23 Nov 2026, at 20:34, Danilo Krummrich <dakr@kernel.org> wrote:
+>=20
+> On Mon Nov 23, 2026 at 11:20 PM CET, Daniel Almeida wrote:
+>> Hi Danilo,
+>>=20
+>> Thanks for doing this.
+>>=20
+>> I spoke with Gary about this topic at Kangrejos and again a couple of =
+weeks
+>> ago. What worries me is that we might introduce some restrictions =
+that might
+>> paint us into a corner. IOW: we have significant downstream work, and =
+I wonder
+>> whether it will work with this series after whatever refactors are =
+needed.
+>=20
+> The reason for the existence of the converted reference counts hasn't =
+been that
+> reference counting was needed as an ownership model, it just was that =
+we haven't
+> had a way to express borrowing from sibling fields that are already =
+guaranteed
+> to be longer lived in any case.
+>=20
+> The distinction is between A having an independent owner that keeps it =
+alive for
+> all B consumers, so the Bs can borrow A, and the Bs collectively =
+owning A, so A
+> is destroyed when the last B releases it. Reference counting expresses =
+the
+> latter ownership model. Both can still be subject to lifetime bounds.
+>=20
+> In the majority of cases, drivers acquire device resources in stages, =
+keeping
+> earlier resources alive until their dependants have been torn down. =
+Where
+> ownership follows this hierarchy, borrowing can express those =
+relationships
+> without reference counting.
 
-[1/9] rust: pci: add VFIO override device IDs
-      commit: 50e74d48053e
+Yeah, I understand the premise of self-ref pin init. My worry is =
+precisely
+whether most/all of the shared resources can indeed be modeled as a =
+borrow on a
+sibling or parent field. Especially resources created by userspace like =
+user VMs
+and CSF groups (equivalent to nouveau channels), or deferred work.
 
-      [ Slightly improve the doc comment. - Danilo ]
+For example, your series does not have to consider user VMs because they =
+are
+not implemented yet. I wonder whether they can work under the proposed =
+plan,
+since user VMs will borrow the MMU, but struct Mmu is stored in the
+registration data. Previously that was trivially solvable with Arc. =
+You're
+saying this is possible under the code you're proposing? Because at =
+first
+glance this looks like a shortening of 'iomem to 'a (from =
+DriverFile<'a>),
+which I assume the compiler would reject due to invariance?
 
-[2/9] rust: pci: expose the VF index within its PF
-      commit: 563a20c3c250
-[3/9] rust: pci: allow drivers to manage DMA ownership
-      commit: 867380955ea7
-[4/9] rust: pci: add reset callbacks
-      commit: 4db2aa70fd43
+>=20
+>> To start with, Alvin's VM_BIND ioctl series [0] will need some =
+changes, since
+>> it keeps the VM pool in the file data. I think this is doable if we =
+move the
+>> pool into the registration data and have each file hold only an index =
+to its
+>> own entry?  i.e.: something like an XArray<Pool<Vm>> indexed by a =
+number
+>> associated with the drm::File. Same for the group pool later. Is this =
+what you
+>> had in mind?
+>=20
+> No, the changes do not force XArray<Pool<Vm>> to be moved into the =
+registration
+> data; drm::File private data can borrow from DRM registration data. It =
+can (and
+> should) stay in the drm::File private data.
+>=20
+> (I'm also working on a generalization of this, as it is a repeating =
+pattern in
+> drivers. We want driver private data associated with an ioctl, e.g.  =
+VM_CREATE,
+> which is shorter lived than the drm::File data and hence shorter lived =
+than the
+> drm::RegistrationData.
+>=20
+> Concurrent ioctls associated with a handle to this data, i.e. the VM =
+in this
+> example, need to be drained on either VM_DESTROY or drm::File private =
+data
+> destruction, e.g.  caused by unregistration through driver unbind.)
+>=20
+>> Anything storing a KernelBo will also have to be outside of the file =
+data,
+>> IIUC, since it now stores a &Vm. Also, downstream we defer KernelBo =
+drops to a
+>> workqueue, because they can happen in the fence signalling path. I =
+suppose we
+>> can keep doing that using ScopedWork/ScopedQueue?
+>=20
+> I assume you refer to the Vm that lives in Firmware. If so, drm::File =
+private
+> data can borrow from it, as Firmware lives in the DRM registration =
+data.
+>=20
+> The teardown has to happen in ScopedWork regardless, as they all =
+carried device
+> resource induced lifetimes already and hence can't go into unbounded =
+work
+> anyway.
 
-      [ Slightly improve the reset callback doc comments. - Danilo ]
+FWIW I meant both that one and user VMs (WIP), we map KernelBos into =
+both
+downstream.
 
-[5/9] rust: pci: add an error_detected callback
-      commit: 817438b2de84
+This seems like another instance of what I asked above. If you confirm =
+this is
+indeed possible even with the invariance I mentioned, then fine, I =
+guess.
 
-The patches are in the topic/pci-sriov-7.5-rc1 topic branch and will be merged
-into the corresponding target branch soon.
+To be honest, however, I must admit that the more I look into it and try =
+to
+understand the code, the more it looks like an improvement over the =
+Devres
+approach we have downstream.
+
+=E2=80=94 Daniel
+
