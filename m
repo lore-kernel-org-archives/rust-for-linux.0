@@ -1,54 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795553407;
-	b=wTsOlAYJZ7q8b1EoREilgmSDjz8hOQKFfCW3l2bYtuCh0LtDfITpwcAMWkKa7z2k3/x5
-	 rVItTj64F+Yqb8Uz+wfzwh028Wc+bv9JSKEwme5F7vQ/ZGUJgj5RL+ZYMdvmjs/HUnGk9
-	 D7hMPM/sk1D0zmiGQp9m6zAOtEFOA1y+QVqqANCN6Rrn6dt5YO7JuTnJxwmh9s8fcmXMT
-	 E22H6BOQ1fK2aZlKUV3EK3TiyM82L2tgyJyL/OM1qnjMUiMofFOYv5SO7ejWbmKAU2rSl
-	 0lanicBMBSnjTb8Kje1SDo1ncJAqe8uvGaRpCp2VAbCJMz8KJIH/2SADqRwtA1BW/Zw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795553407;
-	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
-	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
-	 References:To:X-Mailer:X-ZohoMailClient;
-	bh=9B9bTwB3nnMr+exBXeCJuZEOmi14vsPeF4NsKFNnfdY=;
-	b=NDPGHyo3zb7bmW6xXN3jZPYvSMM5JyCJwyHvoAYslQHwEYAi2ldkqti5/jYaKhrrSMTC
-	 f1cJZQJI3qxqj5RxXuUkzGL6b/kApfvhtJWE/MLyk4eqJNQVa+JkMV8tGFk7HpTtRNJPp
-	 z5URXZpEmnVxObmS8Y2KQMZ/1Wx3nDt+sJuUuAa42x0Uf1yyN0QI2dw34ubih75/fAsa3
-	 3dvUwSx1ibm8wJrCsptDmfZsyM7LonpUkVXxKpdv7BSFJfoZ79Y3GaFJGp3Okz9mvkJ/d
-	 eAG2buYaxfPJbmyo948T1PI/E8DT4oXQxTyzAGbr3MAxmAhYh57wzEJVlGjLADBHCCw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=EqGOsOZR;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
-Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=147.229.8.13
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795555165;
+	b=4JsVnJd0YhtfT2ELnFVi54ysWI+wLQHBMm5xwUG6dIJqs5aGxoN6ePWZCe9/rkqginvT
+	 3LPkAEOpDqT0t9BIMJskreJNVuxkpUWaXDiuthmj+8fX/tFx06Hbat48e20kDaq+A98SN
+	 l1tXPziYcn25LKEnz4AVBqwUERcKFKRs/agc6F1vl8yL0yrI76OTgp2dMcdP4iO4ZJri8
+	 RXQrK96QPnsp9Oe5R2LIDUdB92ioaPITMo50aSUjDOMXYKY+sP/sh0fXfhO/ACOvyhO07
+	 S8Xw33o85tZLNzmN7NpGd3Od1t2kiH1Wrp95fVj00hDLu4Ey5O35mKs//qg7rV9BbwA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795555165;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-Virus-Scanned:X-Virus-Status:X-Spam-Status:X-Spam-Checker-Version;
+	bh=D6ZHYEI070EvMU4ryionbOt3ndI7Wv+kJj983byjX+M=;
+	b=23WLc880Mavp79tGfzVihUiLYk0GZFiQ7YCFNupZ3u/sTsUXw7V+WzvCfQ0agpivwMOr
+	 YgAxysaEsRGK9dFI3IGrCFWSpeVHbQYiewdf8nxLAQ7uL+G2+WS7xoVFYRZUC1qZWVd/x
+	 Fo5ZK1347YKChB7hgx4dffcc5yNb3ejDw8+z2Ihvl7n9uc9QVuuEIkesE/YRjUomQIQt0
+	 AOB80KubBjyF5/yE/eXMj5fn8VnweWpV8TQIpo0CT8i/DqyeEWSOvgRb/gij8vOI98Jge
+	 g1ikirJ2+x/vnEzYTiEElIGg2jqqkukeRzGT17VbxHufa/3izKFhxREyMjZGIjGEtDg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=fit.vut.cz;
+	spf=pass smtp.mailfrom=fit.vut.cz;
+	dkim=pass header.d=fit.vut.cz header.i=@fit.vut.cz header.a=rsa-sha256 header.s=a2025 header.b=gvmdE4hi;
+	arc=none smtp.remote-ip=147.229.8.13
+Received: from adela.fit.vutbr.cz (adela.fit.vutbr.cz [147.229.8.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2CD606A31E;
-	Tue, 24 Nov 2026 20:50:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EB2CD606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5EA606A331;
+	Tue, 24 Nov 2026 21:19:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE5EA606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fit.vut.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fit.vut.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=EqGOsOZR
-ARC-Seal: i=1; a=rsa-sha256; t=1795553365; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=TozeQZGyOqUFcnEUTLGcR38H8GdZ/y4eh+B5BG9Tq+1xjsfiiUk4OJ1fzxOT1dtQgKboNNX7wOKnuyCNak1EyeVeToCl8R9+vXwdgLyLPt9uH4Bs2Lwj48iZbpWRR6+AVxPKWr+Adg8ElIx6ztnjkjpj7+LwEAdJeBES7c6tLEA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1795553365; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=9B9bTwB3nnMr+exBXeCJuZEOmi14vsPeF4NsKFNnfdY=; 
-	b=TmaYPpkiC2QwXK61FYf/kARTj3SaIoTbfLlVp7i7DygzokQ9pRhabYq2q5riEc0tu92VHlnNhEiCf/87/O29USyjXEjgrj6878gcVY8TnCopsJaSjiMicHsIafYyk3Ubbg3vE56WKQfXuJ1tCOCvtx9KEwxyzR83qsPPNWjb5tE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=EqGOsOZRwTrPwDhqBVCr2cMKLazxBcp6GGvT6BUzLTK0Tc0A7K02KzXFN4tJaZ3KqNaTiTZcxIor4zmF97xEQs3+a1A2CoCGTrE9FdUY7T3L7jn0SEejAKi0UJ9t0+iEnj7gvPjE7vV245P2Efg+TqMlWeJ+Ybg1TmYucTfS/3M=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=9B9bTwB3nnMr+exBXeCJuZEOmi14vsPeF4NsKFNnfdY=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1795553363172222.8218597760449;
-	Tue, 24 Nov 2026 12:49:23 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key, unprotected) header.d=fit.vut.cz header.i=@fit.vut.cz header.a=rsa-sha256 header.s=a2025 header.b=gvmdE4hi
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fit.vut.cz; s=a2025;
+	t=1795555151; bh=ryF2cRoqhRQLhwKI7awrvQor3e+pqAG0UR4cvEwkDwQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=gvmdE4hiccdHUep/rpfCfJm5vzu7yYTOBV/TDRmcrWGOpjUYxPrI7rgT4Z9Gp4r3p
+	 NV+7MudJiYfpJDfFCWT67tKnQ6IWGE5ag7C4A5SG1ryMCcvvAJqqHLpixrTJ0qW/E4
+	 7nPgXC/XoeQVbvsFKDlj0ND6F9MNvXZKmCmd4+AMqLOw5zetWeim7v7IdCLL1Wy1AI
+	 MQZkrAEXiha/urzvXkJZftY4bJjY/YCWj58Meq9C1OnDP/uuL9XI5jCe6eaLsaIOOD
+	 RfvHrDqCqvAVs5pjI3mNYX0BJV4ejKRPHtFnCd/bt+p12AgQobpus3DvwJRP+JDAZT
+	 NL0S7OnZMnWBg==
+Received: from tomoka (unknown [100.72.76.61])
+	(Authenticated sender: inguyen)
+	by adela.fit.vutbr.cz (Postfix) with ESMTPSA id 4F90B260127;
+	Tue, 24 Nov 2026 22:19:11 +0100 (CET)
+From: Nguyen Le Duy <inguyen@fit.vut.cz>
+To: gregkh@linuxfoundation.org,
+	arve@android.com,
+	tkjos@android.com,
+	brauner@kernel.org,
+	cmllamas@google.com,
+	aliceryhl@google.com
+Cc: ojeda@kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Nguyen Le Duy <inguyen@fit.vut.cz>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] rust_binder: make work items of a deleted node a no-op
+Date: Tue, 24 Nov 2026 22:18:09 +0100
+Message-ID: <20261124211809.3692554-1-inguyen@fit.vut.cz>
+X-Mailer: git-send-email 2.56.1
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -57,290 +70,152 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v7 3/3] drm/tyr: add Job IRQ handling
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260728-tyr-irq-v2-v7-3-4e172e58e28c@collabora.com>
-Date: Tue, 24 Nov 2026 17:49:04 -0300
-Cc: Alice Ryhl <aliceryhl@google.com>,
- Danilo Krummrich <dakr@kernel.org>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- kernel@collabora.com,
- Deborah Brouwer <deborah.brouwer@collabora.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <03D5FC68-0E3B-47B4-A3E4-6F2EABD54096@collabora.com>
-References: <20260728-tyr-irq-v2-v7-0-4e172e58e28c@collabora.com>
- <20260728-tyr-irq-v2-v7-3-4e172e58e28c@collabora.com>
-To: Laura Nao <laura.nao@collabora.com>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 1.4.6 at adela
+X-Virus-Status: Clean
 
+When a node has no references left, do_work_locked() removes it from
+the owner's nodes tree. However, a Node work item may still be queued
+at that point. This happens when a strong zero2one increment is
+scheduled through a NodeWrapper while the Node is already queued, all
+references are dropped again, and the wrapper runs first and deletes
+the node.
 
-Hi Laura,
+When the stale work item runs later, do_work_locked() calls
+remove_node(self.ptr) again. If userspace has created a new node with
+the same ptr in the meantime, this removes the new node from the tree.
+The owner can then no longer look it up, so BR_RELEASE and BR_DECREFS
+are never sent for it, and the next BINDER_TYPE_BINDER with that ptr
+creates yet another node. Since update_node() looks nodes up by ptr,
+freeing a buffer that refers to the hidden node decrements the other
+one, and a later NodeRef::absorb() hits:
 
-> On 23 Nov 2026, at 11:58, Laura Nao <laura.nao@collabora.com> wrote:
->=20
-> The Job IRQ reports requests from the CSF firmware, including global
-> interface requests and CSG attention bits. Only the GLB bit is =
-currently
-> handled, as it will be used to check firmware readiness. CSG bits
-> handling will be added at a later stage. The Job IRQ handler masks the
-> interrupt in the primary IRQ handler, processes pending raw status in
-> the threaded handler, clears the handled bits, and reenables the mask
-> before returning.
-> Add JobIrqEvents to hold the wait queue and the ready flag used to
-> signal firmware readiness when the GLB bit is set.
->=20
-> Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> Signed-off-by: Laura Nao <laura.nao@collabora.com>
-> ---
-> drivers/gpu/drm/tyr/fw.rs     |   1 +
-> drivers/gpu/drm/tyr/fw/irq.rs | 148 =
-++++++++++++++++++++++++++++++++++++++++++
-> drivers/gpu/drm/tyr/irq.rs    |   1 -
-> 3 files changed, 149 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
-> index f2e0404addf2..ecf2ea171bc9 100644
-> --- a/drivers/gpu/drm/tyr/fw.rs
-> +++ b/drivers/gpu/drm/tyr/fw.rs
-> @@ -69,6 +69,7 @@
->     vm::Vm, //
-> };
->=20
-> +pub(crate) mod irq;
-> mod parser;
->=20
-> pub(super) const CSF_MCU_SHARED_REGION_START: u32 =3D 0x04000000;
-> diff --git a/drivers/gpu/drm/tyr/fw/irq.rs =
-b/drivers/gpu/drm/tyr/fw/irq.rs
-> new file mode 100644
-> index 000000000000..a736d8cd4374
-> --- /dev/null
-> +++ b/drivers/gpu/drm/tyr/fw/irq.rs
-> @@ -0,0 +1,148 @@
-> +// SPDX-License-Identifier: GPL-2.0 or MIT
-> +
-> +//! IRQ handling for the Job IRQ.
-> +//!
-> +//! The Job IRQ signals events from the MCU, including global =
-interface acknowledgements.
-> +#![allow(dead_code)]
+  rust_kernel: panicked at drivers/android/binder/node.rs:822:17:
+  assertion `left != right` failed
+    left: 0
+   right: 0
+  kernel BUG at rust/helpers/bug.c:7!
+  Call Trace:
+   NodeRef::absorb
+   Process::insert_or_update_handle
+   AllocationView::transfer_binder_object
+   Thread::copy_transaction_data
+   Transaction::new
+   Thread::transaction
 
-In general, please prefer expect(dead_code) instead.
+No race is needed, and with CONFIG_USER_NS=y an unprivileged user can
+trigger this with a binderfs mount in its own user namespace.
 
-> +
-> +use kernel::{
-> +    device::Bound, //
-> +    io::Io,
-> +    new_waitqueue,
-> +    platform,
-> +    prelude::*,
-> +    sync::{
-> +        atomic::{
-> +            ordering,
-> +            Atomic, //
-> +        },
-> +        Arc,
-> +        WaitQueue, //
-> +    },
-> +    time::{
-> +        Delta,
-> +        Msecs, //
-> +    },
-> +};
-> +
-> +use crate::{
-> +    irq::{
-> +        TyrIrqRegistration,
-> +        TyrIrqTrait, //
-> +    },
-> +    regs::job_control::{
-> +        JOB_IRQ_CLEAR,
-> +        JOB_IRQ_MASK,
-> +        JOB_IRQ_RAWSTAT,
-> +        JOB_IRQ_STATUS, //
-> +    },
-> +    driver::IoMem,
+Fix this by tracking in NodeInner whether the node has been deleted,
+and making Node::do_work() and Node::cancel() only clear the delivery
+state of a deleted node. A node is only deleted once it has no
+references, so any BR_RELEASE and BR_DECREFS were already sent, and no
+new reference can be taken on it. NodeWrapper::do_work() does not need
+the check, since the node is never deleted while the wrapper is queued.
 
-rustfmt produces a (small) diff here.
+The delivery state is cleared by a new DeliveryState::node_done(), which
+also replaces the open-coded reset that Node::do_work() already had.
 
-> +    reset::HwGate, //
-> +};
-> +
-> +/// The firmware events published by the Job IRQ handler, and the =
-queue used to announce them.
-> +#[pin_data]
-> +pub(crate) struct JobIrqEvents {
-> +    #[pin]
-> +    wait: WaitQueue,
-> +    /// Set once the firmware has signalled that the global interface =
-is ready.
-> +    ready: Atomic<bool>,
-> +}
-> +
-> +impl JobIrqEvents {
-> +    /// Creates a new, empty set of Job IRQ events.
-> +    pub(crate) fn new() -> Result<Arc<Self>> {
+Found with the Kani model checker. Tested with a reproducer on v7.4-rc3
+in QEMU, x86_64 only.
 
-There is an ongoing effort[0] to get rid of Arcs in places they are not =
-needed
-using self-ref pin init.
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Cc: stable@vger.kernel.org
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Nguyen Le Duy <inguyen@fit.vut.cz>
+---
+Changes in v2:
+- Make the work items of a deleted node a no-op instead of checking the
+  tree entry in remove_node(), as suggested by Alice
+- Add DeliveryState::node_done() to clear the Node's delivery state
+- Link to v1: https://lore.kernel.org/r/20261122191322.929005-1-inguyen@fit.vut.cz
 
-Since I expect other users to be able to take a reference to this field =
-as
-applicable, lets drop this Arc for the time being.
+The reproducer was sent to the maintainers separately. The Kani
+harnesses that found the bug pass with this patch.
 
+I used an AI assistant (Claude) for the analysis, the reproducer, the
+code and the changelog. The fix follows Alice's suggestion.
 
-> +        Arc::pin_init(
-> +            pin_init!(JobIrqEvents {
-> +                wait <- new_waitqueue!(),
-> +                ready: Atomic::new(false),
-> +            }),
-> +            GFP_KERNEL,
-> +        )
-> +    }
-> +
-> +    /// Clears the firmware-ready state.
-> +    #[expect(dead_code)]
-> +    pub(crate) fn clear_ready(&self) {
-> +        self.ready.store(false, ordering::Relaxed);
-> +    }
-> +
-> +    /// Waits until the firmware signals readiness via the GLB IRQ =
-bit, or the timeout expires.
-> +    pub(crate) fn wait_ready(&self, timeout_ms: Msecs) -> Result {
-> +        self.wait.wait_event_timeout(
-> +            || self.ready.load(ordering::Acquire),
-> +            =
-Delta::from_millis(timeout_ms.into()).to_jiffies_timeout(),
-> +        )?;
-> +
-> +        Ok(())
-> +    }
-> +
-> +    /// Updates state and wakes up waiters
-> +    fn signal(&self, status: u32) {
-> +        // TODO: handle other Job IRQ events (e.g. CSG attention =
-bits) here once
-> +        // support for them is added.
-> +
-> +        // The GLB bit only signals firmware readiness once, at power =
-up
-> +        if JOB_IRQ_RAWSTAT::from_raw(status).glb() && =
-!self.ready.load(ordering::Relaxed) {
-> +            self.ready.store(true, ordering::Release);
-> +        }
-> +
-> +        self.wait.wake_up_all();
-> +    }
-> +}
-> +
-> +// The Job IRQ, signalling requests or notification from the MCU.
-> +pub(crate) struct JobIrq {
-> +    /// Firmware events signalled by this IRQ.
-> +    events: Arc<JobIrqEvents>,
+ drivers/android/binder/node.rs | 28 +++++++++++++++++++++++++---
+ 1 file changed, 25 insertions(+), 3 deletions(-)
 
-If we get rid of the Arc, this would become=20
+diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
+index efdafc2..1f2bab6 100644
+--- a/drivers/android/binder/node.rs
++++ b/drivers/android/binder/node.rs
+@@ -124,6 +124,13 @@ impl DeliveryState {
+         self.has_pushed_wrapper = true;
+         self.has_strong_zero2one = true;
+     }
++
++    /// The `Node` was delivered or dropped, and the wrapper is not scheduled.
++    fn node_done(&mut self) {
++        self.has_pushed_node = false;
++        self.has_weak_zero2one = false;
++        self.has_strong_zero2one = false;
++    }
+ }
+ 
+ struct CountState {
+@@ -178,6 +185,8 @@ struct NodeInner {
+     active_inc_refs: u8,
+     /// List of `NodeRefInfo` objects that reference this node.
+     refs: List<NodeRefInfo, { NodeRefInfo::LIST_NODE }>,
++    /// Set when `do_work_locked` removes the node from the owner's `nodes` tree.
++    is_deleted: bool,
+ }
+ 
+ use kernel::bindings::rb_node_layout;
+@@ -238,6 +247,7 @@ impl Node {
+                     has_oneway_transaction: false,
+                     active_inc_refs: 0,
+                     refs: List::new(),
++                    is_deleted: false,
+                 },
+             ),
+             debug_id: super::next_debug_id(),
+@@ -636,6 +646,7 @@ impl Node {
+         }
+         if no_active_inc_refs && !weak {
+             // Remove the node if there are no references to it.
++            inner.is_deleted = true;
+             guard.remove_node(self.ptr);
+         }
+         drop(guard);
+@@ -727,9 +738,13 @@ impl DeliverToRead for Node {
+             return Ok(true);
+         }
+ 
+-        inner.delivery_state.has_pushed_node = false;
+-        inner.delivery_state.has_weak_zero2one = false;
+-        inner.delivery_state.has_strong_zero2one = false;
++        inner.delivery_state.node_done();
++
++        if inner.is_deleted {
++            // Nothing is pending for a deleted node, and userspace may already have reused its
++            // address for a new node, so leave the tree alone.
++            return Ok(true);
++        }
+ 
+         self.do_work_locked(writer, owner_inner)
+     }
+@@ -743,6 +758,13 @@ impl DeliverToRead for Node {
+             return;
+         }
+ 
++        let inner = self.inner.access_mut(&mut owner_inner);
++        if inner.is_deleted {
++            // A deleted node has nothing to deliver, so don't requeue it.
++            inner.delivery_state.node_done();
++            return;
++        }
++
+         // If BINDER_THREAD_EXIT is invoked on a thread with a pending node refcount update, we
+         // should move ourselves to ensure the refcount update is still delivered.
+         if let Some(node) = ListArc::try_from_arc_borrow(self.as_arc_borrow()) {
 
-events: &=E2=80=98a JobIrqEvents.
-
-
-
-> +}
-> +
-> +
-> +/// Requests a threaded IRQ registration for the Job IRQ.
-> +///
-> +/// # Safety
-> +///
-> +/// Callers must not `mem::forget()` the resulting registration or =
-otherwise prevent its
-> +/// [`Drop`] implementation from running.
-> +pub(crate) unsafe fn job_irq_init<'a>(
-> +    pdev: &'a platform::Device<Bound>,
-> +    hw: Arc<HwGate<'a>>,
-> +    events: Arc<JobIrqEvents>,
-> +) -> Result<Pin<KBox<TyrIrqRegistration<'a, JobIrq>>>> {
-> +    let job_irq =3D JobIrq { events };
-> +    // Ensure interrupt sources are disabled until the handler is =
-registered.
-> +    job_irq.clear_mask(hw.access().iomem());
-> +
-> +    // SAFETY: The caller guarantees the resulting registration will =
-not be leaked.
-> +    unsafe { TyrIrqRegistration::request(pdev, c"job", job_irq, hw) }
-> +}
-> +
-> +impl TyrIrqTrait for JobIrq {
-> +    fn read_status(&self, io: &IoMem<'_>) -> u32 {
-> +        io.read(JOB_IRQ_STATUS).into_raw()
-> +    }
-> +
-> +    fn clear_mask(&self, io: &IoMem<'_>) {
-> +        io.write_reg(JOB_IRQ_MASK::zeroed());
-> +    }
-> +
-> +    fn reenable_mask(&self, io: &IoMem<'_>) {
-> +        io.write_reg(JOB_IRQ_MASK::from_raw(self.mask()));
-> +    }
-> +
-> +    fn read_raw_status(&self, io: &IoMem<'_>) -> u32 {
-> +        io.read(JOB_IRQ_RAWSTAT).into_raw()
-> +    }
-> +
-> +    fn clear_status(&self, io: &IoMem<'_>, status: u32) {
-> +        io.write_reg(JOB_IRQ_CLEAR::from_raw(status));
-> +    }
-> +
-> +    fn mask(&self) -> u32 {
-> +        JOB_IRQ_MASK::zeroed().with_glb(true).into_raw()
-> +    }
-> +
-> +    fn handle(&self, status: u32) {
-> +        self.events.signal(status);
-> +    }
-> +}
-> diff --git a/drivers/gpu/drm/tyr/irq.rs b/drivers/gpu/drm/tyr/irq.rs
-> index 4a065c6272c5..5632f50b0a13 100644
-> --- a/drivers/gpu/drm/tyr/irq.rs
-> +++ b/drivers/gpu/drm/tyr/irq.rs
-> @@ -1,7 +1,6 @@
-> // SPDX-License-Identifier: GPL-2.0 or MIT
->=20
-> //! Threaded IRQ wrapper shared by all Tyr interrupt sources.
-> -#![allow(dead_code)]
-> use core::marker::PhantomPinned;
->=20
-> use kernel::{
->=20
-> --=20
-> 2.39.5
->=20
->=20
-
-With the changes,
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-
-[0]: =
-https://lore.kernel.org/rust-for-linux/DN2ZFO94BZMF.2XTCCKEUDLZSB@kernel.o=
-rg/T/#t
+base-commit: 4405c18c95d2d0f99f6c581ef0ee8591a1aa6ccd
+-- 
+2.56.1
 
