@@ -1,99 +1,44 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795501310;
-	b=geXRdV+DFTFPSjCb7v10V66A2/KVouWL4bHZ1CRdMYwnFQctQcq2PcO2ArlR0hQhfFG9
-	 V+9s4o5+s427LxVCPOWrFDDwES1oPQIVle2JR0f8FbkfuCTABlrRnnwbf985IK3F5nbgE
-	 CKgm4L/kLdIMS46/HZev74ELQclA7i01Zhez4Rg9lTBrcPs05OLA9AIJ6oeuvspJgxh5F
-	 /sghqhDDp1KQnRijfYo3PVFUSTvZzV/5m0rUOv1yFGjCGsiZCXRGeQti6wNxZ2l9Lq32d
-	 kVdUD9fdTDv/MlCsG+qxOjeccTtvGR0dMFMQwVvyJIAhiJiKIsB5OK5+W+iJIG2kjcQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795501310;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Subject:From:
-	 To:Cc:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:
-	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=yDjib7Hyd6wNnIgneYMeyA51h7Twq0X5yVMVzVny/PA=;
-	b=mtlHrs9VNjOW50ZCazjEbTtvF5gGiBiHSzRs5dd8mfqbPz35t0HmCxnyBDtZHjTzrV+i
-	 p+Vx5qcHtKEMZT8SKA9AJ8soT9ipqHJsOsKwDhU5T2wSpMwk+fdMtuhTh+1H2FckW3N9A
-	 UxdqJb5XiLcW2aSNK6nfyBq+M/lkSbVOw8uPLKl0h+/4FoSRe2eGfaxIbPHttoGEhRSrf
-	 Wbbf3XqaBSr90WYlpTQjsvGSrzKZ4GGJxlEgW8z9+msbRXtn6xB0QD9xzeVSbu09L5fJO
-	 r4NXf4eQZAUgdGEa3/cv78s0WhU7ITKCDS9fj6iah2YHmBxPdgGia5vy7HTSnaaJOqA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b="VpFfE/wq";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.50
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013050.outbound.protection.outlook.com [40.107.201.50])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.29.242.92
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795503792;
+	b=OHBWbkK+fOqgpLihSQxrzKB4uYt6nXzm5gNBI8YJgoAconUH2FyHyE1dBBQr7p5UXowW
+	 V/PvpDRKjgQtPP8c5NhlszZ1gVPHx6tOTe0P+zEc4K0xifOQ8K1GuTj3hvIS/c0sVarEM
+	 5MDASDG6sBVMJ2pX3//KerfZlNXse+fe0cevjs3AsG4uoMmjgvdoxv1FRfqlJJ1/pTOq6
+	 jd9I7jNcPQ1u3aOVjkv29RVg4owMvoDZsBx39opSaDTt0eAtv1FAMYaS46bHosF4KZVhu
+	 UFXQFvnfPCZZo8oTrK49wASY2L5b0iDNk5mWcrNgfmpQHxaNSHQOcsGyuycQlSJPrFw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795503792;
+	h=DMARC-Filter:Received:X-Spam-Checker-Version:X-Spam-Level:
+	 X-Spam-Status:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=pgULmPX2IkV37esTIr12RjyMbe7G+CyAVZ6L97k4TXY=;
+	b=Q2EktUxnXxGiNyY5wSOyRzXdKfXzbjY8YFghVUsdV/FDfvdBFAvNr6vh+1G4EXGLGDeA
+	 nzv15qV5Kx7j3McE3B4Pai0+J99mBzi1/f8mG7L2KRjz0Xyn3csN+GR0imn9ilSoDOjN+
+	 QntyJRgEJenEn+o1a/7XXAQA+qPZ8o0Xgiy9vloZlJ8KIs0NJzeXecTAAXJdHkOIx+gCA
+	 ZLlKBLZL8HTWJBLpBFLAflDPwtwvpDTCi2FiZARNYa3n59cJ6wHVNy0VFmdEdouUA3GNT
+	 s4AxtHH1wfnDq0nbIKARp1g50AtShoyTv0Q5lBUtqY5MFJQ/Kx+YPs0IzDd++zEv9lg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=davidgow.net;
+	spf=pass smtp.mailfrom=davidgow.net;
+	arc=none smtp.remote-ip=203.29.242.92
+Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B43606A321;
-	Tue, 24 Nov 2026 06:21:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7B43606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=VpFfE/wq
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=itr0djN+nCy/vKzCNqJJ8wR5Y4PJtoRQ44Pa29Qcpr45sQ2CkG43V6jQNDfe+tymwsF/FGLnBfTKyg0kTW6DkMHOzKIyOkzYZKkqjzEXbgFXbap50goF0/QIkwVgkNChYpNT4W0ltZSyPT6xIEFy09cc4MtrMKb7bJEgtKLVeQ75BQqyh/Lbd/z7VBbbAu6Wo2EvBMbFlPxyQ/r3sf5z+WfZtyzBxpDdmrhwsooE3Mwj4ilgHwqMkstBnMjGZUCACdHOV2mKttFhr8eJaeYVcGWG4N0XysWYV7m0ig0ikwvAjHtZVEbyls5XVNqGRI12RPcqLEELo/6P7QkLHa21wg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yDjib7Hyd6wNnIgneYMeyA51h7Twq0X5yVMVzVny/PA=;
- b=d8vcgQ3d39JX4nyr175BRcmIU/szy9GMu/mEUJ2c10NLtLupxJ+XeHOj0uRULEwr7boSlxYHhGtfQGB9MlQ74GnBcNXgEXS/RFDBGfnKzwNGY77pMqfTkDfC16V/APq1NBiHHkgN9UH+cv14FeaVHetBJ4MJN4+V8DsR7o30dHUiF7pQ/otyOFmlVeEZHOs38ViXSRQv4mrlY+RE9uDArE2NYbUi2Q1xUBG0j0ayb1LUDGZq1x45tkPvD8tlGtcB/XgHayQtLuZJmezGce0zWWu1G0WHfBY3YPDjmF7fWLUq8GKhs3wsgJ+DtEdx2cHY9q5zWpVL8jcshGidiNoS2w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yDjib7Hyd6wNnIgneYMeyA51h7Twq0X5yVMVzVny/PA=;
- b=VpFfE/wq89WQFsDHyPZAV93nxkjmYp7Ai+oAljOHr86YlBwPVhUBPNR1QvaEGhI18hEH2ZRQKf4nl94EBtvgrwFh5CsluhyCfRCeDQQDl6vQOwKhnpQNeTbcfVPg6DKg+Z7iECk+HdN9tJQiXkhmqdmrkI9sEtApVP3eoUrn0W07bGIE5iikuE17nyHrRJq89tykHjpjx8c9Y9U3tWSoXGK2Tb1hLifG7zOh93ymdVVdrwvkD3htC6GRg3sPbEx40UmXXAgy3qkKW6tbFGY+NGn9hj+xfYBs0RODBep5HYreuEeMfYUcehUMzwXFeozYFOgRg2eDKxqYtF4l/DqKEg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by SJ5PPFCD5E2E1DE.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::9a2) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.14; Tue, 24 Nov
- 2026 06:21:46 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0615.012; Tue, 24 Nov 2026
- 06:21:46 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 24 Nov 2026 15:21:42 +0900
-Message-Id: <DN383BHVHGTB.VVVG9TORAA70@nvidia.com>
-Subject: Re: [PATCH v2] samples: rust_dma: add missing newline in dev_info!
- call
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Ivan Borovyk" <saref012@gmail.com>
-Cc: <dakr@kernel.org>, <ojeda@kernel.org>, <abdiel.janulgue@gmail.com>,
- <daniel.almeida@collabora.com>, <robin.murphy@arm.com>,
- <a.hindborg@kernel.org>, <boqun@kernel.org>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <tamird@kernel.org>, <work@onurozkan.dev>,
- <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-References: <20261123010430.365536-1-saref012@gmail.com>
- <20261123230618.375172-1-saref012@gmail.com>
-In-Reply-To: <20261123230618.375172-1-saref012@gmail.com>
-X-ClientProxiedBy: TYCP301CA0040.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:400:380::12) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E92C606A31E;
+	Tue, 24 Nov 2026 07:03:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E92C606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidgow.net
+Received: by sphereful.davidgow.net (Postfix, from userid 119)
+	id 38363200E22; Tue, 24 Nov 2026 15:03:09 +0800 (AWST)
+X-Spam-Level: 
+Received: from [IPV6:2001:8003:8802:7000::41b] (unknown [IPv6:2001:8003:8802:7000::41b])
+	by sphereful.davidgow.net (Postfix) with ESMTPSA id 0CBBD200DE8;
+	Tue, 24 Nov 2026 15:03:04 +0800 (AWST)
+Message-ID: <b3285ace-e89b-4d2e-bbd0-14e7a80609ac@davidgow.net>
+Date: Tue, 24 Nov 2026 15:03:00 +0800
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -103,83 +48,89 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|SJ5PPFCD5E2E1DE:EE_
-X-MS-Office365-Filtering-Correlation-Id: c6751057-1c24-419b-012a-08df49f336e9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|7416014|10070799003|23010399003|18002099003|22082099003|11063799006|56012099006|4143699003|261022105027099003|261028144727099003|261026140227099003|261009223027099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	W6qZs2mN9tcGUwfmz1fTrKWnOcht+q4cUtYk4CadQVbV+NseqeCxeRTjnYYgyD56lu2q4fmXGZeIGcZsFRmgIjX0EIeTBWWjXaLLclojcVNpbIT777/uiYgZJ+UV9QM+BIkR8Rj/LO0/T3d0usi4Hbr0T5te88U7sBOh+lEZ1qBmGRGDPvrOsyss7GW7Stlvbor50OYtVf14hz0MgytujC89m0spBAmadA5ijRxxmD3LsyruuwNaVXIL1ah2Fn7t8tVEn7iXLS89U2YZe07jUYSJ+qoaFOFVD5OPLSvOATFs2DzLUs6GzHOshMIH8N+k+dKC0f9ISgA7y4mlk8LmXbMANopPbgO/VihjwKhifbn4auKu+iJoXUz3/3xFjXejljPqVHnRxquVEU3LaQtZe25/EcnBei/N5SwAfLN5kruYAdTk5Ik1lsK2zxu+OQcNzJEEt7mrWBva0f0Kw898oVdGg265mmQptELDMgye4UKihfuKB7JMpRdRL6Js1hRVJxG9jhWLjDz3Syvyf71qKxso7JkXxnoG/PHJ5njPF9irR87nIiQp+ED0a+BfiprJ06WxejDOEwPs5Kg9UKxXAPP0W6WPj9GewbgP5ZnfrteJpy40l5peCYDW8aY11jNjRKI05iAEUVpECVZExymIjq0wf7Uaaj8wWkxaniwIgyY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014)(10070799003)(23010399003)(18002099003)(22082099003)(11063799006)(56012099006)(4143699003)(261022105027099003)(261028144727099003)(261026140227099003)(261009223027099003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?K0NLT09wTGdCMkQ0ekxnNXhXL1A1UHdIR0hac1haeVJNdHBITWRSMklMaXdC?=
- =?utf-8?B?c3oza01mLzA4Q3JmWUFJemJwb0xzTHJUZVhOZE52SC9vOXNzZWhnemNrZHBT?=
- =?utf-8?B?alhJd1MzeGYrYWhCczZyT1pnMGtuakVPRndKUy9ETjNGM01OUDA1V0NTL3NM?=
- =?utf-8?B?YTZBelVLVjI1UllWQkl3SWxSbGpSUWsxUUE3VG9JNnpGN1ZYdHZEbUNyQ1VS?=
- =?utf-8?B?enpZNkEwTWpWZmU1ZVA0OWRnWU5ocysvM2hpTTd4RnhaYjVaZFhLdURYbHI4?=
- =?utf-8?B?cURvZE8yd0ZQTnJLNHNmUVdyYWN4ZGJkRCtBK0dWcFZLMHFpc1ByekxQTEpN?=
- =?utf-8?B?YmFxOXBmWTQ2VDlESFRRMVlGbUpOaGFyRXAxOUQ1eFRiN2dyMzZHZ21tNEJT?=
- =?utf-8?B?b25Ca0g4eXRhNVBkb05LNUdrN0E2Ukg3NXp5dUM0NmkzTWpBc1pmajJLc2pr?=
- =?utf-8?B?SGFZNUZIY0tNWHI5RVVKMmRTR2lKS3E1dVk5VGhkeXZvZnozb0dzS0x5bzBk?=
- =?utf-8?B?ZGZJTUhKbU43bWplWXYxSmxuOGtJNlVtT3BLc0E3WlFUR2djNlhsWmZIS3Vy?=
- =?utf-8?B?aHR1Vmo4cVArY2psR2t4S0JxcGJLTjB6WjlINGhweUFvdU80T1NWdEliS0x5?=
- =?utf-8?B?cGFFTW1qQythQldTWUQrWWV1WkpsN3BMS2IzU1Y1YzFhd2F4dDBBU1J4M2xh?=
- =?utf-8?B?dUVaWERMeDFnVnpzcFYvVHVRdVlGVElpSjFLRjJ2MUEzRTJocitDVXdTSnM1?=
- =?utf-8?B?ZzIxZWZpdkQ2ekZPN2lOOHVUMWtmRGExWUFlUFdMQWx6M1pROXRESFdueldD?=
- =?utf-8?B?cktsSisvOUlkMkttWVpJcDl3cVVOT0J0V2VwUHVQRzdHVWtyZXFIK3JYNm5U?=
- =?utf-8?B?ZFBRdXdac28yZFBjVkVnRmhuUUxzTGQvRHoydXl6Uy8veWxKZHpudlNhN1FX?=
- =?utf-8?B?QmtMQ2U3R1dPVUYxbEVnWkVuSmtxWlFvbGM3TUNFS3Bzb3BaRExLeG1kd3Vq?=
- =?utf-8?B?eGNqT3JhQ0pKTmJYNVBsTXo1UmIvaE1qYnhIaVU0WTlyMTFKWFJrYjI5empV?=
- =?utf-8?B?RWp5ME14K3dIRldodEd4MEN1VkpCVXprS1VINHduMVdyMjh0U3NoQytIUE9h?=
- =?utf-8?B?YlVhZ2JjWVBOMmp1Wjl4TXlFNXlqejE2am0zQ3IxWjg5TUlsYzZOdUh5M0pP?=
- =?utf-8?B?UTJMN0R4UXlZZGdKQWxSN2d4Mmt0dmtPYUJteGs1clBoM0VBZ2J0SzFhT0Ji?=
- =?utf-8?B?cXVPVmg0akNDd2JpSVJ4UU5EY2p2bGZuUitQeHlGMFl3d3c3cXpPZTAxVEhY?=
- =?utf-8?B?N0NZZU4vb0FMT0lKVWFwczRpbm1NT3lKbGVTc3U3cWF5OEZnemU4SmJSUCta?=
- =?utf-8?B?OWFhb09qVzl3ODNLY2ZWc0dOaGFXSlBzNXlvNllOM0t5NnJPMi9xcTZWVzZW?=
- =?utf-8?B?eng0M0txbnBGK2pDQjVxVHZONW9WZzJ6anN0U2ZFc2EybXFVckdEMGFML3VV?=
- =?utf-8?B?dWhuWVRNSUhhc0JxUUlVQUhGNmFTL1Nsb2t3ZVZsWFI0eSs2cHp0TEpzRlNM?=
- =?utf-8?B?djBzSko4WG1PSkJlejhzL2xGcEo2TW5QSStGNWU0clYyZ2dERkwzU25BamtH?=
- =?utf-8?B?TENTb2RWaEJzQWcyT2VacDNSWjJRcmtWbi9GNmxvUEpiakxrM1NVR1JsVTdq?=
- =?utf-8?B?b1ZsME5ZVnU4enBtN2Q1Ti9XRVVxMGdXK0M5VXFLSXN0NzJTOTIvWmllYklI?=
- =?utf-8?B?bnZsRU4xSkRuVWZWYW1UMTEwRVZSRXAwbjd1UGN0TmFnUjhqM2JGdXU4MUxy?=
- =?utf-8?B?OU1ZZGtQcHIxYTFFVzVNNGo2ZWxKY01TeHA0UmY0bis4ZmZLUTczS2E4ZmVC?=
- =?utf-8?B?MUEzSXRoU0FYYks0ZTF1UC9jM3lWclB2cW1XUVNLb0lnb3R2cnpmbU4xTXJh?=
- =?utf-8?B?V3ppWnI3VG5BMWZZanJURVVjMGgyaVVITnFKM0RIOGZtbENUSW01SEJ0bmJo?=
- =?utf-8?B?QTZlZDdtekp0alJTellETHV2R2U4UXh1VkRZSXNRZ1NxNldrWFUvZFJIdDNi?=
- =?utf-8?B?M0x0N1RqbDhJZ2kvbXByblRlM1ZzKzI1U0VEMnprL2RIL1JBTTRmUGM1RFVB?=
- =?utf-8?B?V1kvSlNtdGZtWnByRks3OWNlWFBKSDZNMVVta0lCZGhLcHVYQzVtUUZ5RDFy?=
- =?utf-8?B?VTQ1K2hQWDBXeG1nWEFzL3Y4aVpZZ0paWkxGZjNrTDY1bkxxbWwrd25GRnR2?=
- =?utf-8?B?N2xTbVFtM242ZWpxRmVjR2hiMUtibUtvRXhnU28rcDRpb296b3FLRHFZbUNR?=
- =?utf-8?B?UzVibk1NdmpFMnBHWGVzU0t0L1ZBMDNsRXROM296QlFRaTE5WWloSGhoYU84?=
- =?utf-8?Q?KifXPPCxzmxenk4ir4XdvLg5uZ3CsenfNM4iqIZHEOfZb?=
-X-MS-Exchange-AntiSpam-MessageData-1: ToGiMiP6MYxumg==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c6751057-1c24-419b-012a-08df49f336e9
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 06:21:46.0977
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qCtHH7joIic/i6Uc7zS8eBc9/LWqA/B3hQse6WhPQOBN/wHVjN5einvrK+CaPGA+sKzTUiFC70oRNBydXB0KiQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFCD5E2E1DE
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] rust: doctest: fix line numbers after crate-level
+ attributes
+To: git@younes.io, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>,
+ Shuah Khan <skhan@linuxfoundation.org>
+Cc: linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261107-rust-doctest-line-fix-v2-1-a66528f0a7c3@younes.io>
+Content-Language: en-US
+From: David Gow <david@davidgow.net>
+In-Reply-To: <20261107-rust-doctest-line-fix-v2-1-a66528f0a7c3@younes.io>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue Nov 24, 2026 at 8:06 AM JST, Ivan Borovyk wrote:
-> The dev_info! call in PinnedDrop::drop() lacks a trailing newline in its
-> format string, unlike the other dev_info!() calls in the file. End the
-> format string with '\n' for consistency with the dev_*!() and pr_*!()
-> macro conventions.
->
-> Fixes: 5444799d701c ("samples: rust: dma: add sample code for SGTable")
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1139
-> Signed-off-by: Ivan Borovyk <saref012@gmail.com>
+Le 08/11/2026 à 00:36, Younes Akhouayri via B4 Relay a écrit :
+> From: Younes Akhouayri <git@younes.io>
+> 
+> When a doctest starts with a crate-level attribute such as
+> `#![expect(...)]`, KUnit reports failures one line too early, and
+> `line!()` returns a line number that is one too low.
+> 
+> This happens because `rustdoc` moves those attribute lines out of the
+> test body and puts them above the `main` function it generates. The
+> generator works out where the body starts by counting the lines above
+> `main`, but it does not know that some of those lines were moved there
+> from the body. So every line after a moved attribute is mapped one line
+> too early (or more, if there are several such attributes).
+> 
+> For example, adding `assert_eq!(36, 0);` as line 36 of
+> `rust/kernel/init.rs` (inside the doctest that starts with
+> `# #![expect(clippy::undocumented_unsafe_blocks)]`) gives:
+> 
+>      # rust_doctest_kernel_init_rs_2: ASSERTION FAILED at rust/kernel/init.rs:35
+> 
+> Twelve in-tree doctests start like this, e.g. in `bits.rs`, `devres.rs`,
+> `init.rs` and `std_vendor.rs`.
 
-FWIW,
+A quick note that the ones in bits.rs are nested in a macro, so the 
+location is dubious anyway, and this doesn't fix it. Others all looked good.
 
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+> 
+> Fix it by counting the attribute lines that `rustdoc` moved (every
+> `#![...]` line above `main`, except the `#![allow(unused)]` that
+> `rustdoc` adds itself) and taking them into account when computing
+> where the body starts.
+> 
+> `rustdoc` always starts its output with that `#![allow(unused)]`, so
+> check for it before relying on the layout. If a future `rustdoc` (or a
+> crate-level `#![doc(test(attr(...)))]`) changes it, print a warning once
+> and keep the previous behaviour rather than failing the build: the tests
+> still run, only the reported line numbers would be off.
+> 
+> Only single-line attributes are handled, which covers every doctest in
+> the tree today.
+> 
+> With this change, the example above reports `rust/kernel/init.rs:36`,
+> and doctests without such attributes keep reporting the same lines as
+> before.
+> 
+> Fixes: a66d733da801 ("rust: support running Rust documentation tests as KUnit ones")
+> Signed-off-by: Younes Akhouayri <git@younes.io>
+> ---
+> Changes in v2:
+> - Check that the generated test starts with `#![allow(unused)]` before
+>    subtracting the moved lines; otherwise warn once and keep the old
+>    behaviour, instead of clamping with `saturating_sub` (Miguel).
+> - Note in the comment and commit message that only single-line
+>    attributes are handled.
+> - Link to v1: https://patch.msgid.link/20261027-rust-doctest-line-fix-v1-1-0c13185a58b6@younes.io
+> ---
+
+Thanks very much. This looks good to me!
+
+Reviewed-by: David Gow <david@davidgow.net>
+
+Cheers,
+-- David
