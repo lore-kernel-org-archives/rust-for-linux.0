@@ -1,75 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.72
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795546470;
-	b=z2+aC+GXc9vZ9cCWp64d8pBi1ENUXz/hLQjN6qiJkJim9LdSfZax74nK5rf2cZDFmCJc
-	 qoxsE9TSdmtZQ0ZEOcz23lAoIcTHxuiyWrkUcc1nlGIaMGz10fLpu8YDCwJ0T9KmkOVWI
-	 I3/O50mWqypocygW7nckaevG50+2nW/alyp1jRn+2FygBj5bT4agky/70VYs5NNmUFsu3
-	 ygvZ3Xr6njKHHynyI3QY2CUmUb5f46dBk5qoNaINPrTD578aY2Me3dXusX3N1NIpqmyDW
-	 ESKzIdDePDSc9Q4SXoPxShxzCPDZc+QZbVYDD6pkcKbEuydYYV3KcmvxlnFraGfK5zA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795546470;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=JlXoPCsikAIAHDol8QyOvxuGmdfr1LiWSUW7tFYnhrg=;
-	b=wrtxZJWIq7ZiIedCNWAji7kNsxWwx2gjbeI1pxnGhzfZzhvXsQU/v8oHIqXqWkcvyewR
-	 uaxrB3O/o/2in2CCPpIgEwGuzr3OgymVR/65TZxfMF+/i3instbf3KlFI3N2CFS7O2Zyk
-	 cEXxWbi5/g+oYnRA3uOq/9CrifjJ186dHqqboNkuXsdWzRMQXqZ4wqCg+V2MsC6rRSbCP
-	 +89kf08LVUyKwnWreOGuMFguxDEVyjKWmCg2S5kJetCtJ3UcCW7m47aveebKhm8e66d8w
-	 NcvIhFPJMwRBNdW599iWI21r1NeBKFchIyA+pQ/dIuIJ5GQYy/o42ir6opeKFSuw3oQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cs25wCsA;
-	arc=none smtp.remote-ip=209.85.128.72
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795553407;
+	b=wTsOlAYJZ7q8b1EoREilgmSDjz8hOQKFfCW3l2bYtuCh0LtDfITpwcAMWkKa7z2k3/x5
+	 rVItTj64F+Yqb8Uz+wfzwh028Wc+bv9JSKEwme5F7vQ/ZGUJgj5RL+ZYMdvmjs/HUnGk9
+	 D7hMPM/sk1D0zmiGQp9m6zAOtEFOA1y+QVqqANCN6Rrn6dt5YO7JuTnJxwmh9s8fcmXMT
+	 E22H6BOQ1fK2aZlKUV3EK3TiyM82L2tgyJyL/OM1qnjMUiMofFOYv5SO7ejWbmKAU2rSl
+	 0lanicBMBSnjTb8Kje1SDo1ncJAqe8uvGaRpCp2VAbCJMz8KJIH/2SADqRwtA1BW/Zw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795553407;
+	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
+	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
+	 References:To:X-Mailer:X-ZohoMailClient;
+	bh=9B9bTwB3nnMr+exBXeCJuZEOmi14vsPeF4NsKFNnfdY=;
+	b=NDPGHyo3zb7bmW6xXN3jZPYvSMM5JyCJwyHvoAYslQHwEYAi2ldkqti5/jYaKhrrSMTC
+	 f1cJZQJI3qxqj5RxXuUkzGL6b/kApfvhtJWE/MLyk4eqJNQVa+JkMV8tGFk7HpTtRNJPp
+	 z5URXZpEmnVxObmS8Y2KQMZ/1Wx3nDt+sJuUuAa42x0Uf1yyN0QI2dw34ubih75/fAsa3
+	 3dvUwSx1ibm8wJrCsptDmfZsyM7LonpUkVXxKpdv7BSFJfoZ79Y3GaFJGp3Okz9mvkJ/d
+	 eAG2buYaxfPJbmyo948T1PI/E8DT4oXQxTyzAGbr3MAxmAhYh57wzEJVlGjLADBHCCw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=EqGOsOZR;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0228606A337
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Nov 2026 18:54:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F0228606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2CD606A31E;
+	Tue, 24 Nov 2026 20:50:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EB2CD606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cs25wCsA
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a009f82bedso34923915e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 24 Nov 2026 10:54:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795546468; x=1796151268; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JlXoPCsikAIAHDol8QyOvxuGmdfr1LiWSUW7tFYnhrg=;
-        b=cs25wCsAxCYY1cJ6Eg6HcinqoZc4Ui95SsWD9SLhzVgU9u/mUxznVWamPkE2XUy9im
-         X/HlL+u7UcI3aNc3FzmSU76n3MgItgzvA6DYEWvBqbHJ89HkiI/ifBOIPcmQsbvm5d4L
-         25i7cMtrd5kDP3pE06QF6T/9Zwhqyv55lSL8mQHH/Pcn6HKj3j/D8ReXSupuP0dBhD8n
-         jSEJ3wxGu3hy9nNNnai4mTjQzEn5MZceDId9G2WpRaDBJMdBQFG97YOhdsxgPoBif4m6
-         Bod4+sfeFwg1WgTpD12YLxcsBTgou/BIqJ74NmyXFx1KPGFl09D/8ejYplf7reCdI7F/
-         +5QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795546468; x=1796151268;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JlXoPCsikAIAHDol8QyOvxuGmdfr1LiWSUW7tFYnhrg=;
-        b=I8nrF/IC09gb0YPzMvVv9MM3PEo5bhFzSCX6xFDFlk8m9+9rf/sNtDymj89S2/cRlF
-         0eULJ+/k6/+LKr3pfrTLDLu+JATZFOZsSIyY/9mdQMheogpEyVtxUjuG/0Z9yg1hv/lY
-         fjz1rqruKUvwTnc+HyKG2W5hzTJ3MbfQOIOERQuQu1vaERozqszm5r6h360HaIsVE3jK
-         F2TDPB8WomXnesGocM1FCOGXMn2NBaqdmXOfBpZGVmj1UhvxVdviQvZqihKLBJGPmx9a
-         ok8Yl9KZNmcLG66tKNCRaTkC6kTV13u/cBVJAn63abz0wVjfuTH5RkDUP0VmrjgMfBga
-         q+Cg==
-X-Forwarded-Encrypted: i=1; AL+hErHbbi5A6VRP/BW86BrYtk1xjY9bzaOz1YxpX8zL78f0pPHT3gp7qTH9B1R46jF9d7VsPBvfzuShPLnhkY+B/g==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+Uv6ReKmolIGh2pjE98JmTwuCmheqfEOsguExpoAI9/q878OCk
-	J+Ym1S+JZyLs9NpL+w6yw7WFUBY75NtTn+1hi2XxQPIkqU96jAcz8cISRB780q2vHFjtf72AVB7
-	nCmJYuRoXAyH0LP7bJg==
-X-Received: from wmbje17.prod.google.com ([2002:a05:600c:1f91:b0:4bb:5e69:8177])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600d:82d0:b0:4bb:818d:8d8f with SMTP id 5b1f17b1804b1-4bb88818955mr377886255e9.23.1795546468273;
- Tue, 24 Nov 2026 10:54:28 -0800 (PST)
-Date: Tue, 24 Nov 2026 18:54:27 +0000
-In-Reply-To: <20261119-fix-drm-rust-fdinfo-v1-1-c10f4134488d@gmail.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=EqGOsOZR
+ARC-Seal: i=1; a=rsa-sha256; t=1795553365; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=TozeQZGyOqUFcnEUTLGcR38H8GdZ/y4eh+B5BG9Tq+1xjsfiiUk4OJ1fzxOT1dtQgKboNNX7wOKnuyCNak1EyeVeToCl8R9+vXwdgLyLPt9uH4Bs2Lwj48iZbpWRR6+AVxPKWr+Adg8ElIx6ztnjkjpj7+LwEAdJeBES7c6tLEA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1795553365; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=9B9bTwB3nnMr+exBXeCJuZEOmi14vsPeF4NsKFNnfdY=; 
+	b=TmaYPpkiC2QwXK61FYf/kARTj3SaIoTbfLlVp7i7DygzokQ9pRhabYq2q5riEc0tu92VHlnNhEiCf/87/O29USyjXEjgrj6878gcVY8TnCopsJaSjiMicHsIafYyk3Ubbg3vE56WKQfXuJ1tCOCvtx9KEwxyzR83qsPPNWjb5tE=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=EqGOsOZRwTrPwDhqBVCr2cMKLazxBcp6GGvT6BUzLTK0Tc0A7K02KzXFN4tJaZ3KqNaTiTZcxIor4zmF97xEQs3+a1A2CoCGTrE9FdUY7T3L7jn0SEejAKi0UJ9t0+iEnj7gvPjE7vV245P2Efg+TqMlWeJ+Ybg1TmYucTfS/3M=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=9B9bTwB3nnMr+exBXeCJuZEOmi14vsPeF4NsKFNnfdY=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795553363172222.8218597760449;
+	Tue, 24 Nov 2026 12:49:23 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -78,39 +57,290 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261119-fix-drm-rust-fdinfo-v1-1-c10f4134488d@gmail.com>
-X-Mailer: git-send-email 2.56.1.831.g720f3f5937-goog
-Message-ID: <20261124185427.3821700-1-aliceryhl@google.com>
-Subject: Re: [PATCH] rust: drm: enable standard fdinfo for Rust drivers
-From: Alice Ryhl <aliceryhl@google.com>
-To: Peder Bergan <peder.bergan@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, "=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, 
-	Asahi Lina <lina+kernel@asahilina.net>, Lyude Paul <lyude@redhat.com>, 
-	Janne Grunau <j@jannau.net>, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-api@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH v7 3/3] drm/tyr: add Job IRQ handling
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260728-tyr-irq-v2-v7-3-4e172e58e28c@collabora.com>
+Date: Tue, 24 Nov 2026 17:49:04 -0300
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ kernel@collabora.com,
+ Deborah Brouwer <deborah.brouwer@collabora.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <03D5FC68-0E3B-47B4-A3E4-6F2EABD54096@collabora.com>
+References: <20260728-tyr-irq-v2-v7-0-4e172e58e28c@collabora.com>
+ <20260728-tyr-irq-v2-v7-3-4e172e58e28c@collabora.com>
+To: Laura Nao <laura.nao@collabora.com>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-ZohoMailClient: External
 
-On Thu, Nov 19, 2026 at 10:48:47AM +0100, Peder Bergan wrote:
-> DRM monitoring tools use drm-driver and drm-client-id in procfs fdinfo
-> to identify DRM clients. The common Rust DRM file operations leave
-> show_fdinfo unset, so these entries are missing for those clients.
->
-> Set show_fdinfo to drm_show_fdinfo. The DRM core helper emits the
-> standard client information and calls the separate driver statistics
-> hook if the driver provides one.
->
-> Fixes: c284d3e42338 ("rust: drm: gem: Add GEM object abstraction")
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1266
-> Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Hi Laura,
 
-Alice
+> On 23 Nov 2026, at 11:58, Laura Nao <laura.nao@collabora.com> wrote:
+>=20
+> The Job IRQ reports requests from the CSF firmware, including global
+> interface requests and CSG attention bits. Only the GLB bit is =
+currently
+> handled, as it will be used to check firmware readiness. CSG bits
+> handling will be added at a later stage. The Job IRQ handler masks the
+> interrupt in the primary IRQ handler, processes pending raw status in
+> the threaded handler, clears the handled bits, and reenables the mask
+> before returning.
+> Add JobIrqEvents to hold the wait queue and the ready flag used to
+> signal firmware readiness when the GLB bit is set.
+>=20
+> Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> Signed-off-by: Laura Nao <laura.nao@collabora.com>
+> ---
+> drivers/gpu/drm/tyr/fw.rs     |   1 +
+> drivers/gpu/drm/tyr/fw/irq.rs | 148 =
+++++++++++++++++++++++++++++++++++++++++++
+> drivers/gpu/drm/tyr/irq.rs    |   1 -
+> 3 files changed, 149 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
+> index f2e0404addf2..ecf2ea171bc9 100644
+> --- a/drivers/gpu/drm/tyr/fw.rs
+> +++ b/drivers/gpu/drm/tyr/fw.rs
+> @@ -69,6 +69,7 @@
+>     vm::Vm, //
+> };
+>=20
+> +pub(crate) mod irq;
+> mod parser;
+>=20
+> pub(super) const CSF_MCU_SHARED_REGION_START: u32 =3D 0x04000000;
+> diff --git a/drivers/gpu/drm/tyr/fw/irq.rs =
+b/drivers/gpu/drm/tyr/fw/irq.rs
+> new file mode 100644
+> index 000000000000..a736d8cd4374
+> --- /dev/null
+> +++ b/drivers/gpu/drm/tyr/fw/irq.rs
+> @@ -0,0 +1,148 @@
+> +// SPDX-License-Identifier: GPL-2.0 or MIT
+> +
+> +//! IRQ handling for the Job IRQ.
+> +//!
+> +//! The Job IRQ signals events from the MCU, including global =
+interface acknowledgements.
+> +#![allow(dead_code)]
+
+In general, please prefer expect(dead_code) instead.
+
+> +
+> +use kernel::{
+> +    device::Bound, //
+> +    io::Io,
+> +    new_waitqueue,
+> +    platform,
+> +    prelude::*,
+> +    sync::{
+> +        atomic::{
+> +            ordering,
+> +            Atomic, //
+> +        },
+> +        Arc,
+> +        WaitQueue, //
+> +    },
+> +    time::{
+> +        Delta,
+> +        Msecs, //
+> +    },
+> +};
+> +
+> +use crate::{
+> +    irq::{
+> +        TyrIrqRegistration,
+> +        TyrIrqTrait, //
+> +    },
+> +    regs::job_control::{
+> +        JOB_IRQ_CLEAR,
+> +        JOB_IRQ_MASK,
+> +        JOB_IRQ_RAWSTAT,
+> +        JOB_IRQ_STATUS, //
+> +    },
+> +    driver::IoMem,
+
+rustfmt produces a (small) diff here.
+
+> +    reset::HwGate, //
+> +};
+> +
+> +/// The firmware events published by the Job IRQ handler, and the =
+queue used to announce them.
+> +#[pin_data]
+> +pub(crate) struct JobIrqEvents {
+> +    #[pin]
+> +    wait: WaitQueue,
+> +    /// Set once the firmware has signalled that the global interface =
+is ready.
+> +    ready: Atomic<bool>,
+> +}
+> +
+> +impl JobIrqEvents {
+> +    /// Creates a new, empty set of Job IRQ events.
+> +    pub(crate) fn new() -> Result<Arc<Self>> {
+
+There is an ongoing effort[0] to get rid of Arcs in places they are not =
+needed
+using self-ref pin init.
+
+Since I expect other users to be able to take a reference to this field =
+as
+applicable, lets drop this Arc for the time being.
+
+
+> +        Arc::pin_init(
+> +            pin_init!(JobIrqEvents {
+> +                wait <- new_waitqueue!(),
+> +                ready: Atomic::new(false),
+> +            }),
+> +            GFP_KERNEL,
+> +        )
+> +    }
+> +
+> +    /// Clears the firmware-ready state.
+> +    #[expect(dead_code)]
+> +    pub(crate) fn clear_ready(&self) {
+> +        self.ready.store(false, ordering::Relaxed);
+> +    }
+> +
+> +    /// Waits until the firmware signals readiness via the GLB IRQ =
+bit, or the timeout expires.
+> +    pub(crate) fn wait_ready(&self, timeout_ms: Msecs) -> Result {
+> +        self.wait.wait_event_timeout(
+> +            || self.ready.load(ordering::Acquire),
+> +            =
+Delta::from_millis(timeout_ms.into()).to_jiffies_timeout(),
+> +        )?;
+> +
+> +        Ok(())
+> +    }
+> +
+> +    /// Updates state and wakes up waiters
+> +    fn signal(&self, status: u32) {
+> +        // TODO: handle other Job IRQ events (e.g. CSG attention =
+bits) here once
+> +        // support for them is added.
+> +
+> +        // The GLB bit only signals firmware readiness once, at power =
+up
+> +        if JOB_IRQ_RAWSTAT::from_raw(status).glb() && =
+!self.ready.load(ordering::Relaxed) {
+> +            self.ready.store(true, ordering::Release);
+> +        }
+> +
+> +        self.wait.wake_up_all();
+> +    }
+> +}
+> +
+> +// The Job IRQ, signalling requests or notification from the MCU.
+> +pub(crate) struct JobIrq {
+> +    /// Firmware events signalled by this IRQ.
+> +    events: Arc<JobIrqEvents>,
+
+If we get rid of the Arc, this would become=20
+
+events: &=E2=80=98a JobIrqEvents.
+
+
+
+> +}
+> +
+> +
+> +/// Requests a threaded IRQ registration for the Job IRQ.
+> +///
+> +/// # Safety
+> +///
+> +/// Callers must not `mem::forget()` the resulting registration or =
+otherwise prevent its
+> +/// [`Drop`] implementation from running.
+> +pub(crate) unsafe fn job_irq_init<'a>(
+> +    pdev: &'a platform::Device<Bound>,
+> +    hw: Arc<HwGate<'a>>,
+> +    events: Arc<JobIrqEvents>,
+> +) -> Result<Pin<KBox<TyrIrqRegistration<'a, JobIrq>>>> {
+> +    let job_irq =3D JobIrq { events };
+> +    // Ensure interrupt sources are disabled until the handler is =
+registered.
+> +    job_irq.clear_mask(hw.access().iomem());
+> +
+> +    // SAFETY: The caller guarantees the resulting registration will =
+not be leaked.
+> +    unsafe { TyrIrqRegistration::request(pdev, c"job", job_irq, hw) }
+> +}
+> +
+> +impl TyrIrqTrait for JobIrq {
+> +    fn read_status(&self, io: &IoMem<'_>) -> u32 {
+> +        io.read(JOB_IRQ_STATUS).into_raw()
+> +    }
+> +
+> +    fn clear_mask(&self, io: &IoMem<'_>) {
+> +        io.write_reg(JOB_IRQ_MASK::zeroed());
+> +    }
+> +
+> +    fn reenable_mask(&self, io: &IoMem<'_>) {
+> +        io.write_reg(JOB_IRQ_MASK::from_raw(self.mask()));
+> +    }
+> +
+> +    fn read_raw_status(&self, io: &IoMem<'_>) -> u32 {
+> +        io.read(JOB_IRQ_RAWSTAT).into_raw()
+> +    }
+> +
+> +    fn clear_status(&self, io: &IoMem<'_>, status: u32) {
+> +        io.write_reg(JOB_IRQ_CLEAR::from_raw(status));
+> +    }
+> +
+> +    fn mask(&self) -> u32 {
+> +        JOB_IRQ_MASK::zeroed().with_glb(true).into_raw()
+> +    }
+> +
+> +    fn handle(&self, status: u32) {
+> +        self.events.signal(status);
+> +    }
+> +}
+> diff --git a/drivers/gpu/drm/tyr/irq.rs b/drivers/gpu/drm/tyr/irq.rs
+> index 4a065c6272c5..5632f50b0a13 100644
+> --- a/drivers/gpu/drm/tyr/irq.rs
+> +++ b/drivers/gpu/drm/tyr/irq.rs
+> @@ -1,7 +1,6 @@
+> // SPDX-License-Identifier: GPL-2.0 or MIT
+>=20
+> //! Threaded IRQ wrapper shared by all Tyr interrupt sources.
+> -#![allow(dead_code)]
+> use core::marker::PhantomPinned;
+>=20
+> use kernel::{
+>=20
+> --=20
+> 2.39.5
+>=20
+>=20
+
+With the changes,
+
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+
+[0]: =
+https://lore.kernel.org/rust-for-linux/DN2ZFO94BZMF.2XTCCKEUDLZSB@kernel.o=
+rg/T/#t
+
