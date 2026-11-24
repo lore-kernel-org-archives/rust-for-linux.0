@@ -1,92 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.7
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795539257;
-	b=g+aSWUD1fNjOO7htIK94xv1NWGKy+njy8SmQui7WbEgBi9qiprT8T3kd6tk6Vf08C+Vz
-	 jHI0UbhftaxNaZWULVcLTnPsMv5IqeRqDBKOPiJ92f4eeCTqe7r4CC2hmm11V/DIyNCgP
-	 TtkdRt915oBHUw0KB8zlXVFTqjR8ONODVhddwLWLTBD3WAFNw8bX6GJKwvhI0XtFEl4Mk
-	 0l3J1eTaPPK+0CoCUKZrAUoUnG0g9qCLScUFOfncGAOLVjz5FsKf1E9O//m3eJ0gBx0xi
-	 6DDrJCXZ3n21waZzB9ccvVmr8ccQdO0ay6IIP8iLivrVsmsmn5MFoqECCsVZQAmTKCg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795539257;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=CQq3cn5OTp7tCndSsmVZ6PwJT9jX22+B9CY0Yosdsx4=;
-	b=UFbMi7gdhtpNFWogB23P6mQbSM/5gsJuSDvi3uT8Yod+VPh9+4P/C4aZUZ2SvAMkVLSa
-	 SLOcZe7BQ0WTOKrGOOBWLN0tERAAzSuIxPBpDVOzMWR0eUtEmzu2OOvxm8Nl51XJ5IWpv
-	 QwoOMgioFYC3PXfq1PBuu0Qek4f3Pbk7ig5Uh1bRWefrilr5/VesFQD73Ef4JfDUwfRzO
-	 QBVnGr+vq2DLmhGAIYDX5HohRp6ooud7uJ+zRSJyepikYORJ8uWZzIyirM0dqFQeei2wd
-	 UsxlBE+eMF1F2CsaS4tswgFParYLLH9kLBKzwVsHUnclARbWDkLq7f1IKsggDdnlETA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WW09wDbv;
-	arc=none smtp.remote-ip=192.198.163.7
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795542917;
+	b=OkLMrL7rPdEcnd3rS98qJ4XYdRBoxstLU8pAR1usW0xVmSKxD2LaoUIxm1Sc9G0iwmsK
+	 g4dOOieuerc1Kv8rwAR+jGuS7KAWTiBG0D0T+C8s5g5b39iId+H4nTufr7ZTtlsfIi4J3
+	 +FbttE2RPVk5sd1xKjU+0LLIOM5Yg7F8BC7iIinESK0YukRusxpMlfelnWyupOYFxCnru
+	 nkUa0dwvnoiL7txHRjhuMJVROjVAOwv5ofLafbKKkMsVzMsEkAXJBjqc+sfXdyZn39/sO
+	 /TrVQcy9nXeDNzXxMiX8i9phgLXbMg9w4DAE2pDDvBSRIKPcsqtwQQgSWVidGGPEKtw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795542917;
+	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
+	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
+	 References:To:X-Mailer:X-ZohoMailClient;
+	bh=fpAiOPwESU3SxFIsWPPgq9rtaBiS5OvuHNtlKJUrn6E=;
+	b=LnqZwF2cWf8Et2DVTYi5YEEEBHkU7UoudHWsWX6mfHZ6RA37vAbt0kAynTz4YynIz6i6
+	 SxZW8UBq6RdkWbS3Mpc2BiGykdKVdE25MdhELQBoKJDt7ozGco7mlYS/Urp/U1mSWNVXL
+	 rSdjM32pMl1cPdnvMACUXuglPuQtv0KElOrqzfI4TrCbpUSWKKhgVgLqVJ5Yg0WBf9NSG
+	 tIP7bhhqQGtVNm4Cpj1fykvuaPb3EkW03IoLPgYSGrmInyyNtf51L8Wk2Tw1XEAYXlI7R
+	 wPSaxCZuQSiMoDZ394VPL1VtR4Z8rDud20OoI5AZSKEDiLsMVYG45LVYy+g1ZgkAytA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=NWN2UAIY;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF89606A333
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Nov 2026 16:54:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9DF89606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC10B606A31E;
+	Tue, 24 Nov 2026 17:55:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EC10B606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WW09wDbv
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795539257; x=1827075257;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cEnj9GUC9C0dZpOykEV7TDMrFtzJuotLx+ZqYNB/UEs=;
-  b=WW09wDbv3V3Rtj56h36a48/oQYnlYYQxXgI/PStFl5/TrvBl5KfdAv0M
-   OTXsnvylKOgF0uzSbwKlnmSTOt7+TQNhFm6nUSA5BLo7guMPlrTiz46z4
-   muIl/Aa1Y8lCIKWlPVQ0BRuMAvmiJrEYBfIz12mWGIZZNM5KSGweuuWDx
-   1oUZ+yHjShoYGTvnGQ8AOlg1z4WbnYnp2ypkyb+azvPPMWcs2epxjUMvu
-   tr3+uj8tuL95AeWTbcxcemlOVmVob81IKaAA70kpMadyPCqllyLfBZge+
-   8MSuh9aIAdBy+E0R3hoaIvD4PUGkf+XFfq8+0JlTx0olGmjcRkuKn10j4
-   Q==;
-X-CSE-ConnectionGUID: cAUlR/hTRjWt5sZ5mf6ceQ==
-X-CSE-MsgGUID: f/MCVXQoRgqmb5mRz3mKwA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4240337"
-X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="4240337"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 08:54:09 -0800
-X-CSE-ConnectionGUID: vnpYnMGKSYeRsQ/M01NTNQ==
-X-CSE-MsgGUID: GhG120cyQY+TVqu2ME3v0A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="11810537"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 24 Nov 2026 08:54:04 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xVtmL-00000001Pmw-0kfT;
-	Tue, 24 Nov 2026 16:54:01 +0000
-Date: Wed, 25 Nov 2026 00:53:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org,
-	Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
-Subject: Re: [PATCH] rust: bug: add warn_once! macro
-Message-ID: <20261125001602.y8fdKF1R-lkp@intel.com>
-References: <20261124132707.101769-1-mbkchelofficialdev@gmail.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=NWN2UAIY
+ARC-Seal: i=1; a=rsa-sha256; t=1795542870; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=AqPLK2thyyeZzdMv+3QBPVqRpFEHXIVIWT19jJGPS2TSNZhqwtaEO6+T6FWxYEnLH9Hr5jQvgBRMsEJ1d1hzcLSBSvHZzO9vngr7zZMSDbri/aO0Ohb4gChq64vT5aDUleobra4aJmnNCpXlpORxDMYymHfJw40jOJyxacfrTgI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1795542870; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=fpAiOPwESU3SxFIsWPPgq9rtaBiS5OvuHNtlKJUrn6E=; 
+	b=GfbBuk/u57p+2xSmCKZncHsNLcpv5cQ1t2U5EFm7kwOIKxQV2IXwEw3mWITKsdkjec+inoT67Kga6H0X/JphybaY7SbbL6G/Xfr3DGkbt3ZxJoM2eGpS3Y3UklRm/VAAok/nqG6YBrexMJPe97zwZiUtTpvt6IoaYm2GC6UsJOo=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=NWN2UAIYTOHUea2mpFHMsbSJ1q14R4wTlekbh8/k6krPLWHePOriqUAbNzYxNYmwpCIcj2lLspALX212zEsdySLQ5wZGsLBLqo4rv8Q12xu4CiFMTghlUMMp6tm7CdFdHpOoLpIVpLq7/fxvh3g6h4TUw259Cv7UyR1AmBwHQXg=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=fpAiOPwESU3SxFIsWPPgq9rtaBiS5OvuHNtlKJUrn6E=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795542867599313.22834164371363;
+	Tue, 24 Nov 2026 09:54:27 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -95,70 +57,446 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261124132707.101769-1-mbkchelofficialdev@gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH v7 2/3] drm/tyr: add TyrIrq threaded IRQ wrapper
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260728-tyr-irq-v2-v7-2-4e172e58e28c@collabora.com>
+Date: Tue, 24 Nov 2026 14:54:12 -0300
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ kernel@collabora.com,
+ Deborah Brouwer <deborah.brouwer@collabora.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <7C7287DF-458B-4AF8-8AB3-B5986E3B808E@collabora.com>
+References: <20260728-tyr-irq-v2-v7-0-4e172e58e28c@collabora.com>
+ <20260728-tyr-irq-v2-v7-2-4e172e58e28c@collabora.com>
+To: Laura Nao <laura.nao@collabora.com>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-ZohoMailClient: External
 
-Hi Ivan,
+Hi Laura, this mostly looks good! A few things only:
 
-kernel test robot noticed the following build errors:
 
-[auto build test ERROR on rust/rust-next]
-[also build test ERROR on akpm-mm/mm-everything linus/master v7.4-rc4 next-20261123]
-[cannot apply to ah-configfs/configfs-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> On 23 Nov 2026, at 11:58, Laura Nao <laura.nao@collabora.com> wrote:
+>=20
+> Introduce a generic TyrIrq threaded IRQ wrapper along with the
+> TyrIrqTrait trait describing the operations required to handle a
+> Tyr interrupt source.
+>=20
+> Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> Signed-off-by: Laura Nao <laura.nao@collabora.com>
+> ---
+> drivers/gpu/drm/tyr/irq.rs           | 270 =
++++++++++++++++++++++++++++++++++++
+> drivers/gpu/drm/tyr/reset/hw_gate.rs |   1 -
+> drivers/gpu/drm/tyr/tyr.rs           |   1 +
+> 3 files changed, 271 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/gpu/drm/tyr/irq.rs b/drivers/gpu/drm/tyr/irq.rs
+> new file mode 100644
+> index 000000000000..4a065c6272c5
+> --- /dev/null
+> +++ b/drivers/gpu/drm/tyr/irq.rs
+> @@ -0,0 +1,270 @@
+> +// SPDX-License-Identifier: GPL-2.0 or MIT
+> +
+> +//! Threaded IRQ wrapper shared by all Tyr interrupt sources.
+> +#![allow(dead_code)]
+> +use core::marker::PhantomPinned;
+> +
+> +use kernel::{
+> +    device::Bound,
+> +    interrupt::LocalInterruptDisabled,
+> +    irq::{
+> +        Flags,
+> +        IrqReturn,
+> +        ThreadedHandler,
+> +        ThreadedIrqReturn,
+> +        ThreadedRegistration, //
+> +    },
+> +    platform,
+> +    prelude::*,
+> +    sync::{
+> +        atomic::{
+> +            ordering:: {
+> +                Full,
+> +                Release, //
+> +            },
+> +            Atomic,
+> +            AtomicType, //
+> +        },
+> +        Arc,
+> +        SpinLockIrq, //
+> +    }, //
+> +};
+> +
+> +use crate::{
+> +    driver::IoMem,
+> +    reset::HwGate, //
+> +};
+> +
+> +/// Trait describing the operations required to service a Tyr =
+interrupt source.
+> +pub(crate) trait TyrIrqTrait: Sync {
+> +    /// Returns the masked interrupt status.
+> +    fn read_status(&self, io: &IoMem<'_>) -> u32;
+> +
+> +    /// Clears all bits in the mask register, disabling the interrupt =
+sources.
+> +    fn clear_mask(&self, io: &IoMem<'_>);
+> +
+> +    /// Sets the mask register to re-enable the interrupt sources.
+> +    fn reenable_mask(&self, io: &IoMem<'_>);
+> +
+> +    /// Returns the raw interrupt status, regardless of the current =
+mask.
+> +    fn read_raw_status(&self, io: &IoMem<'_>) -> u32;
+> +
+> +    /// Clears the given bits in the interrupt status register.
+> +    fn clear_status(&self, io: &IoMem<'_>, status: u32);
+> +
+> +    /// Returns the bitmask of interrupt sources handled by this =
+instance.
+> +    fn mask(&self) -> u32;
+> +
+> +    /// Handles the given pending, unmasked interrupt bits.
+> +    fn handle(&self, status: u32);
+> +}
+> +
+> +/// State shared between a [`TyrIrq`] and its [`TyrIrqRegistration`], =
+used to
+> +/// coordinate the primary handler, the threaded handler, and =
+teardown.
+> +#[derive(Clone, Copy, PartialEq, Eq)]
+> +#[repr(i32)]
+> +enum IrqState {
+> +    /// Active and ready to process new events.
+> +    Active =3D 0,
+> +    /// A primary handler has claimed a pending event and the =
+threaded handler is running, or
+> +    /// about to run, to service it.
+> +    Processing,
+> +    // Being deregistered: the mask has been, or is being, cleared, =
+and no
+> +    // handler may re-enable it.
+> +    Unregistering,
+> +}
+> +
+> +// SAFETY: `IrqState` and `i32` has the same size and alignment, and =
+it's round-trip
+> +// transmutable to `i32`.
+> +unsafe impl AtomicType for IrqState {
+> +    type Repr =3D i32;
+> +}
+> +
+> +/// A threaded IRQ wrapper shared by all Tyr interrupt sources.
+> +#[pin_data]
+> +pub(crate) struct TyrIrq<'a, T: TyrIrqTrait> {
+> +    /// The interrupt source.
+> +    irq: T,
+> +    /// Shared gate that coordinates hardware access with GPU reset.
+> +    hw: Arc<HwGate<'a>>,
+> +    /// Current state.
+> +    state: Atomic<IrqState>,
+> +    #[pin]
+> +    lock: SpinLockIrq<()>,
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ivan-Tverdokhleb/rust-bug-add-warn_once-macro/20261124-152707
-base:   https://github.com/Rust-for-Linux/linux rust-next
-patch link:    https://lore.kernel.org/r/20261124132707.101769-1-mbkchelofficialdev%40gmail.com
-patch subject: [PATCH] rust: bug: add warn_once! macro
-config: um-allmodconfig (https://download.01.org/0day-ci/archive/20261125/20261125001602.y8fdKF1R-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-rustc: rustc 1.96.0 (ac68faa20 2026-05-25)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261125/20261125001602.y8fdKF1R-lkp@intel.com/reproduce)
+Please move IrqState inside the lock:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/20261125001602.y8fdKF1R-lkp@intel.com/
+>    lock: SpinLockIrq<IrqState>,
 
-All errors (new ones prefixed by >>):
+Notice that Atomic<T> is gone here ^
 
-   In file included from kernel/sched/rq-offsets.c:5:
-   In file included from kernel/sched/sched.h:28:
-   In file included from include/linux/cgroup_api.h:1:
-   In file included from include/linux/cgroup.h:27:
-   In file included from include/linux/kernel_stat.h:8:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from arch/um/include/asm/hardirq.h:24:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:12:
-   In file included from arch/um/include/asm/io.h:24:
-   include/asm-generic/io.h:1209:55: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-   1209 |         return (port > MMIO_UPPER_LIMIT) ? NULL : PCI_IOBASE + port;
-   |                                                   ~~~~~~~~~~ ^
-   1 warning generated.
-   llvm-nm: error: rust/helpers/helpers.o: No such file or directory
-   clang diag: include/asm-generic/io.h:1209:55: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-   clang diag: include/asm-generic/io.h:1209:55: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-   clang diag: include/asm-generic/io.h:1209:55: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->> error[E0425]: cannot find value `BUGFLAG_ONCE` in crate `$crate::bindings`
-   --> rust/kernel/bug.rs:172:37
-   |
-   172 |                 | $crate::bindings::BUGFLAG_ONCE;
-   |                                     ^^^^^^^^^^^^ not found in `$crate::bindings`
-   |
-   ::: rust/kernel/mm/virt.rs:118:12
-   |
-   118 |         if crate::warn_once!(did_overflow || address < self.start() || self.end() < end) {
-   |            ----------------------------------------------------------------------------- in this macro invocation
-   |
-   = note: this error originates in the macro `crate::warn_once` (in Nightly builds, run with -Z macro-backtrace for more info)
+> +    #[pin]
+> +    _pin: PhantomPinned,
+> +}
+> +
+> +impl<'a, T: TyrIrqTrait> TyrIrq<'a, T> {
+> +    /// Requests a threaded IRQ registration for `irq`, using `name` =
+to look up the interrupt.
+> +    /// Returns the shared [`IrqState`] alongside the registration.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must not `mem::forget()` the resulting registration =
+or otherwise prevent its
+> +    /// [`Drop`] implementation from running.
+> +    unsafe fn request(
+> +        pdev: &'a platform::Device<Bound>,
+> +        name: &'static CStr,
+> +        irq: T,
+> +        hw: Arc<HwGate<'a>>,
+> +    ) -> Result<impl PinInit<ThreadedRegistration<'a, Self>, Error> + =
+'a>
+> +    where
+> +        T: 'a,
+> +    {
+> +        let state =3D Atomic::new(IrqState::Active);
+> +
+> +        let handler =3D try_pin_init!(Self {
+> +            irq,
+> +            hw,
+> +            state,
+> +            lock <- kernel::new_spinlock_irq!(()),
+> +            _pin: PhantomPinned,
+> +        });
+> +
+> +        // SAFETY: The caller guarantees the resulting registration =
+will not be leaked.
+> +        let registration =3D
+> +            unsafe { pdev.request_threaded_irq_by_name(Flags::SHARED, =
+name, name, handler) };
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+I don't think we should use name twice here. The second one should =
+probably be
+tyr-job, tyr-mmu, tyr-gpu, etc. We should probably make this possible by =
+taking
+both a "irq_name" and a "name=E2=80=9D.
+
+> +
+> +        // Clear the status and unmask once the handler has been
+> +        // successfully registered.
+> +        Ok(registration.pin_chain(|reg| {
+> +            let handler =3D reg.handler();
+> +            let hw_guard =3D handler.hw.access();
+> +            let io =3D hw_guard.iomem();
+> +            let irq =3D &handler.irq;
+> +            irq.clear_status(io, irq.mask());
+> +            irq.reenable_mask(io);
+> +            Ok(())
+> +        }))
+> +    }
+> +}
+> +
+> +impl<T: TyrIrqTrait> ThreadedHandler for TyrIrq<'_, T> {
+> +    fn handle(&self) -> ThreadedIrqReturn {
+> +        // SAFETY: `handle()` is the hard IRQ handler, so interrupts =
+are already
+> +        // disabled.
+> +        let token =3D unsafe { =
+LocalInterruptDisabled::assume_disabled() };
+> +        let _guard =3D self.lock.lock_with(token);
+
+I'd rather not have this unsafe here if we can use the safe "lock()". If
+interrupts are off, turning them off again is harmless. Also, AI said =
+that your
+unsafe comment is not true under all configs.
+
+> +
+> +        // Only proceed if still `Active`. If `Unregistering`, the =
+IRQ is being
+> +        // torn down and must not be handled.
+> +        if self
+> +            .state
+> +            .cmpxchg(IrqState::Active, IrqState::Processing, Full)
+> +            .is_err()
+> +        {
+> +            return ThreadedIrqReturn::None;
+> +        }
+> +
+> +        let Some(hw_guard) =3D self.hw.try_access_atomic() else {
+> +            let _ =3D self
+> +                .state
+> +                .cmpxchg(IrqState::Processing, IrqState::Active, =
+Full);
+> +            return ThreadedIrqReturn::None;
+> +        };
+> +        let io =3D hw_guard.iomem();
+> +
+> +        let masked_status =3D self.irq.read_status(io);
+> +
+> +        if masked_status =3D=3D 0 {
+> +            // Go back to `Active`, unless the IRQ is being torn =
+down.
+> +            let _ =3D self
+> +                .state
+> +                .cmpxchg(IrqState::Processing, IrqState::Active, =
+Full);
+> +            return ThreadedIrqReturn::None;
+> +        }
+> +
+> +        self.irq.clear_mask(io);
+> +        ThreadedIrqReturn::WakeThread
+> +    }
+> +
+> +    fn handle_threaded(&self) -> IrqReturn {
+> +        let mut ret =3D IrqReturn::None;
+> +
+> +        loop {
+> +            let hw_guard =3D self.hw.access();
+> +            let io =3D hw_guard.iomem();
+> +            let raw_status =3D self.irq.read_raw_status(io) & =
+self.irq.mask();
+> +            if raw_status =3D=3D 0 {
+> +                break;
+> +            }
+> +            self.irq.clear_status(io, raw_status);
+> +            drop(hw_guard);
+> +            self.irq.handle(raw_status);
+> +            ret =3D IrqReturn::Handled;
+> +        }
+
+let hw_guard =3D loop {
+  ..
+  if raw_status =3D=3D 0 {
+    break hw_guard; <=E2=80=94 reuse this guy
+  }
+..
+};
+
+
+> +
+> +        // Only re-enable the mask if still `Processing`. If =
+`Unregistering`, the
+> +        // IRQ is being torn down and must stay masked.
+> +        let hw_guard =3D self.hw.access();
+> +        let _guard =3D self.lock.lock();
+> +        if self
+> +            .state
+> +            .cmpxchg(IrqState::Processing, IrqState::Active, Full)
+> +            .is_ok()
+> +        {
+> +            self.irq.reenable_mask(hw_guard.iomem());
+> +        }
+> +
+> +        ret
+> +    }
+> +}
+> +
+> +// A [`ThreadedRegistration`] for a Tyr interrupt source and its =
+state.
+> +
+> +// Unlike a bare [`ThreadedRegistration`], dropping this type is =
+always
+> +// safe to do while the device remains on a shared IRQ line: its =
+`Drop`
+> +// implementation masks the interrupt source, and notifies teardown =
+via the
+> +// shared [`IrqState`], before the inner [`ThreadedRegistration`] is
+> +// dropped and deregisters the handler.
+
+// -> ///
+
+Please mention that this must come before clocks and regulators, =
+otherwise the
+system will freeze when this type drops by attempting to do I/O on a =
+powered
+down circuit.
+
+> +#[pin_data(PinnedDrop)]
+> +pub(crate) struct TyrIrqRegistration<'a, T: TyrIrqTrait> {
+> +    #[pin]
+> +    registration: ThreadedRegistration<'a, TyrIrq<'a, T>>,
+> +}
+> +
+> +#[pinned_drop]
+> +impl<T: TyrIrqTrait> PinnedDrop for TyrIrqRegistration<'_, T> {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        // Flag teardown and mask the interrupt source, before
+> +        // `self.registration`'s own `PinnedDrop` runs next and calls =
+`free_irq()`.
+> +        // This prevents the hardware from asserting the interrupt =
+again once it is
+> +        // deregistered. `free_irq()` itself waits for any handler =
+already in
+> +        // flight to complete, and having already flagged =
+`Unregistering`, such a
+> +        // handler will not re-enable the mask (see =
+`TyrIrq::handle_threaded`).
+> +        let handler =3D self.registration.handler();
+> +        let hw_guard =3D handler.hw.access();
+> +        let _guard =3D handler.lock.lock();
+> +        handler.state.store(IrqState::Unregistering, Release);
+> +        handler.irq.clear_mask(hw_guard.iomem());
+> +    }
+> +}
+> +
+> +impl<'a, T: TyrIrqTrait> TyrIrqRegistration<'a, T> {
+> +    /// Requests a threaded IRQ registration for `irq`, using `name` =
+to look up the interrupt.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must not `mem::forget()` the resulting registration =
+or otherwise prevent its
+> +    /// [`Drop`] implementation from running.
+> +    pub(crate) unsafe fn request(
+> +        pdev: &'a platform::Device<Bound>,
+> +        name: &'static CStr,
+> +        irq: T,
+> +        hw: Arc<HwGate<'a>>,
+> +    ) -> Result<Pin<KBox<Self>>>
+> +    where
+> +        T: 'a,
+> +    {
+> +        // SAFETY: The caller guarantees the resulting registration =
+will not be leaked.
+> +        let registration =3D unsafe { TyrIrq::request(pdev, name, =
+irq, hw) }?;
+> +
+> +        KBox::try_pin_init(
+> +            try_pin_init!(Self {
+> +                registration <- registration,
+> +            }),
+> +            GFP_KERNEL,
+> +        )
+> +    }
+> +}
+> diff --git a/drivers/gpu/drm/tyr/reset/hw_gate.rs =
+b/drivers/gpu/drm/tyr/reset/hw_gate.rs
+> index 40b38f07c472..2157b4b8ba78 100644
+> --- a/drivers/gpu/drm/tyr/reset/hw_gate.rs
+> +++ b/drivers/gpu/drm/tyr/reset/hw_gate.rs
+> @@ -76,7 +76,6 @@ pub(crate) fn access(&self) -> HwAccessGuard<'_, =
+'hw> {
+>     ///
+>     /// Returns `None` while the reset worker owns the hardware, in =
+which case
+>     /// the caller must skip its hardware access.
+> -    #[expect(dead_code)]
+>     pub(crate) fn try_access_atomic(&self) -> Option<HwAccessGuard<'_, =
+'hw>> {
+>         let srcu =3D self.srcu.read_lock();
+>=20
+> diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
+> index 9d995650be81..b112cc8a5573 100644
+> --- a/drivers/gpu/drm/tyr/tyr.rs
+> +++ b/drivers/gpu/drm/tyr/tyr.rs
+> @@ -12,6 +12,7 @@
+> mod fw;
+> mod gem;
+> mod gpu;
+> +mod irq;
+> mod mmu;
+> mod regs;
+> mod reset;
+>=20
+> --=20
+> 2.39.5
+>=20
+
+By the way, it seems like you forgot to run rustfmt one last time at =
+some
+point? Unless I am mistaken, running rustfmt here produces (a small) =
+diff.
+
+=E2=80=94 Daniel
+
