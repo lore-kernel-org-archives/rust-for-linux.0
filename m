@@ -1,69 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795557433;
-	b=ChPUQOUi9hT2aorh7BHfO6mb0CWq1910obMcd+8sZDPkYUrK8hDuGbvkMWkdbHd/q529
-	 mOc4ytc78IekGU4pismRSvkhUwlqZs5ZiZ3Yu1XcqY6tv8HZa/6qGcBQsfpE1zfL/17sQ
-	 qZPcigPYTntsYvTWBJYWaSqRLxn2NFk6/0pGS7gyWwXahccpN3XV8a3PDrpKll4hI5x35
-	 AjM4m2fcpEyx3XT2HFA4Zlupm37FKzpe4V9q0D7e+uUpHm/aC4RoWxy2a5YTloEI4PUUi
-	 jkkRLgr8y63Ad2EDX7asVbXXbx4ejeFiqvb0WetHW5DeTtdYVDVV2PoiMGmqUGw81lQ==
+	t=1795558592;
+	b=OQDoZcoDElQ649JnQnBdZBpcb8IMH4ziEKilkODmHcgy7uU6nRCjuTk4qzpMo7SfPULO
+	 PrcAk/PHcBwxAC8bpAnnC5JpvhvjsjgdJnrM1YPvWsqX6situET9NC/cMGrQjFCYTOnfC
+	 5gHe2aR/EcJX2UXV9HVHiiwdGaRitN3nJU6G0F2DiqatF/wvYhgS691gyhHVKArVM+DFh
+	 LwKdv9n4ZmGoSIzR/Uom4RxuwtTO3ust4mY1H83iYARFZdtgIFDqscJtnGWiwSeYLehGJ
+	 7F1qNj8u/fozcXKhFWg12QvRhOqi0iURHq9EK1gMab/CAtP9w5NWuXZvH+0owLnsyFQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795557433;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
-	bh=y7bP+CZPpx2yVIY/lngLe2s+quzyte5ixxJmcdp6ly8=;
-	b=EZV3f1lyoG8ePyGbcIJomPB0fbNYHxhzYMMBdLOFDM+MTL039Yp5GJgQLQnWISLxn896
-	 3y7eoNtsQvj8mBiwD+DRgF+X12zuhQsYjK4cpKIPGYEq+W/IQP07Dhi6Q3nsIlbH5bFzB
-	 sIYJT/TeZwozX/eiG//HLviVbMRtHLbPJTfLK/064BcaYhcluHU7vCHhtx+lx/SiCMTDM
-	 YWuFdqkUzDnhw4edPJq/xfn8ATcn2weCrFlPyLXpT4yiorSlNB+IjIeuCt+YWQSFkvB1o
-	 I5+HhGAEblGKlVmJL3qR2O5aR/ArFogfCBzveDeKUMThLVUa3QVALCDF58kD5b0srCQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795558592;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=wtl73C5SEX1kxHGsDVwwCxIwiGSmiFjRPEk/ob0WG+M=;
+	b=z7NywTjNN2FUj9RxrcLoo8bCG0Xv8/RQJBzH8HfDcVkboO6LWEkQNWVv3frTsADn+FUy
+	 mSBJnPEghxk1fsQHlXJNhvAURtTrpVRnf39wjs8FL9CAO02EgO/b5A1GdC5VAOlH57hOa
+	 YLwvWHvVDhvtNAaUUf+FgUk8TbM1/aJ0WhS9tQXDMXhNANicydRCuLgloxgJwj+4sI/lP
+	 fuSsXSFnPs3TwaWcJBTtnEG9Ma/1FrfuTfEOYo6GPbcJZyI9y+JnsQhk/u6pjbkPBiXqw
+	 0WeFP7znr9IdDJmGjbWd2XYb+Qy+qTfprF55fh2A4kG9bmwCCDwd5a5stGX6ITN5yLg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="erjU/wgj";
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7C4606A31E
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Nov 2026 21:57:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6C7C4606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="kKZ/r392";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B87606A326;
+	Tue, 24 Nov 2026 22:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=erjU/wgj
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F8CB339
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Nov 2026 13:57:08 -0800 (PST)
-Received: from [10.2.11.19] (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 06EF23F763
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Nov 2026 13:57:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795557431; bh=bpiX+NehYtjOn104gSrnkTT9oI27YzkEJxqY6Ww988k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=erjU/wgjHcacVXiIMni5zyXCRKCNh7+MEcfgHnpYE4zn1n4lxv32hFfjc32ihw3me
-	 NlhkXDGFKZ+5YO9tZnAerKSqunU/a5A6APjLZKuLfOwzr/vSm/g7l2QfHXuPqyzVWc
-	 0szaUNgSvzsGHECztqNJ64Mq/TBABAPYHFOUr61E=
-Date: Tue, 24 Nov 2026 21:56:51 +0000
-From: Liviu Dudau <liviu.dudau@arm.com>
-To: =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Faith Ekstrand <faith.ekstrand@collabora.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
-	=?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>,
-	Akash Goel <akash.goel@arm.com>,
-	Karunika Choo <karunika.choo@arm.com>,
-	Lukas Zapolskas <lukas.zapolskas@arm.com>,
-	Chris Diamand <chris.diamand@arm.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Alice Ryhl <aliceryhl@google.com>, kernel-dev@igalia.com,
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] drm/shmem: Add a drm_gem_shmem_sync() helper
-Message-ID: <awYII3tzMzv89tAV@e142607>
-References: <20261122-pan-drop-dma-buf-hooks-v2-0-2ed42dce9db6@igalia.com>
- <20261122-pan-drop-dma-buf-hooks-v2-1-2ed42dce9db6@igalia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kKZ/r392
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860241F000CF;
+	Tue, 24 Nov 2026 22:16:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795558592;
+	bh=wtl73C5SEX1kxHGsDVwwCxIwiGSmiFjRPEk/ob0WG+M=;
+	h=From:Date:Subject:To:Cc;
+	b=kKZ/r3924Yqofd1h5L5iWTz8o9Gv5cljpuL84u7Vf1it5dUOVD9xFQCqUCPdzrhZp
+	 P+jrogOKKdKiGClD9zSV0XgFzRODy+ZPK5FDKcTIl0UhCZRtmx0Z854BfW2rsXF9yj
+	 NhFGDuANYVM+40Sxj13TkxfaEXtdt7GHvdn7JDQuCSucsYW9PMBxip/aL7UoJOvH1j
+	 Dla7OZzoMKZ5jDpab29sDRm2PIyDtB9xF4OKpSnIT/lzNQ8LloxcdmRFqLa5ZWl9JQ
+	 Sf1sHYokgoDQ1OGtwbG4wIF7M1ZvTsOdt124AbELr5GC/Hrnj5oIL+Jbtb3AVJVYzS
+	 nAhWpEC+FT0xg==
+From: Gary Guo <gary@kernel.org>
+Date: Tue, 24 Nov 2026 22:16:23 +0000
+Subject: [PATCH] rust: pin-init: document self-referential feature
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -73,192 +52,250 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261122-pan-drop-dma-buf-hooks-v2-1-2ed42dce9db6@igalia.com>
+Message-Id: <20261124-dev-pin-init-doc-v1-1-dd0a3eda9018@garyguo.net>
+X-B4-Tracking: v=1; b=H4sIALYMBmsC/z2MQQ6CMBBFr0Jm7UTbEClexbgo01HGxUDaQkgId
+ 7fVxOX7+e/tkDgKJ7g1O0ReJcmkBcypARq9vhglFAZ7sVdjbIuBV5xFUVQyhomQWudc13tDXQ9
+ FmyM/Zfsm748fp2V4M+XaqY/BJ8YheqWxTjkyn/9J5S3DcXwAot8gm5kAAAA=
+X-Change-ID: 20261124-dev-pin-init-doc-c488879a1c79
+To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Gary Guo <gary@garyguo.net>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795558589; l=8688;
+ i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
+ bh=pPpFK93jRfiiuVjYa5/Ert5vNlHWDFAHtfWNIH/Golo=;
+ b=/6lTmoNs+n727fqNyAY6s57EHHFBG4wtfNsJIZ4/H8kdvOGhfX6aOE8JWu/m75hRCCcKb1tYW
+ B3g8tDHj+Y6Dd299D1fquJnKmTaa1XWS13mLOcen+8BYVsdaCoasM2c
+X-Developer-Key: i=gary@garyguo.net; a=ed25519;
+ pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
 
-On Sun, Nov 22, 2026 at 07:14:49PM -0300, Maíra Canal wrote:
-> From: Faith Ekstrand <faith.ekstrand@collabora.com>
-> 
-> This enables syncing mapped GEM objects between the CPU and GPU via calls
-> to dma_sync_*().  It's a bit annoying as it requires walking the sg_table
-> so it's best if every driver doesn't hand-roll it.
-> 
-> Signed-off-by: Faith Ekstrand <faith.ekstrand@collabora.com>
-> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-> [mcanal: rebased on top of drm-misc-next, fixed kernel-doc nits, added a
-> resv lock across the sgt walk, and skip unbacked/purged BOs]
-> Signed-off-by: Maíra Canal <mcanal@igalia.com>
+From: Gary Guo <gary@garyguo.net>
 
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Add a section to the documentation of `#[pin_data]` macro about
+the safe self-referential creation feature.
+
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+ rust/pin-init/src/lib.rs | 176 +++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 171 insertions(+), 5 deletions(-)
+
+diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
+index 9ffa76434310..c0e87586b072 100644
+--- a/rust/pin-init/src/lib.rs
++++ b/rust/pin-init/src/lib.rs
+@@ -307,6 +307,9 @@
+ /// Tuple structs are supported as well. Their fields have no names, so the generated projection
+ /// is a tuple struct too and its fields are accessed by index.
+ ///
++/// Self-referential structs, where a field borrows another field of the same struct, are also
++/// supported. See the [section on self-referential structs](#self-referential-structs) below.
++///
+ /// If your `struct` implements `Drop`, then you need to add `PinnedDrop` as arguments to this
+ /// macro, and change your `Drop` implementation to `PinnedDrop` annotated with
+ /// `#[`[`macro@pinned_drop`]`]`, since dropping pinned values requires extra care.
+@@ -376,6 +379,170 @@
+ ///     }
+ /// }
+ /// ```
++///
++/// # Self-Referential Structs
++///
++/// This macro also supports structs where a field borrows another field of the same struct. To do
++/// that, use the name of the borrowed field as a lifetime (a *field lifetime*) in the type of the
++/// borrowing field:
++///
++/// ```
++/// # use pin_init::*;
++/// #[pin_data]
++/// struct SelfRef {
++///     part: &'msg str,
++///     msg: String,
++/// }
++/// ```
++///
++/// Here the field `part` captures the field lifetime `'msg` and thereby borrows the field `msg`.
++/// A field may only borrow from fields declared after it: fields are dropped in declaration
++/// order, so the borrowing field is then always dropped before the field it borrows. Structs
++/// with borrowed fields or captured lifetimes do not implement `Unpin`.
++///
++/// When initializing such a struct with [`pin_init!`], every named initialized field have a
++/// binding generated for it (as `&T`/`Pin<&T>` for fields share-borrowed, or `&mut`/`Pin<&mut T>`
++/// for fields mutably-borrowed), so a field can borrow from the fields initialized before it:
++///
++/// ```
++/// # use pin_init::*;
++/// # #[pin_data]
++/// # struct SelfRef {
++/// #     part: &'msg str,
++/// #     msg: String,
++/// # }
++/// stack_pin_init!(let foo = pin_init!(SelfRef {
++///     msg: "hello world".to_owned(),
++///     part: &msg[..5],
++/// }));
++/// assert_eq!(*foo.part(), "hello");
++/// ```
++///
++/// Note that `&mut`/`Pin<&mut T>` bindings are also generated for non-borrowed field, but access to
++/// them are limited to within the initializer.
++///
++/// ## Mutable Borrows
++///
++/// A field is only shared-borrowed by default. To also allow `&mut` borrows, mark the borrowed
++/// field with `#[borrowed(mut)]`:
++///
++/// ```
++/// # use pin_init::*;
++/// #[pin_data]
++/// struct MutSelfRef {
++///     part: &'mut_msg mut str,
++///     #[borrowed(mut)]
++///     mut_msg: String,
++/// }
++///
++/// stack_pin_init!(let foo = pin_init!(MutSelfRef {
++///     mut_msg: "hello world".to_owned(),
++///     part: &mut mut_msg[..5],
++/// }));
++/// foo.as_mut().with_project(|proj| proj.part.make_ascii_uppercase());
++/// assert_eq!(*foo.part(), "HELLO");
++/// ```
++///
++/// Shared borrows are inferred automatically whenever a field lifetime is used, but they can also
++/// be requested explicitly with `#[borrowed]`.
++///
++/// ## Variance
++///
++/// A captured field lifetime is *covariant* by default: just like a normal reference, the field
++/// type allows the captured lifetime to be shortened. If the field type does not allow that (for
++/// example because the borrow is stored behind a `Mutex`), the capture has to be marked as
++/// *invariant* using the `#[uses]` attribute:
++///
++/// ```
++/// # use pin_init::*;
++/// # use std::sync::Mutex;
++/// #[pin_data]
++/// struct InvariantSelfRef {
++///     #[uses('owner: invariant)]
++///     part: Mutex<&'owner str>,
++///     owner: String,
++/// }
++/// ```
++///
++/// The macro verifies that captures marked covariant really are covariant. `#[uses]` accepts a
++/// comma-separated list of lifetimes, each with an optional variance (the default being
++/// `covariant`). The special lifetime `'_` stands for all field lifetimes mentioned in the type
++/// of the field, e.g. `#[uses('_: invariant)]`.
++///
++/// ## Existential Lifetimes
++///
++/// A field lifetime ties a borrow to a specific field. Sometimes a field should instead borrow
++/// from something outside the struct that merely outlives one of the struct's lifetime
++/// parameters. Such lifetimes are declared in the where clause of the struct using `exists`:
++///
++/// ```
++/// # use pin_init::*;
++/// # use std::marker::PhantomData;
++/// # use std::sync::Mutex;
++/// struct CoherentBox<'a>(PhantomData<&'a ()>);
++///
++/// #[pin_data]
++/// struct DeviceBox<'a>
++/// where
++///     exists<'x>: 'a,
++/// {
++///     #[uses('x: invariant)]
++///     m: Mutex<CoherentBox<'x>>,
++///     p: PhantomData<&'a ()>,
++/// }
++///
++/// // The struct is covariant in `'a`, so it can be shortened:
++/// fn shorten<'long: 'short, 'short>(f: DeviceBox<'long>) -> DeviceBox<'short> {
++///     f
++/// }
++/// # let _ = shorten;
++/// ```
++///
++/// An existential lifetime is not a parameter of the struct, so just like a field lifetime it is
++/// hidden from the type of the struct. Unlike a field lifetime, it is not tied to a field; the
++/// only bounds placed on it are those written in the where clause (here `'x: 'a`).
++///
++/// ## Projections and Accessors
++///
++/// Since field lifetimes are not parameters of the struct, borrows of the struct cannot carry
++/// them. This macro therefore generates several methods for accessing the fields:
++///
++/// - `project(self: Pin<&mut Self>)` — the pin projection: `#[pin]` fields are projected as
++///   `Pin<&mut T>`, all other fields as `&mut T`. Fields that capture a field lifetime covariantly
++///   are only projected as (possibly pinned) shared references; fields with invariant field
++///   lifetime capture are omitted entirely.
++/// - `with_project(self: Pin<&mut Self>, f)` — calls `f` with a projection in which every
++///   visible field has its actual field lifetime, so even invariant captures are visible.
++/// - `with_project_ref(self: Pin<&Self>, f)` — the shared version of `with_project`.
++///
++/// For all projections, shared borrow fields are only accessible with shared references, and
++/// mutably borrowed fields are omitted (they are only accessible through the fields that borrow
++/// them).
++///
++/// Every field (except those borrowed mutably) that captures field lifetimes also gets an accessor
++/// method, because they cannot be directly accessed. `fn field(&self)` is generated if all of its
++/// captures are covariant, otherwise `fn with_field(&self, f)` is generated where `f` is called
++/// with the field at its captured lifetimes.
++///
++/// ```
++/// # use pin_init::*;
++/// # #[pin_data]
++/// # struct SelfRef {
++/// #     part: &'msg str,
++/// #     msg: String,
++/// # }
++/// # stack_pin_init!(let foo = pin_init!(SelfRef {
++/// #     msg: "hello world".to_owned(),
++/// #     part: &msg[..5],
++/// # }));
++/// foo.as_mut().with_project(|proj| {
++///     *proj.part = &proj.msg[6..];
++/// });
++/// assert_eq!(*foo.part(), "world");
++/// foo.as_ref().with_project_ref(|proj| {
++///     assert_eq!(*proj.part, "world");
++/// });
++/// ```
+ pub use ::pin_init_internal::pin_data;
+ 
+ /// Used to implement `PinnedDrop` safely.
+@@ -664,11 +831,10 @@ macro_rules! stack_try_pin_init {
+ ///
+ /// Arbitrary Rust expressions can be used to set the value of a variable.
+ ///
+-/// The fields are initialized in the order that they appear in the initializer. So it is possible
+-/// to read already initialized fields using raw pointers.
+-///
+-/// IMPORTANT: You are not allowed to create references to fields of the struct inside of the
+-/// initializer.
++/// The fields are initialized in the order that they appear in the initializer. A let binding
++/// is generated so already initialized fields can be read. For [self-referential
++/// structs](pin_data#self-referential-structs), you may also use such generated bindings to
++/// initialize fields that borrow from them.
+ ///
+ /// # Init-functions
+ ///
+
+---
+base-commit: 5eb5b404e6e7631a986333f00e7b3b18aafcfaa8
+change-id: 20261124-dev-pin-init-doc-c488879a1c79
 
 Best regards,
-Liviu
+--  
+Gary Guo <gary@garyguo.net>
 
-> ---
->  drivers/gpu/drm/drm_gem_shmem_helper.c | 108 +++++++++++++++++++++++++++++++++
->  include/drm/drm_gem_shmem_helper.h     |  17 ++++++
->  2 files changed, 125 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> index d654a22a30de..cc3d04d2d58e 100644
-> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> @@ -901,6 +901,114 @@ struct sg_table *drm_gem_shmem_get_pages_sgt(struct drm_gem_shmem_object *shmem)
->  }
->  EXPORT_SYMBOL_GPL(drm_gem_shmem_get_pages_sgt);
->  
-> +/**
-> + * drm_gem_shmem_sync - Sync CPU-mapped data
-> + * @shmem: shmem GEM object
-> + * @offset: Offset into the GEM object
-> + * @size: Size of the area to sync
-> + * @type: Type of synchronization
-> + *
-> + * Returns:
-> + * 0 on success or a negative error code on failure.
-> + */
-> +int drm_gem_shmem_sync(struct drm_gem_shmem_object *shmem, size_t offset,
-> +		       size_t size, enum drm_gem_shmem_sync_type type)
-> +{
-> +	const struct drm_device *dev = shmem->base.dev;
-> +	struct sg_table *sgt;
-> +	struct scatterlist *sgl;
-> +	unsigned int count;
-> +	int ret;
-> +
-> +	/* Make sure the range is in bounds. */
-> +	if (offset + size < offset || offset + size > shmem->base.size)
-> +		return -EINVAL;
-> +
-> +	/* Disallow CPU-cache maintenance on imported buffers. */
-> +	if (drm_gem_is_imported(&shmem->base))
-> +		return -EINVAL;
-> +
-> +	switch (type) {
-> +	case DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH:
-> +	case DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE:
-> +		break;
-> +
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* Don't bother if it's WC-mapped */
-> +	if (shmem->map_wc)
-> +		return 0;
-> +
-> +	/* Nothing to do if the size is zero. */
-> +	if (size == 0)
-> +		return 0;
-> +
-> +	ret = dma_resv_lock_interruptible(shmem->base.resv, NULL);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* No CPU mapping can exist without pages, and purged BOs have
-> +	 * no content to be synced.
-> +	 */
-> +	if (!shmem->pages || shmem->madv < 0)
-> +		goto out_unlock;
-> +
-> +	sgt = drm_gem_shmem_get_pages_sgt_locked(shmem);
-> +	if (IS_ERR(sgt)) {
-> +		ret = PTR_ERR(sgt);
-> +		goto out_unlock;
-> +	}
-> +
-> +	for_each_sgtable_dma_sg(sgt, sgl, count) {
-> +		if (size == 0)
-> +			break;
-> +
-> +		dma_addr_t paddr = sg_dma_address(sgl);
-> +		size_t len = sg_dma_len(sgl);
-> +
-> +		if (len <= offset) {
-> +			offset -= len;
-> +			continue;
-> +		}
-> +
-> +		paddr += offset;
-> +		len -= offset;
-> +		len = min_t(size_t, len, size);
-> +		size -= len;
-> +		offset = 0;
-> +
-> +		/* It's unclear whether dma_sync_xxx() is the right API to do CPU
-> +		 * cache maintenance given an IOMMU can register their own
-> +		 * implementation doing more than just CPU cache flushes/invalidation,
-> +		 * and what we really care about here is CPU caches only, but that's
-> +		 * the best we have that is both arch-agnostic and does at least the
-> +		 * CPU cache maintenance on a <page,offset,size> tuple.
-> +		 *
-> +		 * Also, I wish we could do a single
-> +		 *
-> +		 *	dma_sync_single_for_device(BIDIR)
-> +		 *
-> +		 * and get a flush+invalidate, but that's not how it's implemented
-> +		 * in practice (at least on arm64), so we have to make it
-> +		 *
-> +		 *	dma_sync_single_for_device(TO_DEVICE)
-> +		 *	dma_sync_single_for_cpu(FROM_DEVICE)
-> +		 *
-> +		 * for the flush+invalidate case.
-> +		 */
-> +		dma_sync_single_for_device(dev->dev, paddr, len, DMA_TO_DEVICE);
-> +		if (type == DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE)
-> +			dma_sync_single_for_cpu(dev->dev, paddr, len, DMA_FROM_DEVICE);
-> +	}
-> +
-> +out_unlock:
-> +	dma_resv_unlock(shmem->base.resv);
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(drm_gem_shmem_sync);
-> +
->  /**
->   * drm_gem_shmem_prime_import_sg_table - Produce a shmem GEM object from
->   *                 another driver's scatter/gather table of pinned pages
-> diff --git a/include/drm/drm_gem_shmem_helper.h b/include/drm/drm_gem_shmem_helper.h
-> index bcbb92f3fe9b..a5def70fae7a 100644
-> --- a/include/drm/drm_gem_shmem_helper.h
-> +++ b/include/drm/drm_gem_shmem_helper.h
-> @@ -122,6 +122,23 @@ void drm_gem_shmem_vunmap_locked(struct drm_gem_shmem_object *shmem,
->  				 struct iosys_map *map);
->  int drm_gem_shmem_mmap(struct drm_gem_shmem_object *shmem, struct vm_area_struct *vma);
->  
-> +/**
-> + * enum drm_gem_shmem_sync_type - Type of synchronization
-> + */
-> +enum drm_gem_shmem_sync_type {
-> +	/** @DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH: Flush CPU caches */
-> +	DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH = 0,
-> +
-> +	/**
-> +	 * @DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE: Flush and
-> +	 * invalidate CPU caches
-> +	 */
-> +	DRM_GEM_SHMEM_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE,
-> +};
-> +
-> +int drm_gem_shmem_sync(struct drm_gem_shmem_object *shmem, size_t offset,
-> +		       size_t size, enum drm_gem_shmem_sync_type type);
-> +
->  int drm_gem_shmem_pin_locked(struct drm_gem_shmem_object *shmem);
->  void drm_gem_shmem_unpin_locked(struct drm_gem_shmem_object *shmem);
->  
-> 
-> -- 
-> 2.56.0
-> 
-
--- 
-====================
-| I would like to |
-| fix the world,  |
-| but they're not |
-| giving me the   |
- \ source code!  /
-  ---------------
-    ¯\_(ツ)_/¯
