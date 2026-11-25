@@ -1,56 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795646905;
-	b=CFGdHK4DXYUQ77rCG5jyCzWsOTve5xlD7ytxCD2PVrOMRp05W1D75m6FLafbQUjis0Tq
-	 5X5gnCcigYRwaEXDWR5YmFqbIPH5ThJnP1sfcL+W1xB+qjkF4zzhpuRWEzDyMWGsGXcWS
-	 Ma6Hyub9XPH9xAP9Fb5vgdxPCrjeyLeTGxbIq0P2KJ0ujsPO2SFID87JSRRGw6UilcWe6
-	 8Ox2IiodWLOohsq0VwGdkJecKpLXDLtVlbGi9mbzuATEnEEHCdj8FC4DRGw6FF88OnSvz
-	 z6icx+0ScxHPHUWaPqHRamOuiB6VhkVRVWEVuOGGPaeYunBh30nm0rAhmGANpXVmOLg==
+	t=1795646918;
+	b=soErn2BEGOBg1+PPPRXaNUyPa3t95xiQkGLhEBnWiY5l4ppAgkWohmePLg1Ty9ztHAzk
+	 4zcnV6c1MW4DcgcYOBsZ4iQ7xUOEEkcrfPX/A2e3CX4aJOGO2BHrLc+t4ZtMJMXGvrwUQ
+	 0NzKz6V8jbesxTPnfd8D+Wqrr6k3usbB4No6IBmrN9JyB35Cpu/gkf5beGTsVZnVWc0qI
+	 Kufowvde0Tmn9vWynxNdBMa3eB9Y6y0pAyYAZPG13ZuEhwY29rfSS5nc6O/kpnSdFrVX0
+	 MCxAdnnvcsT81TXGdIEHDHg6/ZY8+g0b26iGvmoC+xtKPWaKVFKvbLv2ofzvAql1BPw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795646905;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795646918;
 	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-ZohoMailClient;
-	bh=mBDqk7dnIKeAVaEQ8ukQZV5cRW9aOo0WCUoVaNG9E70=;
-	b=O3lBkmseI31JuhnRPjBJ/6GaOBuxAtlzUcl8dj7MoZodLhXJKUOP8DJVLkSVVCc2tOFB
-	 0l50vOFS4BcD2pgI4SwsXIEP3UD5ksMJHxJiW4a+RDUx8Xi3iRZHV8a2viMlE6WF3Zedb
-	 keoNQHpluFt0/o2Jfv2U+mZwcCA8rYu7dYSuuuz9Uu6qxnMDbxOanfvWNpOEkkr/k8uHy
-	 GMTMWDo52VKEO2TjGD/rkPi03AmhoNk8Ne3d8POGkpn+g6aks3Xk8oNd8ysdYFlxNTEuu
-	 TLStFbaGGRcXCDv3cuSfEMcEWo+ReuempOEH03soDM5aov3Othy7PK71rxYeUBO9S7A==
+	bh=/1i4APE0O0sIQ50uMj0gHU7M6QnWF8z8Fcq204FWJZg=;
+	b=hcNPzA+zIOASfVg6CZusOw2t3L6529q57AJBE+RCEjdSax/zqDT0vF87C5lVqW48kwUK
+	 k81XjaVoKxujOwMqwefV62FD+d/ErypNDtyDYYVefDMc0prntaND28ctmnu85I38vUkH9
+	 w+CmJPYL4jXwCs1HWVbAj2Y4BcEu+quj2LC1nOA/TIbSjIDqNtN0o8L4HczsZys0xqzc+
+	 Z/mOzTjyYmeSDgnNlIWstzAWBNXP1DqMYTTN8J1s63CFoE1uWIvy8v7aSwIoDIHbbf0SN
+	 aYTcTgG1LlOlHRh7ASNpUslV5NCwPMCvf67UDquwRWUBiPV6lIMoUpGUPm2BOpcl5PA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=collabora.com;
 	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=g6hO2tlR;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
-Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=D10N5VNG;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFD9606A683;
-	Wed, 25 Nov 2026 22:48:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DFFD9606A683
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF46606A334;
+	Wed, 25 Nov 2026 22:48:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3DF46606A334
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=g6hO2tlR
-ARC-Seal: i=1; a=rsa-sha256; t=1795646853; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=D10N5VNG
+ARC-Seal: i=1; a=rsa-sha256; t=1795646877; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=kLfiw5KeLOviKR14fDVtO2jnMiUygd6cpZk4NpowS0uHmYqOfmy+Xx+tj5TRnhZU766929XwTcbYIjTzAKxPYkOeYWzz3TfrILlbeqYJecVxO7ftPE10AtHKihG77k9mGU20KkF897HqjrXTdAgSZUIxS+2S72LaDukVzZMaJMw=
+	b=SfW+528XIq4Ya4WrOIVxsZglBhek36jRzqCABOJb1kbIUs9Tg98SaDaIxA2SbHVv55uIzqgvvFFsBGmEGXaxqbKOAbtHhy2w+Ed9vr6Kad4ZKacow51mmpeTPxV3CU85uxAKFvtq3+uQmeNhVWyQQ5B0DQVkYVR0JD32mELCS/8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1795646853; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=mBDqk7dnIKeAVaEQ8ukQZV5cRW9aOo0WCUoVaNG9E70=; 
-	b=T3Tpei0uDy6D3KBOBHK3kAAb7wXvdEqMWzF7WXV1BmZm5KFvaloWbK63HhV0ujSHx3Dqwb7KcXG9zZ2so7Vh8DfiTeo7CmpUkdFTQIYA141XwoVGqR/qR/OgTOghqIKzuJKGksP2WAtawwYAuyXKlkDXjoXPG8uam9gUOMItymE=
+	t=1795646877; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=/1i4APE0O0sIQ50uMj0gHU7M6QnWF8z8Fcq204FWJZg=; 
+	b=YSS/47tfA9apuHIxCkeyhtescZr2DqA/x657yLGP7168L5CWUCIg+34YojJNe4w2LWeVmfEw0fVTjyUhFT25AHlnLGjRFM4TIKdrTEea1r6Lt0aJd9Zg2nYnbUBagKe//WvXQB0HBpkBvz09/b5wXPBUHMaHQWVjyFKTP4BtDyk=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=g6hO2tlRXP9Iup0bKkzSAfKFsmA7BIRhineOmJ+G4LpWCzPZOOSWcMAFVxxce1EfbO2HovaUyNK+lXXadaxT3DTSD1BJfHPxdVTcKTirSzoqNSAHaoYFRrR1B2APe/KOuvvo23ZZvfRWL0CGzcxmbeK8Kba84XViNI4rUeiVmbg=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=mBDqk7dnIKeAVaEQ8ukQZV5cRW9aOo0WCUoVaNG9E70=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1795646851749477.6835426595662;
-	Wed, 25 Nov 2026 14:47:31 -0800 (PST)
+DKIM-Signature: a=rsa-sha256; b=D10N5VNGv1dIDwDlQlZXoE6mS8eTjweW/S8NLNsnnM2VJPWR4hhK9mbIY2+EQu3K6B1iCyDCFB4wpAyFChiBxkTpqP0Mp04ivNkxjufBq2F2441D+CVgCzYtpU1niIx8qWgr7spicab9oIgXmor2YPEJFKcdGzS1X5IoTLNBTr4=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=/1i4APE0O0sIQ50uMj0gHU7M6QnWF8z8Fcq204FWJZg=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795646875957665.9814107041586;
+	Wed, 25 Nov 2026 14:47:55 -0800 (PST)
 From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Wed, 25 Nov 2026 19:46:56 -0300
-Subject: [PATCH 05/13] drm/tyr: use SizeConstants for the u32 and u64 size
- constants
+Date: Wed, 25 Nov 2026 19:47:01 -0300
+Subject: [PATCH 10/13] drm/tyr: add split_u64() for the 64-bit register
+ values
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -62,7 +62,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-b4-tyr-as-casts-v1-5-2b2f53164d86@collabora.com>
+Message-Id: <20261125-b4-tyr-as-casts-v1-10-2b2f53164d86@collabora.com>
 References: <20261125-b4-tyr-as-casts-v1-0-2b2f53164d86@collabora.com>
 In-Reply-To: <20261125-b4-tyr-as-casts-v1-0-2b2f53164d86@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -82,125 +82,136 @@ X-ZohoMailClient: External
 
 An `as` cast silently drops the bits that do not fit the target type,
 and nothing at the cast shows whether that can happen. As part of a
-larger effort to reduce the number of `as` casts in Tyr, use the
-`SizeConstants` trait for the size constants that are not used as
-`usize`.
+larger effort to reduce the number of `as` casts in Tyr, add
+`split_u64()`, the counterpart of `join_u64()`, and use it for the
+64-bit values that the MMU code writes as two 32-bit registers.
 
-The `SZ_*` constants are `usize`, so an expression that mixes one with
-a value of another integer type needs a cast on one side.
-
-The `SizeConstants` trait provides the same constants as `u32` and
-`u64`, so that neither side has to be cast:
-
-    va % SZ_4K as u64          ->  va % u64::SZ_4K
-    va.start as usize % SZ_4K  ->  va.start % u32::SZ_4K
+The two casts that the split needs are now in one place, each with a
+`// CAST:` comment, where there were ten.
 
 No functional change intended.
 
 Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 ---
- drivers/gpu/drm/tyr/fw/parser.rs |  4 ++--
- drivers/gpu/drm/tyr/vm.rs        | 32 ++++++++++++++------------------
- 2 files changed, 16 insertions(+), 20 deletions(-)
+ drivers/gpu/drm/tyr/mmu/address_space.rs | 29 ++++++++++++++++-------------
+ drivers/gpu/drm/tyr/regs.rs              | 12 ++++++++++++
+ 2 files changed, 28 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/tyr/fw/parser.rs b/drivers/gpu/drm/tyr/fw/parser.rs
-index 89de560bf192..6ff681aa78d1 100644
---- a/drivers/gpu/drm/tyr/fw/parser.rs
-+++ b/drivers/gpu/drm/tyr/fw/parser.rs
-@@ -20,7 +20,7 @@
-     device::Device,
-     num::Bounded,
-     prelude::*,
--    sizes::SZ_4K, //
-+    sizes::SizeConstants, //
- };
- 
- use crate::{
-@@ -334,7 +334,7 @@ fn parse_section_entry(
-             return Err(EINVAL);
-         }
- 
--        if section_hdr.va.start as usize % SZ_4K != 0 || section_hdr.va.end as usize % SZ_4K != 0 {
-+        if section_hdr.va.start % u32::SZ_4K != 0 || section_hdr.va.end % u32::SZ_4K != 0 {
-             dev_err!(
-                 entry_cursor.dev,
-                 "Firmware virtual address range {:#x}..{:#x} is not page aligned",
-diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
-index 1dd11b2b1253..72c8593c489e 100644
---- a/drivers/gpu/drm/tyr/vm.rs
-+++ b/drivers/gpu/drm/tyr/vm.rs
-@@ -42,11 +42,7 @@
+diff --git a/drivers/gpu/drm/tyr/mmu/address_space.rs b/drivers/gpu/drm/tyr/mmu/address_space.rs
+index f6ccb0d7e3ed..dfa8499a8ebd 100644
+--- a/drivers/gpu/drm/tyr/mmu/address_space.rs
++++ b/drivers/gpu/drm/tyr/mmu/address_space.rs
+@@ -47,6 +47,7 @@
+     regs::{
+         mmu_control::mmu_as_control,
+         mmu_control::mmu_as_control::*,
++        split_u64,
+         MAX_AS, //
      },
-     new_mutex,
-     prelude::*,
--    sizes::{
--        SZ_1G,
--        SZ_2M,
--        SZ_4K, //
--    },
-+    sizes::SizeConstants,
-     sync::{
-         aref::ARef,
-         Arc,
-@@ -491,9 +487,9 @@ pub(crate) fn map_bo_range(
-         flags: VmMapFlags,
-     ) -> Result {
-         if map_size == 0
--            || va % SZ_4K as u64 != 0
--            || bo_offset % SZ_4K as u64 != 0
--            || map_size % SZ_4K as u64 != 0
-+            || va % u64::SZ_4K != 0
-+            || bo_offset % u64::SZ_4K != 0
-+            || map_size % u64::SZ_4K != 0
-         {
-             return Err(EINVAL);
-         }
-@@ -545,7 +541,7 @@ pub(crate) fn map_bo_range(
-     /// This removes any existing mappings in the specified range, freeing the
-     /// virtual address space for reuse.
-     pub(crate) fn unmap_range(&self, va: u64, size: u64) -> Result {
--        if size == 0 || va % SZ_4K as u64 != 0 || size % SZ_4K as u64 != 0 {
-+        if size == 0 || va % u64::SZ_4K != 0 || size % u64::SZ_4K != 0 {
-             return Err(EINVAL);
-         }
+     slot::{
+@@ -255,34 +256,34 @@ fn as_enable(&mut self, as_nr: usize, as_config: &AddressSpaceConfig) -> Result
  
-@@ -791,27 +787,27 @@ fn sm_step_remap<'op>(
- /// Returns the page size (4KB or 2MB) and the number of pages that can be mapped at that size.
- fn get_pgsize(addr: u64, size: u64) -> (u64, u64) {
-     // Get the distance to the next boundary of 2MB block
--    let blk_offset_2m = addr.wrapping_neg() % (SZ_2M as u64);
-+    let blk_offset_2m = addr.wrapping_neg() % u64::SZ_2M;
+         let io = &*self.iomem;
  
-     // Use 4K blocks if the address is not 2MB aligned, or we have less than 2MB to map
--    if blk_offset_2m != 0 || size < SZ_2M as u64 {
-+    if blk_offset_2m != 0 || size < u64::SZ_2M {
-         let pgcount = if blk_offset_2m == 0 {
--            size / SZ_4K as u64
-+            size / u64::SZ_4K
-         } else {
--            u64::min(blk_offset_2m, size) / SZ_4K as u64
-+            u64::min(blk_offset_2m, size) / u64::SZ_4K
-         };
--        return (SZ_4K as u64, pgcount);
-+        return (u64::SZ_4K, pgcount);
-     }
+-        let transtab = as_config.transtab;
++        let (transtab_lo, transtab_hi) = split_u64(as_config.transtab);
+         io.write(
+             TRANSTAB_LO::try_at(as_nr).ok_or(EINVAL)?,
+-            TRANSTAB_LO::from_raw(transtab as u32),
++            TRANSTAB_LO::from_raw(transtab_lo),
+         );
+         io.write(
+             TRANSTAB_HI::try_at(as_nr).ok_or(EINVAL)?,
+-            TRANSTAB_HI::from_raw((transtab >> 32) as u32),
++            TRANSTAB_HI::from_raw(transtab_hi),
+         );
  
--    let blk_offset_1g = addr.wrapping_neg() % (SZ_1G as u64);
-+    let blk_offset_1g = addr.wrapping_neg() % u64::SZ_1G;
-     let blk_offset = if blk_offset_1g == 0 {
--        SZ_1G as u64
-+        u64::SZ_1G
-     } else {
-         blk_offset_1g
-     };
--    let pgcount = u64::min(blk_offset, size) / SZ_2M as u64;
-+    let pgcount = u64::min(blk_offset, size) / u64::SZ_2M;
+-        let transcfg = as_config.transcfg;
++        let (transcfg_lo, transcfg_hi) = split_u64(as_config.transcfg);
+         io.write(
+             TRANSCFG_LO::try_at(as_nr).ok_or(EINVAL)?,
+-            TRANSCFG_LO::from_raw(transcfg as u32),
++            TRANSCFG_LO::from_raw(transcfg_lo),
+         );
+         io.write(
+             TRANSCFG_HI::try_at(as_nr).ok_or(EINVAL)?,
+-            TRANSCFG_HI::from_raw((transcfg >> 32) as u32),
++            TRANSCFG_HI::from_raw(transcfg_hi),
+         );
  
--    (SZ_2M as u64, pgcount)
-+    (u64::SZ_2M, pgcount)
+-        let memattr = as_config.memattr;
++        let (memattr_lo, memattr_hi) = split_u64(as_config.memattr);
+         io.write(
+             MEMATTR_LO::try_at(as_nr).ok_or(EINVAL)?,
+-            MEMATTR_LO::from_raw(memattr as u32),
++            MEMATTR_LO::from_raw(memattr_lo),
+         );
+         io.write(
+             MEMATTR_HI::try_at(as_nr).ok_or(EINVAL)?,
+-            MEMATTR_HI::from_raw((memattr >> 32) as u32),
++            MEMATTR_HI::from_raw(memattr_hi),
+         );
+ 
+         self.as_send_cmd_and_wait(as_nr, MmuCommand::Update)?;
+@@ -322,14 +323,15 @@ fn as_disable(&mut self, as_nr: usize) -> Result {
+         let transcfg = TRANSCFG::zeroed()
+             .with_mode(AddressSpaceMode::Unmapped)
+             .into_raw();
++        let (transcfg_lo, transcfg_hi) = split_u64(transcfg);
+ 
+         io.write(
+             TRANSCFG_LO::try_at(as_nr).ok_or(EINVAL)?,
+-            TRANSCFG_LO::from_raw(transcfg as u32),
++            TRANSCFG_LO::from_raw(transcfg_lo),
+         );
+         io.write(
+             TRANSCFG_HI::try_at(as_nr).ok_or(EINVAL)?,
+-            TRANSCFG_HI::from_raw((transcfg >> 32) as u32),
++            TRANSCFG_HI::from_raw(transcfg_hi),
+         );
+ 
+         self.as_send_cmd_and_wait(as_nr, MmuCommand::Update)?;
+@@ -405,14 +407,15 @@ fn as_start_update(&mut self, as_nr: usize, region: &Range<u64>) -> Result {
+             .try_with_size(lockaddr_size)?
+             .try_with_base(lockaddr_base_field)?
+             .into_raw();
++        let (lockaddr_lo, lockaddr_hi) = split_u64(lockaddr_val);
+ 
+         io.write(
+             LOCKADDR_LO::try_at(as_nr).ok_or(EINVAL)?,
+-            LOCKADDR_LO::from_raw(lockaddr_val as u32),
++            LOCKADDR_LO::from_raw(lockaddr_lo),
+         );
+         io.write(
+             LOCKADDR_HI::try_at(as_nr).ok_or(EINVAL)?,
+-            LOCKADDR_HI::from_raw((lockaddr_val >> 32) as u32),
++            LOCKADDR_HI::from_raw(lockaddr_hi),
+         );
+ 
+         self.as_send_cmd_and_wait(as_nr, MmuCommand::Lock)
+diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
+index 443e9a1e7a21..76892a911227 100644
+--- a/drivers/gpu/drm/tyr/regs.rs
++++ b/drivers/gpu/drm/tyr/regs.rs
+@@ -32,6 +32,18 @@ pub(crate) fn join_u64(lo: u32, hi: u32) -> u64 {
+     (u64::from(lo)) | ((u64::from(hi)) << 32)
  }
  
- /// Maps a physical address range into the page table at the specified virtual address.
++/// Split a 64-bit value into its low and high 32-bit halves.
++pub(crate) fn split_u64(value: u64) -> (u32, u32) {
++    // CAST: The upper 32 bits are dropped on purpose. They are returned in `hi`.
++    #[expect(clippy::as_conversions)]
++    let lo = value as u32;
++    // CAST: After the shift, the value fits in 32 bits.
++    #[expect(clippy::as_conversions)]
++    let hi = (value >> 32) as u32;
++
++    (lo, hi)
++}
++
+ /// Read a logical 64-bit value from split 32-bit registers without tearing.
+ pub(crate) fn read_u64_no_tearing(lo_read: impl Fn() -> u32, hi_read: impl Fn() -> u32) -> u64 {
+     loop {
 
 -- 
 2.56.0
