@@ -1,17 +1,17 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.96.74
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.95.99
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795625268;
-	b=tez4pPgxImjntz3iA/Jn9cWsglC/TBJjwaNxPbiBnRgqKRqVNTbeC5scCk+pH1Qu9uMV
-	 8Qbx+g6E0kUlauqs/Cm56E3CfmpzLS5DoEML65wEQPajuODVDC1arR4+sW3ld9ANNR16P
-	 YkDmNNwVSB9M4U/47LVHRV/J79IhoNySiu3CKBXEZtl5Du4TlbSTjhP3m6y4tORz7VDzc
-	 ZD8sp3Ml+BjdJ0gjvn2Q+3Qb9JvQk0VHph01MdrkgY4SVs99K0HOknwfOzEerIzZQ+PVa
-	 h76jxj+R7rYa2GvoCqHRRpTNZcHNhdmJLbsRErxPYBBeZjKW0pxWAzOSGXQ/eALPGxw==
+	t=1795625569;
+	b=PRAvGZFK3jRKSPhYqk1Kbi6oVmdvFXu/d1UbnYI4rdwA34Jdij8wo8PrJVDS6JhxwIHw
+	 W0aG4kIceDXrbn8roeoG8YxYD1aiv3/n+2ZOe6B12/lu45ajqo0i8eG6KRfquBG3XGU95
+	 Vosop4k9QN60DTbP2sYtd7QjuKF/D45hv6fnL+Hdcp8/IREX59PZHI+ohwP6V9DBrm5L0
+	 JqmkaXZlJqjI1MhRuwSC4fjTQviAZYMrKLwU6Wy8dIvW8vfy1GrDJLbbnYAHuQ/ptMRp4
+	 3u5L8b/6B05gIj3d27H4oOtBCXT/f77/lRXva/1fDGdjLVSRQ3Xt5o7YJ+Zkhnqki6g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795625268;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795625569;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:To:Cc:Subject:
-	 From:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
+	 From:To:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
 	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
 	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
 	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
@@ -24,58 +24,63 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=x/nYfbYndi1SHlwuJj3Ga5w+rAPhbUQ+mb8VoIVvPiI=;
-	b=TPjYQ7NsZer5ApZSec+v7CLju2ViuICibEBPstAC6yITiZAQB4PnB7PJ8Kts9zyMHqVX
-	 fTNmGkC1n71k60GZHgqar1Msd7CU3ruMqkGJjC07XrT4cyzwb1t/M+2/+PXKpcpYuYelo
-	 vlRU9KPIApuOxtt3sciCZdmW0s1HFWiAwX/vMn4Xn8cWE8yRAszdq8cob0OMGMe/PuB2E
-	 sYVrXVKyYRw7ISpJMu/iMbRD2+p7sUjD+c8xKJuHmKWBOVSYAh11WXtDolAIZJRyLQ9t/
-	 cnklSuz3lIiGKcBCEXUOhRgChhRQik/FLKgDbVhjdHtCLKmA15/dDOagOcDb3jWmwDw==
+	bh=YlKLU0VlLoONcPrBYzI3MeVizQ+VpbPatQ1gnO2yy90=;
+	b=Qr0hBb1P7R7dvd8x+RrO7YS3vW0P1tHIaxf5WIPB2odVB7nlo89jlUQTjE8vu95FwFJP
+	 OCrUZc5Kwg8PZLDC3SgJCSs+9FqDq18b8fjypK+pfBkvtOdsfCEKp79PTikgfAvyvHrhl
+	 hQU2f11QM997tSXu9nrCK0UcrkzG/DhB0I5bd4SfEoBG+2+uVwQyD/btazSsJSUkMWu+8
+	 s37E8XtTr7Wfvx43UaSy9GNaTZD6Luiz6PSyRZO9lahHyxpiov49w5X3j38MLJg+FqwxU
+	 95OjB0qTd8nQuG20B+4BgKmMfjzZE5gQMXe+niJgdKSjzM4X2KTdZrreauslsLAIarw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=garyguo.net;
 	spf=pass smtp.mailfrom=garyguo.net;
-	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b="JC//ZJDq";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.96.74
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022074.outbound.protection.outlook.com [52.101.96.74])
+	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=Y3MSIUBR;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.95.99
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021099.outbound.protection.outlook.com [52.101.95.99])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3941F606A321;
-	Wed, 25 Nov 2026 16:47:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3941F606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE32606A33B;
+	Wed, 25 Nov 2026 16:52:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4CE32606A33B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=JC//ZJDq
+	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=Y3MSIUBR
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CAluPzXRA3VvcJK4IRK0Hgc1PHws3RLne/2j8mPyXkqiklmDRWqoG8UqR8zTOvWi2dyazim/lpEtK+GACEuP9Rbxl+bmnBkkbt/Oz+oemGzfjBca1GBQQNMJsBr3L5hszjwQrXLha8wAmJ/2SwtFbgyF2EMu7PjMU/YvVk8+ZjotcPcQr/JIkzuwOEWza0I/kEGqenHbKWdfG7wxBhTLbmtlS2xksOsDkru9DGQVZte/V74MHESbkCMFAGBkiLtZOycSzPRyM0HHUANXDLeMk2lqWLknrrH8DUPdNsIZVyScSY8+2U9HEvvMSdfO+p/36+OJXTLbWbYv3DtKI3Bitw==
+ b=CcJ24QpLJU7dDOeARVF0iOIZbvjJv/hEPVG0wKho4rI/OzuF04GmEeYFePYsyJNSqdkPtjjFCM2MF4JoInwTD4ot3i/7yo2h7DWRzan9AErO0iuUGnB5diRsOnIjglgHqkawev665kzcxSNU3WfzhPQ2UyPxIz1GKj1A5gxg8T26bUPFDmXP3buFK7nIeSfYmCJOmBJhd3RxBu84bsEsfaHcpqe+d5noNhJRZoLQ9vHJGhqijG3Kec/OsSGL8oiPX3kPukwF4NgRcY+VFWVegwD996/w3ofe5uX13gHevgvvijD44SLi+PDXdIWGeqw5Z2gTxQXDHc46AIlskpZarg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x/nYfbYndi1SHlwuJj3Ga5w+rAPhbUQ+mb8VoIVvPiI=;
- b=iY64Hv+PSq+HNy8suGwuDHkgNJQ0jZVmjnkrJfEPd1/1jhtwoodYfQqWJ6ea8LmXapsStef+e9HsWrW/g/P7IzVrpnuFu5qjFBIf1Xp/Q+7EjF3Q+znEO6aL/eLCP62nhbMIN1C4PH+PVwOcvACMOxPC012Z1zO43+yOkf5zb29gWtcmGr+S36dX16CWs3cHLcZMg6qaCMsLJTLrmmLLyyy9zDn6BSsYksO4Xe0qyQzBSQmj/AzfTp9yK7OXNsPdqFf61X6fwhID5jxyDIddmerZZrHYbXjY/ygjNIDoi3CSRYk432L4bzo/uwGmQy6b/6XBNvCAuWb5nx/YBEH5rA==
+ bh=YlKLU0VlLoONcPrBYzI3MeVizQ+VpbPatQ1gnO2yy90=;
+ b=isxJrwXsN9CJfaIAxhPitpOGGS46kGoQVTVosk6XY/sFAvq3kG8YCOA7xseAz/a3cxD7nAy4VyAu/TIxDwf5m6YRgpTbluwuLOWFiBg0N8brjusyWVxka8wz1/oxlc0lMYn1DpzJfvQpdVDYHNdpfW/9p/pkMSNMvG8RrC0agKVEi+PhuR6PRvEHtUKn4TGdyvCshJeGh2LTDp/D1QG9HUFacdBm1smNY4WIKg4GiEcJp30sOGZU5U1dgI0Vp/gEz6nnHXqalAmsx8OgPXKlNoHlDOIzEA5bln1GYFBY6BGJMGqMeLgAgk3wRrVRvUjJsioPzZV3RSBEY+TQzGnFoA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=x/nYfbYndi1SHlwuJj3Ga5w+rAPhbUQ+mb8VoIVvPiI=;
- b=JC//ZJDqOIX7SWR60skOKt3VWOTNXvqMDADhdX4vkphqjRKKlDbgsIIY6walFtNdt06qmceulG7xlLMyUq/I3iC2gbiWHNWgMvua/KaMI9YGrBuiVEkXZzEl5HeTo3Vpm6Jn9ePA2QJB//j+KFPDPmOLitP3rfebWFz1E4Hebdg=
+ bh=YlKLU0VlLoONcPrBYzI3MeVizQ+VpbPatQ1gnO2yy90=;
+ b=Y3MSIUBRmxSvb4IHnX8xyk+pGjG9/k9cYBlmlKeJi7DbIvQCS87fIfTTnUwloYmpnfUXtwARz9rcvJ9ojbQC64ptx8RgPfxtST9D/zKfpmNJJU6OGioY6dxCw5I1dyJEV6F9L6SGNEN/fAjIvr9ORaTMNxb4EkiBUTyN8ilr8aM=
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
- by LODP265MB042256.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4d6::14) with
+ by CWLP265MB6198.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:184::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Wed, 25 Nov
- 2026 16:47:45 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.7; Wed, 25 Nov
+ 2026 16:52:39 +0000
 Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
  ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
  ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0662.004; Wed, 25 Nov 2026
- 16:47:45 +0000
+ 16:52:39 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 25 Nov 2026 16:47:44 +0000
-Message-Id: <DN4G16NA0JJF.QCQBZ2S4U1GZ@garyguo.net>
+Date: Wed, 25 Nov 2026 16:52:38 +0000
+Message-Id: <DN4G4XXREV0V.23XPC66L6P5L3@garyguo.net>
+Cc: <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-media@vger.kernel.org>
+Subject: Re: [PATCH v2 07/10] rust: DmaFence: Replace is_signaled() with
+ status()
+From: "Gary Guo" <gary@garyguo.net>
 To: "Philipp Stanner" <phasta@kernel.org>, "Matthew Brost"
  <matthew.brost@intel.com>, "Danilo Krummrich" <dakr@kernel.org>,
  =?utf-8?q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>, "Alice
@@ -90,16 +95,12 @@ To: "Philipp Stanner" <phasta@kernel.org>, "Matthew Brost"
  <work@onurozkan.dev>, "Sumit Semwal" <sumit.semwal@linaro.org>, "Tvrtko
  Ursulin" <tvrtko.ursulin@igalia.com>, "Paul E . McKenney"
  <paulmck@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>, <linux-media@vger.kernel.org>
-Subject: Re: [PATCH v2 01/10] rust: rcu: Add get_state_synchronize_rcu()
-From: "Gary Guo" <gary@garyguo.net>
 X-Mailer: aerc 0.22.0
 References: <20261124122951.878199-2-phasta@kernel.org>
- <20261124122951.878199-3-phasta@kernel.org>
-In-Reply-To: <20261124122951.878199-3-phasta@kernel.org>
-X-ClientProxiedBy: LO4P265CA0018.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ad::11) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+ <20261124122951.878199-9-phasta@kernel.org>
+In-Reply-To: <20261124122951.878199-9-phasta@kernel.org>
+X-ClientProxiedBy: LO4P265CA0318.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:390::17) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:400:1cb::9)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -111,121 +112,205 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|LODP265MB042256:EE_
-X-MS-Office365-Filtering-Correlation-Id: eb090fcd-0ccc-4164-16ae-08df4b13d47d
+X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|CWLP265MB6198:EE_
+X-MS-Office365-Filtering-Correlation-Id: 90a0ec6c-c28c-45db-032e-08df4b148408
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|10070799003|6133799003|4143699003|261009223027099003|22082099003|18002099003|921020|56012099006|10067099003|261102123227099003|261026140227099003|261021121427099003|261026121527099003|261022105027099003|261028144727099003;
+	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|10070799003|366016|4143699003|22082099003|6133799003|261009223027099003|18002099003|3023799007|921020|10067099003|56012099006|261026140227099003|261026121527099003|261022105027099003|261021123027099003|261021121427099003|261028144727099003|261102123227099003;
 X-Microsoft-Antispam-Message-Info:
-	rZb2EANGXA1HPI0vnyvzQ/Ytv+5bEtE3XmVP3qtlbkmsVcVpw3EGGei0O/4s+EIj/UW8/z3RvjExmjEBn1DlRmO8Vtbq8x3BjhyrCWw1e5Vjz6irWrZbbzOssdkgxBlbuUJ0cQ7PUQipwsklXPwOAK9PWBIgCiHzwxz0ex+BSM1Bv3Ln/1dghG87kK4RlPlLwRuh2Kz+gSl4FVE07HVxcyZUPbg0ucQeWm9hG4/iRDGhlZtcBeygsx0Mk70SPbHUjPZ1vYeK5HmVo4IRK++5OY+AwluWVP9m02RQHnDx+M3oOzSIKDi3Sb7odJgYOI3USBN6hf7jyx2Wd6ORg+hDcUubPygtRtKZkHEB0GZuQ1vy14DcyWfEOn7DVjDl92tu4GVG7emoBS2HQiaMNdGpTYL6SqR94eThetx+sG1F6FrJO2Q4A064PZvfCMYFEmWJdJb1E3r4GblemYxPIC36JMkVHkfUWNk+98DluyyVZXH2oeOAaGelg7AjbRM+pgkA13D8K2AN5v9v4KX7/OfOP8/O+QDZIPtjo8mEKDNKzacYdtwauSry0H4hKNrOYUg3vzRd2ypOw4hIGcKBz9d2lLw8+3StnzaM8Lztho/TE8T2KxqaihZm6yXNE43TyeCNpBYcFUh+eTPACAkN88jTnPLybcdJPY3Erisk4qrW9xLFhFlc/e3OPXesD4FhfhNICnU+hf0rrhYf6Wo1hSn2rg==
+	A5Pmiw3nfGgKBjsNIOyghU3DhzcKGFB6+PVeSwvk00iLv7fl47dgYiSXlgTfIADjtUYPZgjqM8b5yR04YktbWYMJtJoOEnTUttXwNutM2Ax03fEpOzUhISzq8qdfdAh2ANsqxSKwKqvjNQ+txXzaJDscEFlT9WJVsA9BTi5p71DDF/1CHYXaIx61AsTmze1zHkHruyOxi3Znw94zWV+R6mdSCJa1GymFozHzG0LurAO+2cPpdoyZETDgQz1wTAlBWdSxykpVFe10ROO3lMxvmhOnYL/HY89GK3sfu64q5tMe+IqMKqrV9GF5hz4Eij1Vzarq95LX6L/TcsKN44Sl0S4fUEhZREGZL6lWf8qfqMNF+d17qEek2dvYh7K2ddK0pht+Vho5oDn0PduLcR4QwGXPFy8DCfyGGb7YN5jmPzzy8sNqJTt9uJmXDceP2BAFgVcnsKwdgCV1jewx/hXlnTx+qtO8vCIRs31lQDktgXMu/vb+azs3FRy0xnPCy+ou3oyDZ8eQKl/CP6ouieb8Hs7LmyZA+TjuOXPmgg14nzyUKF1HAi2vHbnKjdKEpX1aOVTJPPszFESfHpPCvHkHOjXXqgwA35Idpdj/WoL3rtwEegvFMzY6QLeLhzOJLGT+NLntgt5RKKQNhx0X1T6XmuosIn1JzQAzM3+X/donIZbzl8987gxIMVGPVsMdyepccdUSBdh73BOH38+S2sWEYQ==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(10070799003)(6133799003)(4143699003)(261009223027099003)(22082099003)(18002099003)(921020)(56012099006)(10067099003)(261102123227099003)(261026140227099003)(261021121427099003)(261026121527099003)(261022105027099003)(261028144727099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(10070799003)(366016)(4143699003)(22082099003)(6133799003)(261009223027099003)(18002099003)(3023799007)(921020)(10067099003)(56012099006)(261026140227099003)(261026121527099003)(261022105027099003)(261021123027099003)(261021121427099003)(261028144727099003)(261102123227099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TmVsUnlwYzROb0hLUUw3SjRmTWdzSFMwSWxTb1FCMzRCaXJaL2VodGtsaG9R?=
- =?utf-8?B?YVBQNjg4cnU4cVFwUzdGeTY5S3RDS0FIeUFRUmUzQUpXWmhXUktUbXVLQkRl?=
- =?utf-8?B?emc4VlRsZ2NhSXRPMlQ1YW5RZVJ2RnowelYxZWhmLzZEelBSeWlvQkpyTFN0?=
- =?utf-8?B?cTRVVkVZQ2lrTXRNZ243cTAyYjdqbmgyMU9tQWZ3dzZoZE9OUDJLQ1kwRWhW?=
- =?utf-8?B?MVlWYisvVEc3cUlONXlQQU9laTZhLzR1Y0Y5ZEpTUEhidURHaVAyZUJPbGp1?=
- =?utf-8?B?dlF0ODZCcWl2aVo3Y29uZW9QYTlmYWRzY091NEpERmhVNFpDcHlTMHQ2N3g3?=
- =?utf-8?B?TUt2YTNySEl1c2N4U255RmtIZjQweWp1OFl4Z1FmSVhIOFFLZU5lNnU4RURw?=
- =?utf-8?B?YzF2NGN1L3FJVVVtRHN5TU5lZkpiMlhXV0dVOWRsT3ZyMnYrSmtUZllGMVRK?=
- =?utf-8?B?TmRQRjgvNThVYThPSlFoZmN5V3lsWTFBeUtGOHpTY1BaYnJ1MzU0Ym12K0tH?=
- =?utf-8?B?UEpWK05nQWVITkZ0RXFrczN2d2hlRmRjVVNzazRtMVBzRzhZdmR3ZlordXo3?=
- =?utf-8?B?dW5iT2FnOFFIbmMvYWVBRTNJRkVjR011RXVkQUFwMTdoWmlhYTdRWGk0ZTBS?=
- =?utf-8?B?azd5bXRqU0JXcHNnM2h4bHh3QWliVi80YjFHM3MvMzlha3hyeEJzMFpWVGtL?=
- =?utf-8?B?YU9FU05Ca3pWSmdwK0J2dmo3bDlNNGQ0T3Z5S09IdWxNSk1qQlF6a3hVYWVy?=
- =?utf-8?B?Mk51TnBidHNvTUMveC9RREJQd2hYc0w3S2U2RG9UUWpKL1QxeXJHSUpSMWwv?=
- =?utf-8?B?Qm41ZHFqc2FqcHQ5dXFia1JCTTkrZmZlZkJkZERweEFKMWJ4KzRIbUxSUGhr?=
- =?utf-8?B?eUlzeWpOdXhWQ3Jna1kwSWtBVFY5VGhiRkRGUW5pcnRuRGU3VEdRa1FsYnQ3?=
- =?utf-8?B?Mi9lSGxJSHBqK1ZQRVhLYVkwMkt5S2pWdDYzcWtqSVNFanRpeGx4MDROeWNL?=
- =?utf-8?B?RFBPVkFQcWc1c0xPZ3lzQ0crUkVVeTEwQktFQTN3Rm5kT3hzakpJUzhLSVJr?=
- =?utf-8?B?RFhlUFdrMjlmTS9DTHYzWFc0dU5DeHR3QnVOUWdBZ29RRHZiaER4ZUZVOVVv?=
- =?utf-8?B?d2ZZaUErNEZuQUtrNVlnT015MGVidEk5RUdlWWhPam13cWpSdjRnaVlCYmc2?=
- =?utf-8?B?N25Pc1pLMFJZb0xSTTErWWFMaXUxY2NLZHJ6RWFuY2xQOGY0T0dMVFJMNUVK?=
- =?utf-8?B?ZWtRcUZEYXhLVnJjcVVhd2N5RHQrUUdrT3pxN1NTZ2xoRTdoeldubnBnaVNF?=
- =?utf-8?B?QzFJVUhzcXJqSXNGWS9xR1VLMS96bGhJbTQrNitlUmUzK0gzWXBnMVlTc2Vu?=
- =?utf-8?B?eE1saUl5WW1uUWZUYldObWN6cWJ3RHdlRmU2aU9lS0dXWnNEYUpPSEU0TVVk?=
- =?utf-8?B?dmpiOVJreHVWUlh3aGxLNE82TFc4b016N2w1RHJ5SnU0Y0pISzB0MlNOUlpl?=
- =?utf-8?B?QkhLQWJCSHVVN1orVzhFaDUyM0QyZ1ZKVVh6ekorcGJ5eUdCaE1TQjFqdEhv?=
- =?utf-8?B?WStpek1mK2dvMVdRUmdzQm9oUG5mTUVPR2UwLzNTWE5JQ2NTbnNPT1AwN1hi?=
- =?utf-8?B?eThvSGNyQU4xT3hwaVppbW9mbSt2UzgyQU1DUVY0Rlh1K25JOHpHcnA1SXpj?=
- =?utf-8?B?WTlvWmtTMlpnQW0xNlIzTFQ1dElmN2ZhdjIzYUV1czlNWmkxbEFjRW9EWDM4?=
- =?utf-8?B?bkFIWUw0NVdXZHp3UjBpNkdvdjZ1RUg5VHMyVVFCSk1acFZBei9MYXduRXpM?=
- =?utf-8?B?cTdtamZpS2UxV2pZTFU0U3daYm9FMkVPWUZkOFo2QjNweHRRTTFmRnN6Z3lI?=
- =?utf-8?B?eCtKMzdheXI4ZDE3dEY2ZzBCWkg5ZTAvWjhsRTExYks5ajV1bThBK2V0SUMv?=
- =?utf-8?B?akJtSTI5enhoTStnQS90WEZETDN0R1RXanZQL2U0Rnk0bnJTbkpNN1Ftdm82?=
- =?utf-8?B?aWxFSC9HWnJGSUdGM0FodXRGMUdTUjlIVFBMR2RvWW1jdkpsUm5lL2sxdDFj?=
- =?utf-8?B?ZHFJNi85ZkdoMEs0RnlBaEkyMTlMSzZNZkdqeTFLYnEyZlpIQ1Q5RDBtb1RZ?=
- =?utf-8?B?czlLWncxbHlqT0xZd2xUdlBZQjI2cXZnUXRsODV3bmUwMCtKUHNXWVJWZHlh?=
- =?utf-8?B?S3lEM1JBODhHdGFxUUU4dnZqWVUrTVg4KzBMWXVpcFdZZSttUi9icWZaQWhY?=
- =?utf-8?B?ZTVEWUFacHJxNFZVYXVNS2NqdEpjajRzQjdxWWw4UDQ3cVJTaXZ5Q3Z5UDBs?=
- =?utf-8?B?NUxiYnZ4QXVYVi9wK3JEcmdlUUtnL2dnSWd0MWhjNWh0TDRUSDE5Zz09?=
+	=?utf-8?B?eXVQRjBJZlMwOXlIeis5dWhqaGp0RjNqR2J3OUFmRlpoTXRYcy8yeDJzTU51?=
+ =?utf-8?B?US8yeEtSUVY0bzZ2VjlTeG5TV2VSK2FEM0o4NEVqOFhxeTRnWUt0TjhNeXN1?=
+ =?utf-8?B?QW1qRkxJbWZPak81NlNvNFdFOVRUVXY5ZzVub0xHK0xPYVFMVk9COERHbyth?=
+ =?utf-8?B?ZTR1R0tCc3Z4Slo5dGhiUlNrWEZYdlF1K1o4ZGh3Zm1CZXVUV1NudDhGc1pq?=
+ =?utf-8?B?empnTnpjNFZHcGR3Mk9DSDM2REhMZGo0NjljOGtGN2pqM3JEZ0JaRG9NQnh5?=
+ =?utf-8?B?YW1jejUwa3FFenM1cVRQWklRS0tzZVBZTnZJZXpCTE9CT1M4NVlkUlY2R0xH?=
+ =?utf-8?B?bjFkaFRzQjduaUNYOElXS3lja1dqcXBzNVhKanJpSTUxcFNjalBTc3c2YlhE?=
+ =?utf-8?B?QXdWVVIxMkdmYnNocnVYcXMyc28rajk1MWplWEZCa3o2akZVR2tueXQrNk5w?=
+ =?utf-8?B?cmNkTVpGc0ltdlRZN1lOdEF2N3JyWG5ZTm5YcWQzWGlBYzR0Ky9qRUcvcDQr?=
+ =?utf-8?B?a1dOcndiYkhaSkl2VDdtTnZoSmczMHlHYnFpSm5WVXo4MlZHSkNXYWR5LzRG?=
+ =?utf-8?B?MWg1Q0xtUCtiVlU3SVFoNmprSUs3M21EY2QzcW1OS2lGcCtodHEzdTdkQ0xn?=
+ =?utf-8?B?cUNud0g2WGthUWl6SUZxM0k1TEh1OEM3YWhYYmljUjhPSi9OWGFrNUpLU0Q1?=
+ =?utf-8?B?bi9ZVE03NnVQRk4xcThJc0ZyQXJERUpVN00wYWRZQStLbHg3UksyS3FHTExa?=
+ =?utf-8?B?dGlEMUplK2tlVDFXU0xRVlBYalBkdFBsZk95R2pmck9WQ1JGSmZ1UDNSUHdn?=
+ =?utf-8?B?bHBTS3RMRW93TEJLc3lhWFMydmE1VEhOK3QrbmoxUklhZUdaQ21pek9IN3Vq?=
+ =?utf-8?B?SDZ3NlEwS3cvaVM3SkEzdE1Hc1Vuei85aVJZdVFOaTZYVTRya21Mbm10YTc1?=
+ =?utf-8?B?cnVCNU5vZzkrWTFhcXI4enpvZFZMN3ZCaHNtK2RySnJqZXZKOE11dWNJbnZI?=
+ =?utf-8?B?b0p5VGtaSndMaEx5MzZPbHBRUFRvQXdzaGdtekUybExjalZPVlpEZUxwU2xT?=
+ =?utf-8?B?dTQxb3RnbDBtd1I4NElPSlFhT1dYOXVnbXRsMlVMWHRvUFVWczZoMDRqWHl3?=
+ =?utf-8?B?c2xMWVh2bnIxUTkwc1RqT1JzS2s1ZXM1VTBFWlpZNVpwZGh5bFpJM0ZwQjNh?=
+ =?utf-8?B?VWd6eW90K01DOXg4aVlkK004WWpSNW5JL21sVjZLRzZJWEhicm11ek5kNW9r?=
+ =?utf-8?B?aHN5ZG5YalhqMjZBeDQrQThKWldvd2J3cUtkTk4xZURMVTh4S1B5TTRvV29p?=
+ =?utf-8?B?VmVLMFFOVmVSVUFwQ2lzK0RCcWU4ZGV5bG54T3RxcUUrR2pIYjh1ejBOdzZi?=
+ =?utf-8?B?bG1LV090QVkvdjhYL1VLTnlkWUhzajdPU1RqNFdSUjlEekFsRzJFRGlxTzJj?=
+ =?utf-8?B?N3liUnZvWnI5L3NRSVdrSHBuZzlzZWRDblFHUW5STmlVQ0VrUlhJcHNSbWVx?=
+ =?utf-8?B?Y09rMTZwbDh1QmJmZHk5MTVwZ1Z0R1pjdm40ekNKNnhWWFBZMjJwTEFFak1L?=
+ =?utf-8?B?clRrbitBc29DQzRXZzFmOGNQZVNLd1BHYXFuRThpWlllSk01K3JaMTRSYkNz?=
+ =?utf-8?B?cmNHclY1ZW5UUGp3QkhKSjlEbnhHZnZYVlhMZ3R1Qm9rTEs4eWE5Q2FoS0JW?=
+ =?utf-8?B?bnM5d0pyZ0Y3dGd5L1NKd0gzTUFZT3dVRUM1ZXdQMTg2ekRlMER6UnFDbEpa?=
+ =?utf-8?B?Rzc2ZGxxMy9wYS81UVNxQmlyWTg4M29ybFcwc3Q1QW1UdFFrZ05LRVBGdWdy?=
+ =?utf-8?B?MFplQ0dZMU9LME9JK0VnaWlackYzK01XSlF2V2w4WjlmOHJMbFhFYUU4ZE9u?=
+ =?utf-8?B?Mnk1L2hmZlpieWtUNDdXa0tOMmRab3U0Z294bkIxS2FUWlk0MHgrR1NsUERE?=
+ =?utf-8?B?MXFGeUJwK2IrM09TUktWdDR3U25mTW5KVllETEtPTXBkNE42eWxDZE1aTVdn?=
+ =?utf-8?B?WW42NW96RndjTUpLU2lnNjBBWTRkdVBFT0pqUHZBU3REWWhFdzdDc0FHdmJz?=
+ =?utf-8?B?Y1VRSEE2UUJndnRaYW1Zd2NZMVIvQkFCaE5kQkxqYUNRU0NKa1IzT3pnd1B1?=
+ =?utf-8?B?M3ByZVVTUDZtdVlaSGVXRnJGb1lNcUMrQ0pwREVjVlFtSExzTG8ySGFMNG56?=
+ =?utf-8?B?NG9NYjVYR2hrMndXczM2VWhpbGFpcC9sQmoxT0swdDlyMVU4Q2xGZC90UE5H?=
+ =?utf-8?B?eDJZQmtVVnhzcTk1b2RQNnFMRHEvbTJNNjFhMkFNRWdGZ3lOWDdZNm9Fek9R?=
+ =?utf-8?B?VmZPRk1lSXM3Vm1XQit1NkRyRlUxOG1oa3R3STlLYmJDNGxzYi9ZUT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: eb090fcd-0ccc-4164-16ae-08df4b13d47d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 90a0ec6c-c28c-45db-032e-08df4b148408
 X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 16:47:45.2545
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 16:52:39.7471
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: m4wLDgs/CDZmWz0IwmUl+tOK2F9CKlupGYxxSrw3l6rQafAMGsOY87b+6vCvTGbGvpeNHnllhymX40uaJHChbg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LODP265MB042256
+X-MS-Exchange-CrossTenant-UserPrincipalName: tl67f788nFvyHf4vTK8f45XW4govf0CGGxZqQuJ3PQdnZHiLM4nopKc8KlAqJzz+xRHXROy8gXSsgjj/BuEM+w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6198
 
 On Tue Nov 24, 2026 at 12:29 PM GMT, Philipp Stanner wrote:
-> Some users don't want to perform a full call to synchronize_rcu() if it
-> is avoidable.
+> As it turns out, our dma_fence abstractions lack an essential feature; a
+> problem which is partially inherited from the C backend:
 >
-> Add abstractions for get_state_synchronize_rcu() to obtain a grace
-> period identifier.
+> Despite it being a common pattern in the kernel, you actually should not
+> just check whether a fence was signaled and call it a day - it is
+> important that you also check whether a fence was signaled *with an
+> error*.
+>
+> To make things more complicated, an error can get modified at any point
+> in time before a fence gets signaled. Thus, it must be ensured that the
+> signaled state is always evaluated before the error code.
+>
+> Since the fence status is essential information that must not be
+> ignored, replace Fence::is_signaled() with Fence::status(), making it
+> impossible to ignore the error code.
 >
 > Signed-off-by: Philipp Stanner <phasta@kernel.org>
 > ---
->  rust/kernel/sync/rcu.rs | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+>  rust/kernel/dma_buf/dma_fence.rs | 77 ++++++++++++++++++--------------
+>  rust/kernel/dma_buf/mod.rs       |  3 +-
+>  2 files changed, 46 insertions(+), 34 deletions(-)
 >
-> diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
-> index 0daa1ac87d81..7afc78b34759 100644
-> --- a/rust/kernel/sync/rcu.rs
-> +++ b/rust/kernel/sync/rcu.rs
-> @@ -86,3 +86,13 @@ pub fn synchronize_rcu() {
->      // SAFETY: `synchronize_rcu()` is always safe to be called from proc=
-ess context.
->      unsafe { bindings::synchronize_rcu() };
->  }
-> +
-> +/// Obtain a cookie identifying a grace period.
-> +///
-> +/// Returns an identifier that can be used by other functions to check w=
-hether
-> +/// a specific grace period has passed already.
-> +#[inline]
-> +pub fn get_state_synchronize_rcu() -> usize {
-> +    // SAFETY: `get_state_synchronize_rcu()` is always safe to be called=
-.
-> +    unsafe { bindings::get_state_synchronize_rcu() }
+> diff --git a/rust/kernel/dma_buf/dma_fence.rs b/rust/kernel/dma_buf/dma_f=
+ence.rs
+> index 20dadbde4eb9..09bebf9c1e4e 100644
+> --- a/rust/kernel/dma_buf/dma_fence.rs
+> +++ b/rust/kernel/dma_buf/dma_fence.rs
+> @@ -510,40 +510,44 @@ unsafe impl Send for Fence {}
+>  // SAFETY: Fences are literally designed to be shared between threads.
+>  unsafe impl Sync for Fence {}
+> =20
+> +/// Fence-Status queried through [`Fence::status()`].
+> +#[derive(Debug)]
+> +pub enum FenceStatus {
+> +    /// The fence is not yet signaled.
+> +    Unsignaled,
+> +    /// The fence is signaled. Might have been signaled with an error.
+> +    Signaled(Result),
 > +}
 
-Please create a new type for this since people are not supposed to poke int=
-o
-this. It also saves you from having to make cond_synchronize_rcu unsafe.
+FWIW this is basically just `core::task::Poll<Result>`. A few benefits in u=
+sing
+it compared to define our own:
 
-pub struct RcuState(usize);
+- It has `is_pending()` and `is_ready()`. So `is_signaled()` user can be si=
+mply
+  converted to `.status().is_ready()`.
 
-impl RcuState {
-    /// Snapshot current RCU state.
-    fn get() -> Self { ... }
+- It has `map`/`map_ok` provided already.
 
-    /// Check if RCU grace period has been completed since the `RcuState::g=
-et`.
-    fn poll() -> bool { ... }
-
-    /// Ensure that a RCU grace period has been completed since `RcuState::=
-get`.
-    fn synchronize_rcu() { ... }
-}
+- It supports `?` operator, so you can transform `Poll<Result>` into `Poll<=
+()>`
+  while propagating the error.
 
 Best,
 Gary
+
+> +
+>  impl Fence {
+> -    /// Check whether the fence was signaled at the moment of the functi=
+on call.
+> +    /// Query a fence's error code and turn it into a [`Result`].
+>      ///
+> -    /// Note that this can return `true` for a [`Fence`] whose [`DriverF=
+ence`]
+> -    /// has not yet been dropped. The reason is that the fence ops callb=
+acks can
+> -    /// cause the fence to get signaled by the C backend.
+> -    #[inline]
+> -    pub fn is_signaled(&self) -> bool {
+> -        // We should not use `dma_fence_is_signaled_locked()` here, beca=
+use
+> -        // according to the C backend's recommendations, that function i=
+s
+> -        // problematic and we should avoid calling that function with a =
+lock
+> -        // held.
+> -
+> -        // SAFETY: Inner `fence` is valid because `self` is valid.
+> -        let ret =3D unsafe { bindings::dma_fence_is_signaled(self.as_raw=
+()) };
+> -
+> -        // To be as robust as possible for the future we guarantee that =
+an API
+> -        // caller can 100% rely on the signaling being completed (i.e., =
+all
+> -        // fence callbacks ran), so we have to take the lock.
+> -        //
+> -        // The reason is that the C dma_fence backend currently does not
+> -        // carefully synchronize the `dma_fence_is_signaled()` function =
+with the
+> -        // proper spinlock. This can lead to the function returning `tru=
+e` while
+> -        // fence callbacks are still being executed. This can be mitigat=
+ed by
+> -        // guarding the entire function with the spinlock.
+> -        //
+> -        // The fundamental reason is that the C backend currently does g=
+uard
+> -        // setting of the fence's signaled-bit with the fence's spinlock=
+, but
+> -        // reading is done locklessly.
+> -        //
+> -        // See commit c8a5d5ea3ba6a.
+> -        let _ =3D self.lock();
+> +    /// # Safety
+> +    ///
+> +    /// The caller must only call this on fences that are already signal=
+ed. It
+> +    /// must be ensured that this is ordered properly against checking o=
+f the
+> +    /// signaled status (fence->signaled bit).
+> +    unsafe fn __status(&self) -> Result {
+> +        // SAFETY: Safe by the function's safety requirements.
+> +        let res =3D unsafe { (*self.as_raw()).error };
+> +
+> +        to_result(res)
+> +    }
+> +
+> +    /// Query a fence's status at the moment of the function call.
+> +    ///
+> +    /// If it is signaled, return the fence's result, i.e., determine if=
+ it was
+> +    /// signaled with an error.
+> +    pub fn status(&self) -> FenceStatus {
+> +        // SAFETY: `self` is valid.
+> +        if unsafe { bindings::dma_fence_is_signaled(self.as_raw()) } {
+> +            // SAFETY: The fence is signaled. The C backend ensures orde=
+ring.
+> +            let status =3D unsafe { self.__status() };
+> +
+> +            return FenceStatus::Signaled(status);
+> +        }
+> =20
+> -        ret
+> +        FenceStatus::Unsignaled
+>      }
+
