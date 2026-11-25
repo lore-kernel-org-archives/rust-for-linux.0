@@ -1,56 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795646863;
-	b=nESMaPLrL+vnE8+W+/HhSVCSnbG3wG6PES110xhz4bx7V9V7Ij1VYf8It7PA6UOvI0Yp
-	 QFBsM6Z7egDRXUsmVQ3228zOsDOUGSKDhzJ2ok0QAKqRiFVi5RUzy6+N2ANElnqPZzJgA
-	 KaEzBoWBcrl5BTHmZDgfQsKbMtc3xYk6BuVjs7J67bNwbXUR+JPi41xWb1Yjvir+NOFaJ
-	 6dAMaXlL1rBp+oD+37bc+6UyA73TlE6PXaiIsw1asttLG30gVr9CuoSIdts6W1RAfxJjf
-	 lmsSvJP//HJdoq5vuRJt14RH60pT82SpgX1gt2+1U6oyA7Aj9DBXQcwjOBT0W/28yJQ==
+	t=1795646879;
+	b=kDLrV1mLA4vx3WL+8b9r4dMX9hy+FIWr+a7AkckylD43y+gtYewq1kqdbPk0Ut8KqCSl
+	 vfKYEu8Lcgqa66P/+3+UpLTvKUuB5EaKPw5zAZiseOrv9EX4UybnmT8Jxc2lnetQQRH+2
+	 T5cPuEQDBEQdVjI23zuZkj6AifwZwThIjPJvqi1fCIXMZlMyt29Hdcntg033jI/91h7uQ
+	 0WpnqLyaaiXicg40qn2J1CXTF/YaoR16y5fADeiFwnUQkI5cwFHRBzpkcrrCA9B9huf9r
+	 uIph56wQbljP3YmAbYgXAZ7sFrjB+u6KkfZ5WVK6U9CKqbTb+OgaXqtHyz3ha19qcLA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795646863;
-	h=DMARC-Filter:DKIM-Signature:Received:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-ZohoMailClient;
-	bh=qYaXgoIPVoWjn0UlVSrBwMDEjnv73NbP6vzIlAzAMJg=;
-	b=zCqZ1vTxLoZUpcnc3VyKpzBnRARgoj8mJMYqN1FcVB/yTrQgH00LHnpezmFYRb5U8sOt
-	 uTj8R+ed2R+4JVeNA4VmtcWdSPq1w8SNB/oINQlk2wd9OuS3K9Y6qwlmlzMW44b9APoRc
-	 s3CTz/2CKW7Er2dNNM9XffNw19/Df1dh119KRGQhHbKx+OLiHgUGubJF9pTVCVDiMZr5p
-	 R7yhBAddnXmHpVqji9XLULDBoG5oVsPr1wuBcY3KG6YTfMG5urbztpSY9vTrcofDG3usR
-	 DnimsjZwcoPUfPBcd4qPWTMYYcQOH2jvamxDMbT5YZQRxiJ7zDwjb+G5FVADjGa/WTQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795646879;
+	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-ZohoMailClient;
+	bh=ZdWRi8zA1ua11I581iM4xwj+4Pga6MDcixxXt5D4L/o=;
+	b=sQ23+bN5XnKspkM1mqHL04LV7KroYo6U7qh3EwjnILF7nnVqJ6ayBoT3XYhAfvchPuaZ
+	 bHWVksR+qZLuSqivKUcLMMnAzwlm/Xq/C1RlZNSWf4bWlbIiryYCy0+1V8Jtes7M98t7S
+	 zqWE9g5PYFqFuXDN9N48tAU5o5GCBJg2Bp7i+2JYrsJQhJ5NKaqzdcxoDT/u56GFl8lZ6
+	 EdvyTrMjUoEUper9MFtqmq4XPoyleblbPprP4nlDr7vn55X0BO2ns/K2YBa9ivDJl35nx
+	 1Se8CPLPRXWP/r7x16Nm7al0JqvIauvXk7ma3Po/KDV4KfNM5JJnaCoXZ0Lq8qWk5jQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=collabora.com;
 	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=IaB+LfON;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Gt2P0ZVz;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5E5606A32C;
-	Wed, 25 Nov 2026 22:47:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB5E5606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63696606A33E;
+	Wed, 25 Nov 2026 22:47:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63696606A33E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=IaB+LfON
-ARC-Seal: i=1; a=rsa-sha256; t=1795646829; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Gt2P0ZVz
+ARC-Seal: i=1; a=rsa-sha256; t=1795646835; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=BGV21UNbDR7gcmUiyAG518h9Lk2UL+El2sSfcjj0i+BViibAPE2Ju/jaqmcKXt9WKhFPmKCUsVEkP+Cc4gTou6AwTRpVGQoowGixs7Wbz4wmk3mH0vBwXy+nvsVdS0rCCQfCpMJ2SmacF3psVXTrWZuORpCiAgVmVqGCrZdCRMc=
+	b=nQFoYGV41ffDsF1IRkYk+kKZxQr+eNNvxssOZlhsDku4O0oXeAJfIkI765/ijMbRn5S4vg1tEV9+4+EN9UIsEsQi7i4YNrLZLk7DtPYnMcHiACpH2Ezmg9EEnrinTQwiLmOaYDp6gnjyrl+tvYGDvXSOK98uB9b2mZ1dbKKaP1g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1795646829; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=qYaXgoIPVoWjn0UlVSrBwMDEjnv73NbP6vzIlAzAMJg=; 
-	b=IHZPbqvbmmYB6PMSX9CBzkXcrZ/Sfc3rauvqVx5tGkBn8vPC2uUtCvS79OOpyQS8Jmzp/WDqmr1EEv2BYxLaBXFWuX9PlimrhxQ+frGeNlMSo5oozMl2HwB2s3l4hD1Rwk+1WQRRuc7EFJATjO0OXx+Z62R4HCDRZT7JJU+cnHI=
+	t=1795646835; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ZdWRi8zA1ua11I581iM4xwj+4Pga6MDcixxXt5D4L/o=; 
+	b=bclh7U3Rt2WfpM/srLLvX6yORbAw5w091jVAmMQxCyk2FkONAVwUDNe+hUM9KxZqHDEMZuJAi6D65f7oC6Lf/urh70gWDflGe04VYRoZP4ZxvfkQ5mdjCdofT0T3rvk4erkEACcx9Orcu8Tu+6divGIEwfFEm56KXJukj4VZMzU=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=IaB+LfONHUpGEyaZ/Unz7Bu32TH+pZxUQnt105ndCjFY7p5CSlf0DYrz1cEXM5nvUyBVWYW84O3kQxDRyil6cZopfulRdWezMcDDVVKeRpMorbMkf1CqwJm27J0MvkF/br2uEGEdgaeWu7IHa5LbRY4gf8fi3kqg/GEm/zxOhoA=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=qYaXgoIPVoWjn0UlVSrBwMDEjnv73NbP6vzIlAzAMJg=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1795646827552932.8920723449709;
-	Wed, 25 Nov 2026 14:47:07 -0800 (PST)
+DKIM-Signature: a=rsa-sha256; b=Gt2P0ZVzekEySP2CNLLGPfWHKqaLglWKrA8842B689/03OFib3MivfMOn/PP2JQUiKcbkI3QRyfBph+4C81cuvJZBPpJcQE9iY6jVCC7KCWxoKaM4ssiasMM8PH5uhAXYdIt4lgyjUZOtuUs2ZKhPBnBSXrz5/kAQAD3XAz/fAI=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=ZdWRi8zA1ua11I581iM4xwj+4Pga6MDcixxXt5D4L/o=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795646832404642.2890147683337;
+	Wed, 25 Nov 2026 14:47:12 -0800 (PST)
 From: Daniel Almeida <daniel.almeida@collabora.com>
-Subject: [PATCH 00/13] drm/tyr: reduce the number of `as` casts
-Date: Wed, 25 Nov 2026 19:46:51 -0300
-Message-Id: <20261125-b4-tyr-as-casts-v1-0-2b2f53164d86@collabora.com>
+Date: Wed, 25 Nov 2026 19:46:52 -0300
+Subject: [PATCH 01/13] drm/tyr: convert SeatInfo::slot from u8 to usize
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -62,10 +61,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMTQ7CIBBA4as0s+4kQIomXsV0wc+g4wINQxsN4
- e5iXX6L9xoIFSaBy9Sg0M7Czzyg5wnC3eUbIcdhMMqctDYW/YL1U9AJBidVUKXofQpu0fYMo3o
- VSvw+jtf1b9n8g0L9baD3L20QsKRzAAAA
-X-Change-ID: 20261125-b4-tyr-as-casts-0fdbbfca4157
+Message-Id: <20261125-b4-tyr-as-casts-v1-1-2b2f53164d86@collabora.com>
+References: <20261125-b4-tyr-as-casts-v1-0-2b2f53164d86@collabora.com>
+In-Reply-To: <20261125-b4-tyr-as-casts-v1-0-2b2f53164d86@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
  Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
  David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
@@ -82,52 +80,155 @@ X-Mailer: b4 0.15.2
 X-ZohoMailClient: External
 
 An `as` cast silently drops the bits that do not fit the target type,
-and nothing at the cast shows whether that can happen. Tyr has 86 of
-them, as counted by `clippy::as_conversions`. This series removes 62.
+and nothing at the cast shows whether that can happen. As part of a
+larger effort to reduce the number of `as` casts in Tyr, convert
+`SeatInfo::slot` from `u8` to `usize`.
 
-Patches 1 to 4 change the type a value is kept in, so that it needs no
-cast. Patches 5 to 8 use what the kernel already provides:
-`SizeConstants`, `From`, `FromSafeCast`, `cv!` and the `all_bits()` of
-`impl_flags!`. Patches 10 and 11 move repeated casts into one place.
+The slot index is stored as a `u8`, while the code that uses it takes a
+`usize`. The casts follow from that choice. The index is cast with `as`
+on the way into a `SeatInfo` and on the way out, and
+`SlotManager::new()` rejects more than 256 slots so that the cast to
+`u8` cannot truncate.
 
-The 24 casts that remain are each justified in a `// CAST:` comment and
-marked with `#[expect(clippy::as_conversions)]`. 19 of them convert an
-enum to its integer value. I intend to follow up with an RFC that
-generates these conversions with nova-core's `bounded_enum!`.
+Store the index as `usize`, which removes the casts and the limit.
 
-The last patch denies `clippy::as_conversions` in the driver, so that
-Clippy rejects a new cast unless it is marked.
-
+Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 ---
-Daniel Almeida (13):
-      drm/tyr: convert SeatInfo::slot from u8 to usize
-      drm/tyr: convert VmAsData::va_bits from u8 to u32
-      drm/tyr: convert the lock region exponents from u8 to u32
-      drm/tyr: convert EntryHeader to `bitfield!`
-      drm/tyr: use SizeConstants for the u32 and u64 size constants
-      drm/tyr: replace lossless `as` casts with From and FromSafeCast
-      drm/tyr: use `cv!` for constant conversions
-      drm/tyr: use VmMapFlags::all_bits() to validate map flags
-      drm/tyr: justify the casts of enums to their integer value
-      drm/tyr: add split_u64() for the 64-bit register values
-      drm/tyr: return usize from get_pgsize()
-      drm/tyr: justify the physical address cast in pt_map()
-      drm/tyr: deny `clippy::as_conversions`
+ drivers/gpu/drm/tyr/mmu/address_space.rs | 15 +++------------
+ drivers/gpu/drm/tyr/slot.rs              | 23 +++++++++--------------
+ 2 files changed, 12 insertions(+), 26 deletions(-)
 
- drivers/gpu/drm/tyr/file.rs              |  2 +-
- drivers/gpu/drm/tyr/fw.rs                | 11 +++--
- drivers/gpu/drm/tyr/fw/parser.rs         | 62 ++++++++++++-------------
- drivers/gpu/drm/tyr/mmu/address_space.rs | 54 ++++++++++------------
- drivers/gpu/drm/tyr/regs.rs              | 56 +++++++++++++++++++++--
- drivers/gpu/drm/tyr/slot.rs              | 23 ++++------
- drivers/gpu/drm/tyr/tyr.rs               |  5 ++
- drivers/gpu/drm/tyr/vm.rs                | 78 ++++++++++++++++----------------
- 8 files changed, 167 insertions(+), 124 deletions(-)
----
-base-commit: 7402dd230f4497954b465145a22cff7a5a488629
-change-id: 20261125-b4-tyr-as-casts-0fdbbfca4157
+diff --git a/drivers/gpu/drm/tyr/mmu/address_space.rs b/drivers/gpu/drm/tyr/mmu/address_space.rs
+index 76e3d2df6afd..dd6377bee989 100644
+--- a/drivers/gpu/drm/tyr/mmu/address_space.rs
++++ b/drivers/gpu/drm/tyr/mmu/address_space.rs
+@@ -467,10 +467,7 @@ pub(super) fn start_vm_update(
+     ) -> Result {
+         let seat = vm_as_data.as_seat.access(self);
+         match seat.slot() {
+-            Some(slot) => {
+-                let as_nr = slot as usize;
+-                self.as_start_update(as_nr, region)
+-            }
++            Some(slot) => self.as_start_update(slot, region),
+             _ => Ok(()),
+         }
+     }
+@@ -479,10 +476,7 @@ pub(super) fn start_vm_update(
+     pub(super) fn end_vm_update(&mut self, vm_as_data: &VmAsData<'drm>) -> Result {
+         let seat = vm_as_data.as_seat.access(self);
+         match seat.slot() {
+-            Some(slot) => {
+-                let as_nr = slot as usize;
+-                self.as_end_update(as_nr)
+-            }
++            Some(slot) => self.as_end_update(slot),
+             _ => Ok(()),
+         }
+     }
+@@ -491,10 +485,7 @@ pub(super) fn end_vm_update(&mut self, vm_as_data: &VmAsData<'drm>) -> Result {
+     pub(super) fn flush_vm(&mut self, vm_as_data: &VmAsData<'drm>) -> Result {
+         let seat = vm_as_data.as_seat.access(self);
+         match seat.slot() {
+-            Some(slot) => {
+-                let as_nr = slot as usize;
+-                self.as_flush(as_nr)
+-            }
++            Some(slot) => self.as_flush(slot),
+             _ => Ok(()),
+         }
+     }
+diff --git a/drivers/gpu/drm/tyr/slot.rs b/drivers/gpu/drm/tyr/slot.rs
+index d194ead53f71..0e153dc025c5 100644
+--- a/drivers/gpu/drm/tyr/slot.rs
++++ b/drivers/gpu/drm/tyr/slot.rs
+@@ -47,7 +47,7 @@ pub(crate) struct SeatInfo {
+     /// it means the object has been evicted from the hardware slot,
+     /// and a new slot needs to be acquired to make this object
+     /// resident again.
+-    slot: u8,
++    slot: usize,
+ 
+     /// Sequence number encoding the last time this seat was active.
+     /// We also use it to check if a slot is still bound to a seat.
+@@ -98,7 +98,7 @@ impl Seat {
+     /// If the seat is not `Seat::Active` we can't trust the
+     /// `SeatInfo`. In that case `None` is returned, otherwise
+     /// `Some(SeatInfo::slot)` is returned.
+-    pub(crate) fn slot(&self) -> Option<u8> {
++    pub(crate) fn slot(&self) -> Option<usize> {
+         match self {
+             Self::Active(info) => Some(info.slot),
+             _ => None,
+@@ -174,10 +174,6 @@ pub(crate) fn new(manager: T, slot_count: usize) -> Result<Self> {
+         if slot_count > MAX_SLOTS {
+             return Err(EINVAL);
+         }
+-        // Since the slot index is stored in SeatInfo as a u8, the maximum number of slots is 256.
+-        if slot_count > u8::MAX as usize + 1 {
+-            return Err(EINVAL);
+-        }
+ 
+         Ok(Self {
+             manager,
+@@ -193,7 +189,7 @@ fn record_active_slot(&mut self, slot_idx: usize, slot_data: T::SlotData) {
+         let cur_seqno = self.use_seqno;
+ 
+         *T::seat(&slot_data).access_mut(self) = Seat::Active(SeatInfo {
+-            slot: slot_idx as u8,
++            slot: slot_idx,
+             seqno: cur_seqno,
+         });
+ 
+@@ -221,7 +217,7 @@ fn reactivate_slot(&mut self, slot_idx: usize, slot_data: &T::SlotData) -> Resul
+         };
+ 
+         *T::seat(slot_data).access_mut(self) = Seat::Active(SeatInfo {
+-            slot: slot_idx as u8,
++            slot: slot_idx,
+             seqno: cur_seqno,
+         });
+ 
+@@ -325,8 +321,8 @@ fn evict_slot(&mut self, slot_idx: usize, locked_seat: &LockedSeat<T, MAX_SLOTS>
+     /// If they don't match, the seat is stale and is reset to `NoSeat`.
+     fn check_seat(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) {
+         let (slot_idx, seat_seqno, is_active) = match locked_seat.access(self) {
+-            Seat::Active(seat_info) => (seat_info.slot as usize, seat_info.seqno, true),
+-            Seat::Idle(seat_info) => (seat_info.slot as usize, seat_info.seqno, false),
++            Seat::Active(seat_info) => (seat_info.slot, seat_info.seqno, true),
++            Seat::Idle(seat_info) => (seat_info.slot, seat_info.seqno, false),
+             _ => return,
+         };
+ 
+@@ -353,7 +349,7 @@ pub(crate) fn activate(&mut self, slot_data: T::SlotData) -> Result {
+ 
+         // Copy out only the slot index so the borrow of slot_data ends here.
+         let slot_idx = match T::seat(&slot_data).access(self) {
+-            Seat::Active(seat_info) | Seat::Idle(seat_info) => Some(seat_info.slot as usize),
++            Seat::Active(seat_info) | Seat::Idle(seat_info) => Some(seat_info.slot),
+             Seat::NoSeat => None,
+         };
+ 
+@@ -368,7 +364,7 @@ pub(crate) fn activate(&mut self, slot_data: T::SlotData) -> Result {
+     pub(crate) fn idle(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
+         self.check_seat(locked_seat);
+         if let Seat::Active(seat_info) = locked_seat.access(self) {
+-            self.idle_slot(seat_info.slot as usize, locked_seat)?;
++            self.idle_slot(seat_info.slot, locked_seat)?;
+         }
+         Ok(())
+     }
+@@ -379,8 +375,7 @@ pub(crate) fn evict(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result
+ 
+         match locked_seat.access(self) {
+             Seat::Active(seat_info) | Seat::Idle(seat_info) => {
+-                let slot_idx = seat_info.slot as usize;
+-                self.evict_slot(slot_idx, locked_seat)?;
++                self.evict_slot(seat_info.slot, locked_seat)?;
+             }
+             _ => (),
+         }
 
-Best regards,
---  
-Daniel Almeida <daniel.almeida@collabora.com>
+-- 
+2.56.0
 
