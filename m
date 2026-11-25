@@ -1,78 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795602732;
-	b=BVvAIqCTvTVUYF+wEQvRflWFJWONzWDS/NE0/4cK8iibl8b+S8ndNHbAg7Hx10csdNgN
-	 QhdAABbyBMqSyOMS+RksIBdYDoZ1H3vYFZaAvEXJcTIaGCSqxwmBFZFzfNTXVZ8zHXjNl
-	 3uD3GAiWnpHKCn38XRMA6WY4auHp55+cUEBfXCtwcQHFbePE5m9TN5/Xpid7755dn9VDy
-	 OjT5JsdXWCpasESmlQnXKI83c2HSpPM6dePNzngb6hZ1renDTA1aQXTsaVMBkz3NGbHww
-	 r7l9EhZy5KH3JnL8rcf8dFK6ZZhAxC7qK32RvVyW3qcxpq1qVtz/NOVnP1cAWfSXxVQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795602732;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=25CjG1kgSLZtFjDXa9X/ClPqsTh1zui3GyTeKcR1+GM=;
-	b=pzIhOmt6VsNEJPvTLMmJG/GacWF6qOWQ8rEKNhtbwB7ERhT5mbU0B6KaQ48Jg1iMuKxL
-	 xxskK1pwUqz2p8RuFwGSPy/DOZva61tXVgYcHiGpdOaxG41X3KxHoLS6Ox/hyHV47b7cR
-	 HsvwvZyIS8FeaaTpBF9rQBhWDf2lhsCXtZqF16Lnki+WLnK4Io5GakCGkxx9HlcmEDvWc
-	 mQvhajRqSPrxo1ivEmdOqY27mH0PsXAqa/0k/QeT3n0IFQekszWfp8y+D+4URddl5MjyG
-	 bU7kbXRvItGTuKXckUi2KVXKmr096GH0utPMQfRV1Olg2RdaEemjVBA4DD7g8NckGHg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MD8oec3H;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5213C606A327;
-	Wed, 25 Nov 2026 10:32:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MD8oec3H
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795602732;
-	b=WSkOGV8rwV/w3eKF1PozOoQXRjPQ23OT1bWlDRKaftFLEdy7a/E212Q04BNpQkdg0uv8
-	 wR/5BSInTnCA18yVCbr2HM/ScctDiXCerm66/oj1Q4w1opucmITuTEr6VC5qdTy7uQzUF
-	 kXbK2C+WFBb6ZG0bm36kqUYin5bLKqL2YgJ/8bZngDBHHnkqIXd/m7my0rSyB7VZCUsNp
-	 tvKofsM5H3F4H2XegAReL5OxMSzLp9E1UWb8WK4W2NLO4l9XQ2dGd2DkfsmniAiNwBGIh
-	 +ckLP0pIgVj7Y4jGuVFpkF8mDVha4oEHklvAVHkNy8uBv5JlYBlpOdFiTNo5qjfafxw==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795602732;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=25CjG1kgSLZtFjDXa9X/ClPqsTh1zui3GyTeKcR1+GM=;
-	b=IAJSfJ9qkQMqfrbMgEIDUX2YDLrLJRzkp8x7qOHDUHoTkL6+TG6TPU/9vnOk/vEKqiJK
-	 5ngKELTkbqENU+3wHg7yIY+NQGG52mYBQrfqev1lxNX2Atvn/WXgnAlaT4Rj+u3aWOjFs
-	 UBwKUZr2PKjAb2722W0deU0LsaqUDGX3ps79i7k0ePWttzrK6vhEIgP6OnFo0PBSBLwZ3
-	 nBA5ee1l2cR+FVSUVK7kLRJ2XeFHZfteX/I4OF4wQDNjXo2TUB3AOZPYkzeQ9w/9Rs8fm
-	 E2pw5vX04cQ8L9MkpuBXeiuP9ov4gY3eZbrtov+t8gAV+SAwtfRUVm5ZinTf/zF/Vnw==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.41
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795604616;
+	b=Pocd4xbLghRmKQEDn+SmERxQwIWL5nk1JzLqlWQJ2hz6bVHRFKg7x8P/JcWEE5I9PtkR
+	 tHNfPo2Tq62CwST8GSZEt8fa1HN/HVSLPH1tUuYHeHgUxRZSZYBUHPGPz4RQYelSGPKVt
+	 KC04aAsqNLdF2MP1UpMknENRpMpTw+/R2mckj89hXrKnvTF6Y/EtMsZEWC+sVkcgcnmfc
+	 ov9ip1Xgq6B2/ZjCg+VG59edGfDM1yrH7hafIAms7ROn9vjb5seE5IRVA+VznixV5U/E/
+	 m2lT4VrUHa9mjw7g7LiLAzJXw0lx70SHTGTrQjNWux3PE7TiaY99UQTCid9JbPjx7RQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795604616;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:
+	 DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Last-TLS-Session-Version;
+	bh=01q8TemiEbPQScbgUzDguyMv2m06hdvW9i45NWYmZMY=;
+	b=GzN0+8eKz9UIX6m8bM10IBmOLdtVC3Yaz90FfU5xW8bdevUgak4CRuoe/L4hs51Hk7no
+	 tvtdVqaipPcZg/5E7ny+/WSanXg6eG84LodxJgf6etFFW8Y+kd82X7XsWRS+dts7pnSqB
+	 OejI/A+ErSjtONazgRAbKp7XgVr92kjni9ubkr4L2opbzEhaxnfAA7F+ed0yJb7rXgyZC
+	 nzH3lpCxVE2Su4+at+OZJ+DR2qFXbW34FP5r6srBOj5ZBRIVYTgUqE3vIixOTTj8HN12+
+	 4+EPkMTYT4NBDavBTFqEk4F7ne57kvPT+D2LcCapehgKlZTpWSc8v2ObVp4iO8mgVzQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=marliere.net;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=marliere.net header.i=@marliere.net header.a=rsa-sha256 header.s=dkim header.b="XQMJ/SGD";
+	arc=none smtp.remote-ip=209.85.160.41
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 45BEF1F000C4;
-	Wed, 25 Nov 2026 10:32:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795602732;
-	bh=25CjG1kgSLZtFjDXa9X/ClPqsTh1zui3GyTeKcR1+GM=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=MD8oec3HrXR4kpGJPoQSA1lcPdoDu1c99uLECRRxrDkSo2QHZrM3TkHl729wXbZrs
-	 CT7UKFwOykAs4xmCLO7KhCAIB8rDBhK07TooLoz1Zzv7ChAPG/VvCnQx32f63myG79
-	 uJmGPBN7S0olL8hp0ZdBwIofGLQG3fOwxsHzeKPDof8S7NqOb6BdDjfBRbZuNLi2lQ
-	 2w1vT8kesVPusv1vH0ZoZAFEgw1Y4zw38aKGoAXP405xngTFC6ZAoJx9GkDbH4SGlb
-	 8Gi3qIUIGQOyC7rieIz60iRvEipV7q2bJUEtRMz4mI+JfwpYW6Yi2yQ1k0O63RjqK6
-	 BhBkCRoUqXtgA==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id C74A44CE3B;
-	Wed, 25 Nov 2026 10:32:06 +0000 (UTC)
-From: Peder Bergan via B4 Relay <devnull+peder.bergan.gmail.com@kernel.org>
-Date: Wed, 25 Nov 2026 11:32:02 +0100
-Subject: [PATCH] kbuild: rust: drop the obsolete libclang stack-init probe
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4097D606A32C
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Nov 2026 11:03:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4097D606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marliere.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=marliere.net header.i=@marliere.net header.a=rsa-sha256 header.s=dkim header.b=XQMJ/SGD
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-4ada9579947so3478133fac.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Nov 2026 03:03:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795604615; x=1796209415;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=01q8TemiEbPQScbgUzDguyMv2m06hdvW9i45NWYmZMY=;
+        b=Szsv+tY4TK8kCU2fd2y9TOC1mBAO7GXqMDrqnpXe+wgpKJ8M5nxHH2U2mE+rFJDcy/
+         cLDA86XpX92ZwDyVtrv2LJpxhzpZErtRgfOD8Vae/w8T2ji8ABTYyeS48Z0WIzIu5qsR
+         YYPRtQMcCl67PpDCGw5eCR5D+KiOyxfuDF5YpyrNSgu099eklFdge+osPMlxE1AflQwz
+         /lEAIwyl0pxWe/lf+xzRL/L/USPPymH3cxZ7d5Ey71X3ac4zncEu3iH82UzOeN67vNbF
+         WQOZPvoklCT1sG1spEX5s27D45ZABUbQrU/R/OuUd8d/v+tsW2k7S6vykumGRqURpYZ/
+         xw1g==
+X-Forwarded-Encrypted: i=1; AL+hErFVJJA7V9fyw5rJ/AjbN6VV3y69VUELhLeTILBb1KfwqDPMdR2Onngqkg5MQfpktuOgrwNqdo7dBfLo2hIkKQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9jg/aCOjDIl6xf7YSGTIpdQ25BSxmFhxSywF3hF6cwWszHguYn
+	ap5R8ivEH9hjvwnFCLy1HED6My1WmUhYZ0jvJ5FhuZo13NxDTcfi4VgB
+X-Gm-Gg: AZFdTZfGH80fNTHakmKcr9mcauVZwDJ82fY85DHAUTuEUjtcYc4BY3pnpXUVTG6jrkj
+	dWiCHvyAq1MDLZGSBC6c3ZjhdiXXZvBk1Otl6+pjfzLVnQ9ovHo+9bcoK+4gLa86vIrj/vZMDql
+	oVI0K83pb21JfuIv1hGitiKpVYOEvgKcqPeGLdwO5pFspNa+3piZCKeUU7Oq8kx29vpfKLXBZok
+	rvvjeOt7ou7K2ae5pNvPu1Mz5NckXLCZEWgrpoWDZO175vUrtG2uyHSprJ0NJpWhprGQGB3OOi4
+	sbadYRWUflHyU1RB6BTq97w7Bcjk5sGwwv7NbBY94PnmhV8YSTEASJdk9bhinWmXJKSqFfJG4dj
+	yRrhxuomPLvC/bG8arxmYC68AjRYOBT9Y7eeVJmI4bH1YzYld68cNVE6V8v74/DJblT0ICs0SHL
+	Ei89fK/GN1wGzyQnTOLOxlX3ZJoQHIYxG+OeNZHY5SN75R91X4GsGuCMWCHjVEx4Y0hPzWeKSUC
+	Mi7Hrhv79LGciWgH1d39U+K8wPc90M61HIG7I5LbqtG/c8R6hhcNdoeRsL6YR+PjgeISH/r+r/D
+	E9uhb60uPmEBgUXnRf/HqsL7Wh1V2HNdyK0ndNXzkBISJNdODq/hPrsFOPCBCPbzVljxFPLF5n5
+	1bbkfFMCDPqn3SGxMyx/h1KCDmUwEL9A=
+X-Received: by 2002:a05:6870:be92:b0:49e:4895:2366 with SMTP id 586e51a60fabf-4bc8208f78dmr16261363fac.36.1795604614931;
+        Wed, 25 Nov 2026 03:03:34 -0800 (PST)
+Received: from mail.marliere.net (137.65.66.34.bc.googleusercontent.com. [34.66.65.137])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4bc5b07d766sm15946324fac.2.2026.11.25.03.03.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Nov 2026 03:03:33 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7B25F605F4;
+	Wed, 25 Nov 2026 11:03:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
+	s=dkim; t=1795604610;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=01q8TemiEbPQScbgUzDguyMv2m06hdvW9i45NWYmZMY=;
+	b=XQMJ/SGDl7Kg0X/2qnCdY3LpM1KMcJbFQ0pxQypPzVhm8COHEUxisIbsIrBUB90w/W7C6l
+	FiBNXIOvemLL7PGLJVDh3yMuTAj/lkfMZgpOElbRUHkvtK18Z4KkiAksbjtqBZXBkX3bnl
+	mOTh6XYG7PnBSeAaKBb5eolC7iYERs3DcwClqhAkrqbZEqO3kyX9rPGZAxmJcuERDotPgU
+	QiRWiWezc2dDmfpEMG9UMCgo/Gh+D7fF9RK3boj2/WhejBFcMPCfluXH6ebsw8UXjlggSz
+	lHH+Lat1Ni9B2+Jtpp3ogCZ6W/pLwFgDVD9wog+yicNu06IqZxSUoryofd6iHw==
+From: =?utf-8?q?Ricardo_B=2E_Marli=C3=A8re_=28SUSE=29?= <ricardo@marliere.net>
+Date: Wed, 25 Nov 2026 08:03:18 -0300
+Subject: [PATCH v2] selftests/bpf: Fix kallsyms parsing with long Rust
+ symbols
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -83,85 +95,105 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261125-perf-rust-bindgen-drop-legacy-clang-v1-1-dafbf8d4d3df@gmail.com>
-X-B4-Tracking: v=1; b=H4sIACG5BmsC/1WNQQ6CMBBFr0Jm7URKRINXMSzaYYAaUpppMRjC3
- W3Fjcs3mf/eBoHFcoB7sYHwywY7uwTqVACN2g2MtksMVVldlapq9Cw9yhIiGuu6gR12MnuceND
- 0RprSBtWl0WVNdFO6gWTywr1dv5VHe3BYzJMpZnX+MDowGtGOxnzKeP6L/PxeZsNH3vEaYd8/s
- C3uwMIAAAA=
-X-Change-ID: 20261125-perf-rust-bindgen-drop-legacy-clang-149a05cc71a9
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
- rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
- llvm@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+Message-Id: <20261125-selftests-bpf-rust_sym-v2-1-6cf5cff663e6@marliere.net>
+X-B4-Tracking: v=1; b=H4sIAHXABmsC/4WOQQ6CMBBFr0K6ttoWMMGV9zDEtGWQGihkphAJ4
+ e62eACX7/+Zl78xAnRA7JZtDGFx5EYfQZ0yZjvtX8BdE5kpoa5SqoIT9G0ACsTN1HKcKTxpHTh
+ UphTGKJ1XmsXnCaF1n0P8qH9Ms3mDDcmWLowm4Aa1t12Kou0yaAqAqewchRHXY9Yik+TvgkVyy
+ XNli1I0whYA90Fj7wDh7CGwet/3LxkB9r/uAAAA
+X-Change-ID: 20261124-selftests-bpf-rust_sym-e9b50bb2a39a
+To: Andrii Nakryiko <andrii@kernel.org>, 
+ Eduard Zingerman <eddyz87@gmail.com>, 
+ Ihor Solodrai <ihor.solodrai@linux.dev>, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+ Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ =?utf-8?q?Ricardo_B=2E_Marli=C3=A8re_=28SUSE=29?= <ricardo@marliere.net>, 
+ Alexei Starovoitov <ast@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795602725; l=2276;
- i=peder.bergan@gmail.com; s=kernel-contributions;
- h=from:subject:message-id;
- bh=4ZJGRNrE7feOv/GCMj7ydDys1bv5wRP0IitEqJ8w6Fk=;
- b=1fizUnF/HOhdMP16188n+b1IbPvGMzuRgl4VjsgdEjCnNLU3DSwpJZ1ZiwljBjFWbqoZ+Kloo
- Z2BN0qrh7NrBFAjysQZwbT0SKkU3ZCvvEN6Ynf3xD9b5+tfJwU+4f4s
-X-Developer-Key: i=peder.bergan@gmail.com; a=ed25519;
- pk=39790pn1YZCulHBoUG1uiQI1Hm01EvhBEa2zVrS/yN0=
-X-Endpoint-Received: by B4 Relay for
- peder.bergan@gmail.com/kernel-contributions with auth_id=1395
-X-Original-From: Peder Bergan <peder.bergan@gmail.com>
-Reply-To: peder.bergan@gmail.com
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openssh-sha256; t=1795604604; l=2430;
+ i=ricardo@marliere.net; h=from:subject:message-id;
+ bh=v1+J5AyYE1mm1bqUO9cvlJ/WDdBXeTNjZKb0Tx2U1oQ=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgguRCc5X8/UX9M40lkMnr//aFGOhce
+ x5ezt8MFNUFlqYAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QJv0PKQKIyXStomhGvoJ0TsvTJMYIsGcFuJ7wxLe8AAzeOf5WIoX9JVkQRmWrWDvJCSavAZ19If
+ MyhLG1oF5KQg=
+X-Developer-Key: i=ricardo@marliere.net; a=openssh;
+ fpr=SHA256:pzhe0fJpYLz+3cZ33FFPhIfaUElk9CXPFFXmalIH+1g
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Peder Bergan <peder.bergan@gmail.com>
+load_kallsyms_local_common() reads /proc/kallsyms with a 256-byte line
+buffer and stops parsing at the first line sscanf() cannot handle. Since
+commit b8a94bfb3395 ("kallsyms: increase maximum kernel symbol length to
+512"), symbols may be up to 511 characters, and on CONFIG_RUST=y kernels
+some mangled Rust symbols (e.g. drm_panic_qr helpers) overflow the buffer.
+fgets() splits such a line, the remainder fails to parse and every symbol
+after it is silently dropped.
 
-For Rust-enabled GCC builds with CONFIG_INIT_STACK_ALL_ZERO, the Rust
-Makefile runs bindgen to check whether libclang needs the old enabler
-for -ftrivial-auto-var-init=zero. LLVM 16 made the flag usable on its own,
-and the Rust toolchain check already requires libclang 17.0.1 or newer
-(18.0.0 on LoongArch).
+As a result ksym_get_addr() returns 0 for symbols like bpf_fentry_test1 and
+bpf_testmod_*, address lookups resolve to the last loaded symbol, and
+bpf_get_ksyms() fails with -EINVAL. This breaks bpf_cookie, fill_link_info,
+kprobe_multi_test, kprobe_multi_testmod_test, kprobe_multi_bench_attach,
+tracing_multi_bench_attach and stacktrace_ips.
 
-Drop the obsolete enabler and the bindgen invocation that selects it.
-On this rust-next base, median warm make prepare time fell from 0.72 s
-to 0.49 s over ten runs per version on x86-64 with GCC 16.2.1, libclang
-23.1.5 and bindgen 0.73.2. For both GCC and Clang, the generated kernel,
-helper and UAPI bindings matched byte for byte before and after the
-change.
+Parse the file with fscanf() instead, bounding the symbol name to
+KSYM_NAME_LEN and discarding the rest of the line, as kallsyms_find()
+already does.
 
-Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
+Suggested-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Signed-off-by: Ricardo B. Marlière (SUSE) <ricardo@marliere.net>
 ---
-OpenAI Codex assisted with coding and testing.
+Changes in v2:
+- Took Alexei's suggestion to drop buf and use fscanf() directly
+- Link to v1: https://patch.msgid.link/20261124-selftests-bpf-rust_sym-v1-1-32c450d0c4ee@marliere.net
 ---
- rust/Makefile | 14 --------------
- 1 file changed, 14 deletions(-)
+ tools/testing/selftests/bpf/trace_helpers.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 6dceabbf02c87..66b06ad6f11df 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -483,20 +483,6 @@ BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
- # some configurations, with new GCC versions, etc.
- bindgen_extra_c_flags = -w --target=$(BINDGEN_TARGET)
+diff --git a/tools/testing/selftests/bpf/trace_helpers.c b/tools/testing/selftests/bpf/trace_helpers.c
+index 6d7a4b8c4ab8..5f558280856f 100644
+--- a/tools/testing/selftests/bpf/trace_helpers.c
++++ b/tools/testing/selftests/bpf/trace_helpers.c
+@@ -64,7 +64,7 @@ void free_kallsyms_local(struct ksyms *ksyms)
+ static struct ksyms *load_kallsyms_local_common(ksym_cmp_t cmp_cb)
+ {
+ 	FILE *f;
+-	char func[256], buf[256];
++	char func[512];
+ 	char symbol;
+ 	void *addr;
+ 	int ret;
+@@ -80,9 +80,7 @@ static struct ksyms *load_kallsyms_local_common(ksym_cmp_t cmp_cb)
+ 		return NULL;
+ 	}
  
--# Auto variable zero-initialization requires an additional special option with
--# clang that is going to be removed sometime in the future (likely in
--# clang-18), so make sure to pass this option only if clang supports it
--# (libclang major version < 16).
--#
--# https://github.com/llvm/llvm-project/issues/44842
--# https://github.com/llvm/llvm-project/blob/llvmorg-16.0.0-rc2/clang/docs/ReleaseNotes.rst#deprecated-compiler-flags
--ifdef CONFIG_INIT_STACK_ALL_ZERO
--libclang_maj_ver=$(shell $(BINDGEN) $(srctree)/scripts/rust_is_available_bindgen_libclang.h 2>&1 | sed -ne 's/.*clang version \([0-9]*\).*/\1/p')
--ifeq ($(shell expr $(libclang_maj_ver) \< 16), 1)
--bindgen_extra_c_flags += -enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang
--endif
--endif
--
- bindgen_c_flags = $(filter-out $(bindgen_skip_c_flags), $(c_flags)) \
- 	$(bindgen_extra_c_flags)
- endif
+-	while (fgets(buf, sizeof(buf), f)) {
+-		if (sscanf(buf, "%p %c %s", &addr, &symbol, func) != 3)
+-			break;
++	while (fscanf(f, "%p %c %511s%*[^\n]\n", &addr, &symbol, func) == 3) {
+ 		if (!addr)
+ 			continue;
+ 
 
 ---
-base-commit: b6a9fa34ce4187cb69d3c588a4bbffc31ce5db8f
-change-id: 20261125-perf-rust-bindgen-drop-legacy-clang-149a05cc71a9
+base-commit: 81c6c8c608b6075846d3bd5b6f57958300a56eda
+change-id: 20261124-selftests-bpf-rust_sym-e9b50bb2a39a
 
 Best regards,
 --  
-Peder Bergan <peder.bergan@gmail.com>
-
+Ricardo B. Marlière (SUSE) <ricardo@marliere.net>
 
