@@ -1,87 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.17
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795577108;
-	b=v16GOWG7WgiBdovi/VQLIH+2N4nBqTAnDFWo0vQrHP/qP2a/FK6o2xUN3Dd0qINBD29z
-	 i1peom51RKLlIZ/9rd6nVLOqLFOlzTNJBKCV32DzHVcT3KRgu71AaX90IA5UNjfdCDpc2
-	 ROADgT2oKP02FNDD5/yrCyuOPzEHDfISV0SH3mTQ/Ga7cEYxd6heTXJIOaOQeGCkd40H6
-	 cPnE1lHKK69OOgUzDHPW3lDH2kLwCDdPXZmCZeqfCBJbrl98gzG4dgeSdQTDyxooUyAUM
-	 8gtgi2hSB8lqwQBk610SXAr6t0ETPPbjV+MIv+LRV93x2V3HbqH+zWfk3X75YHYWX/Q==
+	t=1795582531;
+	b=rb6ejrK+/fah4eqY+lpfjrU1ozhjap4jkNFokmejwRZp9Vj+yymfZSrHlZJwXxAAB6Rj
+	 ZDjBxPrIBZobt/bGW/9yT+Wb/UAviQO8xfISwpYKUAOo6Iyp5y3FFqG3ovo1cK3vVzjEM
+	 gIRKTVvvg2w+e09FHIPGcMTGXFyh0qQ51/2+ModL7E/xam3NiC3mDmUYyR3w4EcBTqNAd
+	 r7LjcaKQ0Xh+VXx+vIpMryzW1duPCdw1Gq4zBpUoSXLNdXHYS9/+bUIftyeyPNzmwXUJv
+	 dfspwyF7WCYP2K22HwPXTz3saHWEI0i/MkZLd0Ea1qEJGkiGqWdbZuiuMlgDh4ZDutg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795577108;
-	h=Received:DKIM-Signature:Date:Message-ID:From:To:Cc:Subject:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=jm765WKY/zC72jkI2x569XRAtZ95jMdKBRn4kx2NFXU=;
-	b=rrjW1BcU/nROFseWCk6q7Qo7TzWqkB3pNnX9HSi0VYG7k5tDQ44Mqhjh67DnGcGqTwhU
-	 yBovC1HEDZ2KwVLJToknA9iPCqzOIFV/NwfB8YHZJPRx+3iGlA6GCgDy98gYEGENx66Md
-	 uGMhpCZXZ32fWh6NMAR8SunISKW9k5xhlXGHznp4W9EiNYFXiCaNY5K5YfQY7E7H3rCld
-	 UiDAGOD2kfyh6j8MpLg2NacQQtt8dG5ahg8wZpRajOHLnjQCgQnauy9pHvziq9r1RmfMD
-	 WgheNPh033Kc+bld/QmlUJTkkEKWYDoJ93OQplN3Xp3znFUVrIxZ+qOySq11D2bmIbw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795582531;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=Cx1Omfyaca82v5is2yCAZpsaBqeUc6p8sVzDBGAlWPs=;
+	b=MDZSMVrgj2Q0YKjXl1R8Fyng7RJ3Skx/II+k+Ee6VtawfeJK6FX4EZSr0X0dBu7ZmT/k
+	 hr9Yk1fn+AdQpTzqV5lvVBFatt7uqpBaIMiwTlNwx0oja6hwrfP/3NGSwzKUi6LSmpG0L
+	 csBfUTxxGNEd9ZhPBbRORnPEM1jk0Ko+DC0cCMU0TahQpTFdEUqCWP2c0mM5CXyBr9ReK
+	 /QZd1SJ59PiUfpKUH4IeiJ2mz1Z6x7L0YRL41PIPd1BXrv57SKEpUMc9Bt8cwXMeU2BVL
+	 JXvxSD/5+YxbDiAGDL9H6MEzX5BUpr9DrWQAtjTBN9U3JDp1HhAVwIfTV+68pWJejaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V4AGWGfe;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=C3vWzSNt;
+	arc=none smtp.remote-ip=198.175.65.17
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057F4606A31E;
-	Wed, 25 Nov 2026 03:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B99606A321;
+	Wed, 25 Nov 2026 04:55:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E6B99606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V4AGWGfe
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722391F00A3D;
-	Wed, 25 Nov 2026 03:25:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795577107;
-	bh=jm765WKY/zC72jkI2x569XRAtZ95jMdKBRn4kx2NFXU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=V4AGWGfeZLmrhtquKRv6EviHYCknQ6uF6sSccjviJ4oFSvgpAICCuQyib02WKudKy
-	 WZzoevJXnvM5e8NOpUoL9Ig82rYSxXxmUF9Jr1DLDbm4EjtTfslgzFUp9UHxUlPTv9
-	 wrZwz+G0W0uX1L3CBHkaI1MEt38fA9MYeSZuWLQ37eiV+uutE2OGEeTf1isC4/809q
-	 ZNbCkMcYIXb3teD/R3X/bXjffIjQmZgy38Wakf++rKKgIEMtzE5TK9nhDC09ZhOLli
-	 riBulMJ56RdCaDMuJt8qSHKFWjz1+SQJPB/Yzgx1/6vGL5v3z03GsZeS1enRqA31wI
-	 ei8UTG7MewgQw==
-Date: Tue, 24 Nov 2026 17:25:06 -1000
-Message-ID: <8fefdabc4b1d9e0c0d0b3bae1995e784@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
- Boqun Feng <boqun@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Philipp Stanner <phasta@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- =?utf-8?q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
- =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Corey Minyard <corey@minyard.net>, openipmi-developer@lists.sourceforge.net,
- Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
- Mikulas Patocka <mpatocka@redhat.com>,
- Benjamin Marzinski <bmarzins@redhat.com>, dm-devel@lists.linux.dev,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, linux-input@vger.kernel.org,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>, linux-arm-msm@vger.kernel.org,
- linux-pm@vger.kernel.org,
- "D. Wythe" <alibuda@linux.alibaba.com>, Dust Li <dust.li@linux.alibaba.com>,
- Sidraya Jayagond <sidraya@linux.ibm.com>,
- Mahanta Jambigi <mjambigi@linux.ibm.com>,
- Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, linux-rdma@vger.kernel.org,
- linux-s390@vger.kernel.org, netdev@vger.kernel.org,
- Oder Chiou <oder_chiou@realtek.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, virtualization@lists.linux.dev
-Subject: Re: [PATCH 2/2] workqueue: doc: clarify cancel_work_sync() cross-workqueue behavior
-In-Reply-To: <20261118-ordered-wq-cancel-v1-2-916e01f9affe@google.com>
-References: <20261118-ordered-wq-cancel-v1-0-916e01f9affe@google.com> <20261118-ordered-wq-cancel-v1-2-916e01f9affe@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=C3vWzSNt
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795582530; x=1827118530;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mpdq3uSKN8ttNJvXd+YNSoqlifaG1JC4jLUHr6XomgY=;
+  b=C3vWzSNto22KUNIjdL+ESZynLHX15KFfrCczz2lMr8jX25fWmDu6cBFO
+   W769PwgWOpHxvv0UIOVu76qjbGHr21/mZDSOK9OjwkTFm2vHMnZmfA1/S
+   QvOcDqRWggTSsGpk1CgwZROCs3qoRFGoVOIovfMplF/53Emy2a5E3Hwm/
+   hC3wIL+lL3M2+fjhKFaZd45kUIOH5B32auRbiyIKqhk4yrs7+2r3xZo7J
+   RbUDciGj/jfdvEAfxv/5Xqxhw7Y504XssMibPPVmYESEde5nuhfX4lwOc
+   UdMODUMvtT9pQBFvmHahr1oTT5GaJCJzcl8eJ+7BzA3URyFd4ESUKVN7G
+   A==;
+X-CSE-ConnectionGUID: Nh2l1uTERr6ul4EB+qnsSw==
+X-CSE-MsgGUID: Rv4kM2fhR6y1Uyo0IIe+Gg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4446852"
+X-IronPort-AV: E=Sophos;i="6.27,232,1787036400"; 
+   d="scan'208";a="4446852"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 20:55:29 -0800
+X-CSE-ConnectionGUID: YJPP7F0sTCO4jA6G1nUPlw==
+X-CSE-MsgGUID: swp/MOFVTYu7DyJZn5r4Tg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,232,1787036400"; 
+   d="scan'208";a="12353210"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 24 Nov 2026 20:55:24 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xW52O-00000001Qsc-3UJF;
+	Wed, 25 Nov 2026 04:55:20 +0000
+Date: Wed, 25 Nov 2026 12:55:07 +0800
+From: kernel test robot <lkp@intel.com>
+To: Nick Dowsett via B4 Relay <devnull+nick42d.gmail.com@kernel.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Armin Wolf <W_Armin@gmx.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, Nick Dowsett <nick42d@gmail.com>
+Subject: Re: [PATCH 4/4] platform/x86: clevo-laptop: register 5-step white
+ keyboard backlight LED device
+Message-ID: <20261125125051.uZKXewqY-lkp@intel.com>
+References: <20261122-clevo-laptop-v1-4-881debf4d4b0@gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -92,33 +100,43 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20261122-clevo-laptop-v1-4-881debf4d4b0@gmail.com>
 
-Applied to wq/for-7.5.
+Hi Nick,
 
-Note that cancel_work_sync() and friends haven't been waiting for a work
-item which is still running from a different workqueue since 606a5020b9bd
-("workqueue: gut flush[_delayed]_work_sync()") which went in in v3.7. This
-has been broken for well over a decade and the documentation now says so.
+kernel test robot noticed the following build errors:
 
-The following queue the same work item on more than one workqueue and then
-sync-cancel or flush it. As cancel_work_sync() doesn't guarantee that the
-work item is quiescent in that case, they need to make sure in some other
-way, e.g. by flushing the workqueues that are involved. Note that system_wq
-and system_percpu_wq, which schedule_work() uses, are different workqueues.
-cc'ing the maintainers.
+[auto build test ERROR on 4843f6873f7c4835e62f2c73ba0fd538e57a2f22]
 
-- drivers/char/ipmi/ipmi_msghandler.c: smi_work
-- drivers/md/dm-mpath.c: trigger_event
-- net/smc/smc_llc.c: llc_event_work
-- sound/soc/codecs/rt5651.c: jack_detect_work
-- sound/soc/codecs/rt5682s.c: jack_detect_work
-- sound/soc/soc-jack.c: snd_soc_jack_gpio.work
-- drivers/input/misc/palmas-pwrbutton.c: input_work
-- drivers/cpufreq/qcom-cpufreq-hw.c: throttle_work
-- drivers/vdpa/vdpa_user/vduse_dev.c: vduse_virtqueue.inject
+url:    https://github.com/intel-lab-lkp/linux/commits/Nick-Dowsett-via-B4-Relay/platform-x86-clevo-laptop-add-minimal-WMI-driver-skeleton-and-Kbuild-plumbing/20261122-123538
+base:   4843f6873f7c4835e62f2c73ba0fd538e57a2f22
+patch link:    https://lore.kernel.org/r/20261122-clevo-laptop-v1-4-881debf4d4b0%40gmail.com
+patch subject: [PATCH 4/4] platform/x86: clevo-laptop: register 5-step white keyboard backlight LED device
+config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20261125/20261125125051.uZKXewqY-lkp@intel.com/config)
+compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
+rustc: rustc 1.96.0 (ac68faa20 2026-05-25)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261125/20261125125051.uZKXewqY-lkp@intel.com/reproduce)
 
-Thanks.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/20261125125051.uZKXewqY-lkp@intel.com/
 
---
-tejun
+All errors (new ones prefixed by >>):
+
+>> error[E0223]: ambiguous associated type
+   --> drivers/platform/x86/clevo-laptop.rs:168:17
+   |
+   168 |         self: &<Self::Mode as led::Mode>::Device<'bound, Self>,
+   |                 ^^^^^^^^^^
+   |
+   help: if there were a trait named `Example` with associated type `Mode` implemented for `FixedColorLedOperations<'a, MAX_BRIGHTNESS>`, you could use the fully-qualified path
+   |
+   168 -         self: &<Self::Mode as led::Mode>::Device<'bound, Self>,
+   168 +         self: &<<FixedColorLedOperations<'a, MAX_BRIGHTNESS> as Example>::Mode as led::Mode>::Device<'bound, Self>,
+   |
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
