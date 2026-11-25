@@ -1,48 +1,130 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795633840;
-	b=GqCWthEnU/OXMcAi2nM3UuFxpn5l0E/2wzSb4zIaOw66plcOTAy7WHQ1FjolaJ2dw08b
-	 iO0Zo+V0OM4483g8aHPy2pLPE4iRRR+wVGBWEtJVlvkGAxTLoFURmUwTYEyenphRTgMt5
-	 TlwIMmKRH+LWL9SLX7VfLcODu7zkt6RXL83XnF8BAbLmXJCEB5c/ihcEDJXBwOB47nJTX
-	 h97M+OZtcd33eEXaL6cz3hikLAS9Ua+ZMfz6B8H8jtYOJ8IaOJ/OdBvG8IvTu/jMHWsLj
-	 d6wgmoRToj4Ygh9Y2/zedO5qasNxxTv24DV1h8qiQjNUgIs2mYPTxsRNQajUoHhLCIg==
+	t=1795634470;
+	b=O9rIitQWZPfv7wiuFzOyIU7TeljxmgprPLTCI22k/usi/lFmplvrzgnlQ/DPt1RjPMWO
+	 6vTnx7M5ufNzpII8RKCHXT+w2n5JcJMYS/DoL/vcGNaHWlH/PotG6Xg5QMeIz9s92vjko
+	 ixtqTULmW3l/y5lGxvkYz/tOB9q/6XHd4TLskVK6xo+CNEB8qSiKYlaQyvUmduTDI5gUA
+	 wG+6CL6mYI0FtX+i+8DQ331f2vjXsh1NmiAzN+vozuGmKJL/a9jMVaHpTBkFt0Qe0gJB7
+	 8P9G5Ca2KwGmDDRO1cR2NGxXOV0s88FpqVh0FusKolz5Dz7swV0/n5TGJv6gjA7YPQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795633840;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=gdJT2ccAmvh0rOqxKnPGiTdo4RGbeB5XvNplqFwpnbA=;
-	b=4QnOL+HBn6xJ/HxCWnp3nHgqPzMKLA8zzMm33yUhPI2rXQD+TF6NXJWCoT71zBHgCQYo
-	 +EK52NhPjaahb24lWPqtNS+HB+gpdnUGh/0FDnKzqm2O+Z7QVzds9ej77K5Jcl3s+FIXG
-	 FAZRYHnZg3uIiDl7kINKR+qFjI6YQabTGOvTIaEw7YhFxMQnlodrQ/iSEhcah0rwkMo2Z
-	 8irjBc53VTJNgbOkGc6Ou/OOqiM5bWt8p2tOFP8lngyjComF727Riz+DjZgPumV0dghmz
-	 Uw0jodhpef4r0sA8ay+pmjbEslxq6ul3HeBYtquHzEtJM3vb9XDj2Dbig0y12GlFGbg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795634470;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To:X-TM-AS-GCONF:
+	 X-Proofpoint-Reinject:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=gjkmUYAQqhObZomEhSZvG/YB77KWT+YtxY8LYQ+JXBM=;
+	b=u+uTKkJ6Orja5UHZntcM8D1qfc8iPBoMYI0AEqkwR3kALFZNTo7+iHKwXf+/mqGZCCO1
+	 bOYSzKvp/4OZgjMt2Xbuf2GHucKSaELYXW6xglIvcMmzJGUbeEpcEZSJ0gfRs5ZMrH3QG
+	 N9lmHI/DhdPdc0eTK3bYJ61z1nHhNVwDx1v4OSLbZVLFAyJp21xO5YrlnP/BTYpZccPYM
+	 exJra/B5FkKY/izwqjNiJ0w5AUf1S01TTUJSK5Kq7qnW4mt7nFcvNOQZL2DZ01wscyHtZ
+	 tpmXR6RG4jvjDuztt+W0agG4wrUhGX9HXSGeMtL41+v7VDBmnNxfXNRZzllxjNiAijA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nb2PMwHa;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=b4o1XNDl;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDA9606A31E;
-	Wed, 25 Nov 2026 19:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1BB606A31E;
+	Wed, 25 Nov 2026 19:21:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F1BB606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nb2PMwHa
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5AE1F000C0;
-	Wed, 25 Nov 2026 19:10:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795633840;
-	bh=gdJT2ccAmvh0rOqxKnPGiTdo4RGbeB5XvNplqFwpnbA=;
-	h=From:Date:Subject:To:Cc;
-	b=nb2PMwHaKL2ly+Ltwwy1U5Gzjyv+RAE8sNl/e6s6Mt8D1RST8Ps8U1Fl6HI70fFwV
-	 kPGhOwFmIL1kSaEM5K0/mCTn1jgP5hoQNvkV8jxTEB35wr9kW6kLSWEppBTi9Ai/H/
-	 oPAy71k3Qh3W1y5A1N2DuDqbdKV1TrQuD0HSgsiMsoTo7zZ8Lx/lDX6a9Vztbg6BQA
-	 arbmN8lcHFZNAdOyNQvdj9QyEeqVNMXVhYAPEhZaVrW9yMZq/J8IKjuBcFatUYUeN5
-	 XvTHWU/kI5hTcHEok0MLosHMWcxZtlbidvbJMvdHczQKha1OxSxxGCXuFFzSActlY0
-	 I2HnaKo/IL4Bw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Wed, 25 Nov 2026 20:10:08 +0100
-Subject: [PATCH v4] rust: alloc: add per-task memalloc scope abstractions
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=b4o1XNDl
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6APGYdNb1999322;
+	Wed, 25 Nov 2026 19:19:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=gjkmUY
+	AQqhObZomEhSZvG/YB77KWT+YtxY8LYQ+JXBM=; b=b4o1XNDlfljukz22wGJQ0h
+	hFDvCKahLQE5+oELMoxpvR8yus1xr/9HFGs7jXKfv24NedjQNfOPAQLQsOYaYxmJ
+	dUFE5fhXckqAuW0PYjKLfUY4rjnJnXiiEJ3J6heXYs/hWnlWwEUIeiE6+U2PbLg2
+	8YmBlg57Xz94o6TGMiXCPGRFMqcx7uqeKTvP5PT0Ve/GxmJjLufrD15klX7U8Hzv
+	zal0O8X8xVHjp69b9e+a0liO17XVYXOOvkfuUiwLL6YKgBmTbYUQ+hOU7A7uWYN1
+	Af/9bgIBBKYXWxK+4RRNAGIaKYwc8nTS7EMTL98PhsZN4n/5Bz49Dm62UQ2Sqx/g
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34fae8qk-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 25 Nov 2026 19:19:44 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6APJJJGp505545;
+	Wed, 25 Nov 2026 19:19:43 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j5uxx22n6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 25 Nov 2026 19:19:43 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6APJJdNd42139928
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 25 Nov 2026 19:19:39 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EBD8220043;
+	Wed, 25 Nov 2026 19:19:38 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 75D8420040;
+	Wed, 25 Nov 2026 19:19:14 +0000 (GMT)
+Received: from shivang.upadyay (unknown [9.67.112.155])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 25 Nov 2026 19:19:14 +0000 (GMT)
+Date: Thu, 26 Nov 2026 00:49:10 +0530
+From: Shivang Upadhyay <shivangu@linux.ibm.com>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+        Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+        Bill Wendling <morbo@google.com>,
+        Justin Stitt <justinstitt@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Benno Lossin <lossin@kernel.org>,
+        Andreas Hindborg <a.hindborg@kernel.org>,
+        Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+        Danilo Krummrich <dakr@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+        Christophe Leroy <chleroy@kernel.org>, Boqun Feng <boqun@kernel.org>,
+        Nicolas Schier <nsc@kernel.org>, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org,
+        linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+        linux-s390@vger.kernel.org, linux-mips@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        Jan Stancek <jstancek@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v6 05/11] powerpc/vdso: Enable the vdsocheck tool
+Message-ID: <awc0rvqmahY6cHtv@shivang.upadyay>
+References: <20261123-vdso-absolute-reloc-v6-0-161e218dd217@linutronix.de>
+ <20261123-vdso-absolute-reloc-v6-5-161e218dd217@linutronix.de>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -52,280 +134,65 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-gfp-noio-v4-1-0f67ab9895ab@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAI8yB2sC/23NTQ7CIBRG0a0YxmL4awuO3IdxQOmjJRpowBBN0
- 71LO9BGHX4vnMuEEkQHCR13E4qQXXLBlyH2O2QG7XvArisbMcJqQpnEvR2xDy5g23aCAuUVkRK
- V52ME6x5r6nwpe3DpHuJzLWe6XP9EMsUUKy2JtEaoVojTFaKH2yHEHi2VzD6yJtVGsiKN1QwYr
- w3T/Efyt6SUqI3kReqq4dC0oMzXn/M8vwAmVIzkFQEAAA==
-X-Change-ID: 20260128-gfp-noio-fbd41e135088
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9565; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=0YRhhuKoy9a8ZWo6v32rODo4LhAbhlvxZN1lEYkVOw8=;
- b=kA0DAAoB+lApCKrFvdAByyZiAGsHMpaj80yAAtDs2/HBL2/2iD6q8ROCtcVTm1LX5MyAqVdUY
- IkCMwQAAQoAHRYhBFeK2cjZZnYmKsBqhvpQKQiqxb3QBQJrBzKWAAoJEPpQKQiqxb3QlTAP/jS0
- MAELtG5ofjnYaNxy3Zg4S6rkf1bzZqmQWh0LhRjU8lnlCSpWaRwHQ9NHjE0GYShtZ+pdtKfdhM4
- UCzm4UcwFaL6JZujqUBBe9NsEZzrYsWkLmDzE8bY0Q10XqYd1d5PzjJFozIeWbL2GKvC60WktZc
- 26miCJc2hvSlN7nrK6oVMeNOIPInSIGh9rJMEBqTfPVqucBFxaGDONUOix5pRFoehTb/HNKQ0L7
- 5sLh0P/pOtkmD3qjwNTP3OTcMkXnWeZYuZVCeYQAJFbxEl+6juzRX8vP0C0Z3XAgNNcontLJuI5
- ACetC5iqfwZ1y4lw25ADlJKahTIZLGcWjIBKM+Kke47HFabgVpy3ugRtHosX3cM3Y4gHRXt1L0N
- BdfwZvzZy4PLi+q0+Q89Ks07T4uqkg2v1XGAakdH5dZ4tthG1CeN9f2RHADb1FJ0FH5GBQnQAAd
- IwkN3iCPlhRCF1b8P9uC/qfF0HrpK1pyPq8dGRNmIAvm7WqN8o+ujrE5Qe03nlezM7fv8c5DVWn
- 7q/vl7vA+Pa5jUcMRNfC1Pff0N4BeEyd6JhDd98VM3X1JTMNmMLRePiPILpSzilLfih3QRM5Xt2
- 5wAuSIO5+t+z/v2ClX3mcky9WNcdl2c9R/6dlWRTNOES3A0xZ3Ci8ygIjy+cMTZci68kt0wd8/A
- w2ple
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261123-vdso-absolute-reloc-v6-5-161e218dd217@linutronix.de>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI1MDA3NiBTYWx0ZWRfX3whPefz46WC1
+ hNygsADgWWH3q76IQ97vzHqlw0KVrxx7r7UAw5SVuBqmP03DlIHvveHdnCb8I+LFUdhf3IBTEF4
+ 8I0LKw8A6RDat+2jMShRhIdJyHC/snbMARzB3j97ZRg4dk9eQk6Kb/c17OPxkgsEeh56QxlIgDC
+ wUPWuvr9YTBgUtvA8T8GCqkSSvcvT95hsmx8Ct0PUUDgvFCs7cWvxl/cHPmpiD4Kk1M2+/XY3xk
+ DLiaxWKhSrSivaxvdgJ1EA4G7gz0ulJrAaMk8ySQ2/S47CSLA2FI3plB5nV4GNPFWQXLUfRWPHl
+ QcXK+Qe1+YjjykPhUcW6RI716uPTfT8UPFmL8V6qwT/f4oC1rJT58R1VQobyjiFZ9MGmwr6WlCS
+ z5ZKV+GghS12zlmcdRFYX61cx8WcuTghM7JYnVHIKLaR9Q0N8q8XzXIjmtuCeYWzKrV/9/k7FwS
+ CZCtvJAPPqeb1X+3DCw==
+X-Proofpoint-ORIG-GUID: 9DuPW81bc1Ne1-Acmq-ZFQ1oXTeQgO4D
+X-Authority-Analysis: v=2.4 cv=U6QHnuru c=1 sm=1 tr=0 ts=6b0734d1 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=8nJEP1OIZ-IA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=K52B-zMjTZoA2OaJzQcA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
+X-Proofpoint-GUID: kgd6ntmKeCF4y3vpHzpfFLVurSHBIu2a
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI1MDA3NiBTYWx0ZWRfXwLCiikm0vVyM
+ 9boHPXPDQcdJQkQPxTdXN6x3x8c/RPGIYsu6hqtP046Hh/4b5uaJA5LSJKyG0fXuE8vE282QQVw
+ jau+sQ3OeVvDMeZGSzccJJHxqp+Tqsg=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-25_04,2026-11-25_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 lowpriorityscore=0 spamscore=0 impostorscore=0
+ clxscore=1011 bulkscore=0 suspectscore=0 adultscore=0 phishscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
+ definitions=main-2611250076
 
-Add an abstraction for the per-task allocation policies exposed by
-the kernel through paired save/restore helpers in `linux/sched/mm.h`:
-`memalloc_noio`, `memalloc_nofs`, `memalloc_noreclaim` and
-`memalloc_pin`. Each pair wraps `memalloc_flags_save` and
-`memalloc_flags_restore`. The save call sets bits in `current->flags`
-and returns the bits it added, which the restore call clears again. The
-pairing assumes strict LIFO nesting; restoring out of order corrupts
-the per-task state.
+On Mon, Nov 23, 2026 at 02:50:56PM +0100, Thomas Weißschuh wrote:
+> +        bindings::EM_PPC64 => AllowedRelocations {
+> +            in_object_file: &[
+> +                10,  /* R_PPC64_REL24 */
+> +                11,  /* R_PPC64_REL14 */
+> +                26,  /* R_PPC64_REL32 */
+> +                44,  /* R_PPC64_REL64 */
+> +                249, /* R_PPC64_REL16 */
+> +                250, /* R_PPC64_REL16_LO */
+> +                251, /* R_PPC64_REL16_HI */
+> +                252, /* R_PPC64_REL16_HA */
+> +            ],
+Seems to excluise list of all reletive relocations.
+I only could find the following being actually used, for defconfig ppc64le.
+But good to have all there.
 
-Expose each policy as a variant of the `ScopeFlag` enum, with
-`ScopeFlags` as the corresponding set type, both generated by
-`impl_flags!`. Add `alloc_scope`, which applies a set of policies, runs
-a closure and restores the previous policies before returning. The save
-and restore operations are not exposed on their own, so safe code
-cannot leave a scope open or restore out of order.
+[root@system vdso]# for i in `ls *.o`; do objdump -r -SD $i  | grep -oP 'R_PPC\w*' ; done | sort |  uniq
+R_PPC64_REL16_HA
+R_PPC64_REL16_LO
+R_PPC64_REL24
+R_PPC64_REL32
+R_PPC64_REL64
+[root@system vdso]#
 
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
-Changes in v4:
-- Replace the `ScopeKind` trait and its tag types with an `alloc_scope()`
-  function taking `ScopeFlags` built with `impl_flags!` (Gary).
-- Replace the per-policy C helpers with a single `memalloc_flags_save()`
-  and `memalloc_flags_restore()` helper pair.
-- Do not expose a safe/restore functions public (Sashiko).
-- Mark `alloc_scope()` as `#[inline]` (Sashiko).
-- Link to v3: https://msgid.link/20261109-gfp-noio-v3-1-a573e7be9c44@kernel.org
+Looks good. Feel free to add,
+Reviewed-by: Shivang Upadhyay <shivangu@linux.ibm.com>
 
-Changes in v3:
-- Rebase on v7.4-rc1.
-- Replace the pinned `Scope` guard and `memalloc_scope!` macro with a
-  closure-based `ScopeKind::with` entry point (Alice, Gary).
-- Make the doctests compile and run under KUnit instead of `ignore`.
-- Document that `NoReclaim` has no effect in hard interrupt context.
-- Link to v2: https://msgid.link/20260605-gfp-noio-v2-1-cfa2e236c2a3@kernel.org
-
-Changes in v2:
-- Rewrite the patch to use scoped allocation flags instead of exposing
-  a `GFP_NOIO` flag constant.
-- Link to v1: https://lore.kernel.org/r/20260128-gfp-noio-v1-1-9a808fc49b44@kernel.org
----
- rust/bindings/bindings_helper.h |   1 +
- rust/helpers/mm.c               |  10 +++
- rust/kernel/alloc.rs            |   1 +
- rust/kernel/alloc/scoped.rs     | 134 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 146 insertions(+)
-
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 3791af0aadc7..df21b5b129a4 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -86,6 +86,7 @@
- #include <linux/refcount.h>
- #include <linux/regulator/consumer.h>
- #include <linux/sched.h>
-+#include <linux/sched/mm.h>
- #include <linux/security.h>
- #include <linux/serdev.h>
- #include <linux/slab.h>
-diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
-index b5540997bd20..42424583e7b3 100644
---- a/rust/helpers/mm.c
-+++ b/rust/helpers/mm.c
-@@ -48,3 +48,13 @@ __rust_helper void rust_helper_vma_end_read(struct vm_area_struct *vma)
- {
- 	vma_end_read(vma);
- }
-+
-+__rust_helper unsigned int rust_helper_memalloc_flags_save(unsigned int flags)
-+{
-+	return memalloc_flags_save(flags);
-+}
-+
-+__rust_helper void rust_helper_memalloc_flags_restore(unsigned int flags)
-+{
-+	memalloc_flags_restore(flags);
-+}
-diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-index 68d80f3fa6c8..5e4c142b5682 100644
---- a/rust/kernel/alloc.rs
-+++ b/rust/kernel/alloc.rs
-@@ -6,6 +6,7 @@
- pub mod kbox;
- pub mod kvec;
- pub mod layout;
-+pub mod scoped;
- 
- pub use self::kbox::Box;
- pub use self::kbox::KBox;
-diff --git a/rust/kernel/alloc/scoped.rs b/rust/kernel/alloc/scoped.rs
-new file mode 100644
-index 000000000000..7fec1c974192
---- /dev/null
-+++ b/rust/kernel/alloc/scoped.rs
-@@ -0,0 +1,134 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Scoped allocation policies for the current task.
-+//!
-+//! The kernel exposes several per-task allocation policies through save/restore pairs in
-+//! [`include/linux/sched/mm.h`]: `memalloc_noio`, `memalloc_nofs`, `memalloc_noreclaim` and
-+//! `memalloc_pin`. Each pair is a wrapper around `memalloc_flags_save` and
-+//! `memalloc_flags_restore`. The save call sets bits in `current->flags` and returns the bits it
-+//! added, which the restore call clears again. The save/restore APIs assume strict LIFO nesting;
-+//! restoring out of order corrupts the per-task state.
-+//!
-+//! This module exposes each policy as a [`ScopeFlag`]. [`alloc_scope`] applies a set of policies,
-+//! runs a closure and restores the previous policies before returning.
-+//!
-+//! [`include/linux/sched/mm.h`]: srctree/include/linux/sched/mm.h
-+//!
-+//! # Examples
-+//!
-+//! ```
-+//! use kernel::alloc::scoped::{
-+//!     alloc_scope,
-+//!     ScopeFlag, //
-+//! };
-+//!
-+//! // Every allocation inside the closure behaves as if `GFP_NOIO` were set, even though the call
-+//! // site passes `GFP_KERNEL`.
-+//! let b = alloc_scope(ScopeFlag::NoIo, || KBox::new(42_u32, GFP_KERNEL))?;
-+//! assert_eq!(*b, 42);
-+//!
-+//! // Policies can be combined with the bitwise OR (`|`) operator.
-+//! let b = alloc_scope(ScopeFlag::NoIo | ScopeFlag::Pin, || KBox::new(42_u32, GFP_KERNEL))?;
-+//! assert_eq!(*b, 42);
-+//! # Ok::<(), Error>(())
-+//! ```
-+// # Implementation details
-+//
-+// Since the closure used in this API is synchronous it cannot contain a suspension point, so the
-+// save and restore always execute in the same call frame, on the same task, and nested scopes
-+// restore in LIFO order. The save and restore operations are not exposed on their own, so safe
-+// code cannot begin a scope without ending it.
-+use crate::impl_flags;
-+
-+impl_flags!(
-+    /// A set of per-task allocation policies.
-+    ///
-+    /// Build a set by combining [`ScopeFlag`] values with the bitwise operators, then pass it to
-+    /// [`alloc_scope`] to run code under the policies.
-+    ///
-+    /// # Invariants
-+    ///
-+    /// Only bits that correspond to a [`ScopeFlag`] are set.
-+    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+    pub struct ScopeFlags(u32);
-+
-+    /// A per-task allocation policy.
-+    ///
-+    /// Each policy corresponds to a `memalloc_*_save` / `memalloc_*_restore` pair in
-+    /// [`include/linux/sched/mm.h`](srctree/include/linux/sched/mm.h).
-+    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+    pub enum ScopeFlag {
-+        /// `GFP_NOIO` scope.
-+        ///
-+        /// Allocations on the current task behave as if `GFP_NOIO` were set, making them safe to
-+        /// issue from the IO completion path.
-+        ///
-+        /// Corresponds to `memalloc_noio_save` / `memalloc_noio_restore`.
-+        NoIo = bindings::PF_MEMALLOC_NOIO,
-+
-+        /// `GFP_NOFS` scope.
-+        ///
-+        /// Allocations on the current task behave as if `GFP_NOFS` were set, making them safe to
-+        /// issue from a filesystem critical section.
-+        ///
-+        /// Corresponds to `memalloc_nofs_save` / `memalloc_nofs_restore`.
-+        NoFs = bindings::PF_MEMALLOC_NOFS,
-+
-+        /// No-reclaim scope.
-+        ///
-+        /// Allocations on the current task may dip into the memory reserves. Callers must be sure
-+        /// their allocations will help free more memory shortly; see the kernel C documentation
-+        /// for the full contract.
-+        ///
-+        /// The scope has no effect in hard interrupt context, where `PF_MEMALLOC` does not grant
-+        /// access to the reserves; see `__gfp_pfmemalloc_flags()` in
-+        /// [`mm/page_alloc.c`](srctree/mm/page_alloc.c).
-+        ///
-+        /// Corresponds to `memalloc_noreclaim_save` / `memalloc_noreclaim_restore`.
-+        NoReclaim = bindings::PF_MEMALLOC,
-+
-+        /// Long-term pin scope.
-+        ///
-+        /// Allocations on the current task are restricted to zones that allow long-term pinning.
-+        ///
-+        /// Corresponds to `memalloc_pin_save` / `memalloc_pin_restore`.
-+        Pin = bindings::PF_MEMALLOC_PIN,
-+    }
-+);
-+
-+/// Run `f` with the allocation policies in `flags` applied to the current task.
-+///
-+/// The policies in `flags` are applied before `f` runs. When `f` returns, the policies that were
-+/// not already in effect before the call are removed again. `flags` can be a single [`ScopeFlag`]
-+/// or a [`ScopeFlags`] set.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::alloc::scoped::{
-+///     alloc_scope,
-+///     ScopeFlag, //
-+/// };
-+///
-+/// let b = alloc_scope(ScopeFlag::NoFs, || KBox::new(42_u32, GFP_KERNEL))?;
-+/// assert_eq!(*b, 42);
-+/// # Ok::<(), Error>(())
-+/// ```
-+#[inline]
-+pub fn alloc_scope<R>(flags: impl Into<ScopeFlags>, f: impl FnOnce() -> R) -> R {
-+    let flags: ScopeFlags = flags.into();
-+
-+    // SAFETY: By the type invariant of `ScopeFlags`, `flags` only contains `PF_MEMALLOC*` bits.
-+    // Setting these on the current task is sound from any context. In hard interrupt context
-+    // `PF_MEMALLOC` is ignored rather than misinterpreted.
-+    let added_flags = unsafe { bindings::memalloc_flags_save(flags.into()) };
-+
-+    let ret = f();
-+
-+    // SAFETY: `added_flags` was produced by the `memalloc_flags_save` call above on this task. `f`
-+    // is a synchronous closure, so it has already returned and any scope it began has already
-+    // been restored.
-+    unsafe { bindings::memalloc_flags_restore(added_flags) };
-+
-+    ret
-+}
-
----
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-change-id: 20260128-gfp-noio-fbd41e135088
-
-Best regards,
---  
-Andreas Hindborg <a.hindborg@kernel.org>
-
-
+~Shivang.
