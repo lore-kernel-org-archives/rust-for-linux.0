@@ -1,72 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=216.40.44.11
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795630965;
-	b=ddAP9G2DTFT4ePILKeH+LEAoOqwxf9JjTOt7ccoygxO7mnXRHMs+8N4v2bhuV54wzR22
-	 u3G/3ooVWThboMEwxHjLwW5YMEBWw5q8fpE1nT2ISbhgpauQFEnIfcWE6LSTSyXBQJC4P
-	 RTuHhnTMybE8LPEJU6xVYWrHmEjAwA9X78gbPxgOLmLeJyYR/o729hVFeL1Ymt+dGWqfT
-	 a9bsuK+7GGeBW/Zdessn1byWi8Lv3pWA8ikR9rwnlMgsIIMtNIWXnJiz8yuxlB4tbf1pO
-	 Q0P5YR4WUrkvcIYhfNO91kmj0PeMUhqVDfntKosJRUcyTn58xD7emwmv7LukYYbjB+g==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795630965;
-	h=DMARC-Filter:Received:Received:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Rspamd-Server:X-Rspamd-Queue-Id:
-	 X-Stat-Signature:X-Spam-Status:X-Session-Marker:X-Session-ID:
-	 DKIM-Signature:X-HE-Tag:X-HE-Meta;
-	bh=6qR++cFUSbUPUEmO+yBbsbTsqe4WGzx7vfqPrLzKD+Y=;
-	b=3ZKVcBTpNC6/JCS6uJ032o5JNcQV8NVAJio/uXSh5uFmmtIo/5fXFpfWAGpBy/sQUZIB
-	 +X9ycRAob22E+JGQMyJq+My+kAj773MQmwh47aihpPB8izt7ZXwRCTPAjbGcf+qg5tbnL
-	 jOf5jn70aEaWpHiiwbB6K1k6TcW8cHNug8MrurE1+xIm+Zy53kkMhd+Rdwk7ookJ7mH6D
-	 86WaXlJ+8IctuWDdwV0v5OoxTYwdWEMaY4uqv8V+UMqCmkdDJDKM0XvVtMFJWkAeIuysu
-	 xaAYiljwddDJasrjNLxMPEYqcn6mfIt09CmbK0puRUAz7ogOJ0Vo0Jci9tLc52oLi7Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=goodmis.org;
-	spf=pass smtp.mailfrom=goodmis.org;
-	dkim=pass header.d=goodmis.org header.i=@goodmis.org header.a=rsa-sha256 header.s=dkim1 header.b=dhj3qKPr;
-	arc=none smtp.remote-ip=216.40.44.11
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795632643;
+	b=uGNVkM8qQAR3T9ysyiG+ctWX6myfAtMzPM/og9EqQviYUU7eaU925umaGkSeSOjqiuPr
+	 DaQW11T1SFf7HJWHsrspDEvC16RBExjyR2jYsV6kDV7LQ8HA1fOvqEe+Vi764klO/2ayU
+	 cfvJq9h6xcdDfAe0YgqG/PgF8DA8xvKFOcA6VJ1UyO+N3w7Tkf7S+7kzx54m9isf+Xm0d
+	 7VUXlRqxFbfLC9pgP+DL+RECUG17hD+9PZ+PjEEnNMDjHDwJLv4fblOsZyUr1xfOqKpmQ
+	 hLcaQxzrGVh8GZA50OBSLtBkoB7Ot8QeOh0e2fnI1+WXkv30L+T6z4nFCQNqbsFSSnw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795632643;
+	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
+	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
+	 References:To:X-Mailer:X-ZohoMailClient;
+	bh=T4QJdIAnF8cgQyJ1JK7OVxMUlUSq0t75T8bZ0NcrZTs=;
+	b=szi+zZa512h1aCT2slkoHCnCwkV5QOVtjfAbw4h5TSUOSLAvQiHPImiLUihAcmfFFv1d
+	 q/rdhmTyS1MtzvoVI15L32/Pfeoyq0rh8gg31OxzsoAJUX3VeaVFquatXsD1hSs1kTC0u
+	 8PkOFm4sVrGSvVDbcFQ/KlRbRZgYaaJXR6y6ROAS1VONUInBTWlPnNFiLTDe9wdRdiyaK
+	 ACrd1psIgL2imlO8CncC7pt9Y6uug3qTFPiggfTxu9JEE8zrK1ad4OezbIbAX9QjcJPES
+	 FrbZbAPAdKQM8ZetlUtS7qkpq1QWZESdcxEusDxKFVg+SfjQOddHT7RP6lZ4uobCUtA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=KcklkUXa;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3541D606A33C;
-	Wed, 25 Nov 2026 18:22:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3541D606A33C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447B8606A31E
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Nov 2026 18:50:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 447B8606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=goodmis.org header.i=@goodmis.org header.a=rsa-sha256 header.s=dkim1 header.b=dhj3qKPr
-Received: from omf19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C90DE120F71;
-	Wed, 25 Nov 2026 18:22:38 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf19.hostedemail.com (Postfix) with ESMTPA id 2158E20028;
-	Wed, 25 Nov 2026 18:22:27 +0000 (UTC)
-Date: Wed, 25 Nov 2026 13:22:25 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: "Gary Guo" <gary@garyguo.net>
-Cc: "Ian Rogers" <irogers@google.com>, <linux-kernel@vger.kernel.org>,
- <linux-trace-kernel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
- <jpoimboe@kernel.org>, <peterz@infradead.org>, <mingo@redhat.com>,
- <tglx@kernel.org>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
- <x86@kernel.org>, <catalin.marinas@arm.com>, <will@kernel.org>,
- <mark.rutland@arm.com>, <linux-arm-kernel@lists.infradead.org>,
- <pjw@kernel.org>, <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>,
- <alex@ghiti.fr>, <linux-riscv@lists.infradead.org>, <acme@kernel.org>,
- <namhyung@kernel.org>, <linux-perf-users@vger.kernel.org>,
- <mhiramat@kernel.org>, <ast@kernel.org>, <daniel@iogearbox.net>,
- <andrii@kernel.org>, <bpf@vger.kernel.org>, <nathan@kernel.org>,
- <llvm@lists.linux.dev>, <nsc@kernel.org>, <linux-kbuild@vger.kernel.org>,
- <ojeda@kernel.org>, <rust-for-linux@vger.kernel.org>, <ardb@kernel.org>,
- <linux-efi@vger.kernel.org>, <maz@kernel.org>, <oupton@kernel.org>,
- <kvmarm@lists.linux.dev>, <shuah@kernel.org>,
- <linux-kselftest@vger.kernel.org>, <indu.bhagat@oracle.com>,
- <jremus@linux.ibm.com>, <wnliu@google.com>, <dylanbhatch@google.com>
-Subject: Re: [RFC PATCH v2 00/30] unwind: Minimal DWARF CFI unwinding for
- user and kernel space
-Message-ID: <20261125132225.00254c37@gandalf.local.home>
-In-Reply-To: <DN4FM3TBOJ9T.2QOOL77P5HETO@garyguo.net>
-References: <20261125061523.1540234-1-irogers@google.com>
-	<DN4FM3TBOJ9T.2QOOL77P5HETO@garyguo.net>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=KcklkUXa
+ARC-Seal: i=1; a=rsa-sha256; t=1795632593; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Q/vgguqfpuRFU9tNviYG3WPmTeozjtgKRbqw3UxCbx+6KPKCBjKSONfzeVE6/rw7aMd78gt41KW+6J9uXuMg6Z84F6EOjBPddD0Jg8b6RCxIRo5MrrJ+eynrMlDriRIoG9U71ypZw5HwNt0+Y1Zgbr6I8jI9fpF1V7jN4IFsUWU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1795632593; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=T4QJdIAnF8cgQyJ1JK7OVxMUlUSq0t75T8bZ0NcrZTs=; 
+	b=Fd0AShZ0UNNMo8EozlE1i8uEmJ+YgOtfBZiVdMyD1CkXmYecx5D5qRpdmn2oXr5xf6NolXK7WOvK6M/xJ9tgLA2dI0DuCpwRsq7bIAGas7SRXg6lBy8Qqppd/p5UPciNU7zmoA3qvwwOTOJortpbz1ROBEDIitcva7GOHdD+i5k=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=KcklkUXa+vK/5d3ehydqeO09yLe3wAnSUn7X6Hvwmz/Z1uZesaddCSn2u/vritIVGyGYhkKbTvBsqv639gKPAqxqMK4Usb4OPyKC1xNCY0xshVX1A/bHC/gKHhXe7re8a5/CWsemLQeT40nU0wIasYrrK5nkqQP/xqBhzAT5OaE=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=T4QJdIAnF8cgQyJ1JK7OVxMUlUSq0t75T8bZ0NcrZTs=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 179563259167510.752161362890206;
+	Wed, 25 Nov 2026 10:49:51 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -75,25 +57,110 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspamout06
-X-Rspamd-Queue-Id: 2158E20028
-X-Stat-Signature: bmxmyx7zbff3tj5wzgboeoe9y8ngdg7c
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1/Cm47ggEMe5tkUQwuPIv9j4yoOc3+2FwI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=6qR++cFUSbUPUEmO+yBbsbTsqe4WGzx7vfqPrLzKD+Y=; b=dhj3qKPrnd5Ol5oStgJ72xjormeA1wf1DO/RZc9kjGarZplof6LxOCEYEKKVU+6U05bo+jnrn30dh3AQ2S2utOXzBrNDvJP6ChCp0OiNHXA0Mz5Qca51KujLnC0+gny5rgFtqYDHuEEGrRoB4ayAc52wJ7NqKJRyFXoq+87Y6Bg=
-X-HE-Tag: 1795630947-362156
-X-HE-Meta: U2FsdGVkX18ShW9pI+/3LezhiP+sfLyAz5bbFmDR0Cg79ArNrSxS4kGp2fzzjf2A8iMOExZ79Wjpfg5dnD2BuvcnWnPjmIUJbGqbBkLfSiaYUFYSqR7ZAyP5O5UzEvRDCN589rXn1aP6/jRut7zfB+DDsEhPmN5DqCQvkQ7ZfZK1DiZPYS6+dvk+POli+n6GtTpGQ+j2vtl3LmQVHr+SzbA0nhYCBgifjijh6DwBsiIDVGFv0Nn3Ybo7aD+vHLlpczM4CVbNSwTPAeoiNfZ1pIRQfuRQQygtba8VmRY7xWxfdUk9RhDQhUICoUNpPyMEpj3E7lFTHILx587J1If+CzVdP12M+SkIwx9akUq8SAeuSlUzaZ2IKhNYhFH5nvIw0f5ED6Ry586F6FXLp5r+/Q==
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH v7 07/10] drm/tyr: add VM-related ioctls
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20261122-tyr-ioctls-v7-7-3a2af624b992@linux.dev>
+Date: Wed, 25 Nov 2026 15:49:31 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Lyude Paul <lyude@redhat.com>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Johan Hovold <johan@kernel.org>,
+ Sami Tolvanen <samitolvanen@google.com>,
+ rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ driver-core@lists.linux.dev,
+ Ke Sun <sunke@kylinos.cn>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <2395489A-A2DD-4740-818D-60636E5CA872@collabora.com>
+References: <20261122-tyr-ioctls-v7-0-3a2af624b992@linux.dev>
+ <20261122-tyr-ioctls-v7-7-3a2af624b992@linux.dev>
+To: Alvin Sun <alvin.sun@linux.dev>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-ZohoMailClient: External
 
-On Wed, 25 Nov 2026 16:28:02 +0000
-"Gary Guo" <gary@garyguo.net> wrote:
+Hi Alvin, thanks for working on this! :)
 
-> A quick question: how do you plan to get this working on 32-bit ARM which has
-> its own EHABI?
+For v8:
 
-Do we care? Isn't ARM 32 mostly deprecated at this moment? Or at least not
-adding new features.
+Please rebase on drm-rust-next and list these two series as
+dependencies:
 
--- Steve
+=
+https://lore.kernel.org/all/20261124-rust-drm-gem-shmem-imported-sgt-v2-0-=
+000f7a9ccb8d@jannau.net/
+
+=
+https://lore.kernel.org/all/20261117-tyr-remap-2mb-v1-0-2a8efd4c8180@googl=
+e.com/
+
+Please switch the ops array to KVVec, as Deborah suggested:
+https://lore.kernel.org/all/awYgh-A8JtN899eB@um790/
+
+Please do not add new "as=E2=80=9D casts unless absolutely needed. =
+from_safe_cast(),
+UserPtr::from_u64() and cv!() for the uAPI constants cover all but
+VM_BIND_OP_TYPE_MASK. For this last one, please use a //CAST: comment
+
+
+> On 22 Nov 2026, at 09:50, Alvin Sun <alvin.sun@linux.dev> wrote:
+>=20
+> Implement VM_CREATE, VM_DESTROY, VM_BIND and VM_GET_STATE. VM_CREATE
+> hands the new VM to the per-file pool and, on insertion failure, the
+> caller tears it down, so an aborted creation never leaks a VM.
+> VM_DESTROY removes the VM from the pool and kills it, even if =
+in-flight
+> jobs still hold references (matching panthor: such jobs are expected
+
+There is no way to have in-flight jobs or any jobs running at the =
+moment, so I
+would drop this part.
+
+> to fault). VM_BIND runs synchronously for now.
+>=20
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+
+Same comment as previously regarding the commit message.
+
+Here is what I would write, as a mere example:
+
+---
+drm/tyr: add VM-related ioctls
+
+Currently, the only VM in Tyr is the one the MCU runs in, and userspace
+has no way to create one.
+
+Add the four VM ioctls of the panthor uAPI:
+
+- VM_CREATE creates a user VM and adds it to the VM pool of the file.
+- VM_DESTROY removes a VM from the pool and kills it.
+- VM_BIND maps/unmaps BO ranges into a VM.
+- VM_GET_STATE reports whether a VM is usable.
+
+VM_BIND is synchronous only. DRM_PANTHOR_VM_BIND_ASYNC fails with
+EOPNOTSUPP.
+
+=E2=80=94
+
+Note how this says _why_ the change is needed, not only what the change =
+does:
+
+Currently, the only VM in Tyr is the one the MCU runs in, and userspace
+has no way to create one.
+
+=E2=80=94 Daniel
+
