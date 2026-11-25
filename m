@@ -1,17 +1,17 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.95.80
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.195.97
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795623579;
-	b=cSbTx8RgDVEDArpntatMhFCrxoOc8th+k1oHZCa52uOddmzHQqFRvK1kfOAhL4LwEJhU
-	 t2zGt7sMvVu++QD1OV2hArIPXPgzHxZ0VJp/1Aismtfa3G9GDeCfmLofJ8w0RwdQbKX0F
-	 irwmz+TkwFJq7oprGuZ2e/kjoQzyl50Z2Ofl+U4ZEtGV7kydSGocWNohX4pQI1oT8ekY9
-	 6vf3h8TcYjETgLUulJWNGFRbFFbzI+tO4H4EFjsLVtsII1mbShdHJq23wj63AuKoaqrev
-	 g0n/KHkziGDevwZ9QXVxK4gHYmCglgoK1dM074hZ03vH96o5p4cz+FLRzNpR0zb6aEQ==
+	t=1795624087;
+	b=1TnaUdrMLyC8utGUnPgS6tkPES7wREhQrNij4Ll9DKleTyO3cURglyyoC7GCsAAopSLw
+	 nWRuIwOWoPf/hyyFI6Xmwd2Q7S76I5T7FR1T/mzce5a53eRJTB7g1RuUGj2da4Po47zp+
+	 pqLo2rxiRcA3HwtSawal44UnR1Pvi1uEA0E0/99o0vpabc6hND8QKxkb4qr1nTUZuEevP
+	 DeI/Pxu7Ag2ra1iAjDXALO3I6ZZYz/1/YhIv7NRdUDXRDIGTb1QOG7W0L2csvmB0rhn8n
+	 HFcK0rM7G4HlJswzlNM9wGGHrGyqpqjXiZhOBGILX5IAtvUCXwejFcfiw/iwO9oIbrg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795623579;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795624087;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:From:To:
-	 Subject:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
-	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Subject:From:
+	 To:Cc:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
 	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
 	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
 	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
@@ -24,75 +24,84 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=st5CPMLtqQsyzzXYNFTS6SVM/oQUOZBkPYn3gBv8Cc0=;
-	b=nQyaMp1xNyaOgGyOVEr52pqNkqqvsNIISGNvgVAQ2oWfy2sRU31sDYxzXH909D8ePNtv
-	 byFZ7azVrSpXoMag2A3HYfnAjz7eFfInqu10KmzLNFqxrVY+PJw5kEIYtAqxsJNZuJAHu
-	 5+FOkq76lVkVRpD/yD1oWD9d6iqghJtLveP8szJbiXIy3ZhihT/BsIdIDPryT8ji5fHZY
-	 Q9gXMpwX+6yo5aziqTiFG4pJQwxDtLntWdyf76lw/q2aMXDryiErKEh8bHy2XTzaFMgEB
-	 dNZmkOzcc3EXfWWjTN+QZ3FZRZB39xZ2K8dJyGzlNkwMjHOPjvaBxJ+E1/NDrkP1y0g==
+	bh=etV7w6McVU4IkyvSR1MbS3GvzqUUoDoXyhVUKvZEZQ0=;
+	b=2y72EYTGb0aVku/C+OIT2ZvYQuC310iO5NArhjQigBZTmljfz1dvHyKWz2QzPoF5theD
+	 ++NJdr4X4PtDIELwnIxmalvMq584OTfXHUs6JEoYr+M/3pEoh0lovDwwG4RjzrTWlQBHE
+	 P2KE4yRjxeS2f5o3SBC9YG4Km7PXnp+5fNiP/cePU4cXaBe5ND770GuV1fnrmydu5pMXx
+	 ir3waklloZB/DOCZvQa9NbPURy8IYm929YtiVTkIMlLvbD3Jc50BV40g5/EoExt3toLL8
+	 7jKkKIv6o406gpAn8v35L+C6gNj2zJEH55Y3CC6ghZvbZ7rVuhpgIawNPokh8MQV71g==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=garyguo.net;
 	spf=pass smtp.mailfrom=garyguo.net;
-	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=KSt9JGZE;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.95.80
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021080.outbound.protection.outlook.com [52.101.95.80])
+	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=tVRKWPxs;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.195.97
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020097.outbound.protection.outlook.com [52.101.195.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A0C606A31E;
-	Wed, 25 Nov 2026 16:19:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89A0C606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD81606A327;
+	Wed, 25 Nov 2026 16:28:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DD81606A327
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=KSt9JGZE
+	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=tVRKWPxs
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L4Q5suvYW1QOJoR7rB/hRo/5jsDk4WxlodnRcYwkq47bRd/FZrkln/zQ3icN2ZupNdiwKIj6ZwwH6vSWGDtI7c2OYGMjpEI9Poeu8Zpha5iWPUE5iTTZ8VomC/F3cHrawyqOgODzVmXD7X7ymBdI3qCA0nTW24KMjeaFAVykSZ5FEp41tQmcFtADjopeG9baOmv+wycK3RANbTqswYSVEh4VyfqjVvdVtZ/XX+FY+/gJu2h9Vov2MKB5c0kxmcFs5TGtLI16mCu6fuxzww0qGXSIXiCwi94CAUckMES5eHHPx5J/94rdm9ao38fNxFJgC/0inCmJgD+lKjLdaUXViQ==
+ b=Ha1iZpZvU0UvAZlA0LGSw04MVNvqWTqomTPr1ZI8HiXBjMhmbQdjBX4AHTTPqBybf4X1nV2zT8bgsB8QcAcaEPeon+r4lv8GszAfqw4TZ1NYaVEgJ/DHmXjbSFn+p5M9tbbF8pvJMQp/vxfo1QRiYmisiKgEy9MxQCJhSlKY3lN93nT8y2ObMsTcfJqMDUHQOF1uUekRhzolidCcMXLMzk3nClkNjAUu2gMktGh27Lt7qODc4207WZUl4JfejbDNe3IiFHf1bHwzXFRRG9Xg/PDRmSkj37kw2czgojOJ5WDOKehFAYcN7dhcuHSFpoD04aiYs17OosYq5hTWExAgdQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=st5CPMLtqQsyzzXYNFTS6SVM/oQUOZBkPYn3gBv8Cc0=;
- b=Cigcqmg0UqsbtocULDEfB8zTCkB9ijlKTTWSMvbcj764VfduaaKtq/uY4N4MYxu7w4aP3LRtkn6uI4N5UfnnS6rD3evtjXF0E3eu0zUfq4dDRfEbf7Lc/Gyt4IQLxa1EtppHNAuZDWUGblJSKvl4B9nKu9vd9piG2RUuF5V6kz2QyGXUUF8f3B4/N+044QRSUEyYJHszTSutKi67zjd/vMWp5GXeyJ2XklvNyyxu0jWPZMKQjhlgvs5a8YsqXwJsyqDdf7oUREixsjfsTgLXS9L3Oe6oyT3q0ViaRdzds/+7bR8rwRkwDh4mJT3rpT2Ilt/eYXzgPh2epb30Nx1Y/w==
+ bh=etV7w6McVU4IkyvSR1MbS3GvzqUUoDoXyhVUKvZEZQ0=;
+ b=iN4fTo/BIhIyALnk64XGac9fvKPMdKXwvhOZ+MsXEg0ytGbBg3t7mpts8oOIHr7bZzK4SL96gFvY9tY3a8wMYr3CnYyV0k8qaHJrrNYeDU3YTIejjRU4Mryg+leayu2EZVLpfxs/Hbm+OKhAz0nYZy279s24oPnXxjQMRUIpJ8PO+hfUq/FSKykfD9sI3zBI//WhmSM6PghJxGCFOGi+jLmrppZPQ4TWk7UkON21S0qR8TKG3U2SJjAMBjfYACEe0rafKuMy75L/fSyKLA/p1xkmmiVY1+uVTIQLeXKqY7xtjSmWYqdQ9wAerTeYhF1CfUGud71yy4v7+EszbvM9CQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=st5CPMLtqQsyzzXYNFTS6SVM/oQUOZBkPYn3gBv8Cc0=;
- b=KSt9JGZEnxEaiAZitEa169y2URDb4SW33tB0vZH4OrGaWGvLoP6pvuGNHbSiz5eK/DpFSMUZNgD9jAj9xqldxN3ToyalvZ8PNiTOcCdpWrDaXCB1kf4Gz9AYUomniYYgayL8e1+lEmUZrEtcq4rOo7in2JtAFjDwCt87rsLaOLk=
+ bh=etV7w6McVU4IkyvSR1MbS3GvzqUUoDoXyhVUKvZEZQ0=;
+ b=tVRKWPxsYNS0b7XyHyEJiZxCMgHdb9DBwZwvTn8tfu0gm1XcqeisvaPh0IB4fnaIACSiojPJwkCPBLdh+uh0dWEPU9zDefg5ERQ3TADUVyMUTo1XGA2YPxEGnnIydZEhr3gR3G6mrSv1PLWOX7tFMOHrDKpJGzP5y7UQ2wOzfnU=
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
- by LO0P265MB7313.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2ee::13) with
+ by LO8P265MB7671.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:3ca::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Wed, 25 Nov
- 2026 16:19:32 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.4; Wed, 25 Nov
+ 2026 16:28:04 +0000
 Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
  ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
  ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0662.004; Wed, 25 Nov 2026
- 16:19:32 +0000
+ 16:28:04 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 25 Nov 2026 16:19:30 +0000
-Message-Id: <DN4FFKMFI488.187QX5RI55L8S@garyguo.net>
+Date: Wed, 25 Nov 2026 16:28:02 +0000
+Message-Id: <DN4FM3TBOJ9T.2QOOL77P5HETO@garyguo.net>
+Subject: Re: [RFC PATCH v2 00/30] unwind: Minimal DWARF CFI unwinding for
+ user and kernel space
 From: "Gary Guo" <gary@garyguo.net>
-To: "Priya Bala Govindasamy" <pgovind2@uci.edu>, <m.wilczynski@samsung.com>,
- <ojeda@kernel.org>, <ukleinek@kernel.org>, <boqun@kernel.org>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <dakr@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
- <acourbot@nvidia.com>, <work@onurozkan.dev>, <elle@weathered-steel.dev>,
- <linux-pwm@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <ardalan@uci.edu>, <zhiyunq@cs.ucr.edu>, <dzueck@uci.edu>
-Subject: Re: [PATCH 1/1] rust: pwm: reject over-aligned driver data in
- `Chip::new()`
+To: "Ian Rogers" <irogers@google.com>, <linux-kernel@vger.kernel.org>,
+ <linux-trace-kernel@vger.kernel.org>, <linux-arch@vger.kernel.org>
+Cc: <jpoimboe@kernel.org>, <rostedt@goodmis.org>, <peterz@infradead.org>,
+ <mingo@redhat.com>, <tglx@kernel.org>, <bp@alien8.de>,
+ <dave.hansen@linux.intel.com>, <x86@kernel.org>, <catalin.marinas@arm.com>,
+ <will@kernel.org>, <mark.rutland@arm.com>,
+ <linux-arm-kernel@lists.infradead.org>, <pjw@kernel.org>,
+ <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <alex@ghiti.fr>,
+ <linux-riscv@lists.infradead.org>, <acme@kernel.org>,
+ <namhyung@kernel.org>, <linux-perf-users@vger.kernel.org>,
+ <mhiramat@kernel.org>, <ast@kernel.org>, <daniel@iogearbox.net>,
+ <andrii@kernel.org>, <bpf@vger.kernel.org>, <nathan@kernel.org>,
+ <llvm@lists.linux.dev>, <nsc@kernel.org>, <linux-kbuild@vger.kernel.org>,
+ <ojeda@kernel.org>, <rust-for-linux@vger.kernel.org>, <ardb@kernel.org>,
+ <linux-efi@vger.kernel.org>, <maz@kernel.org>, <oupton@kernel.org>,
+ <kvmarm@lists.linux.dev>, <shuah@kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <indu.bhagat@oracle.com>,
+ <jremus@linux.ibm.com>, <wnliu@google.com>, <dylanbhatch@google.com>
 X-Mailer: aerc 0.22.0
-References: <cover.1794600927.git.pgovind2@uci.edu>
- <caddec5478a0d39a73152247a60bc21b3c609cc7.1794600927.git.pgovind2@uci.edu>
-In-Reply-To: <caddec5478a0d39a73152247a60bc21b3c609cc7.1794600927.git.pgovind2@uci.edu>
-X-ClientProxiedBy: LO6P123CA0017.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:313::7) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
+References: <20261125061523.1540234-1-irogers@google.com>
+In-Reply-To: <20261125061523.1540234-1-irogers@google.com>
+X-ClientProxiedBy: LO4P265CA0261.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:37c::14) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:400:1cb::9)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -104,167 +113,96 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|LO0P265MB7313:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7f12134f-861f-4711-7417-08df4b0fe326
+X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|LO8P265MB7671:EE_
+X-MS-Office365-Filtering-Correlation-Id: 93a54ba0-c3e9-4a79-2c32-08df4b111461
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|10070799003|366016|4143699003|22082099003|6133799003|261009223027099003|18002099003|3023799007|921020|10067099003|56012099006|261026140227099003|261026121527099003|261022105027099003|261022075727099003|261021121427099003|261028144727099003|261102123227099003;
+	BCL:0;ARA:13230040|1800799024|7416014|23010399003|376014|10070799003|366016|261009223027099003|18002099003|22082099003|56012099006|261028144727099003|261022113327099003|261022075727099003|261022105027099003|261026140227099003|261026121527099003|10067099003;
 X-Microsoft-Antispam-Message-Info:
-	U0PQ/F3sH5m4V4u53QgDzfvWlREfDlKakpjR3Z0DlX2ZM5mX9LOdgmW20krDR1rrHuuVqg+o4AbnpKi+uiokf9LN+xsYrFX5xgmVPlWPnVTeq0FhtsH5Cnw06bFDDmUuA438TMN6+KzUuS9DzSahZcx4uGeqSu1qo4g3O4PPIqOcct69YWPOEjPnIVoTTZzEzxXCrdZZz2H/JqJIehvAwKZjAhM/ApFG2o+Is6Km8JTeltRTYXGid8/3YoEPJRLhui3PMFtxddX40K87R8gBZiUx/IiQI28TkKWWL8vohUmdqm1nLWrtIHNN4wy0UEzw9KjFa0YQ0fZ4f2Y2j6YJLwhxCXcQzWM1fNiEhhdaFeVanN4SJutr2wGvedn1dPC5nUGhSw8rTY4x/NRage+WCsSqwJlNAU5n77onxWL1nUXghjFaRkszV0z8wWmfmWn2/oOnb1Sc3xME17lT8hLL8QvQ+bJ1yUukfnp+oVoKVZ8aG3MqijG/wvPYV6jKfnDg2DqH35ma9yvGhevA+nKqaHv3xxGXLla/WheM4INGPe59nKB1Y6W2BLECVhQYL84EuSjmopq3iTjFHIt47hNCcFqurDU6Q1vnz6P1obLkNyE9L/QwdwXNgFYbuI2OoIu3TLAIz3NdDpVu8g41q2a0903cAufm9K6lE62qJkRiLS0AOZbsCH2XXmmTD1XDwd+hvEQIuoKU+cw19mzgI8fnSw==
+	4pEqPffHiIuHgwKDpWn0vgwlvV+li/4UKkd8XhWfSs6FiCqlSZHm2qMrxAN33Ao0pjeuZcanPTs4urwLEn+8+iYXhvEUSwjI8pAX8njmDkmwzkkCjRRHj3KB1dsJGO/pHe9koiI1f2bzgkz1HdMYzNQw0rCs+MO7KZT3NL9YdW9OACcKcn7jc5TWBPsWHu/OLhCmA42tv2vw2lKajqHmfzf3xHE9G2f4S0no2poSPJbePyp7TNUvkj1t4ytj2qzz5Pscgnfp1kMMdoMRV3eEVc7Cl/oSiXgABtF4kIuDUxtthnGaRrWs9Z1e2DzR19XjuoBmw1X0I47LWZk2bxm4YPfibFqsWjGx5ucRCTWKz/vX936zj4WH2RQ8tcOPKFAOSlbYBtgUbdlFFgji3uPQfq2ZtXp43b/aGJgkgBfwsztggidzqoaXkjFjTw2RF6ZIkRcC54Z9xm31YjS3uD1IfXHBQs3ovWiCH2SPoSu98NRXnZQLRRLbWNEnz/gVBUdt5xJac34a0FplOngbLaSQyUR8Hf8EbhxzgLg1nPc1YWAzPkCEVkW7Yn0hPHJL64eeIDIksvRg4080GTawHF5IqsQ9W6f1oBW2mixJRu+7NVa7SCyfKxxykLiYz6TLJoh/OlqBeM539LNfXhw7NXP24l3n7T6Qmf1StckpPG/fey0=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(10070799003)(366016)(4143699003)(22082099003)(6133799003)(261009223027099003)(18002099003)(3023799007)(921020)(10067099003)(56012099006)(261026140227099003)(261026121527099003)(261022105027099003)(261022075727099003)(261021121427099003)(261028144727099003)(261102123227099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(23010399003)(376014)(10070799003)(366016)(261009223027099003)(18002099003)(22082099003)(56012099006)(261028144727099003)(261022113327099003)(261022075727099003)(261022105027099003)(261026140227099003)(261026121527099003)(10067099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SUhYWjZyMTBGUGM2UEI3Q1RSVVljb1RWdkU3dlhrOUUzZ1NyTTl0QlhkZExB?=
- =?utf-8?B?emp2cndlYXc0OUtuM1VvT0FaQ3NRRGpNekUyNVNOTVVTVTROVXl5a0tXSCtk?=
- =?utf-8?B?WFpBWWUyN0tLQ2I1S09TM1FTWmtzdXI5L1NQZUlCYjVkOW5LL1VqN3RteFd2?=
- =?utf-8?B?R0dTR2NBRG5GbnVxbmhEamZpWGZrNFhYbkU4OW4ycnRxcEU4NG80TVd3NVp5?=
- =?utf-8?B?RWVkWHZtWjVUT0JjdGN4VEp3TEF6RW9lWktIaVFZVzBSOCtlT0lVb3RrbVZN?=
- =?utf-8?B?OU5aNkFUdHpleW5hTzdnamo0QmhmUmhmakY2bnU2UlRxbE9pWHM3UjNuWUNL?=
- =?utf-8?B?WTU2RUZ6YWljbmFGRDZZbmd0VldibGFtWm9uSHRIZ09JeWN5UkxaYkY3d0Nq?=
- =?utf-8?B?alJhVVdTUkhOdjdHU0xBU0ZyOWkrZVdETThSMVJzdkhpYkZUYlQwL051UHB0?=
- =?utf-8?B?N3RDODUwSGJaY2hWUHhIMWtzSE9SVlQ1QmZmZldYNjJ1ZUpNMWZ0MWtBSkhK?=
- =?utf-8?B?dEI1STFzY2thZDI0WTU1VHNRTytMWkVDNUFVZnplTjZuVFJmeGZJS1psZW1M?=
- =?utf-8?B?ZDJ1V3ZSN1ErMVA5aHV1aW5XZHJvNGYyc3ZydThkNWNPMGdPcGhTZW4wWEhl?=
- =?utf-8?B?Wk91bzNXeVVNdWw1M3RJenFQWG90RTl0VmRaajhrUjdYOW9JektLVzdrT3N6?=
- =?utf-8?B?SkFKajFDZjZVdmdiQUxhdHJ6d0J6V3pvekMzM2RobHNUd2prTTlNcm9vUEVP?=
- =?utf-8?B?QnFqbEJWRmZ6aFBPcTZ3SnArRTBiM3o0YUtmVkhUdjhDYUt6cFZSRTFNMEd4?=
- =?utf-8?B?S1NpQXdWYURQeEpNekhPdzdYU0xLRUJJeU1oWk1FYjNoMDIyMEEveStmbXpG?=
- =?utf-8?B?clNqMkxDU1BSbi9KYU95OTNzVnZDRlNDVTNvZ2hUR2ZvYzY4L2w3S0t5MVBO?=
- =?utf-8?B?ZXozTUtWV21UN25wVDM5WU1yS00vYXV0dFI1Z0hJcy9FMUZhdi8xQUtmRkt2?=
- =?utf-8?B?ZCsvdDh3SWR2WjdWWjB2U0g1ZUtHSENPL0hYWnVZa1VOZC96Ti9lRG00dWVJ?=
- =?utf-8?B?dWJ5ODc4V3h4aWEzM203bnd0eTRvV1ZWVzJ5MHN3Y1pjNHJtc3h5ZWVHS3da?=
- =?utf-8?B?L1NGQjVXQVlpQkg0QjJlYy8wdHdQME9icEwvRmN4UDNVT2tFcVUwRml1MlJ6?=
- =?utf-8?B?TUZ6ODcvZVZFd0FySnpUb1MvOHhEcFQ0Z0JsS3VtYzB2NWlDc2hxUG1sQmM1?=
- =?utf-8?B?Q0wyYXBBTFhvODg5c1NMd2FzbThKZk41b0lzeFlnbXF0Ti9weFRDRXBEaGc4?=
- =?utf-8?B?Q1pvcUJnaXVIL3V0TFpqL2RPamVGVkhMWERENEhSUUxDWXFDaytXZkd4eUhD?=
- =?utf-8?B?QTdUY3AzZ2h0djJ2QzFDVnZQYTh6dS9pSU5TUXptRlJPc2NMWmNibnJlMmNK?=
- =?utf-8?B?TjNMWG96SG5laWhzM3ZYYnZ1QWNHNk85K0toblJTTi9qREV4cDRsUXN1SlNx?=
- =?utf-8?B?NDIrYlpsNXR3Vkh0WnRnNk5kU0hzUU45SjJZNXIrSFRUYjlKVzBueTRtVUo2?=
- =?utf-8?B?MURjbm51OEU4eHNtZ3MzZTJSLzlwcmthV3BLend2VEhCcC9XOG94bUFuTUZS?=
- =?utf-8?B?S0VmR3dhUlF5eFFyR1BUVVpCQ1IrR0hBNDdVVGNDOWUxUytGV3IwYkFIU2l3?=
- =?utf-8?B?T1hwclpYNy9mcStaREZPcDFobXNYUElIMkxNOXVqOGhMeUw1TmJzSno1d0dw?=
- =?utf-8?B?S1RNM3hRYjh6cXk2dzIxckFqZ1p0Y2lkc0t1ZzVJQ3p1cFRVNi94ZzY0bEF4?=
- =?utf-8?B?TXhJN2laL21ZY2VndnEvemRHSjNGNHpmVTVGWmlaMENLempscmtuUXdiczdk?=
- =?utf-8?B?YlpZMWVTMDA5WDN0NlJVeHpmU0VaRk9Zb0ZacDFYNCsrRkU1WkdmZm44eFdm?=
- =?utf-8?B?UWFTS1JTcUNrTW9qY3JsY055cXUzVjIwdndOeWV0SzJ2OUIrQ2xKai9oV0hv?=
- =?utf-8?B?OXBEVWJnY1N5SjVrMVNxVVRJRVVPRU9rZTNSNkVYK1JHOS92MnRXMVBiQ2Vq?=
- =?utf-8?B?ZDZhdzV0bVNzRFlCQ3JuM2RWdlNuWTJwU0V0WEtJRVpSTFMzaktwaTEvV0pO?=
- =?utf-8?B?MnZYRkl2SE9iQnlGRTZiZ3VEM1RxRDFCeFAvbzBHYldzN2VLaGpWRmIxZDIx?=
- =?utf-8?B?b1pqUFJHaGxSSFFJVGYvTTZXdFBkNGRYUmNSTU5wTXRoVDR0N1d4SWZwZVB6?=
- =?utf-8?B?ZDMyZVhVNGVrMW9GdGE3U0E2dXI5VlY3dHRqS3Brcnl3bDdWbkJpNjJKdk5V?=
- =?utf-8?B?eG56blFsczFVSGVORUpyMHdrR1RFUDJFRHpVd3VJcFZKV1hvblFKdz09?=
+	=?utf-8?B?NVczU2p1NUxqVzg1QlRxN0JiSjUwN1g5a0Z0WUxoS3BvMUxZTE1OMStnd0Z5?=
+ =?utf-8?B?Z1RtaWFaZjNJMWxHRmR5QS90MkpFSUMxL2w5TVh5YU9kSWpxeVc5ZHlXVG5m?=
+ =?utf-8?B?M2tMU1RRT0ZRR3hocEtiWWU3QlVFWGp3K1VLaXRRZmx4OGNhOFBOY295OFdO?=
+ =?utf-8?B?MStlZkdFUG5jVnprTVhQTU5uZjdRR2JOQlBiN2tvYytucEZFN0UvTTdCNCty?=
+ =?utf-8?B?Y2tsVFFQWnprbXN3bXJMSFNEZ2ErdC9haFJNWlkyS0kvdXRqWXQ1MTlBNUI0?=
+ =?utf-8?B?UVdZL2d5VmRRS2cxSGYxcHI0dVU4NTVuVE45Z1lpQTNjMkZvSndNSU9ZdWdO?=
+ =?utf-8?B?VUZ1QjF2U21uMlhPS3BmTXBxaERnK0hxa3R4Q0MvQ29KbGQrTWxVY2kzc0gz?=
+ =?utf-8?B?VGN0Z1dwa092dG05ei9uSkF1Ky9mQko1UUlzSlIvdnRuRFJqUkVqdVF4ZFk2?=
+ =?utf-8?B?cnBPZ1c3ZjBJM0J3UUFpdVFCUERTb2Uya1Y3YzlNWlc0R3kyUnJjd01TWi8v?=
+ =?utf-8?B?TzVSMUo2aFZZKzRCdDlBY045RUx1WUpIY05ETUt4U2dTcUI3R0lvUmVCeS8r?=
+ =?utf-8?B?ZXpTQVVIa3gxTzFnUUtDZmc2K3JYSXN0cEN3VEFGdVlObmZvYmFVMDBuc0hB?=
+ =?utf-8?B?cHBkcFh5dnNlOUN5eWxTcGhWOHJSeXc4YlcvdDRJZHM5NEdlMlE3YlZCQ3Vt?=
+ =?utf-8?B?Tjc4a2paUnJFR005MW1CR0tZeHlOeTdhRG83K1JhS2FMOURPa0pFbG44VHBU?=
+ =?utf-8?B?akRPZ3FVcmd6d2RhM0FpSlpsWkFEb25nYVpaUG5zV3M5ZHNZbEVzSkJtbXFO?=
+ =?utf-8?B?aGNoTE4xdlI1RndlRDYvZ3ZTbjZtMnN2cktmeFd5ZVN6NkJ3U2o4UFFHU1F3?=
+ =?utf-8?B?MCtkWDBxcWxoZ3Y2dVQ0MXVEblZGN1NUWW1aS09sV28xTmJrOGpYZCtaMnEz?=
+ =?utf-8?B?WmQ3SVM3VDR4L2RadXBqZWUwQ21RQ1d5QTNCaUdoZ09RSm5MYWg2N3d1dDNx?=
+ =?utf-8?B?TzJCZnJoaWw1dUxJRjE1UG1PNUw4VWtqQmxHQXdkSGc1ZGREcThIUjV3YWZE?=
+ =?utf-8?B?OWtVcUxLVGdnM3hiMmJDdHhCSjNpVVUwV0JTMmFkUTB6aG00akRGS0cvT2pR?=
+ =?utf-8?B?VW5WV21uckJkWENOVUZwSlZpNUJyU3ZtWXMwR3cvTHBuSGJvK2Y2YmR1Qnhp?=
+ =?utf-8?B?SWUraGYwaXFxc1FRVGNTdXlLWnh6ZE81V044NGc0dC95UEFmTms1ZzB1cHVs?=
+ =?utf-8?B?QlVaOFkyZDFPajJpcEFBQitZRzlEOFNiYW4vTTNKaTgzdXZWR0lMRC9ZbUxP?=
+ =?utf-8?B?dHlTZUpOMDk2V1ZGL0FUYVVJTFFPQ3ZUKzFxKzF1ZU9Kak15Z0JrRTIyOEFK?=
+ =?utf-8?B?MGN5ejd4TXBkYmpFR3dCcFZ1ZXlSNjQ3cVlibStza0h1SGdaYzMxbFBGQnk3?=
+ =?utf-8?B?c3pQNnoveXVYalczdktCUjdldUJQdllodjMwbXhnd1l3YXhpRHpRdXRXQkNh?=
+ =?utf-8?B?bEthSUlkWGxsTWI3SnFFakZJQ2gxR3JUOFNlckhqRXlIdDVHdlFsVXVESVB1?=
+ =?utf-8?B?N2ZTamNPSWlEZzhEV25Hc2Y0LzRYWVZxRXRoN1F3cjcvbTlPak9OSHNvZElB?=
+ =?utf-8?B?dkRSVnJTRysxRmJ1U1E0Ty9ROUozZFlaZzJNUk5wajBPNm1RaURLRG5ZQWhp?=
+ =?utf-8?B?WXVhRThnQmZTQnBzc1dTNmpHaUgwWGZuQ01TMklsRmdQNGdVczI3V3dxNTk3?=
+ =?utf-8?B?Q1M1UDZSVzBEOEJjK1l6enFHQmdQOTV5WXdLd2R6MUVnNnAzTnlhcTV2TXBG?=
+ =?utf-8?B?eDVZbXBGMXo1a1UrWVZXSjU2Q0NCRjI5ZzFTV0lWZ2F4TkFCQnJGZWZpNDMv?=
+ =?utf-8?B?VU5OMDVKZ0M0eU9IWWlTcS9RNzBkV0k2aUtIT0RVQ1VscTRialRudjdGSXEr?=
+ =?utf-8?B?V1VobW9WRndjV0pVYXJqRXlueEpVelc3SVM3aGdFQzdMNzQwaVNjWEpMTlhp?=
+ =?utf-8?B?Z2xtSmZkNis5V3VCY09GOVRaQ05md1EwbW9neGVpdjdRWmNJck5rVURGRDU0?=
+ =?utf-8?B?U1hma2UvdlJvcVJLbTNBbHdzcjNuSXNhZkh3QUxLd1FYQitYOUxVTlRWeEUw?=
+ =?utf-8?B?VGxaRGZFd2xMelcxMUFVdS8rdllEZFYwbDEwK2ZwNVpTWEp1UmxtQVJrYXpK?=
+ =?utf-8?B?dlJIRVYzTC92Tm93N1Bzc202OCtvQjN5eTB0U2FQRkpHTTd0QTl3Rjl3UmxT?=
+ =?utf-8?B?M1pHM3l2cDVwUUFwVkdJUnh0Wnk3aVJUVFZSekZqeGphbzRRWWNhR3A1ZlNo?=
+ =?utf-8?B?TC80b1E2Tll0VmhZV1VzaVBTRnZjcGUrZTZEVDBHUzF2OWtISmFxQT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f12134f-861f-4711-7417-08df4b0fe326
+X-MS-Exchange-CrossTenant-Network-Message-Id: 93a54ba0-c3e9-4a79-2c32-08df4b111461
 X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 16:19:32.1040
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 16:28:03.9540
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 18a52Rh41J5QBJfQwwx/Q1MSwoSWpJv3GgsL90CX7K4uGpPe4pu55m9ODtFY7YZSeH+sJfA9ETZxlR3VD/5SwQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB7313
+X-MS-Exchange-CrossTenant-UserPrincipalName: zfLPUsOGfR/d8B9Jc7ISsOR1doPTigyD8v8xZJajv77s4IRWJaS+Ul7s/UjjTU/DZ1mNYwogycPZR6w7HBNHBA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO8P265MB7671
 
-On Fri Nov 13, 2026 at 8:25 PM GMT, Priya Bala Govindasamy wrote:
-> `Chip::new()` does not check the alignment of the driver data type `T`.
-> This allows a Rust kernel module to choose an arbitrary alignment for `T`=
-.
+On Wed Nov 25, 2026 at 6:14 AM GMT, Ian Rogers wrote:
+> Overview
+> =3D=3D=3D=3D=3D=3D=3D=3D
 >
-> `pwmchip_alloc()` reserves `size_of::<T>()` bytes for the driver's
-> private data. `pwmchip_priv()` aligns this storage to `PWMCHIP_ALIGN`,
-> which is defined as `ARCH_DMA_MINALIGN`. But, `PwmOps` does not restrict
-> the alignment of `T`, so a caller may provide a `T` whose required
-> alignment is greater than `ARCH_DMA_MINALIGN`.
-
-The commit message is overly verbose slop, please simplify it. Just state t=
-he
-issue (`pwmchip_alloc` aligns to `PWMCHIP_ALIGN` only) and the fix (reject
-drvdata with higher alignment with const_assert).
-
+> This RFC v2 series introduces Minimal DWARF Call Frame Information (CFI)
+> stack unwinding in the Linux kernel for both user-space deferred
+> callchains (unwind_user / PERF_RECORD_CALLCHAIN_DEFERRED) and
+> kernel-space stack traces (stacktrace.h / HAVE_RELIABLE_STACKTRACE)
+> across x86-64, ARM64, and RISC-V, paired with an optional standalone C
+> build-time .eh_frame minifier (scripts/min_eh_frame.c).
 >
-> This can result in `drvdata_ptr` pointing to misaligned storage for `T`
-> in the underlying C allocation.
-> If `drvdata_ptr` is misaligned for `T`, that breaks the safety
-> requirements of `pin_init::raw_try_init()` which requires a valid,
-> aligned pointer as an argument. This is undefined behavior.
+> It enables reliable stack unwinding across kernel and user-space
+> binaries compiled with or without frame pointers (-fomit-frame-pointer),
+> without introducing duplicate .sframe sections in user-space ELF files
+> or requiring new compiler, assembler, or dynamic-loader formats.
 >
-> Additionally, `Chip::drvdata()` can be called using the `Chip` produced b=
-y
-> `Chip::new()`. It creates a reference to `T` from the misaligned storage
-> which is also undefined behavior.
 
-These all follows from underalignments and there's no need to do this
-explicitly.
+Hi Ian,
 
->
-> Reject over-aligned types at compile time by asserting that T's alignment
-> does not exceed ARCH_DMA_MINALIGN.
->
-> This issue was detected by FerroLens, an LLM-assisted analysis tool, and
-> was then manually analyzed and reproduced.
+I'm a big fan of using DWARF. I haven't got the time to look into the detai=
+ls,
+but minifying the info so only IP/CFA is kept sounds like a reasonable appr=
+oach.
 
-This should be a note and not commit message. Move it below the ---.
+A quick question: how do you plan to get this working on 32-bit ARM which h=
+as
+its own EHABI?
 
 Best,
 Gary
-
-> Fixes: d8046cd50879 ("rust: pwm: Add complete abstraction layer")
-> Reported-by: Dylan Zueck <dzueck@uci.edu>
-> Signed-off-by: Priya Bala Govindasamy <pgovind2@uci.edu>
-> ---
->  rust/bindgen_parameters         | 1 +
->  rust/bindings/bindings_helper.h | 1 +
->  rust/kernel/pwm.rs              | 5 +++++
->  3 files changed, 7 insertions(+)
->
-> diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
-> index 5bab3cf06336..59d0a6518032 100644
-> --- a/rust/bindgen_parameters
-> +++ b/rust/bindgen_parameters
-> @@ -49,6 +49,7 @@
->  # We use const helpers to aid bindgen, to avoid conflicts when constants=
- are
->  # recognized, block generation of the non-helper constants.
->  --blocklist-item ARCH_SLAB_MINALIGN
-> +--blocklist-item ARCH_DMA_MINALIGN
->  --blocklist-item ARCH_KMALLOC_MINALIGN
->  --blocklist-item VM_MERGEABLE
->  --blocklist-item VM_READ
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h
-> index 3791af0aadc7..4ffd714f9229 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -113,6 +113,7 @@
-> =20
->  /* `bindgen` gets confused at certain things. */
->  const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN =3D ARCH_SLAB_MINALIGN=
-;
-> +const size_t RUST_CONST_HELPER_ARCH_DMA_MINALIGN =3D ARCH_DMA_MINALIGN;
->  const size_t RUST_CONST_HELPER_ARCH_KMALLOC_MINALIGN =3D ARCH_KMALLOC_MI=
-NALIGN;
->  const size_t RUST_CONST_HELPER_PAGE_SIZE =3D PAGE_SIZE;
->  const size_t RUST_CONST_HELPER_GENLMSG_DEFAULT_SIZE =3D GENLMSG_DEFAULT_=
-SIZE;
-> diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
-> index 8aa47304bec3..7823bb56d17a 100644
-> --- a/rust/kernel/pwm.rs
-> +++ b/rust/kernel/pwm.rs
-> @@ -587,6 +587,11 @@ pub fn new<'a>(
->          data: impl pin_init::PinInit<T, Error>,
->      ) -> Result<UnregisteredChip<'a, T>> {
->          let sizeof_priv =3D core::mem::size_of::<T>();
-> +        const_assert!(
-> +            core::mem::align_of::<T>() <=3D bindings::ARCH_DMA_MINALIGN,
-> +            "PWM driver data is over-aligned"
-> +        );
-> +
->          // SAFETY: `pwmchip_alloc` allocates memory for the C struct and=
- our private data.
->          let c_chip_ptr_raw =3D
->              unsafe { bindings::pwmchip_alloc(parent_dev.as_raw(), num_ch=
-annels, sizeof_priv) };
-
-
