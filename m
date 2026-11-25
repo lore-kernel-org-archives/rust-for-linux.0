@@ -1,56 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795646918;
-	b=soErn2BEGOBg1+PPPRXaNUyPa3t95xiQkGLhEBnWiY5l4ppAgkWohmePLg1Ty9ztHAzk
-	 4zcnV6c1MW4DcgcYOBsZ4iQ7xUOEEkcrfPX/A2e3CX4aJOGO2BHrLc+t4ZtMJMXGvrwUQ
-	 0NzKz6V8jbesxTPnfd8D+Wqrr6k3usbB4No6IBmrN9JyB35Cpu/gkf5beGTsVZnVWc0qI
-	 Kufowvde0Tmn9vWynxNdBMa3eB9Y6y0pAyYAZPG13ZuEhwY29rfSS5nc6O/kpnSdFrVX0
-	 MCxAdnnvcsT81TXGdIEHDHg6/ZY8+g0b26iGvmoC+xtKPWaKVFKvbLv2ofzvAql1BPw==
+	t=1795646919;
+	b=X/MSA+zTZDGGOk1RsJ9b/pNFP1ORtQ3tl1VOr79YuCiUDoou4tTh7dgZ+a2jWZ/YrT0F
+	 Rnb7Q9YVUUIOUUwW8Rpr6ePxsyE2DHuN3S/AK/wJU1tj0Gw/A38CjKe+QXkguJHltfUfd
+	 muq+G5n4DFf3fHww9ijQroaAoMkdnfc5IU1GX7ZjQL//n1qmsYyvJ89Wc9P3pklSS3QD7
+	 qBAm636TKqCWPVVCZDxi2ZDEILOf+SGW0Rp1VCkLPFAbXI41k0EomXPziaHFH/7qKtygq
+	 QOh3HsDem6O9maN7ENnplo1MFgcWfFpNrZJDprlXYczv5+Zvm//2MsrkvZCSfxIeAkA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795646918;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795646919;
 	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-ZohoMailClient;
-	bh=/1i4APE0O0sIQ50uMj0gHU7M6QnWF8z8Fcq204FWJZg=;
-	b=hcNPzA+zIOASfVg6CZusOw2t3L6529q57AJBE+RCEjdSax/zqDT0vF87C5lVqW48kwUK
-	 k81XjaVoKxujOwMqwefV62FD+d/ErypNDtyDYYVefDMc0prntaND28ctmnu85I38vUkH9
-	 w+CmJPYL4jXwCs1HWVbAj2Y4BcEu+quj2LC1nOA/TIbSjIDqNtN0o8L4HczsZys0xqzc+
-	 Z/mOzTjyYmeSDgnNlIWstzAWBNXP1DqMYTTN8J1s63CFoE1uWIvy8v7aSwIoDIHbbf0SN
-	 aYTcTgG1LlOlHRh7ASNpUslV5NCwPMCvf67UDquwRWUBiPV6lIMoUpGUPm2BOpcl5PA==
+	bh=OcoNfhRzueM4nmkVOl/eWUDadIuxLOkb0KKg/ezBuXI=;
+	b=lWt7fyWGpZs9t7lu4EhaC4TakO/fU2H311vMTos4p4w6p60Gbvyq2c4WFObIEniFJwF6
+	 akpM3JZiUk+JzEjsig3sfc45FDj/ksbRZd1oM3aa73SEMqbFZL13K4UfxisVV81AAQbSK
+	 23JWQRzPyZsNJ5SKuVafkM0NZGuxmf+4MkxA5LZrgj+81HmszTr4Co8Q71MO0+RVg1J/U
+	 FQt9egi6iKjxeFG5Vh0SvcP4ezLJPPNa7LHgr9N3U84BuUkYkD888gOxxAqrixjHFY+0c
+	 Cw7uy9Khh8wyhPIIwsiHdyp1W+m1MtyznRxOyLf2Ib7HkO7neCpo5F/UHSQvyzDn50A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=collabora.com;
 	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=D10N5VNG;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=CnGDaOZ9;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF46606A334;
-	Wed, 25 Nov 2026 22:48:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3DF46606A334
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17FA606A6A1;
+	Wed, 25 Nov 2026 22:48:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C17FA606A6A1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=D10N5VNG
-ARC-Seal: i=1; a=rsa-sha256; t=1795646877; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=CnGDaOZ9
+ARC-Seal: i=1; a=rsa-sha256; t=1795646874; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=SfW+528XIq4Ya4WrOIVxsZglBhek36jRzqCABOJb1kbIUs9Tg98SaDaIxA2SbHVv55uIzqgvvFFsBGmEGXaxqbKOAbtHhy2w+Ed9vr6Kad4ZKacow51mmpeTPxV3CU85uxAKFvtq3+uQmeNhVWyQQ5B0DQVkYVR0JD32mELCS/8=
+	b=T1977zerzDbblLEHB4lmzINsgZqTNhXd9pMx0tT03WNNIG8gHYTUDNw01WzGruglpscBYVuOvCzVgw8LW8sOcyJxzqcdLOCiHMnNdK6gg46IpivZhHGseQ/xCsipNUu2o6gUIsLQZoNrGbL77YSneUehVpuKfjhriOT1a8UCVD4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1795646877; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=/1i4APE0O0sIQ50uMj0gHU7M6QnWF8z8Fcq204FWJZg=; 
-	b=YSS/47tfA9apuHIxCkeyhtescZr2DqA/x657yLGP7168L5CWUCIg+34YojJNe4w2LWeVmfEw0fVTjyUhFT25AHlnLGjRFM4TIKdrTEea1r6Lt0aJd9Zg2nYnbUBagKe//WvXQB0HBpkBvz09/b5wXPBUHMaHQWVjyFKTP4BtDyk=
+	t=1795646874; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=OcoNfhRzueM4nmkVOl/eWUDadIuxLOkb0KKg/ezBuXI=; 
+	b=GJEw8elqYtGBNmuL6467K5u2S3gutYtca6xXGMXGX/kegX66mG0XQmclz+E9LlL5dKlGzPTAGoy83pMfBOigtGVDzqgZsdWkRK65HpynT0UU6DT+p6SfhnIy/RNYs2Yt2c2Kfg+bZ9SFSYw/rz9+FWSWlLiwZRfpL/VYSwUl1ME=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=D10N5VNGv1dIDwDlQlZXoE6mS8eTjweW/S8NLNsnnM2VJPWR4hhK9mbIY2+EQu3K6B1iCyDCFB4wpAyFChiBxkTpqP0Mp04ivNkxjufBq2F2441D+CVgCzYtpU1niIx8qWgr7spicab9oIgXmor2YPEJFKcdGzS1X5IoTLNBTr4=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=/1i4APE0O0sIQ50uMj0gHU7M6QnWF8z8Fcq204FWJZg=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1795646875957665.9814107041586;
-	Wed, 25 Nov 2026 14:47:55 -0800 (PST)
+DKIM-Signature: a=rsa-sha256; b=CnGDaOZ9OyvERxzenT1Sk8r0lUExIS7ZKfAH1mcXZv6wL6uSxpxvOmS+7xERTPPPGF+GPzLdxCOuGWRE84HTqtSnfTaOYJ7aGf8JABsLZmgKEt1A2X1z1yrE3fUNngOj1lFM1A+lQmm5eettDpWuo34Dhxej/dn7cn/X1CbI6rY=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=OcoNfhRzueM4nmkVOl/eWUDadIuxLOkb0KKg/ezBuXI=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795646871124918.3804823342383;
+	Wed, 25 Nov 2026 14:47:51 -0800 (PST)
 From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Wed, 25 Nov 2026 19:47:01 -0300
-Subject: [PATCH 10/13] drm/tyr: add split_u64() for the 64-bit register
- values
+Date: Wed, 25 Nov 2026 19:47:00 -0300
+Subject: [PATCH 09/13] drm/tyr: justify the casts of enums to their integer
+ value
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -62,7 +62,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-b4-tyr-as-casts-v1-10-2b2f53164d86@collabora.com>
+Message-Id: <20261125-b4-tyr-as-casts-v1-9-2b2f53164d86@collabora.com>
 References: <20261125-b4-tyr-as-casts-v1-0-2b2f53164d86@collabora.com>
 In-Reply-To: <20261125-b4-tyr-as-casts-v1-0-2b2f53164d86@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -82,136 +82,220 @@ X-ZohoMailClient: External
 
 An `as` cast silently drops the bits that do not fit the target type,
 and nothing at the cast shows whether that can happen. As part of a
-larger effort to reduce the number of `as` casts in Tyr, add
-`split_u64()`, the counterpart of `join_u64()`, and use it for the
-64-bit values that the MMU code writes as two 32-bit registers.
+larger effort to reduce the number of `as` casts in Tyr, justify the
+casts that convert an enum to its integer value. These stay, since
+`as` is how Rust reads the value of an enum.
 
-The two casts that the split needs are now in one place, each with a
-`// CAST:` comment, where there were ten.
+Each of them gets a `// CAST:` comment and an
+`#[expect(clippy::as_conversions)]`, so that the lint can be enabled
+for the driver.
 
 No functional change intended.
 
 Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 ---
- drivers/gpu/drm/tyr/mmu/address_space.rs | 29 ++++++++++++++++-------------
- drivers/gpu/drm/tyr/regs.rs              | 12 ++++++++++++
- 2 files changed, 28 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/tyr/fw.rs   |  2 ++
+ drivers/gpu/drm/tyr/regs.rs | 36 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 38 insertions(+)
 
-diff --git a/drivers/gpu/drm/tyr/mmu/address_space.rs b/drivers/gpu/drm/tyr/mmu/address_space.rs
-index f6ccb0d7e3ed..dfa8499a8ebd 100644
---- a/drivers/gpu/drm/tyr/mmu/address_space.rs
-+++ b/drivers/gpu/drm/tyr/mmu/address_space.rs
-@@ -47,6 +47,7 @@
-     regs::{
-         mmu_control::mmu_as_control,
-         mmu_control::mmu_as_control::*,
-+        split_u64,
-         MAX_AS, //
-     },
-     slot::{
-@@ -255,34 +256,34 @@ fn as_enable(&mut self, as_nr: usize, as_config: &AddressSpaceConfig) -> Result
- 
-         let io = &*self.iomem;
- 
--        let transtab = as_config.transtab;
-+        let (transtab_lo, transtab_hi) = split_u64(as_config.transtab);
-         io.write(
-             TRANSTAB_LO::try_at(as_nr).ok_or(EINVAL)?,
--            TRANSTAB_LO::from_raw(transtab as u32),
-+            TRANSTAB_LO::from_raw(transtab_lo),
-         );
-         io.write(
-             TRANSTAB_HI::try_at(as_nr).ok_or(EINVAL)?,
--            TRANSTAB_HI::from_raw((transtab >> 32) as u32),
-+            TRANSTAB_HI::from_raw(transtab_hi),
-         );
- 
--        let transcfg = as_config.transcfg;
-+        let (transcfg_lo, transcfg_hi) = split_u64(as_config.transcfg);
-         io.write(
-             TRANSCFG_LO::try_at(as_nr).ok_or(EINVAL)?,
--            TRANSCFG_LO::from_raw(transcfg as u32),
-+            TRANSCFG_LO::from_raw(transcfg_lo),
-         );
-         io.write(
-             TRANSCFG_HI::try_at(as_nr).ok_or(EINVAL)?,
--            TRANSCFG_HI::from_raw((transcfg >> 32) as u32),
-+            TRANSCFG_HI::from_raw(transcfg_hi),
-         );
- 
--        let memattr = as_config.memattr;
-+        let (memattr_lo, memattr_hi) = split_u64(as_config.memattr);
-         io.write(
-             MEMATTR_LO::try_at(as_nr).ok_or(EINVAL)?,
--            MEMATTR_LO::from_raw(memattr as u32),
-+            MEMATTR_LO::from_raw(memattr_lo),
-         );
-         io.write(
-             MEMATTR_HI::try_at(as_nr).ok_or(EINVAL)?,
--            MEMATTR_HI::from_raw((memattr >> 32) as u32),
-+            MEMATTR_HI::from_raw(memattr_hi),
-         );
- 
-         self.as_send_cmd_and_wait(as_nr, MmuCommand::Update)?;
-@@ -322,14 +323,15 @@ fn as_disable(&mut self, as_nr: usize) -> Result {
-         let transcfg = TRANSCFG::zeroed()
-             .with_mode(AddressSpaceMode::Unmapped)
-             .into_raw();
-+        let (transcfg_lo, transcfg_hi) = split_u64(transcfg);
- 
-         io.write(
-             TRANSCFG_LO::try_at(as_nr).ok_or(EINVAL)?,
--            TRANSCFG_LO::from_raw(transcfg as u32),
-+            TRANSCFG_LO::from_raw(transcfg_lo),
-         );
-         io.write(
-             TRANSCFG_HI::try_at(as_nr).ok_or(EINVAL)?,
--            TRANSCFG_HI::from_raw((transcfg >> 32) as u32),
-+            TRANSCFG_HI::from_raw(transcfg_hi),
-         );
- 
-         self.as_send_cmd_and_wait(as_nr, MmuCommand::Update)?;
-@@ -405,14 +407,15 @@ fn as_start_update(&mut self, as_nr: usize, region: &Range<u64>) -> Result {
-             .try_with_size(lockaddr_size)?
-             .try_with_base(lockaddr_base_field)?
-             .into_raw();
-+        let (lockaddr_lo, lockaddr_hi) = split_u64(lockaddr_val);
- 
-         io.write(
-             LOCKADDR_LO::try_at(as_nr).ok_or(EINVAL)?,
--            LOCKADDR_LO::from_raw(lockaddr_val as u32),
-+            LOCKADDR_LO::from_raw(lockaddr_lo),
-         );
-         io.write(
-             LOCKADDR_HI::try_at(as_nr).ok_or(EINVAL)?,
--            LOCKADDR_HI::from_raw((lockaddr_val >> 32) as u32),
-+            LOCKADDR_HI::from_raw(lockaddr_hi),
-         );
- 
-         self.as_send_cmd_and_wait(as_nr, MmuCommand::Lock)
-diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-index 443e9a1e7a21..76892a911227 100644
---- a/drivers/gpu/drm/tyr/regs.rs
-+++ b/drivers/gpu/drm/tyr/regs.rs
-@@ -32,6 +32,18 @@ pub(crate) fn join_u64(lo: u32, hi: u32) -> u64 {
-     (u64::from(lo)) | ((u64::from(hi)) << 32)
+diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
+index 14cfe2884d5a..2fa9852e0b83 100644
+--- a/drivers/gpu/drm/tyr/fw.rs
++++ b/drivers/gpu/drm/tyr/fw.rs
+@@ -98,7 +98,9 @@ fn from(value: Bounded<u32, 2>) -> Self {
  }
  
-+/// Split a 64-bit value into its low and high 32-bit halves.
-+pub(crate) fn split_u64(value: u64) -> (u32, u32) {
-+    // CAST: The upper 32 bits are dropped on purpose. They are returned in `hi`.
+ impl From<CacheMode> for Bounded<u32, 2> {
 +    #[expect(clippy::as_conversions)]
-+    let lo = value as u32;
-+    // CAST: After the shift, the value fits in 32 bits.
-+    #[expect(clippy::as_conversions)]
-+    let hi = (value >> 32) as u32;
-+
-+    (lo, hi)
-+}
-+
- /// Read a logical 64-bit value from split 32-bit registers without tearing.
- pub(crate) fn read_u64_no_tearing(lo_read: impl Fn() -> u32, hi_read: impl Fn() -> u32) -> u64 {
-     loop {
+     fn from(value: CacheMode) -> Self {
++        // CAST: `CacheMode` is `#[repr(u8)]`, so the cast is lossless.
+         Bounded::try_new(value as u32).unwrap()
+     }
+ }
+diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
+index 49e4adf2231d..443e9a1e7a21 100644
+--- a/drivers/gpu/drm/tyr/regs.rs
++++ b/drivers/gpu/drm/tyr/regs.rs
+@@ -251,7 +251,9 @@ fn try_from(val: Bounded<u32, 8>) -> Result<Self, Self::Error> {
+     }
+ 
+     impl From<GpuCommand> for Bounded<u32, 8> {
++        #[expect(clippy::as_conversions)]
+         fn from(cmd: GpuCommand) -> Self {
++            // CAST: `GpuCommand` is `#[repr(u8)]`, so the cast is lossless.
+             (cmd as u8).into()
+         }
+     }
+@@ -279,7 +281,9 @@ fn try_from(val: Bounded<u32, 4>) -> Result<Self, Self::Error> {
+     }
+ 
+     impl From<ResetMode> for Bounded<u32, 4> {
++        #[expect(clippy::as_conversions)]
+         fn from(mode: ResetMode) -> Self {
++            // CAST: `ResetMode` is `#[repr(u8)]`, so the cast is lossless.
+             Bounded::try_new(mode as u32).unwrap()
+         }
+     }
+@@ -313,7 +317,9 @@ fn try_from(val: Bounded<u32, 4>) -> Result<Self, Self::Error> {
+     }
+ 
+     impl From<FlushMode> for Bounded<u32, 4> {
++        #[expect(clippy::as_conversions)]
+         fn from(mode: FlushMode) -> Self {
++            // CAST: `FlushMode` is `#[repr(u8)]`, so the cast is lossless.
+             Bounded::try_new(mode as u32).unwrap()
+         }
+     }
+@@ -434,7 +440,9 @@ fn try_from(val: Bounded<u32, 8>) -> Result<Self, Self::Error> {
+     }
+ 
+     impl From<ExceptionType> for Bounded<u32, 8> {
++        #[expect(clippy::as_conversions)]
+         fn from(exc: ExceptionType) -> Self {
++            // CAST: `ExceptionType` is `#[repr(u8)]`, so the cast is lossless.
+             (exc as u8).into()
+         }
+     }
+@@ -465,7 +473,9 @@ fn from(val: Bounded<u32, 2>) -> Self {
+     }
+ 
+     impl From<AccessType> for Bounded<u32, 2> {
++        #[expect(clippy::as_conversions)]
+         fn from(access: AccessType) -> Self {
++            // CAST: `AccessType` is `#[repr(u8)]`, so the cast is lossless.
+             Bounded::try_new(access as u32).unwrap()
+         }
+     }
+@@ -772,7 +782,9 @@ fn try_from(val: Bounded<u32, 32>) -> Result<Self, Self::Error> {
+     }
+ 
+     impl From<CoherencyMode> for Bounded<u32, 32> {
++        #[expect(clippy::as_conversions)]
+         fn from(mode: CoherencyMode) -> Self {
++            // CAST: `CoherencyMode` is `#[repr(u8)]`, so the cast is lossless.
+             (mode as u8).into()
+         }
+     }
+@@ -814,7 +826,9 @@ fn try_from(val: Bounded<u32, 2>) -> Result<Self, Self::Error> {
+     }
+ 
+     impl From<McuControlMode> for Bounded<u32, 2> {
++        #[expect(clippy::as_conversions)]
+         fn from(mode: McuControlMode) -> Self {
++            // CAST: `McuControlMode` is `#[repr(u8)]`, so the cast is lossless.
+             Bounded::try_new(mode as u32).unwrap()
+         }
+     }
+@@ -857,7 +871,9 @@ fn from(val: Bounded<u32, 2>) -> Self {
+     }
+ 
+     impl From<McuStatus> for Bounded<u32, 2> {
++        #[expect(clippy::as_conversions)]
+         fn from(status: McuStatus) -> Self {
++            // CAST: `McuStatus` is `#[repr(u8)]`, so the cast is lossless.
+             Bounded::try_new(status as u32).unwrap()
+         }
+     }
+@@ -1050,7 +1066,9 @@ fn try_from(val: Bounded<u8, 2>) -> Result<Self, Self::Error> {
+         }
+ 
+         impl From<AllocPolicySelect> for Bounded<u8, 2> {
++            #[expect(clippy::as_conversions)]
+             fn from(val: AllocPolicySelect) -> Self {
++                // CAST: `AllocPolicySelect` is `#[repr(u8)]`, so the cast is lossless.
+                 Bounded::try_new(val as u8).unwrap()
+             }
+         }
+@@ -1095,7 +1113,9 @@ fn try_from(val: Bounded<u8, 2>) -> Result<Self, Self::Error> {
+         }
+ 
+         impl From<Coherency> for Bounded<u8, 2> {
++            #[expect(clippy::as_conversions)]
+             fn from(val: Coherency) -> Self {
++                // CAST: `Coherency` is `#[repr(u8)]`, so the cast is lossless.
+                 Bounded::try_new(val as u8).unwrap()
+             }
+         }
+@@ -1126,7 +1146,9 @@ fn from(val: Bounded<u8, 2>) -> Self {
+         }
+ 
+         impl From<MemoryType> for Bounded<u8, 2> {
++            #[expect(clippy::as_conversions)]
+             fn from(val: MemoryType) -> Self {
++                // CAST: `MemoryType` is `#[repr(u8)]`, so the cast is lossless.
+                 Bounded::try_new(val as u8).unwrap()
+             }
+         }
+@@ -1379,7 +1401,9 @@ fn try_from(val: Bounded<u32, 8>) -> Result<Self, Self::Error> {
+         }
+ 
+         impl From<MmuCommand> for Bounded<u32, 8> {
++            #[expect(clippy::as_conversions)]
+             fn from(cmd: MmuCommand) -> Self {
++                // CAST: `MmuCommand` is `#[repr(u8)]`, so the cast is lossless.
+                 (cmd as u8).into()
+             }
+         }
+@@ -1476,7 +1500,9 @@ fn try_from(val: Bounded<u32, 8>) -> Result<Self, Self::Error> {
+         }
+ 
+         impl From<MmuExceptionType> for Bounded<u32, 8> {
++            #[expect(clippy::as_conversions)]
+             fn from(exc: MmuExceptionType) -> Self {
++                // CAST: `MmuExceptionType` is `#[repr(u8)]`, so the cast is lossless.
+                 (exc as u8).into()
+             }
+         }
+@@ -1508,7 +1534,9 @@ fn from(val: Bounded<u32, 2>) -> Self {
+         }
+ 
+         impl From<MmuAccessType> for Bounded<u32, 2> {
++            #[expect(clippy::as_conversions)]
+             fn from(access: MmuAccessType) -> Self {
++                // CAST: `MmuAccessType` is `#[repr(u8)]`, so the cast is lossless.
+                 Bounded::try_new(access as u32).unwrap()
+             }
+         }
+@@ -1575,7 +1603,9 @@ fn try_from(val: Bounded<u64, 4>) -> Result<Self, Self::Error> {
+         }
+ 
+         impl From<AddressSpaceMode> for Bounded<u64, 4> {
++            #[expect(clippy::as_conversions)]
+             fn from(mode: AddressSpaceMode) -> Self {
++                // CAST: `AddressSpaceMode` is `#[repr(u8)]`, so the cast is lossless.
+                 Bounded::try_new(mode as u64).unwrap()
+             }
+         }
+@@ -1672,7 +1702,9 @@ fn try_from(val: Bounded<u64, 5>) -> Result<Self, Self::Error> {
+         }
+ 
+         impl From<InaBits> for Bounded<u64, 5> {
++            #[expect(clippy::as_conversions)]
+             fn from(bits: InaBits) -> Self {
++                // CAST: `InaBits` is `#[repr(u8)]`, so the cast is lossless.
+                 Bounded::try_new(bits as u64).unwrap()
+             }
+         }
+@@ -1703,7 +1735,9 @@ fn try_from(val: Bounded<u64, 2>) -> Result<Self, Self::Error> {
+         }
+ 
+         impl From<PtwMemattr> for Bounded<u64, 2> {
++            #[expect(clippy::as_conversions)]
+             fn from(attr: PtwMemattr) -> Self {
++                // CAST: `PtwMemattr` is `#[repr(u8)]`, so the cast is lossless.
+                 Bounded::try_new(attr as u64).unwrap()
+             }
+         }
+@@ -1735,7 +1769,9 @@ fn try_from(val: Bounded<u64, 2>) -> Result<Self, Self::Error> {
+         }
+ 
+         impl From<PtwShareability> for Bounded<u64, 2> {
++            #[expect(clippy::as_conversions)]
+             fn from(sh: PtwShareability) -> Self {
++                // CAST: `PtwShareability` is `#[repr(u8)]`, so the cast is lossless.
+                 Bounded::try_new(sh as u64).unwrap()
+             }
+         }
 
 -- 
 2.56.0
