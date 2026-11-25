@@ -1,75 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=216.40.44.11
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795630675;
-	b=nfLZV/iQ2Tm2VH74oatlLIHK5FxK74LlQbArAv/pr7Ac+e9zxDRoI3WBuRg9HoTrDvBX
-	 osrMtrr7Z2Q/cwcQhW5NrJvuq6wPeBy52ZlMEU1bitd9QNwCd+7yiSMyPtMkTrqHpCxum
-	 +5Flab+Wr0paHeTCsisrZNgTjA67OexL7v7DwvC6SMHHs/ivIXADLFUklyC2fy/QxUL7I
-	 c794nFKMg33SlzgOHmO03AKkEkN52fMarqmaL7NINDEDs3q9JBsUiBTeI81nI/7XWoATj
-	 AJoZ9rv34igYQ2TXXn7DFkE5yg7lX1LuKlzTEx5nN7M123pXxcGjcZd7w20JF16hePQ==
+	t=1795630965;
+	b=ddAP9G2DTFT4ePILKeH+LEAoOqwxf9JjTOt7ccoygxO7mnXRHMs+8N4v2bhuV54wzR22
+	 u3G/3ooVWThboMEwxHjLwW5YMEBWw5q8fpE1nT2ISbhgpauQFEnIfcWE6LSTSyXBQJC4P
+	 RTuHhnTMybE8LPEJU6xVYWrHmEjAwA9X78gbPxgOLmLeJyYR/o729hVFeL1Ymt+dGWqfT
+	 a9bsuK+7GGeBW/Zdessn1byWi8Lv3pWA8ikR9rwnlMgsIIMtNIWXnJiz8yuxlB4tbf1pO
+	 Q0P5YR4WUrkvcIYhfNO91kmj0PeMUhqVDfntKosJRUcyTn58xD7emwmv7LukYYbjB+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795630675;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=YHLhVtA0M0YnoXZFl+g5SRgT14ajH+S/lGw2ZTmdV94=;
-	b=0Jzt3U3Rt9eW1kvxmaaV62DgBVrbcolJAzkMJbVpRuGixZfoijB2vWzvPoA7jQV/cKun
-	 jxuL6zwdriq71vzKW0B/q2uSN5bGArD/JA/cFiQB2IGV4T1srckBMTlVmqPjEbJgJNVW/
-	 9WahGbwtJOAOIqI4WVZQZBLYpuN1PZIitJwNUuRmElbsr01unwwg12K1TTEDLBqnQSZii
-	 Rp7XpNhQHLKXgwK25pVFHOeV5vSZfS5hB2QwHG52V0j3edol8/dGBeIiRLhcJ16WCn6pR
-	 cjzTgbb4tZyI3YvA/T9sbg51Rh/7oTdmKrLzM95CXtlDOWjeGXBqNqsa4gO8wE7dVwg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795630965;
+	h=DMARC-Filter:Received:Received:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-Rspamd-Server:X-Rspamd-Queue-Id:
+	 X-Stat-Signature:X-Spam-Status:X-Session-Marker:X-Session-ID:
+	 DKIM-Signature:X-HE-Tag:X-HE-Meta;
+	bh=6qR++cFUSbUPUEmO+yBbsbTsqe4WGzx7vfqPrLzKD+Y=;
+	b=3ZKVcBTpNC6/JCS6uJ032o5JNcQV8NVAJio/uXSh5uFmmtIo/5fXFpfWAGpBy/sQUZIB
+	 +X9ycRAob22E+JGQMyJq+My+kAj773MQmwh47aihpPB8izt7ZXwRCTPAjbGcf+qg5tbnL
+	 jOf5jn70aEaWpHiiwbB6K1k6TcW8cHNug8MrurE1+xIm+Zy53kkMhd+Rdwk7ookJ7mH6D
+	 86WaXlJ+8IctuWDdwV0v5OoxTYwdWEMaY4uqv8V+UMqCmkdDJDKM0XvVtMFJWkAeIuysu
+	 xaAYiljwddDJasrjNLxMPEYqcn6mfIt09CmbK0puRUAz7ogOJ0Vo0Jci9tLc52oLi7Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KkOMrl45;
-	arc=none smtp.remote-ip=209.85.128.70
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=goodmis.org;
+	spf=pass smtp.mailfrom=goodmis.org;
+	dkim=pass header.d=goodmis.org header.i=@goodmis.org header.a=rsa-sha256 header.s=dkim1 header.b=dhj3qKPr;
+	arc=none smtp.remote-ip=216.40.44.11
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27545606A334
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Nov 2026 18:17:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27545606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3541D606A33C;
+	Wed, 25 Nov 2026 18:22:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3541D606A33C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KkOMrl45
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a204ac318aso29034645e9.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 Nov 2026 10:17:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795630673; x=1796235473; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YHLhVtA0M0YnoXZFl+g5SRgT14ajH+S/lGw2ZTmdV94=;
-        b=KkOMrl45Ovpk14ILpt4BJIXO9BYTFs2IWZ90yK0DGtWNNYu8P+XeP5IhTdQaDnYALu
-         nKXAKJZZ0o5C8JDLoLO8V+wDqklxfhBilI6wHnL8FNSGhw5m9wKFLT0bdKjHof8+qE0z
-         BcYdB+SrLvQHXgFiTWdeNAACD9TrHqo2xqucID5I4BWeSUYyslXTGcRmkO1EUooKgNVB
-         k6O5TPDSlsT8mOoPm+tOba6uoAmy5lZm2pjGZgOWhrCgjtPpBaNrStoXR0s7TbJNTlYm
-         cl+LWH8/0qqoYG0wpHUBeYI6XO82s/B0pyqPU06h31wpa8GpAYR+HQo5cQKGmhROYu6h
-         mlMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795630673; x=1796235473;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YHLhVtA0M0YnoXZFl+g5SRgT14ajH+S/lGw2ZTmdV94=;
-        b=GBZS1c5sdJDCZX2lJyzUqr/r+psB1+KUNiLLQF2835oev8ROhfhxT281CV1eEG6fJt
-         gakAUqY45Br0oP7sfva4qKkPk2chA3HIzMy/d9uxsT3BrMJaPm6t1nhgAJzpmekxGkh8
-         SGT3I91MR7ZuS5/X5crN45QMi1QFMK4rwA3i0Utx1neO1cME0HbyYp78m7+UiKqLQhoq
-         Sn/ddkwLJVLT+AfOFPbw/xEIhf5mmVySb0qK5QDQ7tXMN3z5YSwYyJ+oWrQPbHZXhFzB
-         mE79WxbR6sBDsyJg/1yiEFA0xvEbtjmfJfXHgOMrSw7EyXdPCviYmLOWQPrOe87THOOj
-         wOlA==
-X-Forwarded-Encrypted: i=1; AL+hErF7E3CVt27iP8TywB8qMw2DYgCATm6M85ptjoil4wG73wyk/kkYc0Ey39MxQt+TuRXj5XA3sycETPtyg7McAg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/wraWWicaOd+xnpClOGShjg+avEy0sYRjVJnUHOYPbpK7Iu/BZ
-	dugkjjnC2y5fpfFspqBjX+a62lytuVEec1SSFMGJqWIRDFJogdGXW4kBOxsXkWgBaXW20asF2iq
-	dDL1MnNDKQIj7g4Z9yg==
-X-Received: from wmbz25.prod.google.com ([2002:a05:600c:c099:b0:4a1:e676:5ad4])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3508:b0:4b2:3c81:d1 with SMTP id 5b1f17b1804b1-4bb88826921mr365854635e9.5.1795630673419;
- Wed, 25 Nov 2026 10:17:53 -0800 (PST)
-Date: Wed, 25 Nov 2026 18:17:52 +0000
-In-Reply-To: <5eec17370f67438e43bb1c82b1d6a16b@kernel.org>
+	dkim=pass (1024-bit key) header.d=goodmis.org header.i=@goodmis.org header.a=rsa-sha256 header.s=dkim1 header.b=dhj3qKPr
+Received: from omf19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C90DE120F71;
+	Wed, 25 Nov 2026 18:22:38 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf19.hostedemail.com (Postfix) with ESMTPA id 2158E20028;
+	Wed, 25 Nov 2026 18:22:27 +0000 (UTC)
+Date: Wed, 25 Nov 2026 13:22:25 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: "Gary Guo" <gary@garyguo.net>
+Cc: "Ian Rogers" <irogers@google.com>, <linux-kernel@vger.kernel.org>,
+ <linux-trace-kernel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+ <jpoimboe@kernel.org>, <peterz@infradead.org>, <mingo@redhat.com>,
+ <tglx@kernel.org>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+ <x86@kernel.org>, <catalin.marinas@arm.com>, <will@kernel.org>,
+ <mark.rutland@arm.com>, <linux-arm-kernel@lists.infradead.org>,
+ <pjw@kernel.org>, <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>,
+ <alex@ghiti.fr>, <linux-riscv@lists.infradead.org>, <acme@kernel.org>,
+ <namhyung@kernel.org>, <linux-perf-users@vger.kernel.org>,
+ <mhiramat@kernel.org>, <ast@kernel.org>, <daniel@iogearbox.net>,
+ <andrii@kernel.org>, <bpf@vger.kernel.org>, <nathan@kernel.org>,
+ <llvm@lists.linux.dev>, <nsc@kernel.org>, <linux-kbuild@vger.kernel.org>,
+ <ojeda@kernel.org>, <rust-for-linux@vger.kernel.org>, <ardb@kernel.org>,
+ <linux-efi@vger.kernel.org>, <maz@kernel.org>, <oupton@kernel.org>,
+ <kvmarm@lists.linux.dev>, <shuah@kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <indu.bhagat@oracle.com>,
+ <jremus@linux.ibm.com>, <wnliu@google.com>, <dylanbhatch@google.com>
+Subject: Re: [RFC PATCH v2 00/30] unwind: Minimal DWARF CFI unwinding for
+ user and kernel space
+Message-ID: <20261125132225.00254c37@gandalf.local.home>
+In-Reply-To: <DN4FM3TBOJ9T.2QOOL77P5HETO@garyguo.net>
+References: <20261125061523.1540234-1-irogers@google.com>
+	<DN4FM3TBOJ9T.2QOOL77P5HETO@garyguo.net>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -78,46 +75,25 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261119-rust-workqueue-v4-0-707c68994940@google.com>
- <20261119-rust-workqueue-v4-5-707c68994940@google.com> <5eec17370f67438e43bb1c82b1d6a16b@kernel.org>
-X-Mailer: git-send-email 2.56.1.839.g22a8290db9-goog
-Message-ID: <20261125181752.2027207-1-aliceryhl@google.com>
-Subject: Re: [PATCH v4 5/5] rust: workqueue: add ScopedWork for non-'static
- work items
-From: Alice Ryhl <aliceryhl@google.com>
-To: Tejun Heo <tj@kernel.org>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, "=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, 
-	John Hubbard <jhubbard@nvidia.com>, Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspamout06
+X-Rspamd-Queue-Id: 2158E20028
+X-Stat-Signature: bmxmyx7zbff3tj5wzgboeoe9y8ngdg7c
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/Cm47ggEMe5tkUQwuPIv9j4yoOc3+2FwI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=6qR++cFUSbUPUEmO+yBbsbTsqe4WGzx7vfqPrLzKD+Y=; b=dhj3qKPrnd5Ol5oStgJ72xjormeA1wf1DO/RZc9kjGarZplof6LxOCEYEKKVU+6U05bo+jnrn30dh3AQ2S2utOXzBrNDvJP6ChCp0OiNHXA0Mz5Qca51KujLnC0+gny5rgFtqYDHuEEGrRoB4ayAc52wJ7NqKJRyFXoq+87Y6Bg=
+X-HE-Tag: 1795630947-362156
+X-HE-Meta: U2FsdGVkX18ShW9pI+/3LezhiP+sfLyAz5bbFmDR0Cg79ArNrSxS4kGp2fzzjf2A8iMOExZ79Wjpfg5dnD2BuvcnWnPjmIUJbGqbBkLfSiaYUFYSqR7ZAyP5O5UzEvRDCN589rXn1aP6/jRut7zfB+DDsEhPmN5DqCQvkQ7ZfZK1DiZPYS6+dvk+POli+n6GtTpGQ+j2vtl3LmQVHr+SzbA0nhYCBgifjijh6DwBsiIDVGFv0Nn3Ybo7aD+vHLlpczM4CVbNSwTPAeoiNfZ1pIRQfuRQQygtba8VmRY7xWxfdUk9RhDQhUICoUNpPyMEpj3E7lFTHILx587J1If+CzVdP12M+SkIwx9akUq8SAeuSlUzaZ2IKhNYhFH5nvIw0f5ED6Ry586F6FXLp5r+/Q==
 
-On Wed, Nov 25, 2026 at 06:44:05AM -1000, Tejun Heo wrote:
-> Hello, Alice.
-> 
-> On Thu, Nov 19, 2026 at 02:12:46PM +0000, Alice Ryhl wrote:
-> > Because the cancellation guarantee only holds if the destructor runs
-> > before the bound Queue or any lifetime in T expires, ScopedWork::new()
-> > (and thus new_scoped_work!) is unsafe and requires that the resulting
-> > value is never forgotten and is dropped before 'wq or T's lifetimes end.
-> 
-> I'm no Rust expert, so maybe this is me thinking too much in C, but
-> requiring the compiler to understand and enforce that a workqueue outlives
-> its scoped work items doesn't seem very convenient to use. Wouldn't it be
-> easier to package e.g. a percpu refcnt with the workqueue, have each scoped
-> work item hold a reference from creation to destruction, and make
-> destroy_workqueue() keep draining until the count reaches zero?
+On Wed, 25 Nov 2026 16:28:02 +0000
+"Gary Guo" <gary@garyguo.net> wrote:
 
-What I'd say is that this isn't the only way to spawn work on the
-workqueue. This utility is intended for use-cases where it's convenient
-to do it like that (e.g. because the queue is defined before the work
-item in the same struct). We already have another way of spawning work
-that uses different ownership rules (e.g. self-freeing work) and that
-mechanism would not go through ScopedWork.
+> A quick question: how do you plan to get this working on 32-bit ARM which has
+> its own EHABI?
 
-Alice
+Do we care? Isn't ARM 32 mostly deprecated at this moment? Or at least not
+adding new features.
+
+-- Steve
