@@ -1,75 +1,75 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795618999;
-	b=mbv1OZC9HH1D+t9aJROhqtkNsO92RfyUAx0KOmnD8RW3vD4sywXT025VJVC7lclLpRFw
-	 6/96CzQOklH4YUagIEEi5S/P+AEJ+q4CCq9DK7mIAUHAqEgxwslgv4hnYY5zNttiba7v/
-	 5OvGFx/P2pMaYf5TPMuCI4HTlzY3YYi+VgzAct9Whdg5XyIY7CmodiNiPsvyuNWiQKA73
-	 4g0ojADfl9CSlH0X6iaxL1tnyjQ1T6n0lK5utYeYsxbpls/rtNIYl+Yku0+K6latDZpMH
-	 2sPWb6j4IRLNnqk0ybZPv3R0hx1+p5/Xq1MrERIg0a/tXfv/5efrHU9iIGa/KHjkEkw==
+	t=1795618997;
+	b=EvjRhO1RRGILmjcZSiX+2qOmg4CecI5q6/JWZE4hDEKPJNwh2hH3bl1i9s+JwJIaJYsz
+	 0mCo1orjq2l79Ddh3Nd54jSTQUj7iBZ/+AcHFyrTtntIKietyNfQCeyaTpd/hmFDnF0fQ
+	 ySg3zcd/6giRbiZbuS6gTSYx9SUHsLcY0oSoLFnokXr/oZh3ugEgwq47DWx02DgJNA2Bs
+	 5gFfRoWc7RBR/SQHieDsOqtwbTdvGKEjYsrFMSp10Ulz//bQhucrC0XSvrho7Z3FijI5a
+	 tDHBDc6q/Jz561UdWWJ/riRQ8LHWLsamAfT2wQqu4S3mCVD95n2G0vQWBLVwnyXWqzw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795618999;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795618997;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=8Jz8ssl/IqO+cdkuoUF1XK1hhhFDc4ccWMMZLEDHfAk=;
-	b=C6qFvU+EY8WCabDXndMWtsvmIm9cwSkIF8N72Ycw3uNFkT/NhSz1Wc9v0SA6qkQUiiVN
-	 jvAX72UWJua7q6oK6F3faVBlA1GUC0yu9+WF84Xg6Bs68sSd5qhq46ImRu+ukvKPCrQ01
-	 01EmBwS2vQyevpO+fwpwuyPP6oOcqSw/WqLQQCzfptQ/jWn03qXmXLBDT8cQKZLQviJ4Y
-	 UfTHv/l4gwEcbvF4c/9qLoFLsDcBV4b68ttbg+B2sMA024zP9+a3v5kX9kyswJGYH2gn1
-	 /y040xhamwcZoExBt2psuhc1ECIXhRoMSdrMxWOYhTpLquCpHP4qzA/9Y1RigFyJroA==
+	bh=N4O2DbAYKqujXPOE3qGC4/NB1PRFQz/yrJhP3BnWqGc=;
+	b=yTz8/IMyTZafPPzRDB50rsWuXwpZdgw1z2jflZx+dKGeJjgqx0IQQ2+MgHH58DIX363m
+	 jekv86W0HtfKfbq+yAViDOaY/WSv4EOCyfGTA/rz8yR4JLVbDgppo8HZGSHw7A1gfyvpQ
+	 fKgZiJRHqNwK56wbHpovAF/EBH/hs4kJmWmnFR2OMpMb2EJ47gfOOgMtXVVopQdCsLQ1q
+	 0h88JJm3PbTyEOT9WBLbHO/wgEI7sT3/a36e9ustwGgmkk/gVJzur4Sos2/bP/35EE3+f
+	 Hctys5bqg4Gc+H8Mu9UBGJgfOMCWooRml4d59ZhmvBE2y0IFs6VfoP5i4GJS3hSTgSw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=A78AbNie;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nA6o9YS0;
 	arc=none smtp.remote-ip=209.85.128.71
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B559606A681
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Nov 2026 15:03:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B559606A681
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4134D606A335
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Nov 2026 15:03:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4134D606A335
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=A78AbNie
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a1fdde384cso41752375e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 Nov 2026 07:03:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nA6o9YS0
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4ba078abd78so38920365e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Nov 2026 07:03:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795618997; x=1796223797; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1795618995; x=1796223795; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8Jz8ssl/IqO+cdkuoUF1XK1hhhFDc4ccWMMZLEDHfAk=;
-        b=A78AbNiebNcNklyGszsJq8iPMepM+a6YL5fAZFdxaO9hs88QZZ/buRs4hMEgXNv+Zz
-         ulEuzpfSlOsD9TFztYZ4HeQ6DOrR94+9N7Xs9SOaACCfJQ4banvsFCS3rN/KKZrxNksv
-         5w7wG6TWmacfS1GFN6P1AGF97oRGT64FjuEMJTUiJRXt1xz1xbujYKs2izTINehVGc+p
-         baKL/xKMIXxWSgSXnGZDYuin3Uxz0yBdqwnMziFh0e/84mnxNjU2Qn0KclZNeEGHyVBp
-         FrVo0PmtvLzXll5Ktnb+qnuGp//Tmcfz681NGQTB0/Ccpnj1wQcj+sGCdcNKZg08s6zJ
-         P3mg==
+        bh=N4O2DbAYKqujXPOE3qGC4/NB1PRFQz/yrJhP3BnWqGc=;
+        b=nA6o9YS0JDCjENOgK23oRWt39tSZ+7jAlrpFeu6eTbevBHhESqnKpWIyByw9TdM90Z
+         xJExr3JEAz0pnvOhBA1BL6SSR1T498hzLQmXrGM2aXbLZCo8zMURSQBOKNK24W+YaKeP
+         n/SrJGXbiJ5Kxq2MNo28AqaCK2tQ0dWYUD2ovPqWC+2BGDeVFYwSUvy1XZm4Gv8Oovbm
+         FR+CR0r2LyAZHzhQLGq3Az9lZAy7L+PSmqgPdCRuM+iSOIjq/iksaQ8Dc+23wCnY1RHz
+         Lp84BV5+dfXSl+0Blq4KMq7pbWHXE2TCmTz7q8j7QPvPresrr0LOBB9QmskfelE5vp3j
+         1x6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795618997; x=1796223797;
+        d=1e100.net; s=20260707; t=1795618995; x=1796223795;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=8Jz8ssl/IqO+cdkuoUF1XK1hhhFDc4ccWMMZLEDHfAk=;
-        b=H1+D9tS2r6W0n0fMCEfzN8Kl5OvzHqD0vtcAJ/rp/erlOWa4JXqUiUyf0UlFP2gKm7
-         Upn+AmkjfJLev85eGS+HvxdKWRx82reYS58ei5Z7rY4VAah+1p+IEg01ioT0Y1WoBL1X
-         OyqX8kIrNFnI1ADIwPVccOmSgmPC1l+/f/WIollm4I6NKgMGUVzxCFZ06fqrh0sWEGCe
-         ZmOm+KjmVMXWoWqVZRKOn4MypgKLreZKF02EaLYrrfzZRXb29klxRhy2dWgRl4Auz7s9
-         6MoBdof5qkKzP+uhjgNyrnGBPl8k7Or4bu8NXNaqXAcgMnvxn4eRMG5NzNd00uLYzzxo
-         Bi2g==
-X-Forwarded-Encrypted: i=1; AL+hErE3ul1HXxVDiDtMu6eaNi+VvbmIvm6r2dCXXA/LRcgq+GSLnNb2x1uxeEKdjmxLZ4WeFLqI5i1XudoIzvcLKA==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8J/IjrLPRNqS9Sw5jNHvx3oonFWUri1AFvXaR4Hl5Iew8Z/Wa+
-	J/LETcPIiQIBiujjC5LgFPH3yvshgIZetXoe2NK5ws88eKVD2vF/COpKJlPQCB/65CmmZ0kbsoT
-	rNkOP9vsZ+AX1CwNFCw==
-X-Received: from wmpr23.prod.google.com ([2002:a05:600c:3217:b0:4a2:e03:1f55])
+        bh=N4O2DbAYKqujXPOE3qGC4/NB1PRFQz/yrJhP3BnWqGc=;
+        b=mq7bgaOis6Zoy0Jnjv1cGRoEg6GThpRiwoYi10rjDmWnTUepQ7X34+/xklETtk/XUG
+         10Eb0H8zUd0hFsDTsDmMS/gjBjvgd55qXxIIBKMPjJ7cQfpZF5Tq4sKptRme8wnZ/+Th
+         OhW1CZcOloOc5kk3n7bUB4mlJjz3tloms/9bNUdV9TnePHHYqtt6wORP7gDbGCKx2RWT
+         6/nnSM828CBul9Arn/+W8EXAZE8eirrmubRVPGGGZZpNWJYNvh15i6TdZkZUhMm/mFE7
+         ab22sh7ycDVj+uRhAJeaC+tVW9/tnrNKRj4dY3x8FSMMzM1JfaSR0CHgNiNzXvPhD/yJ
+         +KVg==
+X-Forwarded-Encrypted: i=1; AL+hErGkcKlAwcmDqnx2ovfMRu1xgiRi/BPsIMx5dydtfTzDrLZGUV0NH6JXvZrIv9ZZ+xoP+CjDnNyHZEqGI1AQBA==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9fRv+OgXc8C4KZzFXsYrxHpog0c4za8jxJK9xTrPA7NjecW5EB
+	YDk66RQWEF8elu+DR6Yt6T9O3KOHez3xP4C1WhAcvSExl/9PCvmM+g1dEdfHZjMF52jAx68efIW
+	Mqsac2VkgsGm27SC6yQ==
+X-Received: from wrpy15.prod.google.com ([2002:adf:f6cf:0:b0:4a4:8614:8907])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d08:b0:4a2:392:9de2 with SMTP id 5b1f17b1804b1-4bb8882bd7bmr363816705e9.28.1795618996639;
- Wed, 25 Nov 2026 07:03:16 -0800 (PST)
-Date: Wed, 25 Nov 2026 15:03:15 +0000
-In-Reply-To: <20261124-rust-drm-gem-shmem-imported-sgt-v2-4-000f7a9ccb8d@jannau.net>
+ 2002:a05:600c:6748:b0:4ba:761:97a1 with SMTP id 5b1f17b1804b1-4bb888251bfmr350875475e9.14.1795618995334;
+ Wed, 25 Nov 2026 07:03:15 -0800 (PST)
+Date: Wed, 25 Nov 2026 15:03:14 +0000
+In-Reply-To: <20261124-rust-drm-gem-shmem-imported-sgt-v2-2-000f7a9ccb8d@jannau.net>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -80,10 +80,11 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
 References: <20261124-rust-drm-gem-shmem-imported-sgt-v2-0-000f7a9ccb8d@jannau.net>
- <20261124-rust-drm-gem-shmem-imported-sgt-v2-4-000f7a9ccb8d@jannau.net>
+ <20261124-rust-drm-gem-shmem-imported-sgt-v2-2-000f7a9ccb8d@jannau.net>
 X-Mailer: git-send-email 2.56.1.831.g720f3f5937-goog
-Message-ID: <20261125150315.1587936-1-aliceryhl@google.com>
-Subject: Re: [PATCH v2 4/5] rust: drm: gem: add an is_imported() accessor
+Message-ID: <20261125150314.1587795-1-aliceryhl@google.com>
+Subject: Re: [PATCH v2 2/5] drm/gem/shmem: Initialize private objects via
+ drm_gem_shmem_init() too
 From: Alice Ryhl <aliceryhl@google.com>
 To: Janne Grunau <j@jannau.net>
 Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -100,18 +101,14 @@ Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
 	nova-gpu@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Nov 24, 2026 at 12:37:46PM +0100, Janne Grunau wrote:
-> From: Sami Tolvanen <samitolvanen@google.com>
+On Tue, Nov 24, 2026 at 12:37:44PM +0100, Janne Grunau wrote:
+> Rust drivers need to initialize private gem objects when importing
+> DMA-bufs. As with regular objects the ideal way is to allocate the
+> object in Rust and initialize it via the DRM gem shmem helper. Expose
+> the `private` to the exported drm_gem_shmem_init() function.
 > 
-> Drivers need to check whether a GEM object is PRIME-imported.
-> 
-> Add BaseObject::is_imported(), wrapping drm_gem_is_imported() through a
-> C helper shim.
-> 
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+> Link: https://lore.kernel.org/rust-for-linux/20261118114102.490384-1-aliceryhl@google.com/ [1]
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
 > Signed-off-by: Janne Grunau <j@jannau.net>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-Alice
