@@ -1,130 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795648325;
-	b=dQUHBvKnHJx1p6sT6zZekX6vdL6AuLdNpH2KacKNP0WT0Q7MCPZfVVLXcOrOM9Iu6RQc
-	 soBxjWRllUrNjADnrVhyJQD5JcHkRnaHANcjrk+YW8WEcsoAVkk1scB9of5Mp/npQMhw5
-	 sm0nWBS7SWlkfJhzveBTupLVYEWjHiQUq6ctzNRcAoOKhAIzDx6j8jb7ZlT6dOCCerXOI
-	 eq8zBQz8opGgnATqFf2JmBTckr2qhVd14zCYcMErsAE9aleS/0ZsiaV7K/iBx3qsJVONn
-	 qYarsx5lktaDLMKcrgzrnTRKXBhAPA2QU8V3gaigPMxvq4UCBjCwpNAS3gA8hrqMYeA==
+	t=1795648545;
+	b=ofTMUoPxKx0Pf7z1zgwQvx/UlPU23/agiqlmI+uOi9bSNOGMQUAgC4iSRUDq8KZrruqq
+	 Uosce5JNVjY+KTCGcG29TxRGUSm6nePQ77xR8uaDfJoosJPFbR0NN4mLOSHrJvvqlc7M6
+	 5D/PajIROQbziDTg3uuXd0hwqZUneewUwsrtN5DKRwuLe2AHMA9D/9RhI/4qkcYs1DILQ
+	 n7uHHD89uHqTgS9ZNOyaqPoZzwpmJpbtePWcwtGiCcPssWOzZZuA+CLUHtG+/FMXKqfQ/
+	 S4qHpXHpf1v5Z6MQU3oL96Wug8a+Po2+ziPYJ41onUSA1XQgfOF55kSlD+NeOAy+EZQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795648325;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding;
-	bh=pGLjl7j/SBb86fKn90UOENSPBdsbSFo/tf5AbXyjbKY=;
-	b=4t7sfKR4OB3sdiEi9daXuS6WqD5wqYq9jrcLnWNII88u7avRx2L37jm3QuXifIRctf9J
-	 tKgUxDiN5y+5XwuZE0llTF7QnpzawGp3xAZfeaeN+hCRrsAAShl0gomz140/yaSg4vNCu
-	 Pl1y+cI1xxXG2t5ZSqP+F/4i2ke//ioSJmBtUdFbRuf1dwx7p9XtkJSwc7x3rv4fh5N+v
-	 tfFdjw/9PXqiNEaBFECAAjJQEMLTqTJia0d6K3sfhheHP2o4rEbQyeNBI/Pq04neL5QXw
-	 yCgD1whUp9rrx5HvnpINkIAQIElq61N3nUiPHoxHyQHRx1zmPow2Lgz3yufv2eNTh8g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795648545;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=RKU43PV6v6Z6Y7r13RaAE1fMnAuQ4/xp8oTM5GP3ccM=;
+	b=L1DuCUYu/+hE/PFKbd01ePA90oGKsdMYpMWub+VkIZTvW+xeO2/z0EalMQy6FBQoD0TD
+	 ZVBH4FId/sqomavGonj0VPtbSDtYengsoSWg1Dof/rJ8Lff0FWGpvqrTEcmPJ2ILaVViU
+	 2K7ZzOxRNb9UhoLUQRB9JwKqG8lP8G65C7o6hMQntfn8vaYYU9p9yhUALVOQaR7VjxpmW
+	 Hy953PUjjiiM1wOq/dfSgTekEs+EQBbZ5aPueInNvAObhI+IhomK9w9zi5l1KjM2oTwbj
+	 RpxGf8XthgklrMhle1eIjOIGwKyArfn2dlJGaGxTthPDOCBKC1bAgQUYiZYHk++DgxA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=flapping.org;
-	spf=pass smtp.mailfrom=flapping.org;
-	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=Ytdfc3Wt;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=e4eXdFW6;
-	arc=none smtp.remote-ip=103.168.172.158
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L3+i0JDP;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBA5606A330
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Nov 2026 23:12:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0CBA5606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id CDE7F606A321;
+	Wed, 25 Nov 2026 23:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm2 header.b=Ytdfc3Wt;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=e4eXdFW6
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 0DD8A1400418
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Nov 2026 18:12:04 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 25 Nov 2026 18:12:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1795648323;
-	 x=1795734723; bh=pGLjl7j/SBb86fKn90UOENSPBdsbSFo/tf5AbXyjbKY=; b=
-	Ytdfc3WtKqM3C5b4lUGW2YbjQf1+OfaJ0u8pdNl0dNeadsL5F1xjjc9tWXfY2lEc
-	km/kE9pXJNEkxn/Tjbz+PiA7xpQsCrqjgpYm4AE0lWLHJWapC1PJGbl4mpcS9z6d
-	/GTIWoqyDA2Lj9KPYrRboDPv2zhVP+51nkfxcw8+LYqr/s4M0FrfYXdEdg4Lq6WC
-	jzkVHTh13OMVUkchDodquoC5HKbbsDizIYK31kC6YEJcJ7AQbI5wqNM+zaXp524u
-	4GWPKeYQO48mw3U4rAi8cMML/Dc8a5dN6/lLu+EodJP4bADnqxocYJ/+VV4rHNkg
-	dk1dOR/7MBbnIehjdrN7gg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795648323; x=
-	1795734723; bh=pGLjl7j/SBb86fKn90UOENSPBdsbSFo/tf5AbXyjbKY=; b=e
-	4eXdFW6xBQhKs2prfeNS2EkUICB10Yw85aRhKBIpfRCGP1u6atV+0jwCoZdulzPU
-	bgo16KIMQiqdY12RuJKXxC8TtZfgw6a4RYkwgKB8pki4h0ErZLHcZId0OWrhBb3q
-	HA+eyPmaStFojOjEgXgH2XRG9Utjz0xZEerafZvYOgrUgNjJoQp8UMW+5pkR09Nr
-	GFLi1k4cfF0BfWhL4vECPSFohMPilahfCy8b5Kv29sJjEAprbJKhE/z9vXp6BP9S
-	rStjAT9xyCkX/SGT/RhpiaOaNqtJCxrwqjPXFmcI2i9lErWsokGgJibWCDBqtZXC
-	Lszp/ywXsx19zz0hte3Yw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1795648323; d=flapping.org;
-	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
-	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm2:rsa-sha256:cPFtnJOjVgatvwF8ZVXE4uN46y9T0mDxnEveaQ27InHFyeh
-	6HW8VA/8IorwljStjfDbQbsj0ZydR9dsOzdI9MJw3XlXjUDumgPvM222h9/7O8IE
-	MdvisXxQrViCPfLQ4F4kNhwC/l1ypeA5gBJ2zTovco7n3adRj9VHQiaoABeyUuGt
-	64am8kZSgZgkwFe1ksRn8vJU0Sf6fjiO/B+mnKyajXqAJa+nu+VcX2TS6Ue/qzSp
-	CymgsetmTvHOqjS4PTyyDlz31zfPHgtJmie1a/3aISmbwZMYEOOcIVCH2RObZoOr
-	5rvQtc90RoyhhcSGOdwL7ZfFE4HtDrXcm4v+LWA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:YUnLiMJtabnPyfBRjXF0Cp1S+S2sLQWyc7v33qlqgzw=:ReMT3etTEGHzj3x1XVKD+IW7FqMajtWZnVyCfA5+voA=;
-X-ME-Sender: <xms:Q2sHa6R4fkkPsyqwQyMpSC0tdGunAaSfNvgcaNC7lnreqMsyMqRKkA>
-    <xme:Q2sHa4JOscRJpAcVpNn_7PUR1EXltoAn9SJpOr8iYHyak6kbUPNHWB-tYrytlBLU1
-    mLi6AQfHf8AuEI_m5IH4gwSun-9PHoPijuqp47-Bquu9tAbjE9N2ig>
-X-ME-Received: <xmr:Q2sHa6CRo1IoqWZUEwP0oVnuaJBYn9NT5WVlMIXsSIBYVazKS223WS3O22605trJCa8-HYMmxaN5xfho4iiMDQKG>
-X-ME-Proxy-Cause: dmFkZTFkdInJTRfS+07fsGcPolMb2Cn0DmAYTwufftzh15xMEvIviqE5Az8VlMNthE41Tv
-    CDBikO5ZSU3s4zorfxRrVfgA2m/33BP/X9x69o1mmF4/Cep7E82M+yClHJGkSkXw0UPeSO
-    9lLz0ig9ySbRVyvDJKiqERxamf5Lr04BM4vd1doEoNbmEXbcoIA0FRkKkKWZgL4DKd3kVb
-    ud633an5FXbXou+pDgBPgOZaQbmLOBSTCO0UclFMp1H7KZuThiFEtl9sN7pnh+TqHT1VFJ
-    oBZ0st44s8HFCZts8DydMt+R8eGVdnJjIlBGX744qFC9MuPqJmnq0feyV+fqe3f7+i2ybZ
-    cF62s6le3Tn67GCXyJ/qC4U/KbdX+Xu0L8olXN0FhjymrOxgOrThlwynWv6fxkfKNxWmzO
-    aCRBtgeff6j/IzYRzobCm41UhNwKceijc5UdNDw31YB63OK0kA1mqvLOAKQJ76axrIW5Z3
-    WDPIsmvL9xSWlgrRfn6GnR+8AfWIDZVdopeyfcC0Dm5rVUrR5jI/IZilxUeIrzXvt+XH0y
-    XVwzRgp3mx6DuuvRMNkZiUKInLIwiQIQA0DkxCTkqinmqqb4Us9+c/yIa/REewoFFjTr8e
-    tAnK83BWTpb8a+JiXbXkzUyCojqlN7FTBC3EVCunBTuL5Z3M/C03BRyMm/lQ
-X-ME-Proxy: <xmx:Q2sHa93yWBVLDCrQxSbcU2ys8aJzWrUZ4mTEe4lSw9L4VStF4-0t9w>
-    <xmx:Q2sHa1lfn9SyO8xYhcz2VZdtbav0EZuz2defxC8VzqloJf85A2c5vg>
-    <xmx:Q2sHayfuoA_wt79TrDiF8dAPBIbZRaNl0vMlICez1IZlEnviUze7gg>
-    <xmx:Q2sHa6UaYj8OOtyUyxni-isA47DMnT5MrXvlqyyfeYKzP5SHKGkkhw>
-    <xmx:Q2sHa3DQc5is8KUEA8BR_tUK4tHCn-B0bcQW6o8X4GX-HUBsGK3ZIMpl>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 25 Nov 2026 18:11:57 -0500 (EST)
-Date: Thu, 26 Nov 2026 08:11:55 +0900 (JST)
-Message-Id: <20261126.081155.1605990248496749195.tomo@flapping.org>
-To: engineer.jjhama@gmail.com
-Cc: tomo@flapping.org, andrew@lunn.ch, fujita.tomonori@gmail.com,
- tmgross@umich.edu, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ojeda@kernel.org,
- boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org,
- acourbot@nvidia.com, work@onurozkan.dev, hkallweit1@gmail.com,
- linux@armlinux.org.uk, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 0/3] rust: net: phy: suspend may run
- without phy_device->lock
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <CAGAB666qnAjFnf41PQmG5kWWSb+Au01OgspPhvREotLGXTYwXQ@mail.gmail.com>
-References: <20261117-exp-phy-rs-maybelocked-v3-0-4e183a7366a7@gmail.com>
-	<20261124.215747.1090155063373507910.tomo@flapping.org>
-	<CAGAB666qnAjFnf41PQmG5kWWSb+Au01OgspPhvREotLGXTYwXQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L3+i0JDP
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 94C061F000CA;
+	Wed, 25 Nov 2026 23:15:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795648545;
+	bh=RKU43PV6v6Z6Y7r13RaAE1fMnAuQ4/xp8oTM5GP3ccM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=L3+i0JDP93bNhCHqYr2zL5RMHo7EsNjmuIcuHxD9rzEqTybdE9RFReipmqhYiXgyJ
+	 CVXOMO85sv/BMx2/o9De/1fJaD1gprQl90y/+dxdY9QUCx1i7Uzt+hH6AJitbwwWpW
+	 FK3hs3k8CwxTVf9s+C/iqc5+9nIK9U0oCDHdIeMVnrNcipLhFgQ5AuMN82Etir07nL
+	 dJPD7PVD4Apw/+1ISfmn5/Qtm+zoOvWgnjZ6k39JniWKMwdqvmCZpG/llADy6qaB0i
+	 9IFlBlaThMj7AP8lDyyVFkkusQjMX5KUUUQueazUEVdPj4gORKMY2TfhCeFH5UHeDd
+	 5acViyZQct/VQ==
+Date: Thu, 26 Nov 2026 00:15:42 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Priya Bala Govindasamy <pgovind2@uci.edu>, m.wilczynski@samsung.com, 
+	ojeda@kernel.org, boqun@kernel.org, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
+	daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, 
+	elle@weathered-steel.dev, linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	ardalan@uci.edu, zhiyunq@cs.ucr.edu, dzueck@uci.edu
+Subject: Re: [PATCH 1/1] rust: pwm: reject over-aligned driver data in
+ `Chip::new()`
+Message-ID: <awdrlmrOn0_lKlUX@monoceros>
+References: <cover.1794600927.git.pgovind2@uci.edu>
+ <caddec5478a0d39a73152247a60bc21b3c609cc7.1794600927.git.pgovind2@uci.edu>
+ <DN4FFKMFI488.187QX5RI55L8S@garyguo.net>
+ <awcbICD_lN4uJrKo@monoceros>
+ <DN4H92P6CGXR.UWHS0SN6H62D@garyguo.net>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -133,55 +64,70 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rxczz6rflblfv7tr"
+Content-Disposition: inline
+In-Reply-To: <DN4H92P6CGXR.UWHS0SN6H62D@garyguo.net>
 
-On Wed, 25 Nov 2026 18:40:32 +0900
-SeungJong Ha <engineer.jjhama@gmail.com> wrote:
 
-> On Tue, 24 Nov 2026 21:57:47 +0900 (JST), FUJITA Tomonori wrote:
->>
->> On Tue, 17 Nov 2026 19:36:18 +0900
->> SeungJong Ha <engineer.jjhama@gmail.com> wrote:
->>
->> > Patch 1 drops `read_mmd`, `write_mmd` and `match_phy_device`, which make
->> > the same claim but are called under other conditions, and have no users.
->> > Patch 2 makes `Device` generic over a lock context and documents when
->> > the `Locked` callbacks run without the lock, and patch 3 gives `suspend`
->> > the `MaybeLocked` one.
->>
->> Can we use &Device and &mut Device instead of the new context types?
-> [...]
-> 
-> Yes, that is simpler. I will do that in v4. Two things to check first:
-> 
-> - genphy_soft_reset() reads autoneg and writes suspended, so I would keep
->   it on &mut self. soft_reset gets &mut Device, and the SAFETY comment
->   says that the phy_mii_ioctl() path is outside the guarantee.
+--rxczz6rflblfv7tr
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 1/1] rust: pwm: reject over-aligned driver data in
+ `Chip::new()`
+MIME-Version: 1.0
 
-Agreed.
+On Wed, Nov 25, 2026 at 05:45:03PM +0000, Gary Guo wrote:
+> On Wed Nov 25, 2026 at 5:32 PM GMT, Uwe Kleine-K=F6nig wrote:
+> > On Wed, Nov 25, 2026 at 04:19:30PM +0000, Gary Guo wrote:
+> >> On Fri Nov 13, 2026 at 8:25 PM GMT, Priya Bala Govindasamy wrote:
+> >> > This issue was detected by FerroLens, an LLM-assisted analysis tool,=
+ and
+> >> > was then manually analyzed and reproduced.
+> >>=20
+> >> This should be a note and not commit message. Move it below the ---.
+> >
+> > FTR: While I agree that the commit log is very verbose (and being only
+> > half Rust-literate I still don't understand it completely :-), but I
+> > like the info that this was found using a tool (in contrast to being a
+> > real problem triggering with mainline) in the commit log.
+>=20
+> Perhaps better to just state "This is a soundness issue and not triggered=
+ on
+> any of the in-tree users"? I think that's what's important for commit log=
+s.
+> Whether a tool is used to find it doesn't have direct correlation to whet=
+her any
+> in-tree users are affected.
+>=20
+> Given the removal of "Assisted-by" requirement recently I thought the ide=
+a is
+> that exact tool / model used doesn't belong to commit message anymore.
 
-> - read() and write() take the MDIO bus lock, and &Device cannot say
->   more than that the phy_device->lock state is off limits.
-> 
->   In read_mmd and write_mmd the bus lock is already held, so they
->   deadlock. A test driver whose read_mmd calls dev.read() hangs as soon
->   as the PHY binds, and lockdep reports recursive locking on
->   bus->mdio_lock. The path is phy_probe() -> genphy_read_abilities() ->
->   genphy_c45_read_eee_abilities() -> phy_read_mmd().
-> 
->   In match_phy_device they reach a device that may be bound to another
->   driver, which the netdev AI review pointed out on v1  [1].
-> 
->   Do you still want to keep these callbacks with &Device and document
->   this, or wait until they can get accessors that fit their context?
+I'm ok with making the statement "Found by static analysis" or similar.
+The thing that's relevant is that it wasn't hit in real life. (Assuming
+that the reproduction that the patch author wrote about involved
+modifying a driver to use a struct with stricter alignment requirements
+than currently present.)
 
-Yes, please keep them with &Device and document it. The deadlock is not
-a soundness problem. I will add accessors for the bus-locked context,
-with a guard or a context type, as a follow-up.
+Best regards
+Uwe
 
-For match_phy_device, &Device fixes both problems in [1]: read_paged()
-needs &mut self, and read_mmd no longer gets &mut Device.
+--rxczz6rflblfv7tr
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> [1] https://lore.kernel.org/r/179454612500.2199510.688554972467066283@kernel.org
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmsHbBsACgkQj4D7WH0S
+/k5JLAf/UJzK0sCwcg1hpwNCWXxGpVGKiUYgTp22ZVXBAKfT9JcO81eRRNAYTtLl
+jR/kf14S94se2B8dAxdfCnASGuWlVavBcGp34+cm8x5dA7c8ssAc/77sfOa49oJO
+OAcM6xd/bX6NzxeKfUl7XF3N+9J9MmYgMLWoR51LrkhMWh/TvFlna8U7COAJwECu
+1UNzQXqT4fguvNuue28HpTc3LAQ5IkEbWhptJjKxgM1XOU+IcJfHGUWy3cafDBqJ
+JJ9tdyjKCtvQ4MW/lDvR8MxZ+ZYnwWyFCfpNHmu5YfDKZYmFATf17oVii1SCdGF0
+MjSsKKenCHkwTnDOsKqoLB65u6NWMQ==
+=sMvJ
+-----END PGP SIGNATURE-----
+
+--rxczz6rflblfv7tr--
