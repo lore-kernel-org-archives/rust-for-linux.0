@@ -1,54 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795636808;
-	b=t5MUkOGR42KmIJxOuh1d1gh8d/zwlXYp5lwfAz/AOIwzJsnf4wiZrhuvO0W+Oh1XzeNF
-	 A9MOvWMR5KtSi/ST6/Qkc/CYAML5P7ILjtyldSM2fYVt34Qk60CVcoWkVztYfK4kHwmEs
-	 62ZdWOiF1wrAmaBZ6LAOJ0Pg/Kkp1w1b9VAbaQv9VSY7ztlSKJfsjrWLJqSmhDM50xRJ3
-	 ajT72CQlZLWpEyE4kLuJlIQrOJGyYil/EJvF9ZEnMPjFskOivzNn/KZN+V3bY78xqD2nR
-	 M9LioIFjtRo0mHm5cci+Xd/Igm4URh3+50lBK+oxb+nWuq8IxdUgehpGbvuvn/aCGug==
+	t=1795638534;
+	b=z3rR7YhCGHYyCyexThLVH1YJZtCos5qVIfYJ2+17WN5j/kCntMYpzkRQmniGtYXox5/f
+	 D8nN0vOPpadYH9f7SJbOjdAcXbRBDgwUeDwqWtGkiIqzXQp3hxYHDVSQ2BnBpD6vb6zQ6
+	 X76mGliOpFUoGSf3kRsCYREeU79sLCtX7E8qW8Thmz9nTDI6WCr7JqWmEx46ainQZ2rry
+	 QmAAmQejcwT1r3ET/R2eqwyWwlES1ZSnF3v+LlT7KpQeUBAlPwsBZ3kJmGwVpdopyJ/X3
+	 LZsW18KT2MtkNt2BQlEPTZKMc1rztlvXWxQ9ln8bJoNFOD0O5Sa5yoBHIqaL96yhNUw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795636808;
-	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
-	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
-	 References:To:X-Mailer:X-ZohoMailClient;
-	bh=XFGeHnO41wQThwSaa5KXLEiWWiuY84ny09QOskOc0hQ=;
-	b=o2GCDfXYEBhR+frJAdyJvvVL/hGTvSbVdL4NFSWyTNZ6hcDmcgzzHdkgMmGU5s+3cYRZ
-	 1bJSU+FtNBUTbyCoIkeHEYsPDHNb89nFpmv31i2L2ZubfB8glIFzgqmZzkg0rWuNj1uqe
-	 +kUI5NGxRKY6e5cLWsTblhiPi7jg2zQJcHndO0yemZfEcnsDjnvBmSBuQKcVK542+0uLu
-	 RLZ92psiPzInEaV5zjUBO6SqVN7y9X8fsBC0J7v5D3uPBDnHcRET21h2Zqjrth3p+rRXn
-	 dGsNxwN8pca2hLpDDb0jF6nHWaJf72JpER1DoBzS39vR8UYhwUbGaJvZ8GCs0fLspsQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795638534;
+	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=JOYAa7fLf3e5taKaH7vZHli1+lb0DGOTCK/mKOpNivA=;
+	b=H6phGHBcWYu+txAIOeN7egjxdqp1xjVzSmLtUac/dGjd7Gskgm/aBj1HYASjqkKmPuT6
+	 nA4MMCqwJPj4zgDrYavFjqZ5A0eGkNVaydLefHfVAH5XFdRmaUD322T/LgEmn/RNakLOj
+	 zQ9J9iiievCmTUNLYDkohRsns9Un66YE8ioyH3qdFusT3dfOYgj5iTzCpOzzG+tFMG72y
+	 nXGuaSznDDYe8UYhlujxOMphu4W4rya1MvZK/5b9hJLah06rDs8A4JRQ/M3feZXERfn4p
+	 1I2s3l1Tbdewu6VDprNXA9Xp9rX3gxuQegqmHhyAGP/yNo/Iyofz+MaakIjb4wmvg+g==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=collabora.com;
 	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=d6mAjL4w;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b="E0t/jPCt";
 	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
 Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E52D606A327
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Nov 2026 20:00:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E52D606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D62606A31E;
+	Wed, 25 Nov 2026 20:28:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D1D62606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=d6mAjL4w
-ARC-Seal: i=1; a=rsa-sha256; t=1795636770; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=E0t/jPCt
+ARC-Seal: i=1; a=rsa-sha256; t=1795638511; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=TfChQJlevYzacqlUs5E50T2a4Ex8FOkFSrYn/uNaxZnlNmkfxt+LKyGS0aWJrt7nAf+WeXyezi2Dv15ISzqAqkJZqEfysX2pNxm+AdwRQAEviVZ68t8l/3iGfu/DwQi5r6YYgb97zvP0VtyY/yKX1o1v9VKq8iIuWXKEyqzUkXM=
+	b=bVjUtopT3JmDHTvh9Azp17CvVtPb5q4EQix/Rasg38yoXcuyv9rdM54fYEHXY3PYSKk7sOHFAW5gVqcVvn9NtxxbrLgWfbIDMTOK4Em1pRUM7HGRmASU6BRSmXYn37jgAHiweoknbCQvWASlFZsRBJcbomvNE6kt2Qz/eEgbwso=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1795636770; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=XFGeHnO41wQThwSaa5KXLEiWWiuY84ny09QOskOc0hQ=; 
-	b=WwpfBSSagcpQAIirt+1FNN4fOeSTu/B8l5ovgqHJ+K8aEm/2AstsbVQc2t3qHst0TP4dUi26TPbLxX7JP8PeC8s7cXFyCKrEv4TqU2S3n3F4R2pxGeveR4Q/FIrROcVLf83obJiYgUJeW19ZmhJEGXY3Hf8dO9SYBzOsOjRuh5I=
+	t=1795638511; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=JOYAa7fLf3e5taKaH7vZHli1+lb0DGOTCK/mKOpNivA=; 
+	b=OSzJDmTZCeop6vjVmMmsaRIQquaAuX2pzXfNkHR1a/x+OW5bejuc8uhYPc2fOS4f5d9UdBhilU3skOl/j5TbGztmksIvQia7Kcf8vc5VzI9p40sApkzWhDeWCCUdjIbboXZJoUWrao7QAGRpKuRkiSq6NZeSCdl3Y2790L3224o=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=d6mAjL4wHpUEOODbjZ7UfyaaVnxoW2SPYt3uZYQ+vg3HvaBNwI/1z/YAp0TG0Wzz1VYWhz+ETlGpdx2wqt5DZmubBE1PVCjcgYPrUPHfmhlbxMFUG4Y4qGRnFH9OIiUZkZ2qfQaZrH2Ira+CU69KDw+aBHk4GQ3LZY3RKCmK5Ck=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=XFGeHnO41wQThwSaa5KXLEiWWiuY84ny09QOskOc0hQ=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1795636767086600.8023695989365;
-	Wed, 25 Nov 2026 11:59:27 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=E0t/jPCtXGtbb6JaguDNhXG1M4TpVUu9A8qf+uw6GCu6dZl9p34wDOVn1IM6B2q078APwQ/1/XEZ5i1KoWOhylrI1V5c3DdNHBmC1A4Un59GTkgJSvynnXd+mOZG8se8VZ/vZ9U+wh7aLnRVaOK9QeRejLbrL7Arjv8pVji8OvM=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=JOYAa7fLf3e5taKaH7vZHli1+lb0DGOTCK/mKOpNivA=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795638509259683.9981897561948;
+	Wed, 25 Nov 2026 12:28:29 -0800 (PST)
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+Date: Wed, 25 Nov 2026 13:28:20 -0700
+Subject: [PATCH] drm/tyr: clamp va_bits to available bits
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -57,67 +58,84 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v7 09/10] drm/tyr: support write-combine BO mappings
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20261122-tyr-ioctls-v7-9-3a2af624b992@linux.dev>
-Date: Wed, 25 Nov 2026 16:59:08 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Lyude Paul <lyude@redhat.com>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Johan Hovold <johan@kernel.org>,
- Sami Tolvanen <samitolvanen@google.com>,
- rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- driver-core@lists.linux.dev,
- Ke Sun <sunke@kylinos.cn>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <992B7455-18DB-46A3-8C94-EE5EE937EFC4@collabora.com>
-References: <20261122-tyr-ioctls-v7-0-3a2af624b992@linux.dev>
- <20261122-tyr-ioctls-v7-9-3a2af624b992@linux.dev>
-To: Alvin Sun <alvin.sun@linux.dev>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261125-b4-va_bits_clamp-v1-1-07e2bb33eb50@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzNDQyNT3SQT3bLE+KTMkuL45JzE3AJdk8Q000RLo2TDVDMLJaC2gqLUtMw
+ KsJHRsbW1AAZORVliAAAA
+X-Change-ID: 20261125-b4-va_bits_clamp-4af5a92c1e68
+To: Daniel Almeida <daniel.almeida@collabora.com>, 
+ Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, sunke@kylinos.cn, 
+ Deborah Brouwer <deborah.brouwer@collabora.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2484;
+ i=deborah.brouwer@collabora.com; h=from:subject:message-id;
+ bh=xNf252I664eRJisbxhiMQd/tqwpzVUUADtcDYFaeWQ4=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDNnsLm++z2sQDzij+oWvtEG2t/fxQ70ky9c6VmpcTx9Ob
+ U1YyRTVUcrCIMbFICumyHLW3qhHvOq9ke78/80wc1iZQIYwcHEKwERe/WJkeO3eO2E745TdDj3L
+ NtX9XvnbrPaad8DqzI1nNwu+ut70XZqR4TzLPcv1ERHP7xmbXz2RsfhS9p4AJbOPWmrff72KYjR
+ cwgQA
+X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
+ fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-Hi Alvin,
+Tyr creates a virtual memory space using the number of bits supported in
+virtual addresses as reported by the gpu. But the page table mapping
+operations limit the width of the input virtual addresses to unsigned
+long. This can result in tyr creating a virtual memory space that is
+larger than a 32-bit system can support.
 
-This patch does quite a few things at once and I'd rather split this.
+Check if the virtual address space bits supported by the gpu are larger
+than the width of unsigned long, and if so, clamp the virtual address
+space bits to this smaller size.
 
-The change we _really_ need in your series is the stale cache eviction
-problem. It is unfortunate that this is a problem in general, and not
-only in Tyr. For that, using the DMA API as soon as the BO is created is
-enough. You can do that in patch 6 by calling sg_table() before the CPU
-is allowed to touch the buffer, like you already do in this one.
+This reproduces the clamping that already occurs in panthor_mmu_init().
 
-Two other things are done by this patch:
+Link: https://sashiko.dev/#/patchset/20261122-tyr-ioctls-v7-0-3a2af624b992%40linux.dev
+Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+---
+ drivers/gpu/drm/tyr/gpu.rs | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-- Honor writeback mappings -> this should be its own patch.
-- Add a "coherent" flag, and thread it through the driver.
+diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
+index 820de9d60c19..058863a6b70b 100644
+--- a/drivers/gpu/drm/tyr/gpu.rs
++++ b/drivers/gpu/drm/tyr/gpu.rs
+@@ -36,6 +36,15 @@
+ 
+ impl GpuInfo {
+     pub(crate) fn new(io: &IoMem<'_>) -> Self {
++        let mut mmu_features = io.read(MMU_FEATURES);
++
++        // In io_pgtable_ops, input virtual addresses can't exceed unsigned long.
++        // Check that the virtual address bits reported by the gpu are
++        // architecturally supported and, if not, clamp them to the available bits.
++        if mmu_features.va_bits().get() > usize::BITS {
++            mmu_features = mmu_features.with_const_va_bits::<{ usize::BITS }>();
++        }
++
+         Self(uapi::drm_panthor_gpu_info {
+             gpu_id: io.read(GPU_ID).into_raw(),
+             gpu_rev: io.read(REVIDR).into_raw(),
+@@ -43,7 +52,7 @@ pub(crate) fn new(io: &IoMem<'_>) -> Self {
+             l2_features: io.read(L2_FEATURES).into_raw(),
+             tiler_features: io.read(TILER_FEATURES).into_raw(),
+             mem_features: io.read(MEM_FEATURES).into_raw(),
+-            mmu_features: io.read(MMU_FEATURES).into_raw(),
++            mmu_features: mmu_features.into_raw(),
+             thread_features: io.read(THREAD_FEATURES).into_raw(),
+             max_threads: io.read(THREAD_MAX_THREADS).into_raw(),
+             thread_max_workgroup_size: io.read(THREAD_MAX_WORKGROUP_SIZE).into_raw(),
 
-What it does not do is "support write combine mappings". In fact, write
-combine mappings is the only thing properly supported and tested so far
-:)
+---
+base-commit: 7402dd230f4497954b465145a22cff7a5a488629
+change-id: 20261125-b4-va_bits_clamp-4af5a92c1e68
 
-The problem with the second bullet point is that a) everything else
-needed to support coherent=3D=3Dtrue is missing and b) I don't have a =
-system
-where coherent=3D=3Dtrue to test this. If others do, great, but even =
-still,
-lets do this as a separate series. So I'd prefer if the coherent flag
-was dropped, along with patch 8.
+Best regards,
+-- 
+Deborah Brouwer <deborah.brouwer@collabora.com>
 
-=E2=80=94 Daniel=
