@@ -1,102 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.95.119
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795628708;
-	b=Yd3lUw7bCuSOUu2B4HE5znzZq16w7quJH0twVlPlZfIcnsTDiUq+xhjDCWuKovG1QvZq
-	 QATirmycxt7+THo57EyqyzcPN3Wh2b+7he/JhoCymWUKF0UfPuAnR89aKEhnIuf//ZOiB
-	 3l0uWMZeZ1OqKOWEbE0CL7lEbHuCEd2QXi6G4nGaOVE7glZdJuFS1775qVVZBWSrVIO9p
-	 kgT7zitItzKcrfHs9e80Kldzd8NN9KI6ZQoMNKcd4LpyHCKKvVOmuxriW3DGqcGZCFsU1
-	 j03BSmjKqA0emCXsfCoMpHGUcPiYKYn0nFx3tlCgQ5wVfGMFU9ezZ+xLV/KdwJ5xnoQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795628708;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
-	 From:To:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
-	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=YtUoZROMY4FEPZqPPD4EFLEbRhcPJTAaarz25kek/fw=;
-	b=GvBXKZWNQQAvkRxBTXzDQ5j1vJYc27zBpjcXqn9xZfXLO6aNs9tw0xaA8JA5dcDA53Tl
-	 HZDFThmuqH1Z5leu3tJFUgv5vJiobEsUa3el9xoIbCzymgjCAfiUaa0Xvxhnwfr/BGycG
-	 4XwauWYT2wiAzIV7ktDG/+UY3j0exGIkWcnFzNrKxV3Tyknzsq0f4Y8cMpvevK2P4m+lg
-	 36o7LlrZm5pJdOYqT8nbJ3APVl2FyHCgN7Hrqkdsy8rhblxRt+X0667Lup8qNbSHJCjOV
-	 04Lwa2T37hUBXsBQqjC34zhpokDS+O4oiMC61dwCqTXAKTLfHhcPI+/aI7ihld6yjVw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=garyguo.net;
-	spf=pass smtp.mailfrom=garyguo.net;
-	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=nCAMQgye;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.95.119
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021119.outbound.protection.outlook.com [52.101.95.119])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795629470;
+	b=IW68JQZt4bvVazag6iS17nsDtPaYlLdXT52mH38r1yKhymUYFvM5t8ko69kxeB2QOl8N
+	 BEAgHYdm9RLD0TWb2zf9+jcv75SZILqxdwefIAZ5LeynR1adYjLszPROe0yFFeXf7jzzV
+	 q2dMCm2zTsFKpgqmxBQtT/+jwnb13i/V4dWPQa95Ahxbv61Im1ncRFmOjdyrTTHS3doJC
+	 7s2o3oq7Wz/FPIr9bc9Y+198AZaRyr1Sk0J/bQV7rOCLHXZ0ZPXGLJJIX3oGnkLyJf5/X
+	 BziSMHbTDFSgKGzKd41VsinixBc4R61Hugp4yLB4ffA/HkxupWGfaAieqdSLQjbNMEQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795629470;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:To:From:Subject:Cc:References:
+	 In-Reply-To;
+	bh=2f9ij5G5D/y6Pj/3zdLsa4eDisdRz/W4PkKF8qTAmDs=;
+	b=CAbc2z6UrLJWeotU/1h2uV1ofeb2BbuWcZvLH8SqcbhR5XEPWuaA0opWAq9IN4054V8e
+	 IkC5xrPONRaJuDIH2CGF0JcEkVTt1mKHzPTw/DC62qIqBXl0BOi+TyDs1T769ix7MFp1r
+	 3oPYhnccp/aIrq0IPXQGEQOIEJixnKAz5ROUBwolLCZ48ZyeL73+EZLFQQZB1J0daz10S
+	 w9sHaa1GsR41c2vo94a+GT+l9YvAaIpUpncGPxflJqju+2OncQeKA3avNV9SISuWBLERM
+	 pV8OZfHmKKdj1d6PTuLDYP1AtKalsYevUFu6qriHjCjgfrRBw49YKiqAki+NYaMtFiA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="fz7TbJU/";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F33C606A68D;
-	Wed, 25 Nov 2026 17:45:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0F33C606A68D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766FC606A321;
+	Wed, 25 Nov 2026 17:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=nCAMQgye
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FgbSLzb5Skge3DRBA0xq0z3qUx7Y1NDe2uaKdHIBDzMcvjp3psWL1CUtuL47azo//almdrY2vhnZMNi+nUIAtIxqQfY9SKiqwpb8/hdRu4w8wr7dBTNBXMTD7v/I7e4AgiTUogEv4aAllQOd7GqO9kvt8oP30z+Uo35mCPzSE+IVT2rAGb8aPUZYA+o84ulmgmQTb/wQIyWAsuL+Q32h5ZudfatnK6Pq4uoR8w6rcY2SH0uFazqUHmdO31+YuIQPeEhuXKwqGP7+yJNzEyZUKBpRNnJfvK1BgX9xcPr+XlOzU6RFTMBZLrEYYeUeqtoDoG4rjJ4yaJN+bDjOjgMowQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YtUoZROMY4FEPZqPPD4EFLEbRhcPJTAaarz25kek/fw=;
- b=xLVEHKs4N8GJuQjKoTa0hs+cl25n/RNWDME/b6to1A5wvmUifSA7jYSAnJHKs26KOzG2cq/J/3Mwd3G2BaaJPIZSDNNpqsafHXDGCq58/27eOQkMg+yyG70KdyJc6oEZ5Tbk7utNGI1God9vRX1vQt1phpOkDs7ELALM7nu48Dj9DWvoPpEF7irMpuhFHXn4HpIa6TBPSQpp8xspU9Y+wrpjpZh845gme7asu5qCArqCHqN3BGYGdh3WojsDVzoukw7UcIKz69/Q4RBkNlpyaFiU88B9gRFGdPhoQ3GFQPCx0zMOQ9OImBx+9T10CS08R8IR4gkz1HgBC6PEKJCJPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YtUoZROMY4FEPZqPPD4EFLEbRhcPJTAaarz25kek/fw=;
- b=nCAMQgyeWY7sk2UAtvx5AcOAzxrgy03oiFsnRh040KhMj12epJshcf/xqEOwoib7LhN+6B4Dvqu5H1ughAHNiV3HKsPMP3rLyfalihL8v3+ssZinP2aecsPQE15QkNpTnhA9XNOFB5qT8/+yI6mPrncmczq3nzPfNKXb7vP57uE=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1cb::9)
- by LOCP265MB8641.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4b5::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Wed, 25 Nov
- 2026 17:45:04 +0000
-Received: from CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3]) by CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- ([fe80::55f6:f98b:7fad:c6e3%2]) with mapi id 15.21.0662.004; Wed, 25 Nov 2026
- 17:45:04 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 25 Nov 2026 17:45:03 +0000
-Message-Id: <DN4H92P6CGXR.UWHS0SN6H62D@garyguo.net>
-Cc: "Priya Bala Govindasamy" <pgovind2@uci.edu>, <m.wilczynski@samsung.com>,
- <ojeda@kernel.org>, <boqun@kernel.org>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <dakr@kernel.org>, <daniel.almeida@collabora.com>,
- <tamird@kernel.org>, <acourbot@nvidia.com>, <work@onurozkan.dev>,
- <elle@weathered-steel.dev>, <linux-pwm@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <ardalan@uci.edu>, <zhiyunq@cs.ucr.edu>,
- <dzueck@uci.edu>
-Subject: Re: [PATCH 1/1] rust: pwm: reject over-aligned driver data in
- `Chip::new()`
-From: "Gary Guo" <gary@garyguo.net>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, "Gary Guo"
- <gary@garyguo.net>
-X-Mailer: aerc 0.22.0
-References: <cover.1794600927.git.pgovind2@uci.edu>
- <caddec5478a0d39a73152247a60bc21b3c609cc7.1794600927.git.pgovind2@uci.edu>
- <DN4FFKMFI488.187QX5RI55L8S@garyguo.net> <awcbICD_lN4uJrKo@monoceros>
-In-Reply-To: <awcbICD_lN4uJrKo@monoceros>
-X-ClientProxiedBy: LO4P265CA0263.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:37c::12) To CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:1cb::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fz7TbJU/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC71C1F000C6;
+	Wed, 25 Nov 2026 17:57:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795629470;
+	bh=2f9ij5G5D/y6Pj/3zdLsa4eDisdRz/W4PkKF8qTAmDs=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To;
+	b=fz7TbJU/3glP8YXf/jae8naiAwKy0x5vxOMI5AC7hWWLBflpbagoU2pKrdY18YziL
+	 vu4U6UIOQcTnHcq+XV7npbS18NHnvSvBuQuY0aToG1eUsHcXobqCwKrRE4UJYhksdJ
+	 KIz/xIW6QkCXRAoiiWGIVXV9gG4/KRAoH/Q79MuJVohZ3qwnA0EyNYbYpjcC2UBFRx
+	 0DOOSg2fUj12hb2m5JzXU8aud7xqWtexLbwZ6+S2SjX7+GxYByCa+SI0XguEuV6TuP
+	 ILrujJLjtZEmbFaV96gsOEd2C2I51S/CBcIM0Gd4shhinKiVIVvPj6g6UUIbSc1T9N
+	 nRWB3kauLJn1Q==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -105,95 +48,442 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP265MB6051:EE_|LOCP265MB8641:EE_
-X-MS-Office365-Filtering-Correlation-Id: dc1f4e0f-e9f7-47fb-d16a-08df4b1bd68a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|10070799003|376014|7416014|366016|18002099003|22082099003|6133799003|4143699003|10067099003|56012099006|261102123227099003|261026140227099003|261026121527099003|261021123027099003|261022105027099003|261022075727099003|261028144727099003|261021121427099003;
-X-Microsoft-Antispam-Message-Info:
-	kftRBvSra36uM+KTJjBYjcq0lqzk6es0MhvSmQyPbD4gWc3b0fdMMj7zWfRjJ7GPWwQXxxxmciZ4Tx8WJFh6on4HY4VCDBHp2iPoo50s+d5sdrz82U7qztChx7xu5AgI/5D7Swkk0ofcGNCGWs0rAknSWvnUhq70ZMDEpu3dLq7XljkJuhh1VpPzY5Lsl0WT3+BxwzqXuphaByssUVsV4+nc42cU/ZU1SH5fVFOSSaeyvozWPFJ1/VjgKrUxqXfSeXyH+9qyz3ZJBriXSZPpukQI1xes0uOxgN4ab7meOfwf7HRQp1wnk7hTzxLHQHzKxHGSBReWvjgOok7Rh5vDTdSWXDwLDeVDuxOwqFEV4tdn0M8tqoHg874WtsPx0FlHtPV7nFX+W5U8ZIAGxQcQ8v0UguW4zPElHmfJtbba5wFB7y9Uq3yVXjDCGYib+dFLXKMkGalp8mdUe1h0ceZCJV3aboiJIfVXOhvktSbUaourz2sxqsWbIer3KXoWIWKMzU9UAZj3ccRej6fxsW43VnqKNine0ZSeg+y0eGZ3uUg3itIFS8nlScpXCDgAacrNEKykUrb914YptAWm0xPb46E7NNG7Vc1Mk6fzEa6C8QwJyM5fMLWbtatjtGO30nT8ftlOZDW1WIgOYJcdKSXyodLuaQO33QOXfL77r39Fww4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(10070799003)(376014)(7416014)(366016)(18002099003)(22082099003)(6133799003)(4143699003)(10067099003)(56012099006)(261102123227099003)(261026140227099003)(261026121527099003)(261021123027099003)(261022105027099003)(261022075727099003)(261028144727099003)(261021121427099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZGlGZlp4VGFDT0FHek5IWFRwbW15OHhhWHlNbVNMbnFtem1IdnBnU0F1ME0x?=
- =?utf-8?B?TzFOUlU1RklkN21TRmYrVE5yZ1ZMT0NNUU9IazJ4b3pVQXQ5SWN2QVRLTUhn?=
- =?utf-8?B?TCt0MlpHMDBiNkRTRnVqckhzRmF2aFlJSnVMZnNlSlJyb01HbHlsWEhaZXoz?=
- =?utf-8?B?Y2I1eGs5SEMvUXdmcitjdXpXTWxUYmppM1cySWNrKzh4UHVpdGZoZFVGWTVI?=
- =?utf-8?B?bTJGSC9ESFZDMGJLUEtMelV0QlFFUENjem5LQWViekphc2pLcEVDMVhQSDlW?=
- =?utf-8?B?RFp3U3hrZzl1VUo2Y1V5K3Z4RWVUQ3ptT0tEa0Mwd08ydzJ2L0RDdFcveDB1?=
- =?utf-8?B?Sm9RZ2ZNbTBsMmhYU2pkbU50NUFENXpoa01NYTlZUDBsRlpYbGkrc1psSlU4?=
- =?utf-8?B?dThqY2h4N0R4MjhRV001MEZnZS83R1lMR3hmVk9qTU85MWJpVVF0Q0tPVlBw?=
- =?utf-8?B?Mk51SVVYbDBMaDlRdU9McDFNcWFkQUJvazNxblBYb09YejB2ZE9HUnMzcG81?=
- =?utf-8?B?ODFNL21GRi94bUNkRUtlM2N1QUZZQlV0aTRMTDY4QWNqazM1WDUxSGZZcE9O?=
- =?utf-8?B?Lzk2RVlPWXphdmNTWVI2Y3BrVS9kalZxSFpvcWcycGt4Y294c0lNU2I1bW5j?=
- =?utf-8?B?ZnRTNEhSZ21nUnZWWEs4cnRMK2oveEs1VnR2Y2x5V2lURHROQzROSnQwcmtF?=
- =?utf-8?B?b3VjbUE4US9BczA1d0dQSThjWjVkQkc2bDRlb2JWYUJKTlNSVm40STNWOWRS?=
- =?utf-8?B?QytWT0pZOWxxVjRIU3FvZzZ0VzIxMWx6RnZkdVRLbFE0YmtYNGxaa2RTeURY?=
- =?utf-8?B?YVlnblA5cmxPOEhCVDRnVTBxTHYzUU52YUh5RU42Wkd6dCtmcWU1UHlvd3hs?=
- =?utf-8?B?RTB0Z0U2U0RKMDM4Tk5Jd1JuWEtVWHphV1lvZ3FMcVRsU01BdFZGdG1oSEEz?=
- =?utf-8?B?Uk1RNCs2b2o5ZXRUMVdNWXNxYTVSL1crdHI0ZzBGcy94c090WDFScnNndmJC?=
- =?utf-8?B?aDBSTGN3WUZOcVF5cnhiZHhEOHdBT1hRR2ZWOE5ncTBzSlpWS2xxMDNPTXE5?=
- =?utf-8?B?VTMzMEVNcU9LejN4ZVFabTZNOSt6M0J6S21OOVFrU2pQRkMrQzFJN3FmdlFR?=
- =?utf-8?B?dUNXcGROM1doNjNNN2E3UmtQK0RqaGZEcWJwQ3JQYXZsblJDb2VXdC9kQktl?=
- =?utf-8?B?dGFjRkIvUTc1TkwycGYyYjdldW9zYS9KZWZHSG8rdThscExMMWdjZ050S0hJ?=
- =?utf-8?B?ekVPUkJIcXRZZHFLZ1RlL3hNK1hUQzBJTzdYc0tjQkU3S2tubC8zUzZvMlBj?=
- =?utf-8?B?RDlWWU1UcGZSQm1SS3dNVWRPeXlyRTZxUkhyTWVPZXVQTHRBdU56NUd3RUxv?=
- =?utf-8?B?NFh4ZXdBekxhbmw0ZkhXb0FXQ2FwYlNxQlNuU2hTWURNbzd4TXdLbnA4dEVV?=
- =?utf-8?B?K1ArZ2t6R1I5MEZOUlAzczBmTzhKWUN4bTRhRjViK2N4RllBamlyNk1xOW1U?=
- =?utf-8?B?NS81UENXWEtQZ0NJYytXajVnVmJDSUgyTFdJazRoR0hDUVBNOEczZlM5NC9h?=
- =?utf-8?B?Ukxvb295YysrQWw2QVA1bUh0YjR3UlYvSzBJM1kzbnNQRm0wR1lhZllGTVFj?=
- =?utf-8?B?dVlDZ3BSSU5INVgxTnpDaDV6d0RHYS82WlF1M0VjTjhtNjVlMGMwMGdhV040?=
- =?utf-8?B?cnRDMnc3UHhmN3pFeGdzSHdEUlpwOFU0eExSRytTNUNPOHAxVXRQMWY0NWhF?=
- =?utf-8?B?SXRpcy94K1FVcEdzT2RvbTVYd1doS3hTMkdxa2tFb1diSUdQN3NFQ3VTN3B5?=
- =?utf-8?B?VjFDNTBxdm1KdWlUeUN6ODNLRjd0VSszQ0ZDVHEwckExNk9uQUpKazh3OXFs?=
- =?utf-8?B?SVRXdWtaSjRkSUFsNVFpWU9ibVpSSmdRcUZiMlBOTWtyTXpEdXVWK0lHaUow?=
- =?utf-8?B?RVhtanlVWFpCeWtGMUMwem9uMUdiVjJnZjB5SzdsVFZmdWRVTVBzSlhPYzho?=
- =?utf-8?B?aEVUcjJHZXJnQWl4MmI2dk00TVR4TCs5akI1MWRkSXRSalI1YlNxODRBd3JK?=
- =?utf-8?B?MzVpUFJITGlJVW1JQjVHTlNFdW94YXJGaGZFUnk0Qlk4Q2FBRGNEUGI1WkNy?=
- =?utf-8?B?S2RkZE5Sc3p4UFQxMWhma3JqNjd3aEx5dXFidy9ndEJWaVhLOGtoY0lQTFV0?=
- =?utf-8?B?NnRxbnhZZkdKOW1IclV0ZHdkSjR3L1N2UDB6a0pYVVluYXMySnZYck0xUHdj?=
- =?utf-8?B?akcvV283U1dIYkdaYnlVRnJQTkFrYmoxWFY5NitFZ0NlOTNnQ0t6NjQyZnB2?=
- =?utf-8?B?SWZwRUEwSUo2T1hXVklZSUlCYkRGUmJGRHlSTmVvejc2RHhnZUNVZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: dc1f4e0f-e9f7-47fb-d16a-08df4b1bd68a
-X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB6051.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 17:45:04.6758
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ES9P43EmkTVXXrmePBip+g0bHFx6ym6RaaZRlv5A39rKVsRgvbIkQeDNMcAqXRkN39eWrGFupbjBkAU9AHVXXg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOCP265MB8641
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 25 Nov 2026 18:57:40 +0100
+Message-Id: <DN4HIQ5VPWEI.FFVR53SNX54Y@kernel.org>
+To: "Simon Song" <xinmengs@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 6/9] rust: vfio: add common VFIO device handling
+Cc: <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <linux-pci@vger.kernel.org>, "Zhi Wang" <zhiw@nvidia.com>,
+ <alex@shazbot.org>, <jgg@nvidia.com>, <yishaih@nvidia.com>,
+ <skolothumtho@nvidia.com>, <kevin.tian@intel.com>, <airlied@gmail.com>,
+ <simona@ffwll.ch>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+ <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+ <tmgross@umich.edu>, <jhubbard@nvidia.com>, <ecourtney@nvidia.com>,
+ <cjia@nvidia.com>, <smitra@nvidia.com>, <kjaju@nvidia.com>,
+ <alkumar@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
+ <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <boqun@kernel.org>,
+ <daniel.almeida@collabora.com>, <tamird@kernel.org>, <work@onurozkan.dev>,
+ <jgg@ziepe.ca>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <peter@colberg.org>
+References: <20261119215046.2892839-1-xinmengs@nvidia.com>
+ <20261119215046.2892839-7-xinmengs@nvidia.com>
+In-Reply-To: <20261119215046.2892839-7-xinmengs@nvidia.com>
 
-On Wed Nov 25, 2026 at 5:32 PM GMT, Uwe Kleine-K=C3=B6nig wrote:
-> On Wed, Nov 25, 2026 at 04:19:30PM +0000, Gary Guo wrote:
->> On Fri Nov 13, 2026 at 8:25 PM GMT, Priya Bala Govindasamy wrote:
->> > This issue was detected by FerroLens, an LLM-assisted analysis tool, a=
-nd
->> > was then manually analyzed and reproduced.
->>=20
->> This should be a note and not commit message. Move it below the ---.
->
-> FTR: While I agree that the commit log is very verbose (and being only
-> half Rust-literate I still don't understand it completely :-), but I
-> like the info that this was found using a tool (in contrast to being a
-> real problem triggering with mainline) in the commit log.
+On Thu Nov 19, 2026 at 10:50 PM CET, Simon Song wrote:
+> +/// Maps a C device structure to its embedded VFIO device.
+> +///
+> +/// # Safety
+> +///
+> +/// Implementations must return the address of the `vfio_device` at the =
+beginning of `Self`,
 
-Perhaps better to just state "This is a soundness issue and not triggered o=
-n
-any of the in-tree users"? I think that's what's important for commit logs.
-Whether a tool is used to find it doesn't have direct correlation to whethe=
-r any
-in-tree users are affected.
+I think "at the beginning of `Self`" is not a safety requirement for this t=
+rait,
+it's an implementation detail of the current implementation on the C side, =
+that
+could be a type invariant of DeviceBase.
 
-Given the removal of "Assisted-by" requirement recently I thought the idea =
-is
-that exact tool / model used doesn't belong to commit message anymore.
+Besides that, I think the abstraction we currently need with DeviceBase and
+RawDevice (which I proposed to deal with the current implementation) could =
+be
+simplified if the C code would be more flexible regarding the layout of a s=
+truct
+subclassing a struct vfio_device.
 
-Best,
-Gary
+However, this could be a subsequent consideration and nothing that needs to=
+ be
+tackled now; it is mostly an implementation detail of this abstraction.
+
+> +/// preserving the input pointer's provenance.
+> +pub unsafe trait RawDevice {
+> +    /// Returns the `vfio_device` embedded in `raw`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `raw` must point to an initialized, live `Self`.
+> +    unsafe fn raw_vfio_device(raw: *mut Self) -> *mut bindings::vfio_dev=
+ice;
+
+I think this could be safe by taking &Opaque<Self>.
+
+> +}
+> +
+> +// SAFETY: A `vfio_device` is its own VFIO device.
+> +unsafe impl RawDevice for bindings::vfio_device {
+> +    unsafe fn raw_vfio_device(raw: *mut Self) -> *mut bindings::vfio_dev=
+ice {
+> +        raw
+> +    }
+> +}
+> +
+> +/// Callback data stored after the C device structure.
+> +///
+> +/// `R` is the type of the registration data and `O` the type of the ope=
+n data, both written
+> +/// with the placeholder lifetime `'static`, because the device has no l=
+ifetime to name.
+> +///
+> +/// # Invariants
+> +///
+> +/// `reg_data` is `None` until a registration publishes its data, and is=
+ not changed again. The
+> +/// data is pinned and remains valid while the device is registered. Aft=
+er unregistration or a
+> +/// failed registration attempt, the pointer may dangle; its pointee mus=
+t never again be
+> +/// accessed through this device.
+> +/// `open_data` is null outside a successful first open, otherwise it ow=
+ns a pinned allocation
+> +/// until the last close. The bus-specific layer drains callbacks before=
+ either is released.
+> +struct CallbackData<R, O> {
+> +    reg_data: UnsafeCell<Option<NonNull<R>>>,
+> +    open_data: UnsafeCell<*mut O>,
+
+I think this should be Option<NonNull<O>> as well.
+
+> +}
+> +
+> +/// A C VFIO device structure `Raw`, followed by the callback data of th=
+e driver `T`.
+> +///
+> +/// `raw` is the first field, so the `vfio_device` at the beginning of `=
+Raw` is also at the
+> +/// beginning of `Self`, as `vfio_alloc_device()` requires.
+> +///
+> +/// `R` and `O` are the types of the registration data and the open data=
+ of `T`, written with
+> +/// the placeholder lifetime `'static`. Use the alias [`Device`], which =
+takes both from the
+> +/// operations trait of `T`.
+> +///
+> +/// # Invariants
+> +///
+> +/// - `R` and `O` are the registration data and open data types of `T` w=
+ith all lifetimes
+> +///   replaced by `'static`. The data stored is only valid as described =
+for `CallbackData`.
+> +/// - `raw` is initialized and remains alive while borrowed. The referen=
+ce count of its embedded
+> +///   `vfio_device` owns the allocation.
+> +/// - The device is registered with VFIO only after its registration dat=
+a has been published.
+
+That's more of a description of the registration protocal than a type invar=
+iant.
+
+Maybe something like:
+
+"For [`Open`] and [`IoContext`] references, registration data is published =
+and
+remains valid for the reference's lifetime."
+
+Also note that type invariants should be justified with an // INVARIANT com=
+ment
+when the type is constructed, or re-created from a raw pointer.
+
+> +/// - Callback contexts are borrowed only for the corresponding callback=
+ and thread; only
+> +///   [`Normal`] references can be reference-counted.
+
+I'd remove this one.
+
+I'd also keep the documentation private with #[doc(hidden)] as the type is =
+not
+supposed to be used outside of the Rust core code.
+
+> +#[repr(C)]
+> +pub struct DeviceBase<Raw, R, O, T, Ctx: DeviceContext =3D Normal> {
+> +    raw: Opaque<Raw>,
+> +    data: CallbackData<R, O>,
+> +    _context: PhantomData<(T, Ctx, NotThreadSafe)>,
+> +}
+
+If we declare CallbackData as
+
+	struct CallbackData<T: Operations> {
+	    reg_data: UnsafeCell<Option<NonNull<T::RegistrationData<'static>>>>,
+	    open_data: UnsafeCell<Option<NonNull<T::OpenData<'static, 'static>>>>,
+	}
+
+we can get rid of R, O, right? Then DeviceBase could be simplified to:
+
+	pub struct DeviceBase<Raw, T: Operations, Ctx: DeviceContext =3D Normal> {
+	    raw: Opaque<Raw>,
+	    data: CallbackData<T>,
+	    _context: PhantomData<(T, Ctx, NotThreadSafe)>,
+	}
+
+I think this also needs a change in the subsequent patch, so
+vfio::pci::Operations extend vfio::Operations.
+
+	pub trait Operations: super::Operations
+
+> +/// A VFIO device, wrapping `struct vfio_device`.
+> +pub type Device<T, Ctx =3D Normal> =3D DeviceBase<
+> +    bindings::vfio_device,
+> +    <T as Operations>::RegistrationData<'static>,
+> +    <T as Operations>::OpenData<'static, 'static>,
+> +    T,
+> +    Ctx,
+> +>;
+
+...and this simplifies to:
+
+	pub type Device<T, Ctx =3D Normal> =3D DeviceBase<bindings::vfio_device, T=
+, Ctx>;
+
+> +#[expect(dead_code)]
+> +impl<Raw: RawDevice, R, O, T, Ctx: DeviceContext> DeviceBase<Raw, R, O, =
+T, Ctx> {
+> +    /// Initializes the Rust fields of a newly allocated device.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `this` must point to an allocation with the size and alignment o=
+f `Self`, whose `raw`
+> +    /// has been initialized. Nothing else may access the allocation dur=
+ing this call.
+> +    unsafe fn init(this: *mut Self) {
+> +        // SAFETY: The caller provides exclusive access to a suitable al=
+location.
+> +        unsafe {
+> +            (&raw mut (*this).data).write(CallbackData {
+> +                reg_data: UnsafeCell::new(None),
+> +                open_data: UnsafeCell::new(core::ptr::null_mut()),
+> +            });
+> +            (&raw mut (*this)._context).write(PhantomData);
+> +        }
+> +    }
+> +
+> +    /// Recovers `&Self` from the `vfio_device` VFIO passes to a callbac=
+k.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `vdev` must point to the `vfio_device` at the beginning of a `Se=
+lf` that remains alive
+> +    /// for `'a`. The caller must provide the guarantees of `Ctx` throug=
+hout the borrow.
+> +    unsafe fn from_raw_vfio<'a>(vdev: *mut bindings::vfio_device) -> &'a=
+ Self {
+> +        // SAFETY: `Raw` begins with its `vfio_device` and is the first =
+field of `Self`. The
+> +        // caller guarantees validity and the context.
+> +        unsafe { &*vdev.cast() }
+
+If we rely on this layout guarantee here, there's no point to have the RawD=
+evice
+trait dealing with the layout.
+
+Either we add from_raw_vfio() to RawDevice, or we just remove RawDevice and=
+ make
+the layout guarantee a type invariant.
+
+Either is fine with me, but maybe the RawDevice trait is a bit overengineer=
+ed
+and a type invaraint is sufficient.
+
+> +    }
+> +
+> +    fn as_raw(&self) -> *mut Raw {
+> +        self.raw.get()
+> +    }
+> +
+> +    fn as_raw_vfio(&self) -> *mut bindings::vfio_device {
+> +        // SAFETY: By the type invariants, `raw` is initialized and aliv=
+e.
+> +        unsafe { Raw::raw_vfio_device(self.as_raw()) }
+> +    }
+> +}
+> +
+> +#[expect(dead_code)]
+> +impl<Raw: RawDevice, R, O, T> DeviceBase<Raw, R, O, T> {
+> +    /// Publishes the registration data passed to callbacks.
+> +    ///
+> +    /// Returns [`EBUSY`] if registration data has been published before=
+, so that a device can
+> +    /// be registered at most once.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must serialize calls for this device. `data` must poi=
+nt to pinned data that
+> +    /// remains valid until the device has been unregistered or, if regi=
+stration fails, is not
+> +    /// accessed through this device.
+> +    unsafe fn publish_registration_data(&self, data: NonNull<R>) -> Resu=
+lt {
+
+I'd use:
+
+	data: NonNull<T::RegistrationData<'a>>,
+
+and erase the lifetime internally.
+
+> +        // SAFETY: The caller serializes publication, and callbacks only=
+ read the slot.
+> +        if unsafe { (*self.data.reg_data.get()).is_some() } {
+> +            return Err(EBUSY);
+> +        }
+> +        // SAFETY: The slot is unpublished, so the device has not been r=
+egistered and no
+> +        // callback can read the slot.
+> +        // INVARIANT: The slot is written once; the caller keeps `data` =
+valid.
+> +        unsafe { *self.data.reg_data.get() =3D Some(data) };
+> +        Ok(())
+> +    }
+> +
+> +    /// Destroys the open data.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Call once after a successful [`DeviceBase::open`], with all I/O =
+callbacks drained and
+> +    /// the next first open excluded. Registration data and the resource=
+s the open data borrows
+> +    /// must remain alive.
+> +    unsafe fn close(&self) {
+> +        // SAFETY: The last close exclusively takes the allocation publi=
+shed by `open()`.
+> +        let raw =3D
+> +            unsafe { core::mem::replace(&mut *self.data.open_data.get(),=
+ core::ptr::null_mut()) };
+
+With the type changed to Option<NonNull>> this becomes:
+
+	let raw =3D unsafe { &mut *self.data.open_data.get() }
+	    .take()
+	    .expect("VFIO OpenData is expected to be populated.");
+
+> +        // SAFETY: The allocation came from `KBox::into_raw()` and is de=
+stroyed without moving
+> +        // it. Lifetimes do not affect its layout.
+> +        unsafe { drop(KBox::from_raw(raw)) };
+> +    }
+> +}
+> +
+> +#[expect(dead_code)]
+> +impl<Raw: RawDevice, R, O, T> DeviceBase<Raw, R, O, T, Open> {
+> +    /// Creates the open data from the registration data.
+> +    ///
+> +    /// The [`Open`] context guarantees an exclusive first open of a reg=
+istered device, whose
+> +    /// registration data remains valid until the last close.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - No open data may exist.
+> +    /// - `OD` must be `O`, except for lifetimes.
+> +    /// - `R` names the registration data with the placeholder lifetime =
+`'static`, and the
+> +    ///   caller chooses the lifetimes of `OD`; this function cannot tie=
+ either to the time the
+> +    ///   data is valid. `init` must therefore use the registration data=
+ parametrically, as a
+> +    ///   function generic over its lifetimes does: nothing borrowed fro=
+m it may escape, other
+> +    ///   than into the returned open data.
+> +    /// - `init` must not capture references that are only valid for the=
+ callback and store
+> +    ///   them in the open data, which outlives the callback.
+> +    /// - The open data must be destroyed with [`DeviceBase::close`] at =
+the last close.
+> +    unsafe fn open<'a, OD, I>(&'a self, init: impl FnOnce(&'a R) -> I) -=
+> Result
+> +    where
+> +        I: PinInit<OD, Error>,
+> +    {
+
+I think this can just use the associated types of T:
+
+	unsafe fn open<'a, 'data: 'a, I>(
+	    &'a self,
+	    init: impl FnOnce(&'a T::RegistrationData<'data>) -> I,
+	) -> Result
+	where
+	    I: PinInit<T::OpenData<'a, 'data>, Error>,
+	{
+
+> +        // SAFETY: By the type invariants, an `Open` reference only exis=
+ts for a registered
+> +        // device, which has published registration data that nothing ch=
+anges anymore. The
+> +        // data remains valid until the last close.
+> +        let reg_data =3D unsafe { (*self.data.reg_data.get()).unwrap_unc=
+hecked().as_ref() };
+> +
+> +        // Allocate before calling the driver so allocation failure cann=
+ot follow open.
+> +        let data =3D KBox::<OD>::new_uninit(GFP_KERNEL)?;
+> +        let data =3D data.write_pin_init(init(reg_data))?;
+> +
+> +        // SAFETY: Only the owning pointer moves; `close()` drops the al=
+location in place.
+> +        let raw =3D KBox::into_raw(unsafe { Pin::into_inner_unchecked(da=
+ta) });
+
+I think this can just be
+
+	let data =3D KBox::pin_init(init(reg_data), GFP_KERNEL)?;
+	let raw =3D data.into_foreign().cast::<T::OpenData<'static, 'static>>();
+
+> +        // SAFETY: The first open is exclusive, and no I/O callback runs=
+ before it returns.
+> +        // The caller guarantees that `OD` and `O` only differ in lifeti=
+mes, which do not
+> +        // affect the layout.
+> +        // INVARIANT: The allocation is pinned and owned by the slot unt=
+il `close()`.
+> +        unsafe { *self.data.open_data.get() =3D raw.cast::<O>() };
+> +        Ok(())
+> +    }
+> +}
+> +
+> +#[expect(dead_code)]
+> +impl<Raw: RawDevice, R, O, T, Ctx: IoContext> DeviceBase<Raw, R, O, T, C=
+tx> {
+> +    /// Returns the registration data and the open data, for an I/O call=
+back.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `R` and `O` name the data with the placeholder lifetime `'static=
+`, which is not the time
+> +    /// the data is valid. The caller must use both parametrically, as a=
+ function generic over
+> +    /// their lifetimes does: nothing borrowed from them may outlive the=
+ callback, and nothing
+> +    /// borrowed for the callback may be stored in them.
+> +    unsafe fn callback_data(&self) -> (&R, Pin<&O>) {
+
+Same here, can we use the associated types of T?
+
+> +        // SAFETY: By the type invariants, an `IoContext` reference only=
+ exists during an I/O
+> +        // callback on an open, registered device. VFIO excludes the las=
+t close and
+> +        // unregistration for its duration, so by the type invariants of=
+ `CallbackData` both
+> +        // slots hold valid data that nothing changes, and the open data=
+ is pinned.
+> +        unsafe {
+> +            let reg_data =3D (*self.data.reg_data.get()).unwrap_unchecke=
+d();
+
+I'd use expect() instead.
+
+> +            let open_data =3D *self.data.open_data.get();
+> +            (reg_data.as_ref(), Pin::new_unchecked(&*open_data))
+> +        }
+
+Multiple unsafe operations should have their own unsafe block and justifica=
+tion.
