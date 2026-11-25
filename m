@@ -1,100 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795599645;
-	b=sSACH6SGPScbNrIfN8BdL4UfhndrgB3jh0AtQbneh59z/hgL8XDwX13puf6QOHdTc4O9
-	 Fw27z07iNe2Z5xkPFADgTSW5MO1sdsSUAqDzGm60urbyzGTUgC3Tq5A75+XlMlnIa6bnb
-	 H/MRdr3nBIdVndUEvDFIbmci2lkYELvvsT/1mwBhI3G2OWf3mVwyjr0MfxUW0U3fsOfk7
-	 e8BoQ54ZABcsZ7t6B1nK/GcZw8SkikPLhI83m4RTVZBdLkT2VShISq+1VwKa/xty/iXwF
-	 TCj4GO7pE+mkHByub+cfz2tWd2Pp5lOp+wG0ydPmSqK0eAX5ym5AbsXABGdYvCH8ibA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795599645;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=pQwGXJSXqljBjagDccQ7L1MMOs3fUlkutet967RTyHA=;
-	b=rV/1dB/JlHfACs3pgeaodpY+MVcHzJG2f57rURG1rWC4dpKVK6dfCDMX48Rt+QgPRBby
-	 lGe5UWLz1bnEI7Ylz8U6zE1PnjGcHM14i3nteeFcAfYzeVhypEM8ajLK30L3nfOs1ej1N
-	 7Ff9quTCQmMhhh4zXSCZPl488vjlcGVrjT2+M+eWs726O5pKrlfk4VYUhY8VbPHRmINP/
-	 EBs0JF3tv4TEO5ihTY3efkfRwVHWZhk/nt8Jw6gQm1/FTvutxXwJwYEXMie4tvOKHHD5L
-	 irGMrSaMItiLyiW78ddJz2YbXXQBURONB3//jem3Vh77SWe+d0okqouo5qxeopdNYaQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=USogZ0T7;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.50
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.42.244.120
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795600604;
+	b=AyVDzcFaDEbPohtIppnjEXRKOOEE6L1COHGLoJZAbQf3j858Dax/o02nClj/IkJ+bsI6
+	 78DQGWOih5fShb/t1suC3h/iq45+mbucQqhQfpbmec0Eh4JelBw4t6NA3mK21L+0tPKW4
+	 JarMpwGh7/cmqStH97KMIJ6gszFLQPVf6se56UFbpix1ymf0caeqxGyg6RWxTUiaQKJp1
+	 ZN4zOuJhjm96viBpLTyPYlw8gkUshHfKtaRp0Ga7lvl1ogyFxw/OvuzpPcuNNlRpqLF8x
+	 uSZ2xRamxFPRGO+OM9tlTpL+tXiynXzjilZkxfXhCEenAuMJ/paTFPT7DVQsKaOAIcQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795600604;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:Organization:x-ms-reactions:
+	 X-purgate-ID:X-purgate-type:X-purgate-size:X-Notice:X-purgate:
+	 X-purgate:X-pfmilter;
+	bh=o9V35QWmnxkcGDaXqhjxiPIy0R24gUWruywCyvkZf9g=;
+	b=m50LyulA/iCwMBAodkD9bXvCZ/Iiwn9pOyk+sv040VDQ2yBIXJHZ0CZqULi1jOD9hmHv
+	 NzVh4nuaS8ijzzd3FKmHF2Be8UpGL5fqMyj6ALkSMM2KXX6MmJK6ETIriF+O+EnVeuqCQ
+	 QbZo0WQzPpXXc094oe2C/wOvMsmVPUb6lWYEpS0Hj9eyYrV/s8/g6Qx/3uSR2T9RFdsQB
+	 goSbqmUBl9u78kRordGfuc3NekPppNAqEUgfZav+IBrmvt24wVlf/4QDyE/Nzt3q0O6CJ
+	 h+HP+vj+C6wCYGs366xJjsnWFYrwFObk5I/JDDzL1JcxK/iLKjaujfSI6NYpLt0K2Pg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=fritz.com;
+	spf=pass smtp.mailfrom=fritz.com;
+	dkim=pass header.d=fritz.com header.i=@fritz.com header.a=rsa-sha256 header.s=mail header.b=OvOVK9ai;
+	arc=none smtp.remote-ip=212.42.244.120
+Received: from mail.avm.de (mail.avm.de [212.42.244.120])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B1D606A32E
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Nov 2026 09:40:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E3B1D606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EBF606A329;
+	Wed, 25 Nov 2026 09:56:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 10EBF606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=USogZ0T7
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-70059e4dab6so2928023eaf.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 Nov 2026 01:40:44 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795599644; cv=none;
-        d=google.com; s=arc-20260327;
-        b=O1cUDO5wBaecspZUBTMoJd1SaI02XjkIGfWCTP6t4JgD5lBVQEf70+kX7ruytO1LyR
-         kVFbRK7frS0U66PzcISOagrxr8esydUlM4afMhgk5U9qLquExLXy9f6cvaDOVYhEnq8N
-         fuvOeVdWwqOxMfu/LeKlA+KwuQWjJ/X2dbcfQcKayzDilgMXTxJbnKY1S3Atr10G6WO+
-         PN2xcxxC+lfXa7fFSg9FD3kgOoL4c1MJSo91klETEMGOGxIsJZhLiY9bsqrDz8BTTjZ6
-         jnAOQdwy8Mc0hERYMabCFQMykJEyQoaf7y2wwNEzxgY2NOmgQxYAz2DClRVWAKvIdmiS
-         quaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=pQwGXJSXqljBjagDccQ7L1MMOs3fUlkutet967RTyHA=;
-        fh=3B0Laih2AcNDizDbir/jbEF9XD9OF7xZOlQhQM8JiMk=;
-        b=G8ylV5uh0FC07dtDmtuGwdQw2CnM2juMUqJ1US3AFQO494CSHbDScvy/wW27zlGY6u
-         NvzNOEowrHorLbzF1MXfN1g72pLVVPxjQLDzMG59TbESaR5AA92OFCajhmxIVDkGeS1y
-         wYrfFS4d94Q0gBWw5pS2oQIm1sxlx9cZhYLgKg//PeKzqRTGAjnqJ5VryTxIxMxetRLt
-         jEvM4jkhgvK7dGsC48JQS+RyPSlt4Qwi/Q6sb/0WzbZViLF7qal/kGFh7g/gnfCeiGtw
-         Ymxp3cdVBDL4rD+bXFYOPG0rHNhcNt+bkOljoLF+Qs9JqexvelIyP1SUERHFBtgtNiLv
-         MRPw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795599644; x=1796204444; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pQwGXJSXqljBjagDccQ7L1MMOs3fUlkutet967RTyHA=;
-        b=USogZ0T7/+oVKbbiq10JBY6QO9BLjWfuL//cJGrm69dZzwe3xcxXYfejWFRKMykHAk
-         JLbCM7dWn1b62yVI8kDtdjJ9tarlF05DXeEiA2BQyimghQfJ3fuol6EWB2R5Eoa6bUzM
-         C9i36emuQHVamCvtmNtmFGKA8PGlc0pCFIHgvGVazJO0/a1o9s8WiLhfpIn3J7wWSQsc
-         aew+7tayon+TGltP3Ort73UMToKHA/YL1b3IIuT/dXMd68X5mCt3ATymsx8R+q4YMvMR
-         BCvRazhZYOuJ+MBQmEsw05DReJlUv3y8mSfzpgzDpJBVLz74ZGhYl55Xks0vpitxlOw9
-         G2TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795599644; x=1796204444;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=pQwGXJSXqljBjagDccQ7L1MMOs3fUlkutet967RTyHA=;
-        b=UgPrKxQoEZDRz5OCI0yHpKDdVHNFQl4A6K4HgtVKZZkvsKXFqdd77iErz6oMeawjwv
-         x1zphXisBhrftYjSxVfVEEOB8f7MbYsSWG3ggtTRvmua4H3cMdLKeaw62aun9oLk0a5O
-         1ykfNKCbAKxf3j9omGVGS01STwUcX98u+Pit0vlhxfTK9IyhWMznSTWUUuT/PoIek94m
-         8zHRD5BojdZV4rYT4x+dHszTAk3MSHnkP/GcxhpI3l1tJXeQdbnILOjF4aAV9o5DPGHK
-         SD+KQGsEh+5pSmuKX5alYj7Cw781URNjaJWcVUU+DI/Yy6y0WAhYUXfJYaK3AVUv/r/E
-         /HhQ==
-X-Forwarded-Encrypted: i=1; AL+hErEc5UAO/PgGJBU7+mj8eFqp4/gzUxnZpp55YHpG3jRIN/MLFrPyG4jQDHhAAIAugfYd3Ztw2r+yoB62lhwyOQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/2Dfg4CA43vkR4Qs4vhSRrR9SHaQ/JOPChTgp1balEsAOVBo7n
-	HF+YOx8A/fiBYdiodQmKPtQQjMdGj8rOgcxn9Bhc+fUtKpZNgsMuB0ihViI89YF7aRibNRGLvxK
-	IO0CkeRCG2nRUiWJhITIi4Auq9FVNja4=
-X-Gm-Gg: AZFdTZcxwa5/YyjKsMjmN78WjXhOtOmH+DChZ46hkd3VeYl9XcPOL1URxWT5MNqeqlo
-	NuYIVTgzwCBJF8DSFDlNZGaYk9bbHKWJ6t5E2SoQUlYWYwBvjjrernSoNoD3t5H+pIToqNPogZb
-	1CGBeevyYDt3DgFMObbJBn9OPi21A/jChtGvf5vXZ9AAUEDSd4u21c+iEe8OQWBrBxXrDIa+21P
-	5AoOA7iFwwXnepiNbnyEeAUhusST2lNzyWoKNUDTVfmp4nIMsjpBBI1DXnjUpDDFH0drt9//H6o
-	DIVRihmUXcgksdI9n0W85RR3bf5i6AMoylzc+FmGj7XYHGJINdN+IgEUjy4NcSXebTl0I5nwkcF
-	bG3tH6KJ/mwBPLtff9nCB2VxTm3mEityQW4ajxlXVfxfc8NWSUvHH8PWMJAXvXMotu7xR4igKkR
-	HmLDtP01BPVzB+z/j5acuE5uRttPRsLGduM/O+m2XOs1puwMEakGnaIoAN
-X-Received: by 2002:a05:6820:740b:b0:71a:ff98:1734 with SMTP id
- 006d021491bc7-71b395674efmr12396945eaf.45.1795599643823; Wed, 25 Nov 2026
- 01:40:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.a=rsa-sha256 header.s=mail header.b=OvOVK9ai
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fritz.com; s=mail;
+	t=1795600592; bh=pZNseUamYF/NcBCWp2XFZ917wokQkwCmyXEupzEFfo0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OvOVK9aiHm8AT8ElIOf0mHmcxUZqwvb9/Usx9TkHvu+FLOLBysBfDif3qHokFDPEe
+	 nlzMytPtB80W+7JR1u9lNTK7rMmuJQhpwqyTN6A7oifJLbZbukMFQuMWk/alMlt7Vz
+	 709n2l4yfmtdMnlpyL7Sz1aW77eKlBu86HvbUzwnDQs5u30YYG/+tvXeEs95Gk8Mk2
+	 Vm9cM/0CQj/vpLQiMGoal3nPkHzq25SNIMrakcmlahLSPSgMUAH7pa87hTS7S6j619
+	 S5FDwDQnzFvw0BuXbAIJFVQnuzcNaxH+3WwOWAwuMk038+czYJ0r/x5Bpu8bwCAXQe
+	 cYRcdz8PZrcSg==
+Received: from [212.42.244.78] (helo=mail.avm.de)
+	by mail.avm.de with ESMTP (eXpurgate 4.57.1)
+	(envelope-from <n.schier@fritz.com>)
+	id 6b06b0d0-045b-7f0000032729-7f000001912c-1
+	for <multiple-recipients>; Wed, 25 Nov 2026 10:56:32 +0100
+Received: from mail-auth.fritz.com (unknown [212.42.244.78])
+	by mail.avm.de (Postfix) with ESMTPS;
+	Wed, 25 Nov 2026 10:56:32 +0100 (CET)
+Date: Wed, 25 Nov 2026 10:56:32 +0100
+From: Nicolas Schier <n.schier@fritz.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>,
+	Kees Cook <kees@kernel.org>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org, linux-modules@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v6 5/7] kbuild: batch module finalisation
+Message-ID: <20261125-bald-mushroom-of-development-7b2288@l-nschier-z2>
+References: <20261124-build-speedup-v6-0-141a4f861c67@kernel.org>
+ <20261124-build-speedup-v6-5-141a4f861c67@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -104,60 +96,125 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261117-exp-phy-rs-maybelocked-v3-0-4e183a7366a7@gmail.com> <20261124.215747.1090155063373507910.tomo@flapping.org>
-In-Reply-To: <20261124.215747.1090155063373507910.tomo@flapping.org>
-From: SeungJong Ha <engineer.jjhama@gmail.com>
-Date: Wed, 25 Nov 2026 18:40:32 +0900
-X-Gm-Features: Aa3M54pIN7Z7-kOVJu80h62SthWObgtP2wcxlpS5G_JuF9aGWICvZzW1W-c0JhI
-Message-ID: <CAGAB666qnAjFnf41PQmG5kWWSb+Au01OgspPhvREotLGXTYwXQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 0/3] rust: net: phy: suspend may run without phy_device->lock
-To: FUJITA Tomonori <tomo@flapping.org>
-Cc: andrew@lunn.ch, fujita.tomonori@gmail.com, tmgross@umich.edu, 
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, dakr@kernel.org, daniel.almeida@collabora.com, 
-	tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, 
-	hkallweit1@gmail.com, linux@armlinux.org.uk, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261124-build-speedup-v6-5-141a4f861c67@kernel.org>
+Organization: FRITZ! Technology GmbH
+x-ms-reactions: disallow
+X-purgate-ID: 149429::1795600592-22FEB977-6F71B524/0/0
+X-purgate-type: clean
+X-purgate-size: 4480
+X-Notice: Whitelisted
+X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
+X-purgate: clean
+X-pfmilter: host: postfix-mx-01  mail-id: D1F4DA0233  external: no
 
-On Tue, 24 Nov 2026 21:57:47 +0900 (JST), FUJITA Tomonori wrote:
->
-> On Tue, 17 Nov 2026 19:36:18 +0900
-> SeungJong Ha <engineer.jjhama@gmail.com> wrote:
->
-> > Patch 1 drops `read_mmd`, `write_mmd` and `match_phy_device`, which make
-> > the same claim but are called under other conditions, and have no users.
-> > Patch 2 makes `Device` generic over a lock context and documents when
-> > the `Locked` callbacks run without the lock, and patch 3 gives `suspend`
-> > the `MaybeLocked` one.
->
-> Can we use &Device and &mut Device instead of the new context types?
-[...]
+On Tue, Nov 24, 2026 at 12:20:15PM +0000, Lorenzo Stoakes (ARM) wrote:
+> With the .mod.S change in place, module finalisation on allmodconfig builds
+> consists of a large number of very short-lived jobs.
+> 
+> For allmodconfig x86-64 this can be on the order of ~22,000 jobs of a few
+> milliseconds in duration each.
+> 
+> Each job entails processing ~22k .cmd files, so the combination of heavy
+> overhead and small individual job results in a lot of unnecessary and
+> repeated work even with all cores being utilised.
+> 
+> The solution is to batch by a number of jobs. Determining which value makes
+> sense was done empirically.
+> 
+> On a 128-thread threadripper box doing an allmodconfig build, best of
+> 2, *.ko, *.mod.o deleted each time:
+> 
+>     modules per chunk    instances    wall
+>     -----------------    ---------    ------
+>                     1        11171    10.22s
+>                     2         5586     6.72s
+>                     4         2793     4.97s
+>                     8         1397     4.26s
+>                    16          699     4.05s
+>                    32          350     4.05s
+>                    64          175     4.07s
+>                   128           88     4.05s
+>                   256           44     4.03s
+>                   512           22     4.18s
+> 
+> Wall time flattens for 16-256 module batches.
+> 
+> A slower/lower core machine will do better with fewer modules-per-batch, a
+> faster/higher core machine will do better with more modules-per-batch.
+> 
+> Therefore, take the midpoint which works in the most margin in either
+> direction - 128 modules per batch.
+> 
+> This naturally scales with module count too as the optimum gains are
+> obtained with higher module count, so fewer batches in this case costs less
+> overhead.
+> 
+> Each instance holds only its own modules' variables and the top-level one
+> reads no per-module .cmd files at all, the same rules serve both levels,
+> and an instance is told its chunk with modfinal-first=<index>.
+> 
+> Only the top-level instance builds .module-common.o, to the chunks it is a
+> plain prerequisite, so no two instances ever write it.
+> 
+> "make modules" with every *.mod.o and *.ko deleted goes from 28.9s to 15.9s
+> with clang 22. No-op "make modules" goes from 5.6s to 4.8s, as checking the
+> 22,000 targets is spread over the chunks too.
+> 
+> Whole build, 128-thread Threadripper 9980X, best of N runs:
+> 
+>                                          before   after     delta
+>                                          -------------------------------
+>   x86 allmodconfig, no-op make, gcc         2.3s     1.4s    -0.85s (-38%)
+>   x86 allmodconfig, no-op make, clang       2.8s     1.8s    -0.94s (-34%)
+>   x86 allmodconfig, clean, gcc            306.6s   294.1s     -12.6s (-4%)
+>   x86 allmodconfig, clean, clang          290.2s   283.9s     -6.4s (-2%)
+> 
+> Reviewed-by: Kees Cook <kees@kernel.org>
+> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  scripts/Makefile.modfinal | 30 +++++++++++++++++++++++++++++-
+>  1 file changed, 29 insertions(+), 1 deletion(-)
+> 
+> diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
+> index 75e9effdf02c..4d5e6e1a0ff9 100644
+> --- a/scripts/Makefile.modfinal
+> +++ b/scripts/Makefile.modfinal
+> @@ -13,9 +13,30 @@ include $(srctree)/scripts/Makefile.lib
+>  # find all modules listed in modules.order
+>  modules := $(call read-file, modules.order)
+>  
+> +modfinal-chunk-size := 128
+> +
+> +ifdef modfinal-first
+> +
+> +# this instance handles the chunk of modules.order starting at $(modfinal-first)
+> +modules := $(wordlist $(modfinal-first), $(words $(modules)), $(modules))
+> +modules := $(wordlist 1, $(modfinal-chunk-size), $(modules))
+> +
+>  __modfinal: $(modules:%.o=%.ko)
+>  	@:
+>  
+> +else
+> +
+> +modfinal-chunks := $(addprefix chunk-, $(shell seq 1 $(modfinal-chunk-size) $(words $(modules))))
+> +
+> +PHONY += $(modfinal-chunks)
+> +$(modfinal-chunks): .module-common.o
+> +	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.modfinal modfinal-first=$(@:chunk-%=%)
 
-Yes, that is simpler. I will do that in v4. Two things to check first:
+Thanks!
 
-- genphy_soft_reset() reads autoneg and writes suspended, so I would keep
-  it on &mut self. soft_reset gets &mut Device, and the SAFETY comment
-  says that the phy_mii_ioctl() path is outside the guarantee.
+Reviewed-by: Nicolas Schier <n.schier@fritz.com>
 
-- read() and write() take the MDIO bus lock, and &Device cannot say
-  more than that the phy_device->lock state is off limits.
 
-  In read_mmd and write_mmd the bus lock is already held, so they
-  deadlock. A test driver whose read_mmd calls dev.read() hangs as soon
-  as the PHY binds, and lockdep reports recursive locking on
-  bus->mdio_lock. The path is phy_probe() -> genphy_read_abilities() ->
-  genphy_c45_read_eee_abilities() -> phy_read_mmd().
+(bike-shedding) For readability, I'd favourised the use of pattern 
+matching stem:
 
-  In match_phy_device they reach a device that may be bound to another
-  driver, which the netdev AI review pointed out on v1  [1].
+$(modfinal-chunks): chunk-%: .module-common.o
+	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.modfinal modfinal-first=$*
 
-  Do you still want to keep these callbacks with &Device and document
-  this, or wait until they can get accessors that fit their context?
-
-Best regards,
-SeungJong
-
-[1] https://lore.kernel.org/r/179454612500.2199510.688554972467066283@kernel.org
+-- 
+Nicolas
