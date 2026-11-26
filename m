@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795712008;
-	b=zu5/zL/Kh/05MrImmVEztJWGIpH4VQ9PdGWXV5YBNFuJs+T+BFCuRK9R8FACJPMUB4NA
-	 Xch5DcDFnLPgDsn7f15qNBKKe8b66+XquEueqTPT4HyC9AXtJStmMNWhT13BpmOmIsOmm
-	 /X3nsDXGGPQdAuPFgO8fq/JfMx6nF+Cwkw8+qbiFlw83T4+wxsgHc72cLz/t+JIr7fVsX
-	 w9z2IH5Q3NK6U1u8c+3Mvnbx3sudNLuJCK5C3MA11kYgNYfkY3uIT7vg9YkCvTh9OxOyo
-	 BCo0CRxQXO7SYYslFtbyWkPGvV1jS24OyANgPGccv8KzBLqvjr7HpwwO+A2iyw0cMJQ==
+	t=1795712009;
+	b=OBtzUcjsont5/eoCrKEexg8b33OgfMsG7jhU6qqGipfAwCfu+EV648VfjAw7czPi58R6
+	 nzj+tfQ/VZ4sr4uvzAfa4Iu3jLTfq3NJil1WG26vIuQDagqL3hxbHyM9X7Ry8EN4ODOLV
+	 4bHdrHSOMJTjZ3Rk4jJx6hwCrzpDGltP/c0MMZm/9bZMGT+y+e/RGjakORbkOrxE0eF4z
+	 WSpba95LXxCINU1/ukboEnWXs8EK/0O8EltoW9WFJnfgkOSHjOZp1igwYj9qqkm47/djr
+	 hUjT/hMUY1DTkT9BTaeLNT3TIheNZ8X5Cw+XMwGF1DzoaL6a9sGoeJnghJg+CMB16zA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795712008;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=BBgxIMJgFFVx7grtsn3dXP+nSFBup6h3SytP0JP2Kwk=;
-	b=PRh9kq0CbTMwzd0clzqSPPfK7vw/AsVFu1XMbMJZeo+zxwui+4axjLqCK3FWMEY2X/Gc
-	 YSaBIZrI+Z3YT/O1JHuc23bCraHHEDn2laDXe1MUKJJIJMtqVshvp79+10tkll69Jj920
-	 V9hqxXtDbjHQjlv7G8tormIuucBKFf+qVECMpxevmXxe55y97Kn5Pyw67YPRPA3JApodT
-	 wRot2916L0lq/G4jDjKR2ykcwZr3+EPUkYp+/K5MzrPiFiMo+ety62vYnKUlf4fq+OcKC
-	 p0KQMXNpRrB9LhcBeESmD2xwqUEk2xlUxOgs0mjN+KJxjZ6RlzPzHloIdxNz+jAZ6Kw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795712009;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=WMaZovrqFePOxFZHi6LrHIJhAI8Su22jubOvzidTT10=;
+	b=vFOu6iOAg/KCepqjSllOUDC0DZxSvst0KbeTLx4cUxt0+exPWJOfrm1njIHWNgE+31K+
+	 Odv1JGm4wZSbROrZKimIRYd/d8eR1W+09BsilsXjfFb0V8ad9afFdD/yPbyPWOT/HtUcc
+	 xg93UVsJxuUm+hTqS1MZ8iE0A6Id5EdpZmJwuhAHObWM3QvhU/jl6u0DP7vJ/qkDmrNIt
+	 cBOm/eXRuTl++lGbins5MeX9fEHJIxGzJX17lwyOA2yHH59bcAEGvLBHLL9+4CQp72+Iw
+	 w8FHyFWq/8DdlCk8uhAAieWnG4138FtdtYRUMJc3o4eEBp09nbt/u7O668pEQ3q5MBA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YI7nF4o8;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="muJRJI/c";
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F382C606A321;
-	Thu, 26 Nov 2026 16:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C293B606A329;
+	Thu, 26 Nov 2026 16:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YI7nF4o8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=muJRJI/c
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795712007;
-	b=sfFl77HfmRxty6/o/XKQboOpyDz0PTlvQahf2DM2qRU2b9cULoQrbLkGaLDLwwtt8urj
-	 m8ePfJ6z11/4IXgt9lexV9JskapQ7lUH7vbU806NFkBIpbFmvJVx5FJx0gbF8cEKSSEiU
-	 yhH8nUgPd2agQNNtWTble6/DeGoce8Lc3UmtC+V/T22Ld2N3H+sIzi85rEXUaXzvYSilc
-	 mHNIbuX2nOrWBemeKCpyXpOrmSixbZeMALWFeqp4SFDSxt1Cun9E/F0t2Ayak+251cSXf
-	 qxXXafFkQYJL6lzZNyySKPt93t8Vtax1xhQz8ZiG67+zraO5uE/KkR20PdxRXpA9KuQ==
+	t=1795712009;
+	b=xf6gH+sv2vHGsrELHMJoDEU9kaiOGhRhFjcODuWnLz4aQNXCMTmkPecjmlZQTsQnrXgK
+	 cZvvUwEXphi9H376iKuKZhVEfp5hhGZOMtEa+LF6z0c2kftKhW/3bMJepCosE+fkMJ/Zb
+	 caY1ifCLMZ2qgatVt8Nu6wnBdSZxG/BHnSK7rCEenMcS0Gib4CYFf9xP2rpNCnGCVS4wF
+	 vcTH40Ceqolw0UjJs6P3+T517SSZjOOBCnpRjM5eFBjRDU6o1ycVD313WwNaTJomSllqT
+	 ah5SoBWkuh6a8pCvbh6Dc6p4RVz4pLlu7Nu1pcqnEvrioMIUQjIZhzQhUN7PyOCzzSw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795712007;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=BBgxIMJgFFVx7grtsn3dXP+nSFBup6h3SytP0JP2Kwk=;
-	b=FccVhddULzNFTACVDIw13J5Z1IosbqXruuPVVagrqkTabUfSAldN3gOdPD41DiebPpZm
-	 5ZCx3lHNqoCNXDhXHd3EhdepOLfHT1x46lYdtzp93godrPw+VAKo1N7eV5E6/ac4Z+S6/
-	 o4jrOEwyn22n7qkAPppXMCi2hGrufrkWVa0TokFbwR+NO8mY31YkRkh4i9NA/Ysl2Um91
-	 pDzQbe1dFwWpkRLZRH7+MXS1EiXusqeIJUuXT9uRwf8pv2vclr5nhhZormEGY1H8CP/Wg
-	 NymuE+AIO3316mvHrkb39T0aCIpyCGFaXPuzfJzjT9MU+9USh7hyEnhgndCd1zQ93uw==
+	c=relaxed/relaxed; t=1795712009;
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=WMaZovrqFePOxFZHi6LrHIJhAI8Su22jubOvzidTT10=;
+	b=lM6GFaJNNVUz3pEvJokl4Hm8XxfNcwJNY15UwBzdO9/ULKK0mr1/cGMm7VTf6AuK27FM
+	 5sOsAkTVR70UBn45WR38sbJol/Z/xFG/3StehWtJ87OaLZppbF2CdyaPws2JW6ZYyFQOw
+	 qS3qGiFW+MsHHBXqdKa8qxUhBKPc2zZrwOW3CEkLRQ+EtIlDvSD+hrt6xinr2p188aAjX
+	 8axmolemLYgYi4MJDig261oFA7zHyvoIR6/eA7cL+0D46DoFXZcgGplRFK5f7Rcn399cD
+	 N3ixi6ggUDgpiyaQZx/djs5xvGP2slNknO7Orqao2rT3TBXCn3xGVi8Cp1Gxk/WDY/A==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 43FAF1F000D8;
+	by smtp.kernel.org (Postfix) with ESMTPS id 01BE81F000D3;
 	Thu, 26 Nov 2026 16:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795712007;
-	bh=BBgxIMJgFFVx7grtsn3dXP+nSFBup6h3SytP0JP2Kwk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=YI7nF4o8sE7iU2yrsrPoVtO4WSdgdL+KSBN3QAFZLfzPa9U5Fjji06T318uo+RxC8
-	 +Rxlo9Ux5yKR9Jdc9FZ0HAZHoFsPiIPJSXhzmFvG3z9LgTSpyHaYr8NQKcmekOiPBS
-	 yXV6SweiVH6S9MAVwZb+tbUXshkhnK3q6UN4IVmEsfFl8r5qKL0VaL7GV6a92NQ+cc
-	 F1XmddglXwGz1ue9u5DL+IZU/i3EZemPTKND2Yvj780qBEqB2rSUJEsGa2sJgF06yu
-	 zJrEFeHT8NbMy9wtRu/3NtJmSvAMMa437V+Sw4xw3SVoR7hJPmbvL3jUJa9YeYhMjr
-	 +Tb3pXIB5W0Sw==
+	s=k20260515; t=1795712009;
+	bh=WMaZovrqFePOxFZHi6LrHIJhAI8Su22jubOvzidTT10=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=muJRJI/cbX19ZFrGlYuwcuqOHVHJtiGvThi3DpYOqxr/GOBqBnVZ5MucxNrv6nQPr
+	 nBRtLFazfQ8fdDHrpQV64Kkomwb470A/kPLBIY2ntPQZol4Q681ypixUUGAzRXOvXm
+	 5OAO1EaRcDgsDxxhyio9GGHWjaM2oAUZJMzCd4KfAVFD5Gj5jKBVwz0zecQuDYZvvN
+	 k4oDwoNJcOxkKULWfr6aL3Dsyo/ttLZufWdfcYSKtRQLYOTElXhav2g+AjSXTpWYl8
+	 JWhGZYrp5Sm70oIAwq41dauzWkpZCdFIOW7fA+ahbFxnGGOFs1Azq8gCTGREQ0ca9R
+	 NRbp+P8Dcp4cA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id C8C824D73C;
+	by lkml.kernel.org (Postfix) with ESMTP id 856C44D725;
 	Thu, 26 Nov 2026 16:53:19 +0000 (UTC)
 From: Peder Bergan via B4 Relay <devnull+peder.bergan.gmail.com@kernel.org>
-Date: Thu, 26 Nov 2026 17:53:16 +0100
-Subject: [PATCH 2/3] drm/panic: Apply the QR mask while drawing data
- modules
+Subject: [PATCH 0/3] drm/panic: Speed up QR code encoding
+Date: Thu, 26 Nov 2026 17:53:14 +0100
+Message-Id: <20261126-perf-drm-panic-qr-v1-0-51856937dc4d@gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -84,9 +84,11 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261126-perf-drm-panic-qr-v1-2-51856937dc4d@gmail.com>
-References: <20261126-perf-drm-panic-qr-v1-0-51856937dc4d@gmail.com>
-In-Reply-To: <20261126-perf-drm-panic-qr-v1-0-51856937dc4d@gmail.com>
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPpjCGsC/1XMTQrCMBCG4auUWTvYBhPUq4iL/EzsCI1xUqVQe
+ ncTXbl8hvneFQoJU4Fzt4LQmws/UsWw68CPNt0IOVSD6pUZBmUwk0QMMmG2iT0+BfXRmROFPh6
+ 0hrrLQpGXb/Ny/bm83J383ELtw9lC6MQmP7ZT4/4v2TBx8ZhomWHbPoSdYyOnAAAA
+X-Change-ID: 20261126-perf-drm-panic-qr-58b69ed0f455
 To: Jocelyn Falempe <jfalempe@redhat.com>, 
  Javier Martinez Canillas <javierm@redhat.com>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -94,112 +96,58 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
  linux-kernel@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795711998; l=3294;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795711998; l=1688;
  i=peder.bergan@gmail.com; s=kernel-contributions;
  h=from:subject:message-id;
- bh=ZAbo9XJK8sS3xUaaH1sSP/WDCUTJVmN5DS5JCEvtWZk=;
- b=wCS7L6+UV4zWSP45BF52yYOERefTbJ+dfA57nTVQ50Okvuv4wZQY0GGvdRE2tJHV+CNi53p1r
- nrgmXwv9H3aDbXiSKoMijuZF6otTmNKNDMGw70J3hhWDXWKhIeiEvf4
+ bh=iDsLMb9aE0AlmFCf+gA2dXKbpkU/dhpl3hq2AY5ctqI=;
+ b=40xnObcbPohCg/rGboSbRgdZHBAKadpaSbTlyOBgw/YCPJSPXbZ6WunLCvCJWFT1bbaIPdlLl
+ qv8dqwinY1KCL/FRNXVcX6qTtgl81Iyvns5c79/Zzh/SAemijqXyg3N
 X-Developer-Key: i=peder.bergan@gmail.com; a=ed25519;
  pk=39790pn1YZCulHBoUG1uiQI1Hm01EvhBEa2zVrS/yN0=
 X-Endpoint-Received: by B4 Relay for
  peder.bergan@gmail.com/kernel-contributions with auth_id=1395
 X-Original-From: Peder Bergan <peder.bergan@gmail.com>
 Reply-To: peder.bergan@gmail.com
-Content-Transfer-Encoding: 7bit
 
-From: Peder Bergan <peder.bergan@gmail.com>
+The DRM panic helper encodes kernel log data into a QR code. Speed up
+encoding by searching alignment centers per axis, applying fixed mask 0
+during data placement, and simplifying exponent reduction in
+Reed-Solomon error correction.
 
-After placing data and remainder modules, apply_mask() scans the whole
-image to invert the unreserved modules covered by checkerboard mask 0.
-Data placement already visits every unreserved module once.
+I benchmarked the extracted encoder with Rust 1.100.0 on an x86-64
+Ryzen 7 9800X3D. Across 12 paired warm runs per workload, median
+version-40 encoding time fell from 1.778 ms to 0.277 ms with a
+2,900-byte raw payload and from 1.782 ms to 0.284 ms with a URL and
+a 2,800-byte payload encoded in numeric mode. Both workloads produced
+identical QR images. The timings cover encoding only. Log collection,
+compression and framebuffer drawing were outside the benchmark.
 
-Apply mask 0 while drawing each data module and each zero-valued
-remainder module. This removes the separate image pass and its buffer
-read-modify-write operations. The format information still advertises
-mask 0.
+In the differential checks, each patch preserved the returned width
+and all output bytes across 6,002 raw and URL test inputs. The mask
+traversal check covered all 40 QR versions, including the remainder
+modules.
 
-Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
+I also ran the drm_panic_helper KUnit suite in x86-64 QEMU/KVM with
+the QR URL empty and with a URL configured. Both runs passed all 45
+checks, including 15 QR cases.
+
 ---
- drivers/gpu/drm/drm_panic_helper_qr.rs | 35 +++++++++++-----------------------
- 1 file changed, 11 insertions(+), 24 deletions(-)
+OpenAI Codex assisted with coding and testing.
 
-diff --git a/drivers/gpu/drm/drm_panic_helper_qr.rs b/drivers/gpu/drm/drm_panic_helper_qr.rs
-index c6ed395c05bd2..1d96ae855052a 100644
---- a/drivers/gpu/drm/drm_panic_helper_qr.rs
-+++ b/drivers/gpu/drm/drm_panic_helper_qr.rs
-@@ -691,12 +691,6 @@ fn set(&mut self, x: u8, y: u8) {
-         self.data[off] = v;
-     }
- 
--    /// Invert a module color.
--    fn xor(&mut self, x: u8, y: u8) {
--        let off = y as usize * self.stride as usize + x as usize / 8;
--        self.data[off] ^= 0x80 >> (x % 8);
--    }
--
-     /// Draw a light square at (x, y) top left corner.
-     fn draw_square(&mut self, x: u8, y: u8, size: u8) {
-         for k in 0..size {
-@@ -864,37 +858,31 @@ fn next_available(&self, x: u8, y: u8) -> (u8, u8) {
-         (x, y)
-     }
- 
-+    /// Draw an unreserved module with checkerboard mask 0.
-+    fn draw_data_module(&mut self, x: u8, y: u8, bit: bool) {
-+        let invert = (x ^ y) % 2 == 0;
-+        if !(bit ^ invert) {
-+            self.set(x, y);
-+        }
-+    }
-+
-     fn draw_data(&mut self, data: impl Iterator<Item = u8>) {
-         let (mut x, mut y) = (self.width - 1, self.width - 1);
-         for byte in data {
-             for s in 0..8 {
--                if byte & (0x80 >> s) == 0 {
--                    self.set(x, y);
--                }
-+                self.draw_data_module(x, y, byte & (0x80 >> s) != 0);
-                 (x, y) = self.next_available(x, y);
-             }
-         }
--        // Set the remaining modules (0, 3 or 7 depending on version).
--        // because 0 correspond to a light module.
-+        // The remaining modules encode zero before masking.
-         while !self.is_last(x, y) {
-             if !self.is_reserved(x, y) {
--                self.set(x, y);
-+                self.draw_data_module(x, y, false);
-             }
-             (x, y) = self.next(x, y);
-         }
-     }
- 
--    /// Apply checkerboard mask to all non-reserved modules.
--    fn apply_mask(&mut self) {
--        for x in 0..self.width {
--            for y in 0..self.width {
--                if (x ^ y) % 2 == 0 && !self.is_reserved(x, y) {
--                    self.xor(x, y);
--                }
--            }
--        }
--    }
--
-     /// Draw the QR code with the provided data iterator.
-     fn draw_all(&mut self, data: impl Iterator<Item = u8>) {
-         // First clear the table, as it may have already some data.
-@@ -905,7 +893,6 @@ fn draw_all(&mut self, data: impl Iterator<Item = u8>) {
-         self.draw_version_info();
-         self.draw_data(data);
-         self.draw_maskinfo();
--        self.apply_mask();
-     }
- }
- 
+---
+Peder Bergan (3):
+      drm/panic: Check QR alignment centers one axis at a time
+      drm/panic: Apply the QR mask while drawing data modules
+      drm/panic: Simplify QR error correction exponent reduction
 
--- 
-2.56.1
+ drivers/gpu/drm/drm_panic_helper_qr.rs | 59 +++++++++++++---------------------
+ 1 file changed, 23 insertions(+), 36 deletions(-)
+---
+base-commit: 5ce32a0c94a827ff44ee60898c28060714dcff75
+change-id: 20261126-perf-drm-panic-qr-58b69ed0f455
+
+Best regards,
+--  
+Peder Bergan <peder.bergan@gmail.com>
 
 
