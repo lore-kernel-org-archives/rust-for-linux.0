@@ -1,101 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.44
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795697002;
-	b=Wvr2V4/F6ey238Ak3AlsAnYdknlS5GAdM4GXw1lr9V6+0KCZsrYWpmNwMs3fzg4v7Gyi
-	 ZfSSOOqzvx5E4pmdQ+84Y/L0TXJRvdF1fAJWFToMn30YODWscIWxLKHlRmEUBB2AanyTA
-	 JcWUOasslNy6URECb8wOpt9gCivgFTdxRU3YRJm3obaJ5Itv5Jhp/pYmDhPpcN3ba346O
-	 c+XQgr5TLIEr3EU1Kuf8uEGr4aCJf54dFo0O/xbt5FB334/76CGxwVjifWabjp6uJCZun
-	 +IO0aEYkd8KEpUeF2cTSCQ3/sNXgwIdN6Et+VPMQ0mBZ1VzoekGopa8a5Rig4xUZNUQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795697002;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.69
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795697981;
+	b=4YeuD1SMX2SuGrevrFGFhB3MS92PawwxIxJBMxw6Grjno58TKOOew87pA2czqNNMTBhN
+	 Uzp6dURGZFlyo3dq/8RSJ+gJ0nHHuaJQSP2jwJ5CTRKLRN40RFlt+XnO7g7bN4f6JVtjI
+	 tFitBGBSejSsbFUVmlbW+mAZS2qwkeSyS8kMJFuiqvkg9WJlSjvpyd3gMawczKuSyYeJ8
+	 jDKbOFH7VX6TV/zTWLKRZq0DI4opfLWB48On3dpBmbi4kDS6ahW4xj514K/JWG7cjJ8k2
+	 zIIjIEkC8b7de1oHPpkYYSTJu72Vf4l2USS8jl3lsJL01jP1t+LNRAKhn4ji/uAYInQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795697981;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=o9Abx8wExLURdMx+3brBY5biSd8oqBfJ6pvMSMTyXjw=;
-	b=xCeDIocd+joyrO7uFMussyfiJg9DITBEbLAJFS8IHxnMH9Ec+zCfjl59EM3NAR+kJURs
-	 Uwn6cuTH1WhLk6nmz6HqWDeGhNiCAdF1/Lh4EyKzbUvrsJVFhI8hGDRk46fyDJ2lDNuOp
-	 I48TqYx75cHwFKqXbrYfQTE/PQf5/gk0HHcz9IXlOnWDNhJJYbN4zhuFpKYiqGgSSyYjP
-	 1EYXXZBWnysyZM0fEVq0rRWgIsdozqU/AQ/3GtxmQtjBRvmk5LgLh7+Nm/lsqd8gKi+t0
-	 xeGafpV4JHrqrCtTbVD3lGu3qnO/uuGfYEquevqdAH/cTFVSglsyBGFh0we1/Klv4Hw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=/pb5zHgl63KG16XK2xUlTaZkg6Ui48LOGLyMhDrC7G4=;
+	b=49rSlEvJ7GpjnILwV7E60D42werLCeStNFJyi0L6Amn4lNLV2QJhlMmol60zxuCB30ng
+	 6rnkXzqIcl9/Q6/6NG5yrLLNv6Rms0+BC178GETyh7BiNgbsXLOQ06SSWb1dQyEh0tZEO
+	 gNdTCZIZ6SF8qHy2ETcDscoFWCU5A6oBg/3b4+ZMXySMIgXxs3+YAv+SkRT/2XHi/j/M+
+	 Z0WPP6OPE2lHmWGxQExyYylpyIoq8qswhk8kto5q3gqBGOc3MF3eTLewcM3EW+9BEbM0H
+	 AoHlPwVSKeYt+L24lw/LAFeEQBC48I3ZYOHEaNYzroZAwVGXTGLfeZ43mAjuU7cOdXw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=O1Hx2dsu;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.44
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nsr97qYH;
+	arc=none smtp.remote-ip=209.85.128.69
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C6B606A321
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 12:43:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25C6B606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AEE4606A338
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 12:59:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0AEE4606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=O1Hx2dsu
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-491846221ffso6061226f8f.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 04:43:21 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795697000; cv=none;
-        d=google.com; s=arc-20260327;
-        b=e6WBQoWyKgbzXm2BRa+EzfikYWtapZo2MbVUANKSnSnfFpDM9Z4YEAONRdBUJfbsl3
-         dT8S3g0TJV8m73BSUNT/G6Gw5NeDYcVHvA0JWe7WiOSoGIl4h5WIp6AxAzul83PvXyx+
-         jEznv81yq3HG6v+Kvpm/Y7O5X/rslShJ5ldhEjj3E9RTwmZ8YwXa+ggLyjqnRXngYCIl
-         bCFP2Q09tjlRVDApL0i0krKD7hJh4Y53uMjylwznaKUuUXouE8qZLsCEs2q7hQcpMckB
-         uzToOY+0PYZzhY7Yb6ZwJ0+MbU/yKY7j2Ag2bN8eX8zi2Wz/xOdMuFXSoAZTVsDi2xJp
-         zTBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=o9Abx8wExLURdMx+3brBY5biSd8oqBfJ6pvMSMTyXjw=;
-        fh=CPkh5ZJMb+WZV+2BMxlVJZ4YlK8ESsACtgpn/OaT7v8=;
-        b=nh55RV10inJGJjgoWqYIE9SBkzktNWycOYkrGcwFo0p4xCLk2xuWvOBxcH5PbS5yda
-         z3DJxGBNeJ8f6buYAOoZMG4V1T8zH0zSxv1EnNKexMGUkE1McbwO8c+2I31SjfaXZA8Y
-         RD5FNXcbrO8Xs6bYScTWZACShVVO6Gmc782KKUxGgfaTL2ozGeAac6PtUcouOi+SweQ/
-         x1qb57aC7fznTGIM4T36wo0EttHjakcpoAssxisKoMijicJXmrp1y9bgbQX+ULVpBGLi
-         8AMgHwr/KftC7YFDPbSDw85CDdT/dUOBUQuOgHoEu/3B6J92v5Ox+kIrF7W75T5XHL9u
-         cnMA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nsr97qYH
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4bb69d84053so51244705e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 04:59:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795697000; x=1796301800; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=o9Abx8wExLURdMx+3brBY5biSd8oqBfJ6pvMSMTyXjw=;
-        b=O1Hx2dsuq10/oTIOFgdevzB1nCddtbfQ2o7VJksECNBoidtdLwaAR/syeHDZWp1w9/
-         03KKURVL8fYcZo2CvY+L6Ogs5vAepAUn+WL8hKy6Hy/9xbM/JyLeHHmVIax8uiE9UINa
-         GU0jwSZrg8cFzjLi9wo4y4gXbYsn3JXaX8Y1OPfjTTxtghFe176ExLWZbTggHc1oNuPY
-         /8tsPOHhoyrfvDBhf7X87GtDcyfc0Z0yUB5+yZ1nv0BIeyMUHSGIIUfw6/MMkbFoMtLT
-         vQMKU2ToW4NfSs9XP2lrrRlv5nwaSf72+WMH6R8CantHxXBQeQXVaY/eQQpfDolkFw97
-         xlvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795697000; x=1796301800;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1795697979; x=1796302779; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=o9Abx8wExLURdMx+3brBY5biSd8oqBfJ6pvMSMTyXjw=;
-        b=z1JqTEC4yLOcIwTApqiaGnL4ZNn9GLP+F3LgGy7k8cQpja0MPrJoltiLe4uf9/j2AU
-         /5Tb0sOFAUypygXR2EgeNGmtxi9uoFaxkiWFCTuld53kTAOwkY1BlmRU8u+TXjdGMeZE
-         MzfR0Wwf3XeFkIfFUnTbVapMSb7eBsAi1jRKPzXgLQNSiRbGHyFgju+0CzcGI/fjHblA
-         56bFT54mVMkRhI9TMd8bs1eifxtt62R3ovorNQ/s14LGkLPu5iI9+sRqMAOA8Hfd/Sim
-         AY1bAOoCkAcuyrJxEi1Xd7ogHFlhzfcrz2yyO2GV4+YrjQdtZSfJBd39SgvibycdjadC
-         jd5w==
-X-Forwarded-Encrypted: i=1; AL+hErGx8xotzGuKLNLY/tW8wfBUbLVijtlySTaN7Je0eMojI5SAz0415jzbUuje6I2wazhOE3goFD+crEbJZMuJKQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8JUO2WS7pVSZ5tm+MtzGBRWDq2Q/nhpB0HpUfh4NikpAekVSEX
-	cudvQ747XXAc+Pq+07A8M9PFZNYygoNB9/Ih2WBZfLIrhTmegxmFtH/Y6Smu+czV6TVAtB6zfDN
-	am1+OC6nBLUCZAbCrUW3AJSa97mD7AHBVuEv3B3Yg
-X-Gm-Gg: AZFdTZc9lcmsJVkvgfvMWEL3oqKSq87fACXJcpjxh5F2A//JCKqkBahK9zBDLKuxuxE
-	IafYtOyiEkLyWLaRCe1NJXX834xjoULXCvUfZ7SJpXqJCkMXCNXK4UVXE83zfayP0AEEiagJZl5
-	FbI3wkMK6fGHlkAUUlFJ0hbMaPNMdqiSxiNxgSYoX6suCRMDCzsDSKDqv2Q0ZIGzd1TDO37wEwX
-	O/3pTGtJiaUcT5B5DcpM7GW1Zli6+CaWCnPVkuFk0vnBpzx09VSYJifm+JvyUbjJiv1weLLEP4K
-	kP3jY+UmNE60sqW9J28K5rXKxYxhzQdYZKa/fmTqLbzxcSKNdrkOqlXMlyyFUNP/bk0sg3D3wv7
-	1iI/q5g9Wn+/N2T9vyKzRfVzR5kb9kikBuSE+6KmpFQa95d5O+PwlvJH93E/thtu9ieURSKYQIB
-	w1CZxF0srtTOW/Bms9R8vQmsnm6jJVDn9xQxj1BmpT9YI0
-X-Received: by 2002:adf:e00f:0:10b0:491:d224:aa78 with SMTP id
- ffacd0b85a97d-4abb27275e7mr29748444f8f.26.1795697000100; Thu, 26 Nov 2026
- 04:43:20 -0800 (PST)
+        bh=/pb5zHgl63KG16XK2xUlTaZkg6Ui48LOGLyMhDrC7G4=;
+        b=nsr97qYH0hDOSFszgs7HZR6asNaHVQfl1MZN90sDF7HCf0LvZ6wfI2nIZ3i1mE6lQ8
+         owQvd+UFRNZpkgonEqgq4iDwsQP5gxQwNSxeUDdk2andjlgP2BLzqeqouObf0QpM18Mu
+         qMY53fEqoXHGqqVXjYQ7sNaIygIVq1rLwRY2yrepFoPvqn4yjDD+EI3O77xvKF2DkU8A
+         0b1qAo22XUeVoJ1ARb9fNFblciwokobaN9a83d/NMf3/u7uEuSKH4rCjCB+0rmdUb8Bp
+         3sxDq0znmhjPNuTxqErta1LoHvjC+PJsenNGYz4CYAQhWY4MzkqlPgmA1uh+tAtu4USm
+         LpMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795697979; x=1796302779;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/pb5zHgl63KG16XK2xUlTaZkg6Ui48LOGLyMhDrC7G4=;
+        b=nc0/4Twj45jFJdODVrLKCnPheMBbyM9Yf1Jb/hNpUKMT4Y4Awyb4LDrUqrdGYq77Yg
+         5aMuM9gnqBmUibry3mPnkUGJD8fkFtraFgpiK8xsE4wkf/lC9ciA1ggsQwKc5fs8d6PT
+         S0A/URLAxCw3xay5weN+ZpCVV6qblHwsjqYCnfpid8r0ehjUED8RvnuLP3axL4mBe4lR
+         tJDG4qtRe9NJhYt7LgEhvWMS2ZOhktx97nM42mGh10s844dGjvXxGhRf2tEESKnsMyiw
+         gc/kK3oEaWBd5NE0nIkOVyMrS+g4hq6I2EhjM0dIHP+6ryvMYcjYKWIDVzQcEOFFgKey
+         2dTg==
+X-Forwarded-Encrypted: i=1; AL+hErGFm6/SJu+/ILDek906jycfYZs8eHe4fyv3yofl8HZBewHWjn/5VeHUZ2IC+/CHqUwcbGH2JUQ2qvtsF/gwfw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+9Kah+ijezwAdeDAPmTfeiipnk2Tw3xrvp5LXa1kGD8omuYIcn
+	YuYtPAVU5lrciFTuSEScDl/UWasafjXgxw81kPW0BpVRbvFga+XM40GUH15/6RhAVvbSJC09kge
+	U3/Pp2T8GEa3+Sm/htA==
+X-Received: from wmmh17.prod.google.com ([2002:a05:600c:4151:b0:4a1:e3ce:e2eb])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4e16:b0:4bb:69b2:d3df with SMTP id 5b1f17b1804b1-4bb88813024mr432813665e9.25.1795697979116;
+ Thu, 26 Nov 2026 04:59:39 -0800 (PST)
+Date: Thu, 26 Nov 2026 12:59:37 +0000
+In-Reply-To: <20261126-time-delta-display-v3-1-aeeecc72f3a8@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -104,86 +78,56 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261119-rust-workqueue-v4-0-707c68994940@google.com>
- <20261119-rust-workqueue-v4-5-707c68994940@google.com> <5eec17370f67438e43bb1c82b1d6a16b@kernel.org>
- <20261125181752.2027207-1-aliceryhl@google.com> <f9d8ff6a6c4a4d098e0d461da4e40474@kernel.org>
-In-Reply-To: <f9d8ff6a6c4a4d098e0d461da4e40474@kernel.org>
+Mime-Version: 1.0
+References: <20261126-time-delta-display-v3-1-aeeecc72f3a8@kernel.org>
+X-Mailer: git-send-email 2.56.1.839.g22a8290db9-goog
+Message-ID: <20261126125937.3973192-1-aliceryhl@google.com>
+Subject: Re: [PATCH v3] rust: time: implement `Debug` for `Delta`
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 26 Nov 2026 12:43:07 +0000
-X-Gm-Features: Aa3M54p00DMhUzh_tewZfWZ2hi0LG_ZMSKy1ua0nr0PKeO0HqjITQRZNecEPYTM
-Message-ID: <CAH5fLgjvFXX6oZRkH9OFCun4eNGWKkmoeCfVK3_16Yc75dfRkw@mail.gmail.com>
-Subject: Re: [PATCH v4 5/5] rust: workqueue: add ScopedWork for non-'static
- work items
-To: Tejun Heo <tj@kernel.org>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	John Hubbard <jhubbard@nvidia.com>, Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, "=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 26, 2026 at 12:22=E2=80=AFPM Tejun Heo <tj@kernel.org> wrote:
->
-> Hello, Alice.
->
-> On Wed, Nov 25, 2026 at 06:17:52PM +0000, Alice Ryhl wrote:
-> > What I'd say is that this isn't the only way to spawn work on the
-> > workqueue. This utility is intended for use-cases where it's convenient
-> > to do it like that (e.g. because the queue is defined before the work
-> > item in the same struct). We already have another way of spawning work
-> > that uses different ownership rules (e.g. self-freeing work) and that
-> > mechanism would not go through ScopedWork.
->
-> This is your design and you know this area far better than I do, so pleas=
-e
-> take this with a grain of salt. That said, I wonder whether the interface
-> is more tortured and twisted than it needs to be.
+On Thu, Nov 26, 2026 at 11:51:14AM +0100, Andreas Hindborg wrote:
+> Implement the `Debug` trait for `Delta` so that a span of time can be
+> printed by a formatter.
+> 
+> The span is printed as a count of the time unit it is stored in, suffixed
+> with that unit, and with each group of three digits separated by an
+> underscore the way Rust integer literals are written. A span of 12345
+> nanoseconds is printed as `12_345 ns`.
+> 
+> `Debug` is implemented rather than `Display`, because `Delta` has no single
+> obvious format and the other kernel types that carry a unit, `Hertz`,
+> `MicroVolt` and `MicroWatt`, implement `Debug` only. Callers that need a
+> specific format should use `Delta::as_nanos` and print the result
+> themselves.
 
-Always happy to discuss! Thanks for the question.
+Thanks for addressing the earlier feedback! Aside from the 32-bit division
+issue that Tomonori already pointed out, this looks good to me.
 
-> Workqueue lifetime seems to add a layer of ugliness, at least going by th=
-e
-> restrictions on ScopedWork. Wouldn't that be relatively easy to solve by
-> adding a percpu refcnt to the Rust wrapper of workqueue and tying work an=
-d
-> delayed work items to it? Dropping the workqueue would wait until nothing
-> is pending, and cancelling delayed work items before that would be up to
-> the user. Work and delayed work items would then behave the same way and
-> be usable on any workqueue.
+> +    #[inline]
+> +    fn repr_to_i64(repr: Self::Repr) -> i64 {
+> +        // CAST: `isize` is 32 or 64 bits wide on the architectures the kernel
+> +        // supports, so widening to `i64` preserves the value.
+> +        repr as i64
+> +    }
 
-I'll take a step back for one moment. The previous version of this
-patchset did not have the lifetime in question. Adding a percpu
-refcount doesn't resolve the issue that made me add it, unfortunately.
+Maybe we could add `impl FromSafeCast<isize> for i64` to
+`kernel::num::casts` and use `i64::from_safe_cast(repr)` here?
 
-The problem is: if we drop a ScopedWork early, then once
-cancel_work_sync() returns, we may free resources used by that work
-item. Obviously if the work item is still executing on some workqueue
-after cancel_work_sync() returns, that would be bad, as it would use
-resources now freed.
+> +        let mut groups = [0u64; 7];
 
-Originally I did not think this was an issue. I assumed that if
-cancel_work_sync() returns, and there was no concurrent resubmission,
-then it would no longer be running. However, this is not true:
-https://lore.kernel.org/all/20261118-ordered-wq-cancel-v1-2-916e01f9affe@go=
-ogle.com/
-
-My fix for this issue was to add a &Workqueue field to ScopedWork and
-enforce that the scoped work item can only ever be scheduled to that
-one workqueue. By only ever using it with one workqueue, I know the
-non-reentrance conditions hold, and so I know that when
-cancel_work_sync() returns, the work item is not running anywhere, and
-hence it's safe to perform cleanup.
-
-Of course, there may be other ways to enforce the non-reentrance
-conditions hold, which could let me get rid of the lifetime. But the
-lifetime is there to handle the cleanup before destroy_workqueue() is
-called case, so a percpu refcount does not come into play.
-
+Minor nit: since each group is `< 1000`, this could be `[0u16; 7]` instead
+of `[0u64; 7]`.
 
 Alice
