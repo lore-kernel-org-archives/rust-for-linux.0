@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795686831;
-	b=XilVjiITsZtucOVd4QcZIPee4hnu7XX6ewjCVEH+NOZE1cm/LobW90c/yYCr7jGw5eBp
-	 JqIgtEhqtaVa9joLQ3VObWZZH6KSXXyZZOaBeSjvG0CKIEG98mXIQd8vKO5nYXjsceZRF
-	 5OyrkAPBRRTGbtBXfSS4HAbRKuLGDJ9tRW+6Oqg8z6X0Mg+ydiQMwpUR9fijCCncvEY5k
-	 57eCdeurB7TT2zBI7GSCQRVqm/SX6gwSGWdoB9l2OfAP9d22CV/zRZiXQ2KQ016Mxkwqd
-	 69AZ4HCP2uz71hzdJ0EQB3mknH/ac/l+7C9k12JPP+BQRo4TmNbsl7fV6iXGya6ucqg==
+	t=1795686833;
+	b=2RE+XY5Ha5iqRfKCpuaXQP1wxoYS9Gnzd+gkN0kN0coUqnz9pJ9jJHYumzrltzyZeLN5
+	 nYAmfPWqerclKivnTSZorbmfPsRy9R2aB7epMtVRwzTVLt7EejTR6pa5iwcwCUv4TVFNF
+	 JnzV2SCSaIApC3CHe/6tmWGz+eXFMS3gJmszrZ8JW214As1DeMlsitzW53wqvgohF2c4D
+	 cASaF8bLmY01Er7xXyviX50slHOgUfVbPadSHd1MjWFkmyfemDjyBYRtwQrKKD79sr2y3
+	 w9zB8kzc0MY4r83j2xpRc3WbH5/9FQP5B+Vz+gkpTJiV9LUrQAme5BezyKVmf3lM13Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795686831;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795686833;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Developer-Key:X-Developer-Signature:
 	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=4LB3yQ8An3Y0YBQjJWN7gTJw3a9Shu5jG0BjthZZNgs=;
-	b=dzX0SN6MHj8fnYimI6pAyyBze4yPjqvm+mP0uD1ShGjVA2IXLC89QboaEHVSQ80flTrd
-	 XjRIAT94kTdr4/ItbviYvcjGShu3ZADBK9sYQmq60rOUOgkfdGtiwxvXRtwsennStiwqd
-	 aVEruZjCczUiVKjp/dyoxiefIBFC1bHn2tvPxNKipFdWJ31HfvlvjtMem2Kba4ryqOsuk
-	 L8Z09VA3brTSO1nuluIbdYDljVQOPd5rOCU3JkkWOc/twlAYk6EdERCYSKGcP4/o7LL0E
-	 ksZ7X+F3u5OkJorRKB1n0ygnY1j+WSG1j4kbUQ1Se41MSizCHSVpfWX+eqLpKXvu4qA==
+	bh=pdTN5k5ljISeX4Y7RP4qX7eVJP6sJ2SABjzpm0RRdMI=;
+	b=2WuB2tfbrd4fMWIIVJ+awsJ0eSF4rtluQspEDsB/zPmVXSxuOCJpHBAK5b88ifSggSmH
+	 0UT0Fn0327sMLJKG9hJSoLwr8n3PfRw18EAPIlQHqsVD6/sczkoKFYj4sTHH8185zzmUY
+	 ZJ/1cLgEqzNfZKWEu/QrXR04ytwxFozqkMajsfWEX69WBdhbc/wfXOZAzrIteMJ4PnqdB
+	 e/ZiCmN1b+H3ZvQorEaOY6xWNERsUihL5wSSOqbmzlT3ZjB6oMQcEakDGCQE2NsvlrJUB
+	 cE8vhBhNiqu0SxDvQWTwxjU6JQI1dZHQSKewOAfYCcJA1ZrH9TABL3X1G+xFKPc+HsQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XI499JC7;
-	arc=none smtp.remote-ip=209.85.128.72
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KxK5CpM8;
+	arc=none smtp.remote-ip=209.85.208.198
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com [209.85.208.198])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996D8606A32C
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 09:53:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 996D8606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F6E606A6A0
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 09:53:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3F6E606A6A0
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XI499JC7
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a009f82bedso48075315e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 01:53:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KxK5CpM8
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-3accf0b1addso21850101fa.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 01:53:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795686829; x=1796291629; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1795686831; x=1796291631; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4LB3yQ8An3Y0YBQjJWN7gTJw3a9Shu5jG0BjthZZNgs=;
-        b=XI499JC7QGhiiviqriPz02cY8H0QPRkH9lRmfXnNY6tIEKpIL1DtJU6JULMCmi/r9h
-         GID5FFHreb5jJ9HZRQYN2zKfOCGSSMT3QkzdcT2tOpIIqyuTgtkQd9JBaarhvlOfRpua
-         95nFIEBqrbFrdI5y6p9uM3NjleZNkTjqG5+itIo8eXlK3OqV5bqpLyJiesYtjiP9ANGw
-         0aHS8pOFGwY/0VY597tl178kL8YqzeDHSW+cdV3z6uAP2FCwr8TpFOHhs4ABMeB88hqr
-         JS4MFnuqZQFwm3CJuDXn1JMPVV6py8OA7DEdWUerWlD8XyvN10TRLcB0r7qUkJXCNOVx
-         /Upw==
+        bh=pdTN5k5ljISeX4Y7RP4qX7eVJP6sJ2SABjzpm0RRdMI=;
+        b=KxK5CpM8Uy4nT8ZmGA3aPQ3diwW6+siEZpmqsdyTnIjDLbUasIReNR8GUKpiARIKjw
+         hieUypXR2ZZnmnSUN3KNltr4SOQPWokU7x99HG/VCZEqxYCH2UPu25GX9OY8O+HOV1J0
+         P07riwqXkmevaoK2BNItAHTCAl63d58fXFoFQ0bV91j4aalTOIN1MjtzzCKPor8osBXX
+         qcWUnrH3VfVBNnWBphBTXVWhYp4cfEVDfu6jqWtP/Z9kESGg/jcQ14GXWdeyXqeJ5z8T
+         fB23OTsJ3XkN3snMWi4lShbagEF1t0FRY74SShIkH/murUkiWHkJBFItAFuOSwERXyT6
+         r61w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795686829; x=1796291629;
+        d=1e100.net; s=20260707; t=1795686831; x=1796291631;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4LB3yQ8An3Y0YBQjJWN7gTJw3a9Shu5jG0BjthZZNgs=;
-        b=xMoh58exUpWYomhAfWVWDZUmtUtoB+ktDe8D8yjwCoQ4qbR6WDZWUm060+uIQejIub
-         H+P3o8j1sxKCc8tIUNENUGO4EP2gOYH31YrhtFbUPR4DvfMxr6JfAGsYKKKD1gOiMUPD
-         8VoQw330rBhxVHdz4ZAV2wad4asjlnttv7x7FE49yWnv17f3NGMZKWMJ4XxkTMypVqL9
-         siYnu30F5NdEPc82K2eadsR6ahGH15KUqw46pQmebm/I/ebiIunI63ToP9QrlVDFHv4I
-         PTDoyXnYgjYSvxBaIbYyEm6r1FlVE7RXYW7cM/prwqbypSvn/p76tDMTl54zBQaU5lId
-         2hdg==
-X-Forwarded-Encrypted: i=1; AL+hErFNeKG6d15/irurxbD9QcaGB1vnwecbc2CixHT3TndzGzmg/k2GTLrSERyTi+l13bhedDHehwQ64PPNCSJ7Wg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z9jAdcFQ9JQGMjHcYhWEgg9w7pl5dNCAGq7AwvB0CMIpwruoXXT
-	ZUZSmczZXmjg/eLrEV2W+X/Sg5q0F1wRNLh+VXugXGPwVI/vMf6EBs8T7zLj6NfcBb+oF91Osg9
-	smTIRQpw5rI19pT7RLw==
-X-Received: from wmfq11.prod.google.com ([2002:a05:600c:2e4b:b0:4a3:5dec:ff72])
+        bh=pdTN5k5ljISeX4Y7RP4qX7eVJP6sJ2SABjzpm0RRdMI=;
+        b=beuLP/z3Vq/FN0XjuKAwExO2hnieyUZcb27xGkRKbBG/3NEq5e5SPAT3i/Yw6ksTv7
+         maqof4kVv4pFDWwkISxnI/emZR+g18C5FWyWgwPhlpiylD131zjFTJURLqdQ6sNPbE27
+         y5Pnkz9JIxWQY1QKrHMehHSmlhWpC35NZEMcTplsC9h9+lF4DkqZX1SZsC1EebBXYiPk
+         Dcr4TZaZI8zgAQcqVRn1HJh7uxFhT5sMdtFf5RRcLDXDEUXo1vqeMh2XcI1hP0k/m4lI
+         yzjZzZ4gfBUHPsrZaCj3Mgh2LOnV5TtamkKh/uLv1oIP7NJnKA/RU/Dn9Ai+KPL5Yw/G
+         UUiA==
+X-Forwarded-Encrypted: i=1; AL+hErFm+UCjIMzoi3nOV+9uAVW65O9rWoaUOLRH2HXEEYu+gQdf6U/py/m4F8Sr8vczF+ExHscAiWzOpORTj8rivw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/MdXa2q4TnauGU058BARBiAosCEC82tbyOGZV0/8HKHUe7Jgtn
+	BSICP5F/cNesWk1h0d9049595v+RA3qb96oVSlMrH3ujbhxSGo6UBYK/iLQsC6qwcjlc3aUPJu3
+	XAO+Rkc8Ykw9UQs6w+w==
+X-Received: from ljis24.prod.google.com ([2002:a2e:9c18:0:b0:3ab:1b6e:f31f])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600d:18:b0:4bb:9001:1aa with SMTP id 5b1f17b1804b1-4bb900102b8mr290353945e9.10.1795686828817;
- Thu, 26 Nov 2026 01:53:48 -0800 (PST)
-Date: Thu, 26 Nov 2026 09:53:40 +0000
+ 2002:a2e:a98e:0:b0:3ac:ee2a:ce63 with SMTP id 38308e7fff4ca-3ae7fa13056mr60047371fa.18.1795686830885;
+ Thu, 26 Nov 2026 01:53:50 -0800 (PST)
+Date: Thu, 26 Nov 2026 09:53:41 +0000
 In-Reply-To: <20261126-binder-32bit-fixes-v1-0-22fc21baf6f8@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -81,22 +81,22 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261126-binder-32bit-fixes-v1-0-22fc21baf6f8@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1346; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=+DbkYXvml6s4B9GdpXkb+BI+SGj5nNXm1abdMi6aNsA=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBrCAGp5pHSSaJHP6p5NnJfT3tuspVzoxpjamyaH
- aDAPOkd0o6JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCawgBqQAKCRAEWL7uWMY5
- RvI1EACNCl09Z4znAbCNhyokO33ghP0zKUfMQmPSpNUfP3nlY/7v8VxmUMeWd3Ph8t6++iQRT87
- nd+kjy5B9+NUPeFLhSZoBYlYGrcQfYUPLz9ZPHmDjWoiZGXS/5TplPPcT29VeXHeb463/GRQpKt
- i0jVDNsjX3kLBhOl2xM+1hsv1MYQKig/qZ15WPbpGGcvwPZX4ZB+FyKSrWhMwEnu2yviUJbOxrp
- ep7Gf/T/xmCrGAY34w/phyqjHkMIIW8oEMe6SI5P7zkd5tXk8FhE/RXbMCY0jvarmXD+6WFXVeS
- 2Q8MIXLzxn5QDUhRkmKeURNoJGaXrAHp1jrGtdENze3JpmywJLgwz0W0YUvf6O7g9250kEEdbBw
- Xew+p706BEkBUjpoOYZ3cPW/8dYNRvN1aQPvv4DnnEDvebhl+Aranoiab74M41d0XmXuaUz/wTH
- 2sGehTMYcE2DuVYYRemUHO5AJm4Tup1fbz8IcVfRFEbJuqyxe0rAx1gNAqiVQ7T5NcwtYrk9sIK
- JVIjIIAdN8U7Zpupltd33spmTWwibYI4oYR3R4BnIcM1QH4aSTKP4F8X94Lu8hZhi6OiyC6Ax7A
- F9tVIc3yLO0kP5a8lZFhNy2sN31Ogcw/qJt6tAEeLSeQ7zgz+3pu/K9IbSbSsmd2bfKKD8PiRpz B2hGtqpgmY0hsnA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3242; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=RlIYXXPHdukFDAnF4wZCL+AIuLeA7xeGITe8j6jhzlo=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBrCAGqr4I2163inFA/Zi3cpPfSdhO3k0/n4Genc
+ N5kn7IOOPKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCawgBqgAKCRAEWL7uWMY5
+ RhF2D/0fBgCYQx+auxYq7WhW7zTx5GvnMYrqA9l4lwwthI8HTWYwb3ygn+VWkl30lZOME7m2sJL
+ 8JQfQFpR9pgi7s2N7/h/wI7aYE4kDSfr2taVYlbPUkB0JHIe2bcm84RS9Ag5mFdfOOSGREmrCAR
+ uNALZ593EIEpChdkQZ2Hiik73Qxi6nv1mx5nma6l47Xuf+SW7Ppok3YxG7+Ha3PmCMGLw3b6FSO
+ EWdckukNuXKiAol2qCAu1nhpJr7uK5UlV86M/4h8DFz1zO45iqZ0Sp40/uwRolWiL1eHX1mO50K
+ w1MA9xJU0O3Q6dUv+gYUGT+RA+rwgTrOQw6uDlkCvTza+1ZBZb1zZG0Ju2XSVrn//LP9yt5TWRp
+ xv6gVPLBzMHiETa3r6LIwOGj3jU2GH9nCpJcr6z8D8MiBXEDPHjvfJue3OU7DyMpNiQgQkpRDAs
+ vv6J7fw41cEzDGVENE9T0YJeZGZ3U1uPxUhrPpFBOK5H5r0JpeZKNP7pt1fRSYokxwIA7OJvvNd
+ VGO6TkR2iZvfVSWFtQcTL8b0Awym/N0ArUDvFNfL5FQ0CKUcHze3tW3G+r1yHyD/AVUuK75wq1y
+ ASCcZpWwotsngV0w377NhSaR7dWY+7cowdqLb2I/nZTMApByOiqELlUo5aSYYq6rhqnvAhxNWoK B/P7NtQwkYRXiYA==
 X-Mailer: b4 0.14.3
-Message-ID: <20261126-binder-32bit-fixes-v1-1-22fc21baf6f8@google.com>
-Subject: [PATCH 1/5] rust_binder: read u64 pointer in BC_FREE_BUFFER
+Message-ID: <20261126-binder-32bit-fixes-v1-2-22fc21baf6f8@google.com>
+Subject: [PATCH 2/5] rust_binder: clamp write_read buffer sizes to usize::MAX
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -108,35 +108,66 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <ga
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On 32-bit kernels, BC_FREE_BUFFER reads a usize instead of a 64-bit
-binder_uintptr_t from userspace. This desynchronizes the command stream
-and misinterprets the remaining bytes, causing subsequent commands to
-fail or leaking the buffer. Thus, read a u64 pointer on all platforms.
-
-To match legacy C Binder behavior, out of range pointer values are
-ignored, rather than reported as an error.
+On 32-bit kernels, casting `BinderWriteRead` buffer sizes to `usize`
+silently truncates lengths of 4 GiB or more modulo 2^32. Moreover,
+`Thread::read()` subtracts the remaining writer length from the
+untruncated 64-bit length, inflating `read_consumed` by multiples of
+4 GiB. Thus, clamp these buffer lengths to `usize::MAX` and compute
+`read_consumed` from the clamped length.
 
 Cc: stable@vger.kernel.org
 Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/android/binder/process.rs | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/android/binder/thread.rs | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index e97213250beb..f23dbe98d688 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -1125,7 +1125,8 @@ pub(crate) fn buffer_alloc(
-         Ok(NewAllocation(res))
-     }
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index 54a208caebe1..8357313875d5 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -1520,9 +1520,10 @@ fn oneway_transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> Bin
  
--    pub(crate) fn buffer_get(self: &Arc<Self>, ptr: usize) -> Option<Allocation> {
-+    pub(crate) fn buffer_get(self: &Arc<Self>, ptr: u64) -> Option<Allocation> {
-+        let ptr = usize::try_from(ptr).ok()?;
-         let mut inner = self.inner.lock();
-         let mapping = inner.mapping.as_mut()?;
-         let offset = ptr.checked_sub(mapping.address)?;
+     fn write(self: &Arc<Self>, req: &mut BinderWriteRead) -> Result {
+         let write_start = req.write_buffer.wrapping_add(req.write_consumed);
+-        let write_len = req.write_size.saturating_sub(req.write_consumed);
++        let write_len = usize::try_from(req.write_size.saturating_sub(req.write_consumed))
++            .unwrap_or(usize::MAX);
+         let mut reader =
+-            UserSlice::new(UserPtr::from_addr(write_start as usize), write_len as usize).reader();
++            UserSlice::new(UserPtr::from_addr(write_start as usize), write_len).reader();
+ 
+         while reader.len() >= size_of::<u32>() && self.inner.lock().return_work.is_unused() {
+             let before = reader.len();
+@@ -1592,9 +1593,10 @@ fn write(self: &Arc<Self>, req: &mut BinderWriteRead) -> Result {
+ 
+     fn read(self: &Arc<Self>, req: &mut BinderWriteRead, wait: bool) -> Result {
+         let read_start = req.read_buffer.wrapping_add(req.read_consumed);
+-        let read_len = req.read_size.saturating_sub(req.read_consumed);
++        let read_len =
++            usize::try_from(req.read_size.saturating_sub(req.read_consumed)).unwrap_or(usize::MAX);
+         let mut writer = BinderReturnWriter::new(
+-            UserSlice::new(UserPtr::from_addr(read_start as usize), read_len as usize).writer(),
++            UserSlice::new(UserPtr::from_addr(read_start as usize), read_len).writer(),
+             self,
+         );
+         let (in_pool, has_transaction, thread_todo, use_proc_queue) = {
+@@ -1654,13 +1656,13 @@ fn read(self: &Arc<Self>, req: &mut BinderWriteRead, wait: bool) -> Result {
+             }
+         }
+ 
+-        req.read_consumed += read_len - writer.len() as u64;
++        req.read_consumed += (read_len - writer.len()) as u64;
+ 
+         // Write BR_SPAWN_LOOPER if the process needs more threads for its pool.
+         if has_noop_placeholder && in_pool && self.process.needs_thread() {
+             let mut writer = UserSlice::new(
+                 UserPtr::from_addr(req.read_buffer as usize),
+-                req.read_size as usize,
++                usize::try_from(req.read_size).unwrap_or(usize::MAX),
+             )
+             .writer();
+             writer.write(&BR_SPAWN_LOOPER)?;
 
 -- 
 2.56.1.839.g22a8290db9-goog
