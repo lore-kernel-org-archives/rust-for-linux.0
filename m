@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795686833;
-	b=2RE+XY5Ha5iqRfKCpuaXQP1wxoYS9Gnzd+gkN0kN0coUqnz9pJ9jJHYumzrltzyZeLN5
-	 nYAmfPWqerclKivnTSZorbmfPsRy9R2aB7epMtVRwzTVLt7EejTR6pa5iwcwCUv4TVFNF
-	 JnzV2SCSaIApC3CHe/6tmWGz+eXFMS3gJmszrZ8JW214As1DeMlsitzW53wqvgohF2c4D
-	 cASaF8bLmY01Er7xXyviX50slHOgUfVbPadSHd1MjWFkmyfemDjyBYRtwQrKKD79sr2y3
-	 w9zB8kzc0MY4r83j2xpRc3WbH5/9FQP5B+Vz+gkpTJiV9LUrQAme5BezyKVmf3lM13Q==
+	t=1795686834;
+	b=GkQJMuN5FfQop2qqqBGScDZVNFDy1fevhrD77+MAYYs90kgQaeexFoGQaNXdPPAeIUlw
+	 FXMYLcLZfbty9S249er86kRywy0QTk7LBR7GAagtyxpygky5ptYqLtUjAt0wk81CLQPB5
+	 t0fCL2/tEMC22n1LeV1PF1M3EFbWYJ8YUUhOUaRbFFfAkfcgOn0zBkQsDxTbzp60QQN5y
+	 2174tkgRfl5rRNQLTGbs6zzHdnF3s9/+WCHBGBqhpRuTAxLRwqWLfw/PMpYd5NjvQAj7R
+	 QidwQsXt4S7fnvBYfqfmeJw21V0QffmyNmbZXOI3zaCw6W32lzJW0U/r4Fx32u8qkMA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795686833;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795686834;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Developer-Key:X-Developer-Signature:
 	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=pdTN5k5ljISeX4Y7RP4qX7eVJP6sJ2SABjzpm0RRdMI=;
-	b=2WuB2tfbrd4fMWIIVJ+awsJ0eSF4rtluQspEDsB/zPmVXSxuOCJpHBAK5b88ifSggSmH
-	 0UT0Fn0327sMLJKG9hJSoLwr8n3PfRw18EAPIlQHqsVD6/sczkoKFYj4sTHH8185zzmUY
-	 ZJ/1cLgEqzNfZKWEu/QrXR04ytwxFozqkMajsfWEX69WBdhbc/wfXOZAzrIteMJ4PnqdB
-	 e/ZiCmN1b+H3ZvQorEaOY6xWNERsUihL5wSSOqbmzlT3ZjB6oMQcEakDGCQE2NsvlrJUB
-	 cE8vhBhNiqu0SxDvQWTwxjU6JQI1dZHQSKewOAfYCcJA1ZrH9TABL3X1G+xFKPc+HsQ==
+	bh=CuzfEbpK6SMX5s62D8VhwwFSgZwewNQ++RDy8jpJRaA=;
+	b=4lzsoK7NRMhnwW0EboMXzSX/EvAqqgkmWLYrQacZWHWMK2/1eEKBcOO8UnF0Ui/batmr
+	 pFH176JxNbW67CyTwd2IDd7GjX6SeY4rXieY67v7vkYc3nHZgk65SiJElPC64JDuw4XF+
+	 ESXlON1mrliXdoX7/eQU9wH4Ili1/Ub+WFuSgVIo6ivRLgaAQ37w7Qvio7SMranIARbRv
+	 WIVvOgRQzrNNqSV43j/PgmcNCzpuXRLTaQh2mYgjdgnR+yLJhLWZIRCqFAf2jABF73ny2
+	 cg54tObn4LOareGXqPrfqTyVHNrLH0vXN5rDZu+6X/fWFuY5TyHybpyPyT2+4VMss4A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KxK5CpM8;
-	arc=none smtp.remote-ip=209.85.208.198
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com [209.85.208.198])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=mFIRwbj3;
+	arc=none smtp.remote-ip=209.85.128.70
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F6E606A6A0
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 09:53:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3F6E606A6A0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429AD606A333
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 09:53:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 429AD606A333
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KxK5CpM8
-Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-3accf0b1addso21850101fa.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 01:53:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=mFIRwbj3
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4bb68d624baso36790285e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 01:53:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795686831; x=1796291631; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1795686833; x=1796291633; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pdTN5k5ljISeX4Y7RP4qX7eVJP6sJ2SABjzpm0RRdMI=;
-        b=KxK5CpM8Uy4nT8ZmGA3aPQ3diwW6+siEZpmqsdyTnIjDLbUasIReNR8GUKpiARIKjw
-         hieUypXR2ZZnmnSUN3KNltr4SOQPWokU7x99HG/VCZEqxYCH2UPu25GX9OY8O+HOV1J0
-         P07riwqXkmevaoK2BNItAHTCAl63d58fXFoFQ0bV91j4aalTOIN1MjtzzCKPor8osBXX
-         qcWUnrH3VfVBNnWBphBTXVWhYp4cfEVDfu6jqWtP/Z9kESGg/jcQ14GXWdeyXqeJ5z8T
-         fB23OTsJ3XkN3snMWi4lShbagEF1t0FRY74SShIkH/murUkiWHkJBFItAFuOSwERXyT6
-         r61w==
+        bh=CuzfEbpK6SMX5s62D8VhwwFSgZwewNQ++RDy8jpJRaA=;
+        b=mFIRwbj3mXaR9Vjjmnly7m578PJZkNRattVk0JGhh2ojgFYN+qBS6zgthCnwAgLes4
+         mIZ2oH0GJSW42rsO9HkeCHMG5CZ8pTpEQMUtvua/terxVVJtMVC0DNegVaGhSZDi9kTn
+         lmfvFAOSpiQ7vyTnZfZ8pdbZnbGTtLBjBYiJWq0TOpmpR5ESWJbIRNltI3Fb9aipCp0h
+         zf8n7p/8zAC22O7JM4w7/vHISmnY6012f5JEDd7Za1KrTRA95jNi7JslbceLLWioXuSu
+         RHZDspcU4+gL6IWyJFmwcs3FMK9/za2WfUqKwwIUFRlxaYPf3uPr4OBTN+bTj/yImBzq
+         r/YA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795686831; x=1796291631;
+        d=1e100.net; s=20260707; t=1795686833; x=1796291633;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=pdTN5k5ljISeX4Y7RP4qX7eVJP6sJ2SABjzpm0RRdMI=;
-        b=beuLP/z3Vq/FN0XjuKAwExO2hnieyUZcb27xGkRKbBG/3NEq5e5SPAT3i/Yw6ksTv7
-         maqof4kVv4pFDWwkISxnI/emZR+g18C5FWyWgwPhlpiylD131zjFTJURLqdQ6sNPbE27
-         y5Pnkz9JIxWQY1QKrHMehHSmlhWpC35NZEMcTplsC9h9+lF4DkqZX1SZsC1EebBXYiPk
-         Dcr4TZaZI8zgAQcqVRn1HJh7uxFhT5sMdtFf5RRcLDXDEUXo1vqeMh2XcI1hP0k/m4lI
-         yzjZzZ4gfBUHPsrZaCj3Mgh2LOnV5TtamkKh/uLv1oIP7NJnKA/RU/Dn9Ai+KPL5Yw/G
-         UUiA==
-X-Forwarded-Encrypted: i=1; AL+hErFm+UCjIMzoi3nOV+9uAVW65O9rWoaUOLRH2HXEEYu+gQdf6U/py/m4F8Sr8vczF+ExHscAiWzOpORTj8rivw==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/MdXa2q4TnauGU058BARBiAosCEC82tbyOGZV0/8HKHUe7Jgtn
-	BSICP5F/cNesWk1h0d9049595v+RA3qb96oVSlMrH3ujbhxSGo6UBYK/iLQsC6qwcjlc3aUPJu3
-	XAO+Rkc8Ykw9UQs6w+w==
-X-Received: from ljis24.prod.google.com ([2002:a2e:9c18:0:b0:3ab:1b6e:f31f])
+        bh=CuzfEbpK6SMX5s62D8VhwwFSgZwewNQ++RDy8jpJRaA=;
+        b=ZSchTKrdd+g2wNsvL/5yr0D9NbxxHDg5cYEl083pJa9jgFpCTYQf2L7fuPJ1HrhHs2
+         rrAkmtAht6PNPcC4FX62QYOwn26n0TXKIUByKmsbtCD8qPWR59ElaREIGEbA5rXIF/oJ
+         llFscjJsEdJNRntvd/mtQB8qCnSsbrH5e26yHofO021eQA2uclMPzE+2oSpPiVtaw2bZ
+         gkZIB48RhCWOHZ1uwm4nqwTxfwzW3z5y4TWsLXLSPG3f51v38vnrVNG5SSwGcI8c8LMQ
+         9+e3MxvQswf0z/Dh2GkN+zw9niWIvoQXrieUEPh1ZXt2Yl55Tx6oxJLpnuUtq650FT3w
+         8gUQ==
+X-Forwarded-Encrypted: i=1; AL+hErFS8/O4v7j0gJLdIMaWsuV2C2URuayXTec2xyYmF+dujFORDlKPy0tdu4d6tLwDZHCPDMBW7VjbXsLM0WQ3ZQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+KE/7Hfz2gUx9rcD4eIdl+cq+uHBvho9hf1rxg2ruNkcAquY7v
+	K1voOVsbT4kXDmtrMRI05IDLsOJvTtIIx/cDX8ZcI4tnVrBAwmMjlWFSVRaM5oaB2h8GCfPuerw
+	WSdD/XIJDhQ465KRCrw==
+X-Received: from wmbef18.prod.google.com ([2002:a05:600c:6612:b0:4a1:dfb3:2e66])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a2e:a98e:0:b0:3ac:ee2a:ce63 with SMTP id 38308e7fff4ca-3ae7fa13056mr60047371fa.18.1795686830885;
- Thu, 26 Nov 2026 01:53:50 -0800 (PST)
-Date: Thu, 26 Nov 2026 09:53:41 +0000
+ 2002:a05:600c:4e02:b0:4a4:4d57:8462 with SMTP id 5b1f17b1804b1-4bb88812b1cmr414847705e9.24.1795686832411;
+ Thu, 26 Nov 2026 01:53:52 -0800 (PST)
+Date: Thu, 26 Nov 2026 09:53:42 +0000
 In-Reply-To: <20261126-binder-32bit-fixes-v1-0-22fc21baf6f8@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -81,22 +81,22 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261126-binder-32bit-fixes-v1-0-22fc21baf6f8@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3242; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=RlIYXXPHdukFDAnF4wZCL+AIuLeA7xeGITe8j6jhzlo=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBrCAGqr4I2163inFA/Zi3cpPfSdhO3k0/n4Genc
- N5kn7IOOPKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCawgBqgAKCRAEWL7uWMY5
- RhF2D/0fBgCYQx+auxYq7WhW7zTx5GvnMYrqA9l4lwwthI8HTWYwb3ygn+VWkl30lZOME7m2sJL
- 8JQfQFpR9pgi7s2N7/h/wI7aYE4kDSfr2taVYlbPUkB0JHIe2bcm84RS9Ag5mFdfOOSGREmrCAR
- uNALZ593EIEpChdkQZ2Hiik73Qxi6nv1mx5nma6l47Xuf+SW7Ppok3YxG7+Ha3PmCMGLw3b6FSO
- EWdckukNuXKiAol2qCAu1nhpJr7uK5UlV86M/4h8DFz1zO45iqZ0Sp40/uwRolWiL1eHX1mO50K
- w1MA9xJU0O3Q6dUv+gYUGT+RA+rwgTrOQw6uDlkCvTza+1ZBZb1zZG0Ju2XSVrn//LP9yt5TWRp
- xv6gVPLBzMHiETa3r6LIwOGj3jU2GH9nCpJcr6z8D8MiBXEDPHjvfJue3OU7DyMpNiQgQkpRDAs
- vv6J7fw41cEzDGVENE9T0YJeZGZ3U1uPxUhrPpFBOK5H5r0JpeZKNP7pt1fRSYokxwIA7OJvvNd
- VGO6TkR2iZvfVSWFtQcTL8b0Awym/N0ArUDvFNfL5FQ0CKUcHze3tW3G+r1yHyD/AVUuK75wq1y
- ASCcZpWwotsngV0w377NhSaR7dWY+7cowdqLb2I/nZTMApByOiqELlUo5aSYYq6rhqnvAhxNWoK B/P7NtQwkYRXiYA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2059; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=D/f9oxKyC+0/56/KEOw74+zJmNkPLDR+DYLqojHESgU=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBrCAGq33LkyEM1Kp5UxVgcoJPi82CGjjlbyW1go
+ ahuN4hggKaJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCawgBqgAKCRAEWL7uWMY5
+ RqvFD/wKbJV5Opv9yGzOIOj7YSge6Ul/q4nRnBl6PIP7+HRm2NsUEirOWCZL3JAV+GPTJnyiYwL
+ FySoprLoLWePqkB9lFeKVuPU2A9rjKHDvykgHh72qBIylWucgWEkcRhSP4Eri5mfXid7dtKcGrA
+ G11kUg1gESq6dcdkkaYvcqXYk0AqJ0InRLtS0JafmecqbkQYX8cWEcmfBzFjqCYXTMSZMiNAuro
+ wr9ccf7rphqEybBFlbEh21d+JgBge701bdCF8VFuUNopTKyhspwH5NP++Vh3xOG6BmtWemzNNTy
+ uL4NaPrpSxpVR9r87JOI9wrmQXvnu7jWUS93A6k/jO+MNT6tlMbt+JUAIdqdd/AWq3eVTNgbDFq
+ a5XfQoS3YH1smj7Pu4kGddaQoS2dPT5Xmv63agMAQrTkHhgbsy2+nKIt0S8C9ydcStE67h+xx55
+ YODeLu9nvziegqHRnevTIZXCNAhSnMbO3sPrGIgKv7EshXx+juCkyAQD/cA42EcQmGHNBNjBF0o
+ D+IuYq2mfST0xOQSV9NNbJIBAeTkKTyEdRf/G9llcSESkd6Z3w4mG7Upm+lKxddW3pPaKAcAzWB
+ aRwiDoZjAPfnjH+uyieMjdeehb5A9GbDWMn3fxuZHUA81TA0DiR7q4OPH3H2gCbRS/U7hK/KLZj wrw1Rgw46hSErTA==
 X-Mailer: b4 0.14.3
-Message-ID: <20261126-binder-32bit-fixes-v1-2-22fc21baf6f8@google.com>
-Subject: [PATCH 2/5] rust_binder: clamp write_read buffer sizes to usize::MAX
+Message-ID: <20261126-binder-32bit-fixes-v1-3-22fc21baf6f8@google.com>
+Subject: [PATCH 3/5] rust_binder: reject transaction sizes exceeding usize::MAX
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -108,66 +108,42 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <ga
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On 32-bit kernels, casting `BinderWriteRead` buffer sizes to `usize`
-silently truncates lengths of 4 GiB or more modulo 2^32. Moreover,
-`Thread::read()` subtracts the remaining writer length from the
-untruncated 64-bit length, inflating `read_consumed` by multiples of
-4 GiB. Thus, clamp these buffer lengths to `usize::MAX` and compute
-`read_consumed` from the clamped length.
+On 32-bit kernels, casting `data_size`, `offsets_size`, and
+`buffers_size` from u64 to usize when reading transaction metadata
+silently truncates values exceeding `usize::MAX` instead of failing as
+on 64-bit kernels. Note that C Binder also silently truncated these
+u64 sizes to size_t on 32-bit kernels.
+
+Thus, saturate values exceeding `usize::MAX` to `usize::MAX`, which
+`copy_transaction_data()` rejects with `EINVAL`.
 
 Cc: stable@vger.kernel.org
-Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Fixes: 5326a18e3e64 ("rust_binder: introduce TransactionInfo")
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/android/binder/thread.rs | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/android/binder/thread.rs | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 54a208caebe1..8357313875d5 100644
+index 8357313875d5..23367dfbf393 100644
 --- a/drivers/android/binder/thread.rs
 +++ b/drivers/android/binder/thread.rs
-@@ -1520,9 +1520,10 @@ fn oneway_transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> Bin
+@@ -1310,10 +1310,12 @@ fn read_transaction_info(
+         info.code = td.transaction_data.code;
+         info.flags = TransactionFlags::from_bits(td.transaction_data.flags);
+         info.data_ptr = UserPtr::from_addr(trd_data_ptr.buffer as usize);
+-        info.data_size = td.transaction_data.data_size as usize;
++        // Saturate sizes exceeding `usize::MAX` to `usize::MAX`, which is
++        // guaranteed to be rejected as `EINVAL` in `copy_transaction_data`.
++        info.data_size = usize::try_from(td.transaction_data.data_size).unwrap_or(usize::MAX);
+         info.offsets_ptr = UserPtr::from_addr(trd_data_ptr.offsets as usize);
+-        info.offsets_size = td.transaction_data.offsets_size as usize;
+-        info.buffers_size = td.buffers_size as usize;
++        info.offsets_size = usize::try_from(td.transaction_data.offsets_size).unwrap_or(usize::MAX);
++        info.buffers_size = usize::try_from(td.buffers_size).unwrap_or(usize::MAX);
+         // SAFETY: Above `read` call initializes all bytes, so this union read is ok.
+         info.target_handle = unsafe { td.transaction_data.target.handle };
  
-     fn write(self: &Arc<Self>, req: &mut BinderWriteRead) -> Result {
-         let write_start = req.write_buffer.wrapping_add(req.write_consumed);
--        let write_len = req.write_size.saturating_sub(req.write_consumed);
-+        let write_len = usize::try_from(req.write_size.saturating_sub(req.write_consumed))
-+            .unwrap_or(usize::MAX);
-         let mut reader =
--            UserSlice::new(UserPtr::from_addr(write_start as usize), write_len as usize).reader();
-+            UserSlice::new(UserPtr::from_addr(write_start as usize), write_len).reader();
- 
-         while reader.len() >= size_of::<u32>() && self.inner.lock().return_work.is_unused() {
-             let before = reader.len();
-@@ -1592,9 +1593,10 @@ fn write(self: &Arc<Self>, req: &mut BinderWriteRead) -> Result {
- 
-     fn read(self: &Arc<Self>, req: &mut BinderWriteRead, wait: bool) -> Result {
-         let read_start = req.read_buffer.wrapping_add(req.read_consumed);
--        let read_len = req.read_size.saturating_sub(req.read_consumed);
-+        let read_len =
-+            usize::try_from(req.read_size.saturating_sub(req.read_consumed)).unwrap_or(usize::MAX);
-         let mut writer = BinderReturnWriter::new(
--            UserSlice::new(UserPtr::from_addr(read_start as usize), read_len as usize).writer(),
-+            UserSlice::new(UserPtr::from_addr(read_start as usize), read_len).writer(),
-             self,
-         );
-         let (in_pool, has_transaction, thread_todo, use_proc_queue) = {
-@@ -1654,13 +1656,13 @@ fn read(self: &Arc<Self>, req: &mut BinderWriteRead, wait: bool) -> Result {
-             }
-         }
- 
--        req.read_consumed += read_len - writer.len() as u64;
-+        req.read_consumed += (read_len - writer.len()) as u64;
- 
-         // Write BR_SPAWN_LOOPER if the process needs more threads for its pool.
-         if has_noop_placeholder && in_pool && self.process.needs_thread() {
-             let mut writer = UserSlice::new(
-                 UserPtr::from_addr(req.read_buffer as usize),
--                req.read_size as usize,
-+                usize::try_from(req.read_size).unwrap_or(usize::MAX),
-             )
-             .writer();
-             writer.write(&BR_SPAWN_LOOPER)?;
 
 -- 
 2.56.1.839.g22a8290db9-goog
