@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1795709187;
-	b=KXc9rlaRWqOZ6bTw9LvzndQ208FwAD1DWDxpY6SJ+GgZ927gnqQcFCTOGz9WDmtuYPI/
-	 pkfa26cl6lcL6XYeL/17OD/OsqHQn4sDWvbCFRUlKb3l9UVV8FOL0XPNHY/HE8pjnYuJq
-	 oP/cbU7RT/WnhYgcqK+K6GS9+7cqHoHFr4qVfjoOIsWLPTcnvoyJtfLFUc8K7eGvSgS/J
-	 xd2o5IUJEoG5/xWikX3+viqwUXHOGwI2pqfyAKms1tz4T87vewViUg73L26PcnWSRqV3Z
-	 Lxie+w5B2EBz58uYG0/neEjZzge/mwLMtfR5NrgyJCiJ8xpt9M1GqlrRSed6rmZp8sQ==
+	b=lsokbiQlh1qYX3DlgmHUNzY7pwnKuUQ25c7Gh3gU6ybiRJil0zKDOVhjy5JOyHcfhGEf
+	 xJAx0NZC9ivHE9Z/IOcA/uEWMbQGDhlr8Mkwr0/2dxX1A6EKmAsCDn3Y4vsnYmnx7sWXV
+	 FTq1iePYKfRhpvDpVrAiLoAvUgi53revolEUAqG1u+7XMxu6YpodnfHdMHIhx9ttpu+0K
+	 4TGtSHzU/HIHk0NU90PDbEk7HnWkzCBIAzqpIGaG7ScUWo/UHeHuVD3pueXaI12hqzuQj
+	 qvmf/FhNnWOO3E4R5h0Ahw3mjx9X2pEGKgMNLNJIsh7MofMma72lVaBLj5b2u+1eQeQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795709187;
 	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-ZohoMailClient;
-	bh=l5OYIe75wHzFRIOHh0kfNH2rcb0KVmBnsaIGoSidDr4=;
-	b=RksIDBq9TTCwRQFKoxP/YmnRAMCijqtHscPRT9RhRzDgcTeVVPw5xGZMzMvnL/Rst+rD
-	 rB152jWdMGva7elNZARITj7e0eZJjDLA1OZRNPfvbCsUkoVGpOkR8+2Z4YUpLNCX6CM2y
-	 HfvaN9yIAdvoJXi4d8lS44Yr6sCuW0Z9GeFSYLzFh4vu+0ErK23YfrWpkkgBmHUMa6JvS
-	 O+conlDJK7ppOEfU6Dx1viW/GWIAt7g29N7j2AT/4fajZ/w9Y1CWZ1T4LfViFUvcl0zwI
-	 gY51ydMEyIaQlTBbPu8DvoJgmsHz2TDltPxtQAIfIZE2RH7eSOu9Hlkkhg37GMbn41A==
+	bh=oY+lb1T78FAmK20LxOfcLtD9nvohP0xsrFvv9vx9VXs=;
+	b=WftzfvjUacFp6QXTYrLN7ttQJ1fO1d/wxSAl38JRzafHcEyGZ8JdXWG6rO+EG19K4quQ
+	 9T9j5B9xQxLAM7Cg70Lymq/SspumWSxo1kR/BCrh4RmwbL3d8NxC0bQ1Vjbj/l75mjxOR
+	 JsRflmsN2mWppFPrb+VsadzwEmfYrPJHegvZH2o4jmYYOyqTQPhqcPeEVtHm9d2uXlEJQ
+	 +sdEEk6fuMscJL2imUIo+dH7M8Oo4nu5EOcpzK/nIBg4xavOjJ06+mr3BGao/spSTjVdU
+	 6oaKjWrm5IBuCKgcmnXRgLZkABp8AqeEr0/mTKjQLhjXiaOBL7pQxdWUBj4aNYzUi3A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=collabora.com;
 	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=C5bVt5Ml;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Ag+MIQZ+;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
 Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B2B606A31C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABAC8606A321;
 	Thu, 26 Nov 2026 16:06:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73B2B606A31C
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ABAC8606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=C5bVt5Ml
-ARC-Seal: i=1; a=rsa-sha256; t=1795709105; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Ag+MIQZ+
+ARC-Seal: i=1; a=rsa-sha256; t=1795709093; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=Ugpy+eup+rDqcYyfdyVCVfMxMbbC3rTYNPRuyLXGTzz4HbO0ZdfwrjGUjDGq6i2DkExqTmwxY5WOxuReBFziai8Mg5PY9FGTl2ezNklxwIQv/iVSWug+SUr/I5ynE9NC7NekPtv16OFk3WINqNQKJ93J66vuD8K+wD0L/jmw2Hc=
+	b=e0PPR9psFoU1dGOUInC7OFW7vFNlJW46bYVVmQCagB3Tbd0OHDaKyd6iXz5EfFdr3YBJ6e2FcWrFzvUnycHZZ0nO5kNQUXjK5luHq30iliXxNpUy1O8PWb2jAuPo37orBDK8hyGJEQRGGxp7dFi/u28YOySyuePQeBSUEfoXhKM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1795709105; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=l5OYIe75wHzFRIOHh0kfNH2rcb0KVmBnsaIGoSidDr4=; 
-	b=bvD+3HGHzs059X4MdyeIFqMbmqur7BWxz0kNQrUfJCOyybhxDm7rymTcuhFXjGI+ERmyfJrbaJ9L/tqnu/4eIsllNxwUquyOWLfPvXkvjlEpudVHs+yWsZzGHgaunljjpm8TQ6bsTcjBfnFL+dalNHcVYbNQYSU8AtHgGSC8vWY=
+	t=1795709093; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=oY+lb1T78FAmK20LxOfcLtD9nvohP0xsrFvv9vx9VXs=; 
+	b=kk6tTdvsI72XRTpYoxm6mOgqC18okfje5UgntgQDi4bEqiWqUPke/MLmjAYyYu8JoiiYnjq5E1J5I1V3Q+5b3ZM5yBixqVReiwTPDvm8/JyiZWakRPbNE2MQiJR2l99QlyQfVio9p2YD/6hcCfo6/sjTbz453v+6YMbvAq/3/nE=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=C5bVt5MlJfuVjfJ8Qc7sNCg5plkyjKo7LO9yYILyO7pCqy77LfbXYu74K1bBTRbrUQPMuJTdie9slxouINyHQYVa5vSdIjZroAjfpNQb2XA4a3/WXqrLj7AuSGZrJ5gx3yuCX9lklVRt9aIXYcf861ujbIophPhOZpSUwoWD7iY=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=l5OYIe75wHzFRIOHh0kfNH2rcb0KVmBnsaIGoSidDr4=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1795709104416312.4345849624442;
-	Thu, 26 Nov 2026 08:05:04 -0800 (PST)
+DKIM-Signature: a=rsa-sha256; b=Ag+MIQZ+xlB1KgXr3yMeTkX6IaNApndDF2VeWD9XuBEX1KP1HIOZvcsa2HGTuCcEYsSepa6JY/NbCakS3NlQgIyem3w8RXXCoGD5kfYDthA5js/LgxwglDCyNN0lA5TpMaq0P0oj5wncz7RlJFK27nUQRt3GtGJih5Y0DuunBw0=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=oY+lb1T78FAmK20LxOfcLtD9nvohP0xsrFvv9vx9VXs=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795709090334246.02620113942362;
+	Thu, 26 Nov 2026 08:04:50 -0800 (PST)
 From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Thu, 26 Nov 2026 13:04:31 -0300
-Subject: [PATCH 4/7] rust: reset: add AssertedGuard
+Date: Thu, 26 Nov 2026 13:04:29 -0300
+Subject: [PATCH 2/7] rust: reset: add ExclusiveResetControl
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -61,7 +61,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261126-b4-rust-reset-v1-4-9c4c3d029080@collabora.com>
+Message-Id: <20261126-b4-rust-reset-v1-2-9c4c3d029080@collabora.com>
 References: <20261126-b4-rust-reset-v1-0-9c4c3d029080@collabora.com>
 In-Reply-To: <20261126-b4-rust-reset-v1-0-9c4c3d029080@collabora.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -82,126 +82,381 @@ Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 X-Mailer: b4 0.15.2
 X-ZohoMailClient: External
 
-Some drivers hold their device in reset for a short time while they
-are bound.
+Add an abstraction for exclusive reset controls, so that Rust drivers
+can assert and deassert the reset lines of their device.
 
-Add ExclusiveResetControl::assert_guard() as a convenience for them. It
-asserts the reset line of an Unknown control and returns an
-AssertedGuard that deasserts it when dropped, so the control stays in
-the Unknown state.
-
-The guard borrows the control mutably because, unlike regulators,
-exclusive resets do not have an "enabled" count. Therefore, allowing
-more than one guard at a time would not work, as dropping one of them
-would invalidate the other while it is still alive.
+It follows the type-state pattern of the regulator abstraction. It
+borrows the bound device it was obtained from, which ties it to the
+binding as devm_reset_control_get_exclusive() does in C.
 
 Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 ---
- rust/kernel/reset.rs | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 82 insertions(+)
+ MAINTAINERS          |   1 +
+ rust/kernel/lib.rs   |   1 +
+ rust/kernel/reset.rs | 333 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 335 insertions(+)
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d8bcacb7d8ef..e427742252d0 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -24064,6 +24064,7 @@ F:	include/linux/reset-controller.h
+ F:	include/linux/reset.h
+ F:	include/linux/reset/
+ F:	rust/helpers/reset.c
++F:	rust/kernel/reset.rs
+ K:	\b(?:devm_|of_)?reset_control(?:ler_[a-z]+|_[a-z_]+)?\b
+ 
+ RESTARTABLE SEQUENCES SUPPORT
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 1ab41129d557..c0199ec055b8 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -125,6 +125,7 @@
+ pub mod ratelimit;
+ pub mod rbtree;
+ pub mod regulator;
++pub mod reset;
+ pub mod revocable;
+ pub mod safety;
+ pub mod scatterlist;
 diff --git a/rust/kernel/reset.rs b/rust/kernel/reset.rs
-index 7ca83f2d6abf..3bbd226825d8 100644
---- a/rust/kernel/reset.rs
+new file mode 100644
+index 000000000000..396f1e19ee2e
+--- /dev/null
 +++ b/rust/kernel/reset.rs
-@@ -12,6 +12,10 @@
- //! A driver can also get a single reset control for all the reset lines in the `resets`
- //! property of its device. Its operations then act on all of those lines.
- //!
-+//! An [`ExclusiveResetControl`] in the [`Unknown`] state can also assert its line for a limited
-+//! time, with [`ExclusiveResetControl::assert_guard`]. The [`AssertedGuard`] that it returns
-+//! deasserts the line when dropped, and the control stays in the [`Unknown`] state.
-+//!
- //! C header: [`include/linux/reset.h`](srctree/include/linux/reset.h)
- //!
- //! See [Reset controller API](https://docs.kernel.org/driver-api/reset.html) for more information.
-@@ -381,6 +385,24 @@ pub fn assert(self) -> Result<ExclusiveResetControl<'a, Asserted>, Error<Self>>
-     pub fn deassert(self) -> Result<ExclusiveResetControl<'a, Deasserted>, Error<Self>> {
-         self.deassert_internal()
-     }
+@@ -0,0 +1,333 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+    /// Asserts the reset line and returns an [`AssertedGuard`], which deasserts it when dropped.
++//! Reset control abstractions, the consumer side of the reset controller API.
++//!
++//! A reset controller controls a number of reset lines. A device is held in reset while its reset
++//! line is asserted.
++//!
++//! A driver gets an [`ExclusiveResetControl`] for a reset line of its device, and uses it to
++//! assert and deassert the line. A new control is in the [`Unknown`] state. Its `assert()` and
++//! `deassert()` methods, when they succeed, move it to the [`Asserted`] or [`Deasserted`] state.
++//!
++//! C header: [`include/linux/reset.h`](srctree/include/linux/reset.h)
++//!
++//! See [Reset controller API](https://docs.kernel.org/driver-api/reset.html) for more information.
++
++use crate::{
++    bindings,
++    device::{
++        Bound,
++        Device, //
++    },
++    error::{
++        from_err_ptr,
++        to_result, //
++    },
++    prelude::*, //
++};
++
++use core::{
++    marker::PhantomData,
++    mem::ManuallyDrop,
++    ptr, //
++};
++
++mod private {
++    pub trait Sealed {}
++
++    impl Sealed for super::Unknown {}
++    impl Sealed for super::Asserted {}
++    impl Sealed for super::Deasserted {}
++}
++
++/// A trait representing the different states a reset control can be in.
++pub trait ResetState: private::Sealed {
++    /// Whether dropping a reset control in this state asserts the line.
++    const ASSERT_ON_DROP: bool;
++}
++
++/// A state that records nothing about the reset line, which may be asserted or deasserted.
++///
++/// Dropping a reset control in this state does not change the line.
++pub struct Unknown;
++
++/// A state where the last successful operation on the reset control was an assert.
++///
++/// Dropping a reset control in this state does not change the line.
++pub struct Asserted;
++
++/// A state where the last successful operation on the reset control was a deassert.
++///
++/// Dropping a reset control in this state asserts the line. An error from that assert is
++/// discarded.
++pub struct Deasserted;
++
++impl ResetState for Unknown {
++    const ASSERT_ON_DROP: bool = false;
++}
++
++impl ResetState for Asserted {
++    const ASSERT_ON_DROP: bool = false;
++}
++
++impl ResetState for Deasserted {
++    const ASSERT_ON_DROP: bool = true;
++}
++
++/// An error that can occur when trying to move a reset control between states.
++pub struct Error<T> {
++    /// The error that occurred.
++    pub error: kernel::error::Error,
++
++    /// The reset control the operation failed on.
++    pub reset: T,
++}
++
++impl<T> From<Error<T>> for kernel::error::Error {
++    /// Drops the reset control and keeps the error, so that `?` works on the state transitions.
++    #[inline]
++    fn from(err: Error<T>) -> Self {
++        err.error
++    }
++}
++
++/// An exclusive reset control of a device.
++///
++/// Exclusive means that the driver has direct control over the reset line. A reset line can be
++/// held by one [`ExclusiveResetControl`] at a time.
++///
++/// A reset control obtained with [`ExclusiveResetControl::get_optional`] may have no reset line,
++/// in which case every operation on it succeeds and does nothing.
++///
++/// The reset control is released when the [`ExclusiveResetControl`] is dropped. The lifetime `'a`
++/// is that of the reference to the bound device it was obtained from, so an
++/// [`ExclusiveResetControl`] cannot outlive the binding of that device to its driver.
++///
++/// # Examples
++///
++/// Holding a device in reset while its clocks are turned on, then releasing it:
++///
++/// ```
++/// use kernel::{
++///     device::{
++///         Bound,
++///         Device, //
++///     },
++///     reset::{
++///         Deasserted,
++///         ExclusiveResetControl, //
++///     },
++/// };
++///
++/// struct Data<'a> {
++///     // Dropping `Data` asserts the line again.
++///     reset: ExclusiveResetControl<'a, Deasserted>,
++/// }
++///
++/// fn probe<'a>(dev: &'a Device<Bound>) -> Result<Data<'a>> {
++///     // Put the device in reset.
++///     let reset = ExclusiveResetControl::get(dev, None)?.assert()?;
++///
++///     // For example, turn on the clocks of the device here, while it is held in reset.
++///
++///     // Release the device from reset.
++///     let reset = reset.deassert()?;
++///
++///     Ok(Data { reset })
++/// }
++/// ```
++///
++/// # Invariants
++///
++/// `inner` is a pointer obtained from a successful call to one of the following:
++///
++/// - [`reset_control_get_exclusive()`]
++/// - [`reset_control_get_optional_exclusive()`]
++///
++/// It is treated as an opaque token that may only be accessed using C API methods (e.g., it may be
++/// `NULL` if the C API returns `NULL`). The [`ExclusiveResetControl`] owns the reference that the
++/// call returned.
++///
++/// [`reset_control_get_exclusive()`]:
++/// https://docs.kernel.org/driver-api/reset.html#c.reset_control_get_exclusive
++/// [`reset_control_get_optional_exclusive()`]:
++/// https://docs.kernel.org/driver-api/reset.html#c.reset_control_get_optional_exclusive
++pub struct ExclusiveResetControl<'a, State: ResetState> {
++    inner: *mut bindings::reset_control,
++    _phantom: PhantomData<(&'a Device<Bound>, State)>,
++}
++
++// SAFETY: A reset control can be used and released from any thread.
++unsafe impl<State: ResetState> Send for ExclusiveResetControl<'_, State> {}
++
++// SAFETY: An `ExclusiveResetControl` has no `&self` methods, so references to it can be shared
++// between threads.
++unsafe impl<State: ResetState> Sync for ExclusiveResetControl<'_, State> {}
++
++impl<'a> ExclusiveResetControl<'a, Unknown> {
++    /// Gets the reset line `name` of `dev`, or its first reset line if `name` is `None`.
 +    ///
-+    /// The [`ExclusiveResetControl`] stays in the [`Unknown`] state, and it cannot be used while
-+    /// the guard exists.
++    /// Equivalent to the kernel's [`reset_control_get_exclusive()`].
 +    ///
-+    /// The line is asserted with the kernel's [`reset_control_assert()`].
++    /// [`reset_control_get_exclusive()`]:
++    /// https://docs.kernel.org/driver-api/reset.html#c.reset_control_get_exclusive
++    #[inline]
++    pub fn get(dev: &'a Device<Bound>, name: Option<&CStr>) -> Result<Self> {
++        let id = name.map_or(ptr::null(), |n| n.as_char_ptr());
++
++        // SAFETY: `dev` is a valid device, and `id` is `NULL` or a valid C string.
++        let inner = unsafe { bindings::reset_control_get_exclusive(dev.as_raw(), id) };
++        let inner = from_err_ptr(inner)?;
++
++        // INVARIANT: `inner` comes from a successful call to `reset_control_get_exclusive()`, and
++        // the returned value owns the reference from that call.
++        Ok(Self {
++            inner,
++            _phantom: PhantomData,
++        })
++    }
++
++    /// Gets the reset line `name` of `dev`, if there is one.
++    ///
++    /// Behaves the same as [`Self::get`], except when the device has no such reset line or
++    /// `CONFIG_RESET_CONTROLLER` is disabled. In those cases, it returns an
++    /// [`ExclusiveResetControl`] on which every operation succeeds and does nothing.
++    ///
++    /// Equivalent to the kernel's [`reset_control_get_optional_exclusive()`].
++    ///
++    /// [`reset_control_get_optional_exclusive()`]:
++    /// https://docs.kernel.org/driver-api/reset.html#c.reset_control_get_optional_exclusive
++    #[inline]
++    pub fn get_optional(dev: &'a Device<Bound>, name: Option<&CStr>) -> Result<Self> {
++        let id = name.map_or(ptr::null(), |n| n.as_char_ptr());
++
++        // SAFETY: `dev` is a valid device, and `id` is `NULL` or a valid C string.
++        let inner = unsafe { bindings::reset_control_get_optional_exclusive(dev.as_raw(), id) };
++        let inner = from_err_ptr(inner)?;
++
++        // INVARIANT: `inner` comes from a successful call to
++        // `reset_control_get_optional_exclusive()`, and the returned value owns the reference from
++        // that call.
++        Ok(Self {
++            inner,
++            _phantom: PhantomData,
++        })
++    }
++}
++
++impl<'a, State: ResetState> ExclusiveResetControl<'a, State> {
++    /// Asserts the reset line and moves the [`ExclusiveResetControl`] to the [`Asserted`] state.
++    ///
++    /// Equivalent to the kernel's [`reset_control_assert()`].
 +    ///
 +    /// [`reset_control_assert()`]:
 +    /// https://docs.kernel.org/driver-api/reset.html#c.reset_control_assert
 +    #[inline]
-+    pub fn assert_guard(&mut self) -> Result<AssertedGuard<'_, 'a>> {
-+        // SAFETY: By the type invariants, `self.inner` is a pointer that a C getter returned, and
-+        // `self` owns its reference.
-+        to_result(unsafe { bindings::reset_control_assert(self.inner) })?;
++    fn assert_internal(self) -> Result<ExclusiveResetControl<'a, Asserted>, Error<Self>> {
++        // INVARIANT: The reference that `self` owns moves to the value that this returns.
++        let reset = ManuallyDrop::new(self);
 +
-+        Ok(AssertedGuard { reset: self })
++        // SAFETY: By the type invariants, `reset.inner` is a pointer that a C getter returned, and
++        // `reset` owns its reference.
++        to_result(unsafe { bindings::reset_control_assert(reset.inner) })
++            .map(|()| ExclusiveResetControl {
++                inner: reset.inner,
++                _phantom: PhantomData,
++            })
++            .map_err(|error| Error {
++                error,
++                reset: ManuallyDrop::into_inner(reset),
++            })
 +    }
- }
- 
- impl<'a> ExclusiveResetControl<'a, Asserted> {
-@@ -423,3 +445,63 @@ fn drop(&mut self) {
-         unsafe { bindings::reset_control_put(self.inner) };
-     }
- }
 +
-+/// A guard returned by [`ExclusiveResetControl::assert_guard`], which deasserts the reset line when
-+/// dropped.
-+///
-+/// An error from the deassert done on drop is discarded. [`AssertedGuard::deassert`] deasserts the
-+/// line and returns the error.
-+///
-+/// # Examples
-+///
-+/// Holding a device in reset for a limited time:
-+///
-+/// ```
-+/// use kernel::reset::{
-+///     ExclusiveResetControl,
-+///     Unknown, //
-+/// };
-+///
-+/// # fn restart_clocks() -> Result { Ok(()) }
-+/// fn reset_device(reset: &mut ExclusiveResetControl<'_, Unknown>) -> Result {
-+///     let asserted = reset.assert_guard()?;
-+///
-+///     // If this fails, dropping `asserted` deasserts the line.
-+///     restart_clocks()?;
-+///
-+///     asserted.deassert()
-+/// }
-+/// ```
-+#[must_use = "the reset line is deasserted immediately when the guard is unused"]
-+pub struct AssertedGuard<'r, 'a> {
-+    reset: &'r mut ExclusiveResetControl<'a, Unknown>,
-+}
-+
-+impl<'r, 'a> AssertedGuard<'r, 'a> {
-+    /// Deasserts the reset line and consumes the guard.
-+    ///
-+    /// The only difference from dropping the guard is that this returns an error from the
-+    /// deassert, which a drop discards.
++    /// Deasserts the reset line and moves the [`ExclusiveResetControl`] to the [`Deasserted`]
++    /// state.
 +    ///
 +    /// Equivalent to the kernel's [`reset_control_deassert()`].
 +    ///
 +    /// [`reset_control_deassert()`]:
 +    /// https://docs.kernel.org/driver-api/reset.html#c.reset_control_deassert
 +    #[inline]
-+    pub fn deassert(self) -> Result {
-+        // Skip `drop()`, which would deassert the line a second time.
-+        let guard = ManuallyDrop::new(self);
++    fn deassert_internal(self) -> Result<ExclusiveResetControl<'a, Deasserted>, Error<Self>> {
++        // INVARIANT: The reference that `self` owns moves to the value that this returns.
++        let reset = ManuallyDrop::new(self);
 +
-+        // SAFETY: By the type invariants of `ExclusiveResetControl`, `guard.reset.inner` is a
-+        // pointer that a C getter returned, and `guard.reset` owns its reference.
-+        to_result(unsafe { bindings::reset_control_deassert(guard.reset.inner) })
++        // SAFETY: By the type invariants, `reset.inner` is a pointer that a C getter returned, and
++        // `reset` owns its reference.
++        to_result(unsafe { bindings::reset_control_deassert(reset.inner) })
++            .map(|()| ExclusiveResetControl {
++                inner: reset.inner,
++                _phantom: PhantomData,
++            })
++            .map_err(|error| Error {
++                error,
++                reset: ManuallyDrop::into_inner(reset),
++            })
 +    }
 +}
 +
-+impl<'r, 'a> Drop for AssertedGuard<'r, 'a> {
++impl<'a> ExclusiveResetControl<'a, Unknown> {
++    /// Asserts the reset line and moves the [`ExclusiveResetControl`] to the [`Asserted`] state.
++    ///
++    /// Equivalent to the kernel's [`reset_control_assert()`].
++    ///
++    /// [`reset_control_assert()`]:
++    /// https://docs.kernel.org/driver-api/reset.html#c.reset_control_assert
++    #[inline]
++    pub fn assert(self) -> Result<ExclusiveResetControl<'a, Asserted>, Error<Self>> {
++        self.assert_internal()
++    }
++
++    /// Deasserts the reset line and moves the [`ExclusiveResetControl`] to the [`Deasserted`]
++    /// state.
++    ///
++    /// Equivalent to the kernel's [`reset_control_deassert()`].
++    ///
++    /// [`reset_control_deassert()`]:
++    /// https://docs.kernel.org/driver-api/reset.html#c.reset_control_deassert
++    #[inline]
++    pub fn deassert(self) -> Result<ExclusiveResetControl<'a, Deasserted>, Error<Self>> {
++        self.deassert_internal()
++    }
++}
++
++impl<'a> ExclusiveResetControl<'a, Asserted> {
++    /// Deasserts the reset line and moves the [`ExclusiveResetControl`] to the [`Deasserted`]
++    /// state.
++    ///
++    /// Equivalent to the kernel's [`reset_control_deassert()`].
++    ///
++    /// [`reset_control_deassert()`]:
++    /// https://docs.kernel.org/driver-api/reset.html#c.reset_control_deassert
++    #[inline]
++    pub fn deassert(self) -> Result<ExclusiveResetControl<'a, Deasserted>, Error<Self>> {
++        self.deassert_internal()
++    }
++}
++
++impl<'a> ExclusiveResetControl<'a, Deasserted> {
++    /// Asserts the reset line and moves the [`ExclusiveResetControl`] to the [`Asserted`] state.
++    ///
++    /// Equivalent to the kernel's [`reset_control_assert()`].
++    ///
++    /// [`reset_control_assert()`]:
++    /// https://docs.kernel.org/driver-api/reset.html#c.reset_control_assert
++    #[inline]
++    pub fn assert(self) -> Result<ExclusiveResetControl<'a, Asserted>, Error<Self>> {
++        self.assert_internal()
++    }
++}
++
++impl<State: ResetState> Drop for ExclusiveResetControl<'_, State> {
 +    fn drop(&mut self) {
-+        // SAFETY: By the type invariants of `ExclusiveResetControl`, `self.reset.inner` is a
-+        // pointer that a C getter returned, and `self.reset` owns its reference.
-+        unsafe { bindings::reset_control_deassert(self.reset.inner) };
++        if State::ASSERT_ON_DROP {
++            // SAFETY: By the type invariants, `self.inner` is a pointer that a C getter returned,
++            // and `self` owns its reference.
++            unsafe { bindings::reset_control_assert(self.inner) };
++        }
++
++        // SAFETY: By the type invariants, `self` owns the reference that the C getter returned,
++        // so it is safe to relinquish it now.
++        unsafe { bindings::reset_control_put(self.inner) };
 +    }
 +}
 
