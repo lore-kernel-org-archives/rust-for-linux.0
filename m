@@ -1,89 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795702142;
-	b=WmYt4O/wIHXSM28FExPmMXeKubPdFAjbdKXYEsPQvaNoOVErPO9oZgqKLK6eK1x3zPs+
-	 UOhre2Dm9rXCOeOfh7G70VTtZZVDB8UXWA+ZVU6JtU23x3UCk5lQVVAMOHnpmwGEUlHJs
-	 5ZIjDSVVgdxH6J1C5qwyP1B2zCoT0JBJAf0n/lCMn5gQBGzTmKkDJFFVkoqQgkH4b4l5e
-	 76mmn/kWYm+f8wrH6WnigbjGEAGyD8netnVPMGeUig0wzTWaBCFY/pRyz1Ozvzs0X+4cH
-	 P4K7R6tCSKtxlklsaAZlPsACV3vOBQ9l2ZABqeHQz+eTUwCshJgRRFGZtydYu5SdjXg==
+	t=1795702239;
+	b=Xd0t7WFUAeqxt7009ho9C4K1AFB2tYCa17+7Qh/wAe9vfJQxZRW36GSpcqdY6eF2kS8J
+	 Bj/E4/Ku/vIN4q7J2OQrZ+ScaA1fIyBcBkwIhzWdua7SmH3uSaYezNK3AW4GlBnaTtbw2
+	 Mul+Jmp/LfCWI4sZUj/a+XnBDEy7X6LE/2VcEA7jz2pBKEbRpbPYz3DIO/PB7goyl+0Ji
+	 k38iNXxdS2bsdjH9gXX9FeZYBl5P0haZ1lL4wbtUHTMvzy2fGMmRSI0/KiekfbEJ8WoUt
+	 ED3g9o+rtl9wjaHNgJdXo0i9STsI/FP0XF1mhCXSS/RiWRdp97e+senNHaItFEKWl2Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795702142;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795702239;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
-	bh=GA3jjErzEYnxoF7n+/ic3y3L8vij59KVAFVMuR5dBb0=;
-	b=DrcYWhCUmLWNYw8VpgkxFfSuxRA0cLahsQhIOZy/6CXdJDyvjBqt+gkrUt4V2Lzm27ga
-	 teSn9sY1u4NE32g6ddTYrvfoQxAGAXCquiDe8BVx3FdRuQKEzcqBDe03OlwTohxmPva8P
-	 M99ZH1MfesR7bL+U1slBFn/47+xeDrxXz0n4w8MOfcoSyIx8P9wIf6XOr33SAOwrn8RdL
-	 Oa9+X/RDE/7VAEO79NGEaaR7M0fqHc7WEfGnJQPwprqUmhtUDcmriTbsnXZbuEA8ebm10
-	 ISccSSWOA5HJ6zEkpv0ZIIqxnnl47qvIk4w//rqvjJoOUUK+kq9NK4e9ftN4AD7eHuA==
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 From:To:Cc:Subject:X-Mailer:References:In-Reply-To;
+	bh=pZCrJxjGpKeIxaWqujE/cqP8aBauwoXvz6QYa0WHP4s=;
+	b=DNYf9xzzYdvEApr0IfGLdPDIWQ4Yv8IUfKyfM7FdwsGCkUdZJbvPpeFzWMcqvL779p0e
+	 usT5J3sBlKEhRKi22wu5/v87f/zZBMWZ2JHvnow1dr0c9hR0WbZFOR0cf1a+nEQSQ2ciR
+	 r+t52KpkDykXKbX5us8DmF7NLYqYJvC/19akfHGs41oAygb7Jjhv4LdQbreTF31B4jtdP
+	 59JoTM91flZ/zpLKt9exnLMJgbGxRyffeMuVCqRdZ36Q2IdWb9IE5LL4rfVWbiFR8KPLO
+	 r/algZcrP7gfTy3QpwTWGwLvSw/CjAE6oJ/ZWTpjB0l52mbjPE4ax3R8Vyw/jX1RZSw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=TxII5QHD;
-	arc=none smtp.remote-ip=209.85.216.43
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wBkgKjAa;
+	arc=none smtp.remote-ip=209.85.221.175
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58A4606A32C
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 14:09:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A58A4606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9FE606A32C
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 14:10:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F9FE606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=TxII5QHD
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3b09a83d12aso4907533a91.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 06:09:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wBkgKjAa
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5ee3e658c70so2199485e0c.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 06:10:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795702141; x=1796306941; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GA3jjErzEYnxoF7n+/ic3y3L8vij59KVAFVMuR5dBb0=;
-        b=TxII5QHDK0stzogCWbY6gZRZufXl35OTuDpxw8Ei5/BTICnIyJeVN2pNrofOI0JQ/d
-         eXojWIsRKkk+MIoB/gnbwAXUKmFwjLdAZH2IslSvzLOorzJwc3nx2BkxBL9RJgg24SkU
-         6pk7zNog4reBcKWBEIhJO2VZmd4kcRb/K+X53r2VDfdtsapON3zyscxse62lpH7G5aLl
-         wfcGZg0wbhIXLZ83UA2RRwaZ5cOhbPA4tYQ7/1r9cC7mV5lC6EqAXcqzLgFCHn1RQZ26
-         POFN3Y84efXf95FDl8F48Ptlw28oy7XwowN/qgsG5fvGkU4dHco/ScRs6z9ZpQMfTmqP
-         BEwA==
+        d=gmail.com; s=20260707; t=1795702237; x=1796307037; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=pZCrJxjGpKeIxaWqujE/cqP8aBauwoXvz6QYa0WHP4s=;
+        b=wBkgKjAaod/g3XH9xwmjFOVzz2fQNBZjovvaikdGVy09duuPt7C5mqx97kItSCHcbF
+         F4rbYRXADtsCf4BkbLs/NMS70E4TEdEJb99D7F7wKxupM4aWdJmA1tKL+P2i12atfTXb
+         QSEZm+o7YFlOR0r+IGFCC+1W6i2TWj3aKv44I003JCGjo8Vvzvpr4ru6+2/dhfP6PCyr
+         7GhYhrFHTRiFfEliC+ohX4mxPGSWG/2wXsNqctxG/ru1UwywecNjhNGVgpYd7kBjl92M
+         03EEjWTH//zd00CFV65pTO+W8dE1BKY7Sbk0+xUAucE6F3Lj7ZPD4sdx0Zxuj7fn4aN7
+         ug5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795702141; x=1796306941;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1795702237; x=1796307037;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GA3jjErzEYnxoF7n+/ic3y3L8vij59KVAFVMuR5dBb0=;
-        b=2Yva+qtnd0NL+jMQlTLF7gCuWtg0r9G61fhDmxSQdQHNGev+Q2KkmQX67g3jmxodv9
-         Lf41fKgZbCARfEjuObUXxnT2Jo/VsRjtmWf6QGjAvAjLKRu/pwK41A/Kgo0XZassyvf9
-         sgt2xmQxfzxjCB5OsXa2EIAGEWhwRvzw3P7YRuOv5v+0nq4/rIqa7HyNN3LzRX91e9tU
-         uo3uZraM1ktrWWyuH+98KSi3JRuFVGTygQOb1WHJBnyuloq1onPtjlntooedHgfOl8Yp
-         8wUJDk4ZBhg5AUeAAy0aP8Xz3t7SDlb41m2SKnCaQQdxsj5wyR2ne9LNXNsY1sTuwUKX
-         fm/Q==
-X-Forwarded-Encrypted: i=1; AL+hErHN6nrFgd4PRtvwWrtLnfxYuPtrsDVWliSETGtf48exovBcUuaIQS6P9f2+bTy6TgN/p/hQoFGQ5v38scDVjQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8jB0oXtZYG4ciWqga6gbEucNnQthqPsce0KwkO+ang2jrRodeC
-	QNcJlaTn11dY+3VwExQw4uydcGtZ5qcIw33lUUlnS3UZQbCRr1Vtj0RP
-X-Gm-Gg: AZFdTZdzoJFftZ7wH8d3UOYeThxVPRornhwE5PcgK4+7yQZ9lPgnjIf4CBlXal9poUm
-	9XHVYRUm5ALurbu6wTNwvCTsfcu0R63UyFIBC46jCUBmLWMSrdI+LzvBqAyRBClmpaN3rFC/qkc
-	O5Lx6P2iOR3SLe1pHNDPqU02MSmbGh/j8iuEuUNvOgOoRF4xCKnBTSHJIabSIlRdMoUpvTpHKfT
-	PseNwFT3yfw/dM7pSCCH9cM5fM8wuivmGp2n2d7il3Nq0z5xmnYKFG23QA1Sc1VOs3vo2XneqaJ
-	3Y5fGJPoUjkrq9bgIVpMwTA4ibfcioL0rTi3HQYm46nLjACoH/0cKR5fASUiy9r9UrC9hWJ6AT2
-	dROYQnSM3HwgvHlQS8iTgxGi1Y9DWz+hfujOhwh1kj0vJcP4wL5iULAvJ0nBGIKpZbRkmyhSy9a
-	aMD3csQ5hP0fTGfy2CD3zDdUjt3q2U914EHUR/u4EssSNtDMeJYcjUWUiYHcdXqN9jOP58cKIE2
-	DA6vVPQ3DrD+O6aQIlFNJxhgWisk7GGtxkv76eObKvPmpqNeyv4q+ehx5qmya2zCVtSPLb8ICwN
-	QF1J/k8UX78BuwSb3HBrtGM2t8qi10Rz5hHivnFGFDP6U2q9xSSDEyCNDyRVxRdzecP/NCH2RPO
-	kC8VhzKvJsdTJqwdcJA5dSoxh3zSfs83xCZc2D5KmsQ2TTirNactzWOmo
-X-Received: by 2002:a17:90b:4a92:b0:3b3:fd13:683a with SMTP id 98e67ed59e1d1-3b41c995b82mr20643205a91.59.1795702140978;
-        Thu, 26 Nov 2026 06:09:00 -0800 (PST)
-Received: from [169.254.3.1] ([143.248.188.96])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b44b8733e6sm12583573a91.3.2026.11.26.06.08.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Nov 2026 06:09:00 -0800 (PST)
-From: SeungJong Ha <engineer.jjhama@gmail.com>
-Date: Thu, 26 Nov 2026 23:08:33 +0900
-Subject: [PATCH net-next v4 2/2] rust: net: phy: pass &Device to suspend,
- read_mmd and write_mmd
+        bh=pZCrJxjGpKeIxaWqujE/cqP8aBauwoXvz6QYa0WHP4s=;
+        b=ZA7RvRLtEmU7ry9BdTage4SFtszxjlYn7NM953mCvJiKg3IVSg7NH1wD2cc0tB8C1Y
+         nUrkrF3nKWMBw2O9DUv7TTC9elUEPiyRtNpGwC0cNPLorzFRH0KZdktebC698u962m+b
+         +wzyF0WWcHiUNSOcRwDQvhxhyiVqgcgoQgvhAgxdGPma8oOpWNhHsZUaAxe940/dEXLd
+         Ia1mUR/9lLUt+nYsX73WgLuLc1dPgulpyoCq3WDa50j2muMvCO4GF0n8mFj76t7LJt/A
+         BsMOrvacaJQqSJfkVnAhiEfu91KEqpJqa2qCJLTuS0tWtC9uch7t8CiKTL+R1uOc+Bnh
+         oiZA==
+X-Forwarded-Encrypted: i=1; AL+hErGeN6IsUyYhNzeOAmjVXF7IqtNODhZDyjsR4Pvfyg58DX5ad5UBzjW9x1/tG6YuIYLQqw9HFBWji4vreLZIhg==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+Hvbf3kt3Mw+Hqk3xpayVWum0nY/F7N/9422po8iRX0+cAozgw
+	ugEDPE0Pp1lX/M50XhjdawPW6Gb9XLmYldMMzju8Stg8AB63FpjJbrc=
+X-Gm-Gg: AZFdTZdlkcsDDdB5etzsJmRzBq4yYydrjhT/3wPbjPdcjchsjQlMP8TtjsxGbvePVG/
+	fsLuwXWqc+v3Gk+MzTP0/ai0clbCHoHQ2OOM58PYyT7X390FZyaZuH1I+RIPuqM436sS2fQbPbJ
+	V9Z5l2Rs+vw4QDg2DSrsBwbrh6rZMn9NsaB71Sgj/D49piw6jt3qhm3Z/ljZGJ2lbKUBIxG00sI
+	2lNzuckpwriMrrXV5bQikQ9b+LhDdPThrEUmtkintjpgbQuaB3toCNYUvtLqIXLGdDhrZT5EXGj
+	drx/nPwy7RoHR37M4QegBM7gy+0k9jy9Fe3aEsK73pISavRPTOPkqzWfoLrrui2WP9soqpoTwVT
+	uwCvWYQFGWedKCfOXqdS4Q2XTWtITKIkXsAVjjPgNFgcwxPMvM4sPA3maK+oYeQj602TN5vNpkH
+	v87Wu0BDsYl4x3DTs/KoP3PuU1fdgCR+z5wAXatY0CWxPzYyX/hLuEiG6xErzNdD/jrkMhiiDSt
+	QEiHfMihZ7znxS4/jjcqnON1hfN1TrmtwgJej1tGNRrds04bps3horXeTy03fUemo9sODhAkOMO
+	RbrUuPS5CQk/f2p4HbcNNXY1F4E6F0u+U9VGnLOpaV3ONYbXor40oG9sgZORQOhQ
+X-Received: by 2002:a05:6122:3b84:b0:5ea:e324:7c0c with SMTP id 71dfb90a1353d-5ee8af8d6fdmr11736966e0c.22.1795702237493;
+        Thu, 26 Nov 2026 06:10:37 -0800 (PST)
+Received: from localhost ([186.158.238.108])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ee91a4e0cfsm19471567e0c.13.2026.11.26.06.10.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Nov 2026 06:10:37 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -92,151 +87,65 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261126-exp-phy-rs-maybelocked-v4-2-16f9a10bb579@gmail.com>
-References: <20261126-exp-phy-rs-maybelocked-v4-0-16f9a10bb579@gmail.com>
-In-Reply-To: <20261126-exp-phy-rs-maybelocked-v4-0-16f9a10bb579@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- Trevor Gross <tmgross@umich.edu>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, SeungJong Ha <engineer.jjhama@gmail.com>
-X-Mailer: b4 0.15.2
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 26 Nov 2026 11:10:29 -0300
+Message-Id: <DN57BC2XOPSJ.2UE7DI9RNQUBD@gmail.com>
+From: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
+To: "Ivan Tverdokhleb" <mbkchelofficialdev@gmail.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>
+Cc: "Liam R . Howlett" <liam@infradead.org>, "FUJITA Tomonori"
+ <fujita.tomonori@gmail.com>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, <linux-mm@kvack.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2] rust: mm: warn once on invalid VMA range
+X-Mailer: aerc 0.20.0
+References: <20261124132609.101657-1-mbkchelofficialdev@gmail.com>
+ <20261124153228.134723-1-mbkchelofficialdev@gmail.com>
+In-Reply-To: <20261124153228.134723-1-mbkchelofficialdev@gmail.com>
 
-phy_suspend() calls `suspend` without `phy_device->lock`, also right
-after the state machine drops it, and __phy_read_mmd() and
-__phy_write_mmd() call `read_mmd` and `write_mmd` with the MDIO bus lock
-held but not necessarily `phy_device->lock`. Yet these callbacks get a
-`&mut Device` and can call methods such as set_speed() that rely on the
-lock.
+Hello,
+On Tue Nov 24, 2026 at 12:32 PM -03, Ivan Tverdokhleb wrote:
+> Use `debug_assert!()` and `pr_warn_once!()` in
+> `Vma::zap_vma_range()` to report invalid ranges.
+>
+> Signed-off-by: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
+> ---
+> Changes in v2:
+> - Drop the `warn_once!()` macro and its KUnit test.
+> - Use `debug_assert!()` and `pr_warn_once!()` in `Vma::zap_vma_range()` a=
+s suggested by Miguel.
+>
+>  rust/kernel/mm/virt.rs | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+> index 63eb730b0..1a3a990c9 100644
+> --- a/rust/kernel/mm/virt.rs
+> +++ b/rust/kernel/mm/virt.rs
+> @@ -115,8 +115,9 @@ pub fn end(&self) -> usize {
+>      #[inline]
+>      pub fn zap_vma_range(&self, address: usize, size: usize) {
+>          let (end, did_overflow) =3D address.overflowing_add(size);
+> +        debug_assert!(!did_overflow && address >=3D self.start() && self=
+.end() >=3D end);
+>          if did_overflow || address < self.start() || self.end() < end {
+> -            // TODO: call WARN_ONCE once Rust version of it is added
+> +            crate::pr_warn_once!("Attempt to zap invalid VMA range\n");
 
-Pass a `&Device` instead, and document that read() and write() deadlock
-in `read_mmd` and `write_mmd`. Update ax88796b_rust, the only user of
-`suspend`; it only calls genphy_suspend().
+I believe by the comment of Fujita [1], the `pr_warn_once!` should be
+guarded by `#[cfg(CONFIG_DEBUG_VM)]`.
 
-Suggested-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Signed-off-by: SeungJong Ha <engineer.jjhama@gmail.com>
----
- drivers/net/phy/ax88796b_rust.rs |  4 ++--
- rust/kernel/net/phy.rs           | 36 +++++++++++++++++++++---------------
- 2 files changed, 23 insertions(+), 17 deletions(-)
+Regards,
+Nicol=C3=A1s
 
-diff --git a/drivers/net/phy/ax88796b_rust.rs b/drivers/net/phy/ax88796b_rust.rs
-index 2d24628a4e58..890ae79d8561 100644
---- a/drivers/net/phy/ax88796b_rust.rs
-+++ b/drivers/net/phy/ax88796b_rust.rs
-@@ -77,7 +77,7 @@ fn read_status(dev: &mut phy::Device) -> Result<u16> {
-         Ok(0)
-     }
- 
--    fn suspend(dev: &mut phy::Device) -> Result {
-+    fn suspend(dev: &phy::Device) -> Result {
-         dev.genphy_suspend()
-     }
- 
-@@ -107,7 +107,7 @@ impl Driver for PhyAX88772C {
-     const NAME: &'static CStr = c"Asix Electronics AX88772C";
-     const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_exact_mask(0x003b1881);
- 
--    fn suspend(dev: &mut phy::Device) -> Result {
-+    fn suspend(dev: &phy::Device) -> Result {
-         dev.genphy_suspend()
-     }
- 
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index bb2cc6b3c94c..d04a651ae62b 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -371,10 +371,10 @@ impl<T: Driver> Adapter<T> {
-     /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-     unsafe extern "C" fn suspend_callback(phydev: *mut bindings::phy_device) -> c_int {
-         from_result(|| {
--            // SAFETY: The C core code ensures that the accessors on
--            // `Device` are okay to call even though `phy_device->lock`
--            // might not be held.
--            let dev = unsafe { Device::from_raw_mut(phydev) };
-+            // SAFETY: `phydev` is valid for the duration of the callback. `phy_suspend()` does not
-+            // take `phy_device->lock`, and `phy_state_machine()` calls it right after dropping the
-+            // lock, so this gets a `&Device`.
-+            let dev = unsafe { Device::from_raw(phydev) };
-             T::suspend(dev)?;
-             Ok(0)
-         })
-@@ -439,10 +439,10 @@ impl<T: Driver> Adapter<T> {
-         regnum: u16,
-     ) -> i32 {
-         from_result(|| {
--            // SAFETY: This callback is called only in contexts
--            // where we hold `phy_device->lock`, so the accessors on
--            // `Device` are okay to call.
--            let dev = unsafe { Device::from_raw_mut(phydev) };
-+            // SAFETY: `phydev` is valid for the duration of the callback. PHYLIB calls this with
-+            // the MDIO bus lock held but not necessarily `phy_device->lock`, so this gets a
-+            // `&Device`.
-+            let dev = unsafe { Device::from_raw(phydev) };
-             // CAST: the C side verifies devnum < 32.
-             let ret = T::read_mmd(dev, devnum as u8, regnum)?;
-             Ok(ret.into())
-@@ -459,10 +459,10 @@ impl<T: Driver> Adapter<T> {
-         val: u16,
-     ) -> i32 {
-         from_result(|| {
--            // SAFETY: This callback is called only in contexts
--            // where we hold `phy_device->lock`, so the accessors on
--            // `Device` are okay to call.
--            let dev = unsafe { Device::from_raw_mut(phydev) };
-+            // SAFETY: `phydev` is valid for the duration of the callback. PHYLIB calls this with
-+            // the MDIO bus lock held but not necessarily `phy_device->lock`, so this gets a
-+            // `&Device`.
-+            let dev = unsafe { Device::from_raw(phydev) };
-             T::write_mmd(dev, devnum as u8, regnum, val)?;
-             Ok(0)
-         })
-@@ -617,7 +617,7 @@ fn read_status(_dev: &mut Device) -> Result<u16> {
-     }
- 
-     /// Suspends the hardware, saving state if needed.
--    fn suspend(_dev: &mut Device) -> Result {
-+    fn suspend(_dev: &Device) -> Result {
-         build_error!(VTABLE_DEFAULT_ERROR)
-     }
- 
-@@ -627,12 +627,18 @@ fn resume(_dev: &mut Device) -> Result {
-     }
- 
-     /// Overrides the default MMD read function for reading a MMD register.
--    fn read_mmd(_dev: &mut Device, _devnum: u8, _regnum: u16) -> Result<u16> {
-+    ///
-+    /// PHYLIB calls this with the MDIO bus lock held, so calling [`Device::read`] or
-+    /// [`Device::write`] here deadlocks.
-+    fn read_mmd(_dev: &Device, _devnum: u8, _regnum: u16) -> Result<u16> {
-         build_error!(VTABLE_DEFAULT_ERROR)
-     }
- 
-     /// Overrides the default MMD write function for writing a MMD register.
--    fn write_mmd(_dev: &mut Device, _devnum: u8, _regnum: u16, _val: u16) -> Result {
-+    ///
-+    /// PHYLIB calls this with the MDIO bus lock held, so calling [`Device::read`] or
-+    /// [`Device::write`] here deadlocks.
-+    fn write_mmd(_dev: &Device, _devnum: u8, _regnum: u16, _val: u16) -> Result {
-         build_error!(VTABLE_DEFAULT_ERROR)
-     }
- 
-
--- 
-2.54.0
+[1] https://lore.kernel.org/rust-for-linux/20261124.225103.2152350984946270=
+550.tomo@flapping.org/
 
