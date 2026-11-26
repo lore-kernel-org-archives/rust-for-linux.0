@@ -1,73 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795686549;
-	b=OfAnlRL7thWx9EUSWCIJikc1qwM3rXT/I7N3NZl31ernkakAxCC3vfMhdEVx2xLkjeS6
-	 1JlBMCurfejLyKCaUhyef0KkMqkfBClbJwsMQxcOaung2jU6YbIxSusnehMkahzOKLOTH
-	 SVCmxY8qGXlYJgritHtc7YDj0ppjbHNRNlcvGkj7ul8kGkWOfPn3Bc9ZlWY0XQmIAc/qO
-	 SQ2Tlmx7eEOz5+t083gDxGlowOEQvcvnd+owQjxC/o+lOMiBO+r61R/0aXKGnCEFUZxor
-	 mnKup4trLGoYj67u1kQOzTLeQ+NlIVPbIbb0frFWpAt222hS6KIE7etUlKS9us9VcgA==
+	t=1795686829;
+	b=Yhg787agLVHKj2UF3CKsTJjZrR7hWXLYsrnU4h2qljp08sOs1yOmFlZ17AvucI+McXKz
+	 x2bs7yI0w+YACZHUpKTgbI/fI8gyHTsw+42gKDy/5Zc6JaN6XvYr852VPrC2PjPrZsZq5
+	 aVre83+7FURHw6WKdkAexTwhMixq+paiq1HOjSgBjzkJCKHQU2v/quNkfTHPaX8yRZYVa
+	 P5Bjm1teHPR2lDY/enwMAqd8gqNLqiKFPkCAjIIdqXLY1AjNLMrVjjBASHdjQ/B/xlDoF
+	 GRMAeVobbgE62FPFsWeREw+xqjq9fPwrnp+uhnOW5xDJLyrdN6dwDd2D+muHBOj2aVQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795686549;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795686829;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
 	 X-B4-Tracking:X-Change-Id:X-Developer-Key:X-Developer-Signature:
 	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=6dZB05s8L/xa0x/oyJAw9mH4rJKsN+Tc+ttIJvUQqrI=;
-	b=OmU6vPXnAWo7tZ4JaLEb28jFoEmzx2GDyLKCy3lDWapavP0xcq02/ApF4UBxcgoqtI5D
-	 yqretdT06vCWYymbuh7mEZQMyprrJdkpJ1vVC6m426zqBxPW0LF177O9T/cYlX3Zo0YP7
-	 oCKhWj359QjL4nRFI4FTmuzcvVynI4H4fpjF2li2IPVpuODa426kLw9b29zuDxkcYU4TI
-	 tmaHCKAZM0trJQsKZiBV4BfkvaONTFp/XPo7Vk+XOoylw7qW2VwYa6MMO/ImXoCz0OfW8
-	 xQWoawEEnhD/cs6776C4OhmRhWvbg6JwvjO1L5gkCJAlC7DT2LBJHwe8xILtA/bhY3g==
+	bh=IQ+jDuVBv1HbX1b3BBSVrbjflr2E8zhivXziNzPhcDM=;
+	b=HFYlGLCka7cMV/BC+s7HZd9gCptzu1ua5PGWWUIXTcuA1LRfCpwbciMDB7vdlCBuHCk0
+	 t8yYKkexjY/joy3LL9nH5oE07roqdV0fQhw9tB6wcBLQ4Z23W46j/K9OpDWXsIiVMSjnp
+	 Cfxww2oLgw7DVvKoTYeKyPnfsXJmy14zudrIAeI1OxiMkrISDnkizRKnxpDvGV6+9tqSG
+	 cIUv6gzlLzmAifgQRuBzx+FX4ThC75CSAKPDIolTDxN9lsR9b8q+V9ktFuf+qPSjjz9Pb
+	 KCn2OwkmlW956pUM5kdfFL4BQLZsQhkqYmfQMhY0+tzKkJsff1c5Hi3NnqlFRFAhgfQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fp8N7lzS;
-	arc=none smtp.remote-ip=209.85.221.71
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ATY9mf21;
+	arc=none smtp.remote-ip=209.85.221.72
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063F7606A31C
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 09:49:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 063F7606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54531606A335
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 09:53:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54531606A335
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fp8N7lzS
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48e4d1e29f3so5614568f8f.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 01:49:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ATY9mf21
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-4901562b819so4962698f8f.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 01:53:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795686547; x=1796291347; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1795686828; x=1796291628; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:mime-version:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6dZB05s8L/xa0x/oyJAw9mH4rJKsN+Tc+ttIJvUQqrI=;
-        b=fp8N7lzSwrTu/9GPaWUsM5v6iLg4AYau+nLme97eCrNL++BNkEGNvfPrHaM/vo8F5K
-         zngzStknlQ39jD6B8t/1rEsrX3bQEkCXS5uLIqMsLhiokK5y2lix7nuFXu5yLQoUB7W7
-         0VxwKSzVoWLhFol8y4egya9cJq5IyRLs7DdtQDJu2hZGpjZTdguc7EP9m2STIMgFKr2M
-         A76B4LRPHMf1MkfJMqtlO6gbS09zd673Yd8jZzy7NIq/jaYMYsKFqzjvF/iuUhH30Hx0
-         X3YlO0Q8STUsOAcLCgUytAoVjidvFIBQVetkHbV726vp4qltv90sMoT7ySZOPEuo8aQV
-         /UQQ==
+        bh=IQ+jDuVBv1HbX1b3BBSVrbjflr2E8zhivXziNzPhcDM=;
+        b=ATY9mf21DZwNhmZpYSdtB3X8MG95289N7UHEfn2MzH1YO6Mw0I4FY6KBInec/MSWAN
+         toGl5bwYMk/xVPG2Fux1x8h3CmZipQrOoR5NC+nzOzKoGZLuD7o3dks5fzithnN+E0XO
+         cnzY9EjfZK6mIhrOPKyjMSv0bUe+5MGngOtq5Yz8qamTYn4zPVoZRAb0oKt5bV2Ns8AW
+         hXT3WXnkMk+37oKwYnS/zZCmNbF/xObSbqfIq3U6aiSkz+gYPq2z/GxzJFsQHm3UCmbU
+         yHjJkTjenXIPE0HPFI1mfEY8hSd2uSi84cVfMzqwvMFaPsDuYZMKmtozf0l0/KcvO8Ik
+         mTtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795686547; x=1796291347;
+        d=1e100.net; s=20260707; t=1795686828; x=1796291628;
         h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6dZB05s8L/xa0x/oyJAw9mH4rJKsN+Tc+ttIJvUQqrI=;
-        b=Nq1huOfywkN23ZaXJdIT2/0O8tauZkZj6O10OwVnrxhoMuQo9u5slIwCWySAT89MYd
-         rx3bMlPSb0hutetDQ0dIwlxW1v5b+vIhySxme5mCaJJncxRA1QByApTqrACjsAuwnKlz
-         y42s10ZYeIOFWo2yZfXm5rJA+fbp4xTp+f0XMr8tv7L5vfQyuNSF6cN0g46iBJvoCxLy
-         jIMhDbqaqErQPkEK6VTMQlbdqRO2E7XgcMLJMSnylkJBRK7JZqQw3aRHmJPutj03lJYJ
-         mwoe4YC2cOc9P/1c6cd9nB5uD2cQLE2kzWjG3hOxtCjVt/veUe8lvx/gr0aTgFlAkhkO
-         rWYQ==
-X-Forwarded-Encrypted: i=1; AL+hErGG/U49k5PhBgBF4vlxLXDGS8/aEYvdSPfd5bSEiuVfCwQT72kPAIdUKIwtGzc8HWGolAv6sZEo54FClBBVRw==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+ufL7vly/JhEarO1sZXA445e/jsx3F5k2q3ZAKJhX+QZj5lave
-	15PYgPVNqIocipWF55PHVANXIeHGLPfV1PEqL3UdgiZsnhOQx9LFOynrILVc0ywmy6+TvnAjbOC
-	ApcF3lHzLoXMk71ja5Q==
-X-Received: from wrn9.prod.google.com ([2002:a05:6000:2b89:b0:4bc:7f09:ce4b])
+        bh=IQ+jDuVBv1HbX1b3BBSVrbjflr2E8zhivXziNzPhcDM=;
+        b=kRH/DS2yFGk764BF1TZtRsYBwi0KujfO5e1iv1lnG1THT9QNbP4kuxf5I6Gt6Hw2Oy
+         J+8u1oT6nG20TxIRe3mzOO3t+6qJ/ONcDu9LXrFcSUQ6z/mRNUN47tcCQtBHSLN/WpJV
+         Rqb47kW4RteJELDw00AThjc5KBF/2kDOeQyQVqFhhRZqsQ2pL4VzQK+nKpv2XMNHXuRW
+         aoQh5+ZPdLCl5ESo1ZmsRuB8O17d5k7mwMbAfleghebpfji6/AlwE9+t2Grc834PJiLO
+         IuD4l1g222hyjI9QGeu4hcvR18MUIV5gSbUzHbY/08riee8uvlwKnnmr6IK6vLD7Xkct
+         e4MQ==
+X-Forwarded-Encrypted: i=1; AL+hErGFYe1LPZON8cn3zqlnijH+zxi5mmfbcPac0uA45/VnCM0uo7qPi/9CXExQE2J8pFLMliYqYuxv6sYFHGSOoQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8Pg8G3PGwpL9fjm20NWTSslrFCiRfE18R0LEzVRoiJB523tlh+
+	W8yqQ/5X4ivdNVK9BJhShVeFSyzdRwSAajs73xAMwwr/2tyVa9bOGLDW05vwafiPxSvhlowRzjl
+	yb9rAC3McmEpugtuZzw==
+X-Received: from wroa3.prod.google.com ([2002:adf:ed03:0:b0:4a2:f12f:819c])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:4b13:b0:4b7:75cf:44c6 with SMTP id ffacd0b85a97d-4b775cf4568mr15049720f8f.11.1795686546960;
- Thu, 26 Nov 2026 01:49:06 -0800 (PST)
-Date: Thu, 26 Nov 2026 09:48:55 +0000
+ 2002:a5d:59c3:0:b0:4b5:b60:4814 with SMTP id ffacd0b85a97d-4b50b60487bmr22618872f8f.54.1795686827511;
+ Thu, 26 Nov 2026 01:53:47 -0800 (PST)
+Date: Thu, 26 Nov 2026 09:53:39 +0000
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -77,26 +77,26 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAIcACGsC/x2MSwqAMAwFryJZG7DF/1XEhW1TzSaVFkQQ725wO
- W9480ChzFRgrh7IdHHhJAqmrsAfm+yEHJTBNrY3xvboWAJllBRUSUyYKeLUtYNzo49DaECvp45 8/9llfd8PQ0bDNGYAAAA=
-X-Change-Id: 20261126-binder-node-info-ref-9547bb8cf7d0
+X-B4-Tracking: v=1; b=H4sIAKQBCGsC/x3LSwqAMAwA0auUrA3Y9IN4FXFRNWo2VVoRQXp3i
+ 8vHMC9kTsIZevVC4luyHLFCNwrmPcSNUZZqoJa81uRwkrhwQkOTXLjKwxk7Zx3bYFrvA9TxTPy H+g1jKR+LB8dHZAAAAA==
+X-Change-Id: 20261125-binder-32bit-fixes-8545e4a3066a
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1810; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=R1LORDAvDp4NuZMtOtb8uChUQIctktLSNQnXbs2iwUA=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBrCACNZiRU0nSs9sDT2DUVGV4ZLL/QnKSo4b2oK
- DeWPZw/A9KJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCawgAjQAKCRAEWL7uWMY5
- RiwrEACO59M8fGBM2i5vcu9N67sYCetcAHUCfazpxOxDoUzho91GoPYdOJlSf/iePnmZX/oWStS
- jNHbZYD2GBseA2vwPdHeQHgMT67bVPdvmOVmXmrDG6t0GrTsrcUarwo8MOtnwllJP4N+RM70hYg
- czzdEWhSje3Ie/9skQJa40X9LUUVSIegAiiYLeg8LwjQTelwlLwou2oXd1eGfd/w1EpxQeQsM/W
- 42NGjkfUgrUkrMdOWUudR2jwjxSkueatQv8FHhTVUGpHq2Rs/6YPqCFi9ehGJLG9z12Wb+X8eQz
- dr0aFQEYNSOvI9vYM5LeKTLTPsVikLCaPdIxt7bKAU2FL2kDaObbVqi3IJiqoinK2LiWyrAFbzV
- KvD/yt0Ytomm44jD0RZ112iWw8tfoWz6tqVoraMeNWsNgsO8naDqwAUjAm+JBTwQa3cZMh8+SFP
- FmfNBIntjc0eG707t8DpYsuatvWy8HdRTxlASFqPfd6X0SwhIMXNWfCr8QVWY4YnZqhwYreG59Q
- je3QSvArrs/7y6v5zEhG6rh9rBhjlZCjLu9G8n8h+SofGqqgmmrdUAMVlgBxUuw7nYacqbTpMAA
- Aj+DZ0UfCjfHfj67z/xEo5K1FZWzb54CR+nMsh4iUh0ef9+XkiPaptWxZ/tLK9+JjxoWvtXiHU1 /KUa5HNPkDDdapA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=936; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=EpMduAqe51nfTvXf0d6Ojk5wyRUruSt4ngGPShsiPWM=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBrCAGpCYmZgGXciGbCpezM5TFDplsUak60b3HpE
+ Qz0XGyImN2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCawgBqQAKCRAEWL7uWMY5
+ RqRFEAC4u5UqJMUvF1FCrevyejCifXyIvacrgWdtTDHksm8L8kB24b3GPQqZ2KiaWODShrglh6U
+ sjqL0YoSRNLR4pbS3JcjavmENMfsG8katQCauZI0f+WjlRXQQh+dLFznvojSVxV9ughV/FP0wdS
+ k8S6nOrqR+4hicnMWIFoEimMOyAjgrd830ZMZ5EgZE6O/iX6wsRRBmjAPKkTAKISlmnS0UII2SC
+ tP0lELozuwgMJ9OJDQgKdLqoWMxUtWn8FJmfMN304p0eiklxDoEIWAuRzZe5qGGQn2eEyYA4eB7
+ B3hqgAAL2Q53I7YTlhVTVCzTYV5rKrSq1l0iWBrYDZ38A5zEq6rNV2D4WLJe6QwMZEK4JyqFCjB
+ san4mtxyPsvKWYB8Hg7+YkoKmmsHw1ZJKmx/CX7hvfWgJDBYrx0Qntsbx4PygX1NT/b+4WGTqZr
+ bEUM2CpIP/tfDBhw5lng9wp5+RFOp3lOtceYXAv3ptUduNZZ8hxLXnbPBvf6JfHnsyV2/yjTkL/
+ w8dJvJgyTSTRlqXLF45iyHcRi1EQ63goQNgT1y4lwIdnq2t+Hs2vJu8afAH08abcCkK6mHbFlvU
+ FPMowGj64Pk79+iuo0O+w+nv1M9zAcvok9JEMw6WnjXhxDqFYIrg/2UOK7RTDz0fTZ9Zqndc3OP JON+2IYYSZzoVEg==
 X-Mailer: b4 0.14.3
-Message-ID: <20261126-binder-node-info-ref-v1-1-efbc97174846@google.com>
-Subject: [PATCH] rust_binder: validate handle in get_node_info_from_ref()
+Message-ID: <20261126-binder-32bit-fixes-v1-0-22fc21baf6f8@google.com>
+Subject: [PATCH 0/5] rust_binder: fix 32-bit truncation and alignment bugs
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -105,47 +105,28 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <ga
 	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
 	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
 	Alexandre Courbot <acourbot@nvidia.com>, "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>, 
-	stable@vger.kernel.org
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-When servicing BINDER_GET_NODE_INFO_FOR_REF, get_node_info_from_ref()
-returns ENOENT for unknown handles and succeeds on handles that only
-hold a weak reference. This diverges from C Binder, which requires a
-strong reference and returns EINVAL in both cases. Thus, return EINVAL
-for unknown or weak-only handles in get_node_info_from_ref().
+This series fixes several bugs that only affect 32-bit platforms.
 
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/bug/linux-756a00e6-8404-4b56-badf-e15ba0bd93a3
-Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-Cc: stable@vger.kernel.org
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/android/binder/process.rs | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Alice Ryhl (5):
+      rust_binder: read u64 pointer in BC_FREE_BUFFER
+      rust_binder: clamp write_read buffer sizes to usize::MAX
+      rust_binder: reject transaction sizes exceeding usize::MAX
+      rust_binder: align scatter-gather buffers to u64
+      rust_binder: use u64 for node and handle reference counts
 
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index 1f4cb43f1de6..ece319f52b76 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -1248,8 +1248,12 @@ fn get_node_info_from_ref(&self, data: UserSlice) -> Result {
- 
-         {
-             let mut node_refs = self.node_refs.lock();
--            let node_info = node_refs.by_handle.get_mut(&out.handle).ok_or(ENOENT)?;
-+            let node_info = node_refs.by_handle.get_mut(&out.handle).ok_or(EINVAL)?;
-             let node_ref = node_info.node_ref();
-+            if node_ref.get_count().0 == 0 {
-+                binder_debug!(UserError, "tried to use weak ref as strong ref");
-+                return Err(EINVAL);
-+            }
-             let owner_inner = node_ref.node.owner.inner.lock();
-             node_ref.node.populate_counts(&mut out, &owner_inner);
-         }
-
+ drivers/android/binder/node.rs             | 22 +++++++++++-----------
+ drivers/android/binder/process.rs          |  7 ++++---
+ drivers/android/binder/rust_binder_main.rs |  5 +++++
+ drivers/android/binder/thread.rs           | 26 +++++++++++++++-----------
+ 4 files changed, 35 insertions(+), 25 deletions(-)
 ---
-base-commit: 277f222cf565a408c604a3aa6b6b152eec2e6b60
-change-id: 20261126-binder-node-info-ref-9547bb8cf7d0
+base-commit: 917fcbf033154a6c8d83cfa6c88f012b71eb37b2
+change-id: 20261125-binder-32bit-fixes-8545e4a3066a
 
 Best regards,
 -- 
