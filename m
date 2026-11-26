@@ -1,73 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.70
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795696338;
-	b=B6zTnHsIB1zwnYmWUW0jK4Kc8fi6Gi3lq/eC8imr0aQZ19rhAj7dbCMqDuwKicFYzwT1
-	 q+5VmPLlcq0iAhLFkbBEpCshxv0+LZusaHqaVmT6f85Y8G2tYfvFmlRtuouygBsgiyxWK
-	 TUashHYGe9ajh3rx3u8bCKb3Ca3rojLbE6jnDXEkMEI7DCmn1ggZbrKJP5rtcjfu68T8k
-	 4uEvUfufmGoOsAT/8gsMSqjTVbXvcfMZfhwz9fsgVNO54E4JKfqim9RG9rMAAnDkzARGz
-	 x/itXaq2FNCgGPRiVflAAmnxvOtopL0IjY5vRDOWZYFm05YlIHFJrbzWfRr8yygQYBA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795696338;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.44
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795697002;
+	b=Wvr2V4/F6ey238Ak3AlsAnYdknlS5GAdM4GXw1lr9V6+0KCZsrYWpmNwMs3fzg4v7Gyi
+	 ZfSSOOqzvx5E4pmdQ+84Y/L0TXJRvdF1fAJWFToMn30YODWscIWxLKHlRmEUBB2AanyTA
+	 JcWUOasslNy6URECb8wOpt9gCivgFTdxRU3YRJm3obaJ5Itv5Jhp/pYmDhPpcN3ba346O
+	 c+XQgr5TLIEr3EU1Kuf8uEGr4aCJf54dFo0O/xbt5FB334/76CGxwVjifWabjp6uJCZun
+	 +IO0aEYkd8KEpUeF2cTSCQ3/sNXgwIdN6Et+VPMQ0mBZ1VzoekGopa8a5Rig4xUZNUQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795697002;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
-	 X-B4-Tracking:X-Change-Id:X-Developer-Key:X-Developer-Signature:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=fHCx7zIpHYpLkOgKlg2Z3g8RSF2ncCGsbCBAjvwZT28=;
-	b=CjzhJORCwM0h/vSwsRZtkWvXML7VENJZ/ClOgwB8fMUGFl+t3k9XRIJmCoqjKZb7RtH0
-	 tHEqwKwCxhk61XJzokRwiBRReP1Iv/XTvjJlcoS9BX0pLSLH8UwCHMuXXXXFqLhwzLFzh
-	 rwYVKTGPHxzmysHvhjdPuLjTyhmM44hfjhY8KRCoM3LtSXuBiOv2PgWi4J0zaS1AYh89x
-	 Cc4k6GQVhJJ9PGkm/5YMMK/l5xChDURXXGAFdpdFprGvpWcE1Eb0m7uRwZZu8oxi4koPJ
-	 1oTaGcgDc23aLIm6IE80vSGzDKXII03COMHOjJbpREyipVs3OEMTwYLeMcIiMr4pFtQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=o9Abx8wExLURdMx+3brBY5biSd8oqBfJ6pvMSMTyXjw=;
+	b=xCeDIocd+joyrO7uFMussyfiJg9DITBEbLAJFS8IHxnMH9Ec+zCfjl59EM3NAR+kJURs
+	 Uwn6cuTH1WhLk6nmz6HqWDeGhNiCAdF1/Lh4EyKzbUvrsJVFhI8hGDRk46fyDJ2lDNuOp
+	 I48TqYx75cHwFKqXbrYfQTE/PQf5/gk0HHcz9IXlOnWDNhJJYbN4zhuFpKYiqGgSSyYjP
+	 1EYXXZBWnysyZM0fEVq0rRWgIsdozqU/AQ/3GtxmQtjBRvmk5LgLh7+Nm/lsqd8gKi+t0
+	 xeGafpV4JHrqrCtTbVD3lGu3qnO/uuGfYEquevqdAH/cTFVSglsyBGFh0we1/Klv4Hw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=EBtZJa8W;
-	arc=none smtp.remote-ip=209.85.128.70
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=O1Hx2dsu;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.44
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5396B606A323
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 12:32:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5396B606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C6B606A321
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 12:43:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25C6B606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=EBtZJa8W
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4bb680f0ac4so48734135e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 04:32:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=O1Hx2dsu
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-491846221ffso6061226f8f.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 04:43:21 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795697000; cv=none;
+        d=google.com; s=arc-20260327;
+        b=e6WBQoWyKgbzXm2BRa+EzfikYWtapZo2MbVUANKSnSnfFpDM9Z4YEAONRdBUJfbsl3
+         dT8S3g0TJV8m73BSUNT/G6Gw5NeDYcVHvA0JWe7WiOSoGIl4h5WIp6AxAzul83PvXyx+
+         jEznv81yq3HG6v+Kvpm/Y7O5X/rslShJ5ldhEjj3E9RTwmZ8YwXa+ggLyjqnRXngYCIl
+         bCFP2Q09tjlRVDApL0i0krKD7hJh4Y53uMjylwznaKUuUXouE8qZLsCEs2q7hQcpMckB
+         uzToOY+0PYZzhY7Yb6ZwJ0+MbU/yKY7j2Ag2bN8eX8zi2Wz/xOdMuFXSoAZTVsDi2xJp
+         zTBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=o9Abx8wExLURdMx+3brBY5biSd8oqBfJ6pvMSMTyXjw=;
+        fh=CPkh5ZJMb+WZV+2BMxlVJZ4YlK8ESsACtgpn/OaT7v8=;
+        b=nh55RV10inJGJjgoWqYIE9SBkzktNWycOYkrGcwFo0p4xCLk2xuWvOBxcH5PbS5yda
+         z3DJxGBNeJ8f6buYAOoZMG4V1T8zH0zSxv1EnNKexMGUkE1McbwO8c+2I31SjfaXZA8Y
+         RD5FNXcbrO8Xs6bYScTWZACShVVO6Gmc782KKUxGgfaTL2ozGeAac6PtUcouOi+SweQ/
+         x1qb57aC7fznTGIM4T36wo0EttHjakcpoAssxisKoMijicJXmrp1y9bgbQX+ULVpBGLi
+         8AMgHwr/KftC7YFDPbSDw85CDdT/dUOBUQuOgHoEu/3B6J92v5Ox+kIrF7W75T5XHL9u
+         cnMA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795696337; x=1796301137; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fHCx7zIpHYpLkOgKlg2Z3g8RSF2ncCGsbCBAjvwZT28=;
-        b=EBtZJa8WsE0MD3ONXzlsFf5vMK2zog0Nb8lDbqkYhNbm05uQeTB/qAJgtP7QFLQEjR
-         7OkBZcl+1FCsJibDTaQr9BAuB7ax2HahyysfFAYc91eiZmCfATf27+CZw0rPpx6N4EA5
-         c6IO4cSO9zgJ5QuTW9xFInew5UQqxNnqpm7eGlA9Lhot8cUSGvxBbtLimAqDVOvihEGT
-         rhIZl4x6UPUuhDKKBmtI4G7UJWBUciWYDonrwnX9DroUK6MOlEryfO9KgjZQwpGfMk4x
-         R6Jj5YmNQJKJVxiRTEb2kU4RsEs/v3wwlnTuVMlF4hFinPv1rqtUylxwxnGWL6/TZNcM
-         EAKw==
+        d=google.com; s=20260707; t=1795697000; x=1796301800; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=o9Abx8wExLURdMx+3brBY5biSd8oqBfJ6pvMSMTyXjw=;
+        b=O1Hx2dsuq10/oTIOFgdevzB1nCddtbfQ2o7VJksECNBoidtdLwaAR/syeHDZWp1w9/
+         03KKURVL8fYcZo2CvY+L6Ogs5vAepAUn+WL8hKy6Hy/9xbM/JyLeHHmVIax8uiE9UINa
+         GU0jwSZrg8cFzjLi9wo4y4gXbYsn3JXaX8Y1OPfjTTxtghFe176ExLWZbTggHc1oNuPY
+         /8tsPOHhoyrfvDBhf7X87GtDcyfc0Z0yUB5+yZ1nv0BIeyMUHSGIIUfw6/MMkbFoMtLT
+         vQMKU2ToW4NfSs9XP2lrrRlv5nwaSf72+WMH6R8CantHxXBQeQXVaY/eQQpfDolkFw97
+         xlvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795696337; x=1796301137;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
+        d=1e100.net; s=20260707; t=1795697000; x=1796301800;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=fHCx7zIpHYpLkOgKlg2Z3g8RSF2ncCGsbCBAjvwZT28=;
-        b=SzatHqZvDnCvyOit+OEhrynTfvDFCy7S4CHetmr1LQ6VpF8dlC0qaZuT9eSggLtDU+
-         Yz+Es+s2kyXIs4tscbc326FVoN8gxeVR2BPxfa8IypPnAFs22HkVW+TsPE9eFT33c+sV
-         2SfoD1H/1fcqoobmpS4h4GTzRpX9BYYIliTcpzvjFr0nxVWBFhkCf6gWP4kZrX5x3eYO
-         K8vRC3OmlLkWC4KAVChP+rNlR0NmCXduRaiilTzg5rW0Zlxm7Tq34+zhMXdsl7h6hLZU
-         MW5W/Lb4mCP+Hipn+pi9EU7Y5Eu1HKQUks4fRMt6ooOgRnme+qroFz5XWr6oLzYxWmwN
-         vqEw==
-X-Forwarded-Encrypted: i=1; AL+hErETSGWvcue5uJBfoAR10e3uVncwtfDBut8k3R+ErLsBs6FPyIFgYm7Ng/dXEpw3csi1MqBORADiFvfTBlkWFQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/ucV7Rr2+jbF301OJDye9AufcEm9cmdiX3LsxgyZSC6wIs3+v+
-	qAISQzfzWy4uOcodGmjB7eUMjSF0TEy+fM2qV5b2AUpS7MgxO54cksdKya4ncAnwwmb8fg9B/o/
-	NCdxEQeoN/eB+omGwyw==
-X-Received: from wmpr22.prod.google.com ([2002:a05:600c:3216:b0:4a1:e780:89af])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1384:b0:4a2:1612:6367 with SMTP id 5b1f17b1804b1-4bb88816c44mr429916695e9.15.1795696336153;
- Thu, 26 Nov 2026 04:32:16 -0800 (PST)
-Date: Thu, 26 Nov 2026 12:32:00 +0000
+        bh=o9Abx8wExLURdMx+3brBY5biSd8oqBfJ6pvMSMTyXjw=;
+        b=z1JqTEC4yLOcIwTApqiaGnL4ZNn9GLP+F3LgGy7k8cQpja0MPrJoltiLe4uf9/j2AU
+         /5Tb0sOFAUypygXR2EgeNGmtxi9uoFaxkiWFCTuld53kTAOwkY1BlmRU8u+TXjdGMeZE
+         MzfR0Wwf3XeFkIfFUnTbVapMSb7eBsAi1jRKPzXgLQNSiRbGHyFgju+0CzcGI/fjHblA
+         56bFT54mVMkRhI9TMd8bs1eifxtt62R3ovorNQ/s14LGkLPu5iI9+sRqMAOA8Hfd/Sim
+         AY1bAOoCkAcuyrJxEi1Xd7ogHFlhzfcrz2yyO2GV4+YrjQdtZSfJBd39SgvibycdjadC
+         jd5w==
+X-Forwarded-Encrypted: i=1; AL+hErGx8xotzGuKLNLY/tW8wfBUbLVijtlySTaN7Je0eMojI5SAz0415jzbUuje6I2wazhOE3goFD+crEbJZMuJKQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8JUO2WS7pVSZ5tm+MtzGBRWDq2Q/nhpB0HpUfh4NikpAekVSEX
+	cudvQ747XXAc+Pq+07A8M9PFZNYygoNB9/Ih2WBZfLIrhTmegxmFtH/Y6Smu+czV6TVAtB6zfDN
+	am1+OC6nBLUCZAbCrUW3AJSa97mD7AHBVuEv3B3Yg
+X-Gm-Gg: AZFdTZc9lcmsJVkvgfvMWEL3oqKSq87fACXJcpjxh5F2A//JCKqkBahK9zBDLKuxuxE
+	IafYtOyiEkLyWLaRCe1NJXX834xjoULXCvUfZ7SJpXqJCkMXCNXK4UVXE83zfayP0AEEiagJZl5
+	FbI3wkMK6fGHlkAUUlFJ0hbMaPNMdqiSxiNxgSYoX6suCRMDCzsDSKDqv2Q0ZIGzd1TDO37wEwX
+	O/3pTGtJiaUcT5B5DcpM7GW1Zli6+CaWCnPVkuFk0vnBpzx09VSYJifm+JvyUbjJiv1weLLEP4K
+	kP3jY+UmNE60sqW9J28K5rXKxYxhzQdYZKa/fmTqLbzxcSKNdrkOqlXMlyyFUNP/bk0sg3D3wv7
+	1iI/q5g9Wn+/N2T9vyKzRfVzR5kb9kikBuSE+6KmpFQa95d5O+PwlvJH93E/thtu9ieURSKYQIB
+	w1CZxF0srtTOW/Bms9R8vQmsnm6jJVDn9xQxj1BmpT9YI0
+X-Received: by 2002:adf:e00f:0:10b0:491:d224:aa78 with SMTP id
+ ffacd0b85a97d-4abb27275e7mr29748444f8f.26.1795697000100; Thu, 26 Nov 2026
+ 04:43:20 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -76,205 +104,86 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAMAmCGsC/x3MQQqAIBBA0avErBtQy4KuEi0mnWo2FhoVSHdPW
- r7F/xkSR+EEQ5Uh8iVJ9lCg6wrcRmFlFF8MRplOa2PR7cFfFHGRIGnDm+TE1jZu9tT2yhOU8oi 8yPNfx+l9P787sARlAAAA
-X-Change-Id: 20261125-condvar-finish-wait-453cbda470da
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6230; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=PgjTJyn3+DIyu9bLn4l6pPnMUa4wWkOWUbLI08zk1iE=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBrCCbEvvgTXcf8PQxlLLeQUwaZJCWEBOFPBLO5C
- iPj3CvW1deJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCawgmxAAKCRAEWL7uWMY5
- RgtxD/9uFNLvthXike/gPVN4HE8fZGW3e4dJJCjg95vyTo2+DsMy06lVvjXXtQ1nhiPppPzYOQt
- 9ew9Hyzce63WxiqcK7Rs+IJWZagnZzVHgxyhNVR/U8A7JtAz+jEpY4al0OYZZ9NrRYyGxpbcFzD
- vXV6rkGphi7dFknZXBwA0hJLH8+2ltJSVlrOsyKjGyx7oGGcb7Jzo1VvevR7X2O+ab/1Ymw10eO
- VXv1x+uk59v32lO12CexL3JKcIa8SsBjAQZ09snquz+ZTDs+IfCtgDb7U45xv2U2DKisJA8Gqsy
- t0Xyz1+CuE5CydXCXpYu6Y2kKzemXTOLMlw4bRi0sjiHbC0kMkHvB9f16NoJ2JXTxNf0vKOPupa
- o42Z9b5lY3ozxANchoA/w2v04M/D0el04D3VBOrsH1bjNp+gyuokkmBHNES5gppGDXrPe9sgful
- r7QsDBFVyN8WL0jdKdP8N8ST5Mj+bdxVkhG82Ixr8Sn7CIqbaUtQAqhwIs7l1+z4dYYXG15qeop
- Hj2/AWpcHy0g2kBrsyLv/A5dK6GKlhW430QcIkOQYk935aWcRfP7gWi0GsMKVN2/PR24UEIdvZt
- +pjZDFCgtQmwCrM12w2yolB8iVOiUmbLf8Ew0UknwqdY+tMabhgSPEOaUsPWQPJveVJosFRScpe IdD8J25L4lwrMVA==
-X-Mailer: b4 0.14.3
-Message-ID: <20261126-condvar-finish-wait-v1-1-296b5a05045b@google.com>
-Subject: [PATCH] rust: sync: condvar: call finish_wait() before relocking
+MIME-Version: 1.0
+References: <20261119-rust-workqueue-v4-0-707c68994940@google.com>
+ <20261119-rust-workqueue-v4-5-707c68994940@google.com> <5eec17370f67438e43bb1c82b1d6a16b@kernel.org>
+ <20261125181752.2027207-1-aliceryhl@google.com> <f9d8ff6a6c4a4d098e0d461da4e40474@kernel.org>
+In-Reply-To: <f9d8ff6a6c4a4d098e0d461da4e40474@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-To: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, Lyude Paul <lyude@redhat.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, 
-	"=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, Miguel Ojeda <ojeda@kernel.org>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Wedson Almeida Filho <walmeida@microsoft.com>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	stable@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+Date: Thu, 26 Nov 2026 12:43:07 +0000
+X-Gm-Features: Aa3M54p00DMhUzh_tewZfWZ2hi0LG_ZMSKy1ua0nr0PKeO0HqjITQRZNecEPYTM
+Message-ID: <CAH5fLgjvFXX6oZRkH9OFCun4eNGWKkmoeCfVK3_16Yc75dfRkw@mail.gmail.com>
+Subject: Re: [PATCH v4 5/5] rust: workqueue: add ScopedWork for non-'static
+ work items
+To: Tejun Heo <tj@kernel.org>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	John Hubbard <jhubbard@nvidia.com>, Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When schedule_timeout() returns due to a signal or timeout, you must
-invoke finish_wait() right away, before invoking any potentially
-sleeping operations.
+On Thu, Nov 26, 2026 at 12:22=E2=80=AFPM Tejun Heo <tj@kernel.org> wrote:
+>
+> Hello, Alice.
+>
+> On Wed, Nov 25, 2026 at 06:17:52PM +0000, Alice Ryhl wrote:
+> > What I'd say is that this isn't the only way to spawn work on the
+> > workqueue. This utility is intended for use-cases where it's convenient
+> > to do it like that (e.g. because the queue is defined before the work
+> > item in the same struct). We already have another way of spawning work
+> > that uses different ownership rules (e.g. self-freeing work) and that
+> > mechanism would not go through ScopedWork.
+>
+> This is your design and you know this area far better than I do, so pleas=
+e
+> take this with a grain of salt. That said, I wonder whether the interface
+> is more tortured and twisted than it needs to be.
 
-However, the CondVar will currently relock the lock before invoking
-finish_wait(), which may sleep in mutex_lock() while the wait queue
-entry is still queued. For exclusive waiters, a concurrent notify_one()
-or notify_sync() can then match the task in TASK_UNINTERRUPTIBLE and
-lose the wakeup for other waiters.
+Always happy to discuss! Thanks for the question.
 
-For non-exclusive waiters or notify_all(), keeping the wait entry queued
-across relock does not lose wakeups, but it can still cause a spurious
-wakeup inside mutex_lock() and nests wq_head->lock under the guard's
-lock.
+> Workqueue lifetime seems to add a layer of ugliness, at least going by th=
+e
+> restrictions on ScopedWork. Wouldn't that be relatively easy to solve by
+> adding a percpu refcnt to the Rust wrapper of workqueue and tying work an=
+d
+> delayed work items to it? Dropping the workqueue would wait until nothing
+> is pending, and cancelling delayed work items before that would be up to
+> the user. Work and delayed work items would then behave the same way and
+> be usable on any workqueue.
 
-Thus, have the callback invoke finish_wait() at an appropriate time
-instead of letting WaitQueue::wait_once*() do it. A token is used to
-enforce that this method is called.
+I'll take a step back for one moment. The previous version of this
+patchset did not have the lifetime in question. Adding a percpu
+refcount doesn't resolve the issue that made me add it, unfortunately.
 
-Cc: stable@vger.kernel.org
-Fixes: 19096bce8157 ("rust: sync: introduce `CondVar`")
-Fixes: 4afe54ecfe50 ("rust: sync: convert CondVar and PollCondVar to use WaitQueue")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/sync/condvar.rs | 19 ++++++++++++-------
- rust/kernel/sync/wait.rs    | 44 +++++++++++++++++++++++++++++++++++++-------
- 2 files changed, 49 insertions(+), 14 deletions(-)
+The problem is: if we drop a ScopedWork early, then once
+cancel_work_sync() returns, we may free resources used by that work
+item. Obviously if the work item is still executing on some workqueue
+after cancel_work_sync() returns, that would be bad, as it would use
+resources now freed.
 
-diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-index 89f1a31afb89..d1f9b8d78680 100644
---- a/rust/kernel/sync/condvar.rs
-+++ b/rust/kernel/sync/condvar.rs
-@@ -109,8 +109,11 @@ fn wait_internal<T: ?Sized, B: Backend>(
-         guard: &mut Guard<'_, T, B>,
-         timeout: Delta<Jiffy>,
-     ) -> Delta<Jiffy> {
--        self.wq.wait_once_exclusive(wait_state, || {
--            guard.do_unlocked(|| task::schedule_timeout(timeout))
-+        self.wq.wait_once_exclusive(wait_state, |finish| {
-+            guard.do_unlocked(|| {
-+                let ret = task::schedule_timeout(timeout);
-+                (ret, finish.finish_wait())
-+            })
-         })
-     }
- 
-@@ -180,11 +183,13 @@ pub fn wait_interruptible_freezable_nonexclusive<T: ?Sized, B: Backend>(
-         &self,
-         guard: &mut Guard<'_, T, B>,
-     ) -> bool {
--        self.wq.wait_once(TASK_INTERRUPTIBLE | TASK_FREEZABLE, || {
--            guard.do_unlocked(|| {
--                task::schedule_timeout(Delta::from_jiffies(task::MAX_SCHEDULE_TIMEOUT))
--            })
--        });
-+        self.wq
-+            .wait_once(TASK_INTERRUPTIBLE | TASK_FREEZABLE, |finish| {
-+                guard.do_unlocked(|| {
-+                    task::schedule_timeout(Delta::from_jiffies(task::MAX_SCHEDULE_TIMEOUT));
-+                    ((), finish.finish_wait())
-+                })
-+            });
-         crate::current!().signal_pending()
-     }
- 
-diff --git a/rust/kernel/sync/wait.rs b/rust/kernel/sync/wait.rs
-index 399760e475cc..f378f0b0f110 100644
---- a/rust/kernel/sync/wait.rs
-+++ b/rust/kernel/sync/wait.rs
-@@ -18,6 +18,7 @@
- };
- 
- use core::{
-+    marker::PhantomData,
-     pin::Pin,
-     ptr, //
- };
-@@ -228,27 +229,33 @@ fn wait_event_timeout_internal<F: FnMut() -> bool>(
- 
-     /// Performs a single non-exclusive prepare-to-wait / finish-wait cycle, calling `schedule_fn`
-     /// in between. Non-exclusive waiters are all woken by [`wake_up()`](Self::wake_up).
-+    ///
-+    /// `schedule_fn` receives a [`WaitFinish`] token and must call [`WaitFinish::finish_wait`]
-+    /// before returning (e.g. before reacquiring a lock).
-     #[inline]
-     pub(super) fn wait_once<F, R>(&self, wait_state: c_int, schedule_fn: F) -> R
-     where
--        F: FnOnce() -> R,
-+        F: for<'a> FnOnce(WaitFinish<'a>) -> (R, WaitFinishCalled<'a>),
-     {
-         self.wait_once_internal(wait_state, false, schedule_fn)
-     }
- 
-     /// Performs a single exclusive prepare-to-wait / finish-wait cycle, calling `schedule_fn`
-     /// in between.
-+    ///
-+    /// `schedule_fn` receives a [`WaitFinish`] token and must call [`WaitFinish::finish_wait`]
-+    /// before returning (e.g. before reacquiring a lock).
-     #[inline]
-     pub(super) fn wait_once_exclusive<F, R>(&self, wait_state: c_int, schedule_fn: F) -> R
-     where
--        F: FnOnce() -> R,
-+        F: for<'a> FnOnce(WaitFinish<'a>) -> (R, WaitFinishCalled<'a>),
-     {
-         self.wait_once_internal(wait_state, true, schedule_fn)
-     }
- 
-     fn wait_once_internal<F, R>(&self, wait_state: c_int, exclusive: bool, schedule_fn: F) -> R
-     where
--        F: FnOnce() -> R,
-+        F: for<'a> FnOnce(WaitFinish<'a>) -> (R, WaitFinishCalled<'a>),
-     {
-         let wait = Opaque::<bindings::wait_queue_entry>::uninit();
- 
-@@ -268,10 +275,11 @@ fn wait_once_internal<F, R>(&self, wait_state: c_int, exclusive: bool, schedule_
-             }
-         };
- 
--        let ret = schedule_fn();
--
--        // SAFETY: Both `wait` and `wait_queue_head` point to valid memory.
--        unsafe { bindings::finish_wait(self.wait_queue_head.get(), wait.get()) };
-+        let (ret, _finished) = schedule_fn(WaitFinish {
-+            wq: self,
-+            wait: &wait,
-+            _invariant: PhantomData,
-+        });
- 
-         ret
-     }
-@@ -328,6 +336,28 @@ pub(super) fn wake_up_pollfree(&self) {
-     }
- }
- 
-+#[must_use]
-+pub(super) struct WaitFinish<'a> {
-+    wq: &'a WaitQueue,
-+    wait: &'a Opaque<bindings::wait_queue_entry>,
-+    _invariant: PhantomData<fn(&'a ()) -> &'a ()>,
-+}
-+
-+impl<'a> WaitFinish<'a> {
-+    #[inline]
-+    pub(super) fn finish_wait(self) -> WaitFinishCalled<'a> {
-+        // SAFETY: Both `wait` and `wait_queue_head` point to valid memory.
-+        unsafe { bindings::finish_wait(self.wq.wait_queue_head.get(), self.wait.get()) };
-+        WaitFinishCalled {
-+            _invariant: PhantomData,
-+        }
-+    }
-+}
-+
-+pub(super) struct WaitFinishCalled<'a> {
-+    _invariant: PhantomData<fn(&'a ()) -> &'a ()>,
-+}
-+
- /// A wait was interrupted by a signal.
- #[derive(Clone, Copy, Debug, Eq, PartialEq)]
- pub struct Interrupted;
+Originally I did not think this was an issue. I assumed that if
+cancel_work_sync() returns, and there was no concurrent resubmission,
+then it would no longer be running. However, this is not true:
+https://lore.kernel.org/all/20261118-ordered-wq-cancel-v1-2-916e01f9affe@go=
+ogle.com/
 
----
-base-commit: 7402dd230f4497954b465145a22cff7a5a488629
-change-id: 20261125-condvar-finish-wait-453cbda470da
+My fix for this issue was to add a &Workqueue field to ScopedWork and
+enforce that the scoped work item can only ever be scheduled to that
+one workqueue. By only ever using it with one workqueue, I know the
+non-reentrance conditions hold, and so I know that when
+cancel_work_sync() returns, the work item is not running anywhere, and
+hence it's safe to perform cleanup.
 
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
+Of course, there may be other ways to enforce the non-reentrance
+conditions hold, which could let me get rid of the lifetime. But the
+lifetime is there to handle the cleanup before destroy_workqueue() is
+called case, so a percpu refcount does not come into play.
 
+
+Alice
