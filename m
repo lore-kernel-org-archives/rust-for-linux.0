@@ -1,59 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795702393;
-	b=t+2AXaAroQyIpeVqpnzZEeUBPhCV/E3T9VJEwfszbJKaQPaCgzRIf9Qt9j2EE/d4tOoY
-	 JPjmTkSPE6cDQBCNhwZuJVfD2yq2yUjFyZwQlA1F/s8sBBzyu5/enUMdhSPxmdD8xMznf
-	 RkGL9nyKZLoK9rtM3gk5crilkf9s7lIwtnBMIo90UtD4zWhiluQHBZJ6ugQ05/3c7Wqhu
-	 FC/1BuA5pACaRNmVKqz4jh+obz0nElbNGK/Ik0LrXi6BUqNEaHYZxUlCnqZtsXA6YOeN6
-	 IzR+YQ3XFPpvCEk3hLOcCoJfwhnQnd86R/dBFxNBC9Zx/nUCeRlRdaYnzqt6h6y8+rg==
+	t=1795702724;
+	b=B/ZC+R9BMa8yEEp937s3fndDiAiWh/FJw7J9vmXCPfaGoxGfotIH383XLMx4ihWWlQg4
+	 rSPNVo/b6vuw+CzoRZuEGrD/HV6l/+OnuQCaLElZQjq4YfiRhhVUIyJtj1OjZYX1E1U29
+	 OvTkWpXflWDIUxI+NKqV8Fsg5jDP/GfbqeSCIvH+P09yDkwjGiOipdSJQPikba13GGB5N
+	 Ugg3Av/DpQqRoXNc8aH4Y0Nd/wA/42F1F+Ry5YePGgkRwSTPm/2Ye6RLsMx1vgpzfeYj0
+	 1FeXA4++XKGeLSNQ0vh+xH62/7Gut2lo3oV6r3O7+Z+FgQS17YONbRG2lVIzgc+A0QA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795702393;
-	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
-	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Mailer;
-	bh=3YnYPrDG3MtIj/tmv9XSpUodKwdeK5KGlzh7C/4XlWI=;
-	b=47dzcyD9SGWqCNySe4sDHVpbvf7uv8DcDzMmcV4+wlMkgCWTitGKyjgLHuk4j2IismF6
-	 Fp8GPwWjsBYO2Aueln08LbPtjPkNHTiWxvPF7YW/kTsnpKeodppVw7mLc4PhOrmRE/f2j
-	 QRQ2/5sl7AUxVoQwYQXU9ndBJ0ALTVK3Q7tUqjPcuDvOWf2feOCzWVud3TVqCV1oJs7AS
-	 1xGOFIOSrmwooedXADWYW6HxNNT5ZD3Bl8dDMiq4UFRbZQN0fkTGMEltUwutC/y2HFgc2
-	 InQgGTbPtEPTY0TdegiygkQQMe92lBLm3ednncDRgG2nI9wPw71gjqpNyrqsrCuYf+g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795702724;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=HcPUrCRDnVTrRxzrnQBBCh1QtlonsMv/Nc1PiLUr+ik=;
+	b=n0woBTVVpYkgMDY5K71TSFXOvHNNlu/afonIoQSHIUzdF4dndZy2aqnByUZRRUJToMw4
+	 pR1s+j3O5H/j/1k64VV+ZnxwQYCgvshcSgAsxqIhOIK3ruyB+aBWYAPy43iJ2LXDbgyQB
+	 EB3XcIoc7pTRg0n2CFKt+Ch3XgNnNq5DUvtFuPDngrItcKCuWYHWv6zuFQ5s1UaJWaTDs
+	 vnzdBAAv4Li5NUw71uqxwgyBI5TknO8v5IniFp2e1N5dsj6dUfe0DrU8XxTT8sPMjk8bY
+	 TPUqUTT/uxpMuTnD5SHHBhUhmuUIOwj10BObehA5eUz57BF21uHyNF8OpSMkMB5lMlQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mWIZB1v5;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=k10GsYKJ;
+	arc=none smtp.remote-ip=148.251.105.195
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B5F606A329
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 14:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514F2606A335;
+	Thu, 26 Nov 2026 14:18:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 514F2606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mWIZB1v5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509D71F000F0;
-	Thu, 26 Nov 2026 14:13:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795702393;
-	bh=3YnYPrDG3MtIj/tmv9XSpUodKwdeK5KGlzh7C/4XlWI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=mWIZB1v5xNhBCBWXwJlEE9KpdWnJYnYJ7ZZ+TqxXGfthSIbfjUNV4vw2Z59qGlrZt
-	 BQsQ695UIuU5lvyy06sfleVMqTB3H2/MmhdVay5R9nSqAH84IWef3kBawwDkGsGIzQ
-	 PsFrzP780Ri0oFc/ZEStSBEtMbBq3NQinDTcXLWiRXZcmSCvUGCk7OCed3gsk9gD+y
-	 nnSyGEg3m9r7GjQ+l4+fHkUXZ8zgJ/Yujm2qhth2PAkZ6c33HIuJQ7k352y3gobTUJ
-	 cMPn1k81K5/WZ7+fZ2+ZJ23EUanpNTlox1DbDPKLy38HPLFY+mBhDM+T2vkdk+urrn
-	 IRQ8a6odUAfeQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: ojeda@kernel.org, FUJITA Tomonori <tomo@flapping.org>
-Cc: acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de, 
- bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org, 
- daniel.almeida@collabora.com, frederic@kernel.org, gary@garyguo.net, 
- jstultz@google.com, lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, 
- tamird@kernel.org, tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
- rust-for-linux@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20261118230708.2599659-1-tomo@flapping.org>
-References: <20261118230708.2599659-1-tomo@flapping.org>
-Subject: Re: [PATCH v1] rust: time: add #[track_caller] to Delta division
- and remainder
-Message-Id: <179570237815.3865922.5425805498685614983.b4-ty@b4>
-Date: Thu, 26 Nov 2026 15:12:58 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=k10GsYKJ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1795702717;
+	bh=JucLJO8s2LUWmGGq3P+iCmFjYmGKjZAtIrVZIaSBnss=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=k10GsYKJSVYB6hugOrnfDpmv9Yu2+0OIMjyq21AudIpCLH+1kiskEjCWkb5xzWgSJ
+	 WRKyMvQjNLp10aGYRSg+Wrbq0gzQi2PtBGTEVLnGm2Kb7cQCHYZlo8oX9TeRF/67on
+	 UbPuVBugdGzFIHlK/HhmXGkjcPFRmcZLuLI/n6uhtztxsnnboFhFBCULQwN8zLnvMJ
+	 ih0IwXLTnx95ht+vmu/vL+q9yZXHz9LO1o+0QNDkRTpX+BBSJWw9oxyYaY8jOrJhAS
+	 6WFQTZynSG6ewt+j8abyEDaUsr+e9Z+Ve0gyQy5adoIoP6UF/OIe+wIsoUWpAw3cc1
+	 XMYFGxYvAm7NQ==
+Received: from laura.lan (unknown [100.64.0.215])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: laura.nao)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 71BB217E04F7;
+	Thu, 26 Nov 2026 15:18:36 +0100 (CET)
+From: Laura Nao <laura.nao@collabora.com>
+To: laura.nao@collabora.com,
+	daniel.almeida@collabora.com
+Cc: a.hindborg@kernel.org,
+	acourbot@nvidia.com,
+	airlied@gmail.com,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	dakr@kernel.org,
+	deborah.brouwer@collabora.com,
+	dri-devel@lists.freedesktop.org,
+	gary@garyguo.net,
+	kernel@collabora.com,
+	linux-kernel@vger.kernel.org,
+	lossin@kernel.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	simona@ffwll.ch,
+	tamird@kernel.org,
+	tmgross@umich.edu,
+	work@onurozkan.dev
+Subject: Re: [PATCH v7 3/3] drm/tyr: add Job IRQ handling
+Date: Thu, 26 Nov 2026 15:18:30 +0100
+Message-Id: <20261126141830.215638-1-laura.nao@collabora.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20261126111145.117769-1-laura.nao@collabora.com>
+References: <20261126111145.117769-1-laura.nao@collabora.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -63,28 +87,37 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
+Content-Transfer-Encoding: 8bit
 
+On 11/26/26 12:11, Laura Nao wrote:
+>
+> Makes sense, thanks for the pointer. I this this also means 
+> job_irq_init needs to return Result<impl PinInit<Self, Error> + 'a>
+> instead of a fully constructed Result<Pin<KBox<TyrIrqRegistration<'a, JobIrq>>>>,
+> right?
+>
+> With [0], Firmware is no longer wrapped in Arc. Iiuic, combined with the
+> above, this will let us embed both the firmware and the job IRQ 
+> registration as plain #[pin] fields in the same TyrDrmRegistrationData 
+> struct. The job IRQ can then borrow a reference to the firmware's 
+> JobIrqEvents directly within that same struct, instead of cloning it
+> through Arc.
+>
+> If that's correct, I'll change both job_irq_init() and 
+> TyrIrqRegistration::request() to return a 
+> Result<impl PinInit<Self, Error> + 'a>.
+>
 
-On Thu, 19 Nov 2026 08:07:08 +0900, FUJITA Tomonori wrote:
-> Delta's div() and rem_nanos() panic if the divisor is zero, or if
-> i64::MIN is divided by -1. In these cases the caller passed a wrong
-> value, but the panic message shows a line in time.rs.
-> 
-> Add #[track_caller] so that the panic message shows the caller's
-> location instead.
-> 
-> [...]
+..and here I meant job_irq_init should return 
+Result<impl PinInit<TyrIrqRegistration<'a, JobIrq>, Error> + 'a> and
+TyrRegistration::request() should return 
+Result<impl PinInit<Self, Error> + 'a>. Sorry for the confusion.
 
-Applied, thanks!
+Using a pin initializer seems the right direction regardless[1], so I'll
+make the change.
 
-[1/1] rust: time: add #[track_caller] to Delta division and remainder
-      commit: 6d614de4288dd9738557b5bbc5be90851bf27701
+Best,
 
-Best regards,
--- 
-Andreas Hindborg <a.hindborg@kernel.org>
+Laura
 
-
+[1] https://lore.kernel.org/all/DN545I66CKO1.2YKP99UIQQR43@kernel.org/
