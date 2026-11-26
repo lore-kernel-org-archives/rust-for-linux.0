@@ -1,45 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795734736;
-	b=f64lCHxg118gMXwcyStQtRbjXTkAiykxdGS7CdCwZ76kdjPaX1iG7QioBsAetwpGk8t9
-	 Jndfl3AaSqjvkNHOKOqNTtSWMUgN4lf8dot8C3+GiretL//5DPsON9/fpTvR/bqo+4/wt
-	 89fAWrPOp12v4kOsq4YN1npYRKDizB/ZY+iMojpkKQfUV80PH/GEchCV3OUmZHLfxPIKD
-	 X/OFX0yfw/LD5gkM4Ve7oCRP/QnGBUSvn0NtRx921K+KlBey6VQTOA21923wnaIo9nPHB
-	 9+ATlPJNd7V4aQu2PZxy2A72K3z0LMNkQhVvMq5WstYlIZzV8qwX78Mk5Il86TbORjA==
+	t=1795737378;
+	b=Bo5j4AkClTNqx/37Wteagzg2xiFEGE+a9FttB6hlI8U2Rxe5NVLoSvBd9qZnzx/3xprD
+	 5fIuM+BZAT96maX1AoykrMd6rSyn6A4Oe1IhQPLaq7f2+PkzHBaTp25/nLxlrttHxEiIT
+	 AMUbdowFwTcBkM4uulpLnWBVv2TSqN8I5gN0jy7o9fcarWJz33HeqG/HvbVETwayF318v
+	 m21xeSbgEJt/X+DwjL1eDweIvY+vrQTWZjvJwBUSYKh1UlOKZQlL+i3I8DKg8mFg6B7SD
+	 Q8QFZDf2fEcDXYNSValMa8JCHcIjqcddrSeX4IXkQH6IYiZ49g+Vn9+W8LGLWPdes+Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795734736;
-	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
-	 In-Reply-To;
-	bh=yCg6GFs8aIIt9H7EV8TqGTZ5EaU2Zu9rrP42YjkHPnk=;
-	b=Hjv4/RPNsyjhFSNFXAHvRgDoKmFWUGQmM3OBLkUYxgUrLchk23jz2DwDe3xPSP2p8hDw
-	 L+W8BvyJDiYcjQIRU+3kdCsIkdQHGbTHXEZG+ESry+rYqueMLFyvXSCd62P8ENsOR4UXk
-	 IWHEbnux6XD3s5yjfrOqxFO+D3kNc/nQEnNamCuGUHOmNbt2d6fGjlOOLLHvjcuPzmLSY
-	 tuDCJ2kRf8rF2NmTtzNbc4Ap+5E6RDy6pg9yX09Alzg4xNt4hmIX1Lu+x3aHBUoZGTNWx
-	 XGOoYhPM6lzAs9sE7a+0X6tVAJ7o44PNc17V1mTNSZ1arjfAq+qPSK+EAq3xTaF9UiA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795737378;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 Subject:From:To:Cc:X-Mailer:References:In-Reply-To;
+	bh=LaUG1WyYJVQ7dlLvzt89P9Dst4rSbBmHbm3uXYe8MRQ=;
+	b=ccm2A+dPfl3JuY8rUOiFpyOZYwcS6Vur4g055qc/+0q0gFubG/SLiQdqFfc9lzxuNKvz
+	 wO6gQChe9TrC1yqKa59hQkdCWb/jUJHxvpYjRfm1GtlzdnDT/rT52h5X5bW6F3DeCUIsS
+	 GezVlTD3mHPu14oCKTyI8PAVsnyZ6waeXnFan8m5E5H1nS4sPpLzMTbvnXC6XrRke39mV
+	 b4Gg0exR7RyOILISCpwHvYDzs59WidZ4Po90tZyJbXm4y/uJpeuv0QNIyuM105RxJaYqm
+	 P545ZU77o3ml024AzaBqtB9ckLQMoU+tQN1zVlOpr6h2hr/wDF9PmHIt0vkbyTDJVdQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="OLE/5HdM";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ikJhu+W6;
+	arc=none smtp.remote-ip=74.125.82.51
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB58606A31C;
-	Thu, 26 Nov 2026 23:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C517606A31E
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 23:56:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9C517606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OLE/5HdM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93CEB1F000C1;
-	Thu, 26 Nov 2026 23:12:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795734736;
-	bh=yCg6GFs8aIIt9H7EV8TqGTZ5EaU2Zu9rrP42YjkHPnk=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=OLE/5HdMOrzqMoVMzpMOMOMHiwFOsx9zxrVlr3wkAc/3r3feA4bo/4U8T+dquucT7
-	 GoxqIb3GA2Qzhx23dBRIcv/B7pXI/l0P5FqcBZ2JkRB8dKNWtcDk83NE+tFGgfmsDy
-	 Y2+X8Sk3RBM8g/QKSroJurZNSvZCfBzHReXtUL4ZFWqJTFXeExgVVyxjuXWjrWU54x
-	 wRLwe8ecIV18WWvO6CCa3mCpILwAESGiq3BoKYoO7R0FnuW3Fs9WKfUegeovFJCzNe
-	 Wn9z/hNWXG4yDF+b45eJhwRrzPajMgbisyeckxW0kPcFQ8utWEGo0CiWDlzqk7vx7W
-	 dVWYVqxyMLVnw==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ikJhu+W6
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-1b244fb7fffso8160515c88.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 15:56:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795737377; x=1796342177; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=LaUG1WyYJVQ7dlLvzt89P9Dst4rSbBmHbm3uXYe8MRQ=;
+        b=ikJhu+W6juEwDhcC4tRupeakNXkzVbxGKgrdXD19Dy4SL2lQ17Ll6DeeDvZdYxOUzI
+         +9VJIZ6Y0Mz5hi4u1RNa9gEiLZZGWOwDCcgkmfYyslEsD4A/9tjVbewqlSsT/5a8yWkN
+         fjYcVYejRr8Shh5mw1hejUuI0AqxvmVhOcyjN0QldOZuyg0M2uGFGpgZy7v1xy/ldI3b
+         CtfgNjN9maYwagLkdJTFVsA9fwYtKiQoSRWsiIYDG4bm94qmVdJc/6oDnYd0m8gl2G+n
+         heR790DtFHFunGZt8xeHakgTdtNj/go68pACV0o/+LwIdqH0dg2XfAENrus/gbj97vd2
+         r1sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795737377; x=1796342177;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LaUG1WyYJVQ7dlLvzt89P9Dst4rSbBmHbm3uXYe8MRQ=;
+        b=m+5PUw2+w81mh3zRcuD7qTEZdImB2PvD/3PWNWPxY+2AM7xD3NjzLMYzoqSG3RiFPK
+         IG10inz/3Kp0/GMHqAQ0vpKHyUhzToOLta1zkTXKkff6U7vwOnr15MKa6zjRHXVSJeCC
+         wrHoiUkbyTfRtbLWXBlIhz2glKTwvr0+/v0eUJtk93XsX54sMgsl79vdnoYVp7qKHMQs
+         r6cgxzbGHJ8yr0AOgX4KUZ5NEmderMb53ogkOjMPWx3Zroq/Y7LBqtaZg5WZ2sA1F3sb
+         jyarernl2Cx0BLFbPk3RcXAJa5ponsOLtNgfr/FGtg9FxH5SFJq86BAVGqKDhoHgYs7c
+         CebA==
+X-Forwarded-Encrypted: i=1; AL+hErED1gqEVDCusOq7u3D5YatpfRWAjwf5/fxZApwvufCKC5CXwolQUC3zDk0DXEVSw2hL/e4HUhJO0Iw0ep8VZQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/arUu/UMm70RyAmHzp45n6OjHafUT1VlC6ZUnc46XCdy/X99Hq
+	Nux/mLqL+WDPGPCUpmQ4IlaO5tk1XneuPPQXQasoZx8iXF8HSJx453OG
+X-Gm-Gg: AZFdTZd3car5Q5QzqpbxbOdKJvDIk4UZT0hxrpPZ4D8OM/enHoPpWvpLXBg/PXVefWw
+	e0X76S05JbAcFAqASAnHvhm9YnuA7GBPWT6vLLhYXK+MwD5eSNWjxEAXPv7kZEGMWRCWajDp7k2
+	UQ6djG6CqEzB3LehNjQB3YiBufFz3yBjiRYfisT3ZurwoUU31DJiun6805qyiWBaAUAUaSrO+ry
+	4f2mMY8rxgB3Fpd0HgTrN4wBXRGQEWDYogyVoqbUEOXmnMypqYzftLUSQFJyZMrxyMoKM0ZrsB5
+	rgZI8myFliguiRfyBeU+jzPXcWP/PpesquWT7FOTGMbajm9j1dsITLs2OqkM3YKWX2GxzKR0cFE
+	JC5znuOYWNoD77K1wJBIwWzYChu4sZjIwSo1j5Fyx0LqUefWk5KSzxjshlNqBZo6zEjUYT2NGEj
+	0gdQjHA+XWe2l9ziUlJtChAHdpydB69jnOBxdh7uQBm1RGhny6yRWPERutMvfbgG04qc5vfXQgw
+	yzbSOsz0DkoJcE0mvrr9sS8Z2LMf3/dZeVAQLqr0bk582e70bkBSOO3ZagaCUsqgrahx2ISRUN5
+	BZZEVRCkk4osArWjVa4hEga9ZLk=
+X-Received: by 2002:a05:701a:ccda:10b0:1b5:7477:ff7d with SMTP id a92af1059eb24-1b574780064mr13682312c88.15.1795737376560;
+        Thu, 26 Nov 2026 15:56:16 -0800 (PST)
+Received: from localhost ([2001:8004:6f80:e4a4:63f4:2ea2:b5db:9dfa])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5566c1142sm51067878c88.2.2026.11.26.15.56.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Nov 2026 15:56:16 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -51,103 +90,25 @@ Precedence: list
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 27 Nov 2026 00:12:07 +0100
-Message-Id: <DN5IU15U2LO1.1NCRHBKWBJG5B@kernel.org>
-Subject: Re: [PATCH v3 7/9] rust: vfio: add PCI variant driver abstractions
-Cc: <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <linux-pci@vger.kernel.org>, <jgg@nvidia.com>, <yishaih@nvidia.com>,
- <skolothumtho@nvidia.com>, <kevin.tian@intel.com>, <airlied@gmail.com>,
- <simona@ffwll.ch>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <jhubbard@nvidia.com>, <ecourtney@nvidia.com>,
- <cjia@nvidia.com>, <smitra@nvidia.com>, <kjaju@nvidia.com>,
- <alkumar@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
- <kwankhede@nvidia.com>, <targupta@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
- <boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
- <work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
- <kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
- <peter@colberg.org>
-To: "Simon Song" <xinmengs@nvidia.com>, <rafael@kernel.org>,
- <alex@shazbot.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20261119215046.2892839-1-xinmengs@nvidia.com>
- <20261119215046.2892839-8-xinmengs@nvidia.com>
- <DN4P1UAAVP8G.2TUW0Q8UEQVCG@kernel.org>
- <03b5355c-e8c9-4190-95b8-fb847756ad7f@nvidia.com>
-In-Reply-To: <03b5355c-e8c9-4190-95b8-fb847756ad7f@nvidia.com>
+Date: Fri, 27 Nov 2026 07:56:04 +0800
+Message-Id: <DN5JROQRBFHK.1T3SMLE6KKBVD@gmail.com>
+Subject: Re: [PATCH v2] rust: dmi: add basic DMI matching abstraction
+From: "Nick Dowsett" <nick42d@gmail.com>
+To: <nick42d@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "Jean Delvare" <jdelvare@suse.com>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
+References: <20261126-rust-dmi-v2-1-33064f0bb005@gmail.com>
+In-Reply-To: <20261126-rust-dmi-v2-1-33064f0bb005@gmail.com>
 
-(Cc: Rafael)
+Please ignore this - I missed the `#[inline]` annotation.
+v3 will follow at a later stage with this corrected.
 
-On Thu Nov 26, 2026 at 4:01 PM CET, Simon Song wrote:
-> On 11/25/2026 3:51 PM, Danilo Krummrich wrote:
->
->>> +impl RuntimeActive {
->>> +    fn new(dev: &device::Device<device::Bound>) -> Result<Self> {
->>> +        // SAFETY: `dev` is a valid device. This is `pm_runtime_get_sy=
-nc()`, which takes a usage
->>> +        // reference even if it fails.
->>> +        #[cfg(CONFIG_PM)]
->>> +        let ret =3D
->>> +            unsafe { bindings::__pm_runtime_resume(dev.as_raw(), bindi=
-ngs::RPM_GET_PUT as c_int) };
->>> +        #[cfg(not(CONFIG_PM))]
->>> +        let ret =3D 0;
->>> +        // INVARIANT: `this` owns the usage reference, and drops it if=
- the resume failed.
->>> +        let this =3D Self(dev.into());
->>> +        to_result(ret)?;
->>> +        Ok(this)
->>> +    }
->>> +}
->>> +
->>> +impl Drop for RuntimeActive {
->>> +    fn drop(&mut self) {
->>> +        // SAFETY: `self.0` is a valid device, and `new()` took the us=
-age reference dropped
->>> +        // here. This is `pm_runtime_put()`.
->>> +        #[cfg(CONFIG_PM)]
->>> +        unsafe {
->>> +            bindings::__pm_runtime_idle(
->>> +                self.0.as_raw(),
->>> +                (bindings::RPM_GET_PUT | bindings::RPM_ASYNC) as c_int=
-,
->>> +            )
->>> +        };
->>> +    }
->>> +}
->>=20
->> This seems reasonable, but doesn't belong into VFIO core code. This shou=
-ld e.g.
->> go under rust/kernel/device/pm.rs.
->>=20
->> However, it would become dead code once we land the runtime PM stuff and=
- enable
->> it for PCI, right? I think an alternative could be to just make nova-vgp=
-u depend
->> on !PM.
->>=20
->
-> Right, this goes away once driver has runtime PM callbacks, I tried !PM a=
-nd it
-> works, but CONFIG_PM is set in x86_64_defconfig and allmodconfig, so driv=
-er
-> won't be built there with default option for x86, would you rather keep
-> RuntimeActive and moved it to pm.rs or prefer to depend on the CONFIG_PM =
-until
-> the runtime PM for PCI lands?
-
-Right, in this case I'd just inline the call to __pm_runtime_resume() into
-Registration::new() and the call to __pm_runtime_idle() into
-Registration::drop() to keep it as local as possible.
-
-We can then replace it with the proper bus PM handling once the core PM cod=
-e
-lands; I will send the corresponding PCI changes soon.
-
-Rafael, please let me know if you have any concerns.
-
-Thanks,
-Danilo
+Nick
