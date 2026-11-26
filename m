@@ -1,74 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.70
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795720459;
-	b=pxss3cQyCGJ/bJlUPdkCsUNNL+uJLwwJgwqKBaZnrNr2+R50WbH/qzwX/zsyH0B+qPFb
-	 ny91E6J+0AtsqQoPZVGlh3evAgfgAVH38qlLBcmvcJiuJDSnzEno3jqe5+20NkzTuQ6td
-	 kGaDUv/UNUsnvRjaFL6sCSYlJDZMuXIrBNbihqw69UqA46Akfq12vDiHtAJ7PzCwdUaWt
-	 5pV4S7tuhzs4OYqnBMIZPCHYmlhOxdsKJigrD1pcLenPb3epmqHB2duOa05wt+wy33fZP
-	 qgI7HQmi5wzFKW4bsHDVL7DvU+3Rth3M1db2F5pSzvspCC2nzr2cNwKg7pg40VOGi4Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795720459;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=8q/VB3c/73wlCZkx7DvMv3nIBqo12V1N1B2GG0LAjuo=;
-	b=TC4V9iET9PyTmKytUx4Hr92w0hnPfXmQ0wRWhfaTDQ6gTv4qUtlS2yxbU6PJUaIwHNQD
-	 N+HvmWWtAvWtaokkmDhfFph8CD/RVjHeDCPDg7Tupe1raKzOTk+lolUJJQFZs8ZRikTfO
-	 C64XTnvdCI4pMBEXxxb23maJ+jT2+gY7OfKmDgkvvforB+7ytDJxZQ4mmlT58w5t4XZrr
-	 op7EyYhSF08x7d+gY6UlI35xZ1/iBEHNNG8Ho50ZH6mru2yvcqL+YL35Co/Jydgo5vVeH
-	 DZ3heSeTz0Q3gKi7sO1CkgTHGL9mh/aMddi8cbgLAglfBqlNSaYIRwy5++v0/4Dz/ZA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=NqI0HORD;
-	arc=none smtp.remote-ip=209.85.208.70
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795723880;
+	b=v5jzFA1FtwxLRxHBPI59KSIN3kpQ0wWE4ZwXfYwyQRc05E0O1/6NLuasCASPkwM7aVzJ
+	 WHiHtgDqV/ZGPBoItVoOs/f0b8/E0ClF1g1dNA8jFWNMGSqYyjULQYkyy/zpG1CuaISHP
+	 eeYv1Ds5n3wcadJ5XHH2d9kWhpC2ejo8sm5nRGl1Uv5EN6msVsjnq+d8Izw7WPPQbS1Bi
+	 jFWlb3Es5162MP46bMBNA7EVQlp8dli1YGLhg9veFj1XhjubReiqzePM8QqlF3luylVt4
+	 s+Q6PYOVjtUeIjNG2Vhqhq/z6ai2kGDI4e3QwbZn+GlgX8QW149JmAVxO3cwuDqTcwA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795723880;
+	h=DMARC-Filter:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-ZohoMailClient;
+	bh=jjH2UYzmhPzgLkuBv62Qf/P7bzdvFKQUVBGEtPzWtUM=;
+	b=st1bJNI6wDWqF023a+vC36Hz5VGXTcDH+7eqdT0yNGBtQReU4JTU62ewDSIpWxq0yedI
+	 DIiN1jdRLi10yblTWOwM2glwCikOMGh4ZjQjW46fOxHVEuauAdkyCVr5tciwi72CH8q/l
+	 SDm4e4QeAdLJD8VpxwcToCqGkZfgwxExPXsOX5CM/tXy4TDeF4xHvcsiBar2EY68sg5/5
+	 tDriBCbRWHCfA6FUIxu3VIT99Fjvbdn6H/x8LUYGfBn6h8eUTJX4IlaZMIaIRZsAlv45A
+	 ev9cupaDebw7yYeT53k+e+a+dL/NqrZ9DxwwJpCeIWZySxbFwtvyjJjETuAxWzQHWOQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=j8Yf1LiZ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29554606A31E
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 19:14:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29554606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76501606A321;
+	Thu, 26 Nov 2026 20:11:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76501606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=NqI0HORD
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6ba810fb848so4344708a12.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 11:14:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795720458; x=1796325258; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8q/VB3c/73wlCZkx7DvMv3nIBqo12V1N1B2GG0LAjuo=;
-        b=NqI0HORDSfIa7FR7vFvW/PHEp9erUJjqcBhvqMd+A/i3zcDcQPRju4fUNKrVMqpJZj
-         7kp2T+vzj8k/s6EXBnPGSkAHJpSwUioLnGW2xF9ognAVqeJpQDvfndUP6sVrxmRPMyvx
-         bh2V9IIDrGE1bZJjlasXGvYcjn19kh++mtMO6XtO2AJ2QLCJYJzvYJ/2TKIhMGDSOTU4
-         j+MxjXxR7U4TVgxUV1r+6t7AMUTfyvsKdapJ1v0ScKA0PmpASisBdHqlTsvySWf4oZrp
-         +5L3WDwiswfPTeBl3Ztpf5Ct17CxgsOhGBLx++Jm6t/hl+OMNDrLKiEdTO1KN9Hn5P4v
-         Urlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795720458; x=1796325258;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8q/VB3c/73wlCZkx7DvMv3nIBqo12V1N1B2GG0LAjuo=;
-        b=P2pFpG1Dg8hAVlulVvWKaCM2sbllAuFiWJmFIDfto49N5pbxb7Dhjg55qSSkkKTVYg
-         nbhUHYwVFiEUDT8cuKd8CoNg9AKrTmTV8xhiymF+4Gw2SzxdbakQ1674dF/qahAu54ZU
-         16U3YA4kQsR0X0MoVXcgyOKZZvzPd0OxjK8QBb5zNa8qqkrY82AwKnPUgbSQBVfcu8uO
-         fTkFdrwnLtMTKcThCvWpg0XyGzmCTV17ievaVFEUSoT+V/BdptJWEfaZOvLn5RbopqD3
-         KGwyyNY3cxIdx6wLy8x6HT2Bo5Yxpq4bPS/YhR8cjd49Uxb1EcZZCGJH4qo6x5fejAIA
-         a98Q==
-X-Forwarded-Encrypted: i=1; AL+hErEyipyrP2UzD1trC7Sgm6JZNN4XwGYsJgKgZzMyC2jJf9xHO4zBk5pY3KdvQh1zmCWblldZyGKIl3RgVEl75A==@vger.kernel.org
-X-Gm-Message-State: APuU4Z9AIVPsvS69kawW3Fs8HHljAnvEnzTraYZGtf7Yd/1dYx+vGXTu
-	pDTfsF9BkxxfFJ3JcZGlBXEWdMnjAIYxG0nO2Rd5Qj0bEXJ7E2SolKzl89cIGEr/vYXkIJjbdX4
-	ix5wTzL7P4kSRpx9Vlg==
-X-Received: from edgd12-n2.prod.google.com ([2002:a05:6402:a50c:20b0:6b8:8b9a:86f6])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:aa7:c0c8:0:b0:6b9:278a:99f4 with SMTP id 4fb4d7f45d1cf-6ba37d5bcd8mr11922168a12.10.1795720457280;
- Thu, 26 Nov 2026 11:14:17 -0800 (PST)
-Date: Thu, 26 Nov 2026 19:14:16 +0000
-In-Reply-To: <20261126-b4-rust-reset-v1-5-9c4c3d029080@collabora.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=j8Yf1LiZ
+ARC-Seal: i=1; a=rsa-sha256; t=1795723854; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=neMfuKQL3DjukqrxNCXz1oEjTjE2Fkj5y/US10Vm+MiNQ9/A1YVkSw62AtxrGFPOHIvCcoH13tXxB25pjGgpfDZC3/3XYeD89uajnP0XmiMQ+lYvVA8QVGgAWAz/i/WKu/+04B9H9TCbE90T5W4IiOf2eUy8HCnoKBmQr6dDnRw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1795723854; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=jjH2UYzmhPzgLkuBv62Qf/P7bzdvFKQUVBGEtPzWtUM=; 
+	b=gamMzD5auQUdlK7sn32/BjzATeiMNfj9PvEAprZjGG5Kj9/i1DZdVEh+Jat0F80hMrWfgQv2STojHc26NHi3a66ZIgsJFCaqZFKzLg7ghLyOITB2IikfT3BuPG3GrEG8IFtj62h4wpHbGcbKHZt+yAkHfz9asSo94fqz770QCY8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=j8Yf1LiZGpKo1qDXhUa1kWVzGs9KbjfcGRLm1wszxkDzSYh0l8f6azRO4vD2EUXvOqOFMnx6jSifO2G0TzSAJcow3A9+ehaO/aNo+BgD1hjnkK0ytKxOziyoTix3wDxcBov2jkllBZ9+3o3VS1iuAI7DcpEZKstVIkcvlUaPeMs=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=jjH2UYzmhPzgLkuBv62Qf/P7bzdvFKQUVBGEtPzWtUM=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795723851199853.6085617662809;
+	Thu, 26 Nov 2026 12:10:51 -0800 (PST)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Subject: [PATCH 0/4] drm/tyr: use the conversion derives for the enums
+Date: Thu, 26 Nov 2026 17:10:42 -0300
+Message-Id: <20261126-tyr-enum-derives-v1-0-a487b0e1bee3@collabora.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -77,79 +59,81 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261126-b4-rust-reset-v1-0-9c4c3d029080@collabora.com> <20261126-b4-rust-reset-v1-5-9c4c3d029080@collabora.com>
-Message-ID: <awiFCBnJ_i-N_Blb@google.com>
-Subject: Re: [PATCH 5/7] rust: reset: add SharedResetControl
-From: Alice Ryhl <aliceryhl@google.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	Detlev Casanova <detlev.casanova@collabora.com>, 
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/12RS25bMQxFt2K8cV8hkRQlBUXRfRQZUPy0LuK49
+ XOCFkH2XtnJxBlekOdefl6WzU9735a73cty8uf9tj8+TpE/7Rb9KY8/fN3b1Ask4JyB1/O/0+q
+ PT4fVJvjs26ojKnRL2YsuE/t98tj/vVp+v3/T29P45Xq++Lx3nPzP08w6v7UtB982uWbd7b68R
+ 5V10DVNZoZs5219zmtaYUAUzEzW+JseHx5kHE/yWY+Hr1dvOevPq4+Sj6ZSagqPWspgtpHtQlf
+ QURhmObt+oHqvDM3Jc5GeJdtoVC9AB2m1WQoGUr+lrICjWdgA81qwYHMtWpPM63SPElAZU76lK
+ KVkHUApQ20+R8sWSahV7AQG2VGpa7qluKTErtHEUVCEDAh7sKURgN2IKwSkdksVLtx5IGLpThy
+ hQ5BxoM/dsjeLUhoNuaWQw5K31J2zk1IkQ0pQLVSGEU2BqTW8pbzNpTu3otiSsCogQOGROXHvs
+ 5bnVVqGD3upSjKPrD0Xn+shKeSe0d0ZeT4ygkX4Qg3ZfJ0vP+zPd7s6JzIDTEHUay80iEumIvO
+ yEVXKvGhj6Mv96+t/y2a7t/ACAAA=
+X-Change-ID: 20261126-tyr-enum-derives-cbf729d01e5c
+To: Daniel Almeida <daniel.almeida@collabora.com>, 
+ Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: Kaiqi Guo <chaoji_xinren@163.com>, 
+ Alexandre Courbot <acourbot@nvidia.com>, dri-devel@lists.freedesktop.org, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-ZohoMailClient: External
 
-On Thu, Nov 26, 2026 at 01:04:32PM -0300, Daniel Almeida wrote:
-> +    /// Deasserts the reset line and moves the [`SharedResetControl`] to the [`Deasserted`] state.
-> +    ///
-> +    /// Equivalent to the kernel's [`reset_control_deassert()`].
-> +    ///
-> +    /// [`reset_control_deassert()`]:
-> +    /// https://docs.kernel.org/driver-api/reset.html#c.reset_control_deassert
-> +    #[inline]
-> +    pub fn deassert(self) -> Result<SharedResetControl<'a, Deasserted>, Error<Self>> {
-> +        // INVARIANT: The reference that `self` owns moves to the value that this returns.
-> +        let reset = ManuallyDrop::new(self);
-> +
-> +        // SAFETY: By the type invariants, `reset.inner` is a pointer that a C getter returned, and
-> +        // `reset` owns its reference.
-> +        to_result(unsafe { bindings::reset_control_deassert(reset.inner) })
-> +            .map(|()| SharedResetControl {
-> +                inner: reset.inner,
-> +                _phantom: PhantomData,
-> +            })
-> +            .map_err(|error| Error {
-> +                error,
-> +                reset: ManuallyDrop::into_inner(reset),
-> +            })
-> +    }
+The `as` cast series [1] leaves 19 casts that convert an enum to its
+integer value, each inside a hand-written conversion between the enum
+and `Bounded`. This series derives these conversions with the `TryFrom`,
+`From` and `Into` derives of Kaiqi's series "rust: add conversion
+derives and exhaustive From support" [2], which removes the 19 casts.
+Patch 4 also converts `EntryType`, the last enum with a hand-written
+conversion, which had no cast.
 
-The C side here interacts badly with the error path of
-`SharedResetControl::deassert()`.
+This is based on drm-rust-next and depends on [1] and on patches 1 to 9
+of [2]. I will follow up with a review of [2] soon.
 
-In `drivers/reset/core.c`, `reset_control_deassert()` does:
+[1] https://lore.kernel.org/all/20261125-b4-tyr-as-casts-v1-0-2b2f53164d86@collabora.com/
+[2] https://lore.kernel.org/all/20260930002436.21395-1-chaoji_xinren@163.com/
 
-    if (rstc->shared) {
-        if (WARN_ON(atomic_read(&rstc->triggered_count) != 0))
-            return -EINVAL;
+---
+Daniel Almeida (4):
+      drm/tyr: use the conversion derives for the GPU_CONTROL enums
+      drm/tyr: use the conversion derives for the MMU_AS_CONTROL enums
+      drm/tyr: use the conversion derives for `CacheMode`
+      drm/tyr: use the `TryFrom` derive for `EntryType`
 
-        if (atomic_inc_return(&rstc->deassert_count) != 1)
-            return 0;
-    }
-    ...
-    return rcdev->ops->deassert(rcdev, rstc->id);
+ drivers/gpu/drm/tyr/fw.rs        |  30 +--
+ drivers/gpu/drm/tyr/fw/parser.rs |  25 +-
+ drivers/gpu/drm/tyr/regs.rs      | 486 ++++-----------------------------------
+ 3 files changed, 56 insertions(+), 485 deletions(-)
+---
+base-commit: 7402dd230f4497954b465145a22cff7a5a488629
+change-id: 20261126-tyr-enum-derives-cbf729d01e5c
+prerequisite-message-id: <20261125-b4-tyr-as-casts-v1-0-2b2f53164d86@collabora.com>
+prerequisite-patch-id: 1d54819d2dac9c113331baef19e763cedb0ca517
+prerequisite-patch-id: 016e94c56c10e511f6ac4c045f620207211b9f02
+prerequisite-patch-id: 1899e0445dbd58f2a72b6f9bdcffba70b7e65ac4
+prerequisite-patch-id: 4da30d4ec1abd60c6cbc5f5f108437abb4d5e3f3
+prerequisite-patch-id: 04ac471e820674330ff6ed854c7691be3f4c7cef
+prerequisite-patch-id: b62e387da808817a10df1a2977da60ecc630aeef
+prerequisite-patch-id: 17733676a0b8814fabdec83ab20b749729149c4f
+prerequisite-patch-id: 7a6862e6c23c43bdf11dff1f84032cd4209afc33
+prerequisite-patch-id: f10354893c358db15456a84dc6113d24f03af0c0
+prerequisite-patch-id: faee0bac4883bd31a407fb7fc66a40d5c2400c49
+prerequisite-patch-id: 8c67c4dd9fc45169d882a349d0b27cf056197c6f
+prerequisite-patch-id: b6ddee237c4a24b5c0242097aace0102820ac1db
+prerequisite-patch-id: d1a6ccba37c85b7f62a7a06d73ce09813a5c6530
+prerequisite-patch-id: c4eb8ca570fef755b66db1d2f5372cb562b8c1ec
+prerequisite-patch-id: c997628e4e15a91a1db84772cb92a878d0f624ce
+prerequisite-patch-id: d52e3ddfdb2de753538ec5c70acbf9ef5f276301
+prerequisite-patch-id: 4000d922c41278ed2f1df0a4873942d21e3c49c0
+prerequisite-patch-id: 65006ecf8ae3a3aa4d2439f6d0bf239d4672f208
+prerequisite-patch-id: 565696b33359e46ffcba363b3e72c1e8df5584ba
+prerequisite-patch-id: 36fd0e809e61e4c4f0d34027dfcabd4434030883
+prerequisite-patch-id: e8bf99685c380a6cc232256b160699bf91cbf812
+prerequisite-patch-id: 6cca0def1c915ef8a34c21913eee636a57ff6aa6
 
-Unlike `reset_control_reset()`, `reset_control_deassert()` does not
-decrement `rstc->deassert_count` when `rcdev->ops->deassert()` returns
-an error.
+Best regards,
+--  
+Daniel Almeida <daniel.almeida@collabora.com>
 
-Because `SharedResetControl::deassert()` returns `reset` in the
-`Unknown` state (`ASSERT_ON_DROP == false`) on error:
-
-- If the caller drops `reset`, `deassert_count` stays leaked at 1, so
-  future shared users will see `deassert_count != 0` and skip
-  `ops->deassert()`.
-
-- If the caller retries `reset.deassert()`, `atomic_inc_return()` returns
-  2 (`!= 1`), so `reset_control_deassert()` returns 0 without calling
-  `ops->deassert()`, leaving the line asserted while Rust treats the
-  control as `Deasserted`.
-
-I wonder if this is a bug on the C side we should fix in core.c?
-
-Alice
