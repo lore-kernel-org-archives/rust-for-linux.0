@@ -1,92 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.133
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795689826;
-	b=m8EBOrWL64xHVOBsWyXUu1GlJHeizckfCY/t6+LHsC6w4c4XxkwVvbmBOfB3lRoFTwHU
-	 /85urGzt+iMNU3dnbyxJmP/OHUCDbrderZo1ft0vYalNBzVW4y6cRxEmoTE8biuMtNngF
-	 3q7/vKYER2JRXEFmlMsXfqhsUMKk4P45HW9L0bb4gUbaJBghzCHxuZdOT2I+M0x2Zo7Gp
-	 gJUmBtiipnmvm8Ar0zA/zR3qP0J2NkpchpByqMUZihformZxAnwvf9g+Ia8xEZSQ2QRpv
-	 jjCeMAvHI8qyNADyznMP86mARVHGdRI9KauSR5D2IoltDooFE/r9f1gPC+KMDiip1YA==
+	t=1795690303;
+	b=bx86AgCgr+0Dge0j1GPwOOnfm0fZcf4rMuBe5cp2CD6AUw6OBuROCbVL3fd9pVC0nKgf
+	 epQUn0GQvAOivhA/fT1NBQsTqSBZksu4uyDAeTFhUWQcbWw2NdyEt4LAiRmtvdoNH+Djs
+	 fTtSOH5XaxeTsV7WzOtpX7G5svv9A1djOBquKYLr0A06AAgThE5xZ/yt5UJDOEft5sL8v
+	 gDoO3uu/d6xBBhy07oaDa48sTIxCtlMHOccJTThEStwCx0EZBgmgEgFKl63AIIF29OZHj
+	 QlFg8rWLFNoGxUPdggEdHQQnhh2ry6UNxrUDHQJcUW4UCpWzrXIoxXoKVY0EiatcZYg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795689826;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:User-Agent;
-	bh=c1nvGyyATSzvkRs46WMcaspK2QvDsxzNoOVTMvbbYTk=;
-	b=ES5NX5FulOmG2OWmHQXuCIsm3LcaxIw7PfvTlbq+CXGMdLaU1U944tST8rBoKsqk15sX
-	 +P+JQKhy28givA+SFK6IpbkvI0MnEFy4kBm9tzOxouxS7i1u37fZ7kfSQN3bmTjGZQWYd
-	 DmR+XGrPuHQ4EZEdghTBLPwpDPBsCFdfWweFa3ODAMCRF2W+2gGE3G7E8s9OhFX/HsfEG
-	 jQadDblFytn58QFR3xIvoT5q8W3HWh4vbnhQ8BlXS1osPf32i56zFriDxeSjR/68iWZJY
-	 3FGCuI1zQuxjAA1Gf98rb2JM1HxTxbLuxh+7a/gpYpCJYXV+4HzAmFYFCmc2w71ehJg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795690303;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=5ntCcjIuevH5QG1iJizV2FIttqGUB67AJd7kEb0bdV4=;
+	b=JseXVCDz6tYVqJnOEFe2NhXo4VOUpIv9txYUCLk+trZeRnIs2DYOMrXBKzJMActkG+6n
+	 iZYHbH1opKwXXSLed719blNZ8lxR4tC9+Oyuy0mb+ScGaacOPtBlrIc7FE7akpvpZ6Ysg
+	 A8OYte8GSetK0rRrW3YOOJo5zT2otO4Hv18irHFZ00xylvqJ44bV06hzKn2GEGX2tY/qS
+	 XhhxVuaGjSN+f2n81TTl89MZX9ssATFlKMCtKhY+Au8fEyfzq2MZocZYy3MpmQpMS8YIo
+	 IpP5OKczklG2d0UGvVcUUtXP5SadAevAO7U5Z9BgKCCFsxFwEA4eSDQELd1WuqD2vsA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=roqaHcvE;
-	arc=none smtp.remote-ip=74.125.227.133
-Received: from mail-pj2-f5.google.com (mail-pj2-f5.google.com [74.125.227.133])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RA5CmdhA;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2F6606A31C
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 10:43:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD2F6606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6739606A31E;
+	Thu, 26 Nov 2026 10:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=roqaHcvE
-Received: by mail-pj2-f5.google.com with SMTP id 98e67ed59e1d1-3b41c8d9767so3628131a91.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 02:43:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795689825; x=1796294625; darn=vger.kernel.org;
-        h=user-agent:content-transfer-encoding:content-type:mime-version
-         :references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=c1nvGyyATSzvkRs46WMcaspK2QvDsxzNoOVTMvbbYTk=;
-        b=roqaHcvEgGVem/kNb+hmQEF8T9M5UJBJjsH12Y61q4gBdaebiU2/rmNdxCN3STAj1W
-         91jwKvUUG5YFD58BfjzmGH73aMRdaFwy+seO68u/3ZnWGMpsEINpn7QYgimW1Jzal7We
-         0x83rG2ptktuEwxeqgX16bZ2JLOoDtXhsh/RL59WqOkNOMnZvQ7ILQ42Cd+gMg8Khx7Z
-         RZ14873FZof1s0PnHLScH1Jb54mwx6sHN/I4YJ5bP4fcXDRTq4URZJEikhRdgj0ZSD2b
-         KlC8bwSq2A42/ELv+xa4UrdowOl2DScI0rcJtHgUqGChlXp+jfjSuoeoHH7j7sPL9GaL
-         jk0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795689825; x=1796294625;
-        h=user-agent:content-transfer-encoding:content-type:mime-version
-         :references:in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c1nvGyyATSzvkRs46WMcaspK2QvDsxzNoOVTMvbbYTk=;
-        b=ReCHt0nAcFIP75/iluUVM1aWxJ9ZRPlAJihjbyZ3o/UtAOtk/kb7NW2nHVedpECfV5
-         +fZJtiKkC74o+Ad9D+5UboStz1IzRFlNuG7md8Bi1mMLwMaR8j4QIGciIbDN2M1WSlaX
-         zKaH5pJMunO0bfiKBsLSlwS1bEDrN9UQ8ojQFE9+F2hBGoT/675TiIKuqyAvpUnwQrEF
-         InsVOK0bgDe/h/YZ/mXQwWhhLKQAsEjGXVVwRDZefecAMzLNJMgSc3Q/oT3TwNrFYJ+S
-         zWGzurgGuAj+zX0HIYBqxa+YUF7OA4EP/kYJIxQO0tH2YJZYZWJ0O6WYp3/wQc0sFPpz
-         THNw==
-X-Forwarded-Encrypted: i=1; AL+hErEv4GOw3BEZOIOXv6BhungvbwllQd8RMvBtJCrmZiIFfwjhzVgdB3g6QXBfyGga2cyzoaWC+1rBzrYK4UD3rw==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8+f4qcWUSkq6LFw2KwmLhW7VCh+Uo9KE2KKj/r8akQVthAdG9n
-	dzBC5UUDbsvzE8GK2ovIg3I986Hxj0uXQZxbh3psWCSUPY75z+Al77IoqwWofE2s+Aw=
-X-Gm-Gg: AZFdTZfdN68QpORgVIS1ge8vNyn4RXc59CaQjrOKsHDL+f3j+D36OD1Kq4auKXVxCDw
-	3apM4SAYrVYvw1jrgv8o42/zRqBM7Sgfpe3yMGVNIAWmx13x55X39m9k8I3yFJounkdmvrtRQXg
-	vgk+ec5xyodZiuwtBwVMS129EaOcAzQT+l8j8O/4AS8rDV1pIZod4gk72SIpbmVs/BFAzqFUPWQ
-	qAPYEIEXjpgKijyAzSJfcDNHLeTtKYZEW+Tp6EWDWCcILo2xI5Nf2BmyFDXu0OtRAyT9kzgcJZI
-	ZFZq8Or9F9CydqqA7lPkzk4NP2341+7ehHrKEs4lCP2awQQv7zem0IaDpAKHUtgRImLF/yxUynq
-	vc0j8jleXYSYHygHmcTN59YBh1R1BBsEC3TzAZmMwWK4iMLKNKXEhPbLc/izGs+DkXyALrkpPPo
-	TEUh/BAErU0+30qBPCQZ63lgmAe6AxK0KH79H6n4nFmh4ASzsFQgKmczodHTjLs7s48/MtlRL7J
-	c177b5W7TLgWCgYM+oxeMupgySJtWb08twrQFyv4JgA21R2+FSpn0NBN1nZ25VFf/2wsq3HmMRn
-	j7lBDBotvXWJSUJShbLUqAVW8Jz12ZoZf5ZRlA==
-X-Received: by 2002:a17:90b:4a47:b0:3a8:9d0d:ca50 with SMTP id 98e67ed59e1d1-3b41c8fe84amr21058716a91.10.1795689824766;
-        Thu, 26 Nov 2026 02:43:44 -0800 (PST)
-Received: from [100.88.6.56] ([1.55.160.128])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b405d639fdsm35385634a91.10.2026.11.26.02.43.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Nov 2026 02:43:44 -0800 (PST)
-From: Tran Van Tien <7enlab@gmail.com>
-To: ojeda@kernel.org
-Cc: boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, oliver.mangold@pm.me, igor.korotin@linux.dev, vireshk@kernel.org, ukleinek@kernel.org
-Subject: [PATCH v3] rust: sync: make AlwaysRefCounted::inc_ref an associated function
-Date: Thu, 26 Nov 2026 17:43:35 +0700
-Message-ID: <1795689815.75b422ec@gmail.com>
-In-Reply-To: <1795684556.6d661f19@gmail.com>
-References: <1795684556.6d661f19@gmail.com> <1795688552.31c01b07@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RA5CmdhA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AA61F000D1;
+	Thu, 26 Nov 2026 10:51:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795690302;
+	bh=5ntCcjIuevH5QG1iJizV2FIttqGUB67AJd7kEb0bdV4=;
+	h=From:Date:Subject:To:Cc;
+	b=RA5CmdhAMT+egc98YLI0ZsR0M0/tFDHVOxP7ny5vkbAGijjYbnGs9/2+g9jKrVSMC
+	 aypeHRgox5NlkHzBhUwftQbTjECcoyyoZlPAXwDcERJ77aRfFdSJucPIS3TqgsShwd
+	 2NpryuZu9nu1U/66cqsR/JCeDzUuyWxnvBwdoh1nFBr8O45m5GuyOBiLqrEx2QWjql
+	 M+2egwZreLzSQu/3vcwTMAhpXHIVD+VAQ0dv9+Hp3RxCGgpQzS4SSQE2H1zDS6kCiM
+	 OVSZ4nKXhnjH9MtBxEcqJuA/5gvl4UtRAazl/oXuxxQOZGx0szlzjLcyY4Vnq+vl7Y
+	 mD5YxO/xMAzgw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Thu, 26 Nov 2026 11:51:14 +0100
+Subject: [PATCH v3] rust: time: implement `Debug` for `Delta`
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -96,682 +52,271 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-User-Agent: git/2.47.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261126-time-delta-display-v3-1-aeeecc72f3a8@kernel.org>
+X-B4-Tracking: v=1; b=H4sIACEPCGsC/33NzwqCQBDH8VeRPTexM5J/OvUe0UHbWR0ylV1ZE
+ vHdWz0EQXT8/mA+syjPTtirc7Iox0G8DH2M9JCoe1v1DYOY2Io0ZZrwBJM8GQx3UwVG/NhVM5h
+ cE+d5URgyKh6Ojq28dvR6i92KnwY37z8CbutfLiAg1CZiGZcF1/byYNdzdxxcozYv0MdA1OlPg
+ zZDY42WS2vLb2Nd1zeb+eSF+QAAAA==
+X-Change-ID: 20260215-time-delta-display-d702e7788d2d
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+ Thomas Gleixner <tglx@kernel.org>, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+ John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Boqun Feng <boqun@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8209; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=XjIcO1LLn/3GXFoTuFkQ2wSXF1pgayDIVIQRVPfANq8=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBrCA8lN8SuWPdF0REUrLLst3mj1PP9TgAunfsHV
+ ISMP/pQoumJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCawgPJQAKCRD6UCkIqsW9
+ 0AdTD/wKcI+5u8LlPsoSvIV9ttNeRBZoc2+6Jb25mhsIL7CVvymbNREQOoJWLspNvYwQ6Qtv2XY
+ 6hzohH1GQZXYLr3LDoPSqzGPyLJlkg9VbGH9q9EU0ESt2hzWafkb1f/zTLN3JRA6zuTOHRVo/ER
+ COby8LuhuZJqYL1ivgd1g7Kr9A1H5eGoxjn79JWyBZn75oVxNRlnj4bYwyhdipy9BV5r2Mraj0v
+ SN+FASgKowMpQm+lnBtfqqqTWbxDKC8GjaFiencISU6bULgP6exKYfwoPY7XYLM5N05qxsc7K3u
+ t01OK77S/y9mbysBPGOvvjILU+buRDCgOS4ssoAxI4LfnCDrJ4FD8Kt0xGGqMYQS2m9ebcl49WC
+ lWJCgDzsntaUIKTv1OCfHtEt+7Cqe4Yt1y8LJLqtIISxJpqRl3IJrd94akk5fXK5CbvdcDhe8WN
+ t2wGo5eBBWYoDI9QtjyeS5oDifGw6nMBDzocKCHZuoJDL1yA3dxXSC8S/XxqCbC2iaY2kGoRQZ6
+ AJAOUP2ZumPxELyEBM5kKjbTpfcX5+BPdGu2E6FmSPvXJkeNoNninwUsWsJROa0jdWmBXw/+iqp
+ sFhYfRbUwooW9nN6HiyGssxxJIzsAssXkbTTRcCm1CAhmIM5+oEs2knWMkLCh26jOsNGq+/SW03
+ qb5innV95SZorUw==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-In-Reply-To: <1795684556.6d661f19@gmail.com>
-References: <1795684556.6d661f19@gmail.com>
+Implement the `Debug` trait for `Delta` so that a span of time can be
+printed by a formatter.
 
-Incrementing a reference count must be a deliberate act, and every
-inc_ref must be matched by exactly one dec_ref. Making inc_ref an
-associated function that takes a NonNull<Self> mirrors dec_ref, which
-is already an associated function because the object is freed when the
-count reaches zero.
+The span is printed as a count of the time unit it is stored in, suffixed
+with that unit, and with each group of three digits separated by an
+underscore the way Rust integer literals are written. A span of 12345
+nanoseconds is printed as `12_345 ns`.
 
-Having one half of the protocol take a reference and the other half a
-raw pointer makes the pairing harder to review and easier to get wrong.
+`Debug` is implemented rather than `Display`, because `Delta` has no single
+obvious format and the other kernel types that carry a unit, `Hertz`,
+`MicroVolt` and `MicroWatt`, implement `Debug` only. Callers that need a
+specific format should use `Delta::as_nanos` and print the result
+themselves.
 
-This was suggested by Benno Lossin.
-
-Suggested-by: Benno Lossin <lossin@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1177
-Signed-off-by: Tran Van Tien <7enlab@gmail.com>
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
+Changes in v3:
+- Implement `Debug` rather than `Display`, as `Delta` has no single
+  obvious format and the other kernel types that carry a unit
+  implement `Debug` only (Tomonori).
+- Implement the formatting for every time unit rather than for
+  nanoseconds only, via a new `TimeUnit::SUFFIX`.
+- Separate each group of three digits with an underscore (Miguel).
+- Separate the value and the unit with a space.
+- Add KUnit tests for the formatting.
+- Link to v2: https://msgid.link/20261103-time-delta-display-v2-1-b01b1fe9ff9f@kernel.org
 
 Changes in v2:
-  - serdev: call get_device() on the embedded struct device instead of
-    recursing into serdev::Device::inc_ref() itself. Reported by Sashiko.
-  - gpuvm: dereference obj before accessing the vm field. Reported by
-    Sashiko.
-  - gpuvm/vm_bo: dereference obj before accessing the inner field.
-    Reported by Sashiko.
-  - opp, pwm: dereference obj before accessing field 0. Reported by
-    Sashiko.
-  - Group the core::ptr::NonNull imports vertically, as the coding
-    guidelines require. Reported by Sashiko.
-  - Add #[inline] to inc_ref and to ARef::clone() / ARef::from().
-    Reported by Sashiko.
+- Rebased on v7.4-rc1.
+- Suffix the formatted value with `ns` (Alice, Gary, Miguel).
+- Write the value directly rather than via `write_fmt` and `fmt!` (Alice).
+- Document the format with a rustdoc example.
+- Drop the `rnull` user, which will call `Delta::as_nanos` instead (Gary).
+- Link to v1: https://msgid.link/20260215-time-delta-display-v1-1-bdd2d6e98ebf@kernel.org
+---
+ rust/kernel/time.rs | 134 +++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 133 insertions(+), 1 deletion(-)
 
-Build tested with CONFIG_RUST_DRM_GPUVM, CONFIG_DRM_TYR and
-CONFIG_RUST_SERIAL_DEV_BUS_ABSTRACTIONS enabled, so that every touched
-file is actually compiled.
-
-Changes in v3:
-  - No code change. Rebased confirmation and coordination only.
-  - State the base explicitly: this patch applies to the RUST tree listed
-    in MAINTAINERS (git://github.com/Rust-for-Linux/linux.git rust-next)
-    at v7.4-rc4, commit b6a9fa34c, where inc_ref is still a &self method.
-  - Note the conflict with the in-flight series "rust: rename
-    AlwaysRefCounted to RefCounted" (v22), which touches the same set of
-    files and keeps inc_ref as a &self method on RefCounted. This patch is
-    a different change (making inc_ref an associated function), so the two
-    should be sequenced by the maintainer. I am happy to rebase on top of
-    that series once it lands in rust-next.
- rust/kernel/auxiliary.rs         |  7 ++++---
- rust/kernel/block/mq/request.rs  |  6 ++++--
- rust/kernel/cred.rs              |  7 ++++---
- rust/kernel/device.rs            |  8 +++++---
- rust/kernel/device/property.rs   |  9 +++++----
- rust/kernel/dma_buf/dma_fence.rs |  7 ++++---
- rust/kernel/drm/device.rs        |  7 ++++---
- rust/kernel/drm/gem/mod.rs       |  5 +++--
- rust/kernel/drm/gpuvm/mod.rs     |  7 ++++---
- rust/kernel/drm/gpuvm/vm_bo.rs   |  7 ++++---
- rust/kernel/fs/file.rs           | 21 ++++++++++++---------
- rust/kernel/fwctl.rs             |  4 ++--
- rust/kernel/i2c.rs               | 13 +++++++------
- rust/kernel/mm.rs                | 12 ++++++------
- rust/kernel/mm/mmput_async.rs    |  6 +++---
- rust/kernel/opp.rs               |  7 ++++---
- rust/kernel/pci.rs               |  6 +++---
- rust/kernel/pid_namespace.rs     | 12 +++++++-----
- rust/kernel/platform.rs          |  7 ++++---
- rust/kernel/pwm.rs               |  6 +++---
- rust/kernel/serdev.rs            |  9 +++++++--
- rust/kernel/sync/aref.rs         | 19 ++++++++++++++-----
- rust/kernel/task.rs              | 11 +++++++----
- rust/kernel/usb.rs               | 12 ++++++------
- 24 files changed, 126 insertions(+), 89 deletions(-)
-
-diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
-index 9d3de109b..3f499be2f 100644
---- a/rust/kernel/auxiliary.rs
-+++ b/rust/kernel/auxiliary.rs
-@@ -390,9 +390,10 @@ unsafe impl<Ctx: device::DeviceContext> device::AsBusDevice<Ctx> for Device<Ctx>
+diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+index b6a2aab12a50..8b38d4c70c87 100644
+--- a/rust/kernel/time.rs
++++ b/rust/kernel/time.rs
+@@ -309,6 +309,12 @@ pub trait TimeUnit: private::Sealed {
  
- // SAFETY: Instances of `Device` are always reference-counted.
- unsafe impl crate::sync::aref::AlwaysRefCounted for Device {
--    fn inc_ref(&self) {
--        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
--        unsafe { bindings::get_device(self.as_ref().as_raw()) };
+     /// The zero value of [`Self::Repr`].
+     const ZERO: Self::Repr;
++
++    /// The suffix that denotes this unit when a [`Delta`] is formatted.
++    const SUFFIX: &'static str;
++
++    /// Widens `repr` to an [`i64`].
++    fn repr_to_i64(repr: Self::Repr) -> i64;
+ }
+ 
+ /// A time unit of nanoseconds.
+@@ -321,6 +327,12 @@ pub enum Nsec {}
+ impl TimeUnit for Nsec {
+     type Repr = i64;
+     const ZERO: Self::Repr = 0;
++    const SUFFIX: &'static str = "ns";
++
 +    #[inline]
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid object.
-+        unsafe { bindings::get_device(core::ptr::addr_of_mut!((*obj.as_ref().as_raw()).dev)) };
-     }
++    fn repr_to_i64(repr: Self::Repr) -> i64 {
++        repr
++    }
+ }
  
-     unsafe fn dec_ref(obj: NonNull<Self>) {
-diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
-index 6115f9aec..4b82885cf 100644
---- a/rust/kernel/block/mq/request.rs
-+++ b/rust/kernel/block/mq/request.rs
-@@ -240,8 +240,10 @@ unsafe impl<T: Operations> Sync for Request<T> {}
- // keeps the object alive in memory at least until a matching reference count
- // decrement is executed.
- unsafe impl<T: Operations> AlwaysRefCounted for Request<T> {
--    fn inc_ref(&self) {
--        self.wrapper_ref().refcount().inc();
+ /// A time unit of jiffies.
+@@ -333,6 +345,14 @@ pub enum Jiffy {}
+ impl TimeUnit for Jiffy {
+     type Repr = isize;
+     const ZERO: Self::Repr = 0;
++    const SUFFIX: &'static str = "jiffies";
++
 +    #[inline]
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` is valid.
-+        unsafe { obj.as_ref().wrapper_ref().refcount().inc() };
++    fn repr_to_i64(repr: Self::Repr) -> i64 {
++        // CAST: `isize` is 32 or 64 bits wide on the architectures the kernel
++        // supports, so widening to `i64` preserves the value.
++        repr as i64
++    }
+ }
+ 
+ /// A span of time.
+@@ -341,7 +361,7 @@ impl TimeUnit for Jiffy {
+ /// [`TimeUnit`]); its value has type `U::Repr`. `U` defaults to [`Nsec`], so a
+ /// plain [`Delta`] is a span in nanoseconds. The value can be negative, zero, or
+ /// positive.
+-#[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord, Debug)]
++#[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord)]
+ pub struct Delta<U: TimeUnit = Nsec> {
+     value: U::Repr,
+ }
+@@ -669,10 +689,122 @@ pub fn rem_nanos(self, dividend: i32) -> Self {
      }
+ }
  
-     unsafe fn dec_ref(obj: core::ptr::NonNull<Self>) {
-diff --git a/rust/kernel/cred.rs b/rust/kernel/cred.rs
-index ffa156b9d..2a2b2d3b0 100644
---- a/rust/kernel/cred.rs
-+++ b/rust/kernel/cred.rs
-@@ -9,6 +9,7 @@
- //! Reference: <https://www.kernel.org/doc/html/latest/security/credentials.html>
- 
- use crate::{bindings, sync::aref::AlwaysRefCounted, task::Kuid, types::Opaque};
-+use core::ptr::NonNull;
- 
- /// Wraps the kernel's `struct cred`.
- ///
-@@ -78,9 +79,9 @@ pub fn euid(&self) -> Kuid {
- // SAFETY: The type invariants guarantee that `Credential` is always ref-counted.
- unsafe impl AlwaysRefCounted for Credential {
-     #[inline]
--    fn inc_ref(&self) {
--        // SAFETY: The existence of a shared reference means that the refcount is nonzero.
--        unsafe { bindings::get_cred(self.0.get()) };
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid object.
-+        unsafe { bindings::get_cred(obj.as_ref().0.get()) };
-     }
- 
-     #[inline]
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index 2291d85b6..0e96f9606 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -14,6 +14,7 @@
-         Opaque, //
-     }, //
- };
-+use core::ptr::NonNull;
- use core::{
-     marker::PhantomData,
-     ptr, //
-@@ -436,9 +437,10 @@ pub fn name(&self) -> &CStr {
- 
- // SAFETY: Instances of `Device` are always reference-counted.
- unsafe impl crate::sync::aref::AlwaysRefCounted for Device {
--    fn inc_ref(&self) {
--        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
--        unsafe { bindings::get_device(self.as_raw()) };
-+    #[inline]
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid object.
-+        unsafe { bindings::get_device(obj.as_ref().as_raw()) };
-     }
- 
-     unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
-index 5aead835f..fcff7e5a2 100644
---- a/rust/kernel/device/property.rs
-+++ b/rust/kernel/device/property.rs
-@@ -4,6 +4,7 @@
- //!
- //! C header: [`include/linux/property.h`](srctree/include/linux/property.h)
- 
-+use core::ptr::NonNull;
- use core::{mem::MaybeUninit, ptr};
- 
- use super::private::Sealed;
-@@ -361,10 +362,10 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
- 
- // SAFETY: Instances of `FwNode` are always reference-counted.
- unsafe impl crate::sync::aref::AlwaysRefCounted for FwNode {
--    fn inc_ref(&self) {
--        // SAFETY: The existence of a shared reference guarantees that the
--        // refcount is non-zero.
--        unsafe { bindings::fwnode_handle_get(self.as_raw()) };
-+    #[inline]
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid object.
-+        unsafe { bindings::fwnode_handle_get(obj.as_ref().as_raw()) };
-     }
- 
-     unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-diff --git a/rust/kernel/dma_buf/dma_fence.rs b/rust/kernel/dma_buf/dma_fence.rs
-index 18a43e1bb..cc8add65b 100644
---- a/rust/kernel/dma_buf/dma_fence.rs
-+++ b/rust/kernel/dma_buf/dma_fence.rs
-@@ -566,9 +566,10 @@ pub unsafe fn from_raw<'a>(ptr: *mut bindings::dma_fence) -> &'a Self {
- // SAFETY: These implement the C backends refcounting methods which are proven
- // to work correctly.
- unsafe impl AlwaysRefCounted for Fence {
--    fn inc_ref(&self) {
--        // SAFETY: `self.as_raw()` is a pointer to a valid `struct dma_fence`.
--        unsafe { bindings::dma_fence_get(self.as_raw()) }
-+    #[inline]
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: `obj.as_ref().as_raw()` is a pointer to a valid `struct dma_fence`.
-+        unsafe { bindings::dma_fence_get(obj.as_ref().as_raw()) }
-     }
- 
-     unsafe fn dec_ref(ptr: NonNull<Self>) {
-diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-index 6b88ade28..4cdb25f30 100644
---- a/rust/kernel/drm/device.rs
-+++ b/rust/kernel/drm/device.rs
-@@ -481,9 +481,10 @@ fn deref(&self) -> &Self::Target {
- // SAFETY: DRM device objects are always reference counted and the get/put functions
- // satisfy the requirements.
- unsafe impl<T: drm::Driver> AlwaysRefCounted for Device<T> {
--    fn inc_ref(&self) {
--        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
--        unsafe { bindings::drm_dev_get(self.as_raw()) };
-+    #[inline]
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid object.
-+        unsafe { bindings::drm_dev_get(obj.as_ref().as_raw()) };
-     }
- 
-     unsafe fn dec_ref(obj: NonNull<Self>) {
-diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index 85657a39e..e290c3ac9 100644
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -52,10 +52,11 @@ unsafe impl $( <$( $tparam_id ),+> )? $crate::sync::aref::AlwaysRefCounted for $
-             Self: IntoGEMObject,
-             $( $( $bind_param : $bind_trait ),+ )?
-         {
--            fn inc_ref(&self) {
-+            #[inline]
-+            unsafe fn inc_ref(obj: NonNull<Self>){
-                 // SAFETY: The existence of a shared reference guarantees that the refcount is
-                 // non-zero.
--                unsafe { bindings::drm_gem_object_get(self.as_raw()) };
-+                unsafe { bindings::drm_gem_object_get(obj.as_ref().as_raw()) };
-             }
- 
-             unsafe fn dec_ref(obj: core::ptr::NonNull<Self>) {
-diff --git a/rust/kernel/drm/gpuvm/mod.rs b/rust/kernel/drm/gpuvm/mod.rs
-index d9d43d719..681daeae7 100644
---- a/rust/kernel/drm/gpuvm/mod.rs
-+++ b/rust/kernel/drm/gpuvm/mod.rs
-@@ -82,9 +82,10 @@ unsafe impl<T: DriverGpuVm> Sync for GpuVm<T> {}
- 
- // SAFETY: By type invariants, the allocation is managed by the refcount in `self.vm`.
- unsafe impl<T: DriverGpuVm> AlwaysRefCounted for GpuVm<T> {
--    fn inc_ref(&self) {
--        // SAFETY: By type invariants, the allocation is managed by the refcount in `self.vm`.
--        unsafe { bindings::drm_gpuvm_get(self.vm.get()) };
-+    #[inline]
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid object.
-+        unsafe { bindings::drm_gpuvm_get(obj.as_ref().vm.get()) };
-     }
- 
-     unsafe fn dec_ref(obj: NonNull<Self>) {
-diff --git a/rust/kernel/drm/gpuvm/vm_bo.rs b/rust/kernel/drm/gpuvm/vm_bo.rs
-index 5989972da..0ffb7cdad 100644
---- a/rust/kernel/drm/gpuvm/vm_bo.rs
-+++ b/rust/kernel/drm/gpuvm/vm_bo.rs
-@@ -30,9 +30,10 @@ unsafe impl<T: DriverGpuVm> Sync for GpuVmBo<T> {}
- 
- // SAFETY: By type invariants, the allocation is managed by the refcount in `self.inner`.
- unsafe impl<T: DriverGpuVm> AlwaysRefCounted for GpuVmBo<T> {
--    fn inc_ref(&self) {
--        // SAFETY: By type invariants, the allocation is managed by the refcount in `self.inner`.
--        unsafe { bindings::drm_gpuvm_bo_get(self.inner.get()) };
-+    #[inline]
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid object.
-+        unsafe { bindings::drm_gpuvm_bo_get(obj.as_ref().inner.get()) };
-     }
- 
-     unsafe fn dec_ref(obj: NonNull<Self>) {
-diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
-index 23ee689bd..b5242e019 100644
---- a/rust/kernel/fs/file.rs
-+++ b/rust/kernel/fs/file.rs
-@@ -15,7 +15,10 @@
-     sync::aref::{ARef, AlwaysRefCounted},
-     types::{NotThreadSafe, Opaque},
- };
--use core::ptr;
-+use core::ptr::{
-+    self,
-+    NonNull, //
-+};
- 
- /// Primitive type representing the offset within a [`File`].
- ///
-@@ -199,13 +202,13 @@ unsafe impl Sync for File {}
- // makes `ARef<File>` own a normal refcount.
- unsafe impl AlwaysRefCounted for File {
-     #[inline]
--    fn inc_ref(&self) {
--        // SAFETY: The existence of a shared reference means that the refcount is nonzero.
--        unsafe { bindings::get_file(self.as_ptr()) };
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid object.
-+        unsafe { bindings::get_file(obj.as_ref().as_ptr()) };
-     }
- 
-     #[inline]
--    unsafe fn dec_ref(obj: ptr::NonNull<File>) {
-+    unsafe fn dec_ref(obj: NonNull<File>) {
-         // SAFETY: To call this method, the caller passes us ownership of a normal refcount, so we
-         // may drop it. The cast is okay since `File` has the same representation as `struct file`.
-         unsafe { bindings::fput(obj.cast().as_ptr()) }
-@@ -235,13 +238,13 @@ pub struct LocalFile {
- // makes `ARef<LocalFile>` own a normal refcount.
- unsafe impl AlwaysRefCounted for LocalFile {
-     #[inline]
--    fn inc_ref(&self) {
--        // SAFETY: The existence of a shared reference means that the refcount is nonzero.
--        unsafe { bindings::get_file(self.as_ptr()) };
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid object.
-+        unsafe { bindings::get_file(obj.as_ref().as_ptr()) };
-     }
- 
-     #[inline]
--    unsafe fn dec_ref(obj: ptr::NonNull<LocalFile>) {
-+    unsafe fn dec_ref(obj: NonNull<LocalFile>) {
-         // SAFETY: To call this method, the caller passes us ownership of a normal refcount, so we
-         // may drop it. The cast is okay since `LocalFile` has the same representation as
-         // `struct file`.
-diff --git a/rust/kernel/fwctl.rs b/rust/kernel/fwctl.rs
-index b7778e4d5..8f1d094b5 100644
---- a/rust/kernel/fwctl.rs
-+++ b/rust/kernel/fwctl.rs
-@@ -261,9 +261,9 @@ fn as_ref(&self) -> &device::Device {
- // `fwctl_put` decrements it and frees the device when it reaches zero.
- unsafe impl<T: Operations> AlwaysRefCounted for Device<T> {
-     #[inline]
--    fn inc_ref(&self) {
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-         // SAFETY: `self` holds a live reference.
--        unsafe { bindings::fwctl_get(self.as_raw()) };
-+        unsafe { bindings::fwctl_get(obj.as_ref().as_raw()) };
-     }
- 
-     #[inline]
-diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
-index b4ff25c83..d8d96958d 100644
---- a/rust/kernel/i2c.rs
-+++ b/rust/kernel/i2c.rs
-@@ -416,9 +416,9 @@ pub fn get(index: i32) -> Result<ARef<Self>> {
- // SAFETY: Instances of `I2cAdapter` are always reference-counted.
- unsafe impl AlwaysRefCounted for I2cAdapter {
-     #[inline]
--    fn inc_ref(&self) {
--        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
--        unsafe { bindings::i2c_get_adapter(self.index()) };
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid object.
-+        unsafe { bindings::i2c_get_adapter(obj.as_ref().index()) };
-     }
- 
-     #[inline]
-@@ -493,9 +493,10 @@ unsafe impl<Ctx: device::DeviceContext> device::AsBusDevice<Ctx> for I2cClient<C
- 
- // SAFETY: Instances of `I2cClient` are always reference-counted.
- unsafe impl AlwaysRefCounted for I2cClient {
--    fn inc_ref(&self) {
--        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
--        unsafe { bindings::get_device(self.as_ref().as_raw()) };
-+    #[inline]
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid object.
-+        unsafe { bindings::get_device(obj.as_ref().as_ref().as_raw()) };
-     }
- 
-     unsafe fn dec_ref(obj: NonNull<Self>) {
-diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
-index 58bc1793f..f5deac0b7 100644
---- a/rust/kernel/mm.rs
-+++ b/rust/kernel/mm.rs
-@@ -57,9 +57,9 @@ unsafe impl Sync for Mm {}
- // SAFETY: By the type invariants, this type is always refcounted.
- unsafe impl AlwaysRefCounted for Mm {
-     #[inline]
--    fn inc_ref(&self) {
--        // SAFETY: The pointer is valid since self is a reference.
--        unsafe { bindings::mmgrab(self.as_raw()) };
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The pointer is valid since obj is a reference.
-+        unsafe { bindings::mmgrab(obj.as_ref().as_raw()) };
-     }
- 
-     #[inline]
-@@ -93,9 +93,9 @@ unsafe impl Sync for MmWithUser {}
- // SAFETY: By the type invariants, this type is always refcounted.
- unsafe impl AlwaysRefCounted for MmWithUser {
-     #[inline]
--    fn inc_ref(&self) {
--        // SAFETY: The pointer is valid since self is a reference.
--        unsafe { bindings::mmget(self.as_raw()) };
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The pointer is valid since obj is a reference.
-+        unsafe { bindings::mmget(obj.as_ref().as_raw()) };
-     }
- 
-     #[inline]
-diff --git a/rust/kernel/mm/mmput_async.rs b/rust/kernel/mm/mmput_async.rs
-index b8d2f0512..2e490f8ce 100644
---- a/rust/kernel/mm/mmput_async.rs
-+++ b/rust/kernel/mm/mmput_async.rs
-@@ -36,9 +36,9 @@ unsafe impl Sync for MmWithUserAsync {}
- // SAFETY: By the type invariants, this type is always refcounted.
- unsafe impl AlwaysRefCounted for MmWithUserAsync {
-     #[inline]
--    fn inc_ref(&self) {
--        // SAFETY: The pointer is valid since self is a reference.
--        unsafe { bindings::mmget(self.as_raw()) };
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` is valid.
-+        unsafe { bindings::mmget(obj.as_ref().as_raw()) };
-     }
- 
-     #[inline]
-diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
-index 62e446761..cec86e284 100644
---- a/rust/kernel/opp.rs
-+++ b/rust/kernel/opp.rs
-@@ -19,6 +19,7 @@
-     sync::aref::{ARef, AlwaysRefCounted},
-     types::Opaque,
- };
-+use core::ptr::NonNull;
- 
- #[cfg(CONFIG_CPU_FREQ)]
- /// Frequency table implementation.
-@@ -1043,9 +1044,9 @@ unsafe impl Sync for OPP {}
- /// SAFETY: The type invariants guarantee that [`OPP`] is always refcounted.
- unsafe impl AlwaysRefCounted for OPP {
-     #[inline]
--    fn inc_ref(&self) {
--        // SAFETY: The existence of a shared reference means that the refcount is nonzero.
--        unsafe { bindings::dev_pm_opp_get(self.0.get()) };
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid object.
-+        unsafe { bindings::dev_pm_opp_get(obj.as_ref().0.get()) };
-     }
- 
-     #[inline]
-diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-index 769d01d23..0fdf7caa5 100644
---- a/rust/kernel/pci.rs
-+++ b/rust/kernel/pci.rs
-@@ -512,9 +512,9 @@ impl<'a> crate::dma::Device<'a> for Device<device::Core<'a>> {}
- // SAFETY: Instances of `Device` are always reference-counted.
- unsafe impl crate::sync::aref::AlwaysRefCounted for Device {
-     #[inline]
--    fn inc_ref(&self) {
--        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
--        unsafe { bindings::pci_dev_get(self.as_raw()) };
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid object.
-+        unsafe { bindings::pci_dev_get(obj.as_ref().as_raw()) };
-     }
- 
-     #[inline]
-diff --git a/rust/kernel/pid_namespace.rs b/rust/kernel/pid_namespace.rs
-index 979a9718f..6c625a02c 100644
---- a/rust/kernel/pid_namespace.rs
-+++ b/rust/kernel/pid_namespace.rs
-@@ -8,7 +8,9 @@
- //! [`include/linux/pid.h`](srctree/include/linux/pid.h)
- 
- use crate::{bindings, sync::aref::AlwaysRefCounted, types::Opaque};
--use core::ptr;
-+use core::ptr::{
-+    NonNull, //
-+};
- 
- /// Wraps the kernel's `struct pid_namespace`. Thread safe.
- ///
-@@ -43,13 +45,13 @@ pub unsafe fn from_ptr<'a>(ptr: *const bindings::pid_namespace) -> &'a Self {
- // SAFETY: Instances of `PidNamespace` are always reference-counted.
- unsafe impl AlwaysRefCounted for PidNamespace {
-     #[inline]
--    fn inc_ref(&self) {
--        // SAFETY: The existence of a shared reference means that the refcount is nonzero.
--        unsafe { bindings::get_pid_ns(self.as_ptr()) };
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid object.
-+        unsafe { bindings::get_pid_ns(obj.as_ref().as_ptr()) };
-     }
- 
-     #[inline]
--    unsafe fn dec_ref(obj: ptr::NonNull<PidNamespace>) {
-+    unsafe fn dec_ref(obj: NonNull<PidNamespace>) {
-         // SAFETY: The safety requirements guarantee that the refcount is non-zero.
-         unsafe { bindings::put_pid_ns(obj.cast().as_ptr()) }
-     }
-diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index ac0a012ae..37e7ec9e7 100644
---- a/rust/kernel/platform.rs
-+++ b/rust/kernel/platform.rs
-@@ -535,9 +535,10 @@ impl<'a> crate::dma::Device<'a> for Device<device::Core<'a>> {}
- 
- // SAFETY: Instances of `Device` are always reference-counted.
- unsafe impl crate::sync::aref::AlwaysRefCounted for Device {
--    fn inc_ref(&self) {
--        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
--        unsafe { bindings::get_device(self.as_ref().as_raw()) };
-+    #[inline]
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid object.
-+        unsafe { bindings::get_device(core::ptr::addr_of_mut!((*obj.as_ref().as_raw()).dev)) };
-     }
- 
-     unsafe fn dec_ref(obj: NonNull<Self>) {
-diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
-index 8aa47304b..aefcf68e2 100644
---- a/rust/kernel/pwm.rs
-+++ b/rust/kernel/pwm.rs
-@@ -629,10 +629,10 @@ pub fn new<'a>(
- // SAFETY: Implements refcounting for `Chip` using the embedded `struct device`.
- unsafe impl<T: PwmOps> AlwaysRefCounted for Chip<T> {
-     #[inline]
--    fn inc_ref(&self) {
--        // SAFETY: `self.0.get()` points to a valid `pwm_chip` because `self` exists.
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid `Chip`.
-         // The embedded `dev` is valid. `get_device` increments its refcount.
--        unsafe { bindings::get_device(&raw mut (*self.0.get()).dev) };
-+        unsafe { bindings::get_device(&raw mut (*obj.as_ref().0.get()).dev) };
-     }
- 
-     #[inline]
-diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
-index 17ca504b7..4e58cd138 100644
---- a/rust/kernel/serdev.rs
-+++ b/rust/kernel/serdev.rs
-@@ -571,8 +571,13 @@ unsafe impl<Ctx: device::DeviceContext> device::AsBusDevice<Ctx> for Device<Ctx>
- 
- // SAFETY: Instances of `Device` are always reference-counted.
- unsafe impl AlwaysRefCounted for Device {
--    fn inc_ref(&self) {
--        self.as_ref().inc_ref();
-+    #[inline]
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid
-+        // `serdev::Device`, and thus to a valid embedded `struct device`.
-+        unsafe {
-+            bindings::get_device(&raw mut (*obj.as_ptr().cast::<bindings::serdev_device>()).dev)
-+        };
-     }
- 
-     unsafe fn dec_ref(obj: NonNull<Self>) {
-diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
-index 9983ee085..becd2db78 100644
---- a/rust/kernel/sync/aref.rs
-+++ b/rust/kernel/sync/aref.rs
-@@ -49,7 +49,11 @@
- /// alive.)
- pub unsafe trait AlwaysRefCounted {
-     /// Increments the reference count on the object.
--    fn inc_ref(&self);
++impl<U: TimeUnit> kernel::fmt::Debug for Delta<U> {
++    /// Formats the span as a number of time units, followed by the unit.
 +    ///
-+    /// # Safety
++    /// The value and the unit are separated by a space, and each group of three
++    /// digits is separated by an underscore, the way Rust integer literals are
++    /// written.
 +    ///
-+    /// Callers must ensure that `obj` points to a valid object of this type.
-+    unsafe fn inc_ref(obj: NonNull<Self>);
++    /// ```
++    /// # use kernel::{prelude::fmt, str::CString, time::Delta};
++    /// let delta = Delta::from_micros(5);
++    /// let formatted = CString::try_from_fmt(fmt!("{delta:?}"))?;
++    /// assert_eq!(formatted.to_bytes(), b"5_000 ns");
++    ///
++    /// let negative = Delta::from_millis(-2);
++    /// let formatted = CString::try_from_fmt(fmt!("{negative:?}"))?;
++    /// assert_eq!(formatted.to_bytes(), b"-2_000_000 ns");
++    ///
++    /// let jiffies = Delta::from_jiffies(1234);
++    /// let formatted = CString::try_from_fmt(fmt!("{jiffies:?}"))?;
++    /// assert_eq!(formatted.to_bytes(), b"1_234 jiffies");
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    fn fmt(&self, f: &mut kernel::fmt::Formatter<'_>) -> kernel::fmt::Result {
++        let value = U::repr_to_i64(self.value);
++
++        if value < 0 {
++            f.write_str("-")?;
++        }
++
++        // `unsigned_abs` is used because the magnitude of `i64::MIN` is not
++        // representable as an `i64`.
++        let mut magnitude = value.unsigned_abs();
++
++        // Split the magnitude into groups of three digits, least significant
++        // group first. A `u64` holds at most 20 digits, so 7 groups suffice.
++        //
++        // Dividing by the constant keeps the compiler from emitting a check for
++        // a division by zero with a potential panic.
++        let mut groups = [0u64; 7];
++        let mut used = 0;
++
++        for group in groups.iter_mut() {
++            *group = magnitude % 1000;
++            magnitude /= 1000;
++            used += 1;
++
++            if magnitude == 0 {
++                break;
++            }
++        }
++
++        let mut groups = groups.into_iter().take(used).rev();
++
++        // The leading group holds the most significant digits of the value, so
++        // it is the only one that is not zero padded.
++        if let Some(leading) = groups.next() {
++            write!(f, "{}", leading)?;
++        }
++
++        for group in groups {
++            write!(f, "_{:03}", group)?;
++        }
++
++        write!(f, " {}", U::SUFFIX)
++    }
++}
++
+ #[cfg(CONFIG_RUST_TIME_KUNIT_TEST)]
+ #[macros::kunit_tests(rust_kernel_time)]
+ mod tests {
+     use super::*;
++    use crate::{prelude::fmt, str::CString};
++
++    /// Formats `delta` with its [`kernel::fmt::Debug`] implementation.
++    fn debug_fmt<U: TimeUnit>(delta: Delta<U>) -> Result<CString, crate::error::Error> {
++        CString::try_from_fmt(fmt!("{delta:?}"))
++    }
++
++    #[test]
++    fn delta_debug_separates_digit_groups() -> Result<(), crate::error::Error> {
++        // A value below one thousand is printed without a separator.
++        assert_eq!(debug_fmt(Delta::from_nanos(999))?.to_bytes(), b"999 ns");
++
++        // Groups that do not lead the value are zero padded.
++        assert_eq!(debug_fmt(Delta::from_nanos(1000))?.to_bytes(), b"1_000 ns");
++        assert_eq!(
++            debug_fmt(Delta::from_nanos(1_000_007))?.to_bytes(),
++            b"1_000_007 ns"
++        );
++
++        // Zero has a single group.
++        assert_eq!(debug_fmt(Delta::<Nsec>::ZERO)?.to_bytes(), b"0 ns");
++
++        // The extremes of the representation are printed in full. The magnitude
++        // of `i64::MIN` does not fit an `i64`, which makes it the interesting
++        // one.
++        assert_eq!(
++            debug_fmt(Delta::from_nanos(i64::MAX))?.to_bytes(),
++            b"9_223_372_036_854_775_807 ns"
++        );
++        assert_eq!(
++            debug_fmt(Delta::from_nanos(i64::MIN))?.to_bytes(),
++            b"-9_223_372_036_854_775_808 ns"
++        );
++
++        Ok(())
++    }
++
++    #[test]
++    fn delta_debug_uses_the_unit_suffix() -> Result<(), crate::error::Error> {
++        assert_eq!(debug_fmt(Delta::from_nanos(1))?.to_bytes(), b"1 ns");
++        assert_eq!(debug_fmt(Delta::from_jiffies(1))?.to_bytes(), b"1 jiffies");
++        assert_eq!(debug_fmt(Delta::<Jiffy>::ZERO)?.to_bytes(), b"0 jiffies");
++
++        Ok(())
++    }
  
-     /// Decrements the reference count on the object.
-     ///
-@@ -131,7 +135,7 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-     ///
-     /// # // SAFETY: TODO.
-     /// unsafe impl AlwaysRefCounted for Empty {
--    ///     fn inc_ref(&self) {}
-+    ///     unsafe fn inc_ref(_obj: NonNull<Self>) {}
-     ///     unsafe fn dec_ref(_obj: NonNull<Self>) {}
-     /// }
-     ///
-@@ -149,8 +153,10 @@ pub fn into_raw(me: Self) -> NonNull<T> {
- }
- 
- impl<T: AlwaysRefCounted> Clone for ARef<T> {
-+    #[inline]
-     fn clone(&self) -> Self {
--        self.inc_ref();
-+        // SAFETY: The type invariants guarantee that `self.ptr` is valid.
-+        unsafe { T::inc_ref(self.ptr) };
-         // SAFETY: We just incremented the refcount above.
-         unsafe { Self::from_raw(self.ptr) }
-     }
-@@ -166,10 +172,13 @@ fn deref(&self) -> &Self::Target {
- }
- 
- impl<T: AlwaysRefCounted> From<&T> for ARef<T> {
-+    #[inline]
-     fn from(b: &T) -> Self {
--        b.inc_ref();
-+        let ptr = NonNull::from(b);
-+        // SAFETY: `ptr` comes from a live shared reference.
-+        unsafe { T::inc_ref(ptr) };
-         // SAFETY: We just incremented the refcount above.
--        unsafe { Self::from_raw(NonNull::from(b)) }
-+        unsafe { Self::from_raw(ptr) }
-     }
- }
- 
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 3336df493..76cc236fe 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -14,7 +14,10 @@
- };
- use core::{
-     ops::Deref,
--    ptr, //
-+    ptr::{
-+        self,
-+        NonNull, //
-+    },
- };
- 
- /// A sentinel value used for infinite timeouts.
-@@ -349,9 +352,9 @@ pub fn group_leader(&self) -> &Task {
- // SAFETY: The type invariants guarantee that `Task` is always refcounted.
- unsafe impl crate::sync::aref::AlwaysRefCounted for Task {
-     #[inline]
--    fn inc_ref(&self) {
--        // SAFETY: The existence of a shared reference means that the refcount is nonzero.
--        unsafe { bindings::get_task_struct(self.as_ptr()) };
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that `obj` points to a valid object.
-+        unsafe { bindings::get_task_struct(obj.as_ref().as_ptr()) };
-     }
- 
-     #[inline]
-diff --git a/rust/kernel/usb.rs b/rust/kernel/usb.rs
-index 993760ff3..812159a82 100644
---- a/rust/kernel/usb.rs
-+++ b/rust/kernel/usb.rs
-@@ -375,11 +375,11 @@ fn as_ref(&self) -> &Device {
- // SAFETY: Instances of `Interface` are always reference-counted.
- unsafe impl AlwaysRefCounted for Interface {
-     #[inline]
--    fn inc_ref(&self) {
--        // SAFETY: The invariants of `Interface` guarantee that `self.as_raw()`
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The invariants of `Interface` guarantee that `obj.as_ref().as_raw()`
-         // returns a valid `struct usb_interface` pointer, for which we will
-         // acquire a new refcount.
--        unsafe { bindings::usb_get_intf(self.as_raw()) };
-+        unsafe { bindings::usb_get_intf(obj.as_ref().as_raw()) };
-     }
- 
-     #[inline]
-@@ -428,11 +428,11 @@ fn as_raw(&self) -> *mut bindings::usb_device {
- // SAFETY: Instances of `Device` are always reference-counted.
- unsafe impl AlwaysRefCounted for Device {
-     #[inline]
--    fn inc_ref(&self) {
--        // SAFETY: The invariants of `Device` guarantee that `self.as_raw()`
-+    unsafe fn inc_ref(obj: NonNull<Self>) {
-+        // SAFETY: The invariants of `Device` guarantee that `obj.as_raw()`
-         // returns a valid `struct usb_device` pointer, for which we will
-         // acquire a new refcount.
--        unsafe { bindings::usb_get_dev(self.as_raw()) };
-+        unsafe { bindings::usb_get_dev(obj.as_ref().as_raw()) };
-     }
- 
-     #[inline]
--- 
-2.47.3
+     #[test]
+     fn to_jiffies_timeout_converts() {
+
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20260215-time-delta-display-d702e7788d2d
+
+Best regards,
+--  
+Andreas Hindborg <a.hindborg@kernel.org>
 
 
