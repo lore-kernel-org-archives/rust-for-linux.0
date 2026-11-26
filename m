@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795702876;
-	b=v9xFnFsFXeMmKyEFDV9IVpAVylKZz5bfmiNEvAm+URlaJYlRFQjZcaMlYWSssYsQfLBU
-	 k1sjVVQx5z8HimaZQaIOvaHjs7va/eCxeL2bT4oK/rInohSW9kHizMk+90EFHsIbxGE6d
-	 3f/d93f3XEQ74BjbcIjZKV7CuZq0TruwRtXtQ3mbpMyeUPxD7iFHIOunbrPO6Gu7jTIxr
-	 uzlv+8UQWZkxDy0nPB1Mv/eBgxsSh5nrCs38p08uli2HTabVmV0prUzt7Wlr3Pr4FasNE
-	 KLeLgN1cYx6Ss94/SkdbDNDezBPqCr3kZnNdzn55CzEFIL2m8S6d8hTRWpiP9tAgciw==
+	t=1795703023;
+	b=NySEyVELwwlAXw3WXVLlu81Gfoga/tkUwPyy86o64tCvfI3jkjhh1k5QxWDZu1ll78TR
+	 R0tXlubTUEiJn6gFQ+800de4frMd22RIEqFrEoxDDk6qvRqUfXRapfUQkkpjVnKN7fFIb
+	 IgPNMJO+i+4hamMv8C/f7Y7K5YUoAeGACNF4e49HbvsbNg8BSnYPZGj7Ysw1NjaT5zhCi
+	 w5XWp8q3HsW5xIu5PHyMoimxWFt2CWOgTVUoeXLfYm7NRerPXiFj1hahb1c0ebNUVIKns
+	 TrDUoviwjMKCaMImRHFkeHx52Sfytzn+VcuWWrmHgILJlaAMhGyy0JfZJBAnMb433fw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795702876;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795703023;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=atRADlSOnZLQNM6G54/+kjR/y56AYpp2tRLeMkzwmQo=;
-	b=THomAxl6KBTtz5/lSS6QbJ18YOO5Ey/HcBl66Yh292R/sxooUBPnVuehieJ2QU3UA6x6
-	 3r2HFDdz37lSYKOi/4xzZRu9beJp2pSDf514fQQmr3bM+iBA4hEr1vjgm6dFMmxXwS7WD
-	 6CWlbn2M8DhZArMfXBflwSE5+XvbI1C9iIdoRzVY2Qeq7sofE8ZdUCQY3uJ3tUftclya5
-	 oZsa8JNXOd84MKnqOuEFyn+b8RPEsgJx57DEqECPLAJ/0HobKBPVkMvTkunr1yzB6DxNi
-	 h3PUB1arZuu3UEaInEDJ3AYVGC/ztbphv6UQyf1Her3JaQGssk0viXnVTtqkvwW9xHg==
+	bh=dm2y8Oq8oXMm7QsOuoqQEHDEq067SfqFTct2Ocjc2Ss=;
+	b=sf325pX6+Whh2l8omArm7J5DDacEuKfD1+Ms/dVmKCdxcwvIdWi4a0Te44oQBm5DX0Wc
+	 yccDDMqgoLcdlgE1XsZEWgYC8TdRsEqL6bIUsXWk0KFGfJP4tCP0nZ1PmSQc7yYUSdFtA
+	 RIMRAs6C1e/Ovv/WkTYhbnIpTjF82GIZnagjIeidaRhkokw7IDSTIGqGTidu+Qy8XSAl7
+	 EDyCOvRN790zi6vMzRkRZZ6peRTWFFl/5dHdlnelQBsqjv++Z7sPTJZr8Zol32B1DzHqP
+	 yRthq7ltn6twJYRexsOteXS9NHAXEQCVsyNTFKJW9cwrgcxWtNGAwJ5S72gasOb+j7A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=collabora.com;
 	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=lqBSMAU5;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=gKrKVYbv;
 	arc=none smtp.remote-ip=148.251.105.195
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3E9606A321;
-	Thu, 26 Nov 2026 14:21:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9C3E9606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E89A606A321;
+	Thu, 26 Nov 2026 14:23:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E89A606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=lqBSMAU5
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=gKrKVYbv
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1795702873;
-	bh=v9bSNQgXQSZX2c+Meg6UrLoUf8wBWQR+eTf8RCbX6Ak=;
+	s=mail; t=1795703021;
+	bh=SeH7W4HXcoMbKbmUVHcSDi20fgxLOytbLKN210ZOlI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lqBSMAU5p1NeFmG+L9sx55yA9psPVka1U0XjJir8uo/k6gjK2YHYIN1+rmpHINmOi
-	 GztcDHimNlyYByP4ICo1rZEhyvecs8SS2sxuZCfuz0qyP9G480P+fLNzBhuBs73OJt
-	 jgBTlrz0Kv4j17WuqKWPlhW5W8neTH68GrI7TfOpseyptxKLIChtfpPB0o4oaOm70s
-	 CTnUi5ovJhyVFG79imUEpd3DrduT4nwrbZROidEe5FDcWrVxW6GefAUGt4nftBPaHl
-	 6jOSXRlAnca/+ddduRj/eLSwapeRMo09V9iXlXlmn0yI3u4vwkXE6b7qgM5Z4LZuvO
-	 wLMmIoijKx1Wg==
+	b=gKrKVYbvVwu5WWkzcQ2z7uMhkNOB/Eoprtm7L4DXw9xL4Fz1yV4EPacje+wbpIcR/
+	 GXMb58l0xbb3Cf0DUgH+vpOK1yeO5hHa1K98pX+DOsFGPonrDnvtsEJrahTiRSNW4y
+	 a1IuTbRxlwO2F7uX84qr9nfZou9L5AWKm3cYC5PgipxqMgR3lxACu7L48VAJ/xJyAP
+	 +0NiBRQ0GKOexzhvyc+R8+vXTagF17YNxn2/uAH9t24DlfwAzRqmgmtbpXGLiMeLDL
+	 uG58itz9MlAlyMmbcLhskXxHBlM9A2zjP2Djm4u4Q+W28HPc1fcdcX99OeMCT3CXBw
+	 2mKIxD2l4tcNw==
 Received: from laura.lan (unknown [100.64.0.215])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: laura.nao)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 2C47517E09ED;
-	Thu, 26 Nov 2026 15:21:13 +0100 (CET)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0680417E0FD4;
+	Thu, 26 Nov 2026 15:23:40 +0100 (CET)
 From: Laura Nao <laura.nao@collabora.com>
 To: dakr@kernel.org
 Cc: a.hindborg@kernel.org,
@@ -72,12 +72,12 @@ Cc: a.hindborg@kernel.org,
 	tamird@kernel.org,
 	tmgross@umich.edu,
 	work@onurozkan.dev
-Subject: Re: [PATCH v7 2/3] drm/tyr: add TyrIrq threaded IRQ wrapper
-Date: Thu, 26 Nov 2026 15:21:03 +0100
-Message-Id: <20261126142103.216201-1-laura.nao@collabora.com>
+Subject: Re: [PATCH v7 3/3] drm/tyr: add Job IRQ handling
+Date: Thu, 26 Nov 2026 15:23:28 +0100
+Message-Id: <20261126142328.216740-1-laura.nao@collabora.com>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <DN545I66CKO1.2YKP99UIQQR43@kernel.org>
-References: <DN545I66CKO1.2YKP99UIQQR43@kernel.org>
+In-Reply-To: <DN548CRVXMGK.BOPO5J56Y1OH@kernel.org>
+References: <DN548CRVXMGK.BOPO5J56Y1OH@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -89,39 +89,31 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Danilo,
-
-On 11/26/26 12:41, Danilo Krummrich wrote:
+On 11/26/26 12:45, Danilo Krummrich wrote:
 > On Mon Nov 23, 2026 at 3:58 PM CET, Laura Nao wrote:
->> +impl<'a, T: TyrIrqTrait> TyrIrqRegistration<'a, T> {
->> +    /// Requests a threaded IRQ registration for `irq`, using `name` to look up the interrupt.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// Callers must not `mem::forget()` the resulting registration or otherwise prevent its
->> +    /// [`Drop`] implementation from running.
->> +    pub(crate) unsafe fn request(
->> +        pdev: &'a platform::Device<Bound>,
->> +        name: &'static CStr,
->> +        irq: T,
->> +        hw: Arc<HwGate<'a>>,
->> +    ) -> Result<Pin<KBox<Self>>>
+>> +/// Requests a threaded IRQ registration for the Job IRQ.
+>> +///
+>> +/// # Safety
+>> +///
+>> +/// Callers must not `mem::forget()` the resulting registration or otherwise prevent its
+>> +/// [`Drop`] implementation from running.
+>> +pub(crate) unsafe fn job_irq_init<'a>(
+>> +    pdev: &'a platform::Device<Bound>,
+>> +    hw: Arc<HwGate<'a>>,
+>> +    events: Arc<JobIrqEvents>,
+>> +) -> Result<Pin<KBox<TyrIrqRegistration<'a, JobIrq>>>> {
+>> +    let job_irq = JobIrq { events };
+>> +    // Ensure interrupt sources are disabled until the handler is registered.
+>> +    job_irq.clear_mask(hw.access().iomem());
+>> +
+>> +    // SAFETY: The caller guarantees the resulting registration will not be leaked.
+>> +    unsafe { TyrIrqRegistration::request(pdev, c"job", job_irq, hw) }
+>> +}
 >
-> Why does this not return a pin initializer itself?
->
-> I don't think this has a user in this series (except job_irq_init(), which
-> itself seems unused), but I expect this to be stored in some other container
-> that is pinned anyway.
->
-> (Note that in C we'd also not need a separate allocation and just embed it in
-> its corresponding container.)
->
+> You could implement a constructor in an impl TyrIrqRegistration<'a, JobIrq>
+> block instead, which is think is cleaner than a free standing function.
 
-Thanks for flagging this, came to the same conclusion this morning after 
-rethinking about how this will be stored in TyrDrmRegistrationData. 
-I'll fix this in the next revision.
+Right, thanks for the suggestion. Will do.
 
 Best,
-
 Laura
-
