@@ -1,66 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.176
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795699912;
-	b=U9VI8/n47nEuyO09ZlKczboASjudyGqvEMkgEocq31vmYdv+EXQSG8gcmbXkFqxGvYY/
-	 4o7BwLkUtd9ydYjICzp4Z+KI1ewXHoze1C32jmCX0eJwe1LLLIBtZFwvnrB/wPTxHhNvg
-	 91ZS5ElYYZvuapUBH086oycY3Up/DRX2BKIg1E6P9ahowgTIa9nVkcAJ1veVd5VqptoXV
-	 Z7xiClP7AhyOEsgSDNQ8rn5O5dtLrUPSGDXFhpCD7sHsbUzRbzKc1HpiH2CiaQEUDShdo
-	 NUZryJFiPQkViCTPa8kUeCbQs4flkdbaEYP2/o8dPF2lMWoAuhJMfqkh541XHbv2jHg==
+	t=1795700909;
+	b=l1lDtXsb9kP24gViZFsyGKTXG8RwLbgVtjOeT2q4BIZpwuGOXa88BLb28W8/CP+uNglm
+	 Yr7g/Ujw7fCcOgn02gJNxTdCpHPG1oTqPIyOu5TqlhWiRT73l3WN1gnxjhDEOJPtGtvw4
+	 Q7lpMkVtFkiJk7wfMakFJ787WD660lcuzJKGhUH/ZOr2aPf+Uj2fzKRawl8w3zjdu67FB
+	 qqU+wb9jfztfZuTLkyWxl0x2421LLXMrDcw2lhv7q23FkqxSzB46m/Dp8vqkBrk4KRv5h
+	 M/MF/J5Tew2olxGoUlnOMtJjhIEEmQ/bNFw9pI/CkmjPTG/pFS4AZUtATTh5580loXA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795699912;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
-	 Date:Message-ID:MIME-Version:Content-Type;
-	bh=3mGnAomhQ+L6zciHSyNf8bakRWUymFMpnjOMRSLguYg=;
-	b=A+0828tgYBCleF3WFLwlt1YalL1p9tt+NqfqfhdyCGL+0bhhvWFIGtd76qEkrgTy0c7j
-	 kbEu+gsJhmcE02dcpaOaoeyv38Q8Hny1gI781NIX1r6o7c3irmf3+7WdJizsufvK0ralm
-	 s4rWtelN9rChW8B5yiuXn82ZyIGR+TtthE3oGzSt0Q654Z6d8PHkikKjjvV2TY7s1fuk5
-	 t/4ydOLNwfCdloL1AMZg1jhnBI0zK7ZBz3/dV7ULFVozvXLVVQIZ9iMBWpKUiKDogPn8y
-	 bP3j/Cy2SOfM5amBSPQezOcusD8wfLcKV3LWjHSKE63FyWYuwy3rqNhJerA52E8ZY9Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795700909;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
+	bh=VtBIJPjXIIg+HHFMzUuDZRNIJbDv3nZ6Kp6imhbfLPM=;
+	b=ug8gsAsIbuuGm2PocP1XN76DNLD0RNBTUj1q/3tkfT50+zcjZAE/vPbJ9xKvoyLgGZMq
+	 5XFH2uo1VvAGdSio5seaTxs1pUPm25JzLZFQgYaPB4wskFrEU97eF9vxhIRUctfwSRSi5
+	 oYJznHp//Zo2yW1jE3xKEqnOzuO1Hx4xoJKD28Xlv23M5xk/aJhcn0cBxNqilZeXBR1Jy
+	 +ypMQVN77sn95GLcrx+ihSKZdDAI3lqo9vrPAwCtwOhKmJjC3oTrzzEY8+94UT2RXSqzp
+	 OEgV5Kc3MP9pzOMRbT6eNPrHHLU1LKT47MGpbA13EPwUsJf4PcTovZtbMmD//ffd6mQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c+z2psRC;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="OQBpUL/z";
+	arc=none smtp.remote-ip=209.85.221.176
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7782606A31C;
-	Thu, 26 Nov 2026 13:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C03606A31C
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 13:48:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63C03606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c+z2psRC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06ACC1F000D3;
-	Thu, 26 Nov 2026 13:31:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795699912;
-	bh=3mGnAomhQ+L6zciHSyNf8bakRWUymFMpnjOMRSLguYg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=c+z2psRCoBKm9SEcVPumlE5/94/Yps1kS1NBhstYThQ+/yug6XbNHYvl2TEkqj8b9
-	 1tRB/EEwYX8S3XCcHSofQmTYN+yT3q09LfHOpKPP5F1GE2gC+VtZNff+Ee/tqQhZSu
-	 Ka2OJHXkF0D9oNmIbAS2/TPc/+/Z2O18KkMYSzuW4wIPiChgFcURHWRM4FtpQjpY/v
-	 g99GOOLwJLZFzTv3fACu1Zb+JQsb8NAS58gSxCt9cIsxZjYfZjRWJRCskWOCwiULzm
-	 OSdSj6ETIzNYsm8ADsXjVqFzfWqo7LM6zDY6Z8vSJECGRYw3x8upx/MP5oNcXzYoSR
-	 mMYb4eNWFYFDA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, FUJITA Tomonori
- <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
- Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
- <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda
- <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Boqun Feng
- <boqun@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir
- Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
- Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: time: implement `Debug` for `Delta`
-In-Reply-To: <20261126125937.3973192-1-aliceryhl@google.com>
-References: <20261126-time-delta-display-v3-1-aeeecc72f3a8@kernel.org>
- <20261126125937.3973192-1-aliceryhl@google.com>
-Date: Thu, 26 Nov 2026 14:31:41 +0100
-Message-ID: <87ld6fu3b6.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OQBpUL/z
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-5ed2f163a2fso2256193e0c.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 05:48:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795700908; x=1796305708; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=VtBIJPjXIIg+HHFMzUuDZRNIJbDv3nZ6Kp6imhbfLPM=;
+        b=OQBpUL/z+LIsM8xhyvJfSd26SnpwITX9l4cvtx2mpX2NkUSuWVKRbjhtC95H2Ndwx0
+         SIPVAb37fNdmSYmSmppM2euqUf4jQ05xdDdYd7GtMk+aqD/LENyNhBClKX7BzyOCUqtO
+         snE2f+a/82fzcF5ftLsvehKWh//Hu+URoeEAlzPqjPKZ9Z7MqfwiS++QstVKQLT4tonu
+         zi8x1HXC+Qkmt7qeWuC4fOlUJkwcoYNklEBKIYB3W4ztl/3yN/jkp+IjMrpwyXtOY5QT
+         P8iDNEKtvPb4JQcGbb9x2JksmupBgTUsun6xh2lZxVVKY97i8zAyy5OS8sG3Z+T9G/mb
+         xRaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795700908; x=1796305708;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VtBIJPjXIIg+HHFMzUuDZRNIJbDv3nZ6Kp6imhbfLPM=;
+        b=zrNXYvB9+WF6DzWRlQ4DdOwWXfT1ByqBt7JTYttCz1SC1eNKqbsTLQJ15ZqrlJ6585
+         8rHBqLXLqs5OIZc83nDRt2WLtqE8Leub35qLUglFMRrzzBbz6pSaTdOAQNS0CWoTWSru
+         AMSddo56k0hd09CZLHyCsvO8wE3FIqTlbMbBgCba77RRFFhl7xvEcO9Ivksd4gRQvi9T
+         Etrax4XNtX9BtzELaLKZIx2JnM1d1VSrA5ug+MB0XMO6Bm65oKWpwYl5m9V4il/K9wLD
+         WMQAfCld8lcfXrXwNvfdwa0NncA8Ocmtw/eBafPNnSu0/qTPCSCQqEDlm35ZVXr5PLRk
+         rSAA==
+X-Forwarded-Encrypted: i=1; AL+hErH8zJr0Xx4RgxMVC2Ypy43biDg6tb9Q5ohPEBxT3PURAx4XeB8b4VQoIabrjamhoEj3iF9VpvgczzlGxasCRg==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9nfTv7fzggPoEGUPh9MObmqRkfAT6iZswqhv41IxNtiGHBSb7n
+	l5wtDDTOU9Ceq9mwf9mZnZYn1qNYCO8RY3g8CjxWz5pRIInsaEEdBIM=
+X-Gm-Gg: AZFdTZf2Uo8Y2sxE8Q0xPuaS+Net32dHvsw/TaM3IWB3XZUne+yL4EGMEVn+vIWng+y
+	Lom2gGwTABRVQpek+n7YLGJQLqv4ldCam1DDp1v2xtzQZRqF3UH+MsP+O9JoqEH41LE0k3UkqKQ
+	B43nZm47kvNx1KZjEphZroZ0HO0a1Nzj38o7Q+wBB6SPnlgTdpSms8He9xkA6NXkVpNAR4uZOJh
+	jE+5JanzhhpdX3e7qdO8bdtGrlbXPSxaD08Jn2PG7X0AcBc3rgM8xVieWdLT1s8wbpwNSNaEfDl
+	uX9308zLKD0zaH1BX2/bN4u33BT98VWR6DCsl1Vln+e04h3DZtHZRxcMlFm0Vjj+QgJgNTbpcVA
+	C2Cxhz6yoxrL4DGjoNNsRGA6po1Hrodno596IT3zlBLR6Gn7aEsh4WEalKtXXahJNFmC1K31n2i
+	3PL02LLv6tVygsauniTfuUxt9ezuFIOTHFK/cxIcp68h/1+aiWmc7uAsyrCSwDcPRIxuczLoIIa
+	SiF3hTI61DabByXXcQdnrCpuqwVTxJk1LgmERb5An6kIF4AvrHIXoUmmtH9QS/FQXMdin7UTBGD
+	oImmdQ7xsONbNkO8s34sNjocHf69E+1dhipnrXJfG6i0CRjoxL3GkkSAoltVV9rVwg==
+X-Received: by 2002:a05:6122:3295:b0:5eb:2a6e:d3a7 with SMTP id 71dfb90a1353d-5ee8aeeea34mr11674738e0c.12.1795700908379;
+        Thu, 26 Nov 2026 05:48:28 -0800 (PST)
+Received: from localhost ([186.158.238.108])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ee8b555137sm20586545e0c.3.2026.11.26.05.48.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Nov 2026 05:48:27 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -69,51 +87,55 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 26 Nov 2026 10:48:20 -0300
+Message-Id: <DN56UDHKNLEC.22J1K2RGIUUJ0@gmail.com>
+Cc: <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+ <tmgross@umich.edu>, <dakr@kernel.org>, <daniel.almeida@collabora.com>,
+ <tamird@kernel.org>, <acourbot@nvidia.com>, <work@onurozkan.dev>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <oliver.mangold@pm.me>, <igor.korotin@linux.dev>, "Trevor Chan"
+ <trev@trevrosa.dev>, <vireshk@kernel.org>, <ukleinek@kernel.org>
+Subject: Re: [PATCH v3] rust: sync: make AlwaysRefCounted::inc_ref an
+ associated function
+From: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
+To: "Tran Van Tien" <7enlab@gmail.com>, <ojeda@kernel.org>
+X-Mailer: aerc 0.20.0
+References: <1795684556.6d661f19@gmail.com> <1795688552.31c01b07@gmail.com>
+ <1795689815.75b422ec@gmail.com>
+In-Reply-To: <1795689815.75b422ec@gmail.com>
 
-Alice Ryhl <aliceryhl@google.com> writes:
-
-> On Thu, Nov 26, 2026 at 11:51:14AM +0100, Andreas Hindborg wrote:
->> Implement the `Debug` trait for `Delta` so that a span of time can be
->> printed by a formatter.
->> 
->> The span is printed as a count of the time unit it is stored in, suffixed
->> with that unit, and with each group of three digits separated by an
->> underscore the way Rust integer literals are written. A span of 12345
->> nanoseconds is printed as `12_345 ns`.
->> 
->> `Debug` is implemented rather than `Display`, because `Delta` has no single
->> obvious format and the other kernel types that carry a unit, `Hertz`,
->> `MicroVolt` and `MicroWatt`, implement `Debug` only. Callers that need a
->> specific format should use `Delta::as_nanos` and print the result
->> themselves.
+On Thu Nov 26, 2026 at 7:43 AM -03, Tran Van Tien wrote:
+> In-Reply-To: <1795684556.6d661f19@gmail.com>
+> References: <1795684556.6d661f19@gmail.com>
 >
-> Thanks for addressing the earlier feedback! Aside from the 32-bit division
-> issue that Tomonori already pointed out, this looks good to me.
+> Incrementing a reference count must be a deliberate act, and every
+> inc_ref must be matched by exactly one dec_ref. Making inc_ref an
+> associated function that takes a NonNull<Self> mirrors dec_ref, which
+> is already an associated function because the object is freed when the
+> count reaches zero.
 >
->> +    #[inline]
->> +    fn repr_to_i64(repr: Self::Repr) -> i64 {
->> +        // CAST: `isize` is 32 or 64 bits wide on the architectures the kernel
->> +        // supports, so widening to `i64` preserves the value.
->> +        repr as i64
->> +    }
+> Having one half of the protocol take a reference and the other half a
+> raw pointer makes the pairing harder to review and easier to get wrong.
 >
-> Maybe we could add `impl FromSafeCast<isize> for i64` to
-> `kernel::num::casts` and use `i64::from_safe_cast(repr)` here?
-
-I can try to add that.
-
+> This was suggested by Benno Lossin.
 >
->> +        let mut groups = [0u64; 7];
->
-> Minor nit: since each group is `< 1000`, this could be `[0u16; 7]` instead
-> of `[0u64; 7]`.
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1177
+> Signed-off-by: Tran Van Tien <7enlab@gmail.com>
+> --
 
-I chose the u64 so I would not have to narrow from 64 to 16. I valued
-the cleaner code over the wasted bits.
+Hello! There is a patch that implement this [1] with some 'Reviewed-by:'
+tags.
 
-Best regards,
-Andreas Hindborg
+The last patch is from June, maybe it can be coordinated with Trevor
+Chan or you to take it over if it needs some updates.
 
+Regards
+
+[1] https://lore.kernel.org/rust-for-linux/20260628100731.64885-1-trev@trev=
+rosa.dev/
 
