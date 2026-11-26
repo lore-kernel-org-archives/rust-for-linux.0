@@ -1,97 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795714756;
-	b=1wfeMy84Z5ouo8XYtHJ3cQ91/iapKhvaFm9s6ZtezFk9GsGSX/jSQ+xhzO7GslkCgMuL
-	 l8CdKIo1VBV46q7B71aQMFuLeYbwZMcUUztOcHPEDx3KY+i1kbSGCwbKkrutnuOuLlMnA
-	 qp3Fj0WRLFpGQ0ypAajx634La16IaKBUEcuyghRUKa+SX99VA335cs6VyLxCjbIoy/ufO
-	 PBHpd3rziOz5sPypbXbIjAbVRao4iNh5zKoWeDWegSwcB6InSWAKLwZk6woYDiESu8/Hs
-	 TMvWnKK1UO1ymfBnkTR6bTv1xvor4EHpr/8rtSWSn7IZyBI9Pj35KIuHG2Kjfokcr5g==
+	t=1795714782;
+	b=wDf/dQen7U08H0oA9+BNDEFTnS4Ox5p3YFFpqJ/hYkK+SRppLNPn+rLT1fbmunKB4ny5
+	 EBdbTPQG9WMdoSbovCEB6nk5EpHByrA3e6UiBAE2oDlijX0XzV3ql4N1Sv/KYzUGyA5W6
+	 nqMNXVCqgYJTnAz6Oyijn3BhpY52vL5qtWDNauSfUVXHOP9TYIBxz0KgDFVDNMm26IYuP
+	 Hx1OaBNnf0wY1z6i4d/Wpa5IBfH5oX6WE0r3T+EReQjTAQIY7apBo3BCrBYgefynLVilK
+	 C26NR4sKh9ftPFOU4/Jdxs4QBfczPoA/bqgGHGnN/N5Ty3N+NChKkcT9a5jblChbPxg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795714756;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=i6Byx0vgKHEW7YL0wzB4/fobaPVqWn2TsKZAJnLVE6U=;
-	b=21S9p504PF6O62wtmvcmKOr6Zd3EUmCXEMmEcOC/oSjnFQ1RNk89J4yMFcdRaoeoadMI
-	 /xI8iAk4DaddsgrCAOTj42BTN7Y1vmhrzkxwQBkxcg1LT5q9m0UNBkvBhMHCR58KX7cNs
-	 sdzJRVJJb8qDc73msmL9LTuFckE5EOc9RgKz1nL++MmUPV2QxI8GZIv0t5zRddxed0lGR
-	 5N7qP9eQM72U9z8GYLQiE6cagV0hlQD839wuIO40RoturTDzxBwAZbset8rb8plVtGNKD
-	 MBhErn38fMTqeA/wiQPanJv/4oh4qAvT7shIB5Rc/4LGzkxST84EEwXqf+8W4B7ZY1Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795714782;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=R62Wh6i/3I5VkULThJ3xEjHzN2yym/9yj8wdhCqNoJQ=;
+	b=ocake+mcJvKlncxXAI4eTHulfCVGtuxQL7cg38og/Hfr2tzWxwZ3FEJ4B4g5SlSol4NB
+	 w5ZwMQsWtwYJBKB1YVumgS+Ik7o85TEQe0ZmmZnf8upXCjzZoIONMsU+Uwdj7CdWf6W6w
+	 hjnudM0xcKB6n0i5TrEiilvnYavnCd4BBFapvPh8Bvb7IOZ69fXoGg6G2HK2fFzE7BQkj
+	 sLpi5Ll4hoM2+F3dKEDpvKSbmhHDCee6I3bwwtUodCpEnFoy/sWikkO93YKN8KiuKCPrf
+	 /+KkCdv3jCAJCUEG8aX/iTBzwWt00GhcxzpriomBXLu9spNk75L0qKTeuz6UKAAgSRg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=uci.edu;
-	spf=pass smtp.mailfrom=uci.edu;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.43
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gWqcqI6a;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DDA606A31C;
+	Thu, 26 Nov 2026 17:39:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gWqcqI6a
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1795714782;
+	b=LZDJr16jNdttlJHmKfxTnmEmYFlmKU2wn9E1QgfvMMHbL5Ydg9A5KKM14BupwgtJZFQt
+	 rUJ6+r7YnQlOabm4TlvGd2dp3A/g7qqu5Gl+ffkEHlSFcawMvJ3gGDTc5Ea0S9nXa+XaV
+	 uB0zeA/P1UJD2+Wh3Ip2T175LGVWhYg12e5VzLxKP67xgixPRUYtasBGsLPAU3taPUC0C
+	 xdKhhNFIEFum2PIM5zI84m6mJQsAPtM/YpRzCYsWb0Di71b9thRatb01jbIWrqc/znP4F
+	 BGfzVt2VNnvxK5KR0+cM0xlQKpv7E9eBnjj5lZ/N9xKU6MCw4WGZDT1r5tMdohD+wSQ==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1795714782;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=R62Wh6i/3I5VkULThJ3xEjHzN2yym/9yj8wdhCqNoJQ=;
+	b=FppAy+S1qlAYn3ywepHx1OOcD5g6kYj0TDNzDnmnz0NGTK3kZ1nC2jhiSpxuSAOnGFAn
+	 Ib/QoCMRVMhXPXkvuxERrbH8jmN8QM2Ss62qxFTXT9p4e0f9LuVo26VoDEV7wwmlmxrJF
+	 8oNWe7oS227E+tCKs/4FtFvmvjGZxNpXvHYEi3F0UxPVBZegInT1y0ll8usHeLMtbwUW6
+	 zW/nCApgDBCz6HH6uX39u6wtE9vCRDiw3UYNRyBdYqpYz+yNuy5FoqvrKMm2n+V+lkL6e
+	 dhorVPETgMbOKk37A3e5DOirTxMtP/9hu2/TGuDGzZJpQc3GB3aQ1HJEz6B8wxErCRA==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C638606A31E
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 17:39:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1C638606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uci.edu
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-92157f2e8c1so55801596d6.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 09:39:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795714750; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SoUTZSggdg11riCIgiKxzLl6RJY0aKXSX8du/15RUsLT4otUtOfchdyQdYHxFEb1za
-         Uy9x3NzjesmxU7kfxZlv1emQipxTtoN5ovyxMybJiGtS50XP1EJ6qm8wg+9E+sGJl+fX
-         Qh8p0A+d9xfMoPfW0UsMpbs0gcopDCWKYg0OaC6CfWKpZQu4SUzQ0eub50ErKPwBljv4
-         DmxoV0byToCuQX3P6UhyJA50VX9yc3pEmCUPQV6Xp+8a4RTeQZOo+fpF3FzpOIgoB8Xq
-         /+qsjD5lPO/gDIvB40j81CJSYZ0cCS3XubsrkNEfiAkHJ1FSK1lZOKN3rF317uqKkJic
-         Ow3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=i6Byx0vgKHEW7YL0wzB4/fobaPVqWn2TsKZAJnLVE6U=;
-        fh=sDkcjpC9OPOrQiEcA88Xy48mCsuwPx/tbstdvuxn25s=;
-        b=GOzu+hnwKXzMsNmMJwRXpo+42re4t6WvBV/ZTRbCgD3vvusv5ble6U+utRSUyCFzqM
-         vrnGF+YvE8kOKCij2EleaOGg/isbTtjSldpmSvQ1XlbI/szVohgpW6EhqyOFoZ4hxHpA
-         fLkNXy8mHZR6Rij+i2mgHxTZ7N+HAp9Po1NLhhnMMiBYvvoCtT6P/0kcOsMWyo4mt142
-         1pFq7H8MwObaH27HdpTuQlMMNvZPZVlr+4X7mJ21KGPo5CnqeiKZAlmsVItSgcgzzaGK
-         8jgxBfkH4EHmO9jFr67KiY0Ufe00hXrVz+Qr/wVutstjpkhaNxS0yLRhj1tTpf9ncMar
-         5JlQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=uci.edu; s=google; t=1795714750; x=1796319550; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=i6Byx0vgKHEW7YL0wzB4/fobaPVqWn2TsKZAJnLVE6U=;
-        b=WAGRHCmHlEAu0arQWfqXzN06Ck0+vGe4GirOTzGET2xld0xirUELoptRM0pH8b3BUq
-         CuaEwO9oxSfWw5uIf33fw5sIi7ZSZ+/Nzz3zsJt2PA9HUmXkE1DQBOFrOEuocx0ya9ZV
-         W2nisvRHVsgjoYMp42NqYA4GDEVm99qMIqPlm4ssgpQYc3fWN9nom8mBm6cBTGYEdKxa
-         bCs4x91XpmKDHQ5V2zxvW2vqYazIBpPVOQxrY4I2fV8YUneSXwurZ7rs5qTPxsPXf5E+
-         +QmZEBop57q0QpB50Eg6ptV0qC2TjjxuKDNM5jZbEbnBM1ScCc8gFw65jA5bbHg8GnNg
-         v5Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795714750; x=1796319550;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=i6Byx0vgKHEW7YL0wzB4/fobaPVqWn2TsKZAJnLVE6U=;
-        b=heXjMwFA7ksxMNYiznGzMj9+fiXsRfO3fQRCsB3jOy8+4Nor2cfojpvfgBfbflislc
-         tWEZhI8QSEqF3proqA0CynQgWQqEG8X9l1j0jGkvpdM9HUiCKBPpwlIOE6olXT7UQWS6
-         OUf3azPWuOnJy+EMK8geRud1SgA1HVt+u+hbEZlquUfZRnBnEH3HziVb1Kk1AM+WwGI4
-         GkmCpAIyNbeyFG5LncGZd2Azj/55pJXCq0j5dvZWItZ5SpilLwu7T+5/HWIVSR5r5tsS
-         QpuoOBnhVrdMQHG85uFuj9NiasYI0I0afm+dJRUrxr4g18BEzxeFTHpL/OwYy5KZtDCP
-         Q5tA==
-X-Forwarded-Encrypted: i=1; AL+hErEGkFVXAKVqRP2FL+0DVSR+POSwXg0EF2H1A9o+ozUY/2l2C2PrZh/+iuz8vhxQXxamoVI+j5icpbagtxvJTQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8gcOXDkfjDfnrPRm0BZKCPCoV61sNL+wvzeYJFUgFHAAG8VV6H
-	5GMHDjwGoGdXgvB5LxQ8pFGy4kxz3yP+jjKt/rT8tj+pchSAFwi1sa2uQKETUvtUr5uhF3OvUjs
-	+AYmgnFL66PMh6kfJ5BLYMsLAhM4yTOdApgMUCs0Mfw==
-X-Gm-Gg: AZFdTZeYLc3II5lkXj2CFHa30+Pa8rOP+vgTv67yDdAn4iZUzRKkoXxOxX15AAw2kcs
-	+xVWquaEwGTOHfpPTzlOOafyDSZvHUiwR/ohbAv5NpGf3VpwZGmM0xOzrLtkngcksBP3KwFNs2I
-	f2xvmY18oJVSNMjJYHEbOsHGB/VnNcUb7bmTaUB7ux6iQENcKBhCpOwav9ajdqAQKp5DdFaSCSU
-	B1ZVE1mxn3zQVoGjs+S29t90/pywSG3pM/9Dbl0AKOzrfVDreueNgoeDAeMkU5cOj2WBcwXOT9D
-	k7VcaArSQq3Qb3xySm2QbrXk/LM7lcud/Fmai2lw3n86jGNz4QWHwpvSFIEG2RkUs4/ZBI6Qis1
-	WVDSQxUZNN67hDRTHaHqzOf9EGQEQ1SBlG0k3p3o/lBsHfUkn6YFCl9Kq8KdA09tf/bWrPA==
-X-Received: by 2002:a05:6214:248d:b0:920:ee20:af2f with SMTP id
- 6a1803df08f44-921349db00cmr432813936d6.6.1795714749912; Thu, 26 Nov 2026
- 09:39:09 -0800 (PST)
+	by smtp.kernel.org (Postfix) with ESMTPS id D3AF91F000C0;
+	Thu, 26 Nov 2026 17:39:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795714782;
+	bh=R62Wh6i/3I5VkULThJ3xEjHzN2yym/9yj8wdhCqNoJQ=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=gWqcqI6aZ3VwxGb7k0iYI2trdIY9f8yad8Fz24+jidbs9QeTHhlHLbmOyVDg5g8AY
+	 93o/3aqeALZqvP4hI+4AWPIcQ8vA3HTJ3qMLztpxwL6qg29CunnqmcHSNRjE72I3mc
+	 jSMFUJSrp2WpnF8EKsZ21OC70lgt/enZxzNF6V9RYaro47gsUIvbD0aMBabLaoOWTy
+	 C2n8hpvsDoFoSJV79NCcb6KzS+Nd/yfP8B4HFfKlrcoZEt25zoDFppFoDz1os3uxzr
+	 UsshfySTszN6spRjWz2Kg083lrm4qOc92qduGXeuDcCwx5Hty83pmJJJd2oMZz4pj6
+	 ZAntm+Mn4RnJQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 4093D4D774;
+	Thu, 26 Nov 2026 17:39:37 +0000 (UTC)
+From: Peder Bergan via B4 Relay <devnull+peder.bergan.gmail.com@kernel.org>
+Date: Thu, 26 Nov 2026 18:39:33 +0100
+Subject: [PATCH v2] rust: drm: enable standard fdinfo for Rust drivers
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -101,35 +82,101 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <cover.1794600927.git.pgovind2@uci.edu> <CGME20261113202542eucas1p27ba92593376041c476afa9c5286205cf@eucas1p2.samsung.com>
- <caddec5478a0d39a73152247a60bc21b3c609cc7.1794600927.git.pgovind2@uci.edu> <9ee41556-4a24-47b2-9db3-9665048658eb@samsung.com>
-In-Reply-To: <9ee41556-4a24-47b2-9db3-9665048658eb@samsung.com>
-From: Priya Bala Govindasamy <pgovind2@uci.edu>
-Date: Thu, 26 Nov 2026 09:38:59 -0800
-X-Gm-Features: Aa3M54pu9Qa4ZZ6_EIlNbo-KxPT-Rg77lhi2tuQOtAvg_t6FJtZeW7oVBArQtVU
-Message-ID: <CAPPBnEbnBPsYxE5ZXPkhGfueMoYD6DAH7dDrR=wRcq_mD686fg@mail.gmail.com>
-Subject: Re: [PATCH 1/1] rust: pwm: reject over-aligned driver data in `Chip::new()`
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: ojeda@kernel.org, ukleinek@kernel.org, boqun@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
-	daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com, 
-	work@onurozkan.dev, elle@weathered-steel.dev, linux-pwm@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, ardalan@uci.edu, zhiyunq@cs.ucr.edu, 
-	dzueck@uci.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261126-fix-drm-rust-fdinfo-v2-1-b1653edf1e4f@gmail.com>
+X-B4-Tracking: v=1; b=H4sIANRuCGsC/32OQQ6CMBBFr0K6dpQBIuDKexgWpZ1CjbSmBYIh3
+ N0Wo0uXb/Lm5a/Mk9Pk2SVZmaNZe21NgOyQMNFz0xFoGZhlaXZGxBqUXkC6AdzkR1BSG2WhIix
+ ViVLWImfh8+koaHv11nzYT+2dxBhT0Wi5J2gdN6KPp2/w9CsbWsYo9tqP1r32fTPG4P8pMwKCw
+ FQVmBdFVclrN3D9OAo7sGbbtjeTtMqY8QAAAA==
+X-Change-ID: 20261119-fix-drm-rust-fdinfo-8e17f71dd9c3
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>
+Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Asahi Lina <lina+kernel@asahilina.net>, Lyude Paul <lyude@redhat.com>, 
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, 
+ Janne Grunau <j@jannau.net>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795714775; l=2361;
+ i=peder.bergan@gmail.com; s=kernel-contributions;
+ h=from:subject:message-id;
+ bh=Q2j2ETDtWfIZSvsCcbvYzOAWgDMeNdy/ivFkVQ1rlgI=;
+ b=YYMlzYjjLBwQBVI/TNvkEOL/k8jXJiwB84BgOOL63cPbtrPY3kuMOpeybnCbtCTlUNTMtE5iS
+ de4hmC1qM6jBEaYPOQWBjk4ig7ze5HxEge8udesd6l5BdVExQZ7ioNV
+X-Developer-Key: i=peder.bergan@gmail.com; a=ed25519;
+ pk=39790pn1YZCulHBoUG1uiQI1Hm01EvhBEa2zVrS/yN0=
+X-Endpoint-Received: by B4 Relay for
+ peder.bergan@gmail.com/kernel-contributions with auth_id=1395
+X-Original-From: Peder Bergan <peder.bergan@gmail.com>
+Reply-To: peder.bergan@gmail.com
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 25, 2026 at 7:42=E2=80=AFAM Michal Wilczynski
-<m.wilczynski@samsung.com> wrote:
-> The C layout uses PWMCHIP_ALIGN, which is private to core.c. If Uwe
-> agrees it might be a good idea to move it to include/linux/pwm.h and
-> assert against that, so the two can't drift apart.
+From: Peder Bergan <peder.bergan@gmail.com>
 
-Thanks for your comments. As per Gary and Uwe's feedback, I will
-shorten the commit message in the v2 patch. Just to confirm, for v2
-should I only update the commit message, or also move PWMCHIP_ALIGN
-into include/linux/pwm.h?
+DRM monitoring tools use drm-driver and drm-client-id in procfs fdinfo
+to identify DRM clients. The common Rust DRM file operations leave
+show_fdinfo unset, so these entries are missing for those clients.
+
+Set show_fdinfo to drm_show_fdinfo. The DRM core helper emits the
+standard client information. Rust DRM does not yet expose the optional
+driver-specific statistics hook.
+
+Closes: https://github.com/Rust-for-Linux/linux/issues/1266
+Tested-by: Janne Grunau <j@jannau.net>
+Reviewed-by: Janne Grunau <j@jannau.net>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
+---
+Danilo, VTABLE.fops points to UnregisteredDevice::FOPS. Procfs calls
+FOPS.show_fdinfo, so this patch installs drm_show_fdinfo there. The helper
+calls VTABLE.show_fdinfo when the driver supplies additional statistics.
+
+Matt Mireles reported the missing fdinfo fields on an Asahi kernel and
+suggested using this helper.
+
+Janne Grunau tested v1 with the downstream Asahi driver on Apple silicon.
+
+OpenAI Codex assisted with coding and testing.
+---
+Changes in v2:
+- Rebase onto drm-rust-next and set the callback in UnregisteredDevice::FOPS
+  now that the file operations have moved to drm::device.
+- Drop the Fixes tag and clarify that Rust DRM has yet to expose the
+  optional driver statistics hook.
+- Add the Reviewed-by and Tested-by tags from v1.
+- Link to v1: https://patch.msgid.link/20261119-fix-drm-rust-fdinfo-v1-1-c10f4134488d@gmail.com
+---
+ rust/kernel/drm/device.rs | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
+index 1c5b0abb492be..c460ba3706bf9 100644
+--- a/rust/kernel/drm/device.rs
++++ b/rust/kernel/drm/device.rs
+@@ -273,6 +273,7 @@ extern "C" fn fops_open(inode: *mut bindings::inode, filp: *mut bindings::file)
+         fops.read = Some(bindings::drm_read);
+         fops.llseek = Some(bindings::noop_llseek);
+         fops.mmap = Some(bindings::drm_gem_mmap);
++        fops.show_fdinfo = Some(bindings::drm_show_fdinfo);
+         fops.fop_flags = bindings::FOP_UNSIGNED_OFFSET;
+ 
+         fops
+
+---
+base-commit: 4325f4aad9727a6e8e7f10c5d2ebf490470cf938
+change-id: 20261119-fix-drm-rust-fdinfo-8e17f71dd9c3
 
 Best regards,
-Priya
+--  
+Peder Bergan <peder.bergan@gmail.com>
+
+
