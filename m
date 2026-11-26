@@ -1,102 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795724272;
-	b=rfeX3x15Pv+kvXkZ0gUvUwc1xVdViUYk6Og31IwOr18X7S1gODnjdm4NWNkDVjxTLxkT
-	 dsdiBkthDbs/WA2OU2n0Qok6FsmHF7c3ot61q+IU4JBWZkWROgQapxUW0pRk8oRMKOZgc
-	 pVN+iQjpwxvBMSMOE1KgDygOUq+NqvJY0n1x6kqEPAskB39nW5S/TcAQce7xD1geJWLEQ
-	 BmfLtdluolOMeACAuw6Rx8esQpB5+ftT/3Jd5MrQ19F0CPWNrVJ26k71RobDpcTBS4PR1
-	 VgmVlh+1CbQcl/Ex6ploDaU6jUF77PBcyBvuP6eNDjZNGoedJTE478jsdneryYsykeg==
+	t=1795726038;
+	b=qEDaC7r7cpU1IhHI5JnVr782BZIvAd+nMiX5/UUHIg9bvynMYEh7hepGlluS6PVeSASo
+	 qXaUksmZQiYiCZH54Xelftq2ztq1fR1xwptZzreucev/ZJxp4UW4ooyvXp66B8UHZCl1D
+	 sg/ha5Po5bmhwenYsbnl6BTclhZH2Vp04cTBz8Ce6UidU3Lr8/8NnDIdoXrpUtk3IcT3d
+	 HkI/E7EmRVgDwYsCr3UKG8x459iInpVbYa6nB0Sloh3ZyY4mmOP71WIeFGH0AGsGS+vjB
+	 7LD5YS/v1ZZiew/11n7n5GCGM2dDpLEX+0OdXPBus39gAXoh2wJ5ohT/G69tvJ8Vecw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795724272;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=Xm3q3UN6DnQimxetmg57VpsJBbjQoWCdFICvXmCUsG4=;
-	b=ydzfGv6OPncK9cnueUr/v8us/hxcFeMiUODq33WT99tUL+M5IcLaKgcjssMnNpCCFwlG
-	 SVRKaj7hUpsGwdJh6ehmlt3RctElbj1eToLo+paj5atg+Vl3IUs+wkx/EKRuD3wQ6DgRp
-	 5fQ6n9lOqVdzKZ8Ap9dizxbQ80Bqlwr4/Nfi7sXgZ2GgiT/8UzmXsIH6MxEL7GzrMF0kz
-	 cPccHM7TkRlaf5UjAY4AttTXYdIkjZYrN5pBG6vTfCz4JM4JIMsgIkqBGp5RCp0KHflit
-	 v4yWi4uvDN6YhaBcAlBwSC2MHzTZe87nTl23khJ8BvRWJ3fiP0ipwKmi/emo1aoNYMw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795726038;
+	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-ZohoMailClient;
+	bh=7skOuYzYPTry/TblpYJR9UAACaIhegaKxC50HTc/l38=;
+	b=yv9HtW06mOhVPNDikRkGJz589VK6IbCvWJFSMKrxhBVhAg2iQXt1llciO6fdJMvMxBfZ
+	 ktiljrbOVsgS2kd45GxhKO9SaWAQRi3Fnlhknsq5FMLgHQs+MrZIVtJmuzqOoP9tWTVfW
+	 e+97XpMcC5s1vbd2IGrUZznXf/BcGKxOd2ZGvrCR+TdeSsWq7R+xi0GxPnrwbeUPIOJgu
+	 QtpwC28QH5U2ni18+Es+Cj0pgq/L1A+M9KbFNE/k9idkMC7XKc5npwl3lliC/vDmSczMY
+	 A6h7jnir3oTXfsJFI497Mrb4Hk+zufwVTcidGOwD2y4K+JVlWqhgXzNVWfnCFu5GGGQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ct0LcuIz;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.49
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Ds91mDRD;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91AA8606A31C
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 20:17:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 91AA8606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EF9606A31C;
+	Thu, 26 Nov 2026 20:47:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3EF9606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ct0LcuIz
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5c0f0e04628so595934e87.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 12:17:52 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795724271; cv=none;
-        d=google.com; s=arc-20260327;
-        b=MdPgXDXeROD+oC4Huy1MfPmvZKPJ+SiTbGKUY69Sh4dcg/PBO1pxPylT7LA3r9z0eo
-         PCoRuMnVuBjBZbcV65h1rnrq1VFImtxLq7ac4pX2AOl42Odi4Z4CGjd+7p941nrn2C6w
-         xj1HlKL6TBLAv3zMHCos11ojaVY67o8AK7K+wXSxUXqBlWmHq0iO6RFTS25/ayqusrA0
-         dZKAJtmdGWc21St4Bs+TNbC2N9u7XUQ1ap091eCfqv2RftdjoJjEl6Th0vwzRaOsc4nX
-         B1TWSB2EsXD/iaQLDE3JK6Q7tnPHymCuAvEY+KPsalwSUUJJweS3WKZA6+EIsVARZl21
-         Z9lw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Xm3q3UN6DnQimxetmg57VpsJBbjQoWCdFICvXmCUsG4=;
-        fh=vIBevrRSHD1pltHrjs/8Z0tI8bfjtqdbNSD0pqZxaEI=;
-        b=sZnhxvHIReKBU5+YT2lOYR8O96uRwGoNWmdAiRSMKnG0gxWDNm9o4a/I5zONBRsvge
-         pBpZ6jO/xawSDtbjqtDT1BQ7gJhgS32wWAayfP1hAv9ezqXYqnRSa1LycedECQ31kAp/
-         cUsYkCAnpd9jz7glkZEzDOdYUTbCaEl2HMRW1ndb1hXcvGDmKUSzADcXXqy/Oin/24X0
-         4Ln6iUqcJkOPZ+D/TjZLYOMuoQtNeHvR6TPwxQhRZpfX9uJSSkBLdszftARCEbn4HbXP
-         4lZVHX+S45cNHajCSOkDWTEfCxinvLgwjlR9gPdDv4iEgFC6mSww0fhggEvr981edDeC
-         4Mzg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795724271; x=1796329071; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Xm3q3UN6DnQimxetmg57VpsJBbjQoWCdFICvXmCUsG4=;
-        b=Ct0LcuIzKRv0h45YFo/ToRcsQ8u3Yi1OpB6Be7V9neRnrkqExRqeGcMJe1j55xcWGx
-         9ZBOPRGoLRO5pg9FZnGhuMj7nxoD9xidNgdEbnwIVRvWJNSipFqnZX8lqsWLjp8u0G1B
-         x2UNqniHWTyv+/Dl4ilz9ufXmEYl2V9C60CAYPMwxWwe2tLOLgALRUQjr2KpDzNDUS/2
-         DQa8sDDuwU1ZKzktctb+dOFk6uYPkPHiDqv3GHJ2tKuGDIgN+dadiI8OPvaATh4BWzVR
-         kKgDw0/AArSROg8TtCCtiCW0LhbKkaMvvhSt8DPlMzzg5yV2/DFCGNVYUdH4bj5zQhRx
-         nhew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795724271; x=1796329071;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Xm3q3UN6DnQimxetmg57VpsJBbjQoWCdFICvXmCUsG4=;
-        b=SscJNhhWSb3f8EaHecIjhZq3X2DZhYOQYVfTMaCkHhHNrMDd9uFGOssKEK/5xIMufJ
-         JbLGA/ZT54PdfkiQscGipLjQtIZ7INfOhqDz60Iujd4nQ4Q7ipT3bluDKNbecDf8djkH
-         QfgYDqmc1Ho+v4krBZ9HGGOThmhxcz+i1GMEA696xMHfei/cXncKZ3eKEfI/ZV3QHPgf
-         4K321aJmbz4K5kLLZKmqoO6PVQvrW9IJucV4rWIhQsJ+QGwLW626UvcS3L2gy9lq8VSu
-         jCtR7clTP1/Odcx6E6TY1uz/Xt1VjQEQX5N6OthvyRR+r7Dy/eAv2JzM51FfEKGxVV8L
-         fu2Q==
-X-Forwarded-Encrypted: i=1; AL+hErEB1ZY4u4/cZIXap4ucsKKA9ivy4pgxNPrFRe2UeaJltl5uZbI4mDUX+piviPApOA4rhrs4TthvCBdb34Fh4Q==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+oO7j5V1qpN66JThqtEc4iZyFDsAaH2MLmC6RL9Y5dfZfYk1D5
-	c4RRGAUW4Q0TE9ttWri5HV9rvTOQX2kdSITAET8f8docXzb+jl4ZHhoZIfPXqrfinlYs5Bl8gGg
-	wY6LQpnr5BfbR6SPQOKLyGYLPAg79h6lWjw==
-X-Gm-Gg: AZFdTZeL5dhQnTabUk4AjAygK4iD/atYE/2WyVC/FghzeveEwOBoglOUvmnanrfDpNv
-	0gdz/ccozLsbxf25xFXhCj6GPg+ikzBhrWxbh/9PlgQ6o8ZpFaw/+bITs0Edr5I1TWkMHcSXjfX
-	MHA5lgMXGzsZV0Id7npXD3dFVcH3nBb+Y79atCC+x3Zo6w23BbMKxLEwcxvPsb6soMFNVAbQvRx
-	4CyYiVN9YobmcU4DasWhCA2QbON1HHt7B5cUdjE51vxFTYqX+Ud3nGmONzMdfLFbjkCaxw8K2VI
-	85G+Vs7MhYfmnRfbEzr+AZn3RIz7LW4X8uPSN672eI4yiVI8FCzpV6sL8r3gM+DKwLBY7ympBHG
-	lnl6bYfGApiU3DcUeQDRyMWwxntriz8Rl5+prlS+nGDJvD0MyAEn9eW7TVqjnCcQ8TL2AV0xJlF
-	ShwuMduY+niUKxNGN51NIxhFd8G/5VxBKvYuLXyqbLdLtjoeqoGHbzDg+HsvAO/VOaQL7pg75Mi
-	yu/lrhJt0tdWnPMEE+SnhdcrY+0PHGcO6VgJNRZRPTuqpbQ5CNGhEskCfYZy3AwrP8+wZLYmg==
-X-Received: by 2002:a05:6512:2514:b0:5bf:a66f:e5e with SMTP id
- 2adb3069b0e04-5c1bc57989bmr8249858e87.0.1795724270636; Thu, 26 Nov 2026
- 12:17:50 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Ds91mDRD
+ARC-Seal: i=1; a=rsa-sha256; t=1795726006; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=LJMlbpytMkIyPev2CDE2n1g89s8TKpLiiaXHOrCPCLdqfEUdGeg4lFNi97n6GF/pKewDodXH+oJvtIJNpCQnviSyiERsujRGBw4pZHYSAcwLpIU5w81FsaElFCU7zdcIUfS28QPMx7JYnvAroUjqmMd8tSy1yqJZlrpq9JT11k8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1795726006; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=7skOuYzYPTry/TblpYJR9UAACaIhegaKxC50HTc/l38=; 
+	b=Cn46JgpsOtaK0NN/shdfZXr0OMUmVXLjIeY0JGipQ4eXXUoXSTR6TCLtx0ocgj3wR6lzeWLTlr+2348taENoIPPiKNnL3+oqI+j/nIr3mOhid/g7MvyjR76AnCs2QVDbv7ZYfBieD+8LsC8cTICRmWSwtvD9cilzYSZrA4oGi1o=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=Ds91mDRDQmnDJYklSX21AT3u9i8jv8tNbnuMxmAegeCzPQBx3zcaR6NTdeo1nufRBfoWZ/6zVSSA8qcOrajCCoa8g9ZkCz24Ms9Znt2r2Pkcf6BhWXZQMoLcekZhfcnHeFHDdvd5PH1zUSHtjzxiZqDuR2bmXIojutFfViRYDSI=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=7skOuYzYPTry/TblpYJR9UAACaIhegaKxC50HTc/l38=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 179572600353920.21911314558963;
+	Thu, 26 Nov 2026 12:46:43 -0800 (PST)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Date: Thu, 26 Nov 2026 17:44:40 -0300
+Subject: [PATCH] rust: drm: gpuvm: store the driver data in UniqueRefGpuVm
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -106,36 +59,161 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261126131456.87524-1-ojeda@kernel.org> <DN588MZEFFDT.2Y4U95SAKPKUK@garyguo.net>
-In-Reply-To: <DN588MZEFFDT.2Y4U95SAKPKUK@garyguo.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 26 Nov 2026 21:17:39 +0100
-X-Gm-Features: Aa3M54oswV5lnJaWrl_I7DzaKOuGF1A-he8iYhsPwLjSRd427UdhzZBlOUROIaE
-Message-ID: <CANiq72ngsLjcJQK-Tyew1JVW3rh+A9=eUFR5h8c4Sji-FbAN8g@mail.gmail.com>
-Subject: Re: [PATCH] rust: init: clean Rust 1.102.0's `clippy::large_unopt_stack_frames`
- lint
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Benno Lossin <lossin@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261126-gpuvm-data-in-handle-v1-1-47b1e9928f20@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqEMAyF4atI1gZMkSy8yuCittGJOFVaFUG8u
+ 3VcfvDef0KSqJKgKU6IsmvSOWRQWYD72jAIqs8GUxkmMozDsu0/9Ha1qAHzxE+CrqurmiwzCUO
+ +LlF6Pf7ZT/s6bd0obn1acF03PoS2IngAAAA=
+X-Change-ID: 20261126-gpuvm-data-in-handle-cb4041a661e6
+To: Danilo Krummrich <dakr@kernel.org>, 
+ Matthew Brost <matthew.brost@intel.com>, 
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+ Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Matthew Leach <matthew.leach@collabora.com>, 
+ Deborah Brouwer <deborah.brouwer@collabora.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.15.2
+X-ZohoMailClient: External
 
-On Thu, Nov 26, 2026 at 3:54=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->
-> Given this is called "small", would it make more sense to just change the=
- size
-> to, say, 128 and keep the stack init?
+GpuVm<T> keeps the driver data in an UnsafeCell<T> inside the
+refcounted allocation, and UniqueRefGpuVm hands it out through unsafe
+accessors. Only UniqueRefGpuVm accesses the data, so it does not need
+to live in the shared allocation.
 
-Sounds good to me as well. I can send a v2.
+Move the data into UniqueRefGpuVm, which turns data() and data_mut()
+into plain field accesses. GpuVm<T> keeps a PhantomData<*mut T> so that
+it stays invariant in T without the UnsafeCell.
 
-> Actually, I wonder if we should do:
+The data is now dropped with UniqueRefGpuVm rather than when the last
+reference to the GpuVm goes away, and UniqueRefGpuVm is Unpin only if T
+is.
 
-Hmm... but then there is no fallibility for the example, no?
+Suggested-by: Matthew Leach <matthew.leach@collabora.com>
+Suggested-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+---
+ rust/kernel/drm/gpuvm/mod.rs | 35 ++++++++++++++++-------------------
+ 1 file changed, 16 insertions(+), 19 deletions(-)
 
-Cheers,
-Miguel
+diff --git a/rust/kernel/drm/gpuvm/mod.rs b/rust/kernel/drm/gpuvm/mod.rs
+index 23e73da865fb..d3b11e2a39d5 100644
+--- a/rust/kernel/drm/gpuvm/mod.rs
++++ b/rust/kernel/drm/gpuvm/mod.rs
+@@ -28,7 +28,6 @@
+ };
+ 
+ use core::{
+-    cell::UnsafeCell,
+     marker::PhantomData,
+     mem::{
+         ManuallyDrop,
+@@ -62,22 +61,21 @@
+ /// # Invariants
+ ///
+ /// * Stored in an allocation managed by the refcount in `self.vm`.
+-/// * Access to `data` and the gpuvm interval tree is controlled via the [`UniqueRefGpuVm`] type.
++/// * Access to the gpuvm interval tree is controlled via the [`UniqueRefGpuVm`] type.
+ /// * Does not contain any sparse [`GpuVa<T>`] instances.
+ #[pin_data]
+ pub struct GpuVm<T: DriverGpuVm> {
+     #[pin]
+     vm: Opaque<bindings::drm_gpuvm>,
+-    /// Accessed only through the [`UniqueRefGpuVm`] reference.
+-    data: UnsafeCell<T>,
++    _invariant: PhantomData<*mut T>,
+ }
+ 
+ // SAFETY: It is safe to send a `GpuVm<T>` to another thread: all data reachable through it
+-// (`T`, `T::VmBoData`, and the GEM `T::Object`) is `Send` by the `DriverGpuVm` bounds.
++// (`T::VmBoData` and the GEM `T::Object`) is `Send` by the `DriverGpuVm` bounds.
+ unsafe impl<T: DriverGpuVm> Send for GpuVm<T> {}
+ // SAFETY: It is safe to share a `&GpuVm<T>` between threads: `&self` methods only alias data
+-// that is `Sync` by the `DriverGpuVm` bounds, and any thread may drop that data, or upgrade the
+-// reference and ultimately drop `T`, which the same bounds make `Send`.
++// that is `Sync` by the `DriverGpuVm` bounds, and any thread may drop that data, which the same
++// bounds make `Send`.
+ unsafe impl<T: DriverGpuVm> Sync for GpuVm<T> {}
+ 
+ // SAFETY: By type invariants, the allocation is managed by the refcount in `self.vm`.
+@@ -132,7 +130,7 @@ pub fn new<E, Ctx: drm::DeviceContext>(
+     {
+         let obj = KBox::try_pin_init::<E>(
+             try_pin_init!(Self {
+-                data: UnsafeCell::new(data),
++                _invariant: PhantomData,
+                 vm <- Opaque::ffi_init(|vm| {
+                     // SAFETY: These arguments are valid. `vm` is valid until refcount drops to
+                     // zero. The `vm` is zeroed before calling this method by `__GFP_ZERO` flag
+@@ -163,7 +161,7 @@ pub fn new<E, Ctx: drm::DeviceContext>(
+             )))
+         };
+         // INVARIANT: This reference is unique.
+-        Ok(UniqueRefGpuVm(aref))
++        Ok(UniqueRefGpuVm { vm: aref, data })
+     }
+ 
+     /// Access this [`GpuVm`] from a raw pointer.
+@@ -298,29 +296,28 @@ fn sm_step_remap<'op, 'ctx>(
+ 
+ /// The core of the DRM GPU VA manager.
+ ///
+-/// This object is a unique reference to the VM that can access the interval tree and the Rust
+-/// `data` field.
++/// This object is a unique reference to the VM that can access the interval tree. It also owns
++/// the Rust `data` field.
+ ///
+ /// # Invariants
+ ///
+ /// Each `GpuVm` instance has at most one `UniqueRefGpuVm` reference.
+-// `Send`/`Sync` derive from `ARef<GpuVm<T>>`; the trait bounds make them correct for the unique
+-// handle's `&mut T` access.
+-pub struct UniqueRefGpuVm<T: DriverGpuVm>(ARef<GpuVm<T>>);
++pub struct UniqueRefGpuVm<T: DriverGpuVm> {
++    vm: ARef<GpuVm<T>>,
++    data: T,
++}
+ 
+ impl<T: DriverGpuVm> UniqueRefGpuVm<T> {
+     /// Access the data owned by this `UniqueRefGpuVm` immutably.
+     #[inline]
+     pub fn data(&self) -> &T {
+-        // SAFETY: By the type invariants we may access `data`.
+-        unsafe { &*self.0.data.get() }
++        &self.data
+     }
+ 
+     /// Access the data owned by this `UniqueRefGpuVm` mutably.
+     #[inline]
+     pub fn data_mut(&mut self) -> &mut T {
+-        // SAFETY: By the type invariants we may access `data`.
+-        unsafe { &mut *self.0.data.get() }
++        &mut self.data
+     }
+ }
+ 
+@@ -329,6 +326,6 @@ impl<T: DriverGpuVm> Deref for UniqueRefGpuVm<T> {
+ 
+     #[inline]
+     fn deref(&self) -> &GpuVm<T> {
+-        &self.0
++        &self.vm
+     }
+ }
+
+---
+base-commit: 94c9ad2fd7a15f58782c50e471397d1efe6b6363
+change-id: 20261126-gpuvm-data-in-handle-cb4041a661e6
+
+Best regards,
+--  
+Daniel Almeida <daniel.almeida@collabora.com>
+
