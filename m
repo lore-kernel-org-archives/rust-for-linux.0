@@ -1,61 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795694436;
-	b=IUKI0LxQMnh6VZAqX9tZjadfGwc2rvsHEX2O7YGkil0MwaxJTMAeiQ+BrscxfjmrCspS
-	 rdQP3ArZQK+178xhHw1B1eWB23o5ZevlpJFpqi9reBQe3GtZuFuFhSW2nFx3aYlc6zrrL
-	 f2x68giZnsSzmL2W1WCiZG+O9Zm0AvQtYIzil+snW1xMvqHBdbvIPbEPldpe9tn39vYcv
-	 Dw+l28ZlxpKZm3u5Ki5PuHIzOZh3aCdxSi2EHMPWnF7jt3iIX6GspQ7XM8N45RVCbX7kG
-	 gcbSibtrXjYuw+5kWXwqo3l3eOTvtX5CSvbdDRpq5vjif+DLIyfPNbkh3cFSFOOeQew==
+	t=1795694520;
+	b=g1EkQJu1Ksbrpt9TRd8RzrUv2nWmGJ6pJ2DihnKUrfLN9rrslJxm9iAFlq5gEKLSzhFA
+	 4ycrrzfGsC1SvjCqxN1zYc1YoTSsrwlGUloHakf3J9+T4Ub20hm5z1phSuLPbneCzQ8SR
+	 zd/hdjoL9cT96FKKObvKa4CH3uQYrBtiSCN7WXLeRPO2qjZ1xU+6QF3FzF8C0F20zITVw
+	 XieytZ/ueQ2JF+vvjeKOSlnuW4Sq3Jlsmkn0/zkZ/IkvaPe1gk9pS+V0ke7F1El8zOQmT
+	 IE4kDXC3Og06uWGwyKK/Td8HYfzaIRX/5+BNze2A2SD5YAg/PwvIKKEGSCb7DVB42sw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795694436;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795694520;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
 	 Date:Message-ID:MIME-Version:Content-Type;
-	bh=NeVecizEzCgloQzgLcrNc914RsWbWV3K83+bGSP1TQo=;
-	b=QhVH2k12TaR89zftRylnC32ZTFa9w+RZQjg0S5IxjksD1NlNhbzgLHARwJl7ZSXTRq95
-	 KOpSjeJ6JYZtuYfnIdwq+aq8K26rIIC1DX+fAoOLU5iXez/m/Rh637dBKXD+JsICrNPWI
-	 v55Y6LYRzK41JkWA6TlBZr3bRoQgnWvShChf81s9sZdPwxzrQO6pkRCRrEVra+zDxDPnJ
-	 QF2HUCHbfFbljTLwrvhcc6khtoNJa9opilM3SqCphO4AZOEnpA1N6eAP0Wgm9wyNHe6va
-	 LSyfSM8pN/cdg7KBedhWy71Ea1o4BZfy8EIaVH3STAngb59UaAvqrQJ+H2m/Y+CNIDQ==
+	bh=rwLLekRJb5EKbWEl2SvllkzjNL+TR1iW3hAQliLLc/I=;
+	b=kXCzVYpGmFm7j3z41MIhLVvdVi968vKWzuIfIPMrOwduiXDfXbSP0+ULneVcfE4ij2wc
+	 SoxCsy5jDKzEnzujXmMZUKqhmzumZAJKfjoVLUuE6R6Q/gQ/NchwHRMtlovq+djDP7LfB
+	 cut5S3zaXknp8AnzGpbBkpUoK4PTt+8bvDh7Dc323o6Xt48lEmtfdGpgo454suH/lZR2T
+	 2BDRxA+hiEPEB0mP4UJGfwwgEArfeFWDRwsLg04+rZH20XtBSMdp+QFwJe0VMxyCKpiXg
+	 X6EnkHrZr/fIhAInCQOr8GDkiHNDUJy4aDXuKI4AouUgu+gO8df4Vv1fvP0yVxlfIHQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mhzb80Ow;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XF+n74bX;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2F5606A31C;
-	Thu, 26 Nov 2026 12:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D7F606A31C;
+	Thu, 26 Nov 2026 12:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mhzb80Ow
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3661F000C0;
-	Thu, 26 Nov 2026 12:00:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XF+n74bX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D1B1F000C0;
+	Thu, 26 Nov 2026 12:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795694435;
-	bh=NeVecizEzCgloQzgLcrNc914RsWbWV3K83+bGSP1TQo=;
+	s=k20260515; t=1795694519;
+	bh=rwLLekRJb5EKbWEl2SvllkzjNL+TR1iW3hAQliLLc/I=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=mhzb80Ow8ANuEJkPFj8CzgJRVsIWYnVzXqd8oLrrsF8pvo8myS301oBZOA21us39/
-	 RTyya+8j73ldZgTXDL0mYjlsPqyMgEJs74f0OaucbmNqKPci/aDTFtAcr1M1qbCR14
-	 MOPvXqs2XjR0WwZqLrcFFLUU4bhgctc3al5iQwx48T676s0dL84mTltDZ5N2rXzYlt
-	 8c4WXDXfeBldPJSs4GFUaSF9EeT12FgH5TB00VhLyoIs3g5kQ05xlxkFfFdsPxvisX
-	 5rQMFoRcaRnUIlfWZ5HnVGyIkJOZIft00roBs9MjjIK4/0DyYfyDUwJGA04voSXclc
-	 vD80/3hjou/rQ==
+	b=XF+n74bXNHMwL2XNMo2pWipQHD2kmZUw6j8pPKmXb4RXS3gQDbh/WqOVhZZsl+q9L
+	 kZXGUl6NnLNJ7n9+J2WXkIwcug1BvO4Y7FxqjGxHeoWNP66HykE6biCvwoyr8TXMUY
+	 HnZ1QkXpBjyRk4t1vdgUibi7MipldgOpM2a0dtMa0J/JRhz6n2WkL6gJGVBUXJMnqS
+	 Qg4AKADnzVptSsgWx4uos8XI2HHnfX6PlGw7STDIfpWvqdWCX4APRZfCCpH/JEyAGp
+	 cX/f32Prb9GEsgV6HYeG5JOWXWjNS+DMIdTT0R2CT8ctHKkew5U2MJU+mLSOy/jqOi
+	 VnOGp6aE1BzTQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: FUJITA Tomonori <tomo@flapping.org>, fustini@kernel.org,
- guoren@kernel.org, ojeda@kernel.org, ukleinek@kernel.org, wefu@redhat.com
-Cc: acourbot@nvidia.com, aliceryhl@google.com, bjorn3_gh@protonmail.com,
- boqun@kernel.org, chenhan0017.work@gmail.com, dakr@kernel.org,
- daniel.almeida@collabora.com, gary@garyguo.net,
- linux-riscv@lists.infradead.org, lossin@kernel.org,
- m.wilczynski@samsung.com, tamird@kernel.org, tmgross@umich.edu,
- work@onurozkan.dev, linux-pwm@vger.kernel.org,
- rust-for-linux@vger.kernel.org, FUJITA Tomonori
- <fujita.tomonori@gmail.com>
-Subject: Re: [PATCH v4 0/2] rust: add u64 division helpers and fix the
- pwm_th1520 32-bit build
-In-Reply-To: <20261118224826.2491684-1-tomo@flapping.org>
-References: <20261118224826.2491684-1-tomo@flapping.org>
-Date: Thu, 26 Nov 2026 12:59:02 +0100
-Message-ID: <87tsl3u7ll.fsf@t14s.mail-host-address-is-not-set>
+To: FUJITA Tomonori <tomo@flapping.org>
+Cc: fujita.tomonori@gmail.com, frederic@kernel.org, lyude@redhat.com,
+ tglx@kernel.org, anna-maria@linutronix.de, jstultz@google.com,
+ sboyd@kernel.org, ojeda@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, boqun@kernel.org,
+ daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com,
+ work@onurozkan.dev, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: time: implement `Debug` for `Delta`
+In-Reply-To: <20261126.202530.1337423276496737821.tomo@flapping.org>
+References: <20261126-time-delta-display-v3-1-aeeecc72f3a8@kernel.org>
+ <gTPebCrRzRVm17umQBmxYHsjnRVQuaK5YRL3GXYaDhmHwC6zMxULjOo0NuwitISKnfv7wNvW4jmrU165tp4RIA==@protonmail.internalid>
+ <20261126.202530.1337423276496737821.tomo@flapping.org>
+Date: Thu, 26 Nov 2026 13:01:48 +0100
+Message-ID: <87o6bbu7gz.fsf@t14s.mail-host-address-is-not-set>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -67,33 +67,52 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain
 
-FUJITA Tomonori <tomo@flapping.org> writes:
+"FUJITA Tomonori" <tomo@flapping.org> writes:
 
-> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> On Thu, 26 Nov 2026 11:51:14 +0100
+> Andreas Hindborg <a.hindborg@kernel.org> wrote:
 >
-> This series fixes the 32-bit build of the TH1520 PWM driver with
-> COMPILE_TEST.
+>> +    fn fmt(&self, f: &mut kernel::fmt::Formatter<'_>) -> kernel::fmt::Result {
+>> +        let value = U::repr_to_i64(self.value);
+>> +
+>> +        if value < 0 {
+>> +            f.write_str("-")?;
+>> +        }
+>> +
+>> +        // `unsigned_abs` is used because the magnitude of `i64::MIN` is not
+>> +        // representable as an `i64`.
+>> +        let mut magnitude = value.unsigned_abs();
+>> +
+>> +        // Split the magnitude into groups of three digits, least significant
+>> +        // group first. A `u64` holds at most 20 digits, so 7 groups suffice.
+>> +        //
+>> +        // Dividing by the constant keeps the compiler from emitting a check for
+>> +        // a division by zero with a potential panic.
+>> +        let mut groups = [0u64; 7];
+>> +        let mut used = 0;
+>> +
+>> +        for group in groups.iter_mut() {
+>> +            *group = magnitude % 1000;
+>> +            magnitude /= 1000;
 >
-> Patch 1 adds a math module to the kernel crate with Rust versions of
-> div64_u64() and DIV64_U64_ROUND_UP(). Patch 2 uses them in the driver.
+> Code that uses this Debug impl fails to build on 32-bit ARM, for
+> example the doctests:
 >
-> The driver only needs u64 by u64 division. It does not need a 128-bit
-> intermediate value like mul_u64_u64_div_u64().
+> ld.lld-20: error: undefined symbol: __aeabi_uldivmod
+>>>> referenced by doctests_kernel_generated.ea22ff07120af58c-cgu.0
+>>>>               rust/doctests_kernel_generated.o:(<kernel::fmt::Adapter<&kernel::time::Delta<kernel::time::Jiffy>> as core::fmt::Debug>::fmt) in archive vmlinux.a
 >
-> Miguel, Uwe acked patch 2 and is fine with this series going through
-> the Rust tree.
+> div64_u64() in my series [1] should work here:
 >
-> chenhan's patch [1] also adds rust/kernel/math.rs, with signed
-> division helpers. Both use the same module header, so whichever
-> is applied later needs only a small rebase.
+>     let quotient = div64_u64(magnitude, 1000);
+>     *group = magnitude - quotient * 1000;
+>     magnitude = quotient;
 >
-> Tested with the doctests on x86_64 and 32-bit ARM QEMU.
->
+> If you prefer, we could also add div_u64_rem() to the math module.
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Ah, thanks. I'll re-spin on top of that series, adding the remainder function.
 
 Best regards,
 Andreas Hindborg
-
 
 
