@@ -1,55 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795723895;
-	b=iIcpRijlXxNT1pCUCgnobFTh4jHLMCEyGdYUeKmdu98xGnqWtkKSJuP2HmpZXU2UEVMa
-	 uduP0KgKhCntxuP18ziF4d4/C0/oFqF3hiTQUSKrcLRaypMwykgpRSsb9BcYPFtxRKM63
-	 Ku9OwZoCrdv+De7eVKZ/jEL8b6sS3VznzHbQ6ufYnGmBy0QVwlY3JFyauVdU69IH77uQA
-	 0Bpl3rbp0lF0TBVLAg/xp9+/s1DHoG//pjCGtXih6oMuN1J7QY3E9I6Y5VzqKaNjVQuMt
-	 BIlUFQOXHETwaiJK0JwswqWR2/9bB5+74cG/eDoqO89vRZ8C746aqQnnoSKV5u/TPig==
+	t=1795723898;
+	b=h9m6XVuFr/c7N66yhWXysywsg7bu9iwgf45ZVVMb7rVusp/jr/8bIGPNZnefDumG79tA
+	 ctSkc1tgYnysDBcRd50a0bokhQcq0IURZy+PIW+xQ9kT0PCubqIsQglFWA0ilooNnNxoo
+	 FjJyO0kCThrm6RGONqo7kHTNMMjy7wm6qmszPW/Y6Ofb9S3M7hAuNcKJe/FqDH9s1ZXFv
+	 MptrntnvRxPZPuHjpBV/dlxveUydIcm1EITIPAO63ESNGuuOHcl8C0FcRuB7Rt9Zu0lIf
+	 6AV6U1Dia9um5wJsZQWnPtbPiVlm4y56MMHlDTw0LFRGaK3XSNU1gnQFxBgNhpLV5jg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795723895;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795723898;
 	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-ZohoMailClient;
-	bh=91AuQ0wdQZg5KK8w32E/aXUdWMBJlHDCMF0yiHAgKG8=;
-	b=oozNIS0ANv9QA0A9Tf1nNJtjsfzyEZx+49kbDgKNWtY5VP9SVUOQJ8XwVKCQWQ8sF+gL
-	 SoxBASkV4AQCy/6p7BeSy+BVs1hwamj9qrNEDq26CT+MpYTB0eRUYDmTEDw67ySFlA+EK
-	 zVm90znEJzxMRC7pLfVIk3n2dkO5639x2o7N56GtM49VjWJxouQCY43tG3XY1zQJL/ISw
-	 hddMGGDsEv0D2WopNsxtZO0vZp4NGGOKczsHXRlLdBZj5H3OO0ZwheIW79Od5d7W7hwhj
-	 Hv27nvfBCaUngjqq0yaDUM8aqT4w1BKRl+f+lfg3iFRxbFrv3O3ipGfKT4L4/aOFPpQ==
+	bh=M34/GtpbqrU7stmPg/LOgYPbbWH4imamaV+LT3Pbdt0=;
+	b=FZnrLiZfyn6b3Qw2w7dJVmfV97EHUARQ/wdn92RGge23Q7ppETndDHY3l+9BD/G5mh6s
+	 BuuEBNCi+/6WOIq/6q/T0RjKvYk7MyTFVyQ/rFDTXtu+bDwBip/NORw14jj1eSRJmdkBH
+	 xWyhp9Oz7aG8Ft2hkTX8sf+TtiDIeIn8FavjLb9FazyrSCJyWHFjh4CeUsOYhDoQ+NgBW
+	 KL63va8ZRsXGQF4zxYkiYqVMpyL1I/peI5CNXayp9CeKJS7cwVpy5KO441Bd5oEfNtojT
+	 lHGOqycjODuD204lLFGOzJAeVJxFT2+dnfy4nkXrd50pRi3iDA3s2OxK5y9gxAv/ZYQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=collabora.com;
 	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=CL7Lkw4n;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=TNbKfNHG;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9E2606A323;
-	Thu, 26 Nov 2026 20:11:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4A9E2606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2364E606A686;
+	Thu, 26 Nov 2026 20:11:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2364E606A686
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=CL7Lkw4n
-ARC-Seal: i=1; a=rsa-sha256; t=1795723866; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=TNbKfNHG
+ARC-Seal: i=1; a=rsa-sha256; t=1795723856; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=ME9MMM/HzpNE3cEHqAqDF/lTKHrffWYVjhms7lImntTA1+XDp/xtDtSPuOF12XKOoE/uB1PKsiAkOrtB9ATERCjjqYO1mlOlis24b9LR5oEvcuWVJz//TBF5+1KqPCyDZ4oYrjmruo4DgVjG46/T5Rvrf/K1XlX1Zwi65cm1iIk=
+	b=AxzcyqSujngf7qqVJPtIniK3GvwUWvd0ml1PdqlB1MQQJaM/MFTakIZAsak6xSssDVZgfA2VItBYX+HxBw7MST2Vc+0FmKWOy1nJXVrk6xvh7bZ7hwBqCG7eqtP0KTrtMwdHFPMdV8eOmSqX2QKoL2CAORxuOUAI25SLTBLbJz8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1795723866; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=91AuQ0wdQZg5KK8w32E/aXUdWMBJlHDCMF0yiHAgKG8=; 
-	b=QsSUC8/znHIsMkmjlZdycCr1AejPFv0KHqfXZXCvZgh2YJqZhC28NuH4bOcMVR49WZ9w1lggSGCUdDWgFuKCjtBDcJWshKI3X7Ves/bVOBcuRoJr+vFePFNIMylItQmubFtg7HqGDnOhAEVgHzWk2fPthyAb/+VtR/inojf3lGQ=
+	t=1795723856; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=M34/GtpbqrU7stmPg/LOgYPbbWH4imamaV+LT3Pbdt0=; 
+	b=iuz6IbASQFGlqGdojyuHg0V2Bl9zlOL+nB43FNhiT8oeStlRfYKfc3Y7XMX7zIFSATkh+5AoBY9nRiYIGC0PUJq4aZQQN5GisEbQqQ1GWHKRcUXtOgi/eoXW6If3a4jAX0wmX/QN1Ttr6YA3TYGYS4XugKOLFfbo0PFgon9DOvY=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=CL7Lkw4nDrGlEhHyfZb3h2dlDBAkJvAKyXgHODQdjRLF5wsNSWZDTq3kADGmrMdox2wBp7zSyht/NO1ILmFyxZHZzRoTF0ybr9CEB+5wcob1zA3fZILKQjm3kf3xrIwovnPJfR3wxXMO6hSBFfg+S06TuYjBfyhYV0JexjoiHuo=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=91AuQ0wdQZg5KK8w32E/aXUdWMBJlHDCMF0yiHAgKG8=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1795723863896766.2077658156967;
-	Thu, 26 Nov 2026 12:11:03 -0800 (PST)
+DKIM-Signature: a=rsa-sha256; b=TNbKfNHG7BNUkZQFcfAjHBDSwqdGnl87ZKCfN8/tyXP4FvU016u/wPov6nwuab3YtjPTAS0dE1C5MUh8IRNG9oqbsNW/Kcgl38fkasmBthydezNZOhSiYRXvOM4kWlcq4kszoixViFTjQFzaEmwWnPsSo5YoXOfDfF2fFdML5Bs=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=M34/GtpbqrU7stmPg/LOgYPbbWH4imamaV+LT3Pbdt0=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795723854444629.9098421832166;
+	Thu, 26 Nov 2026 12:10:54 -0800 (PST)
 From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Thu, 26 Nov 2026 17:10:46 -0300
-Subject: [PATCH 4/4] drm/tyr: use the `TryFrom` derive for `EntryType`
+Date: Thu, 26 Nov 2026 17:10:43 -0300
+Subject: [PATCH 1/4] drm/tyr: use the conversion derives for the
+ GPU_CONTROL enums
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -61,7 +62,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261126-tyr-enum-derives-v1-4-a487b0e1bee3@collabora.com>
+Message-Id: <20261126-tyr-enum-derives-v1-1-a487b0e1bee3@collabora.com>
 References: <20261126-tyr-enum-derives-v1-0-a487b0e1bee3@collabora.com>
 In-Reply-To: <20261126-tyr-enum-derives-v1-0-a487b0e1bee3@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -73,64 +74,323 @@ Cc: Kaiqi Guo <chaoji_xinren@163.com>,
 X-Mailer: b4 0.15.2
 X-ZohoMailClient: External
 
-`EntryType` is the last enum in Tyr whose conversion from `Bounded` is
-written by hand. Derive it as well, so that all of them use the
-conversion derives.
+An `as` cast silently drops the bits that do not fit the target type,
+and nothing at the cast shows whether that can happen. As part of a
+larger effort to reduce the number of `as` casts in Tyr, derive the
+conversions between the GPU_CONTROL enums and `Bounded` instead of
+writing them by hand. This removes the 8 casts that convert one of
+these enums to its integer value.
 
 No functional change intended.
 
 Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 ---
- drivers/gpu/drm/tyr/fw/parser.rs | 25 ++++---------------------
- 1 file changed, 4 insertions(+), 21 deletions(-)
+ drivers/gpu/drm/tyr/regs.rs | 199 +++++---------------------------------------
+ 1 file changed, 21 insertions(+), 178 deletions(-)
 
-diff --git a/drivers/gpu/drm/tyr/fw/parser.rs b/drivers/gpu/drm/tyr/fw/parser.rs
-index 6576bc870982..cf8a815e8ab8 100644
---- a/drivers/gpu/drm/tyr/fw/parser.rs
-+++ b/drivers/gpu/drm/tyr/fw/parser.rs
-@@ -18,10 +18,8 @@
- use kernel::{
-     bitfield,
-     device::Device,
--    num::{
--        casts::FromSafeCast,
--        Bounded, //
--    },
-+    macros::TryFrom,
-+    num::casts::FromSafeCast,
-     prelude::*,
-     sizes::SizeConstants, //
- };
-@@ -548,7 +546,8 @@ fn entry_type(&self) -> Result<EntryType> {
+diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
+index 76892a911227..35656a81aae9 100644
+--- a/drivers/gpu/drm/tyr/regs.rs
++++ b/drivers/gpu/drm/tyr/regs.rs
+@@ -63,7 +63,11 @@ pub(crate) fn read_u64_no_tearing(lo_read: impl Fn() -> u32, hi_read: impl Fn()
+ /// They are involved in GPU configuration and control.
+ pub(crate) mod gpu_control {
+     use kernel::{
+-        num::Bounded,
++        macros::{
++            From,
++            Into,
++            TryFrom, //
++        },
+         prelude::*,
+         register,
+         uapi, //
+@@ -235,7 +239,8 @@ pub(crate) mod gpu_control {
      }
- }
  
--#[derive(Clone, Copy, Debug)]
-+#[derive(Clone, Copy, Debug, TryFrom)]
-+#[try_from(Bounded<u32, 8>)]
- #[repr(u8)]
- enum EntryType {
-     /// Host <-> FW interface.
-@@ -564,19 +563,3 @@ enum EntryType {
-     /// Metadata about how the FW binary was built.
-     BuildInfoMetadata = 6,
- }
+     /// Helpers for GPU_COMMAND Register
+-    #[derive(Copy, Clone, Debug, PartialEq)]
++    #[derive(Copy, Clone, Debug, PartialEq, TryFrom, Into)]
++    #[convert(Bounded<u32, 8>)]
+     #[repr(u8)]
+     pub(crate) enum GpuCommand {
+         /// No operation. This is the default value.
+@@ -248,30 +253,9 @@ pub(crate) enum GpuCommand {
+         ClearFault = 7,
+     }
+ 
+-    impl TryFrom<Bounded<u32, 8>> for GpuCommand {
+-        type Error = Error;
 -
--impl TryFrom<Bounded<u32, 8>> for EntryType {
--    type Error = Error;
--
--    fn try_from(value: Bounded<u32, 8>) -> Result<Self, Self::Error> {
--        match value.get() {
--            0 => Ok(EntryType::Iface),
--            1 => Ok(EntryType::Config),
--            2 => Ok(EntryType::FutfTest),
--            3 => Ok(EntryType::TraceBuffer),
--            4 => Ok(EntryType::TimelineMetadata),
--            6 => Ok(EntryType::BuildInfoMetadata),
--            _ => Err(EINVAL),
+-        fn try_from(val: Bounded<u32, 8>) -> Result<Self, Self::Error> {
+-            match val.get() {
+-                0 => Ok(GpuCommand::Nop),
+-                1 => Ok(GpuCommand::Reset),
+-                4 => Ok(GpuCommand::FlushCaches),
+-                7 => Ok(GpuCommand::ClearFault),
+-                _ => Err(EINVAL),
+-            }
 -        }
 -    }
--}
+-
+-    impl From<GpuCommand> for Bounded<u32, 8> {
+-        #[expect(clippy::as_conversions)]
+-        fn from(cmd: GpuCommand) -> Self {
+-            // CAST: `GpuCommand` is `#[repr(u8)]`, so the cast is lossless.
+-            (cmd as u8).into()
+-        }
+-    }
+-
+     /// Reset mode for [`GPU_COMMAND::reset()`].
+-    #[derive(Copy, Clone, Debug, PartialEq)]
++    #[derive(Copy, Clone, Debug, PartialEq, TryFrom, Into)]
++    #[convert(Bounded<u32, 4>)]
+     #[repr(u8)]
+     pub(crate) enum ResetMode {
+         /// Stop all external bus interfaces, then reset the entire GPU.
+@@ -280,28 +264,9 @@ pub(crate) enum ResetMode {
+         HardReset = 2,
+     }
+ 
+-    impl TryFrom<Bounded<u32, 4>> for ResetMode {
+-        type Error = Error;
+-
+-        fn try_from(val: Bounded<u32, 4>) -> Result<Self, Self::Error> {
+-            match val.get() {
+-                1 => Ok(ResetMode::SoftReset),
+-                2 => Ok(ResetMode::HardReset),
+-                _ => Err(EINVAL),
+-            }
+-        }
+-    }
+-
+-    impl From<ResetMode> for Bounded<u32, 4> {
+-        #[expect(clippy::as_conversions)]
+-        fn from(mode: ResetMode) -> Self {
+-            // CAST: `ResetMode` is `#[repr(u8)]`, so the cast is lossless.
+-            Bounded::try_new(mode as u32).unwrap()
+-        }
+-    }
+-
+     /// Cache flush mode for [`GPU_COMMAND::flush_caches()`].
+-    #[derive(Copy, Clone, Debug, PartialEq)]
++    #[derive(Copy, Clone, Debug, PartialEq, TryFrom, Into)]
++    #[convert(Bounded<u32, 4>)]
+     #[repr(u8)]
+     pub(crate) enum FlushMode {
+         /// No flush.
+@@ -314,28 +279,6 @@ pub(crate) enum FlushMode {
+         CleanInvalidate = 3,
+     }
+ 
+-    impl TryFrom<Bounded<u32, 4>> for FlushMode {
+-        type Error = Error;
+-
+-        fn try_from(val: Bounded<u32, 4>) -> Result<Self, Self::Error> {
+-            match val.get() {
+-                0 => Ok(FlushMode::None),
+-                1 => Ok(FlushMode::Clean),
+-                2 => Ok(FlushMode::Invalidate),
+-                3 => Ok(FlushMode::CleanInvalidate),
+-                _ => Err(EINVAL),
+-            }
+-        }
+-    }
+-
+-    impl From<FlushMode> for Bounded<u32, 4> {
+-        #[expect(clippy::as_conversions)]
+-        fn from(mode: FlushMode) -> Self {
+-            // CAST: `FlushMode` is `#[repr(u8)]`, so the cast is lossless.
+-            Bounded::try_new(mode as u32).unwrap()
+-        }
+-    }
+-
+     register! {
+         base: TyrRegisters;
+ 
+@@ -421,7 +364,8 @@ pub(crate) fn clear_fault() -> Self {
+         }
+     }
+ 
+-    #[derive(Copy, Clone, Debug, PartialEq)]
++    #[derive(Copy, Clone, Debug, PartialEq, TryFrom, Into)]
++    #[convert(Bounded<u32, 8>)]
+     #[repr(u8)]
+     pub(crate) enum ExceptionType {
+         /// Exception type: No error.
+@@ -436,30 +380,8 @@ pub(crate) enum ExceptionType {
+         GpuCacheabilityFault = 0x8A,
+     }
+ 
+-    impl TryFrom<Bounded<u32, 8>> for ExceptionType {
+-        type Error = Error;
+-
+-        fn try_from(val: Bounded<u32, 8>) -> Result<Self, Self::Error> {
+-            match val.get() {
+-                0x00 => Ok(ExceptionType::Ok),
+-                0x80 => Ok(ExceptionType::GpuBusFault),
+-                0x88 => Ok(ExceptionType::GpuShareabilityFault),
+-                0x89 => Ok(ExceptionType::SystemShareabilityFault),
+-                0x8A => Ok(ExceptionType::GpuCacheabilityFault),
+-                _ => Err(EINVAL),
+-            }
+-        }
+-    }
+-
+-    impl From<ExceptionType> for Bounded<u32, 8> {
+-        #[expect(clippy::as_conversions)]
+-        fn from(exc: ExceptionType) -> Self {
+-            // CAST: `ExceptionType` is `#[repr(u8)]`, so the cast is lossless.
+-            (exc as u8).into()
+-        }
+-    }
+-
+-    #[derive(Copy, Clone, Debug, PartialEq)]
++    #[derive(Copy, Clone, Debug, PartialEq, From, Into)]
++    #[convert(Bounded<u32, 2>)]
+     #[repr(u8)]
+     pub(crate) enum AccessType {
+         /// Access type: An atomic (read/write) transaction.
+@@ -472,26 +394,6 @@ pub(crate) enum AccessType {
+         Write = 3,
+     }
+ 
+-    impl From<Bounded<u32, 2>> for AccessType {
+-        fn from(val: Bounded<u32, 2>) -> Self {
+-            match val.get() {
+-                0 => AccessType::Atomic,
+-                1 => AccessType::Execute,
+-                2 => AccessType::Read,
+-                3 => AccessType::Write,
+-                _ => unreachable!(),
+-            }
+-        }
+-    }
+-
+-    impl From<AccessType> for Bounded<u32, 2> {
+-        #[expect(clippy::as_conversions)]
+-        fn from(access: AccessType) -> Self {
+-            // CAST: `AccessType` is `#[repr(u8)]`, so the cast is lossless.
+-            Bounded::try_new(access as u32).unwrap()
+-        }
+-    }
+-
+     register! {
+         base: TyrRegisters;
+ 
+@@ -769,7 +671,8 @@ fn from(access: AccessType) -> Self {
+         }
+     }
+ 
+-    #[derive(Copy, Clone, Debug, PartialEq)]
++    #[derive(Copy, Clone, Debug, PartialEq, TryFrom, Into)]
++    #[convert(Bounded<u32, 32>)]
+     #[repr(u8)]
+     pub(crate) enum CoherencyMode {
+         /// ACE-Lite coherency protocol.
+@@ -780,27 +683,6 @@ pub(crate) enum CoherencyMode {
+         None = cv!(uapi::drm_panthor_gpu_coherency_DRM_PANTHOR_GPU_COHERENCY_NONE => u8),
+     }
+ 
+-    impl TryFrom<Bounded<u32, 32>> for CoherencyMode {
+-        type Error = Error;
+-
+-        fn try_from(val: Bounded<u32, 32>) -> Result<Self, Self::Error> {
+-            match val.get() {
+-                0 => Ok(CoherencyMode::AceLite),
+-                1 => Ok(CoherencyMode::Ace),
+-                31 => Ok(CoherencyMode::None),
+-                _ => Err(EINVAL),
+-            }
+-        }
+-    }
+-
+-    impl From<CoherencyMode> for Bounded<u32, 32> {
+-        #[expect(clippy::as_conversions)]
+-        fn from(mode: CoherencyMode) -> Self {
+-            // CAST: `CoherencyMode` is `#[repr(u8)]`, so the cast is lossless.
+-            (mode as u8).into()
+-        }
+-    }
+-
+     register! {
+         base: TyrRegisters;
+ 
+@@ -813,7 +695,8 @@ fn from(mode: CoherencyMode) -> Self {
+     }
+ 
+     /// Helpers for MCU_CONTROL register
+-    #[derive(Copy, Clone, Debug, PartialEq)]
++    #[derive(Copy, Clone, Debug, PartialEq, TryFrom, Into)]
++    #[convert(Bounded<u32, 2>)]
+     #[repr(u8)]
+     pub(crate) enum McuControlMode {
+         /// Disable the MCU.
+@@ -824,27 +707,6 @@ pub(crate) enum McuControlMode {
+         Auto = 2,
+     }
+ 
+-    impl TryFrom<Bounded<u32, 2>> for McuControlMode {
+-        type Error = Error;
+-
+-        fn try_from(val: Bounded<u32, 2>) -> Result<Self, Self::Error> {
+-            match val.get() {
+-                0 => Ok(McuControlMode::Disable),
+-                1 => Ok(McuControlMode::Enable),
+-                2 => Ok(McuControlMode::Auto),
+-                _ => Err(EINVAL),
+-            }
+-        }
+-    }
+-
+-    impl From<McuControlMode> for Bounded<u32, 2> {
+-        #[expect(clippy::as_conversions)]
+-        fn from(mode: McuControlMode) -> Self {
+-            // CAST: `McuControlMode` is `#[repr(u8)]`, so the cast is lossless.
+-            Bounded::try_new(mode as u32).unwrap()
+-        }
+-    }
+-
+     register! {
+         base: TyrRegisters;
+ 
+@@ -856,7 +718,8 @@ fn from(mode: McuControlMode) -> Self {
+     }
+ 
+     /// Helpers for MCU_STATUS register
+-    #[derive(Copy, Clone, Debug, PartialEq)]
++    #[derive(Copy, Clone, Debug, PartialEq, From, Into)]
++    #[convert(Bounded<u32, 2>)]
+     #[repr(u8)]
+     pub(crate) enum McuStatus {
+         /// MCU is disabled.
+@@ -870,26 +733,6 @@ pub(crate) enum McuStatus {
+         Fatal = 3,
+     }
+ 
+-    impl From<Bounded<u32, 2>> for McuStatus {
+-        fn from(val: Bounded<u32, 2>) -> Self {
+-            match val.get() {
+-                0 => McuStatus::Disabled,
+-                1 => McuStatus::Enabled,
+-                2 => McuStatus::Halt,
+-                3 => McuStatus::Fatal,
+-                _ => unreachable!(),
+-            }
+-        }
+-    }
+-
+-    impl From<McuStatus> for Bounded<u32, 2> {
+-        #[expect(clippy::as_conversions)]
+-        fn from(status: McuStatus) -> Self {
+-            // CAST: `McuStatus` is `#[repr(u8)]`, so the cast is lossless.
+-            Bounded::try_new(status as u32).unwrap()
+-        }
+-    }
+-
+     register! {
+         base: TyrRegisters;
+ 
 
 -- 
 2.56.0
