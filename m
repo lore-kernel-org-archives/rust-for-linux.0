@@ -1,78 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795714782;
-	b=wDf/dQen7U08H0oA9+BNDEFTnS4Ox5p3YFFpqJ/hYkK+SRppLNPn+rLT1fbmunKB4ny5
-	 EBdbTPQG9WMdoSbovCEB6nk5EpHByrA3e6UiBAE2oDlijX0XzV3ql4N1Sv/KYzUGyA5W6
-	 nqMNXVCqgYJTnAz6Oyijn3BhpY52vL5qtWDNauSfUVXHOP9TYIBxz0KgDFVDNMm26IYuP
-	 Hx1OaBNnf0wY1z6i4d/Wpa5IBfH5oX6WE0r3T+EReQjTAQIY7apBo3BCrBYgefynLVilK
-	 C26NR4sKh9ftPFOU4/Jdxs4QBfczPoA/bqgGHGnN/N5Ty3N+NChKkcT9a5jblChbPxg==
+	t=1795716249;
+	b=HvPAqRBsgeIDiSzXvlPe11rju6I5ngTTbUt4rwSqlaJuQ4At3k1YBgYCRby/SgG2Smt+
+	 vv+W6M1SR1flqfQz3hjHKqk+P//nxlIVMpqkgm9+12Ws17SxVIY0fOCn2PCqlLjPnRwdj
+	 ESHVmqHTyorSIRtY47zzl+R8jM2uNK7bWBvHzUh+qmLbqyylbZ1Z4thux9O8/oiQDblEC
+	 go8EF/mjZKJKsGWrTh7yOQVYWGA94jFDQS61qG7FNE3xvu9B+ZfHquMZEPLiAfT8b8b2A
+	 zyzqBei4BT+XsHAFHk7U//OXr6Z0vv3+qJKlIHrq+fU0MjeSlwHBiCiNajXf+Cu5NPQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795714782;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=R62Wh6i/3I5VkULThJ3xEjHzN2yym/9yj8wdhCqNoJQ=;
-	b=ocake+mcJvKlncxXAI4eTHulfCVGtuxQL7cg38og/Hfr2tzWxwZ3FEJ4B4g5SlSol4NB
-	 w5ZwMQsWtwYJBKB1YVumgS+Ik7o85TEQe0ZmmZnf8upXCjzZoIONMsU+Uwdj7CdWf6W6w
-	 hjnudM0xcKB6n0i5TrEiilvnYavnCd4BBFapvPh8Bvb7IOZ69fXoGg6G2HK2fFzE7BQkj
-	 sLpi5Ll4hoM2+F3dKEDpvKSbmhHDCee6I3bwwtUodCpEnFoy/sWikkO93YKN8KiuKCPrf
-	 /+KkCdv3jCAJCUEG8aX/iTBzwWt00GhcxzpriomBXLu9spNk75L0qKTeuz6UKAAgSRg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795716249;
+	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
+	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
+	 References:To:X-Mailer:X-ZohoMailClient;
+	bh=eHauIlLMMTu6/oJCbQFESMOeiuDhBPtEwgIIs3toMOQ=;
+	b=i7THlsyWB6jv5/ZlUVVQdg1OC1OdkqFpe9B/560nBjskpbVNEx80ImzxoTvVepM/0kef
+	 Zq6mOlseEfgr1vGtpKNnysv4Td6vPUrQMPqb2KvCHnh+yo3lqspvlMsQCRGiN8/iPLuFi
+	 rv7SjK9X4N3ogZ9qXvB6tTIrL5E1CNv+oHNidPxHJIldbRsnBACvFBDvV8y1S3M+/+KwS
+	 BJ+HLXmhrc2tBN+xHHB5+v55Cow2FuBGeX2mWvsrDeNXTGzO7hLXp7e6VRaF4RCbMEM1r
+	 +pLwKtZHtQAIf65TF64bZgaxBwsp0U3ZIEs2E8nZlxNklG8OdShuYKLLPqb9HKkJG/w==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gWqcqI6a;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DDA606A31C;
-	Thu, 26 Nov 2026 17:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gWqcqI6a
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795714782;
-	b=LZDJr16jNdttlJHmKfxTnmEmYFlmKU2wn9E1QgfvMMHbL5Ydg9A5KKM14BupwgtJZFQt
-	 rUJ6+r7YnQlOabm4TlvGd2dp3A/g7qqu5Gl+ffkEHlSFcawMvJ3gGDTc5Ea0S9nXa+XaV
-	 uB0zeA/P1UJD2+Wh3Ip2T175LGVWhYg12e5VzLxKP67xgixPRUYtasBGsLPAU3taPUC0C
-	 xdKhhNFIEFum2PIM5zI84m6mJQsAPtM/YpRzCYsWb0Di71b9thRatb01jbIWrqc/znP4F
-	 BGfzVt2VNnvxK5KR0+cM0xlQKpv7E9eBnjj5lZ/N9xKU6MCw4WGZDT1r5tMdohD+wSQ==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795714782;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=R62Wh6i/3I5VkULThJ3xEjHzN2yym/9yj8wdhCqNoJQ=;
-	b=FppAy+S1qlAYn3ywepHx1OOcD5g6kYj0TDNzDnmnz0NGTK3kZ1nC2jhiSpxuSAOnGFAn
-	 Ib/QoCMRVMhXPXkvuxERrbH8jmN8QM2Ss62qxFTXT9p4e0f9LuVo26VoDEV7wwmlmxrJF
-	 8oNWe7oS227E+tCKs/4FtFvmvjGZxNpXvHYEi3F0UxPVBZegInT1y0ll8usHeLMtbwUW6
-	 zW/nCApgDBCz6HH6uX39u6wtE9vCRDiw3UYNRyBdYqpYz+yNuy5FoqvrKMm2n+V+lkL6e
-	 dhorVPETgMbOKk37A3e5DOirTxMtP/9hu2/TGuDGzZJpQc3GB3aQ1HJEz6B8wxErCRA==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=VY1CKT1W;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id D3AF91F000C0;
-	Thu, 26 Nov 2026 17:39:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795714782;
-	bh=R62Wh6i/3I5VkULThJ3xEjHzN2yym/9yj8wdhCqNoJQ=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=gWqcqI6aZ3VwxGb7k0iYI2trdIY9f8yad8Fz24+jidbs9QeTHhlHLbmOyVDg5g8AY
-	 93o/3aqeALZqvP4hI+4AWPIcQ8vA3HTJ3qMLztpxwL6qg29CunnqmcHSNRjE72I3mc
-	 jSMFUJSrp2WpnF8EKsZ21OC70lgt/enZxzNF6V9RYaro47gsUIvbD0aMBabLaoOWTy
-	 C2n8hpvsDoFoSJV79NCcb6KzS+Nd/yfP8B4HFfKlrcoZEt25zoDFppFoDz1os3uxzr
-	 UsshfySTszN6spRjWz2Kg083lrm4qOc92qduGXeuDcCwx5Hty83pmJJJd2oMZz4pj6
-	 ZAntm+Mn4RnJQ==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 4093D4D774;
-	Thu, 26 Nov 2026 17:39:37 +0000 (UTC)
-From: Peder Bergan via B4 Relay <devnull+peder.bergan.gmail.com@kernel.org>
-Date: Thu, 26 Nov 2026 18:39:33 +0100
-Subject: [PATCH v2] rust: drm: enable standard fdinfo for Rust drivers
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC83C606A31C;
+	Thu, 26 Nov 2026 18:04:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC83C606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=VY1CKT1W
+ARC-Seal: i=1; a=rsa-sha256; t=1795716175; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=JACRZCK68+eFCGq9l+1uRAB2x5YjkgF4erINWlAWg1gkyEdC73RqW0MZ8Xes3sKrkr7dSeBhTYHr36LIFRPoj9wv34aNWe7uPb/gxzrxUaB8PulOVsdH9lx/7LG3Vcp+sN7wfWlImGkwNM8gVHT7ltGyawi1CQDpJ4K42Jd6rK4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1795716175; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=eHauIlLMMTu6/oJCbQFESMOeiuDhBPtEwgIIs3toMOQ=; 
+	b=PA4gn1LRcI+ueU76S6A0n/cDwW5BWo4tfcuqEHHv8A9KIoPZvC36GQqihxXK0hzDs0RNUGvdSUmA0elrInoJO2BVQMiNZRIEr4MbclckxwZQ8GF/VX0KscbxbtCsehYeRHuILajeEhnTPrqYdmtfbxpccja9gZNJui+vmd86dxg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=VY1CKT1WKAoPLkVpLr9A3qum063NUkG85dFcANQVkS5rpEDk42EG2DiThTHK6AUYcCMabRvQbaT/aKOlvzOyduS5z60+LwHKcCZc+q3n6UwzTVt0ATbeJSC9X/xqrxbOjJ/HtXlYROErQ6Hs5PUWE1EDYuAOrCzkSJb7QlvNSzA=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=eHauIlLMMTu6/oJCbQFESMOeiuDhBPtEwgIIs3toMOQ=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795716172664139.47020216244937;
+	Thu, 26 Nov 2026 10:02:52 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -81,102 +57,91 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261126-fix-drm-rust-fdinfo-v2-1-b1653edf1e4f@gmail.com>
-X-B4-Tracking: v=1; b=H4sIANRuCGsC/32OQQ6CMBBFr0K6dpQBIuDKexgWpZ1CjbSmBYIh3
- N0Wo0uXb/Lm5a/Mk9Pk2SVZmaNZe21NgOyQMNFz0xFoGZhlaXZGxBqUXkC6AdzkR1BSG2WhIix
- ViVLWImfh8+koaHv11nzYT+2dxBhT0Wi5J2gdN6KPp2/w9CsbWsYo9tqP1r32fTPG4P8pMwKCw
- FQVmBdFVclrN3D9OAo7sGbbtjeTtMqY8QAAAA==
-X-Change-ID: 20261119-fix-drm-rust-fdinfo-8e17f71dd9c3
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Asahi Lina <lina+kernel@asahilina.net>, Lyude Paul <lyude@redhat.com>, 
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, 
- Janne Grunau <j@jannau.net>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795714775; l=2361;
- i=peder.bergan@gmail.com; s=kernel-contributions;
- h=from:subject:message-id;
- bh=Q2j2ETDtWfIZSvsCcbvYzOAWgDMeNdy/ivFkVQ1rlgI=;
- b=YYMlzYjjLBwQBVI/TNvkEOL/k8jXJiwB84BgOOL63cPbtrPY3kuMOpeybnCbtCTlUNTMtE5iS
- de4hmC1qM6jBEaYPOQWBjk4ig7ze5HxEge8udesd6l5BdVExQZ7ioNV
-X-Developer-Key: i=peder.bergan@gmail.com; a=ed25519;
- pk=39790pn1YZCulHBoUG1uiQI1Hm01EvhBEa2zVrS/yN0=
-X-Endpoint-Received: by B4 Relay for
- peder.bergan@gmail.com/kernel-contributions with auth_id=1395
-X-Original-From: Peder Bergan <peder.bergan@gmail.com>
-Reply-To: peder.bergan@gmail.com
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH 0/7] rust: reset: add reset control abstractions
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <6300821339d6891983af704e2044fd1ed25285f6.camel@collabora.com>
+Date: Thu, 26 Nov 2026 15:02:34 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ Detlev Casanova <detlev.casanova@collabora.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <299B626E-DC60-4175-9D66-2DE58BA5070A@collabora.com>
+References: <20261126-b4-rust-reset-v1-0-9c4c3d029080@collabora.com>
+ <6300821339d6891983af704e2044fd1ed25285f6.camel@collabora.com>
+To: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-ZohoMailClient: External
 
-From: Peder Bergan <peder.bergan@gmail.com>
+Hi Nicolas,
 
-DRM monitoring tools use drm-driver and drm-client-id in procfs fdinfo
-to identify DRM clients. The common Rust DRM file operations leave
-show_fdinfo unset, so these entries are missing for those clients.
+> On 26 Nov 2026, at 13:33, Nicolas Dufresne =
+<nicolas.dufresne@collabora.com> wrote:
+>=20
+> Hi Daniel,
+>=20
+> Le jeudi 26 novembre 2026 =C3=A0 13:04 -0300, Daniel Almeida a =C3=A9cri=
+t :
+>> This series adds a Rust abstraction for the consumer side of the =
+reset
+>> controller API. A driver can get the reset lines of its device, as an
+>> exclusive or a shared reset control, and assert and deassert them.
+>>=20
+>> This will be used by the upcoming rkvenc driver that my colleagues
+>> Detlev Casanova, Nicolas Dufresne and I are working on, to recover a
+>> hung core of the encoder without stopping the other one. More details =
+on
+>> this driver can be found by watching Nicolas Dufresne's talk at LPC =
+2026
+>> [0]. Samsung's Rust UFS RFC [1] also uses reset lines, through an
+>> abstraction that it has not posted.
+>=20
+> I don't mind being cited, but please give a heads-up, we haven't =
+discussed any
+> of this, so I can't really comment if its a good or bad idea. On the C =
+side,
+> shared reset don't really work today, so I'm left wondering.
+>=20
+> Nicolas
+>=20
 
-Set show_fdinfo to drm_show_fdinfo. The DRM core helper emits the
-standard client information. Rust DRM does not yet expose the optional
-driver-specific statistics hook.
+Fair, sorry for not giving you a heads-up. I have a branch a bit
+further ahead where I have tested both encoder cores at once, including
+this change. Due to the hierarchy of the power domains, to power down
+core 0, you also need to power down core 1. In other words, if core 0
+becomes stuck, there is no way to bring it back by means of a power
+cycle without also stopping the jobs running on core 1.
 
-Closes: https://github.com/Rust-for-Linux/linux/issues/1266
-Tested-by: Janne Grunau <j@jannau.net>
-Reviewed-by: Janne Grunau <j@jannau.net>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
----
-Danilo, VTABLE.fops points to UnregisteredDevice::FOPS. Procfs calls
-FOPS.show_fdinfo, so this patch installs drm_show_fdinfo there. The helper
-calls VTABLE.show_fdinfo when the driver supplies additional statistics.
+This series mainly makes it possible to access the reset lines in an
+established pattern (e.g. Regulator<T> already uses it, and so does the
+Clk<T> series). For rkvenc, it allows pulsing only the lines of the
+affected core.
 
-Matt Mireles reported the missing fdinfo fields on an Asahi kernel and
-suggested using this helper.
+Reset lines haven't come up so far because with only a single core
+powered up, a power cycle is fine, since there is no other core to
+affect anyway.
 
-Janne Grunau tested v1 with the downstream Asahi driver on Apple silicon.
+Also note that rkvenc does not use SharedResetControl, but I ended up
+deciding to make it available as well. The same can be said of Clk<T>,
+where we have devm_ and other conveniences like guards that are not
+necessarily used at the moment, but that make sense when you look at
+what a lot of C drivers tend to need and carry that over to Rust.
 
-OpenAI Codex assisted with coding and testing.
----
-Changes in v2:
-- Rebase onto drm-rust-next and set the callback in UnregisteredDevice::FOPS
-  now that the file operations have moved to drm::device.
-- Drop the Fixes tag and clarify that Rust DRM has yet to expose the
-  optional driver statistics hook.
-- Add the Reviewed-by and Tested-by tags from v1.
-- Link to v1: https://patch.msgid.link/20261119-fix-drm-rust-fdinfo-v1-1-c10f4134488d@gmail.com
----
- rust/kernel/drm/device.rs | 1 +
- 1 file changed, 1 insertion(+)
+What does not work with shared resets on the C side?
 
-diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-index 1c5b0abb492be..c460ba3706bf9 100644
---- a/rust/kernel/drm/device.rs
-+++ b/rust/kernel/drm/device.rs
-@@ -273,6 +273,7 @@ extern "C" fn fops_open(inode: *mut bindings::inode, filp: *mut bindings::file)
-         fops.read = Some(bindings::drm_read);
-         fops.llseek = Some(bindings::noop_llseek);
-         fops.mmap = Some(bindings::drm_gem_mmap);
-+        fops.show_fdinfo = Some(bindings::drm_show_fdinfo);
-         fops.fop_flags = bindings::FOP_UNSIGNED_OFFSET;
- 
-         fops
-
----
-base-commit: 4325f4aad9727a6e8e7f10c5d2ebf490470cf938
-change-id: 20261119-fix-drm-rust-fdinfo-8e17f71dd9c3
-
-Best regards,
---  
-Peder Bergan <peder.bergan@gmail.com>
-
+=E2=80=94 Daniel
 
