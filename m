@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795691519;
-	b=t1CTZllwShqoFWtggcfOHEZLqEMqqhcKAYIYXkiTjgrOek2ujBI6S1bv00qb+M/RUDHJ
-	 3lWdqPa+qNMmZZFNND6UwHbK9jBMr1zHJY9ASD48A3b+BkWze0DUoBjNXjG3ML/RhJ/Cp
-	 XXwfbDCoPW5QLezBFoywdHHWMilfoUqyyvQoqZgVH7yh5VE4vrCtrpfEDU4vQeaL3sEu2
-	 LoLoVSODaLDsb7L0j15eLJzqEap8TyUvyEt+aESzR1TqL2IXO6+Aa1REDEMEG1jKBj88p
-	 kQHwn5utUL0FB1BYZ0wCo06VEOTbtXwMWn8TYhFQQb2NS6IZxNXy+VoaQywyibudsyQ==
+	t=1795692094;
+	b=OX2jPlZPV9anWIpEOH0ziZXwfWU8X45AmCLksICVSJCwnJrwVKNRFBL24ORfnXTSeFrO
+	 Lsj0TAl9TegHk3EGuJW631UvOPjpEHR/yRtpFXLtavOBjs3mvRtvdpj1s+S6xt6IzWMdW
+	 /+Viul92z2PSqTnDqVbVDlndLE+7rx1ti7huiwuIaq+ebmKsz2dzkZAP2Zs27v//e5zf5
+	 Jj7NPc3l+Mt34Mr3SnWL9wVOxRbfUcDkO6Kbgt7eJQJQfCASwzqDRjl8fsc/xWnDsmUq6
+	 TCuYQ05T3ls7BV6RFqMY4pBFtWN3/i5dXFiRZdZNqMTSbEZ0Hn8RCDOo3cuitQDYVkg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795691519;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795692094;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=eFEvD2f69EGvl7kFF0s0fPq9jUBZzVmpblExY89cSXs=;
-	b=LXGcnMa8PfLSDO/E84EKsib5sTWpMBxbwgJX7k/5uxiqhATuxKPIS/F40l/kD8WdwrCl
-	 qL40KtiD3MsN5AJfqiUmPmL5I8uxr/iSCEdDBpFsLYulGlg8bNpfa4oZSBR9+NaVCth/V
-	 YwrIL+uD+Pz9nAvbn3qNIP6DCSLijpvBd6l3ZVHTs/VvwJEUBHdG1JqcebvPp/kiXrPMX
-	 CYYeqOAkPcqaYvdbSPBfsp6+rDfHBnzPJDzac6iQBhqptQCY/CQcFp/N2juTFpwfH9/Ap
-	 T4h83XTrn5XCvq6akMvYyaVTnxU6GdGdCqXevnpCILJnDcw7QqVCXbQgD/yqdWOuhWQ==
+	bh=G9kDf8zhzxF03NtztDyquX26e7u+VfoLJjS+t7aN5uo=;
+	b=2IuWRxSxjiy3dZ9w5vX6g6yKHfALDHM+1SYvlqGDhlSNyr4L3CjXVZnhKh2WObVdA7RW
+	 JA65Mo+ascpu5tQ//n3DtG8ogKSVEY3GPTHUEqzrp6QSos4YW7QQhJwKOMCRDCCfhJ50j
+	 4dh5k7BS6mp7vMwH3iX56zeiiz8hG9aG4NErhanCgzbZRp5MX11pa5j6l9V02L+WpMPeD
+	 L6nv1PzzmFYEF6Kt/rTq39PnnYrADCv62k4b8F8pCByzb4qoo22plweyN4smY6RvAGkI0
+	 d1jTNaxKJgwAnR01+pKBBRHpU26yt51WRK4cnZijxU/L4ncrM5VRPhP1z6gH3riK6RQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=collabora.com;
 	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=ISo13rvf;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=B4c0Zczk;
 	arc=none smtp.remote-ip=148.251.105.195
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E698606A31E;
-	Thu, 26 Nov 2026 11:11:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1E698606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B92606A326;
+	Thu, 26 Nov 2026 11:21:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E3B92606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=ISo13rvf
+	dkim=pass (2048-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=B4c0Zczk
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1795691517;
-	bh=nv6fHJRxI/wMvY18exOKTyH79016H33/Tf6oSya2kA4=;
+	s=mail; t=1795692091;
+	bh=SVskHWTqGX39epkoQGLSzCQjKeHahi/GNnAagh5WkXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ISo13rvfIfERB1id+DoZpfb1QQAKfd+4wKtG66f+St7S4cekIXij8QrH39fPPsb2U
-	 ObUM5KjBhdc2obQnNxQIFUIL8C+xK1ZtsxMJhLMRm5H2rKcJ/WLkKSNyPQp4ewmiNQ
-	 MlkB/7yNDb3/VREO7BHfM9smXStBqImjixalwbBgG3ciFOVJGUrzk/XXzO2v/Ze681
-	 3Lnson8feL1XewI2cKxFChI8KPSzciAdwRT5nW+J/BtZ1UczSfKgK9fsmul3+aU4sb
-	 di5w4doCwKhNljq/HjEpKIsBkBX3QyJVpUKzch4ZkzqcLYnvI7dTq2L5yw/sf8w/m8
-	 vrmSDRMMIx2qg==
+	b=B4c0Zczkk/fVS5H7XfJ1Nm727gHNha26PrqunYoEJG+aIcBIqeN3a+tXYIoreVEYJ
+	 1lvwdABmLx0J5fAerxXLpJRF8kEowIw9/KMQKH05Vb5XLvezgdJzgKFWtbPgB1+zqJ
+	 srGgRH1KDCPWEZOVCfDTc6YWKc1w8SxwQuWgimvLtEyyEln4Sm5N6Kw0nYuilWTy73
+	 nJ6D4BvTDW9S7VXNe9cxp8aoqqceWo8rEYNhzwU+RIoSVDZtpAu3LPmQJw6Kukrvhf
+	 qeDLgKdE2cmZ2r3sRJeaE5yhYGg+tXBGDzwsKyFS26LvDZ7yvwB3DMM8Y5w+kw3bqo
+	 CCcTANgFzPSWA==
 Received: from laura.lan (unknown [100.64.0.215])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: laura.nao)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 7AF4C17E0183;
-	Thu, 26 Nov 2026 12:11:56 +0100 (CET)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 6D3DD17E01D1;
+	Thu, 26 Nov 2026 12:21:30 +0100 (CET)
 From: Laura Nao <laura.nao@collabora.com>
 To: daniel.almeida@collabora.com
 Cc: a.hindborg@kernel.org,
@@ -72,12 +72,12 @@ Cc: a.hindborg@kernel.org,
 	tamird@kernel.org,
 	tmgross@umich.edu,
 	work@onurozkan.dev
-Subject: Re: [PATCH v7 3/3] drm/tyr: add Job IRQ handling
-Date: Thu, 26 Nov 2026 12:11:45 +0100
-Message-Id: <20261126111145.117769-1-laura.nao@collabora.com>
+Subject: Re: [PATCH v7 2/3] drm/tyr: add TyrIrq threaded IRQ wrapper
+Date: Thu, 26 Nov 2026 12:21:20 +0100
+Message-Id: <20261126112120.119526-1-laura.nao@collabora.com>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <03D5FC68-0E3B-47B4-A3E4-6F2EABD54096@collabora.com>
-References: <03D5FC68-0E3B-47B4-A3E4-6F2EABD54096@collabora.com>
+In-Reply-To: <7C7287DF-458B-4AF8-8AB3-B5986E3B808E@collabora.com>
+References: <7C7287DF-458B-4AF8-8AB3-B5986E3B808E@collabora.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -92,21 +92,15 @@ Content-Transfer-Encoding: 8bit
 
 Hi Daniel,
 
-On 11/24/26 21:49, Daniel Almeida wrote:
+On 11/24/26 18:54, Daniel Almeida wrote:
+> Hi Laura, this mostly looks good! A few things only:
 >
-> Hi Laura,
 >
 >> On 23 Nov 2026, at 11:58, Laura Nao <laura.nao@collabora.com> wrote:
 >>
->> The Job IRQ reports requests from the CSF firmware, including global
->> interface requests and CSG attention bits. Only the GLB bit is currently
->> handled, as it will be used to check firmware readiness. CSG bits
->> handling will be added at a later stage. The Job IRQ handler masks the
->> interrupt in the primary IRQ handler, processes pending raw status in
->> the threaded handler, clears the handled bits, and reenables the mask
->> before returning.
->> Add JobIrqEvents to hold the wait queue and the ready flag used to
->> signal firmware readiness when the GLB bit is set.
+>> Introduce a generic TyrIrq threaded IRQ wrapper along with the
+>> TyrIrqTrait trait describing the operations required to handle a
+>> Tyr interrupt source.
 >>
 >> Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
 >> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
@@ -114,247 +108,360 @@ On 11/24/26 21:49, Daniel Almeida wrote:
 >> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 >> Signed-off-by: Laura Nao <laura.nao@collabora.com>
 >> ---
->> drivers/gpu/drm/tyr/fw.rs     |   1 +
->> drivers/gpu/drm/tyr/fw/irq.rs | 148 ++++++++++++++++++++++++++++++++++++++++++
->> drivers/gpu/drm/tyr/irq.rs    |   1 -
->> 3 files changed, 149 insertions(+), 1 deletion(-)
+>> drivers/gpu/drm/tyr/irq.rs           | 270 +++++++++++++++++++++++++++++++++++
+>> drivers/gpu/drm/tyr/reset/hw_gate.rs |   1 -
+>> drivers/gpu/drm/tyr/tyr.rs           |   1 +
+>> 3 files changed, 271 insertions(+), 1 deletion(-)
 >>
->> diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
->> index f2e0404addf2..ecf2ea171bc9 100644
->> --- a/drivers/gpu/drm/tyr/fw.rs
->> +++ b/drivers/gpu/drm/tyr/fw.rs
->> @@ -69,6 +69,7 @@
->>     vm::Vm, //
->> };
->>
->> +pub(crate) mod irq;
->> mod parser;
->>
->> pub(super) const CSF_MCU_SHARED_REGION_START: u32 = 0x04000000;
->> diff --git a/drivers/gpu/drm/tyr/fw/irq.rs b/drivers/gpu/drm/tyr/fw/irq.rs
+>> diff --git a/drivers/gpu/drm/tyr/irq.rs b/drivers/gpu/drm/tyr/irq.rs
 >> new file mode 100644
->> index 000000000000..a736d8cd4374
+>> index 000000000000..4a065c6272c5
 >> --- /dev/null
->> +++ b/drivers/gpu/drm/tyr/fw/irq.rs
->> @@ -0,0 +1,148 @@
+>> +++ b/drivers/gpu/drm/tyr/irq.rs
+>> @@ -0,0 +1,270 @@
 >> +// SPDX-License-Identifier: GPL-2.0 or MIT
 >> +
->> +//! IRQ handling for the Job IRQ.
->> +//!
->> +//! The Job IRQ signals events from the MCU, including global interface acknowledgements.
+>> +//! Threaded IRQ wrapper shared by all Tyr interrupt sources.
 >> +#![allow(dead_code)]
->
-> In general, please prefer expect(dead_code) instead.
->
-
-Ack.
-
+>> +use core::marker::PhantomPinned;
 >> +
 >> +use kernel::{
->> +    device::Bound, //
->> +    io::Io,
->> +    new_waitqueue,
+>> +    device::Bound,
+>> +    interrupt::LocalInterruptDisabled,
+>> +    irq::{
+>> +        Flags,
+>> +        IrqReturn,
+>> +        ThreadedHandler,
+>> +        ThreadedIrqReturn,
+>> +        ThreadedRegistration, //
+>> +    },
 >> +    platform,
 >> +    prelude::*,
 >> +    sync::{
 >> +        atomic::{
->> +            ordering,
->> +            Atomic, //
+>> +            ordering:: {
+>> +                Full,
+>> +                Release, //
+>> +            },
+>> +            Atomic,
+>> +            AtomicType, //
 >> +        },
 >> +        Arc,
->> +        WaitQueue, //
->> +    },
->> +    time::{
->> +        Delta,
->> +        Msecs, //
->> +    },
+>> +        SpinLockIrq, //
+>> +    }, //
 >> +};
 >> +
 >> +use crate::{
->> +    irq::{
->> +        TyrIrqRegistration,
->> +        TyrIrqTrait, //
->> +    },
->> +    regs::job_control::{
->> +        JOB_IRQ_CLEAR,
->> +        JOB_IRQ_MASK,
->> +        JOB_IRQ_RAWSTAT,
->> +        JOB_IRQ_STATUS, //
->> +    },
 >> +    driver::IoMem,
->
-> rustfmt produces a (small) diff here.
->
-
-Ack - I forgot to do a final rustfmt run before submitting, I'll fix
-this in the next revision.
-
 >> +    reset::HwGate, //
 >> +};
 >> +
->> +/// The firmware events published by the Job IRQ handler, and the queue used to announce them.
->> +#[pin_data]
->> +pub(crate) struct JobIrqEvents {
->> +    #[pin]
->> +    wait: WaitQueue,
->> +    /// Set once the firmware has signalled that the global interface is ready.
->> +    ready: Atomic<bool>,
+>> +/// Trait describing the operations required to service a Tyr interrupt source.
+>> +pub(crate) trait TyrIrqTrait: Sync {
+>> +    /// Returns the masked interrupt status.
+>> +    fn read_status(&self, io: &IoMem<'_>) -> u32;
+>> +
+>> +    /// Clears all bits in the mask register, disabling the interrupt sources.
+>> +    fn clear_mask(&self, io: &IoMem<'_>);
+>> +
+>> +    /// Sets the mask register to re-enable the interrupt sources.
+>> +    fn reenable_mask(&self, io: &IoMem<'_>);
+>> +
+>> +    /// Returns the raw interrupt status, regardless of the current mask.
+>> +    fn read_raw_status(&self, io: &IoMem<'_>) -> u32;
+>> +
+>> +    /// Clears the given bits in the interrupt status register.
+>> +    fn clear_status(&self, io: &IoMem<'_>, status: u32);
+>> +
+>> +    /// Returns the bitmask of interrupt sources handled by this instance.
+>> +    fn mask(&self) -> u32;
+>> +
+>> +    /// Handles the given pending, unmasked interrupt bits.
+>> +    fn handle(&self, status: u32);
 >> +}
 >> +
->> +impl JobIrqEvents {
->> +    /// Creates a new, empty set of Job IRQ events.
->> +    pub(crate) fn new() -> Result<Arc<Self>> {
+>> +/// State shared between a [`TyrIrq`] and its [`TyrIrqRegistration`], used to
+>> +/// coordinate the primary handler, the threaded handler, and teardown.
+>> +#[derive(Clone, Copy, PartialEq, Eq)]
+>> +#[repr(i32)]
+>> +enum IrqState {
+>> +    /// Active and ready to process new events.
+>> +    Active = 0,
+>> +    /// A primary handler has claimed a pending event and the threaded handler is running, or
+>> +    /// about to run, to service it.
+>> +    Processing,
+>> +    // Being deregistered: the mask has been, or is being, cleared, and no
+>> +    // handler may re-enable it.
+>> +    Unregistering,
+>> +}
+>> +
+>> +// SAFETY: `IrqState` and `i32` has the same size and alignment, and it's round-trip
+>> +// transmutable to `i32`.
+>> +unsafe impl AtomicType for IrqState {
+>> +    type Repr = i32;
+>> +}
+>> +
+>> +/// A threaded IRQ wrapper shared by all Tyr interrupt sources.
+>> +#[pin_data]
+>> +pub(crate) struct TyrIrq<'a, T: TyrIrqTrait> {
+>> +    /// The interrupt source.
+>> +    irq: T,
+>> +    /// Shared gate that coordinates hardware access with GPU reset.
+>> +    hw: Arc<HwGate<'a>>,
+>> +    /// Current state.
+>> +    state: Atomic<IrqState>,
+>> +    #[pin]
+>> +    lock: SpinLockIrq<()>,
 >
-> There is an ongoing effort[0] to get rid of Arcs in places they are not needed
-> using self-ref pin init.
+> Please move IrqState inside the lock:
 >
-> Since I expect other users to be able to take a reference to this field as
-> applicable, lets drop this Arc for the time being.
+>>    lock: SpinLockIrq<IrqState>,
+>
+> Notice that Atomic<T> is gone here ^
+>
+>> +    #[pin]
+>> +    _pin: PhantomPinned,
+>> +}
+>> +
+>> +impl<'a, T: TyrIrqTrait> TyrIrq<'a, T> {
+>> +    /// Requests a threaded IRQ registration for `irq`, using `name` to look up the interrupt.
+>> +    /// Returns the shared [`IrqState`] alongside the registration.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// Callers must not `mem::forget()` the resulting registration or otherwise prevent its
+>> +    /// [`Drop`] implementation from running.
+>> +    unsafe fn request(
+>> +        pdev: &'a platform::Device<Bound>,
+>> +        name: &'static CStr,
+>> +        irq: T,
+>> +        hw: Arc<HwGate<'a>>,
+>> +    ) -> Result<impl PinInit<ThreadedRegistration<'a, Self>, Error> + 'a>
+>> +    where
+>> +        T: 'a,
+>> +    {
+>> +        let state = Atomic::new(IrqState::Active);
+>> +
+>> +        let handler = try_pin_init!(Self {
+>> +            irq,
+>> +            hw,
+>> +            state,
+>> +            lock <- kernel::new_spinlock_irq!(()),
+>> +            _pin: PhantomPinned,
+>> +        });
+>> +
+>> +        // SAFETY: The caller guarantees the resulting registration will not be leaked.
+>> +        let registration =
+>> +            unsafe { pdev.request_threaded_irq_by_name(Flags::SHARED, name, name, handler) };
+>
+> I don't think we should use name twice here. The second one should probably be
+> tyr-job, tyr-mmu, tyr-gpu, etc. We should probably make this possible by taking
+> both a "irq_name" and a "name”.
+>
+>> +
+>> +        // Clear the status and unmask once the handler has been
+>> +        // successfully registered.
+>> +        Ok(registration.pin_chain(|reg| {
+>> +            let handler = reg.handler();
+>> +            let hw_guard = handler.hw.access();
+>> +            let io = hw_guard.iomem();
+>> +            let irq = &handler.irq;
+>> +            irq.clear_status(io, irq.mask());
+>> +            irq.reenable_mask(io);
+>> +            Ok(())
+>> +        }))
+>> +    }
+>> +}
+>> +
+>> +impl<T: TyrIrqTrait> ThreadedHandler for TyrIrq<'_, T> {
+>> +    fn handle(&self) -> ThreadedIrqReturn {
+>> +        // SAFETY: `handle()` is the hard IRQ handler, so interrupts are already
+>> +        // disabled.
+>> +        let token = unsafe { LocalInterruptDisabled::assume_disabled() };
+>> +        let _guard = self.lock.lock_with(token);
+>
+> I'd rather not have this unsafe here if we can use the safe "lock()". If
+> interrupts are off, turning them off again is harmless. Also, AI said that your
+> unsafe comment is not true under all configs.
+>
+>> +
+>> +        // Only proceed if still `Active`. If `Unregistering`, the IRQ is being
+>> +        // torn down and must not be handled.
+>> +        if self
+>> +            .state
+>> +            .cmpxchg(IrqState::Active, IrqState::Processing, Full)
+>> +            .is_err()
+>> +        {
+>> +            return ThreadedIrqReturn::None;
+>> +        }
+>> +
+>> +        let Some(hw_guard) = self.hw.try_access_atomic() else {
+>> +            let _ = self
+>> +                .state
+>> +                .cmpxchg(IrqState::Processing, IrqState::Active, Full);
+>> +            return ThreadedIrqReturn::None;
+>> +        };
+>> +        let io = hw_guard.iomem();
+>> +
+>> +        let masked_status = self.irq.read_status(io);
+>> +
+>> +        if masked_status == 0 {
+>> +            // Go back to `Active`, unless the IRQ is being torn down.
+>> +            let _ = self
+>> +                .state
+>> +                .cmpxchg(IrqState::Processing, IrqState::Active, Full);
+>> +            return ThreadedIrqReturn::None;
+>> +        }
+>> +
+>> +        self.irq.clear_mask(io);
+>> +        ThreadedIrqReturn::WakeThread
+>> +    }
+>> +
+>> +    fn handle_threaded(&self) -> IrqReturn {
+>> +        let mut ret = IrqReturn::None;
+>> +
+>> +        loop {
+>> +            let hw_guard = self.hw.access();
+>> +            let io = hw_guard.iomem();
+>> +            let raw_status = self.irq.read_raw_status(io) & self.irq.mask();
+>> +            if raw_status == 0 {
+>> +                break;
+>> +            }
+>> +            self.irq.clear_status(io, raw_status);
+>> +            drop(hw_guard);
+>> +            self.irq.handle(raw_status);
+>> +            ret = IrqReturn::Handled;
+>> +        }
+>
+> let hw_guard = loop {
+>   ..
+>   if raw_status == 0 {
+>     break hw_guard; <— reuse this guy
+>   }
+> ..
+> };
 >
 >
-
-Makes sense, thanks for the pointer. I this this also means 
-job_irq_init needs to return Result<impl PinInit<Self, Error> + 'a>
-instead of a fully constructed Result<Pin<KBox<TyrIrqRegistration<'a, JobIrq>>>>,
-right?
-
-With [0], Firmware is no longer wrapped in Arc. Iiuic, combined with the
-above, this will let us embed both the firmware and the job IRQ 
-registration as plain #[pin] fields in the same TyrDrmRegistrationData 
-struct. The job IRQ can then borrow a reference to the firmware's 
-JobIrqEvents directly within that same struct, instead of cloning it
-through Arc.
-
-If that's correct, I'll change both job_irq_init() and 
-TyrIrqRegistration::request() to return a 
-Result<impl PinInit<Self, Error> + 'a>.
-
->> +        Arc::pin_init(
->> +            pin_init!(JobIrqEvents {
->> +                wait <- new_waitqueue!(),
->> +                ready: Atomic::new(false),
+>> +
+>> +        // Only re-enable the mask if still `Processing`. If `Unregistering`, the
+>> +        // IRQ is being torn down and must stay masked.
+>> +        let hw_guard = self.hw.access();
+>> +        let _guard = self.lock.lock();
+>> +        if self
+>> +            .state
+>> +            .cmpxchg(IrqState::Processing, IrqState::Active, Full)
+>> +            .is_ok()
+>> +        {
+>> +            self.irq.reenable_mask(hw_guard.iomem());
+>> +        }
+>> +
+>> +        ret
+>> +    }
+>> +}
+>> +
+>> +// A [`ThreadedRegistration`] for a Tyr interrupt source and its state.
+>> +
+>> +// Unlike a bare [`ThreadedRegistration`], dropping this type is always
+>> +// safe to do while the device remains on a shared IRQ line: its `Drop`
+>> +// implementation masks the interrupt source, and notifies teardown via the
+>> +// shared [`IrqState`], before the inner [`ThreadedRegistration`] is
+>> +// dropped and deregisters the handler.
+>
+> // -> ///
+>
+> Please mention that this must come before clocks and regulators, otherwise the
+> system will freeze when this type drops by attempting to do I/O on a powered
+> down circuit.
+>
+>> +#[pin_data(PinnedDrop)]
+>> +pub(crate) struct TyrIrqRegistration<'a, T: TyrIrqTrait> {
+>> +    #[pin]
+>> +    registration: ThreadedRegistration<'a, TyrIrq<'a, T>>,
+>> +}
+>> +
+>> +#[pinned_drop]
+>> +impl<T: TyrIrqTrait> PinnedDrop for TyrIrqRegistration<'_, T> {
+>> +    fn drop(self: Pin<&mut Self>) {
+>> +        // Flag teardown and mask the interrupt source, before
+>> +        // `self.registration`'s own `PinnedDrop` runs next and calls `free_irq()`.
+>> +        // This prevents the hardware from asserting the interrupt again once it is
+>> +        // deregistered. `free_irq()` itself waits for any handler already in
+>> +        // flight to complete, and having already flagged `Unregistering`, such a
+>> +        // handler will not re-enable the mask (see `TyrIrq::handle_threaded`).
+>> +        let handler = self.registration.handler();
+>> +        let hw_guard = handler.hw.access();
+>> +        let _guard = handler.lock.lock();
+>> +        handler.state.store(IrqState::Unregistering, Release);
+>> +        handler.irq.clear_mask(hw_guard.iomem());
+>> +    }
+>> +}
+>> +
+>> +impl<'a, T: TyrIrqTrait> TyrIrqRegistration<'a, T> {
+>> +    /// Requests a threaded IRQ registration for `irq`, using `name` to look up the interrupt.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// Callers must not `mem::forget()` the resulting registration or otherwise prevent its
+>> +    /// [`Drop`] implementation from running.
+>> +    pub(crate) unsafe fn request(
+>> +        pdev: &'a platform::Device<Bound>,
+>> +        name: &'static CStr,
+>> +        irq: T,
+>> +        hw: Arc<HwGate<'a>>,
+>> +    ) -> Result<Pin<KBox<Self>>>
+>> +    where
+>> +        T: 'a,
+>> +    {
+>> +        // SAFETY: The caller guarantees the resulting registration will not be leaked.
+>> +        let registration = unsafe { TyrIrq::request(pdev, name, irq, hw) }?;
+>> +
+>> +        KBox::try_pin_init(
+>> +            try_pin_init!(Self {
+>> +                registration <- registration,
 >> +            }),
 >> +            GFP_KERNEL,
 >> +        )
 >> +    }
->> +
->> +    /// Clears the firmware-ready state.
->> +    #[expect(dead_code)]
->> +    pub(crate) fn clear_ready(&self) {
->> +        self.ready.store(false, ordering::Relaxed);
->> +    }
->> +
->> +    /// Waits until the firmware signals readiness via the GLB IRQ bit, or the timeout expires.
->> +    pub(crate) fn wait_ready(&self, timeout_ms: Msecs) -> Result {
->> +        self.wait.wait_event_timeout(
->> +            || self.ready.load(ordering::Acquire),
->> +            Delta::from_millis(timeout_ms.into()).to_jiffies_timeout(),
->> +        )?;
->> +
->> +        Ok(())
->> +    }
->> +
->> +    /// Updates state and wakes up waiters
->> +    fn signal(&self, status: u32) {
->> +        // TODO: handle other Job IRQ events (e.g. CSG attention bits) here once
->> +        // support for them is added.
->> +
->> +        // The GLB bit only signals firmware readiness once, at power up
->> +        if JOB_IRQ_RAWSTAT::from_raw(status).glb() && !self.ready.load(ordering::Relaxed) {
->> +            self.ready.store(true, ordering::Release);
->> +        }
->> +
->> +        self.wait.wake_up_all();
->> +    }
 >> +}
->> +
->> +// The Job IRQ, signalling requests or notification from the MCU.
->> +pub(crate) struct JobIrq {
->> +    /// Firmware events signalled by this IRQ.
->> +    events: Arc<JobIrqEvents>,
->
-> If we get rid of the Arc, this would become 
->
-> events: &‘a JobIrqEvents.
->
->
->
->> +}
->> +
->> +
->> +/// Requests a threaded IRQ registration for the Job IRQ.
->> +///
->> +/// # Safety
->> +///
->> +/// Callers must not `mem::forget()` the resulting registration or otherwise prevent its
->> +/// [`Drop`] implementation from running.
->> +pub(crate) unsafe fn job_irq_init<'a>(
->> +    pdev: &'a platform::Device<Bound>,
->> +    hw: Arc<HwGate<'a>>,
->> +    events: Arc<JobIrqEvents>,
->> +) -> Result<Pin<KBox<TyrIrqRegistration<'a, JobIrq>>>> {
->> +    let job_irq = JobIrq { events };
->> +    // Ensure interrupt sources are disabled until the handler is registered.
->> +    job_irq.clear_mask(hw.access().iomem());
->> +
->> +    // SAFETY: The caller guarantees the resulting registration will not be leaked.
->> +    unsafe { TyrIrqRegistration::request(pdev, c"job", job_irq, hw) }
->> +}
->> +
->> +impl TyrIrqTrait for JobIrq {
->> +    fn read_status(&self, io: &IoMem<'_>) -> u32 {
->> +        io.read(JOB_IRQ_STATUS).into_raw()
->> +    }
->> +
->> +    fn clear_mask(&self, io: &IoMem<'_>) {
->> +        io.write_reg(JOB_IRQ_MASK::zeroed());
->> +    }
->> +
->> +    fn reenable_mask(&self, io: &IoMem<'_>) {
->> +        io.write_reg(JOB_IRQ_MASK::from_raw(self.mask()));
->> +    }
->> +
->> +    fn read_raw_status(&self, io: &IoMem<'_>) -> u32 {
->> +        io.read(JOB_IRQ_RAWSTAT).into_raw()
->> +    }
->> +
->> +    fn clear_status(&self, io: &IoMem<'_>, status: u32) {
->> +        io.write_reg(JOB_IRQ_CLEAR::from_raw(status));
->> +    }
->> +
->> +    fn mask(&self) -> u32 {
->> +        JOB_IRQ_MASK::zeroed().with_glb(true).into_raw()
->> +    }
->> +
->> +    fn handle(&self, status: u32) {
->> +        self.events.signal(status);
->> +    }
->> +}
->> diff --git a/drivers/gpu/drm/tyr/irq.rs b/drivers/gpu/drm/tyr/irq.rs
->> index 4a065c6272c5..5632f50b0a13 100644
->> --- a/drivers/gpu/drm/tyr/irq.rs
->> +++ b/drivers/gpu/drm/tyr/irq.rs
->> @@ -1,7 +1,6 @@
->> // SPDX-License-Identifier: GPL-2.0 or MIT
+>> diff --git a/drivers/gpu/drm/tyr/reset/hw_gate.rs b/drivers/gpu/drm/tyr/reset/hw_gate.rs
+>> index 40b38f07c472..2157b4b8ba78 100644
+>> --- a/drivers/gpu/drm/tyr/reset/hw_gate.rs
+>> +++ b/drivers/gpu/drm/tyr/reset/hw_gate.rs
+>> @@ -76,7 +76,6 @@ pub(crate) fn access(&self) -> HwAccessGuard<'_, 'hw> {
+>>     ///
+>>     /// Returns `None` while the reset worker owns the hardware, in which case
+>>     /// the caller must skip its hardware access.
+>> -    #[expect(dead_code)]
+>>     pub(crate) fn try_access_atomic(&self) -> Option<HwAccessGuard<'_, 'hw>> {
+>>         let srcu = self.srcu.read_lock();
 >>
->> //! Threaded IRQ wrapper shared by all Tyr interrupt sources.
->> -#![allow(dead_code)]
->> use core::marker::PhantomPinned;
->>
->> use kernel::{
+>> diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
+>> index 9d995650be81..b112cc8a5573 100644
+>> --- a/drivers/gpu/drm/tyr/tyr.rs
+>> +++ b/drivers/gpu/drm/tyr/tyr.rs
+>> @@ -12,6 +12,7 @@
+>> mod fw;
+>> mod gem;
+>> mod gpu;
+>> +mod irq;
+>> mod mmu;
+>> mod regs;
+>> mod reset;
 >>
 >> -- 
 >> 2.39.5
 >>
->>
 >
-> With the changes,
+> By the way, it seems like you forgot to run rustfmt one last time at some
+> point? Unless I am mistaken, running rustfmt here produces (a small) diff.
 >
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
->
-> [0]: https://lore.kernel.org/rust-for-linux/DN2ZFO94BZMF.2XTCCKEUDLZSB@kernel.org/T/#t
+> — Daniel
 >
 
-Thanks,
+Ack on all the feedback, thanks! I'll wait a bit in case there's any
+other suggestion and then submit a new revision with the proposed
+changes.
+
+Best,
 
 Laura
