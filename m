@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795693316;
-	b=uDFXSayRIA2J6DQL3mUJAwRscc9HOdnROzTWC7p/sKvnPgBN/EvIgLzYDme0f9glKad3
-	 h52BX3PZnLwkd21KEqn+LcSObEsOBT/01X/w+EDmh6Wgu+MuHrhLOGQVLue8DUdETMuCf
-	 eS1VjRWEq3GmyMRTyJLeCbeHcd9VUcPdcfU5cwGDELY/YiLRfMzNAoqMztCJ1KDH4Fb1Z
-	 o/fKnXBTnFDmR+67iPpQg77fSY90Ik6kBEghvFLuWzaaUZ861YFMH2eqQRtalWxXsIciP
-	 1XlanRjOtIjCvrud2gLn0kE8a40UhXBQYmtDby4/CwE5jXfvBL6b0sTzufrZzxjQZfg==
+	t=1795693538;
+	b=DLJLEcVKxZfOOFJqCmF/cQ401f4ChXyMIHx6F9KZAfhENu29Rku1ESywM1mveWxs4PGj
+	 IG+ZHx1KLS+hK686nS5cDyQ4aex7tkXrqKMx1jtkGKR3O8dwL1JKKhl9h1Ru8cqoewYmp
+	 Jl4hp/9+9RlwrSkkEqr6HzJRd7KPg1qAI+PbU1gFvalxZbHIMSYwWuGlhPh0zTb2eD4N4
+	 gL/T/c2cKLoB2Ka1Jyrddekg6pMcg4vj3qeIz5mVI6UfTEktlwKLxveUkd4i4LVmzhR8Z
+	 Hei9P7PFXDNKwyxxlpoE+5Am9G66I0OWlcV02i3X+3wBp9zqTelMletS5lESqVd0Ehw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795693316;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795693538;
 	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
 	 Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
 	 In-Reply-To;
-	bh=uE98kEPGNlzmvdWON0vWwzGlXWIeDH4wPeHHoPm0CIw=;
-	b=NOZvItiXKQ3GN6lbrjzsW5VQY307o6sTz3QbcrzaH+QgZn2LEd1Y8MCtgqoYRnNPPk6n
-	 7qfs/E/9I9sNCgvP03mf9F/q8xMVKksefghvBYEIYW+l5gLbd3f1wTVkXARlo1Z+IRmAn
-	 f1AxtfWIC5ujW7H758gMllv3fSVjJNS3Pt6DgFpCS9xBcRi/f9FX4GKoTHo1Y9WmH1NLb
-	 GSzP0wUPHHxlT0hAS8TE1eNPR9Gwo234r7+0hJNZyRHiXVCth7PvZqJ7WPIvKutZbkp/p
-	 dgrV1Ke2gy7IiqEEbIO4p99QOw7hZwPZ5iGouqZwV+VeHFWP/J5HPNWSRURZRGsJyUg==
+	bh=bhvFwtF3U6kOOLH4HNUlH3bobwyUeQvz0yMfUYKwy/0=;
+	b=ULRZxVhvEUv1I2afOcCs92vEAXTO0nVFF0NPruLYd+LnpjPRsW2Xl0GG7wezHFxv6k7W
+	 DnE3nDByCLOttXyvNohGgb0bnuSpKCW+NqxF/yw0dTIQUJf/tWdo7Z6WwXWcCtTB0lLFf
+	 kZjD57e7ooCLazuAwps9rNfntODWxfLCa5G4e837X+NvKfikwzRM6q8dvkxZk3Lqz7N+6
+	 afLhFl7WQksAydBmUEvow+G4X7Y3OM2W3c4VNWPLHzDBK90Odv9O//xXeB8/+PIW+6K/M
+	 ksZl97JWBM9Qnt4qpYtlj6jUMT021jGXAPJauFUHyimy1zKSIvLx4s218PjoQbq+Lsw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P23BxASq;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xo+kh0V2;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F1F606A31C;
-	Thu, 26 Nov 2026 11:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C037606A31E;
+	Thu, 26 Nov 2026 11:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P23BxASq
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7B91F000C6;
-	Thu, 26 Nov 2026 11:41:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xo+kh0V2
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601801F000F0;
+	Thu, 26 Nov 2026 11:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795693315;
-	bh=uE98kEPGNlzmvdWON0vWwzGlXWIeDH4wPeHHoPm0CIw=;
+	s=k20260515; t=1795693538;
+	bh=bhvFwtF3U6kOOLH4HNUlH3bobwyUeQvz0yMfUYKwy/0=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=P23BxASqcKYz5WSnU/9SYEpl9vvwTb5U9dKXh0LHBbkOnkUnzEocuA2bnmDsBCcRP
-	 rk/PBL5tg1hBz8ZSz3gXcIChGageDvuaPS9y+QAJcd2Vbe0WVP61tnXHYCV2bpGcmq
-	 zRh6dW/PSV41j0WlZnZgO1s90jERP6zyjzvf5clRcFyM95OtT4GiiqR3vxK33ChLTf
-	 px0jSlqpcUsgM6jLVNepzy4mXpA+Sido78k4ZF9wuzuePBzf5Yq6VhOVhoVAkuihyx
-	 8Qq5fRY01OPWTKet++VwkIVzG3NVxYLCfBFnpGh0sRt9iQDOWo0SZmmjQ5vrEM+Upx
-	 oTXW/k5ii/Srw==
+	b=Xo+kh0V284JacJ6eZoC4IYjN+CakyB8Z5Klvt2Vni7FbVu1WTGPD5SBshDMR1j0Kc
+	 fiQVRZxlshn6MDqSO7bhcYJ+EXmfMnBdNYJ6a4ROkGrKJ0RH03LLbdGVpzYjlQYss1
+	 Y2XQD9JUhk3Y4B/y/2fiiugCt+nh6pSeDGVv7wzkiqZhwWMkE7ry5ECI8E4ghO8Fxf
+	 9g/fqymyOM/EyPLdYPI3U4M859AoO2J7haFUYHF7kyW/qqAeGn3HtDkJCz7GDWoRS9
+	 s3wgwD045CXRwFDLs4xDX8YxmPd08GANuWJO5IkBQNmcgY0rDXrQmqECgpUO/uApmJ
+	 pVyzFu+NUe9Kw==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -51,9 +51,9 @@ Precedence: list
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Nov 2026 12:41:49 +0100
-Message-Id: <DN545I66CKO1.2YKP99UIQQR43@kernel.org>
-Subject: Re: [PATCH v7 2/3] drm/tyr: add TyrIrq threaded IRQ wrapper
+Date: Thu, 26 Nov 2026 12:45:33 +0100
+Message-Id: <DN548CRVXMGK.BOPO5J56Y1OH@kernel.org>
+Subject: Re: [PATCH v7 3/3] drm/tyr: add Job IRQ handling
 Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Alice Ryhl"
  <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
  <simona@ffwll.ch>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
@@ -68,50 +68,31 @@ Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Alice Ryhl"
 To: "Laura Nao" <laura.nao@collabora.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
 References: <20260728-tyr-irq-v2-v7-0-4e172e58e28c@collabora.com>
- <20260728-tyr-irq-v2-v7-2-4e172e58e28c@collabora.com>
-In-Reply-To: <20260728-tyr-irq-v2-v7-2-4e172e58e28c@collabora.com>
+ <20260728-tyr-irq-v2-v7-3-4e172e58e28c@collabora.com>
+In-Reply-To: <20260728-tyr-irq-v2-v7-3-4e172e58e28c@collabora.com>
 
 On Mon Nov 23, 2026 at 3:58 PM CET, Laura Nao wrote:
-> +impl<'a, T: TyrIrqTrait> TyrIrqRegistration<'a, T> {
-> +    /// Requests a threaded IRQ registration for `irq`, using `name` to =
-look up the interrupt.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must not `mem::forget()` the resulting registration or o=
-therwise prevent its
-> +    /// [`Drop`] implementation from running.
-> +    pub(crate) unsafe fn request(
-> +        pdev: &'a platform::Device<Bound>,
-> +        name: &'static CStr,
-> +        irq: T,
-> +        hw: Arc<HwGate<'a>>,
-> +    ) -> Result<Pin<KBox<Self>>>
-
-Why does this not return a pin initializer itself?
-
-I don't think this has a user in this series (except job_irq_init(), which
-itself seems unused), but I expect this to be stored in some other containe=
-r
-that is pinned anyway.
-
-(Note that in C we'd also not need a separate allocation and just embed it =
-in
-its corresponding container.)
-
-> +    where
-> +        T: 'a,
-> +    {
-> +        // SAFETY: The caller guarantees the resulting registration will=
- not be leaked.
-> +        let registration =3D unsafe { TyrIrq::request(pdev, name, irq, h=
-w) }?;
+> +/// Requests a threaded IRQ registration for the Job IRQ.
+> +///
+> +/// # Safety
+> +///
+> +/// Callers must not `mem::forget()` the resulting registration or other=
+wise prevent its
+> +/// [`Drop`] implementation from running.
+> +pub(crate) unsafe fn job_irq_init<'a>(
+> +    pdev: &'a platform::Device<Bound>,
+> +    hw: Arc<HwGate<'a>>,
+> +    events: Arc<JobIrqEvents>,
+> +) -> Result<Pin<KBox<TyrIrqRegistration<'a, JobIrq>>>> {
+> +    let job_irq =3D JobIrq { events };
+> +    // Ensure interrupt sources are disabled until the handler is regist=
+ered.
+> +    job_irq.clear_mask(hw.access().iomem());
 > +
-> +        KBox::try_pin_init(
-> +            try_pin_init!(Self {
-> +                registration <- registration,
-> +            }),
-> +            GFP_KERNEL,
-> +        )
-> +    }
+> +    // SAFETY: The caller guarantees the resulting registration will not=
+ be leaked.
+> +    unsafe { TyrIrqRegistration::request(pdev, c"job", job_irq, hw) }
 > +}
+
+You could implement a constructor in an impl TyrIrqRegistration<'a, JobIrq>
+block instead, which is think is cleaner than a free standing function.
