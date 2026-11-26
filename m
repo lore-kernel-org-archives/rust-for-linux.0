@@ -1,75 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795687378;
-	b=Gw6C1KT/63p7v2PcJN09goFI0PXKsoin7hVXyhza+9LhtYdXg5zAlOnBfLFaUhhEdQBI
-	 FNjXTE8nZe6Iv4L4JTX/rcmlmErMddL/HGKCXSZ43r9vU9amDNo0N6gZe4UXg9eQkudEl
-	 9ysTMeDXmAtI03qNmmuv/w7lIEZpUwSyy2jsblkfNKqVoRmcV6O8GNiwKQXm9PhB6KHWS
-	 buT0HkZ2WYzyOoNPoyQiv1zuP2ax1j7sX5/tpk2DcIbVU4L2H3YKFbbppSbv0jfoMob4R
-	 w4LgIm9QCaHOKQeb5y9ScI4FKj1Bywi2+MoixZS+kpAur3aHmxKVUvIrUCts8evSOwg==
+	t=1795687383;
+	b=CnLowwU9ctqd7t5l/YzIgZVIf3RxT8LbedMjGJJ+DFbv0OKRMyJdPZeb3OsFWGQb5SCx
+	 w6TlSDRweAUmUDkZzBmwd8CjKnl5HH4VQHhwOvncOEgOL7bB8yT7K1G9qc+pt3WLTd6nc
+	 +W/8GOkJX76H3i8Msaik+pUDTNXgpELk66+xbCtnpMVaieGrjn0vAe9BhZKYRkRNaJjZt
+	 f0iWxHoVKGbM5/YuXdHucX6L1qzh1HwFVQ6qk2udl8ABBqebR3UQ7BzyTZbMsL4HATR+w
+	 5svTyVIm6AIaC4DKUJxtnEGJEEasFwY1Ws4FCwmcwK9kP6Nu1EaRQqxKDM9KZfb/nIA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795687378;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795687383;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=yz3Fvi0Z1WbpqBTLJfHCJBGO30gXD4l/AgDztFQ3PBw=;
-	b=XuCxJP4fgMbW6BIfycmZFVo7kNltYpUsS/KvHmA2fjy/fNwfO30iZLg7z8przLKINce0
-	 LPJsvcvjHo1REeK4oV/Lmg9CjHx8FqM9U/fJ3hJRPuj/uPTCtBhg2NZV2S6FTKF8i6IHa
-	 0HikTAHdg79jcFah8pVnYNlRzGL4Lsbv7yBEygl4pqkrKEFn4lteeRVzOQRe039j6X90w
-	 AH5UvvZafMtGMjvxcKQu/oZY+GA8hhuTCxj6tkYRsTm3v9p58Yu+js+ckhFLEd7iuoSSO
-	 N4WTT0z6CR0Wjt3so6B2I8/uWbOnCQzuB+OsI/Rlhw15KFl6QwYeDsYLC1oDW/+NUxA==
+	bh=Z+D36NsUsNKkqF7ketqLvXXyv+j/mhnbTnZNBUdnCJ8=;
+	b=DIsEp5YnBWHTaK+90Y8L4A/UFvyepiztnuNNz3MMGWqrmqQwcokPpwxjc3snVd/i/8sr
+	 YuadO4jdBmVsgvuDJJFqKOoNcqdTla6nBm7qNSqi8M6ZriYWUm3FeCitcjlXHWV/Gd8kv
+	 /p9awjNdds0Mj57FEQdhEFr/zDrA/k1MjIYWx0InNEd8syk9oMHR8i6hWTXCAiyWmKrNF
+	 xPbHvbZwW4aj4E+Vw291VXdBnrqv67wp2KzVXqLNFkn/HV6qY89BslX2RJwMbguieuA1p
+	 JmCT6RhyADUI3Wd3RjGCb/V2OWduLj9IWq0QeUYn9kx2V8OmLoFo+wdPgvURIEpWB+w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=E12EJywu;
-	arc=none smtp.remote-ip=209.85.221.71
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=i4yAY4i7;
+	arc=none smtp.remote-ip=209.85.218.69
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A40606A321
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 10:02:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27A40606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370D6606A31C
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 10:03:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 370D6606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=E12EJywu
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48e00f3929bso3983749f8f.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 02:02:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=i4yAY4i7
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c505f26e9e1so521725066b.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 02:03:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795687376; x=1796292176; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1795687381; x=1796292181; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=yz3Fvi0Z1WbpqBTLJfHCJBGO30gXD4l/AgDztFQ3PBw=;
-        b=E12EJywuUH6ee4wcIsNOeCHLhvkUSPi47vFotlTOk7NVzd/jcCJ5XZJgnrB20h8MSZ
-         uVHkFgiIjTVJ7mVriiRSLYGSOiCEl6Ib7gqfXjOLQwBR9cHig6CrjVdTXU1rDrlwL7ru
-         d0DN+98GEGIWwC3SrowP9VuiXXwCy7huemRr0wbM8IHRBxcodzsZOy95EdQEYOCgLzQA
-         pwTrW/Er7CuVT/u8iojzVz+WQf8TfJDjQWjSM0Az4OCK6s59wlA7nao80PTRXkkYh6hP
-         oLZP4C9vgSVARBjyupemQb0kPqolR2gr8C9bobAIlk3VMKvRGsJ13Wwx3cIrPu2j5y+l
-         txzw==
+        bh=Z+D36NsUsNKkqF7ketqLvXXyv+j/mhnbTnZNBUdnCJ8=;
+        b=i4yAY4i7955QWTPQBaP7DeCola2jI0Noob9/7/ZLURMl2XarpROZ0xN3n61UYp44JH
+         9OrnhGORsSFX6ggaJcNtjZuztDk4M6J1MuqlL68o3TxjFPme2+zfmv2UGBsHQT4Fd1Cc
+         VqtrjDq1qbdj75JTOa5SavrZ4YD1ZhY5JEQ9I+jLwWUxDPjmmqjdVBCqJrNtlQ6a05/8
+         Mb2FWjCGXbRDoZVckKW+Je1ckPu9UUx7rm7/afVU0WpzwI6tCHtJ4LJoYn/uUtI9LObr
+         EcyPDhMW82RViKt5OF73cE5kn9C4aTlel1/vIX40xRihURF3pdmQAztZqv2ODLKN948+
+         ivrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795687376; x=1796292176;
+        d=1e100.net; s=20260707; t=1795687381; x=1796292181;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=yz3Fvi0Z1WbpqBTLJfHCJBGO30gXD4l/AgDztFQ3PBw=;
-        b=nhKg7H7FSOFoTQn8rnDFt/Ya1QxTIlqievl5mFG/SqkYA1sdwfF4yaCU7jD+al8o90
-         sWq0qzRHUrViIVWLWBqUCAsJTuPsVFyVJJQf/73KGmyZ0FsQ9+dzRNbET1dKq/8eqpN1
-         dJEdvYagvrxbN24EgsiN2IBlSCqu9bs+OPi2gqkGTlvd5O1FuscA2f+adKSig/gqjtvW
-         wxibUVF0ZGeT5gPkymvwMrxqB91VPezfj2DL2Z+e+nJ5n+QnhP0RdfBwz92os/mONc13
-         aPAgIBT7bW8qSfSo+x//5Y8aQ9xt5f4xWcFr4FfyzlVMfYj5hn8Ipo8olQyxqzR/bX/Q
-         ZgLg==
-X-Forwarded-Encrypted: i=1; AL+hErE4Ay0M5aMA1WFGt+OxJelEM/iPXWE67tXUwTOsTmyrY8fEaX8jkreaMv1EvD/3J0qJnO4MMeJArGrnsngk4A==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/fJSF1kogDnu3wZIOoLxwGEz6SrUY2VcfU1GiuOHLCJ8l8QAsI
-	PAnADXtpXFsI7xTgjKrO0ScpRZADUyCB4IRZc141c0j0SXpa8Mv3JCmWdgPyjtma4k+8cKSOwxw
-	D/dGqscQOcQIoZYDsRQ==
-X-Received: from wrmk10.prod.google.com ([2002:adf:e3ca:0:b0:4b7:f63a:77e8])
+        bh=Z+D36NsUsNKkqF7ketqLvXXyv+j/mhnbTnZNBUdnCJ8=;
+        b=1fMZwU34E7nhTpyjJD+9Tkd0WTolucjFCWeq/1ZO3rxjc/LEwbQkXo451HSA2E/ggZ
+         HJvuFGF0tYjqMK2bHt12shU1n7ITRhQv28G01iZHDRDIJYPSi/Pf+f7zHITEH1E2PXqB
+         0nlJG8mXa3b+cFonhiP1Xl7e/Xq1HK4ZRTO+2AmnKvMEcyHBWySsnL4MYbjNz3HPkAMw
+         QVHyh5kWp9mjb3OXYizyptu+mLeyR/7MEPY225ID2pxhg5Up3TU5UG1ZuPgX+lFVNJ/V
+         rP0s0k6Tl+S8Bkn1cbLbBmbg1THV05+sBBDJorCFHQx14Dp43aIR1wjeMrbaNJXe2vQj
+         0DEg==
+X-Forwarded-Encrypted: i=1; AL+hErEJbmf9+X0rtL85NzH7X4cBVy3nsrtch0RAxLch/FmTWa0G5AgZ94HFMZLP/Sm1JsdRvnSaGo7n43kKQJsZHQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9UPmjmP3AaCtrsVXg8ejZwBeUNZ6JXkozfxC8lO7zXfH/JLnC6
+	OeOZ9k9hGe7LXTX/v3kvD5mP7ZegVwy7ewW12GKlYGo4fi0tx0a7XMtOxuhtf4uCfQwvaj5psXB
+	hHprYK14aF7Se+YIZyg==
+X-Received: from wrmd16.prod.google.com ([2002:adf:e890:0:b0:4a4:8b97:27fa])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600d:600b:b0:4a2:18c4:61a5 with SMTP id 5b1f17b1804b1-4bb887fb6e7mr422669095e9.6.1795687376087;
- Thu, 26 Nov 2026 02:02:56 -0800 (PST)
-Date: Thu, 26 Nov 2026 10:02:54 +0000
-In-Reply-To: <20261125-b4-tyr-as-casts-v1-0-2b2f53164d86@collabora.com>
+ 2002:a17:906:b0c8:b0:c51:5384:eb0a with SMTP id a640c23a62f3a-c515384ecf4mr1127711666b.3.1795687381470;
+ Thu, 26 Nov 2026 02:03:01 -0800 (PST)
+Date: Thu, 26 Nov 2026 10:03:00 +0000
+In-Reply-To: <20261125-rust-drm-gem-shmem-unused-unsafe-v1-1-d6c5cb0b391f@jannau.net>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -79,28 +79,33 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261125-b4-tyr-as-casts-v1-0-2b2f53164d86@collabora.com>
+References: <20261125-rust-drm-gem-shmem-unused-unsafe-v1-1-d6c5cb0b391f@jannau.net>
 X-Mailer: git-send-email 2.56.1.839.g22a8290db9-goog
-Message-ID: <20261126100254.3642219-1-aliceryhl@google.com>
-Subject: Re: [PATCH 00/13] drm/tyr: reduce the number of `as` casts
+Message-ID: <20261126100300.3642738-1-aliceryhl@google.com>
+Subject: Re: [PATCH] rust: drm: gem: shmem: Drop unused unsafe for vm_ops assignment
 From: Alice Ryhl <aliceryhl@google.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Benno Lossin <lossin@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
+To: Janne Grunau <j@jannau.net>
+Cc: Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
 	Alexandre Courbot <acourbot@nvidia.com>, "=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, 
 	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 25 Nov 2026 19:46:51 -0300, Daniel Almeida wrote:
-> An `as` cast silently drops the bits that do not fit the target type,
-> and nothing at the cast shows whether that can happen. Tyr has 86 of
-> them, as counted by `clippy::as_conversions`. This series removes 62.
-
-Looks great overall. For the whole series:
+On Wed, Nov 25, 2026 at 01:24:28PM +0100, Janne Grunau wrote:
+> The assignment uses a raw const pointer referencing the static const
+> drm_gem_shmem_vm_ops from C side. This is safe since Rust 1.82.0 as
+> stated by the #[allow(unused_unsafe)]` attribute.
+> This was added in parallel with commit f32fb9c58a5b ("rust: bump Rust
+> minimum supported version to 1.85.0 (Debian Trixie)") for Linux v7.1.
+> Drop the unsafe, the SAFETY comment and the attribute as they are always
+> unused with Rust 1.85.0 and later.
+>
+> Signed-off-by: Janne Grunau <j@jannau.net>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
