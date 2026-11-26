@@ -1,93 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795718812;
-	b=CBIy3GVf0+/vNpMpuOLiOq1S2mBgp+SKASmqylxfMaG7+T9epjUw/gjRM7Ra7pEHHPDa
-	 eTnGY1iBUcqxT98sf9Aqjosk+qpoL/Fcp3j7moW3IW3i82fAuRmtomEIRveI+Gc0uIzXZ
-	 OKh6gjU/vELBXEjnphOSiFiy4p8zRBFeZ17V2n2wppkL4xyOAFkusXeq9qS5aFWs+HANA
-	 /IsUXzG67EAZRu4wzwReRp75SnuOUKkIML1VQKRpczPaD/UwAzQVW/a80UeFcFVsvRhXt
-	 8kDxRUdhn5vKc7l/jUM3t8WTL21LuNLsoE6mV2c9h8U05q5fnaIbxKcR3kQV6qWkzDQ==
+	t=1795720459;
+	b=pxss3cQyCGJ/bJlUPdkCsUNNL+uJLwwJgwqKBaZnrNr2+R50WbH/qzwX/zsyH0B+qPFb
+	 ny91E6J+0AtsqQoPZVGlh3evAgfgAVH38qlLBcmvcJiuJDSnzEno3jqe5+20NkzTuQ6td
+	 kGaDUv/UNUsnvRjaFL6sCSYlJDZMuXIrBNbihqw69UqA46Akfq12vDiHtAJ7PzCwdUaWt
+	 5pV4S7tuhzs4OYqnBMIZPCHYmlhOxdsKJigrD1pcLenPb3epmqHB2duOa05wt+wy33fZP
+	 qgI7HQmi5wzFKW4bsHDVL7DvU+3Rth3M1db2F5pSzvspCC2nzr2cNwKg7pg40VOGi4Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795718812;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:References:Autocrypt:Organization:Content-Type:
-	 User-Agent:MIME-Version;
-	bh=15MjkrZo96Wtk7+oJJeShfMhLRx962x5eFfNDruHPYs=;
-	b=D7FSXV9PITuJwOiDfkd4MTMTR0VAqdLetrnBGRYOgzhGpq9Fvr7sZMOi3LRmeucJNdWn
-	 mF3rFXt4/F3azz85OQi5lUg2bVbzaDlswcrTshAbaL1xy75dEucdd+fBXwQyd5mIaFKFK
-	 mm2eYAAvVDNdqEEgvrBvqIYBukk+iXCpxSHWe5xpTgdGQKxcrICbqK6PyMCr7vAFPrYnw
-	 zZeBrE2MtWpldJQ1C7IMw7zxAOAULkFCz/F+Xq2fIXW7tD4rt9Lw059Jpl3nTmubtAOGn
-	 0XE5yQ0gt462kSqu0uz6PXV/Ol3yYeH0Eg6i5PpDk+8Xe7qxhoRhyLh981tbMf/+1dw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795720459;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=8q/VB3c/73wlCZkx7DvMv3nIBqo12V1N1B2GG0LAjuo=;
+	b=TC4V9iET9PyTmKytUx4Hr92w0hnPfXmQ0wRWhfaTDQ6gTv4qUtlS2yxbU6PJUaIwHNQD
+	 N+HvmWWtAvWtaokkmDhfFph8CD/RVjHeDCPDg7Tupe1raKzOTk+lolUJJQFZs8ZRikTfO
+	 C64XTnvdCI4pMBEXxxb23maJ+jT2+gY7OfKmDgkvvforB+7ytDJxZQ4mmlT58w5t4XZrr
+	 op7EyYhSF08x7d+gY6UlI35xZ1/iBEHNNG8Ho50ZH6mru2yvcqL+YL35Co/Jydgo5vVeH
+	 DZ3heSeTz0Q3gKi7sO1CkgTHGL9mh/aMddi8cbgLAglfBqlNSaYIRwy5++v0/4Dz/ZA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=qwXQWvlx;
-	arc=none smtp.remote-ip=148.251.105.195
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=NqI0HORD;
+	arc=none smtp.remote-ip=209.85.208.70
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34FAE606A31E;
-	Thu, 26 Nov 2026 18:46:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 34FAE606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29554606A31E
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 19:14:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29554606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=qwXQWvlx
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1795718810;
-	bh=15MjkrZo96Wtk7+oJJeShfMhLRx962x5eFfNDruHPYs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=qwXQWvlxAorgriUDT67rJAZK2UFFeGfNH7SV/wtVTH9C1W5nS1eY2a8IhC+qx2+7h
-	 tShfulZB2KOamEPgntoO2BslP+gVZ8GRQz1S1/66X+7dLhaHoYWpo6MsV1YULuqqu/
-	 tDVqKfymS0YvCSFDMjYWJLxkyzN1wMwQv2ONzrlOVmDpwVjeCtRpkKIuotEnbrKPiK
-	 T21APHxSdxkqAnLAdTVEcwkxkZ9RR1oCLqQfacIVUsFPe78Z1yxiKYSK8w8SFbIqYO
-	 Lhs9CoAzzR4RbV7g04DTb5k2qHUlS0TUoDWpEikNoPDIlBBuy+awLnxP9cud6B/HCY
-	 8/dcWeU2Ncufw==
-Received: from [100.64.0.214] (unknown [100.64.0.214])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nicolas)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id EA0A717E0DCD;
-	Thu, 26 Nov 2026 19:46:47 +0100 (CET)
-Message-ID: <6e6bc569248e4d72a83de38b8aa83c66abc831f6.camel@collabora.com>
-Subject: Re: [PATCH 0/7] rust: reset: add reset control abstractions
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
-	 <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Tamir Duberstein	 <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=	 <work@onurozkan.dev>,
- Philipp Zabel <p.zabel@pengutronix.de>, 	linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, 	dri-devel@lists.freedesktop.org, Detlev
- Casanova <detlev.casanova@collabora.com>
-Date: Thu, 26 Nov 2026 13:46:46 -0500
-In-Reply-To: <D28A86A5-8077-49BA-B366-FF29E9E75736@collabora.com>
-References: <20261126-b4-rust-reset-v1-0-9c4c3d029080@collabora.com>
-	 <6300821339d6891983af704e2044fd1ed25285f6.camel@collabora.com>
-	 <299B626E-DC60-4175-9D66-2DE58BA5070A@collabora.com>
-	 <ffb55e45af601f0afaf5071f92e123c81de22a70.camel@collabora.com>
-	 <D28A86A5-8077-49BA-B366-FF29E9E75736@collabora.com>
-Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Organization: Collabora Canada
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-SnTR6pbYW0CfO0KFqPeH"
-User-Agent: Evolution 3.62.1 (3.62.1-1.fc45) 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=NqI0HORD
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6ba810fb848so4344708a12.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Nov 2026 11:14:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795720458; x=1796325258; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8q/VB3c/73wlCZkx7DvMv3nIBqo12V1N1B2GG0LAjuo=;
+        b=NqI0HORDSfIa7FR7vFvW/PHEp9erUJjqcBhvqMd+A/i3zcDcQPRju4fUNKrVMqpJZj
+         7kp2T+vzj8k/s6EXBnPGSkAHJpSwUioLnGW2xF9ognAVqeJpQDvfndUP6sVrxmRPMyvx
+         bh2V9IIDrGE1bZJjlasXGvYcjn19kh++mtMO6XtO2AJ2QLCJYJzvYJ/2TKIhMGDSOTU4
+         j+MxjXxR7U4TVgxUV1r+6t7AMUTfyvsKdapJ1v0ScKA0PmpASisBdHqlTsvySWf4oZrp
+         +5L3WDwiswfPTeBl3Ztpf5Ct17CxgsOhGBLx++Jm6t/hl+OMNDrLKiEdTO1KN9Hn5P4v
+         Urlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795720458; x=1796325258;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8q/VB3c/73wlCZkx7DvMv3nIBqo12V1N1B2GG0LAjuo=;
+        b=P2pFpG1Dg8hAVlulVvWKaCM2sbllAuFiWJmFIDfto49N5pbxb7Dhjg55qSSkkKTVYg
+         nbhUHYwVFiEUDT8cuKd8CoNg9AKrTmTV8xhiymF+4Gw2SzxdbakQ1674dF/qahAu54ZU
+         16U3YA4kQsR0X0MoVXcgyOKZZvzPd0OxjK8QBb5zNa8qqkrY82AwKnPUgbSQBVfcu8uO
+         fTkFdrwnLtMTKcThCvWpg0XyGzmCTV17ievaVFEUSoT+V/BdptJWEfaZOvLn5RbopqD3
+         KGwyyNY3cxIdx6wLy8x6HT2Bo5Yxpq4bPS/YhR8cjd49Uxb1EcZZCGJH4qo6x5fejAIA
+         a98Q==
+X-Forwarded-Encrypted: i=1; AL+hErEyipyrP2UzD1trC7Sgm6JZNN4XwGYsJgKgZzMyC2jJf9xHO4zBk5pY3KdvQh1zmCWblldZyGKIl3RgVEl75A==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9AIVPsvS69kawW3Fs8HHljAnvEnzTraYZGtf7Yd/1dYx+vGXTu
+	pDTfsF9BkxxfFJ3JcZGlBXEWdMnjAIYxG0nO2Rd5Qj0bEXJ7E2SolKzl89cIGEr/vYXkIJjbdX4
+	ix5wTzL7P4kSRpx9Vlg==
+X-Received: from edgd12-n2.prod.google.com ([2002:a05:6402:a50c:20b0:6b8:8b9a:86f6])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:aa7:c0c8:0:b0:6b9:278a:99f4 with SMTP id 4fb4d7f45d1cf-6ba37d5bcd8mr11922168a12.10.1795720457280;
+ Thu, 26 Nov 2026 11:14:17 -0800 (PST)
+Date: Thu, 26 Nov 2026 19:14:16 +0000
+In-Reply-To: <20261126-b4-rust-reset-v1-5-9c4c3d029080@collabora.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -96,85 +77,79 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20261126-b4-rust-reset-v1-0-9c4c3d029080@collabora.com> <20261126-b4-rust-reset-v1-5-9c4c3d029080@collabora.com>
+Message-ID: <awiFCBnJ_i-N_Blb@google.com>
+Subject: Re: [PATCH 5/7] rust: reset: add SharedResetControl
+From: Alice Ryhl <aliceryhl@google.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	Detlev Casanova <detlev.casanova@collabora.com>, 
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Content-Type: text/plain; charset="utf-8"
 
---=-SnTR6pbYW0CfO0KFqPeH
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Thu, Nov 26, 2026 at 01:04:32PM -0300, Daniel Almeida wrote:
+> +    /// Deasserts the reset line and moves the [`SharedResetControl`] to the [`Deasserted`] state.
+> +    ///
+> +    /// Equivalent to the kernel's [`reset_control_deassert()`].
+> +    ///
+> +    /// [`reset_control_deassert()`]:
+> +    /// https://docs.kernel.org/driver-api/reset.html#c.reset_control_deassert
+> +    #[inline]
+> +    pub fn deassert(self) -> Result<SharedResetControl<'a, Deasserted>, Error<Self>> {
+> +        // INVARIANT: The reference that `self` owns moves to the value that this returns.
+> +        let reset = ManuallyDrop::new(self);
+> +
+> +        // SAFETY: By the type invariants, `reset.inner` is a pointer that a C getter returned, and
+> +        // `reset` owns its reference.
+> +        to_result(unsafe { bindings::reset_control_deassert(reset.inner) })
+> +            .map(|()| SharedResetControl {
+> +                inner: reset.inner,
+> +                _phantom: PhantomData,
+> +            })
+> +            .map_err(|error| Error {
+> +                error,
+> +                reset: ManuallyDrop::into_inner(reset),
+> +            })
+> +    }
 
-Le jeudi 26 novembre 2026 =C3=A0 15:36 -0300, Daniel Almeida a =C3=A9crit=
-=C2=A0:
->=20
-> > On 26 Nov 2026, at 15:11, Nicolas Dufresne <nicolas.dufresne@collabora.=
-com> wrote:
-> >=20
-> > Le jeudi 26 novembre 2026 =C3=A0 15:02 -0300, Daniel Almeida a =C3=A9cr=
-it :
-> > > What does not work with shared resets on the C side?
-> >=20
-> > Above make sense, for shared, you need a mechanism to coordinate the re=
-set. A
-> > bit like the comment above you made about flushing active jobs, and hol=
-ding on
-> > new jobs until the reset has completed. I think for multiple instance o=
-f the
-> > same driver its quite feasible, but when the triggering driver have no =
-clue what
-> > other driver it shares with, there is nothing as far as I know to help =
-with this
-> > coordination, and its possibly non-trivial, specially if that was not p=
-art of
-> > the initial design.
-> >=20
-> > Nicolas
->=20
->=20
-> My understanding (correct me if I am wrong?) is that this coordination is
-> indeed needed, but baked into the C assert/deassert API:
->=20
-> Someone on a shared line has no power to assert the line
-> unconditionally, all a single consumer can say is "I'd like this line to
-> be asserted". The line is only asserted when all users agree (i.e.: when
-> all other users also ask for a reset).
->=20
-> So if driver A wants a reset, it gets its house in order, and asks for
-> it. Same for all other drivers, and it goes through when the last one
-> does so. This is the de-facto coordination between consumers and it is
-> not something that Rust influences one way or the other.
->=20
-> Sure, B is not told that A wants a reset, and A is not told by the reset
-> APIs when the reset goes through, but at least no user gets its hardware
-> yanked from them all of a sudden.
+The C side here interacts badly with the error path of
+`SharedResetControl::deassert()`.
 
-Which comes back to my point, if the drivers have no back-channel, the lone=
-ly
-driver wanting to reset will wait forever. And the interaction with runtime=
- PM
-seems a bit undefined too no? My question is if this is actually usable in
-practice.
+In `drivers/reset/core.c`, `reset_control_deassert()` does:
 
->=20
-> In fact, we do enforce this even harder by making sure that one cannot
-> construct a SharedResetControl<Asserted>, for the reasons above.
+    if (rstc->shared) {
+        if (WARN_ON(atomic_read(&rstc->triggered_count) != 0))
+            return -EINVAL;
 
-Maybe I'm just missing concrete examples.
+        if (atomic_inc_return(&rstc->deassert_count) != 1)
+            return 0;
+    }
+    ...
+    return rcdev->ops->deassert(rcdev, rstc->id);
 
-Nicolas
+Unlike `reset_control_reset()`, `reset_control_deassert()` does not
+decrement `rstc->deassert_count` when `rcdev->ops->deassert()` returns
+an error.
 
->=20
-> -- Daniel
+Because `SharedResetControl::deassert()` returns `reset` in the
+`Unknown` state (`ASSERT_ON_DROP == false`) on error:
 
---=-SnTR6pbYW0CfO0KFqPeH
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
+- If the caller drops `reset`, `deassert_count` stays leaked at 1, so
+  future shared users will see `deassert_count != 0` and skip
+  `ops->deassert()`.
 
------BEGIN PGP SIGNATURE-----
+- If the caller retries `reset.deassert()`, `atomic_inc_return()` returns
+  2 (`!= 1`), so `reset_control_deassert()` returns 0 without calling
+  `ops->deassert()`, leaving the line asserted while Rust treats the
+  control as `Deasserted`.
 
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCawh+lgAKCRDZQZRRKWBy
-9I8pAQDBxtsGXueaBkl3fN6Srv2E9qjon97wkLGnrGJfbcFA3wEA4SYuf5FQpGbA
-iUJZwtoIA620HHS9JmbtT3AaTThrIw0=
-=0emc
------END PGP SIGNATURE-----
+I wonder if this is a bug on the C side we should fix in core.c?
 
---=-SnTR6pbYW0CfO0KFqPeH--
+Alice
