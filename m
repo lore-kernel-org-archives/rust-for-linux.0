@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795783286;
-	b=J+co5JKxS/p5eERD0OYKc7OFHbO+0pmi2uLI/pbHFnyjxuIx0h1cceqrGcEVNh5x3huW
-	 oVVCSCLKyW3n0nXfuo3Vqivt1S6CokaqsFHkfD2xV1SR3MsXNVKPr/vGX2DPNVt7i8ZJn
-	 Jp7zzhzI+TkyMc0j32QkhuLLmqDDXtTabK/6C1vMVUNxyL58a4bPsbjoC6azL2h2mfENn
-	 iLu+WTTIgxqomr3zk1ltTAgQZraVwf2axn2RIO47t0dqHCYts7WBRxVb+zgLZw15v/Il3
-	 e3zbRJzSwMfv2v6jS0cQw+XQzcXSNMJUUW1/W3HulBQ9qxUzz136irw5Zc8Rw622NNQ==
+	t=1795783331;
+	b=b/LXFCfO/n1JDcFX+K0YLoOcYBrA1oS88KgZSC+Oe57m9GFucNyMk09k7YcYn0PUn6fJ
+	 7axno0PEbhj2Z0XsEuYvqIOLIyPxdjatlionAP1JPMXI97aDIcOjBJ4GN18f/ZXoZbrlo
+	 +/REKnEfT6VZ03ot558GR7J8KWW6HDzHqnGLtrcYFDMr28EFPgTWmxWzA2K3+3MuLWx7G
+	 CJqNpLqgBrcMY47sPBXz4YbbRffS6wVvvdFeH+663eGR0B+KrE3DJ5mJwfwRjmb/R4gJm
+	 dmQ5sX3/TsNV2PunS+3HULJin9wdHu+kZXLImW3A7/G3P8GWvxDuSQnRJKJsvJeJA5g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795783286;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795783331;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
@@ -15,80 +15,80 @@ ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	 To:Cc:References:From:In-Reply-To:X-Mimecast-Spam-Score:
 	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Language:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=n6sjtzia/9qVvozEkPywWapR6k1Ealc6KRJ9DwbhjUM=;
-	b=bf5Xftq94KjLIha5DuHDWPDEcfqsVF4j5CwgzefYXG5YKIXasqnWfiAJvTgyXp3k0S7q
-	 N62yB45F7xi1XIL1eaG0hVcOTvl7gQbvo1uW837B6PqIetzOr7ELl7g/EnF6LXUTkj7iM
-	 XEBqz1xHrM1RxEKPxGxZhAZBm/em+tx6XGvDm3nx0JPnJOJadaNCeR2shayQLYqDlrWoI
-	 Mzya2jXWUOi6Dj1eMvAtjXtiGmZ1/0jPSNy4H0lQ6W2uKLHTJXWJOzeGpCYvI0sY57jcr
-	 WXvJOmmr/4ZkTOKEqLdLCs15AIs95gjbsxVWolW/bE+zz28OA5pvPWJoatLJl0NQF3g==
+	bh=VtKiZFj6Ka7y5JG1hKNNq0d21tsqo0FM1O+R6HYWx5Q=;
+	b=tNnOLW4XPKFCLQuMiGeZRgqR2ZtThzsiQBmuPiZvMsXToyMBkrSUo+rQV1ancCC/qxnw
+	 uVKhRJ9gINHplnGJErIO2BW/FLII9WemeO7DLcpvtRQ5lCjgk4y7MjIFu1tCPt/8GAcsJ
+	 bfqXOlfxKpGtheiQGb/NKVU4jYmWa4JmCaqRvl94pDBU1BXpNvUAHpXFOHYvb6P2ZmKpp
+	 c9yR/rxpgQuxTMnHGhlzPctfeMnlrNG8YGO1r18HIz+S3kSL2ZiYDkyhxtrUbTQctlw18
+	 r0eyKI+fyh4NB8/88ls5+tpvSGvzEd9QtTgGP0iq3jPSvTdNkq6ZUxmdGE1jrAR2c8Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="e6BVF/6F";
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="Ucp/CYJo";
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DCB60A2631
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Nov 2026 12:41:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29DCB60A2631
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8133B606A31E
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Nov 2026 12:42:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8133B606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=e6BVF/6F
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ucp/CYJo
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795783284;
+	s=mimecast20190719; t=1795783329;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n6sjtzia/9qVvozEkPywWapR6k1Ealc6KRJ9DwbhjUM=;
-	b=e6BVF/6FRS7cwwGoEgOSJmveFKtArBFTPa8gU2ARGvFsZTzlQYcYr2zQnpksJ87VhvTv24
-	bGdGxQt8Ga17ycO3HtiOqhdmx8TCx0vy+C+fiBjIg8a/VMS5Q9/sb7VR+9PyLjc32zAbqL
-	1ze+kzN5HCg/MPnv0Y3xqs9FsZd4A34=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=VtKiZFj6Ka7y5JG1hKNNq0d21tsqo0FM1O+R6HYWx5Q=;
+	b=Ucp/CYJoG914xB7QGs+JeCmoNpHaTEEFVO/ApntzTbYgKQdFcmJi4k/dOikNajXgljyf7v
+	buyeXeokZpKdFUtYUum3hKEmRcxWn3SMYg7l8uxkLQkWoMEhzzcrvjARH3ElleRtwB32nM
+	5h9DH41MK1yCg+GoRMRalL7HMPu/5eM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-288-Wtq1D4JtPc6CDyYMSYgbAw-1; Fri, 27 Nov 2026 12:41:22 +0000
-X-MC-Unique: Wtq1D4JtPc6CDyYMSYgbAw-1
-X-Mimecast-MFC-AGG-ID: Wtq1D4JtPc6CDyYMSYgbAw_1795783281
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-49d70f45b22so4763077f8f.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 27 Nov 2026 04:41:22 -0800 (PST)
+ us-mta-693-RtBOOvAGNOKxNBpfPF5NDw-1; Fri, 27 Nov 2026 12:42:07 +0000
+X-MC-Unique: RtBOOvAGNOKxNBpfPF5NDw-1
+X-Mimecast-MFC-AGG-ID: RtBOOvAGNOKxNBpfPF5NDw_1795783327
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a1f03f2e8aso70442615e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 27 Nov 2026 04:42:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795783281; x=1796388081;
+        d=1e100.net; s=20260707; t=1795783327; x=1796388127;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=n6sjtzia/9qVvozEkPywWapR6k1Ealc6KRJ9DwbhjUM=;
-        b=G324ZCw8lxtix9GiNntestNNXqb+tTuxP/4FPYgWQYnGW9gKGruH8qDcPAC5z83QOz
-         5sQiYZoH447WLLAHxAWemMQGIOIPEnnBCWQNOSfotlwaF+RDs0smMzOMeJ+IGBaB6Leq
-         FXt/1TblFcoVS+pa5jVlrIWA8YBK6vnBHtmwhCVR6pVjodrmRYAgoNgrXTqLb+fjhoOn
-         2zVxJT8s4cekHt7ukSTIf86oaHvkx1/94mtkIOPUuSVlMl4j1jtanB9mo1Zy2uaLLLHR
-         lKXaGoJPog/vQhIrjXXPx5wojw5KVRZO0N9BOKCgRctNMyQ5vf2OYki8Ve6aBB2n1t86
-         JU6A==
-X-Forwarded-Encrypted: i=1; AL+hErGKrZwpUYEE9WWVvZLM/EUiyVR/2fmFUulJyI45V3HzaSPfbYjlRkwnI8T1q4sii6FtyFpHeeituEOy4WlhnQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/nDMf6NwITVRz2TtCiwQ2tDaftuOPR9ORfDHTEgi/X36Kf1Xjp
-	VnstPQAfgBwGtuTJ4ByAprkG2zl8aO9EaJFCB/Sz5uDI/GcKPCW1Zf8vFMVdDWD7amq4tV6wU4C
-	zHvBBeTqPzdSLyigkYHZJN91upxmYK6V2YSexS7o1LvhdBUlmxFg5jCId2srzShwFLIPN
-X-Gm-Gg: AZFdTZel31v8Q3yGUVzGaqIyPIF3+XCK2dvzviBymG9gz9r2omaNKZrkgV2fqp6w7GN
-	g8fFOLeqPl20xM6k+s01G8g94zrvjFsmNN+L3nXNquHYKIBVC5Ts1COoQkp2yjfoE+AdL8iUgB6
-	h6bjnQ2b8uffNI8+BEBKqJtETQemrMSfhH7OQEExGDvsUqNGB6nkUbg0SmByJaBMXi0s5sciIVJ
-	i98RaUURETIfOsmpHsVLm8MXlBix1LST3H8gVtrByQNLmYWOjkeqNFr74eSsTW11EBoGFzwRHb9
-	yzVnxP7+bbVp/5EWKxFS7BAo41VO+TsRT8FACSK5Dy0X47jVo7OGD1uezPjahkjGYmoQTuhxPSK
-	S6wu3ZbcO1QMT8TO1T6ZgcYyrlCeUh7f844dhTJgr4OpLO5nnxqz175hyQZSHvQW/MZWlcX3ls2
-	uy27sHvOMP5IUqVuJ6gGtv
-X-Received: by 2002:a05:6000:2607:b0:48f:bb92:c5a7 with SMTP id ffacd0b85a97d-4abb0c5d665mr48588270f8f.9.1795783281257;
-        Fri, 27 Nov 2026 04:41:21 -0800 (PST)
-X-Received: by 2002:a05:6000:2607:b0:48f:bb92:c5a7 with SMTP id ffacd0b85a97d-4abb0c5d665mr48588225f8f.9.1795783280861;
-        Fri, 27 Nov 2026 04:41:20 -0800 (PST)
+        bh=VtKiZFj6Ka7y5JG1hKNNq0d21tsqo0FM1O+R6HYWx5Q=;
+        b=zhEuka+rfLxZWrkFmpIUWoeNlHXJ//FeX6Scca2Se1I7N7r/+NtypRRgb+v6DCtyPo
+         jVB4siUN3XUaxOIAvEM4Ti6aOVv9VfGJeh0pgNPefGKCdmvrJ0n0gPQOQ1svnvKcijby
+         O1mRU5ZQiUUdA9h2u7XhRkKMdAcE+6k5UExonj7iNxLB85tsy1HhO7zxNE3OTjzMbvel
+         zaYrhSXkkBgajX7+FTKJZQQ160O296c3obpFSTMMr34xVrFtj1B5A0x38Np7toIJcush
+         8x+TRdrIAfc6GY/ni+P9n2+pl5Cf0SIpa5Up1RsjOHinMVaTmU46g/DQDK86GANWe8Ox
+         dL5w==
+X-Forwarded-Encrypted: i=1; AL+hErGQvASZxxtS8vEvBdTJB/GaEacGlefylhiAAx4ZYkNs0lBXUTZDhhJVIhEAHCBZcvbKR5FchTOwltcKG84FaQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8ujR8drI1YYGB0hM5+ftdaGYa+/xyQvmMKw/kZReWsMLYnAp77
+	q76VNJOleFZ0mvTUnOVO6zReKY83hqUy+tmBQpX4N1RhG6dWKIf/SKsLldVQdnb6dQKq2V+5Ide
+	NXw2uTc3tWpXJPOm4F6iRaRzF2sZBDKZmRagdQgdnamn92Rh/0j9K5U6zNVAZKt1bTiuS
+X-Gm-Gg: AZFdTZd0ziUXlL2e2u9RlP+B/G5jcl2x9vCWzjTWlaPEQlvC5H5UnFRlJfqcz6LPeqi
+	Ebjezsct+qIzYT58IrgxwWgWd+apmqXEGiTXKJST98si/PxQQ5PhRXWPlvIU43ormQBIGzvVat5
+	idXR69KuPSWBxCsn6h3gmA+Sd8JCuGLm7/RuSR7l2l8iI9TBiJA+Cxd0DcrGGMqtBHQfgQqauEw
+	Ip5Tri15Pk5mjJwsPMnEFLMA31vcKFWvFGkBJtyoOUrN3em5Tqd6YkTqZltR5VKP6O1wFesekIz
+	DAc9yciJ62kFnfpeoMEYKf78tw7sfJ7ZYoYeNvkFrfOX4eu6t3vS0vpfXzS6aiaGcyQ4pQRdCG3
+	/no4xDLZJw5LQKqe3B00as84TNwK3wF1MFoYCcp7MwobkOCgi7bto6EgEGxOhSbDlgexG4VQHPU
+	Rx0PIuT89UHkZH/BdQn0Ca
+X-Received: by 2002:a05:600c:4e02:b0:4bb:8636:dd7d with SMTP id 5b1f17b1804b1-4bb88817f77mr489726685e9.24.1795783326715;
+        Fri, 27 Nov 2026 04:42:06 -0800 (PST)
+X-Received: by 2002:a05:600c:4e02:b0:4bb:8636:dd7d with SMTP id 5b1f17b1804b1-4bb88817f77mr489726405e9.24.1795783326379;
+        Fri, 27 Nov 2026 04:42:06 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:11aa:87f0:ea69:b2b0:2dae:5ef9? ([2a01:e0a:11aa:87f0:ea69:b2b0:2dae:5ef9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6c340df4sm53695095f8f.55.2026.11.27.04.41.19
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb8533579csm593732225e9.2.2026.11.27.04.42.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Nov 2026 04:41:20 -0800 (PST)
-Message-ID: <ba9b59dc-1e4e-4a59-8354-e4ec0de4ef1d@redhat.com>
-Date: Fri, 27 Nov 2026 13:41:16 +0100
+        Fri, 27 Nov 2026 04:42:06 -0800 (PST)
+Message-ID: <4ccdd654-f8af-4e51-a8ac-ae7f68f0db07@redhat.com>
+Date: Fri, 27 Nov 2026 13:42:04 +0100
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -99,19 +99,19 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] drm/panic: Check QR alignment centers one axis at a
- time
+Subject: Re: [PATCH 2/3] drm/panic: Apply the QR mask while drawing data
+ modules
 To: peder.bergan@gmail.com, Javier Martinez Canillas <javierm@redhat.com>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
  dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20261126-perf-drm-panic-qr-v1-0-51856937dc4d@gmail.com>
- <20261126-perf-drm-panic-qr-v1-1-51856937dc4d@gmail.com>
+ <20261126-perf-drm-panic-qr-v1-2-51856937dc4d@gmail.com>
 From: Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <20261126-perf-drm-panic-qr-v1-1-51856937dc4d@gmail.com>
+In-Reply-To: <20261126-perf-drm-panic-qr-v1-2-51856937dc4d@gmail.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: wgl65a-tX39JIom8TlsUUf8KqHaxKPUVq4Dqsr5vShw_1795783281
+X-Mimecast-MFC-PROC-ID: OU61kahW3PevpDgA5F9YkhYiOMXqkqGjBO1enMdfH0A_1795783327
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US, fr
 Content-Type: text/plain; charset=UTF-8; format=flowed
@@ -120,15 +120,15 @@ Content-Transfer-Encoding: 7bit
 On 11/26/26 17:53, Peder Bergan via B4 Relay wrote:
 > From: Peder Bergan <peder.bergan@gmail.com>
 > 
-> is_alignment() scans pairs of alignment centers each time it tests
-> whether a module is reserved. At version 40 there are seven centers
-> per axis, so a lookup can visit 49 pairs.
+> After placing data and remainder modules, apply_mask() scans the whole
+> image to invert the unreserved modules covered by checkerboard mask 0.
+> Data placement already visits every unreserved module once.
 > 
-> Each center covers a five-module span, and adjacent centers are at
-> least 12 modules apart. Find the unique matching center on each axis
-> and apply the existing finder-pattern exclusion to that pair. The
-> lookup now needs at most 14 center tests.
-
+> Apply mask 0 while drawing each data module and each zero-valued
+> remainder module. This removes the separate image pass and its buffer
+> read-modify-write operations. The format information still advertises
+> mask 0.
+> 
 Thanks for your contribution.
 This code is executed only once when a panic occurs, so optimizations 
 are clearly not a priority.
@@ -136,41 +136,84 @@ But this series looks good, and keeps the code simple.
 
 Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
 
-> 
 > Signed-off-by: Peder Bergan <peder.bergan@gmail.com>
 > ---
->   drivers/gpu/drm/drm_panic_helper_qr.rs | 19 ++++++++-----------
->   1 file changed, 8 insertions(+), 11 deletions(-)
+>   drivers/gpu/drm/drm_panic_helper_qr.rs | 35 +++++++++++-----------------------
+>   1 file changed, 11 insertions(+), 24 deletions(-)
 > 
 > diff --git a/drivers/gpu/drm/drm_panic_helper_qr.rs b/drivers/gpu/drm/drm_panic_helper_qr.rs
-> index 4941731fb60fa..c6ed395c05bd2 100644
+> index c6ed395c05bd2..1d96ae855052a 100644
 > --- a/drivers/gpu/drm/drm_panic_helper_qr.rs
 > +++ b/drivers/gpu/drm/drm_panic_helper_qr.rs
-> @@ -746,17 +746,14 @@ fn draw_alignments(&mut self) {
+> @@ -691,12 +691,6 @@ fn set(&mut self, x: u8, y: u8) {
+>           self.data[off] = v;
+>       }
 >   
->       fn is_alignment(&self, x: u8, y: u8) -> bool {
->           let positions = self.version.alignment_pattern();
-> -        for &ax in positions.iter() {
-> -            for &ay in positions.iter() {
-> -                if self.is_finder(ax, ay) {
-> -                    continue;
+> -    /// Invert a module color.
+> -    fn xor(&mut self, x: u8, y: u8) {
+> -        let off = y as usize * self.stride as usize + x as usize / 8;
+> -        self.data[off] ^= 0x80 >> (x % 8);
+> -    }
+> -
+>       /// Draw a light square at (x, y) top left corner.
+>       fn draw_square(&mut self, x: u8, y: u8, size: u8) {
+>           for k in 0..size {
+> @@ -864,37 +858,31 @@ fn next_available(&self, x: u8, y: u8) -> (u8, u8) {
+>           (x, y)
+>       }
+>   
+> +    /// Draw an unreserved module with checkerboard mask 0.
+> +    fn draw_data_module(&mut self, x: u8, y: u8, bit: bool) {
+> +        let invert = (x ^ y) % 2 == 0;
+> +        if !(bit ^ invert) {
+> +            self.set(x, y);
+> +        }
+> +    }
+> +
+>       fn draw_data(&mut self, data: impl Iterator<Item = u8>) {
+>           let (mut x, mut y) = (self.width - 1, self.width - 1);
+>           for byte in data {
+>               for s in 0..8 {
+> -                if byte & (0x80 >> s) == 0 {
+> -                    self.set(x, y);
 > -                }
-> -                if x >= ax - 2 && x <= ax + 2 && y >= ay - 2 && y <= ay + 2 {
-> -                    return true;
+> +                self.draw_data_module(x, y, byte & (0x80 >> s) != 0);
+>                   (x, y) = self.next_available(x, y);
+>               }
+>           }
+> -        // Set the remaining modules (0, 3 or 7 depending on version).
+> -        // because 0 correspond to a light module.
+> +        // The remaining modules encode zero before masking.
+>           while !self.is_last(x, y) {
+>               if !self.is_reserved(x, y) {
+> -                self.set(x, y);
+> +                self.draw_data_module(x, y, false);
+>               }
+>               (x, y) = self.next(x, y);
+>           }
+>       }
+>   
+> -    /// Apply checkerboard mask to all non-reserved modules.
+> -    fn apply_mask(&mut self) {
+> -        for x in 0..self.width {
+> -            for y in 0..self.width {
+> -                if (x ^ y) % 2 == 0 && !self.is_reserved(x, y) {
+> -                    self.xor(x, y);
 > -                }
 > -            }
 > -        }
-> -        false
-> +        // Centers are at least 12 modules apart, so their five-module spans are disjoint.
-> +        let Some(&ax) = positions.iter().find(|&&center| x.abs_diff(center) <= 2) else {
-> +            return false;
-> +        };
-> +        let Some(&ay) = positions.iter().find(|&&center| y.abs_diff(center) <= 2) else {
-> +            return false;
-> +        };
-> +        !self.is_finder(ax, ay)
+> -    }
+> -
+>       /// Draw the QR code with the provided data iterator.
+>       fn draw_all(&mut self, data: impl Iterator<Item = u8>) {
+>           // First clear the table, as it may have already some data.
+> @@ -905,7 +893,6 @@ fn draw_all(&mut self, data: impl Iterator<Item = u8>) {
+>           self.draw_version_info();
+>           self.draw_data(data);
+>           self.draw_maskinfo();
+> -        self.apply_mask();
 >       }
+>   }
 >   
->       // Timing pattern: 2 dotted line between the finder patterns.
 > 
 
