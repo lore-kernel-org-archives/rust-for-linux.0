@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795810310;
-	b=K4k2dot70vHKVVbYGAVnvefOXMxNb7fB3K1TpLgbul33MigflzvPl5civoDiab1f7ORI
-	 fn6JKDjcMhk3LY7h5MbEmJEKdoTyZAGyVgONoJLf9/YVGW+dykTwlDMVXO2xUv8aD5DmP
-	 XzFNmLDoqade8DdB8ZXODOlzAkBE+LZ0MSshG6qe67hgUWRzwN/obT36nee4nGLJn6RV9
-	 vlvtIph6Ve2Q4NGf30qB/0KTueWH8KzPdY/sKDq7FRH/kzSdzNLcmmaV9ouskiXIVh637
-	 S/StE0hnMZgariZsglyPpIpZ8I6CNMKfQZWzjCssx8ZrGVCk6yICW8M2ev7GorvUrig==
+	t=1795811221;
+	b=1Jxp6Tui6jAXHjsQig0xteDG5H5XwtRzrWgVAhCDrMadpbJ1NEPakWWHASWgS35h6aQY
+	 V4kbvNyEz5R+mDayfxkdQ7d3bmRvP6+A03VysSuXHeD/K97SzOUk2AX5og07wX8PTVaj7
+	 1jEfoq/zJ5RwJVZaNVqBxMRVUN8yHUpHZq/4din0zw1riSX+aujbTuYkpzk90mSogQWop
+	 HxqXNxV+2bedXyq72vW2I4JAZCkZ/ez/thOQQRwYUsmqSor8GEW7VSkJU2cqNA92NoB70
+	 HmCgoC9vhWKPPi1+36SgvCmEOMvfSzmEa2JFHDV26/wTBl3u6/SeGIXraKqBcHfEWDA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795810310;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795811221;
 	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
 	 Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
 	 In-Reply-To;
-	bh=xQkfae/SKeVDaBhKJZUuyKSaF2mzk809NAHAXx7sAak=;
-	b=yXHIzKIOEu97GtYYpB7L849XiMS+9l3RhYBmQDLHaB8JMlye0lawySZYO0nfIx53814o
-	 XHhtefzJ8XUC3uuwXU3U7Xh7j/iIsk7v0aAQQhwthLO+m6twhufp9tUw9oAWxF/7CIjcm
-	 BaR4yptM6LLWdl5RezMOhCsBGMtrqZU73CuJAr+EHeTTri0i1EZvYc/KMcKHTg1ngnCA6
-	 DVuPz0dD34GNWg6ZW4odLQAb+XY/qvjLbXtOIYKwJ/dTbsZHmvF8TVavT67Tl2hZBJg15
-	 gyrNSc75DrcdJuU5abfh0YJAwoWstSsoKMHLlonqGRK4bKL5bsPUb8u4y22qwSi5caw==
+	bh=dd6KxHH+iKcHM/gA8I4KWEQmk82hPOhzgathyyn9jII=;
+	b=kt+MYkIGiU4g5/PIl6c8AaiNSVzi1i5PmvrEHhzBj/yhjBeXWA/lDv26fTEDNm+zrUYt
+	 JkBPL3HsiZh6d9iYJK++5+QDErdpMZSc3eAtOKvbmPUWhDJngMpXtnKhkcNSXxhmX25c8
+	 7yVpK5lHkMg8b8urBQFaYSYt0c5ca4mPEegATaexziHrpj/+OfyPOfCM50FFCMT9TE379
+	 ZA02sbjPpwg8Lj4Fju4dvxX/UucypvEiCafEM9KJF1zfncaKZGaaDa1Un/Skiq5+RIK9k
+	 hJlwa85Jd+GR2I9SPBQbGV3dtABD2tMTZFzqVzT3qI+AHartJgM37CVppxj19Hl0QEQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UqscSC7o;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FO4mecrO;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB438606A321;
-	Fri, 27 Nov 2026 20:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB76606A31E;
+	Fri, 27 Nov 2026 20:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UqscSC7o
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EDDD1F00899;
-	Fri, 27 Nov 2026 20:11:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FO4mecrO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E68A91F00897;
+	Fri, 27 Nov 2026 20:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795810309;
-	bh=xQkfae/SKeVDaBhKJZUuyKSaF2mzk809NAHAXx7sAak=;
+	s=k20260515; t=1795811220;
+	bh=dd6KxHH+iKcHM/gA8I4KWEQmk82hPOhzgathyyn9jII=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=UqscSC7oRfjgaDALeV44q7rOHH9jFsHctIWjLb1BN5foFIH/610yWIZT4EQ6WdKzm
-	 CHHwiKAeVNcA7A7otdwvnTthdgJXwTpB8YbUWzEoqCksc5Ru77+oBOq0/bveio09mk
-	 WXqqfYX/K2Wwy7w4Bxse6DlzXiKrUX7RXEETn0Q+cDeYAAm8GUD1bma0aesuTpFGIo
-	 jA2b2evqxl5e8xExYPx50NFRdGMnYEyVsXJoGPBIFDZATPb8HNqMbL4eJxYab9hxDQ
-	 f/xrrDJnBSaCUkioZsmWDGgNV+UJLYJzZMaXdGgMN3ZFo9fisCte0bGT1n0j+96t88
-	 2wyaPTpdrX+Bw==
+	b=FO4mecrONKoUaPEmD0row/8D7V40iOYSV21mfKJp2ViiQew7pHxFy1GF2X9mnd7kg
+	 tn18OUWTVkNbE5UxP5NwX3d2CSON1z0R8PDCdmEVKdS/2tTKglY6s4Q62VLDMwxMHn
+	 2iOh8m3KTDQ5MpSaiPNm9BWoiebGgjAsRfUTlYeitVW2rMKq7/yGQ9w9U3JbAXimes
+	 khq6sTBX8m7eyz0a6/MOyiFNp1/O7YxqyO5AtRTaDzcOLHoOAjMYFZG8dnAMZHcDBQ
+	 hb0VKJ1/PVFk4o9JU0saGvB9vMnAXOP7lnKbmIyGGn+MgBayQLcUegScF6WqpYPeHi
+	 1K9l9DxO+YxRw==
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -51,8 +51,8 @@ Precedence: list
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 27 Nov 2026 21:11:44 +0100
-Message-Id: <DN69MGXVNYTK.3QKU099BIJXHQ@kernel.org>
+Date: Fri, 27 Nov 2026 21:26:55 +0100
+Message-Id: <DN69Y3A64AJG.3SOFZ9ADV9HKS@kernel.org>
 Subject: Re: [PATCH 0/2] rust: dma_buf: add dma-fence signalling sections
 Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Sumit Semwal"
  <sumit.semwal@linaro.org>, =?utf-8?q?Christian_K=C3=B6nig?=
@@ -70,19 +70,25 @@ To: "Gary Guo" <gary@garyguo.net>
 From: "Danilo Krummrich" <dakr@kernel.org>
 References: <20261127-dma-fence-signalling-v1-0-c44e8f4910ca@collabora.com>
  <DN6838W1WF2T.2FLQ4AOZX5B40@garyguo.net>
-In-Reply-To: <DN6838W1WF2T.2FLQ4AOZX5B40@garyguo.net>
+ <DN69MGXVNYTK.3QKU099BIJXHQ@kernel.org>
+In-Reply-To: <DN69MGXVNYTK.3QKU099BIJXHQ@kernel.org>
 
-On Fri Nov 27, 2026 at 7:59 PM CET, Gary Guo wrote:
-> Do you need it being a guard? You can do things like
+On Fri Nov 27, 2026 at 9:11 PM CET, Danilo Krummrich wrote:
+> On Fri Nov 27, 2026 at 7:59 PM CET, Gary Guo wrote:
+>> Do you need it being a guard? You can do things like
+>>
+>>     let a =3D SignallingSection::begin();
+>>     let b =3D SignallingSection::begin();
+>>     drop(a);
+>>     drop(b);
+>>
+>> to break nesting. A closure-based approach wouldn't have this issue.
 >
->     let a =3D SignallingSection::begin();
->     let b =3D SignallingSection::begin();
->     drop(a);
->     drop(b);
+> I also think that a closure-based design would be better.
 >
-> to break nesting. A closure-based approach wouldn't have this issue.
+> Another nit, "signaling" is much more common in the kernel than "signalli=
+ng".
 
-I also think that a closure-based design would be better.
-
-Another nit, "signaling" is much more common in the kernel than "signalling=
-".
+Well, while this is true, the API already inconsistent about this in exactl=
+y the
+functions you are abstracting here, so nevermind. :)
