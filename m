@@ -1,56 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795802535;
-	b=Hn0H/GJ/zSayoQ8VI9o6mDCRmQt985uYh4aNRal/2V6iMSZURbpZ9GYzWRGGazrIXUeT
-	 tkDrNyx7UvR72JsGCXbJyLpnbSdxEyrkaJ9uQv8nEdP4MQb4tlMMEF9fv+8L0AOKgLY0g
-	 lSSma/G3JXDCrUfAll6hfM3+8nvC+5W+Nfpd5B00mokeJd+wcWqMUskqRdiEdq2BAgSJq
-	 Ac80D5X9x59rF02EGIEwwxbGxr4k2vx2EPHuDsQU63LpWzk5kJvrPG33AFlc/AlcM+SNb
-	 wRJSwPVKyDrdm51QCPOtrTM18+zxroxwxC7yRQUqoT5TUulNR2Jtm74pfiKoJeNrJ8Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795802535;
-	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-ZohoMailClient;
-	bh=O5n3RY0LIssaQxNS1HOM3Xrt87DdGm2tM0uOFOF8AnE=;
-	b=Xo8ujde6Oxc96OdMsgrrc0GrTESaVB3krXudpYmC/fKPKPq50kp6IhnSUm5vIZ6O/C56
-	 24HhKJOlpMcD074NB4a/CRDAcZQfoaSDnYDa4nsWy0FKoSwLroQnVi6Lib/7bjBxZb2fp
-	 8LElZW8h1C20cBYhDsWZOSuZIXFNTCd1yMew9BnSXGEXAKLx8unszOJNzDjiP5KKz+Slx
-	 ix4iF3KesN35plHWLMjB5M4vdTkG31ZLRudgYKWYAyFRZ6R+/wfXHg/YhEjtyOdJFSbBL
-	 Bd3zqnvy+oPM/nBwZjTF42Fawx9jfNFKqdVY8X4joAXABp1B/D4R/VrQS4ovYYyO1PA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=crdBkrSy;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
-Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.50
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795802698;
+	b=jFYjn3ggQ3OerFLYm9JWU2EEiX90M73z9vIbrsE3m09Rhlfr263YC+/qpMTQYiapHy0n
+	 gt7HQ2KC8qIm2SROWArIxFs4dk5k6/9/TLFyoVsUm6tYJPyvY5KHKCC1bhRrO9FuoOwut
+	 7nsfbGjmp9b+Adetoj3PfW3kBpJnYcu62lL0L7FkaIaN0hHF6ry5/3QfvdTi78ZoxNbIk
+	 5y7VqoZhnX6McV+Mun+PjZjENOb4ld22zwqCDUP9bt312SPWa7PPwPeyp8a6kT8vBIbFq
+	 Xkj8+XovdDcjTTikvvjbMIfHOVQOXh30cOW+ATRbjayyCUJlvWWSKrdSIRZy1MU1pnw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795802698;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Subject:From:To:
+	 Cc:In-Reply-To:References:Date:Message-Id:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key;
+	bh=RqlkJ/I+EH0yMfrfHVvBSdwYQQPjzHS4s9eY4ppBylg=;
+	b=Vn62zeL/8pqmv9L3oBwibdPOWDDDCTp4xWp7HYuGI4RCmGwoqAHNBAocGd8qhmXrB2Za
+	 iNwcHSyjBG+FyxmvaAJw96e8p8eCmSTxxLriXDsy+34wAy/4ezcvJaT6Ssn1qh+JyRwQZ
+	 KijNknca4BgSCNQSvVJ+vV8JCLQ5g0YHy8vcQ6PsXNsfgq0ufOO2l5nCdO2s3ktSULOif
+	 8MceUUSlEN3weGLK35BMpooWVQMPk58SnhshTtBBbjx4C8w2m0f+5L94AiHauAD7RtWY/
+	 L3F0XxVPPH2qTQsMUMi/xr5AR0Xc8YaRntzDKnQE+NkxYRqkdeagdy5uzv/pnecL9sg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=baylibre.com;
+	spf=pass smtp.mailfrom=baylibre.com;
+	dkim=pass header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=Iy9+aEIQ;
+	arc=none smtp.remote-ip=209.85.208.50
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B96606A31E;
-	Fri, 27 Nov 2026 18:02:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B9B96606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653EE606A324
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Nov 2026 18:04:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 653EE606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=crdBkrSy
-ARC-Seal: i=1; a=rsa-sha256; t=1795802507; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=cy/lfqUj8n+pkVMAHu0twOg+fk/TgBdmDxHfKFOKz+qZXZOe8wxuFSl5j43Muo3sqETTHqrkDKvssOfq5ov6aFclxBsxD6aTjfpmhFjo6Cv5yaPYnblBlYBRw0H9tbsQLUKFXcmwANL/REVp2d7RQ1LQNksDjcQyAEyTdXS9O1k=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1795802507; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=O5n3RY0LIssaQxNS1HOM3Xrt87DdGm2tM0uOFOF8AnE=; 
-	b=NnHry3+i3VvWC31bCZLdbr+GvcBryQac4xbEUuhwNPLb+ZFmEkjnSsyr1zdwGwf1WJoURnyAi0DLxRrul/v4c4wvbSueu5vwMG5v0p8hm4A/s/JhVXIO1TfPLbMGg9aWvvOFL7fhzM6dL4Rx2sCNK3HhvBYejo2r+cdxTPdhXq8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=crdBkrSyHF8dv0TIFvRAYuqE78gJ2zUQcFtZwnqZ71RbmbYwSg6F8ZhgiK7DDIjhZqvXBGIUg0K3NDd1LUahIXgsd82THvLtn1Z9U/EIOvHzlWlafbtvSz/Q34/57LxJIUgpxXBo2agwhevm3GA3EvkR40wQ47Evq4+TeZOjaqg=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=O5n3RY0LIssaQxNS1HOM3Xrt87DdGm2tM0uOFOF8AnE=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1795802505646560.0662479829062;
-	Fri, 27 Nov 2026 10:01:45 -0800 (PST)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Fri, 27 Nov 2026 15:01:37 -0300
-Subject: [PATCH RESEND 1/3] drm/tyr: add KUnit tests for the firmware
- parser
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=Iy9+aEIQ
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6b7ddb99db4so10858703a12.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 27 Nov 2026 10:04:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1795802697; x=1796407497; darn=vger.kernel.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=RqlkJ/I+EH0yMfrfHVvBSdwYQQPjzHS4s9eY4ppBylg=;
+        b=Iy9+aEIQ/sKkgpla/Kw3npoC6iqmm4ymf2V9QCMEc3ojxV5crKQVO3j0cnHzP3E4zH
+         VDe45YUOG1Ojd2XuSLfQhsZ/2uHqVH+fPlScXcw0cEB3Nv0u5aj9MjxEAT/MUUc5qpvH
+         aW75lYxib8O/r48eqz5Nytk6Sr+3trLin+yzkvuRTo0Mf4tmY3pPTf8F5WbsHohWx5zo
+         9XcqlXTnJZ9oYO1CfvignZLNzJtpP1K14ziis2ygXPr6wcSm14s04ME6oU6iLXEXA980
+         3zhsdRAkRDcGZS4e3vsRjAiXzxgoVGFLbHwvcr2gcstiPxxpSggocz02Qboy11izNIlH
+         NXdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795802697; x=1796407497;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RqlkJ/I+EH0yMfrfHVvBSdwYQQPjzHS4s9eY4ppBylg=;
+        b=qbl0zBJ2Zi+HilsVf5kizl86MpE1Qhm+OsXeO+mPcKLVGS6dTUHctvtvaEvHy/inJu
+         A6ALYEnK4FndplPMpxeAhcX0oeAvsifwLb720gDSaSMGDoZSVeys6I3zcEOCcQgMKfFu
+         V15MnTJzm3GQmd3STTLii/r6eLevPypyaRhNgC03sX3kDh7tPtdCFgths36HG//736a/
+         vEZ4mMWYelNhB1iPM1v68aejKgF0iD7YS0bcwkMd3MEUZ9cXJDLa7i2Qt0LWuaeEgEHR
+         ELURixakN8sqIuAd4XaNcka92l+j2illnc/YJm14WLZWWnD2H/RvI/yCwLTf+4g/0RAk
+         cWuA==
+X-Forwarded-Encrypted: i=1; AL+hErEUoRdYpIaYH4foY9h3VWZhPJlloNIiym21WJVXO/ojLwoOFiXJihk+nk0YxLvINtP5Jtd0ajAzizHBQ3f0Rw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/dVX/gsis4rXRY7fr+d/yW7P4qOkp0sSuif6J9nVFwTbAqZT2/
+	uCBRk5qtZaUS6Pv5CQB3RsBddvS5BK9fV341i5UtsVBG9mvJu3wcYb+PjPWEOPUZe9I=
+X-Gm-Gg: AZFdTZdxNXriQzGT5Rl26WgPfvF2ZN1KrmjUpAc7kgCosDsea8yBepjsZz7rGP34Rzo
+	OPUQYHPoAakRQ+sDhv7ymNlM6vIE067G5Yxx65H692Yvc4+cIB/t8xpTnJVXuon6x0VuHHnuqJY
+	VaOWQSj/tJD5K6oB7zsH470ZcMgySzi74Cjbp7grQfkgYyf1P0l1G76NigopLNb4RSzViU3Gfa0
+	Yt9IvUCu5/NAsnwr9gRR1j9gEYPUwguEPHOiqD5Zx53JFr5HDdHAF423V3AB65AGoC5pQdAjh3m
+	prpDfaWHO2aIb+W17rjNTLtfbgc6tBnPyIFTlzn9uVN50o1KGPAaPV9YlFSJFtEyKamZyCdjPef
+	p17N61FgnseWOhveMoqc87IxfFcK8L1cEx1DqZPwEla0gpsGlSPzynO309/NnnG7DxBbGzmeOqR
+	nkavhYYBfCBeSaTTFXrkT2cSVq6PAbvvdTCOXmEuruRMGDuMKLXFS2yiNxnN4lX5Ic5RpvSDR2Z
+	cWYG2mxVN8secqiB0mJdCoGfkVN46xNK1oA+vVoZcXlLSIR0j7O8HsMquY7pjQZKmsxUTjffwza
+	dNKwyPxVJD4mi47dEUWn1SMYUMQPBnoz4gzGQG8mMZLVqrq3
+X-Received: by 2002:aa7:d94b:0:b0:6b7:df0c:18bc with SMTP id 4fb4d7f45d1cf-6ba37d3b56bmr13992034a12.17.1795802696609;
+        Fri, 27 Nov 2026 10:04:56 -0800 (PST)
+Received: from localhost (82-67-6-57.subs.proxad.net. [82.67.6.57])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6ba9b131d3bsm8376099a12.34.2026.11.27.10.04.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Nov 2026 10:04:55 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -61,341 +90,81 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261127-tyr-fw-parser-v1-1-8aab2a711f9b@collabora.com>
-References: <20261127-tyr-fw-parser-v1-0-8aab2a711f9b@collabora.com>
-In-Reply-To: <20261127-tyr-fw-parser-v1-0-8aab2a711f9b@collabora.com>
-To: dakr@kernel.org, simona@ffwll.ch, airlied@gmail.com, 
- aliceryhl@google.com
-Cc: Sami Tolvanen <samitolvanen@google.com>, 
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, 
- Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.15.2
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v6 5/7] rust: clk: add devres-managed clks
+From: Jerome Brunet <jbrunet@baylibre.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Gary Guo <gary@garyguo.net>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Viresh Kumar <viresh.kumar@linaro.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, 
+ Michal Wilczynski <m.wilczynski@samsung.com>, 
+ Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
+ Fu Wei <wefu@redhat.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
+ Jerome Brunet <jbrunet+clk@baylibre.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, linux-pm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, 
+ linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Boris Brezillon <boris.brezillon@collabora.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Maurice Hieronymus <mhi@mailbox.org>, Jerome Brunet <jbrunet@baylibre.com>
+In-Reply-To: <189F36A9-D1C1-478A-A195-F94D037E4376@collabora.com>
+References: <20261013-clk-type-state-v6-0-a5e9977b3509@collabora.com>
+ <20261013-clk-type-state-v6-5-a5e9977b3509@collabora.com>
+ <DMYELN5M09W3.1SYPKW7DZ70E1@garyguo.net>
+ <189F36A9-D1C1-478A-A195-F94D037E4376@collabora.com>
+Date: Fri, 27 Nov 2026 19:04:53 +0100
+Message-Id: <179580269373.2809466.3866997464599192193.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1455; i=jbrunet@baylibre.com;
+ h=from:subject:message-id; bh=EVdcrIGg5JsCx0X3upJdG2WoVOOBbQm+FMplR+16eVc=;
+ b=owGbwMvMwCW2VtK+WnvWU3HG02pJDNmcx1wf2nxO/vlS7391p4r88j3CD8rvTtqo+zJHx/l4O
+ F/jc7mfHaUsDGJcDLJiiiw13NXi7yS1vsyarnMbZg4rE8gQBi5OAZiImTYjwzur9Ptm8U6ip4rk
+ vVaFZW/7m3dS40HhpwtLzNJM1yWbmDP8s+KdsNvXYe+JLxfuuvhc1WqSbtuQczJ5c3eeFEuIet0
+ GNgA=
+X-Developer-Key: i=jbrunet@baylibre.com; a=openpgp;
+ fpr=F29F26CF27BAE1A9719AE6BDC3C92AAF3E60AED9
 
-The firmware parser checks the header and the entries of the firmware
-file before Tyr maps the sections into the MCU VM. The files in
-linux-firmware pass all of these checks and no test feeds the parser a
-malformed file, so nothing exercises its error paths.
+On 2026-11-18 11:47 -0300, Daniel Almeida wrote:
+> 
+> 
+> > On 18 Nov 2026, at 11:24, Gary Guo <gary@garyguo.net> wrote:
+> > 
+> > On Tue Oct 13, 2026 at 6:07 PM BST, Daniel Almeida wrote:
+> >> Many drivers only need a clock running for as long as the device is
+> >> bound and never touch it afterwards. In C, devm_clk_get_enabled() and
+> >> devm_clk_get_optional_enabled() cover this case.
+> >> 
+> >> Add devm_enable(), devm_enable_optional() and
+> >> devm_enable_optional_with_rate(), which wrap the C helpers. They return
+> >> no handle, so the driver keeps nothing in its data and cannot change the
+> >> state of the clock. The clock is disabled, unprepared and put when the
+> >> device is unbound.
+> >> 
+> >> This mirrors regulator::devm_enable() and devm_enable_optional().
+> >> 
+> >> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+> >> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> > 
+> > Given all the device resource lifetime changes, do we still need this now, or
+> > would putting a guard in driver private data to be dropped automatically upon
+> > unbind be sufficient?
+> 
+> I think we should still provide this. Many drivers only care that the clock be
+> enabled at a given rate, and do not care about the handle. I think this has
+> little to do with C or Rust and should be supported in Rust too.
+> 
+> — Daniel
 
-The parser does not touch the hardware, which lets KUnit run it on
-images built in memory. Add the tyr_fw_parser suite. It builds an image
-from named fields, checks that a well-formed image parses into its
-sections, and checks that malformed images are rejected.
-
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
----
- drivers/gpu/drm/tyr/fw/parser.rs | 298 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 298 insertions(+)
-
-diff --git a/drivers/gpu/drm/tyr/fw/parser.rs b/drivers/gpu/drm/tyr/fw/parser.rs
-index c4d0ad1d7899..de5881f1bf47 100644
---- a/drivers/gpu/drm/tyr/fw/parser.rs
-+++ b/drivers/gpu/drm/tyr/fw/parser.rs
-@@ -586,3 +586,301 @@ fn try_from(value: u8) -> Result<Self, Self::Error> {
-         }
-     }
- }
-+
-+#[kunit_tests(tyr_fw_parser)]
-+mod tests {
-+    use super::*;
-+
-+    use kernel::faux;
-+
-+    /// Appends little-endian values to a firmware image.
-+    struct Writer(KVec<u8>);
-+
-+    impl Writer {
-+        fn write_u8(&mut self, value: u8) -> Result {
-+            self.0.push(value, GFP_KERNEL)?;
-+            Ok(())
-+        }
-+
-+        fn write_u16(&mut self, value: u16) -> Result {
-+            self.0.extend_from_slice(&value.to_le_bytes(), GFP_KERNEL)?;
-+            Ok(())
-+        }
-+
-+        fn write_u32(&mut self, value: u32) -> Result {
-+            self.0.extend_from_slice(&value.to_le_bytes(), GFP_KERNEL)?;
-+            Ok(())
-+        }
-+    }
-+
-+    /// A firmware image with two entries.
-+    ///
-+    /// It has a field for each value that a test changes. [`Image::to_bytes()`] writes the other
-+    /// values as zero.
-+    struct Image {
-+        magic: u32,
-+        major: u8,
-+        /// The padding after the version hash.
-+        padding: u32,
-+        /// Size of the firmware header and the entries, in bytes.
-+        header_size: u32,
-+        entries: [Entry; 2],
-+        /// Size of the section data after the entries, in bytes.
-+        data_size: u32,
-+    }
-+
-+    /// An entry of an [`Image`].
-+    struct Entry {
-+        entry_type: u8,
-+        /// Size of the entry, in bytes.
-+        size: u8,
-+        flags: u32,
-+        va: Range<u32>,
-+        data: Range<u32>,
-+    }
-+
-+    impl Image {
-+        /// Returns a well-formed image of 72 bytes.
-+        ///
-+        /// The first section has 4 bytes of data. The second section is at the start of the shared
-+        /// region.
-+        fn new() -> Self {
-+            Self {
-+                magic: FirmwareHeader::FW_BINARY_MAGIC,
-+                major: 0,
-+                padding: 0,
-+                // A firmware header of 20 bytes and two entries of 24 bytes.
-+                header_size: 68,
-+                entries: [
-+                    Entry {
-+                        // An interface entry.
-+                        entry_type: 0,
-+                        // An entry header of 4 bytes and a section header of 20 bytes.
-+                        size: 24,
-+                        flags: SectionFlags::READ_MASK,
-+                        va: 0x0..0x1000,
-+                        data: 68..72,
-+                    },
-+                    Entry {
-+                        entry_type: 0,
-+                        size: 24,
-+                        flags: SectionFlags::READ_MASK | SectionFlags::SHARED_MASK,
-+                        va: CSF_MCU_SHARED_REGION_START..CSF_MCU_SHARED_REGION_START + 0x1000,
-+                        data: 72..72,
-+                    },
-+                ],
-+                data_size: 4,
-+            }
-+        }
-+
-+        /// Writes the headers in the order in which the parser reads them, followed by the data.
-+        fn to_bytes(&self) -> Result<KVec<u8>> {
-+            let minor = 0;
-+            let padding1 = 0;
-+            let version_hash = 0;
-+
-+            let mut w = Writer(KVec::new());
-+
-+            w.write_u32(self.magic)?;
-+            w.write_u8(minor)?;
-+            w.write_u8(self.major)?;
-+            w.write_u16(padding1)?;
-+            w.write_u32(version_hash)?;
-+            w.write_u32(self.padding)?;
-+            w.write_u32(self.header_size)?;
-+
-+            for entry in &self.entries {
-+                // The entry header has the type in bits 7:0 and the size in bits 15:8.
-+                w.write_u32(u32::from(entry.entry_type) | (u32::from(entry.size) << 8))?;
-+
-+                w.write_u32(entry.flags)?;
-+                w.write_u32(entry.va.start)?;
-+                w.write_u32(entry.va.end)?;
-+                w.write_u32(entry.data.start)?;
-+                w.write_u32(entry.data.end)?;
-+            }
-+
-+            for _ in 0..self.data_size {
-+                w.write_u8(0)?;
-+            }
-+
-+            Ok(w.0)
-+        }
-+
-+        /// Writes the image and parses it.
-+        fn parse(&self) -> Result<KVec<ParsedSection>> {
-+            parse_bytes(&self.to_bytes()?)
-+        }
-+    }
-+
-+    /// Parses a firmware image.
-+    fn parse_bytes(image: &[u8]) -> Result<KVec<ParsedSection>> {
-+        let reg = faux::Registration::new(c"tyr-fw-parser-kunit", None)?;
-+
-+        FwParser::new(reg.as_ref().as_ref(), image).parse()
-+    }
-+
-+    /// The well-formed image parses into one section for each entry.
-+    #[test]
-+    fn well_formed_image() -> Result {
-+        let image = Image::new();
-+        let sections = image.parse()?;
-+
-+        assert_eq!(sections.len(), image.entries.len());
-+        for (section, entry) in sections.iter().zip(&image.entries) {
-+            assert_eq!(section.va, entry.va);
-+            assert_eq!(section.data_range, entry.data);
-+        }
-+
-+        Ok(())
-+    }
-+
-+    /// A file that ends inside the firmware header is rejected.
-+    #[test]
-+    fn truncated_firmware_header() -> Result {
-+        let image = Image::new().to_bytes()?;
-+
-+        // The first 16 of the 20 bytes of the firmware header.
-+        assert_eq!(parse_bytes(&image[..16]).err(), Some(EINVAL));
-+
-+        Ok(())
-+    }
-+
-+    /// A file with the wrong magic is rejected.
-+    #[test]
-+    fn wrong_magic() {
-+        let mut image = Image::new();
-+        image.magic = 0;
-+        assert_eq!(image.parse().err(), Some(EINVAL));
-+    }
-+
-+    /// A major version other than 0 is rejected.
-+    #[test]
-+    fn unsupported_major_version() {
-+        let mut image = Image::new();
-+        image.major = 1;
-+        assert_eq!(image.parse().err(), Some(EINVAL));
-+    }
-+
-+    /// Padding after the version hash that is not zero is rejected.
-+    #[test]
-+    fn nonzero_padding() {
-+        let mut image = Image::new();
-+        image.padding = 1;
-+        assert_eq!(image.parse().err(), Some(EINVAL));
-+    }
-+
-+    /// Headers that are larger than the file are rejected.
-+    #[test]
-+    fn headers_larger_than_file() {
-+        let mut image = Image::new();
-+        // The file is 72 bytes long.
-+        image.header_size = 76;
-+        assert_eq!(image.parse().err(), Some(EINVAL));
-+    }
-+
-+    /// An image with no loadable section is rejected.
-+    #[test]
-+    fn no_loadable_section() {
-+        let mut image = Image::new();
-+        // The headers end with the firmware header.
-+        image.header_size = 20;
-+        assert_eq!(image.parse().err(), Some(EINVAL));
-+    }
-+
-+    /// Headers that end inside an entry header are rejected.
-+    #[test]
-+    fn truncated_entry_header() {
-+        let mut image = Image::new();
-+        // The entries end at byte 68. A third entry header would end at byte 72.
-+        image.header_size = 70;
-+        assert_eq!(image.parse().err(), Some(EINVAL));
-+    }
-+
-+    /// An entry that is smaller than its own header is rejected.
-+    #[test]
-+    fn entry_smaller_than_its_header() {
-+        let mut image = Image::new();
-+        image.entries[0].size = 0;
-+        assert_eq!(image.parse().err(), Some(EINVAL));
-+    }
-+
-+    /// An entry with a size that is not a multiple of 4 is rejected.
-+    #[test]
-+    fn unaligned_entry_size() {
-+        let mut image = Image::new();
-+        // The second entry is 25 bytes long, and the headers end where it ends.
-+        image.entries[1].size = 25;
-+        image.header_size = 69;
-+        assert_eq!(image.parse().err(), Some(EINVAL));
-+    }
-+
-+    /// An entry that ends past the headers is rejected.
-+    #[test]
-+    fn entry_larger_than_headers() {
-+        let mut image = Image::new();
-+        // The first entry starts at byte 20. It now ends at byte 72, 4 bytes past the headers.
-+        image.entries[0].size = 52;
-+        assert_eq!(image.parse().err(), Some(EINVAL));
-+    }
-+
-+    /// An entry of an unknown type that is not optional is rejected.
-+    #[test]
-+    fn unknown_entry_type() {
-+        let mut image = Image::new();
-+        image.entries[0].entry_type = 0xff;
-+        assert_eq!(image.parse().err(), Some(EINVAL));
-+    }
-+
-+    /// Section flags that the driver does not know are rejected.
-+    #[test]
-+    fn unknown_section_flags() {
-+        let mut image = Image::new();
-+        // Bit 6 is not a section flag.
-+        image.entries[0].flags = 1 << 6;
-+        assert_eq!(image.parse().err(), Some(EINVAL));
-+    }
-+
-+    /// A VA range that ends before it starts is rejected.
-+    #[test]
-+    fn section_va_end_before_start() {
-+        let mut image = Image::new();
-+        // The VA range ends at 0x1000.
-+        image.entries[0].va.start = 0x2000;
-+        assert_eq!(image.parse().err(), Some(EINVAL));
-+    }
-+
-+    /// Section data that ends before it starts is rejected.
-+    #[test]
-+    fn section_data_end_before_start() {
-+        let mut image = Image::new();
-+        // The data starts at byte 68.
-+        image.entries[0].data.end = 64;
-+        assert_eq!(image.parse().err(), Some(EINVAL));
-+    }
-+
-+    /// Section data that ends past the file is rejected.
-+    #[test]
-+    fn section_data_past_end_of_file() {
-+        let mut image = Image::new();
-+        // The file is 72 bytes long.
-+        image.entries[0].data.end = 76;
-+        assert_eq!(image.parse().err(), Some(EINVAL));
-+    }
-+
-+    /// A VA range that is not page aligned is rejected.
-+    #[test]
-+    fn section_va_not_page_aligned() {
-+        let mut image = Image::new();
-+        image.entries[0].va.start = 0x800;
-+        assert_eq!(image.parse().err(), Some(EINVAL));
-+    }
-+
-+    /// A section at the start of the shared region that is not shared is rejected.
-+    #[test]
-+    fn shared_region_not_shared() {
-+        let mut image = Image::new();
-+        image.entries[1].flags = SectionFlags::READ_MASK;
-+        assert_eq!(image.parse().err(), Some(EINVAL));
-+    }
-+}
+Gary, is this OK with you ? if it is, I can take as it is.
 
 -- 
-2.56.0
+Jerome
 
