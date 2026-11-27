@@ -1,62 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795771867;
-	b=hhRIwrSREwXNrC9iIH9ajcgWbUexZxWMbABo7or51Z5yFUknpX73flzT5rW8cnhJPazU
-	 SkRKwlq1rT0DrG/q6chqMENRXdXHUoHMg3BjXcK3RY8Dot7ECYKFbxVy+NEuWxTaVEKf9
-	 kUpM8TL57xbHGBFvYjEvjwZnDScgGYSHlfRRnJhEI7wjj1GrWnSsdzqI/aMJ8jMTU8qQm
-	 Fnkjqaapyvvd41oJf+WE+QXs3DaBneaYv1Eu5+jKA9J2C2QG5P8Tz1veM09sg7lJHkFAO
-	 d8CAhQcgTS7PTofzfJ1qKD7mFcfOAoL/uxb6rg5u+LzzEtU8ROUN4y9RWghwfYTulyQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795771867;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=08zWpTR5K/nQg5mqMzDZkcFR1VCJRK1H9mo7g3CNk0A=;
-	b=cqWYk3+9Qi3KPlkPMB2s8X3xMFzq2NGmLer2qX9v2KSwcv6Eayg03by5t3MyWHzMCVr3
-	 aP/8xgXfTto/QC2DfeH+3aXbX1DQVzQidDKGRQXcy0o0QhO1217bfZ4GHlnc8hBOu2H9x
-	 3Z9yPjW2+O7nv1JoXT4U1cQPPFZqUpBpOjQneXmphrBxo5s3Qv/8AdpHoi4bVNwseLmwf
-	 wNx7ufN8LR7WwOUYX7Fc6bP5BApewgIMiJnhT0VrNQl6foBjWjFQQRc8aEuaeAUv3IzAQ
-	 Xj+bEn/N9dUmCI59hagkiSlKhrfXQt5Mc/b8Q3m6mNlHxfHzb4E7vFZyQtkW/r+DVJg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h0iHYzh+;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.43
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795773329;
+	b=O2PAFoNhFpVhFb/1WWTAt+MRIIX0g0ACL4BHPcjATZoNJm4l28n9HXJeAnIv8jyf8ZZA
+	 4PHmpnNXdlfY2NhMoXrkLd0KMG9lJ/vyl/NMw4TeXFRSTugbRrIpigGegjBYZedcloW59
+	 rIze9I2j9sUGQ3D+89vwemo59COSxgp/zq0xcIA7VwRS5a+EtFFqOFiX6bV8diA7qy+DL
+	 h5IoVI9cIYZfgjKqOxTTK70wh43UFbACKZCusO9Y6BVAMKN+dg2obkTOdujeqQkqz8BpK
+	 SczqgIfoqEPMPrSCHhXUi6Tik5snQd1Xugva3TXoQJGDf2EXQROKWEnhOzf0PUpJDXA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795773329;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=vpy+L8ilFk/xVj47uBuvADr4xljwNe7U/d1k7VvtaJ8=;
+	b=H3sawAdzP76ajNPfmXWh+Om0FdA6GAQQTXKiOCwkRcOeI5dD6jtoEQxTmOIT6UoEdODM
+	 zgIiC0AeSyDVmguTQqX6PAqYt+/9/T5Ohjy/meHURGMJLkQcJV1bE7ShSUXzsv43RSZhg
+	 I4RfsH53CHNYOQF9P/1ss/K6VbFdLHuzYly9Rc6rv/aeiF3MHhqzTlWhYNI4CdNgDMCZ/
+	 GTIoLJXz4cTuC6W0RRTrTt+gOuwmjhpuVQc90sYI/C5BcnzambtxgAfYf5YKL7dQf9X38
+	 b8w8gnXAjE9FIJ6tUCPBWi8UmZFF7ZW7/NIuZZ2ABLRnwXojvL7UMqsz1WLEiSF7wWw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=o3OSRhaw;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.43
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id B02E1606A31C;
-	Fri, 27 Nov 2026 09:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B9E606A681
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Nov 2026 09:55:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E5B9E606A681
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h0iHYzh+
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 67DAD1F000C1;
-	Fri, 27 Nov 2026 09:31:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795771866;
-	bh=08zWpTR5K/nQg5mqMzDZkcFR1VCJRK1H9mo7g3CNk0A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=h0iHYzh+XkIok5LcYYCcxvHaVqXIfJVzUPJRKmPuJydaInJ9t9BKOGQDCwqryqAuz
-	 XFJ5yrLpnqMtpjxp34q8shQU9CFJXBpzo2LwqOz480d2tLPd3QJUW52fTYghqIq1mU
-	 xszXKrqOCVOsPfddUE1SWf0U1UlxPywqwybHVXYnoEyqL93CbanfdBZfnsRuYzELoC
-	 XX0mPV2RpzdlFMumxAwLgF4f9sYLZORI8AmULrwvg99npTNXSA0jI1I7TIsUolHL+l
-	 cqbUI+IdwvRIAzEMpnhNZSLbXbaa26pjj1ZOG1PZ1x3+0TCy087kTn6QMbmwxVgcQb
-	 25j+SB8Afis/w==
-Date: Fri, 27 Nov 2026 10:31:04 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Priya Bala Govindasamy <pgovind2@uci.edu>
-Cc: Michal Wilczynski <m.wilczynski@samsung.com>, ojeda@kernel.org, 
-	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
-	daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, 
-	elle@weathered-steel.dev, linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	ardalan@uci.edu, zhiyunq@cs.ucr.edu, dzueck@uci.edu
-Subject: Re: [PATCH 1/1] rust: pwm: reject over-aligned driver data in
- `Chip::new()`
-Message-ID: <awlNXMCAAlf5trfM@monoceros>
-References: <cover.1794600927.git.pgovind2@uci.edu>
- <CGME20261113202542eucas1p27ba92593376041c476afa9c5286205cf@eucas1p2.samsung.com>
- <caddec5478a0d39a73152247a60bc21b3c609cc7.1794600927.git.pgovind2@uci.edu>
- <9ee41556-4a24-47b2-9db3-9665048658eb@samsung.com>
- <CAPPBnEbnBPsYxE5ZXPkhGfueMoYD6DAH7dDrR=wRcq_mD686fg@mail.gmail.com>
- <awlMukHhET0ALF2j@monoceros>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=o3OSRhaw
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4a9be758734so4980595f8f.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 27 Nov 2026 01:55:28 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795773327; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YoAOWA3xNjr3QjCyDzsNtCzY7U5PKSyxoNEI+wb7HVXAhb5WPtp3Rp2+0z5QUB05qj
+         iah9WECXNugimLo1F3FdU6pWxCNgKQXPVOMgrboEUg8YolDo3vkJ/WZrXkJnbKzrucJm
+         Mju8IpgVqHx1cANmiRaVGWc1nrxXO53GS/qSjySqBxrIjKiNO4Mtk2DcZyNtFJGYOfYh
+         yTlsw2OAvchptik3XnKU/RkwBuKhrs9B8mqOCddfIZ5YIWU69o7KJji/amb4p1AErAlr
+         6sv6j2FARTFukIrUT1IcDTU6yfi4QEr4meEHJ/BZ0zOQS2Nkp3k5qW460WfIr/SZmgWh
+         E/dw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vpy+L8ilFk/xVj47uBuvADr4xljwNe7U/d1k7VvtaJ8=;
+        fh=hJXA+mf/D/alW/cWklxTir4QRU6vVUiaAwABHShGVQs=;
+        b=O5KoQZ8A0uOrbNXrFVJBxR1EdmnlP65tk9YAEvJ5ma70r0y68WMVxbdOzna8ptSKgP
+         gEIATH1zQne1K95gOQxE2cF0N72wipYr+Si0bvrtKkAKa72zyFuYAtPb2SpodRZR8Vio
+         zjuFqySgaeNi58lB77SDuo5bKXxSJkLyQho8C9BtTpP+mJIPKJ02Bg2MbHbarW5tHYNa
+         7vx0uwzbntmQipASvOV1xA/xqo5RmMe0oRxeWsjyYknY7OnIoB8nhEcMxWq27yKtlrc4
+         fzY5w5YRhplbnYaPlZByfbfkPR6dFj0OuWioWqWHlhsagqibyXBvM6tFfunuujlaK3B6
+         ptTw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795773327; x=1796378127; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vpy+L8ilFk/xVj47uBuvADr4xljwNe7U/d1k7VvtaJ8=;
+        b=o3OSRhaw2QYcXwmaZ3dSGH1e18rCjmoO4Up/97k1PFGYjLm4Xa0qKyEVQesQPMEaAN
+         DIUz1VvKO1keEcutO8WSM8HhHMKVxKc+E3vOtmXZMWf+65Xnd2flpMmgdVNmYBt0HzXz
+         RoOeiEXgzTPHfsd4d3V9Xk24iQs+ovcjlDS7aP105p6QC+18Ki01aiQHNXDjSBsTiA8I
+         qkAhtY6jPuD6++aUisGf5ItXnPYUM1L6PZwNePjh2NGKd2iDWtec1XxoQtEoV1A8nmaO
+         xjvCzcw5f2Zk6DEzSE2Z5dGdNbYrSBC3trhGzD0rDrRYy7sCwLeH5gMDXuR35+Vg1/bf
+         +TsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795773327; x=1796378127;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vpy+L8ilFk/xVj47uBuvADr4xljwNe7U/d1k7VvtaJ8=;
+        b=KPKGIbW2zOxHX5RrpFpkhSVEObjKG1+mdt8D1N6u7wQVsXJiwlYZWivYQg4wEIl0Zd
+         x9PPAbUR+7twuZIDeLbGJl6fIPlhqG78Brvjp8gIbYLwQvUBgNNHH5NHorFv1fiyxWMx
+         2bqlJc3fGwg6YrKPNXRxT5E1OVWxHB+rUcQq91ZilLXaE+zgbl0SchCNicT/dmnrIO2o
+         CJQkMWxY6t94BsmK4BrXQRo5dsZHQqa4R/r4m6CqLzbT8BoFoY/aJrdwmB/lXcR1hA/C
+         nNAaGtBGR6has62DD02jj7k+mx3/xwuefKqskdU6YIpb5s77jqnDP5D3XQ2WsNAVB99H
+         ddAA==
+X-Forwarded-Encrypted: i=1; AL+hErEVjpzccqQRCnrTkq7vDGuT3RMQjYCu3AmQ0GkGWQLHbIfOU0wnWK6WtfDzk8AQbnGB4zbrO3F2gUjtKwLxXg==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9azMepF9HYsODq7xKC2n8C9O4GsL0eWERdP+NQQbJaO3AbnIap
+	P6aImpL0xU7CmU1HddCZuGdobBPF+Czo+78Tc5tQFkmXnTQ2TWo+1UHW+IxgzPZmtv7ACcuAML7
+	8F2igQtEvLANb5mvdNojaF+bBQjokZwoWwXLJtEyb
+X-Gm-Gg: AZFdTZcJS0VAcpYdP5/aU/wtlrr+PaLS9diJyC+QOHLo/UPjDi0TX/u2faHHWJxIM4s
+	y630ET0dGAO1iP/2k467wLsCinoCVNYOTkDHxMb1oQSQGPi3lXyh1+EiOJ6H6GKA8RiZDslu9zj
+	gs1Xe3Ak8kqyrpxhz/wm+fP8R94z2zU+K4OdNM4fiIPummGrGeSANhBAN6tseZYaeoopDF7928i
+	WDPq7fyaBbqbUwPrgjtjgEx8JXO28vHylsHcbF+QBjuOmADSBxgTCHtQ3udTSDsHJ2ONWWx0XY3
+	w+gxwmmepxxaAfB4KaDU4I53KbAJuGY8fDP6pBYwLb5xSW/y2oOo1kLO1tVn57qobQ7GNv/APgC
+	+OK3Dj+1M0TFmiyVx8ySiJiVQ7p+UBcw3ag+pPn490Cy+Rtced9VySiHRqhvvJUBZJDKK4wXTFw
+	mJVqd2jFre4GlvnYpmJ0G6lco6EXfizxoqu4IGSgp/5U+w
+X-Received: by 2002:a5d:588b:0:b0:48e:66d0:664c with SMTP id
+ ffacd0b85a97d-4abaf64be12mr50144469f8f.15.1795773326393; Fri, 27 Nov 2026
+ 01:55:26 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -66,60 +105,62 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wglca3u23ukaiyuf"
-Content-Disposition: inline
-In-Reply-To: <awlMukHhET0ALF2j@monoceros>
-
-
---wglca3u23ukaiyuf
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
+References: <20261124-rust-drm-gem-shmem-imported-sgt-v2-0-000f7a9ccb8d@jannau.net>
+ <20261124-rust-drm-gem-shmem-imported-sgt-v2-3-000f7a9ccb8d@jannau.net>
+ <awXA70GWssuU991c@google.com> <20261125113846.GB372978@robin.jannau.net>
+In-Reply-To: <20261125113846.GB372978@robin.jannau.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 27 Nov 2026 09:55:14 +0000
+X-Gm-Features: Aa3M54oiZNSDgmAEoH9NzLLBRhpgjBRE2cJGZY4MeBf6M2cJPAdsD-3P1zcRduo
+Message-ID: <CAH5fLggRtEUopYT0ZacNvczLRTNk4sKDrE7q-isgW=MDn4mqMQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] rust: drm: gem: shmem: Implement
+ prime_import_sg_table callback
+To: Janne Grunau <j@jannau.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Sami Tolvanen <samitolvanen@google.com>, Lyude Paul <lyude@redhat.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	nova-gpu@lists.linux.dev, stable+noautosel@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 1/1] rust: pwm: reject over-aligned driver data in
- `Chip::new()`
-MIME-Version: 1.0
 
-On Fri, Nov 27, 2026 at 10:28:09AM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> Hello,
->=20
-> On Thu, Nov 26, 2026 at 09:38:59AM -0800, Priya Bala Govindasamy wrote:
-> > On Wed, Nov 25, 2026 at 7:42=E2=80=AFAM Michal Wilczynski
-> > <m.wilczynski@samsung.com> wrote:
-> > > The C layout uses PWMCHIP_ALIGN, which is private to core.c. If Uwe
-> > > agrees it might be a good idea to move it to include/linux/pwm.h and
-> > > assert against that, so the two can't drift apart.
-> >=20
-> > Thanks for your comments. As per Gary and Uwe's feedback, I will
-> > shorten the commit message in the v2 patch. Just to confirm, for v2
-> > should I only update the commit message, or also move PWMCHIP_ALIGN
-> > into include/linux/pwm.h?
->=20
-> There is precedent on a symbol that is only in include/linux/pwm.h for
-> Rust. So if you group PWMCHIP_ALIGN to pwmchip_release() and extend the
-> comment accordingly that would be ok for me.
+On Wed, Nov 25, 2026 at 11:38=E2=80=AFAM Janne Grunau <j@jannau.net> wrote:
+>
+> On Tue, Nov 24, 2026 at 04:53:03PM +0000, Alice Ryhl wrote:
+> > On Tue, Nov 24, 2026 at 12:37:45PM +0100, Janne Grunau wrote:
+> > > +        // SAFETY: The DRM shmem helper only invokes this callback f=
+or a registered DRM device of
+> > > +        // type `T::Driver`, which is `Self`'s driver per the `Alloc=
+Impl` impl below.
+> > > +        let dev: &Device<T::Driver> =3D unsafe { Device::from_raw(ra=
+w_dev) };
+> >
+> > `drm::Driver` in `rust/kernel/drm/driver.rs` currently declares:
+> >
+> >     type Object: AllocImpl;
+> >
+> > without any constraint that `T::Object::Driver =3D T`. I think we shoul=
+d
+> > introduce one similar to how Driver::File constrains this?
+>
+> so changing it to `type Object: AllocImpl<Driver =3D Self>;`?
 
-But having said that, I wonder if PWMCHIP_ALIGN is really needed. Isn't
-is possible to just check after pwmchip_alloc() if the alignment for T
-is good enough? Hmm, maybe that doesn't work as it's a runtime check and
-Rust might want to know during compile time?
+Yeah that's what I meant.
 
-Best regards
-Uwe
+> I think it's hard to get that accidentally wrong but since the change
+> relies on that constraint and we can express it sure.
+>
+> I added it locally for v3 but feel free to make that change before
+> pushing this series to drm-rust-next if there is nothing else that
+> warrants a v3.
 
---wglca3u23ukaiyuf
-Content-Type: application/pgp-signature; name="signature.asc"
+I'm ok with adding it on apply if there's nothing else.
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmsJTdYACgkQj4D7WH0S
-/k7ChQf/YqKgJhXHQ4C9aDol+iX1MLyYqIkckuoc3nLejbenUb6Sep0OQjBpQb4a
-95P1nPDzU1FBYVHZafwvcyFPcTU15qGsEuGAK+8vQiUfFKQuU1NQnsrdidfsQRh6
-XyyLnW0FBzAlseTSVZFWsSYgFI7Qw022PqV0yfoXeSI0woFJZNd/q6fyj9x3cZF5
-1YCtMYxEa4CZivtsudGr0l6/LB4lfDLuxNxr8SfRMgJoNovfGF+SiUijOhosp16I
-gNhSxufUgf4T9GRgpKdEiCGw4eKSB9f/5fcE+/3D1lGg+ilAx8ylnpxO/8YL0fHs
-Y7u5eCnAqsKnQ2Uo5Lo3TGCko6zlTQ==
-=l0az
------END PGP SIGNATURE-----
-
---wglca3u23ukaiyuf--
+Alice
