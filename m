@@ -1,65 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795795935;
-	b=MEYkJ7tKA0hnn9RvozvDavvai+QvY9/CNI+o8iepxaqOe7XuF4xwqUFgq7KKX202N2lP
-	 pykgn9gphoisTaOQsHcj9UHSMZJIxhC1PtjlR7oUZEWcJBzMAe75fwTyIfqGxTfQKS6uQ
-	 oume/wZ86eUBCYpW2jZ+eDJTjTfiRLZfA4nZ/TqxS5BnfTtUicFqtcPROsHzUHvoRjWj5
-	 HU/91+SiQ8cZ+QSlMzQiQZOz/tJJwT1129k7FfJAVKOSyt976tsPLGB4/fH4HEGnBfDcB
-	 9vS5xkKA00vvVAey8RNuTR6roeipXA71+Yn3h6/PYI6KwbCSrCNUtRIQqCdSK7FTwVg==
+	t=1795797399;
+	b=LDqeWncV71Kg+h8Q8k0brm26pxCkWvDP8LpQf+7dy7WQ47+HBcmdA8JJzJtuprkq1dR/
+	 Z9n0kLE9wP/tFzXGqqLcw7TT4t+5EFUR2X9+zQ7wcPQUoQ7QIXT3CIoDZMJymNHZQXhCY
+	 A+gjE+Mj9zE2Bfmca0dFhxEV0G8wBb5y2ABMp+SH0I1gACrOIrttEDr2LDUASzNByDoDL
+	 QOJeksXY6RYsahU5oKZLmIrzIdTf1CKsmGPCVAWWEG4lvF3UJwRmdq/TY/DFLDcB33jWp
+	 NpUWFgzWEXiE4shtBrZ67XLBeDfyg3JFMoJ04QOwYFDZHGrXxYNNi96rSBCSzO+3vUA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795795935;
-	h=Received:DKIM-Signature:Date:Message-ID:From:To:Cc:Subject:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=VBgH8+Q6QHWEj0qZC0+SboPRRBmICX+3ZM9Ab5HQr2s=;
-	b=npc/RDvI/8nmxCgdMUGNv4Rxl98uS+FDJZ1zL8i4ckPHl8cArXzewBi/fYEG/kg0AVrS
-	 7A0vzN8rSiJZTpdx33n6vlCxAP29mXN4QDMcEXiJ4ZtvRmsOZ1frCpuQBZloxxURf1yps
-	 UzPXguLJ+qU99RF4tzcRlZcNWH8ozItoZSrG4g/spusgOs7tS0hmJdbGoWFIXynu5TA6f
-	 EAMOQOZ5pTGMyLotVQsTa0tnMl3Nidu/d6JSTj042WpIrB1yrFW5hAEB7AcLaMTTlxA4B
-	 eJiyDkO0m9OWaquALfeyvtLDPxnz4XEfbJdpG8D7lW2afnOOH3IiLrqPaqimoDtIUpw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795797399;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=nyxEO58jG2eRS60AFB3FuIq+ozdE/sL6szu/SNOCHkU=;
+	b=4qeLtaCd4IRxFvHDvcS7pGF1ESt9cTE+mf+SSnxU0yvB4WcZbDLWvHNZyFVfCo7zv0px
+	 zDUou+3nG9YH3WNP/xnqaZpZkIaSkX1OY8KKXT34H/MA5dgWXpyALhW33VhNkSmDAyN2d
+	 afz3RnGE+ztTMnvQUuhcqoluW7V+Hk7nNdPDoNNNiN/QBUCT/48dNl8Ysy4+1RF1ARMUp
+	 r/8+8nS7m3KQHSfn4f53iGYrf5unMMBq0fCuArAMC9Jb0XRNDNZHJ648WWAMpAUzq9wO8
+	 6Jx08WHW/aLa20dQMdDvstmF6TQ81h0GCtgYXIJwvl36YwC3W59hi3gDufE/50GLtDg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H8yYY+4t;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2CC606A329;
-	Fri, 27 Nov 2026 16:12:15 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=RuXYDHbs;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A10606A32A;
+	Fri, 27 Nov 2026 16:36:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90A10606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H8yYY+4t
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F951F00A2C;
-	Fri, 27 Nov 2026 16:12:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795795935;
-	bh=VBgH8+Q6QHWEj0qZC0+SboPRRBmICX+3ZM9Ab5HQr2s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=H8yYY+4tIiy3LbXOAHA8yprNDZ8BxfhutArHw8EX7sd2LmdWF3Rnl+cBPqkKJD8hU
-	 HCVAWuenQuX3oLwWn9tXGkHnn7lA2DfXj6lZIojCS2U5Exnpe3IRdHyjv1Z10Ha+81
-	 t2VaYqBcU5iVXovXZiDzcwuI7HTbQ5azdWvZS/2jC49ShlTJVBiZSYKj495i+3bPDe
-	 WhrtmbQ5k9ZZFEbZegbVX7/vVuzTBufB4Zf1+yyyEi51lnzFK4COzf6w5je+oMN1z6
-	 pz3pb+AlMwEjzw5lJYmJ74hutXs2y+IR2D1OZknEch+2mtQk54PQd37U6hJAYlIHdr
-	 Wf+rDMm1vXGbQ==
-Date: Fri, 27 Nov 2026 06:12:13 -1000
-Message-ID: <2ac377700fd9cd17c32aae2a9d3dbea7@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>, Danilo Krummrich <dakr@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- John Hubbard <jhubbard@nvidia.com>, Philipp Stanner <phasta@kernel.org>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- driver-core@lists.linux.dev
-Subject: Re: [PATCH v4 5/5] rust: workqueue: add ScopedWork for non-'static work items
-In-Reply-To: <CAH5fLgjvFXX6oZRkH9OFCun4eNGWKkmoeCfVK3_16Yc75dfRkw@mail.gmail.com>
-References: <20261119-rust-workqueue-v4-0-707c68994940@google.com> <20261119-rust-workqueue-v4-5-707c68994940@google.com> <5eec17370f67438e43bb1c82b1d6a16b@kernel.org> <20261125181752.2027207-1-aliceryhl@google.com> <f9d8ff6a6c4a4d098e0d461da4e40474@kernel.org> <CAH5fLgjvFXX6oZRkH9OFCun4eNGWKkmoeCfVK3_16Yc75dfRkw@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=RuXYDHbs
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6C3E41570;
+	Fri, 27 Nov 2026 08:36:34 -0800 (PST)
+Received: from [10.0.129.128] (e122027.cambridge.arm.com [10.0.129.128])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 93AB23F632;
+	Fri, 27 Nov 2026 08:36:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795797397; bh=EFyjz5K6FQSICQk4qVCWxpHVr1zg47R7gms4zh34/8Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RuXYDHbs0klo6rqmTIFbWccVkoffHuEh+tKD+TdfkhY8pOhrThjyfqgwOEx3GX8i1
+	 p2OlSLNY5CUwgHLb95vhb/+eyNx9NsndsVzI9o5La3N5rsszhDPzN1YIj/7GLwZKYN
+	 A/eh1lMd9TGmf/KM8gzt0BrzFQAdsyDdQxgdCNNM=
+Message-ID: <3970b78c-b72a-49ca-9125-75d242508a9d@arm.com>
+Date: Fri, 27 Nov 2026 16:36:26 +0000
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -69,48 +53,241 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 02/13] drm/panthor: Minor scheduler refactoring
+To: Ketil Johnsen <ketil.johnsen@arm.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, Akash Goel <akash.goel@arm.com>,
+ Karunika Choo <karunika.choo@arm.com>,
+ Lukas Zapolskas <lukas.zapolskas@arm.com>,
+ Chris Diamand <chris.diamand@arm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Alice Ryhl <aliceryhl@google.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, Florent Tomasin <florent.tomasin@arm.com>
+References: <20261116112601.3483649-1-ketil.johnsen@arm.com>
+ <20261116112601.3483649-3-ketil.johnsen@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20261116112601.3483649-3-ketil.johnsen@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hello, Alice.
+On 16/11/2026 11:25, Ketil Johnsen wrote:
+> From: Florent Tomasin <florent.tomasin@arm.com>
+> 
+> Refactor parts of the group scheduling logic into new helper functions.
+> This will simplify addition of the protected mode feature.
+> 
+> Remove redundant assignments of csg_slot.
+> 
+> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+> Signed-off-by: Florent Tomasin <florent.tomasin@arm.com>
+> Co-developed-by: Ketil Johnsen <ketil.johnsen@arm.com>
+> Signed-off-by: Ketil Johnsen <ketil.johnsen@arm.com>
 
-On Thu, Nov 26, 2026 at 12:43:07PM +0000, Alice Ryhl wrote:
-> Of course, there may be other ways to enforce the non-reentrance
-> conditions hold, which could let me get rid of the lifetime. But the
-> lifetime is there to handle the cleanup before destroy_workqueue() is
-> called case, so a percpu refcount does not come into play.
+Reviewed-by: Steven Price <steven.price@arm.com>
 
-I didn't explain myself well. I'm not saying that the current scheme
-doesn't work. My concern is how easy the interface is to use, and I wonder
-whether taking workqueue lifetime out of the compiler-managed lifetime
-rules could make it simpler. Something like the following:
+> 
+> ---
+> 
+> v5:
+> - Actually handle error from csg_slot_prog_locked()
+> 
+> v4:
+> - Handle error from csg_slot_prog_locked()
+> 
+> v3:
+> - Use panthor_fw_csg_endpoint_req_update() (was rebase mistake)
+> - Function rename to tick_ctx_update_group_prio()
+> 
+> v2:
+> - Moved option to ding only the CSG doorbell to later patch
+> ---
+>  drivers/gpu/drm/panthor/panthor_sched.c | 135 +++++++++++++++---------
+>  1 file changed, 83 insertions(+), 52 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+> index a343c5180e01e..d632fe1bf4db8 100644
+> --- a/drivers/gpu/drm/panthor/panthor_sched.c
+> +++ b/drivers/gpu/drm/panthor/panthor_sched.c
+> @@ -2345,12 +2345,85 @@ tick_ctx_cleanup(struct panthor_scheduler *sched,
+>  	}
+>  }
+>  
+> +static void
+> +tick_ctx_evict_group(struct panthor_scheduler *sched,
+> +		     struct panthor_csg_slots_upd_ctx *upd_ctx,
+> +		     struct panthor_group *group)
+> +{
+> +	struct panthor_device *ptdev = sched->ptdev;
+> +
+> +	if (drm_WARN_ON(&ptdev->base, group->csg_id < 0))
+> +		return;
+> +
+> +	csgs_upd_ctx_queue_reqs(ptdev, upd_ctx, group->csg_id,
+> +				group_can_run(group) ?
+> +				CSG_STATE_SUSPEND : CSG_STATE_TERMINATE,
+> +				CSG_STATE_MASK);
+> +}
+> +
+> +static void
+> +tick_ctx_update_group_prio(struct panthor_scheduler *sched,
+> +			   struct panthor_csg_slots_upd_ctx *upd_ctx,
+> +			   struct panthor_group *group,
+> +			   int new_csg_prio)
+> +{
+> +	struct panthor_device *ptdev = sched->ptdev;
+> +	struct panthor_fw_csg_iface *csg_iface;
+> +	struct panthor_csg_slot *csg_slot;
+> +
+> +	if (group->csg_id < 0)
+> +		return;
+> +
+> +	csg_iface = panthor_fw_get_csg_iface(ptdev, group->csg_id);
+> +	csg_slot = &sched->csg_slots[group->csg_id];
+> +
+> +	if (csg_slot->priority != new_csg_prio) {
+> +		panthor_fw_csg_endpoint_req_update(ptdev, csg_iface,
+> +						   CSG_EP_REQ_PRIORITY(new_csg_prio),
+> +						   CSG_EP_REQ_PRIORITY_MASK);
+> +		csgs_upd_ctx_queue_reqs(ptdev, upd_ctx, group->csg_id,
+> +					csg_iface->output->ack ^ CSG_ENDPOINT_CONFIG,
+> +					CSG_ENDPOINT_CONFIG);
+> +	}
+> +}
+> +
+> +static int
+> +tick_ctx_schedule_group(struct panthor_scheduler *sched,
+> +			struct panthor_csg_slots_upd_ctx *upd_ctx,
+> +			struct panthor_group *group,
+> +			int csg_id, int csg_prio)
+> +{
+> +	struct panthor_device *ptdev = sched->ptdev;
+> +	struct panthor_fw_csg_iface *csg_iface =
+> +		panthor_fw_get_csg_iface(ptdev, csg_id);
+> +	int ret;
+> +
+> +	ret = group_bind_locked(group, csg_id);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = csg_slot_prog_locked(ptdev, csg_id, csg_prio);
+> +	if (ret) {
+> +		group_unbind_locked(group);
+> +		return ret;
+> +	}
+> +
+> +	csgs_upd_ctx_queue_reqs(ptdev, upd_ctx, csg_id,
+> +				group->state == PANTHOR_CS_GROUP_SUSPENDED ?
+> +					CSG_STATE_RESUME : CSG_STATE_START,
+> +				CSG_STATE_MASK);
+> +	csgs_upd_ctx_queue_reqs(ptdev, upd_ctx, csg_id,
+> +				csg_iface->output->ack ^ CSG_ENDPOINT_CONFIG,
+> +				CSG_ENDPOINT_CONFIG);
+> +
+> +	return 0;
+> +}
+> +
+>  static void
+>  tick_ctx_apply(struct panthor_scheduler *sched, struct panthor_sched_tick_ctx *ctx)
+>  {
+>  	struct panthor_group *group, *tmp;
+>  	struct panthor_device *ptdev = sched->ptdev;
+> -	struct panthor_csg_slot *csg_slot;
+>  	int prio, new_csg_prio = MAX_CSG_PRIO, i;
+>  	u32 free_csg_slots = 0;
+>  	struct panthor_csg_slots_upd_ctx upd_ctx;
+> @@ -2360,44 +2433,13 @@ tick_ctx_apply(struct panthor_scheduler *sched, struct panthor_sched_tick_ctx *c
+>  
+>  	for (prio = PANTHOR_CSG_PRIORITY_COUNT - 1; prio >= 0; prio--) {
+>  		/* Suspend or terminate evicted groups. */
+> -		list_for_each_entry(group, &ctx->old_groups[prio], run_node) {
+> -			bool term = !group_can_run(group);
+> -			int csg_id = group->csg_id;
+> -
+> -			if (drm_WARN_ON(&ptdev->base, csg_id < 0))
+> -				continue;
+> -
+> -			csg_slot = &sched->csg_slots[csg_id];
+> -			csgs_upd_ctx_queue_reqs(ptdev, &upd_ctx, csg_id,
+> -						term ? CSG_STATE_TERMINATE : CSG_STATE_SUSPEND,
+> -						CSG_STATE_MASK);
+> -		}
+> +		list_for_each_entry(group, &ctx->old_groups[prio], run_node)
+> +			tick_ctx_evict_group(sched, &upd_ctx, group);
+>  
+>  		/* Update priorities on already running groups. */
+> -		list_for_each_entry(group, &ctx->groups[prio], run_node) {
+> -			struct panthor_fw_csg_iface *csg_iface;
+> -			int csg_id = group->csg_id;
+> -
+> -			if (csg_id < 0) {
+> -				new_csg_prio--;
+> -				continue;
+> -			}
+> -
+> -			csg_slot = &sched->csg_slots[csg_id];
+> -			csg_iface = panthor_fw_get_csg_iface(ptdev, csg_id);
+> -			if (csg_slot->priority == new_csg_prio) {
+> -				new_csg_prio--;
+> -				continue;
+> -			}
+> -
+> -			panthor_fw_csg_endpoint_req_update(ptdev, csg_iface,
+> -							   CSG_EP_REQ_PRIORITY(new_csg_prio),
+> -							   CSG_EP_REQ_PRIORITY_MASK);
+> -			csgs_upd_ctx_queue_reqs(ptdev, &upd_ctx, csg_id,
+> -						csg_iface->output->ack ^ CSG_ENDPOINT_CONFIG,
+> -						CSG_ENDPOINT_CONFIG);
+> -			new_csg_prio--;
+> -		}
+> +		list_for_each_entry(group, &ctx->groups[prio], run_node)
+> +			tick_ctx_update_group_prio(sched, &upd_ctx, group,
+> +						   new_csg_prio--);
+>  	}
+>  
+>  	ret = csgs_upd_ctx_apply_locked(ptdev, &upd_ctx);
+> @@ -2425,34 +2467,23 @@ tick_ctx_apply(struct panthor_scheduler *sched, struct panthor_sched_tick_ctx *c
+>  	for (prio = PANTHOR_CSG_PRIORITY_COUNT - 1; prio >= 0; prio--) {
+>  		list_for_each_entry(group, &ctx->groups[prio], run_node) {
+>  			int csg_id = group->csg_id;
+> -			struct panthor_fw_csg_iface *csg_iface;
+> +			int csg_prio = new_csg_prio--;
+>  
+> -			if (csg_id >= 0) {
+> -				new_csg_prio--;
+> +			if (csg_id >= 0)
+>  				continue;
+> -			}
+>  
+>  			csg_id = ffs(free_csg_slots) - 1;
+>  			if (drm_WARN_ON(&ptdev->base, csg_id < 0))
+>  				break;
+>  
+> -			csg_iface = panthor_fw_get_csg_iface(ptdev, csg_id);
+> -			csg_slot = &sched->csg_slots[csg_id];
+> -			ret = group_bind_locked(group, csg_id);
+> +			ret = tick_ctx_schedule_group(sched, &upd_ctx, group,
+> +						      csg_id, csg_prio);
+>  			if (ret) {
+>  				panthor_device_schedule_reset(ptdev);
+>  				ctx->csg_upd_failed_mask |= BIT(csg_id);
+>  				return;
+>  			}
+>  
+> -			csg_slot_prog_locked(ptdev, csg_id, new_csg_prio--);
+> -			csgs_upd_ctx_queue_reqs(ptdev, &upd_ctx, csg_id,
+> -						group->state == PANTHOR_CS_GROUP_SUSPENDED ?
+> -						CSG_STATE_RESUME : CSG_STATE_START,
+> -						CSG_STATE_MASK);
+> -			csgs_upd_ctx_queue_reqs(ptdev, &upd_ctx, csg_id,
+> -						csg_iface->output->ack ^ CSG_ENDPOINT_CONFIG,
+> -						CSG_ENDPOINT_CONFIG);
+>  			free_csg_slots &= ~BIT(csg_id);
+>  		}
+>  	}
 
-- Every Rust work item and delayed work item is bound to one workqueue.
-
-- A Rust workqueue has a percpu refcnt and each work item bound to it
-  holds a reference.
-
-- Destroying the workqueue waits for the refcnt to reach zero. A leaked
-  work item then stalls workqueue destruction, which seems like an okay
-  failure mode.
-
-Work items bound this way never move between workqueues, and neither
-delayed work items nor ScopedWork would need the workqueue to be 'static
-or carry its lifetime. This doesn't solve data or device lifetimes but it
-decouples them from the workqueue's, and device accesses can use workqueue
-destruction as the draining point.
-
-We can add whatever is needed on the workqueue side to make draining work
-well, e.g. an operation which expires a workqueue so that work items
-queued on it afterwards are dropped without running, self-freeing ones
-included.
-
-Workqueue looks the way it does because it's C and leaves all lifetime
-management to its users. Carrying the same model over to Rust and then
-wrapping it for each use case seems like a missed opportunity. I don't
-know Rust well, so I could just be blowing hot air.
-
-Thanks.
-
---
-tejun
