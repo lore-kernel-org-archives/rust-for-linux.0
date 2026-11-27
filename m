@@ -1,56 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.6
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795781257;
-	b=0y8HprXYLX+lgf444W4ISBgbI6BGF4E/UIUOyLtpx8bIjRob8ioH+UScBTXJgVDU603E
-	 MkpF6VzhCIiZcFL9JMI8tVLW68kk1e9unJTOlj5aX2l2yapJ1hTj/x3giC1hC2rEpG6Ha
-	 uuFt+yf0SkhVKYU+SfkiLl0/lGLdlGqfrNHLzHcYsoA1E7DfU/HB7vgtJao2iC54JajQJ
-	 2Jt7K8tivIowFj+barvvYmPnXnzJjUbhqs48iwdu6pwu+X4KtJwyH6csG6A5UBliJtquE
-	 gVyNq56GXIhq1tn2rbLq8SrCzeIdiWi/sGceHSk3Hogu22zd1uyYCFbLllLkubEVg6A==
+	t=1795781553;
+	b=O8c6aEj5JJAkvgikyqFHoRZdGvUw/TZXxwxwHWPuXtJ49TWPgH4uBbQteaqdv2Yuia4i
+	 j3v80nQLAJkhoZl68FYVv3otfFoGtC7BEMjkBPEHTQ3twsuPu9RctmrOc8JKoIylFKN+e
+	 539FsO3hrFagDYf3qJTy6UJF61MxHI9j+C0SM9ZvorPgf7Xk6dHA4wN0cIadgGpXPBOaa
+	 NFDlXOqKTWUthBlIpYLSSSBDDeFETXyIGXWB2b1D7kqR1S1ZyJl1pIowXpN931kl4auDc
+	 Gevqq2GqoqmlI3y/VKxFFkjgffZiIQdXs/dSJ+6/ZJPHGWaXM4QIdO7PvPBodODGyvg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795781257;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795781553;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
 	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=Yah2ivdfcmEYck9GJjp5TM7e4/qC0WA5lRSFKMzyiF0=;
-	b=kRI8X7YPNoM3qx0XZT4k68mNWOqufkACeqRSG62IRw1LbkzCi5nP39zRHZ9QPn6HsrTU
-	 6MrDW7gqATGZZFgPd+69qDpSSJFTE50BiK/oyko3xSfHCgfwLM1bwufpCRCeH6BoOzR2X
-	 hPVk4rRFkfuKpgXY56cOgFd/0mDjRb2bOcUcXjwF4z6b2SFfSTAlXUeVAjNugTA5S6k37
-	 Avi5HWaN9cPjw5H8WvwzDU8ajLjz/2bPo7WBVtsiIjhE9Z9bNyHHbMvTlMQ8QbEcWukmH
-	 AlzfnAzqEqpTB8PByH35jGFpMNv6ynxS5fy0QK8GZAB7oOnG1diKpLZX1SubxksVewA==
+	bh=snuzEJKIHyDMfym5CCf8Mmb7VuRB9rqH271+kfl1bko=;
+	b=XNl1sSyCHCCy+jaTDse+hxQAL7m93LFGoydvcXZZT33059by7eBsO9PWdHHKIgRMzx/G
+	 zTeYCSFeacpOEclxjxU/51Za/ooLbfDdY7663IMH2qo7kTu7IavPj8D5q6ReRQfqzOiO5
+	 sI2+VzoZKXkaMMx1fIPGzqB2xpGaNqrJyEKigDWj1bHgjZyxkh6WPHARvNE3sSEiagoTw
+	 YHoNdvbDjSxiMUHdNhFUotxFmm9SYNhLo+JRSKcKFPUqloe6JuHovLcOMUHaQXuEx2uNE
+	 h8PMRbHlWXcYndZUjUqApn30OfGbH21ZumGGAMOYpbUph9yonUhRgYwgbcu43hkwpwg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=126.com;
 	spf=pass smtp.mailfrom=126.com;
-	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b="BLpo/By7";
+	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=GFoeCEsf;
 	arc=none smtp.remote-ip=220.197.31.6
 Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7E4606A31C;
-	Fri, 27 Nov 2026 12:07:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A7E4606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD34606A31C;
+	Fri, 27 Nov 2026 12:12:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4FD34606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=BLpo/By7
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=GFoeCEsf
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Ya
-	h2ivdfcmEYck9GJjp5TM7e4/qC0WA5lRSFKMzyiF0=; b=BLpo/By7BGGkd4hJ35
-	vvB0dXjFt93TM11gsv0qrln/LG71SQxB5wwPK8DDC3hv4NnNxcJ5R1wq+WYh4KLX
-	VsaFkoC4+oAPUbdUvX6L0VGynx0B5r3AiYE98GInRwxOl8tI4ZjgfWcT9QVJJhmG
-	P4TW/Up+Orm0RxJR4AuKxGme0=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=sn
+	uzEJKIHyDMfym5CCf8Mmb7VuRB9rqH271+kfl1bko=; b=GFoeCEsfcsurQPaJXE
+	STR0xkAnbKWj87EMAxywv+oZEC9baDoQcKau7ySlS/3rePzPHoT5hdeRol6b5UBH
+	e7H5k8sWCgK1ZRlZFcK0EHSG5a6M6cNMGADbRjcTRx3xiwUXJkcrXbErk+7Tei9m
+	NzuyyNH62SmGCnxTlEXVCtx8Q=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wDnVyRxcglrD_ebEA--.58649S2;
-	Fri, 27 Nov 2026 20:07:17 +0800 (CST)
+	by gzsmtp3 (Coremail) with SMTP id PikvCgDXB+6PcwlroqgBEQ--.59001S2;
+	Fri, 27 Nov 2026 20:12:06 +0800 (CST)
 From: Bilal Hashim <AeeSec@126.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>,
+To: Viresh Kumar <vireshk@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>
-Cc: rust-for-linux@vger.kernel.org,
+Cc: linux-pm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Bilal Hashim <AeeSec@126.com>
-Subject: [PATCH] rust: configfs: initialize AttributeList at compile time without UnsafeCell
-Date: Fri, 27 Nov 2026 20:06:46 +0800
-Message-ID: <20261127120646.664-1-AeeSec@126.com>
+Subject: [PATCH] rust: opp: clean up OF OPP table on error paths
+Date: Fri, 27 Nov 2026 20:11:29 +0800
+Message-ID: <20261127121129.1150-1-AeeSec@126.com>
 X-Mailer: git-send-email 2.47.0.windows.2
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -62,145 +65,71 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnVyRxcglrD_ebEA--.58649S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGFWxCF4rKFW8Cr13try3XFb_yoWrKFW7pr
-	WDGFW5Jw4UJF43JanrJrWIg348Grn3JFyYkw1Dtw1Iv398JwnFqF9FgrWSy3s0qF92gwnI
-	v3y0gw1293yrZw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zi1EEUUUUUU=
-X-CM-SenderInfo: 5dhh2vbf6rjloofrz/xtbBrBXWcWsJcnVqqwAA36
+X-CM-TRANSID:PikvCgDXB+6PcwlroqgBEQ--.59001S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tFyUuF4rXry5Kr1DKr45ZFb_yoW8tr1UpF
+	48GFW5trZ5ua4xGws7Xa1I9r18W39rXayvv3yUGr9Iva4UCw10qrn8Xa42vas5J3s8Gr1S
+	gryvgr4aq3ykJaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziGQ6tUUUUU=
+X-CM-SenderInfo: 5dhh2vbf6rjloofrz/xtbBrRcfuWsJc5d2UgAA3+
 
-The configfs_attrs! macro currently declares a global static AttributeList
-wrapping an UnsafeCell<[*mut c_void; N]> and populates it at runtime via
-AttributeList::add() on every macro invocation.
+In Table::from_of(), if Self::from_dev(dev) fails after
+dev_pm_opp_of_add_table_indexed() has succeeded, the newly added C-side
+OF OPP table is leaked because Table is never constructed and Drop does
+not run.
 
-Although the static identifier is lexically scoped inside the macro block,
-the static storage is globally shared across all invocations and threads.
-When a function invoking configfs_attrs! (such as make_group() in
-drivers/block/rnull/configfs.rs) executes concurrently on multiple
-threads, or while C configfs concurrently reads ct_attrs_const, the
-unsynchronized &mut writes into the static UnsafeCell cause aliasing UB
-and a data race.
+Similarly, in Table::from_of_cpumask(), if either Self::from_dev(dev) or
+CpumaskVar::try_clone(cpumask) fails after
+dev_pm_opp_of_cpumask_add_table() succeeds, the C-side cpumask OPP table
+is leaked.
 
-Replace UnsafeCell and the runtime AttributeList::add() calls with a pure
-const AttributeList initialized at compile time inside the static item.
-This eliminates the data race, removes the runtime pointer stores from
-make_group(), and allows the attribute table to reside in read-only
-memory.
-
-Tested with LLVM=-22 (verified zero runtime stores to DEVICECONFIG_ATTRS
-in LLVM IR) and booted in QEMU with CONFIG_PROVE_LOCKING=y, exercising
-/sys/kernel/config/rnull mkdir/read/rmdir and 372/372 Rust KUnit
-doctests.
+Fix both paths by rolling back dev_pm_opp_of_remove_table() /
+dev_pm_opp_of_cpumask_remove_table() when Self::from_dev(dev) fails, and
+by cloning the cpumask before calling dev_pm_opp_of_cpumask_add_table().
 
 Signed-off-by: Bilal Hashim <AeeSec@126.com>
 ---
---- a/rust/kernel/configfs.rs
-+++ b/rust/kernel/configfs.rs
-@@ -117,7 +117,6 @@
- use crate::sync::Arc;
- use crate::sync::ArcBorrow;
- use crate::types::Opaque;
--use core::cell::UnsafeCell;
- use core::marker::PhantomData;
+--- a/rust/kernel/opp.rs
++++ b/rust/kernel/opp.rs
+@@ -667,7 +667,14 @@ impl Table {
+         to_result(unsafe { bindings::dev_pm_opp_of_add_table_indexed(dev.as_raw(), index) })?;
  
- /// A configfs subsystem.
-@@ -714,43 +713,32 @@
- pub struct AttributeList<const N: usize, Data>(
-     /// Null terminated Array of pointers to [`Attribute`]. The type is [`c_void`]
-     /// to conform to the C API.
--    UnsafeCell<[*mut kernel::ffi::c_void; N]>,
-+    [*const kernel::ffi::c_void; N],
-     PhantomData<Data>,
- );
+         // Get the newly created [`Table`].
+-        let mut table = Self::from_dev(dev)?;
++        let mut table = match Self::from_dev(dev) {
++            Ok(table) => table,
++            Err(e) => {
++                // SAFETY: `dev` is valid and we just added the OF OPP table above.
++                unsafe { bindings::dev_pm_opp_of_remove_table(dev.as_raw()) };
++                return Err(e);
++            }
++        };
+         table.of = true;
  
- // SAFETY: Ownership of `AttributeList` can safely be transferred to other threads.
- unsafe impl<const N: usize, Data> Send for AttributeList<N, Data> {}
+         Ok(table)
+@@ -689,14 +696,23 @@ impl Table {
+     pub fn from_of_cpumask(dev: &Device, cpumask: &mut Cpumask) -> Result<Self> {
++        let cpus = CpumaskVar::try_clone(cpumask)?;
++
+         // SAFETY: The cpumask is valid and the returned pointer will be owned by the [`Table`]
+         // instance.
+         //
+         // INVARIANT: The reference-count is incremented by the C code and is decremented when
+         // [`Table`] goes out of scope.
+         to_result(unsafe { bindings::dev_pm_opp_of_cpumask_add_table(cpumask.as_raw()) })?;
  
--// SAFETY: We do not provide any operations on `AttributeList` that need synchronization.
-+// SAFETY: `AttributeList` is immutable after compile-time construction.
- unsafe impl<const N: usize, Data> Sync for AttributeList<N, Data> {}
+         // Fetch the newly created table.
+-        let mut table = Self::from_dev(dev)?;
+-        table.cpus = Some(CpumaskVar::try_clone(cpumask)?);
++        let mut table = match Self::from_dev(dev) {
++            Ok(table) => table,
++            Err(e) => {
++                // SAFETY: The cpumask is valid and we just added the OF OPP table above.
++                unsafe { bindings::dev_pm_opp_of_cpumask_remove_table(cpumask.as_raw()) };
++                return Err(e);
++            }
++        };
++        table.cpus = Some(cpus);
  
- impl<const N: usize, Data> AttributeList<N, Data> {
--    /// # Safety
--    ///
--    /// This function must only be called by the [`kernel::configfs_attrs`]
--    /// macro.
-+    /// Create a compile-time constant attribute list.
-     #[doc(hidden)]
--    pub const unsafe fn new() -> Self {
--        Self(UnsafeCell::new([core::ptr::null_mut(); N]), PhantomData)
-+    pub const fn new(attrs: [*const kernel::ffi::c_void; N]) -> Self {
-+        Self(attrs, PhantomData)
+         Ok(table)
      }
- 
--    /// # Safety
--    ///
--    /// The caller must ensure that there are no other concurrent accesses to
--    /// `self`. That is, the caller has exclusive access to `self.`
-+    /// Convert a static `Attribute` reference into a raw pointer for the list.
-     #[doc(hidden)]
--    pub const unsafe fn add<const I: usize, const ID: u64, O>(
--        &'static self,
-+    pub const fn attr_ptr<const ID: u64, O>(
-         attribute: &'static Attribute<ID, O, Data>,
--    ) where
-+    ) -> *const kernel::ffi::c_void
-+    where
-         O: AttributeOperations<ID, Data = Data>,
-     {
--        // We need a space at the end of our list for a null terminator.
--        const { assert!(I < N - 1, "Invalid attribute index") };
--
--        // SAFETY: By function safety requirements, we have exclusive access to
--        // `self` and the reference created below will be exclusive.
--        unsafe { (&mut *self.0.get())[I] = core::ptr::from_ref(attribute).cast_mut().cast() };
-+        core::ptr::from_ref(attribute).cast()
-     }
- }
- 
-@@ -984,22 +972,7 @@
-             @no_child($($no_child)?),
-             @attrs($($aname $aattr)*),
-             @eat($($rname $rattr,)*),
--            @assign($($assign)* {
--                const N: usize = $cnt;
--                // The following macro text expands to a call to `Attribute::add`.
--
--                // SAFETY: By design of this macro, the name of the variable we
--                // invoke the `add` method on below, is not visible outside of
--                // the macro expansion. The macro does not operate concurrently
--                // on this variable, and thus we have exclusive access to the
--                // variable.
--                unsafe {
--                    $crate::macros::paste!(
--                        [< $data:upper _ATTRS >]
--                            .add::<N, $attr, _>(&[< $data:upper _ $name:upper _ATTR >])
--                    )
--                };
--            }),
-+            @assign($($assign)*),
-             @cnt(1usize + $cnt),
-         )
-     };
-@@ -1052,12 +1025,16 @@
-                 // We need space for a null terminator.
-                 const N: usize = $cnt + 1usize;
- 
--                // SAFETY: We are expanding `configfs_attrs`.
-                 static [< $data:upper _ATTRS >]:
-                 $crate::configfs::AttributeList<N, $data> =
--                    unsafe { $crate::configfs::AttributeList::new() };
--
--                $($assign)*
-+                    $crate::configfs::AttributeList::new([
-+                        $(
-+                            $crate::configfs::AttributeList::<N, $data>::attr_ptr(
-+                                &[< $data:upper _ $name:upper _ATTR >]
-+                            ),
-+                        )*
-+                        ::core::ptr::null(),
-+                    ]);
- 
-                 $(
-                     const [<$no_child:upper>]: bool = true;
 
