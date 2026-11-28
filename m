@@ -1,107 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.20
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795831622;
-	b=XhX9RA7qi4tqTbcV9j2sIimxCpoWWcFwxaCoJmivI/gD9esl67igNn1fWHWLrf+txVrr
-	 DnP4IpdAgbeznWFeqgW3KoKt97pem9+R890lTGBTEBZKI4RcvNxnVuXGmQhLZlUpsHWuO
-	 /n/NOJG1hLS08H6TeVDRNIi/oi0wKpirOogLpr4T2dHzzJIKxkwnW0XIoqrLlviSj5IFV
-	 2PsRxNM3a0S3S72nvKXJD/pCb+fmI85EOF90wrdx+Cb8xMAKNWtrqCw0gw5hNsCbHmgvM
-	 aQYB+68X/Zhq3ygTBJJChBeZJ2xVab4R2Ku21dqCCqGWrNZtAQ8gws1d/lN2jgvcrBA==
+	t=1795832179;
+	b=gOGZhe8XJi9O4ZJfjzMykqk3KRCvOnWv7vtADysF/LnHG+TOsSO/zlwcRwE9DwEoy9AW
+	 fhULoMhfR2DnU8dXF05SQvKCFWvIwFYKkW1RobSSOxU+zZPhWQa5vmcNvTxc4CMWlNXKU
+	 ihdXGYIrk0vQwFtfGGyCAThy+OciQkyI+36i4HlPsBwUq0V99tA+6ggqFABacANHmi2G7
+	 TR5weJ4lPd7Hak/yqNxQO44RpVRmLgpi7la6CGFuBOiK4wyEk2ZumZdqPfmui2tiY6Tv0
+	 Xy86P8VyMuExf81xKb3GMNEgRSrFbdaRuRPZNHVaEaZgC9wFnJljhiyjZYPXX5Ue+sw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795831622;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
-	 From:To:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:
-	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=BCWrltCaOsiCXGzyvZNPEPRWcO6L8Z29zipFydWJa3U=;
-	b=SC/D4ptFHrRLyWA/eg8oludHMYDJhX7o8vNDLkQrDTTmgHCXfgG45IzP6+sFnorxV23I
-	 14MqAmYPDFRfUVYoyZXIQyB31OJBFeoaA9AMNfuZIBlq8Hf5oZ9m8AM3QFn2Ut3dgcC79
-	 W0jglLUinEdP1CKHhe3ya5FJEvXXYKZX+3S2Rsllb7jkNY+1pZhlGMF3ymAQUZfR/9Ev6
-	 X7VJmUPoJ+fYShtbU1dsyTjjbOV84sgUK2EHij9UuAh6r3GG9Y+rd2v5kKrLjneMhdQoE
-	 wnZFBIUfMxuHprlIoaPj+oSA2/eEM7EMV3b3Fz0YLPRIVLdPr8a720Eu9v5mSzy+IoA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795832179;
+	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-ZohoMailClient;
+	bh=SGS1yjurF129s3EEICocuiqZDqlPa+vzexrsONiPJ5E=;
+	b=pH8AF34bxMXC62+CbomagAYOGFnhbxeoAZ4AwRCxgtCG8cG9QZ9ymzK+cqBhGdOBe+ou
+	 hyPHtdICbzfhwpQCxCwG2Jt8wZlkhUKUEdapGWp6fdZO19Jz8Y/TVNXCRjZguo8B+pXAe
+	 kSgIvbQSIFixNYWqCN5sDkXKaFhfmrjYORCNS6girn87KfmWfpBAt/w6R2/3fgJBkCKTQ
+	 8/wRqOWtLJqLHZOTu7tGVohdHDZ+yQBfZRClqcfd80XsBUxxVgCUZ1Q2uf8I0zQ9Gjqw7
+	 sgsdK1JO3uqfy9lyVmTo+HwlDTlyiBwUYBXWPVESNg2fjg6hrLX6BuH7Xq3nqToojhg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=TZ7xsw6f;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.20
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010020.outbound.protection.outlook.com [52.101.61.20])
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=TCsPX9XZ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE69606A31E;
-	Sat, 28 Nov 2026 02:07:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ECE69606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E95606A31C;
+	Sat, 28 Nov 2026 02:16:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63E95606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=TZ7xsw6f
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ip612WIzMYwtZQxlsusz1tmFs3jUlVx4XrnAJcVi7uaqKtNJ+ynKwrSxqtnP1O5vutzDaxf1fDwX2t6OeP447LFCqY/ZpZmFWes9bvP6fHpjIOXXvsSMcIyJ1715syRWLvpurNeXc8hdUUxiALXfUtBE7l66Ob2wrK/JNZkL1wu+5Hk2UGDi7FQ5hTLL/Iwb0DbLC+XB5WLb4FTtYyPay0pvoKycINDZWnCzESD1xvZbrgCWI6V0Z4mKB7lPiqHEP44K4ZNh387j3y5tgKmaz2J6yLsu9MLE26WN/4sFGjB4MRnvHP5E2PVLkorI+KRFEJM93pjonvBIx29673rXiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BCWrltCaOsiCXGzyvZNPEPRWcO6L8Z29zipFydWJa3U=;
- b=X2vjtT/Q/U5oMFlFVG8v2zmNNxWk7fBW/U3d2YzseK1A9H8OyyiQxmx83/FDi085ODuKkhQxRKl3TgljGI9CJSu2QIW4+ysXq3X2MUD8npTqlWJAbZVw7LWP98PDDJdKPVpalDxrMveMzgieLVBeiR7cs0JHuU/z1SK+PirwkHBeRLS4AxSRc1h/gx/aeFNQoaY1GHYW3KU9UOJFVdq8bI0MlA0yNRR5pmbOLUbKkLGeQH2TGvMH5KK9kocEAgAgU7Cf3JijY6grQ5ikGlgEEF/y00lLvNOOnZKETAhtBoUt/AnX+s011ofa1qf8SD2+u1szUYAduYO0MmThPOhjKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BCWrltCaOsiCXGzyvZNPEPRWcO6L8Z29zipFydWJa3U=;
- b=TZ7xsw6f1+z+10hzWaVEZ5ScB+2BHliRdY/topNNRMWeHE/eAd1n1qMHu7KWrhguXtVsewJ1TO97i+fILxuyxUBVkm7l0n+e1qOlBMqSLpuc76uJX6ChNa+ZUOcCNfsrXi9y+ty2upWusYrQsq5XrgXsMkYE6HvOFj7Owo++V97VCmjXGImPexQHbmnz2r69NH2Wgi33uOQQCmG9mjRBerpsGk7dZv4mj8zxQ2orbMOfNIPfRsJxL8eMJQN20zynkW+5MzZM9xQNQMydhMh7lflrcbefiQuGkQRIlILSczJ0Os6WjwqEcfz0egzMGrTNc57Rqv/cNTi/k8sKhG/Wjg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by IA0PR12MB7773.namprd12.prod.outlook.com (2603:10b6:208:431::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.7; Sat, 28 Nov
- 2026 02:06:58 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0662.001; Sat, 28 Nov 2026
- 02:06:58 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 28 Nov 2026 11:06:54 +0900
-Message-Id: <DN6H6EMLR0V2.RWXLLGN754P6@nvidia.com>
-Cc: "Yury Norov" <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Boqun Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Alistair
- Popple" <apopple@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi
- Wang" <zhiw@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH 2/3] rust: pci: return a bitfield type for dev_id
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>
-References: <20261127-nova-gsp-dbd-v1-0-0fb5f7c2ce63@nvidia.com>
- <20261127-nova-gsp-dbd-v1-2-0fb5f7c2ce63@nvidia.com>
- <DN62L6PL724V.2HIAY6WVTYPFP@garyguo.net>
-In-Reply-To: <DN62L6PL724V.2HIAY6WVTYPFP@garyguo.net>
-X-ClientProxiedBy: TYCP301CA0047.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:400:384::11) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=TCsPX9XZ
+ARC-Seal: i=1; a=rsa-sha256; t=1795832160; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=U9Pj2eFJtICiMDDxxOJXfm6WGMq/1PkP08GnEHKcbFyMiNwoPY7ZmrXgOo/kN/8RKxYunmJdK8Tbuv5QDFUQteQblBszt+Q3mEDV44My91Z3wvHIFXFcwJD3o+flUV+y8fBal90iTdkXekYUXl8nJKa3KID9Q//faDwKZ2vtlvM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1795832160; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=SGS1yjurF129s3EEICocuiqZDqlPa+vzexrsONiPJ5E=; 
+	b=F5qGpTm2yPA6gs3lB/msTy1QTwIkHWskjdprzuZ/2WiwLngR6YU3i1f3a4zBXeNTm8jMIdcZvYgQsoYrY2Rbl2REm6ULdsjDOtD4s2UsUxpiUfkjJv1IORRbsG2CoFCoub1ImIVp8tHKSN7EUhD6cEeIq1eb1xEb45D1v+8OAvQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=TCsPX9XZHywy70OAeYXt/Yao35tC62828iaSwUFv6lGbo7O/xvnQFWvq3uoVaPX1o8by9pQg6QnvHzB1BEgH/sTqcoZYYexqin9P1r2En+gF/F+wz2IgzLhr00GHR6PzOK/LNANbFhFvHI99IvvaLXRVrydJPo2DkS2oR8WOVXE=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=SGS1yjurF129s3EEICocuiqZDqlPa+vzexrsONiPJ5E=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795832158182751.9359826466103;
+	Fri, 27 Nov 2026 18:15:58 -0800 (PST)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Date: Fri, 27 Nov 2026 23:15:38 -0300
+Subject: [PATCH 1/9] drm/tyr: request the mmu IRQ
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -111,165 +59,186 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|IA0PR12MB7773:EE_
-X-MS-Office365-Filtering-Correlation-Id: 24d497be-4297-46fc-c588-08df4cf44838
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|7416014|376014|366016|10070799003|261028144727099003|261022105027099003|10067099003|4143699003|11063799006|56012099006|261022075727099003|261021121427099003|261009223027099003|261102123227099003|261026121527099003|261021123027099003|261026140227099003|22082099003|18002099003|10063799003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	r4aMYRBycQ3ICh6d4xi2HdsTWlPSsVyJXs6F7E6bfbQ+lMTehZ7OhPhnOjecIVOOMHK7rV/isIfqlPlYxXNV4CeS4C2Hx4Hv3iPMh4jDSQTpeHdAFi+UfHu89tvpob00VpjtQDA6bB1PU5NWWbqrQ4haf5p3gKtLn+A9zJ6vPRlYyHVA71FzLtAJP/PC1Q+1xR1OxzLTK9XYTNKMM5g+Hr1fubzCnt77lsyy2Vn0WZMLbZIOUIgF4tbaAGnYIknt1lkB9Y2t/0CEcxIb8RAjM0y2VBDdxhJ+wDadz6u1JB2K3kT4kDpqP/ekxcdCiMNKYLToTZo3Fs0SmYftXHYX6FOtYOUUlZKeStqR7bl9ZSW8zOJhMuo/ciduMacSUAA0HDzZSM0ZsjbhnmMyjBfAMvcoZfn+FT1hNLyl0mcEkldcQT+Ebzgvo/mo73yftdGoO7crEtSf9GxzDLaS5Wue4vLHRxQDxbjWFIHmFJlhkyeBjGsjKSmAKJ/+ZVEp1k7j8r07TGi0rDbrAzJNexQCbMGlSzasGdF3e4pkS3g1mkEhGqIf8YBDbW2cXXOy59pADWmFaxUvvlOoSQjjoNKtB4b7CnU8fbiru0Bsy7QysEZ9qrS5tDJz+uOHhrHUL1Rf7R1bFqxmtUSZlgCj/AxSBOeBRYkvNW3uGBA797SilDc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(7416014)(376014)(366016)(10070799003)(261028144727099003)(261022105027099003)(10067099003)(4143699003)(11063799006)(56012099006)(261022075727099003)(261021121427099003)(261009223027099003)(261102123227099003)(261026121527099003)(261021123027099003)(261026140227099003)(22082099003)(18002099003)(10063799003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WnNFL2VnVnVOVkRsR2ovSnpjQnJKYjIwZW1uV3pud0dQd1J0RXFQQ1hSbDZE?=
- =?utf-8?B?MUtucmpoMUViWUgvVHZtRUdQeS9QL1pTdTFoUHpWZG95RjZMMkQ4Y2Zjd0Ri?=
- =?utf-8?B?SDJFakZ5Y0Q4SnBLSzRCMno4cEViZmZhZ1R5QTQrSVphaXJNY0tvMTNIWUlP?=
- =?utf-8?B?UHBRdUJ6dGsyVG1vc2lUbHZtMWxsUkt3SU9lRjdoTU0xN2pRYkF6U3g5VEFq?=
- =?utf-8?B?VFNhM2xPNzNVNlVLclNEU0UyQmpORzc3b3JGNmlNNWZrSU9sUURvVDdLTytJ?=
- =?utf-8?B?MjlMcnB4MkRZRHhQWU1JcU5ySURueS9JZU8rRDdocllpTCtNU21rNjArbjh0?=
- =?utf-8?B?L3VBeDdPVVdyd2R2WXlBNHhVN2NOTHNEVmF6VXNrY3FpSCtRL3ZZMUdwYTBh?=
- =?utf-8?B?bTlWWTU1eXZlTnM2WFVUL0t3WUhRYUwwZFh0cFV2OUJaWXB4RkJITTl6N0Ra?=
- =?utf-8?B?cWlTd2pIODl1TDlPZ01Edm43TUVMWGRiZXI3aGlvTXF3VzErcTRzWmxyREhw?=
- =?utf-8?B?SHFiNHdaSVdGQVBwYmZ5eU9MdU5MSHJyTS9ncWlPSWk2VUVyeGdxUWY5RHNM?=
- =?utf-8?B?OTRWK1I5MWFMTFJhOXRSWWI2VUdpU0VobWxVdFkrOVN2bFBNUnNheVNHam5K?=
- =?utf-8?B?Z2FiMGN0N1lPOFZGUCtPOW5vbEdyUEhNTVdoaDFpalVxNFF5SnNIU1NOcUZy?=
- =?utf-8?B?RjFUTUhhRHkyZTZ0dTYzdTE1Z2ZlU0hXL1dXa0VyOGkwekQ1S3JxQ1hwRG1x?=
- =?utf-8?B?YTZvUHdQYmxjdEI4ajlmdXNFZEZ2UlRoUENzTmpDWDVTemFnWnAyYWtsL0w4?=
- =?utf-8?B?VE8vQTlhemtXdW5oK2RPejYxSjByMzdYdzBnSDNQeDJHUEx2dlZwYXJ2Rytj?=
- =?utf-8?B?TjZzald5aW12Mms4K2Q3aHh5bnVYalF6K3RqUmE3aGJ5aW8wdzF2a1ZqRkhY?=
- =?utf-8?B?MGNhRHZJU1V1RDZ5VklnL1hDdmJNMXVYZk9CV2pUY3JFVUNIbSt4MVg4VDZY?=
- =?utf-8?B?L2VvYlJjUjlYQXVBUGVsbXVIRlJQN1RUelJhMVZxVnB2Um9hYStYVlJleEh5?=
- =?utf-8?B?UzVZVjl2QXd1dVpIbitNNGFtTE91a05vVXZaekxScDRpQUk2VWpoVFNmMTNr?=
- =?utf-8?B?Tmdja0tKR2liU1ZOazhwUFJSYWZwVWRkT2xXWFZyU3NaMnpqcEExdStKUEg3?=
- =?utf-8?B?bEJBajNGSitTUDVKb0JFa3FXWnhUYVRiN1l5Y0dJd0J5Z1hHamdobDM2dEtH?=
- =?utf-8?B?eG5ZRFQxaGJxT2E0dlVScnVuWmp0eVlkcG5nQkY2SGFkMTdRMjNoYnNKYjVC?=
- =?utf-8?B?VzJPSjZGU1EwRXhuLzhiS0VuMDErajZzQTJ2TElmTXU3T1J6RVNVRWhmVmFl?=
- =?utf-8?B?ZGw5dkdPYkFKVDRheVV4eW9jajROOHM0VEkrVkM3TEdsVEdPdkR4Z2pyQTF0?=
- =?utf-8?B?MlNiSnFjODRJME45U2E3ejFVQ3RHWllRTUNiRy94TlRrdUduWEU3cFl5L1d3?=
- =?utf-8?B?ajMrSjlVZmVYRXNTTlp1RE5wTi81SUh0RjhPMTU0TnlhTFFtR0dqWC85NFFH?=
- =?utf-8?B?UW9tR3JZc0h5Sy9oMk1WYkx6ZTVrbCtrV3ZhSmFFMm9vZksxM1Q4a1QxZDdz?=
- =?utf-8?B?bWQ4NlprMG92cEVtaVVHOGtITzgxYUE5dU44elRYSTV2VXBIUWU4aU10bW9V?=
- =?utf-8?B?c1JJRWN6elZzMVdtaUhnUklzN0swVzJQUVV1ajRmYmtwcDlMTE9tMGViWHll?=
- =?utf-8?B?TnFQa2tBaCtXTjh3T0JMOEg0aW5TRms1Q3hpMlRuSUFnTkl3b2hHVzZTcUlW?=
- =?utf-8?B?NlhWVWhwVU94UG01QW90ZXJyeEFZZmtLNE50V05ZSHd5c3ZVSWxCMldXaGRy?=
- =?utf-8?B?RmdCZ2tmZEpRZzM1QU11ZEQxalpzWTJrdCs5bWRaRFBSdTIyNk1BM0ZnK2Mr?=
- =?utf-8?B?ZU1sVjNydlEzNjRtTEdKOC9EYjNvNXp0RmJhcTZWRllZNW9CRzExbTRjV3Rx?=
- =?utf-8?B?N081SmU4cG40TXpHZC80Z09YZ2JpRmZ5WEp0ZDZaaUw3SkZPN0o0dFVCVW5Z?=
- =?utf-8?B?cks2anFOeFUvZnBHNStKcEhBNndtdytFQnlvbWVLNmEvRi9zZWJmMlkzSWtk?=
- =?utf-8?B?Wk1SN0VWRnd4aXVCMTdQR0lHY2dxRVlWK2tjOUc0Z09qQVoxQkQwbG5tUFlj?=
- =?utf-8?B?RkUzZVNUQUhuL1JaRDgvSmVldU1Wa3RjV0xFN1llQktpU3l5ZDkrSHk0WGhw?=
- =?utf-8?B?eWtkWHdXZkpPU2pBV0hESHZZWVNweFc1TXoyb2NiSFoyN28zbkhSWG5kbGtJ?=
- =?utf-8?B?NG51cTZic21iSTlSWjB4YXhoSytGd2pVUjRGVlNnVVFTemprb1lyczRRQVpz?=
- =?utf-8?Q?UV/nB5xd0qvisdge71FZV+MI65DA5n0IBZkyOPRLGH7I8?=
-X-MS-Exchange-AntiSpam-MessageData-1: qLwBAlBZ62VpIQ==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 24d497be-4297-46fc-c588-08df4cf44838
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2026 02:06:57.9975
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: azCfVzZhh69Oo/O+8uhGo+De59jiRyL8+wFuqzjgsPfV5UmKcQ4MbRxihKhZu0NSjccy9xCGFjSTghB7dgMW/g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7773
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261127-tyr-mmu-irq-v1-1-2fcb9f9465cd@collabora.com>
+References: <20261127-tyr-mmu-irq-v1-0-2fcb9f9465cd@collabora.com>
+In-Reply-To: <20261127-tyr-mmu-irq-v1-0-2fcb9f9465cd@collabora.com>
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ rust-for-linux@vger.kernel.org, Laura Nao <laura.nao@collabora.com>, 
+ Deborah Brouwer <deborah.brouwer@collabora.com>
+X-Mailer: b4 0.15.2
+X-ZohoMailClient: External
 
-On Fri Nov 27, 2026 at 11:40 PM JST, Gary Guo wrote:
-> On Fri Nov 27, 2026 at 11:46 AM GMT, Alexandre Courbot wrote:
->> The return type of `dev_id` has a well-defined bit layout encoding
->> the bus, device and function IDs of the PCI device. Add a `Bdf` bitfield
->> defining that layout and make `dev_id` return it so users can benefit
->> from it and are not tempted to define their own BDF type.
->>
->> Also update the current two users of `dev_id`.
->>
->> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->> ---
->>  drivers/gpu/nova-core/gsp/fw/commands.rs |  2 +-
->>  rust/kernel/pci.rs                       | 33 +++++++++++++++++++++++++=
-+++++--
->>  samples/rust/rust_driver_sriov/pf.rs     |  2 +-
->>  3 files changed, 33 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/gpu/nova-core/gsp/fw/commands.rs b/drivers/gpu/nova=
--core/gsp/fw/commands.rs
->> index b4bdbddad79f..37b89e62387f 100644
->> --- a/drivers/gpu/nova-core/gsp/fw/commands.rs
->> +++ b/drivers/gpu/nova-core/gsp/fw/commands.rs
->> @@ -88,7 +88,7 @@ pub(crate) fn init<'a>(
->>              gpuPhysAddr: dev.resource_start(0)?,
->>              gpuPhysFbAddr: dev.resource_start(1)?,
->>              gpuPhysInstAddr: dev.resource_start(3)?,
->> -            nvDomainBusDeviceFunc: u64::from(dev.dev_id()),
->> +            nvDomainBusDeviceFunc: u64::from(dev.dev_id().into_raw()),
->> =20
->>              // Using TASK_SIZE in r535_gsp_rpc_set_system_info() seems =
-wrong because
->>              // TASK_SIZE is per-task. That's probably a design issue in=
- GSP-RM though.
->> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
->> index 04a6d240afb2..0592b220767c 100644
->> --- a/rust/kernel/pci.rs
->> +++ b/rust/kernel/pci.rs
->> @@ -6,6 +6,7 @@
->> =20
->>  use crate::{
->>      bindings,
->> +    bitfield,
->>      container_of,
->>      device,
->>      device_id::{
->> @@ -17,6 +18,7 @@
->>          from_result,
->>          to_result, //
->>      },
->> +    fmt,
->>      io::resource,
->>      prelude::*,
->>      str::CStr,
->> @@ -279,6 +281,33 @@ macro_rules! module_pci_driver {
->>  };
->>  }
->> =20
->> +bitfield! {
->> +    /// Bus-Device-Function ID of a PCI device. Equivalent of C's `PCI_=
-DEVID`.
->
-> You can use
->
->     #[doc(alias =3D "PCI_DEVID")]
->
-> for doc searchability.
+The mmu IRQ reports page faults and completed commands for each address
+space. Tyr does not request it, so nothing can report an mmu page fault.
 
-Thanks! Will do.
+Add MmuIrq, a TyrIrqTrait implementation for the MMU_CONTROL IRQ
+registers, and request the "mmu" interrupt in probe before the firmware
+is loaded. Keep the registration in TyrDrmRegistrationData ahead of the
+clocks and regulators, since dropping it writes the IRQ mask through
+MMIO, which needs them enabled.
 
->
->> +    pub struct Bdf(u16) {
->> +        /// Bus number.
->> +        15:8 bus;
->> +        /// Device number.
->> +        7:3 device;
->> +        /// Function number.
->> +        2:0 function;
->> +        /// Aggregation of `device` and `function`, which are commonly =
-used together in code.
->
-> I wonder if this is actually true, or is this just a result of existing A=
-PI
-> being designed to bundle these together? I quick grep shows that the comb=
-ined
-> value is most commonly used to make API happy and packing/unpacking happe=
-ns
-> immediately before/after the API call.
->
-> For C code it is done this way before it avoids having bitfields. But giv=
-en that
-> we're using bitfields here already, we can just use `device` and `functio=
-n` and
-> omit `devfn`.
+All interrupt sources stay masked for now. The next patch unmasks and
+reports page faults.
 
-Nobody is using it for now, so this was added proactively and without
-evidence I admit. Let's drop it for now.
+Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+---
+ drivers/gpu/drm/tyr/driver.rs  | 18 +++++++++-
+ drivers/gpu/drm/tyr/mmu.rs     |  1 +
+ drivers/gpu/drm/tyr/mmu/irq.rs | 77 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 95 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index 9aa536b16972..44ff1f522902 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -34,7 +34,14 @@
+     fw::Firmware,
+     gem::Bo,
+     gpu::GpuInfo,
+-    mmu::Mmu,
++    irq::TyrIrqRegistration,
++    mmu::{
++        irq::{
++            mmu_irq_init,
++            MmuIrq, //
++        },
++        Mmu, //
++    },
+     regs::gpu_control::*,
+     reset, //
+ };
+@@ -73,6 +80,10 @@ pub(crate) struct TyrDrmRegistrationData<'drm> {
+     /// Firmware sections.
+     pub(crate) fw: Firmware<'drm>,
+ 
++    // `TyrIrqRegistration::drop()` writes to the GPU registers, so keep this
++    // field before the clocks and regulators.
++    _mmu_irq: Pin<KBox<TyrIrqRegistration<'drm, MmuIrq>>>,
++
+     #[pin]
+     clks: Mutex<Clocks>,
+ 
+@@ -142,6 +153,10 @@ fn probe<'bound>(
+ 
+             let mmu = Mmu::new(pdev.as_ref(), hw.clone(), &gpu_info)?;
+ 
++            // SAFETY: The registration ends up in `TyrDrmRegistrationData`, which `_reg`
++            // drops at unbind, and every error path before that drops it.
++            let mmu_irq = unsafe { mmu_irq_init(pdev, hw.clone()) }?;
++
+             let firmware = Firmware::new(
+                 pdev.as_ref(),
+                 hw.clone(),
+@@ -164,6 +179,7 @@ fn probe<'bound>(
+                         // so reset work is drained before borrowed data expires.
+                         reset <- reset::ResetHandle::new(pdev, hw.clone()),
+                         fw: firmware,
++                        _mmu_irq: mmu_irq,
+                         clks <- new_mutex!(Clocks {
+                             core: core_clk,
+                             stacks: stacks_clk,
+diff --git a/drivers/gpu/drm/tyr/mmu.rs b/drivers/gpu/drm/tyr/mmu.rs
+index adac036744a3..f095c3374e3a 100644
+--- a/drivers/gpu/drm/tyr/mmu.rs
++++ b/drivers/gpu/drm/tyr/mmu.rs
+@@ -42,6 +42,7 @@
+ };
+ 
+ pub(crate) mod address_space;
++pub(crate) mod irq;
+ 
+ pub(crate) type AsSlotManager<'drm> = SlotManager<AddressSpaceManager<'drm>, MAX_AS>;
+ 
+diff --git a/drivers/gpu/drm/tyr/mmu/irq.rs b/drivers/gpu/drm/tyr/mmu/irq.rs
+new file mode 100644
+index 000000000000..7f8b02613e9e
+--- /dev/null
++++ b/drivers/gpu/drm/tyr/mmu/irq.rs
+@@ -0,0 +1,77 @@
++// SPDX-License-Identifier: GPL-2.0 or MIT
++
++//! IRQ handling for the MMU IRQ.
++//!
++//! The MMU IRQ reports page faults and completed commands for each address space.
++
++use kernel::{
++    device::Bound,
++    io::Io,
++    platform,
++    prelude::*,
++    sync::Arc, //
++};
++
++use crate::{
++    driver::IoMem,
++    irq::{
++        TyrIrqRegistration,
++        TyrIrqTrait, //
++    },
++    regs::mmu_control::{
++        IRQ_CLEAR,
++        IRQ_MASK,
++        IRQ_RAWSTAT,
++        IRQ_STATUS, //
++    },
++    reset::HwGate, //
++};
++
++/// The MMU IRQ, signalling events from the address spaces.
++pub(crate) struct MmuIrq;
++
++/// Requests a threaded IRQ registration for the MMU IRQ.
++///
++/// # Safety
++///
++/// Callers must not `mem::forget()` the resulting registration or otherwise prevent its
++/// [`Drop`] implementation from running.
++pub(crate) unsafe fn mmu_irq_init<'a>(
++    pdev: &'a platform::Device<Bound>,
++    hw: Arc<HwGate<'a>>,
++) -> Result<Pin<KBox<TyrIrqRegistration<'a, MmuIrq>>>> {
++    let mmu_irq = MmuIrq;
++    // Ensure interrupt sources are disabled until the handler is registered.
++    mmu_irq.clear_mask(hw.access().iomem());
++
++    // SAFETY: The caller guarantees the resulting registration will not be leaked.
++    unsafe { TyrIrqRegistration::request(pdev, c"mmu", c"tyr-mmu", mmu_irq, hw) }
++}
++
++impl TyrIrqTrait for MmuIrq {
++    fn read_status(&self, io: &IoMem<'_>) -> u32 {
++        io.read(IRQ_STATUS).into_raw()
++    }
++
++    fn clear_mask(&self, io: &IoMem<'_>) {
++        io.write_reg(IRQ_MASK::zeroed());
++    }
++
++    fn reenable_mask(&self, io: &IoMem<'_>) {
++        io.write_reg(IRQ_MASK::from_raw(self.mask()));
++    }
++
++    fn read_raw_status(&self, io: &IoMem<'_>) -> u32 {
++        io.read(IRQ_RAWSTAT).into_raw()
++    }
++
++    fn clear_status(&self, io: &IoMem<'_>, status: u32) {
++        io.write_reg(IRQ_CLEAR::from_raw(status));
++    }
++
++    fn mask(&self) -> u32 {
++        IRQ_MASK::zeroed().into_raw()
++    }
++
++    fn handle(&self, _status: u32) {}
++}
+
+-- 
+2.56.0
+
