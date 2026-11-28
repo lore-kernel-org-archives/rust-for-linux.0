@@ -1,55 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795832189;
-	b=nT1qkFqPH8uI/NQxDeHf1mtS2wxsROTJpdvrKdoMkbUavoj5VHPtZoz6SIGnXUC30/2c
-	 IhxSIJwW8ZGb5djwk4eNQHz+rQ04WYoVU9PmnghMre043ef3tSRjic1JnsCd+d5vp3Rhq
-	 6gI8ziQy87ClR+28yVTYd8FaIrDssUcYBOixGl/oB5SaLOBjwrflf2WAmkb/2J1ybWJcs
-	 2Q1tBvwPOWwxON/8FKLoeFwB1wfTaDoZbsRn1T6fHxuoKUOLN7W5nWAXM/2F84OkhzApn
-	 sIc39PA/lizCHjIFXYiagnQ4YNsy7QUWId2Kv+cwxMgBGo2YzMny5pB8f/v4xQ5Kcww==
+	t=1795832203;
+	b=sSrLR9VHK9NVxBF4PC4/uSmKBSuyKa9i8Rx8qMVqWEC1q+y25IFc/ukA6JgJJjKbGltp
+	 Thn1+6NLPFDXNhayFxIaJI/J8l1gdx1ur2mDnwu3MGAcrLbpkHT3K+dqTVhVyhIbgFc00
+	 wPtJE0BY9WmeXXqTYnlEoJ2xTH1vmH96wZ7OQP+D5y0vJwlPVPkfUrNFsZjjfR8REqA9D
+	 LKDtz8D2qnnyFU+oWRt/ghqyIFA3V4laHalKCxkb5vmZI0bT5qF+7yDhGz2xX/PYtob1O
+	 rBfnH+Cw9elK6yZLEJEFXvsWGJGuVoA2MjKoMzNGbLRsY/xXNI29Lw4K6gLUQltLEqA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795832189;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795832203;
 	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-ZohoMailClient;
-	bh=9raKRrSllCu05uDQ+E8GcUzWg7XKNVW+zeXTgiM6ny8=;
-	b=0wmvKrZFBnwYBgXqh00z7NZILLEvHOAz1/pth2dU1EJcjtebuNMbL2lH7/MYzKGovfsi
-	 t3YgU8gPONOfepaVQq3Y/m3HG/CNy0pWBwvtPqDcbGeKaLMfdbs9SbRSYjlk/yshFocwd
-	 OFM/hste4URCQufynrTf/pbUyhcvGqW9wIFUCkYaDkAZNc+XOQhVGbkMORZnUhB389GLm
-	 LE/Sbd5lAJcM159u33jNB0FW1JJdzoGIP+jDWILCNJaGwaqZ+Rf+rajF8h0tIlFzbZisi
-	 PIun0monDvc69xnuy1knqoEQxKXYxIJ5QKruuc0xNno8j6oPYhwMX/m/NY5rYOVk1zw==
+	bh=kA1PAQNXubjiqx5Cvaqa2i6f3lZjlznUI6bg/jd6Fac=;
+	b=pJK3em3giQduq5+KAvfN/a72uycV2MyG6334gSgZ/duEsec5E4+ZsT6vz+FwzLnG9wjf
+	 qmjN9cfW3OKkNx61RCtjZzutbOK2muxktC2bpnLfe6RoggmUOqhjDHwLSv5O9fLhWd4v0
+	 O2mRGihZAWilq7RAfQRbUB8efFpGhAEXev5BVY7iqulh6lFExi9CuV0/kAUOl1+RiaKiS
+	 efQfXrybvw5TSmcGujcYT+69mc3D69W8CJ4UBu0pde+Zm0UlFjpDJ1NuCMRcYlTuSrWvP
+	 euIKfTQZFKo0qCFlok6zOfLUbyVvEKXiWspMMSFaGjRm3cj6vicGqDUEbhBxdvobIJQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=collabora.com;
 	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=gILOaS8G;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=aAw2PTrR;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F54606A685;
-	Sat, 28 Nov 2026 02:16:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6F54606A685
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE60606A684;
+	Sat, 28 Nov 2026 02:16:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2EE60606A684
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=gILOaS8G
-ARC-Seal: i=1; a=rsa-sha256; t=1795832168; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=aAw2PTrR
+ARC-Seal: i=1; a=rsa-sha256; t=1795832174; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=FQ/pjUDoDdCrQw3orv3wbuktagb3dOfsdxkqr1f/AVVbsNXxUGXQ5CFDVtQ6fGqQ6gpUuCUULAuxyPSs00VLILQp6YPy1Uq2l6f4SqzudFkfL2Vz7fKxvxmuADzR+PspFsZFSHi5fo11+OAhzbBLifRoDyUS+YffVhJGw/N18vM=
+	b=mP2at//5/FGy9jote8+ecpOKonzuEdX2Lf5H2rxhSkY5Z3OAu+WYq30az92B08yIYDCko72JfVgXw2A7qUBOMEollppzsFbUeD8KnJjIKU4RNGm3Ab+9JT/nvPGgw8s07cBAiw3eqHaJDiIbTuhNmOpO/UliGhDj9HTL96/IlDA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1795832168; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=9raKRrSllCu05uDQ+E8GcUzWg7XKNVW+zeXTgiM6ny8=; 
-	b=oA/BdxdZABjgFqHiJ9GT3UizKnfrDiieKOXwVtrLTgMajNnnJPjnMVvzHxrMZHVbwDykWBTyJX5EgYH55a8mD/LsU/aWWdZI1lSl09cMG5+lZ6XffSkTuAviYYtP1qPbqEkiVrrJtDXQNrDiwemZpyFFYYT1Zz7uRrYq8QLyRPk=
+	t=1795832174; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=kA1PAQNXubjiqx5Cvaqa2i6f3lZjlznUI6bg/jd6Fac=; 
+	b=Tc8LJJrMqEhvxNmWCaXVPhPC7lJfWdxpFkFFVRB2tiEsUiOwZqS262/TGLyjsDg/THhhYFnawn6cijXibAzEBNzK3RS1AjJVeA0WI4MN5j1ktoXD7lGQEKY2XO58FEIsbAzzAe+g7E9ymi9i/w1IcznMd9jRWAkJTaoTgLohM+o=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=gILOaS8GH1MB/Wu/Pi4bqsuKfJK03MveX17sAQqpX6R6OC4AsOhoEIzFCENoDAb1xDEuawbdMooKd4jx6uhypX5imURHLP0lpzDlADCkvfl+jtJ5hLYdk3i+rdC04o1qd97BEhXAQUtnqxJOFLmrjO5J3LSxvjwKDNb/8OE/Nxo=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=9raKRrSllCu05uDQ+E8GcUzWg7XKNVW+zeXTgiM6ny8=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1795832166752104.2427414020658;
-	Fri, 27 Nov 2026 18:16:06 -0800 (PST)
+DKIM-Signature: a=rsa-sha256; b=aAw2PTrRHN0VBSkfgpdXCHbQaqQZ0Ma7NQdfbz1fuBwZL29gNPL1zl7JP3Z4dNiYxWWhru+LsnjNXP7e57+1fJKwzOTiRdKVImENC5Jr8GdrEJTWPgYF/UHHF9ff0XsX5v+J73UcY4I6YrJCRyGbkjEDiCT09tXnAqo4hlamRiY=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=kA1PAQNXubjiqx5Cvaqa2i6f3lZjlznUI6bg/jd6Fac=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795832172540715.9887203570161;
+	Fri, 27 Nov 2026 18:16:12 -0800 (PST)
 From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Fri, 27 Nov 2026 23:15:41 -0300
-Subject: [PATCH 4/9] drm/tyr: report gpu faults
+Date: Fri, 27 Nov 2026 23:15:43 -0300
+Subject: [PATCH 6/9] drm/tyr: do not issue a cache flush while one is
+ pending
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -61,7 +62,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261127-tyr-mmu-irq-v1-4-2fcb9f9465cd@collabora.com>
+Message-Id: <20261127-tyr-mmu-irq-v1-6-2fcb9f9465cd@collabora.com>
 References: <20261127-tyr-mmu-irq-v1-0-2fcb9f9465cd@collabora.com>
 In-Reply-To: <20261127-tyr-mmu-irq-v1-0-2fcb9f9465cd@collabora.com>
 To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
@@ -74,153 +75,70 @@ Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
 X-Mailer: b4 0.15.2
 X-ZohoMailClient: External
 
-A gpu fault sets GPU_FAULT in the gpu IRQ and records the fault in
-GPU_FAULTSTATUS and, when known, its physical address in
-GPU_FAULTADDRESS. Tyr keeps every gpu IRQ source masked, so gpu faults
-go unreported.
+When a cache flush times out, the next call to flush_caches() issues a
+new FLUSH_CACHES while the first one may still be pending, which has an
+undefined result in the hardware.
 
-Unmask GPU_FAULT and log each fault with its exception type, access
-type, source and, when valid, address. Then issue CLEAR_FAULT, since the
-fault registers keep a fault until it is cleared, and until then, no
-further gpu faults are reported.
+Track the pending flush and return -EIO until the gpu reports it
+complete, like panthor does since commit 3c0a60195b37 ("drm/panthor:
+Recover from panthor_gpu_flush_caches() failures").
 
 Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 ---
- drivers/gpu/drm/tyr/driver.rs  |  2 +-
- drivers/gpu/drm/tyr/gpu/irq.rs | 75 +++++++++++++++++++++++++++++++++++-------
- 2 files changed, 64 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/tyr/mmu/address_space.rs | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 383335e8707d..c88fc5194dc2 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -92,7 +92,7 @@ pub(crate) struct TyrDrmRegistrationData<'drm> {
+diff --git a/drivers/gpu/drm/tyr/mmu/address_space.rs b/drivers/gpu/drm/tyr/mmu/address_space.rs
+index d266beec7b40..fc617f282cbe 100644
+--- a/drivers/gpu/drm/tyr/mmu/address_space.rs
++++ b/drivers/gpu/drm/tyr/mmu/address_space.rs
+@@ -167,6 +167,9 @@ pub(crate) struct AddressSpaceManager<'drm> {
  
-     // `TyrIrqRegistration::drop()` writes to the GPU registers, so keep this
-     // field before the clocks and regulators.
--    _gpu_irq: Pin<KBox<TyrIrqRegistration<'drm, GpuIrq>>>,
-+    _gpu_irq: Pin<KBox<TyrIrqRegistration<'drm, GpuIrq<'drm>>>>,
- 
-     #[pin]
-     clks: Mutex<Clocks>,
-diff --git a/drivers/gpu/drm/tyr/gpu/irq.rs b/drivers/gpu/drm/tyr/gpu/irq.rs
-index a27ccf5c37a6..3dd1f634c847 100644
---- a/drivers/gpu/drm/tyr/gpu/irq.rs
-+++ b/drivers/gpu/drm/tyr/gpu/irq.rs
-@@ -5,7 +5,10 @@
- //! The GPU IRQ reports GPU-wide events, such as faults, completed resets and power changes.
- 
- use kernel::{
--    device::Bound,
-+    device::{
-+        Bound,
-+        Device, //
-+    },
-     io::Io,
-     platform,
-     prelude::*,
-@@ -18,17 +21,29 @@
-         TyrIrqRegistration,
-         TyrIrqTrait, //
-     },
--    regs::gpu_control::{
--        GPU_IRQ_CLEAR,
--        GPU_IRQ_MASK,
--        GPU_IRQ_RAWSTAT,
--        GPU_IRQ_STATUS, //
-+    regs::{
-+        gpu_control::{
-+            GPU_COMMAND,
-+            GPU_FAULTADDRESS_HI,
-+            GPU_FAULTADDRESS_LO,
-+            GPU_FAULTSTATUS,
-+            GPU_IRQ_CLEAR,
-+            GPU_IRQ_MASK,
-+            GPU_IRQ_RAWSTAT,
-+            GPU_IRQ_STATUS, //
-+        },
-+        join_u64, //
-     },
-     reset::HwGate, //
- };
- 
- /// The GPU IRQ, signalling GPU-wide events.
--pub(crate) struct GpuIrq;
-+pub(crate) struct GpuIrq<'a> {
-+    /// Device used for logging.
-+    dev: &'a Device<Bound>,
-+    /// Shared gate that coordinates hardware access with GPU reset.
-+    hw: Arc<HwGate<'a>>,
-+}
- 
- /// Requests a threaded IRQ registration for the GPU IRQ.
- ///
-@@ -39,8 +54,11 @@
- pub(crate) unsafe fn gpu_irq_init<'a>(
-     pdev: &'a platform::Device<Bound>,
-     hw: Arc<HwGate<'a>>,
--) -> Result<Pin<KBox<TyrIrqRegistration<'a, GpuIrq>>>> {
--    let gpu_irq = GpuIrq;
-+) -> Result<Pin<KBox<TyrIrqRegistration<'a, GpuIrq<'a>>>>> {
-+    let gpu_irq = GpuIrq {
-+        dev: pdev.as_ref(),
-+        hw: hw.clone(),
-+    };
-     // Ensure interrupt sources are disabled until the handler is registered.
-     gpu_irq.clear_mask(hw.access().iomem());
- 
-@@ -48,7 +66,7 @@ pub(crate) unsafe fn gpu_irq_init<'a>(
-     unsafe { TyrIrqRegistration::request(pdev, c"gpu", c"tyr-gpu", gpu_irq, hw) }
+     /// Bitmask of present address space slots from GPU_AS_PRESENT register.
+     as_present: u32,
++
++    /// Whether a cache flush was issued and its completion has not been seen yet.
++    flush_pending: bool,
  }
  
--impl TyrIrqTrait for GpuIrq {
-+impl TyrIrqTrait for GpuIrq<'_> {
-     fn read_status(&self, io: &IoMem<'_>) -> u32 {
-         io.read(GPU_IRQ_STATUS).into_raw()
-     }
-@@ -70,8 +88,41 @@ fn clear_status(&self, io: &IoMem<'_>, status: u32) {
-     }
- 
-     fn mask(&self) -> u32 {
--        GPU_IRQ_MASK::zeroed().into_raw()
-+        // Only GPU faults are handled. DOORBELL_MIRROR must stay masked because
-+        // GPU_IRQ_CLEAR cannot clear it.
-+        GPU_IRQ_MASK::zeroed().with_gpu_fault(true).into_raw()
+ impl<'drm> AddressSpaceManager<'drm> {
+@@ -191,6 +194,7 @@ pub(super) fn new(
+             dev,
+             hw,
+             as_present,
++            flush_pending: false,
+         })
      }
  
--    fn handle(&self, _status: u32) {}
-+    fn handle(&self, _status: u32) {
-+        let hw_guard = self.hw.access();
-+        let io = hw_guard.iomem();
-+        let fault = io.read(GPU_FAULTSTATUS);
-+
-+        match fault.exception_type() {
-+            Ok(exception) => dev_err!(
-+                self.dev,
-+                "GPU fault: {:?} on {:?} access, source {:#x}\n",
-+                exception,
-+                fault.access_type(),
-+                fault.source_id().get()
-+            ),
-+            Err(_) => dev_err!(
-+                self.dev,
-+                "GPU fault: GPU_FAULTSTATUS {:#010x}\n",
-+                fault.into_raw()
-+            ),
+@@ -448,13 +452,21 @@ fn as_flush(&mut self, io: &IoMem<'_>, as_nr: usize) -> Result {
+     /// Cleans and invalidates the L2 and load/store caches, and waits until that completes.
+     ///
+     /// Taking `&mut self` keeps calls from overlapping.
++    /// A flush that timed out may still be pending, and issuing another one then has an undefined
++    /// result, so after such a flush the next ones fail with EIO until the GPU reports its
++    /// completion.
+     fn flush_caches(&mut self, io: &IoMem<'_>) -> Result {
++        if self.flush_pending && !io.read(GPU_IRQ_RAWSTAT).clean_caches_completed() {
++            return Err(EIO);
 +        }
 +
-+        if fault.address_valid() {
-+            let address = join_u64(
-+                io.read(GPU_FAULTADDRESS_LO).into_raw(),
-+                io.read(GPU_FAULTADDRESS_HI).into_raw(),
-+            );
-+            dev_err!(self.dev, "GPU fault at PA {:#018x}\n", address);
-+        }
-+
-+        // The fault registers keep this fault until it is cleared, and until
-+        // then, no further GPU faults are reported.
-+        io.write_reg(GPU_COMMAND::clear_fault());
-+    }
+         io.write_reg(GPU_IRQ_CLEAR::zeroed().with_clean_caches_completed(true));
+         io.write_reg(GPU_COMMAND::flush_caches(
+             FlushMode::CleanInvalidate,
+             FlushMode::CleanInvalidate,
+             FlushMode::None,
+         ));
++        self.flush_pending = true;
+ 
+         // The GPU IRQ leaves CLEAN_CACHES_COMPLETED masked, so its handler does
+         // not clear the bit under this poll.
+@@ -466,6 +478,7 @@ fn flush_caches(&mut self, io: &IoMem<'_>) -> Result {
+         )
+         .inspect_err(|_| dev_err!(self.dev, "GPU cache flush timed out\n"))?;
+ 
++        self.flush_pending = false;
+         Ok(())
+     }
  }
 
 -- 
