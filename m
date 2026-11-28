@@ -1,56 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795832215;
-	b=TKM/a1hARBle+SX3ODk1+t/j+tEenFkPUxhqVCdwUgHR58ldZK3/9fKdYmXSIFqrcbGj
-	 p8ufEZ94G9a1phspG1hQM2E/e5pY+2/Thl+yjp9aVIdkKSIX39ttsnq8d0hPkwYeNuL+W
-	 qhJVeqM5DHSQXDcwE8OaHYeovRDs40iBZxIQDTvMKAgpvH6FcG/iAp9XcXZf0RCB0H7dG
-	 WLctIdXrLOg23cHN3p6oJTHz9gCcxWrpgCboYz1LKms66RRvNXf0oycHrY4TR0jlxftoX
-	 ypkPv1oGkwzPLzlelLsegqkNGMGFzjK+Ni7QzSV+PWyL0KFwUDfa3E7LzcAFO+jTN+Q==
+	t=1795832216;
+	b=lNPj7+EmyXAvv/aUP+AZj6ASVXVKyK4lIQNaBIkgjIVv4+SGhd7r1nlYd9WAvjEdlJeN
+	 oNY7derrCFN255QDGPHzuKJmW0eDipFrKEIq+iMgtDNu6AtyYwe7lYb3Md7mn3/tt7/rc
+	 CwAfotIw6RAPsC6SuCqhCwqZCboW0lPY9m2T0IyfgGSlVBNSkp6lxB/0JpfMKQIq7xCnq
+	 XZeEZbJtCqw6m6GQ15FH0qhZcb91Mn2mxJD7Ly2i1N0GQw1AqOnoHkSgDZG929mQAhUhT
+	 A5IzpiyIxmTxndRbmhOPNLK2WZBZxUCxpRwaBsCRAXXcsyuWIqYK2LAmR/yQySGtD+g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795832215;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795832216;
 	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-ZohoMailClient;
-	bh=noX1O5wIhIXkaFPpFQLL1PDoUo+1OgKAJgfMh+rsgoM=;
-	b=pCk+i81ocoMJSaKu2OAFJ7M5lLI6PMbQrBiMGVE0G9KO4nu6v7Kj1H0wQZuhnr50OTWq
-	 C+0nKBVjXybtmrqdRInIbkeusr2ZcnJqAQqRve9l0JiaezQLMgG4fBP7yR0GVU3AMjCFO
-	 1JgWLpXbaQWzNvWE5f2yi5RAnWNRfCFf1UVibn2SssJBbFFlGhkBZGajvqI8o8XM0XI9i
-	 DcM3YFq2q11sWDz8tA3vR7pLrzrVqtIJWUPyw+D4xY71XklEM9yWJ2/JzljweAPQWqkj5
-	 3uCYlOvBZpmw+50XrSPSriUW6u4UqRHednCEgsy4l+weHseQHZNbHdxcIpJg9pTYuRw==
+	bh=CrTCLZ93hwlX4ZwQ1q5UNKsWy1SPOSh5fzNi1ZAOwGE=;
+	b=dkxxwcOoyF86yGDPRSJC6HCyKcA4+2eJtGga8120DfLtentHLfiKyc4bxmeCiqXmhWVG
+	 d0Rlqqd6xLg2PNGEL5ESuCOEUsjBXtXHVufZXC51kIXSdKYnBT/SB1yMveyzZsqDJSNI3
+	 wJaGMhsSyKAhSa46FqKFsZk+hGYQPFhflyXJj/k5txzFEZhkBjPR8F1SRa5QMKYSDL9+f
+	 3heXZpC/jik8bVaurq5I1F32/81A1bgrMmIkL8cs+Clro7xmABXeEggdJUEzEj2zs90te
+	 Cn0S80BCeQMdbJSq6WVwYVTm3mTzvTPYzvg+XJrbD0VU195GaoaElDz5QLkD8UPZKdg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=collabora.com;
 	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b="HQ2i6/PN";
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=ixJZ0xNp;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
 Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D7E606A6A5;
-	Sat, 28 Nov 2026 02:16:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C1D7E606A6A5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3C9606A33F;
+	Sat, 28 Nov 2026 02:16:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE3C9606A33F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=HQ2i6/PN
-ARC-Seal: i=1; a=rsa-sha256; t=1795832178; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=ixJZ0xNp
+ARC-Seal: i=1; a=rsa-sha256; t=1795832182; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=Z5Wgo/oeJ4X+pYDP3K++zUQiShYJkAy46eNSW8Te82/eIZ6t2lgjn8jc2qhLb8zjKOjzqs4o/8p4B29d0RnFKWyqomj46yoy+Us+pAkMYdYi5BhsdWs7cZlLVmHZLy45fdXfc4/O3aXncwHYkkS6kNE1tWpK7ho1Kp8OA3SoMGU=
+	b=X8yEMB+wvpxI3VrBYpoJe2ZRgmRdDSdMAP1Nr+bjjjbFW4zpof5NvyjSrMjOvKHwMPKp8pcPVmrP1Bk5g3ob5t8i64KbDmWD7s8Oy17fgBMx9srVCt3HyQlT6DhEIHz3J1KCuLuqt0ZqudcA4p0tvtUwMGxJkTe2O2tv3b2Kxac=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1795832178; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=noX1O5wIhIXkaFPpFQLL1PDoUo+1OgKAJgfMh+rsgoM=; 
-	b=E6VqmqjlKxnTN/Od29HRE627iEQyLJrxFfkU11hCidoL6M/p1X5Jlg7QgeWzPqf5H4Lt6NjBL25bQy9y6bKQRgLDh0BcObHzTqBPKIW4nOCmBqTfSGso43nKymbnMnuGNq/CMlaLa5I637k7CKrbf4b0Kra+bcXuo36W6F2fJwk=
+	t=1795832182; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=CrTCLZ93hwlX4ZwQ1q5UNKsWy1SPOSh5fzNi1ZAOwGE=; 
+	b=Z2hfTT89Oc3laWYrEnu+2Mou34nq1R4FCmGRBGRUGPWZ5shi5BaCttHlJGVcEH2MWTfrhC0D5tFGYbkGKvskItOeHO9YYFQw4b1n1Je/zRk8dP7Ysx7UG0Siuq/z2Z5eaisM8ZkNlROjS94Khgh3oTq0tH6BqEukxnFOmXnuQWc=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=HQ2i6/PNSQUg7Eji132/GXcP9bzphhqBULBHj81KauNRqtbIV/LPBInHhpJzQ+v9Uj7KeQKXGofSlVoc3uYimaZD7EOHI7ZpDr4ExxSobmSwufrvuo3p4RuKqRWUXRcyCaDOolOGDpA5bfB4Rma9iRaXmf9QcBx2CMCUAyI4z4s=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=noX1O5wIhIXkaFPpFQLL1PDoUo+1OgKAJgfMh+rsgoM=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1795832175431426.15764727825297;
-	Fri, 27 Nov 2026 18:16:15 -0800 (PST)
+DKIM-Signature: a=rsa-sha256; b=ixJZ0xNpez6JeL+sbt4cY2W5L23TpV8LxNSXI5f95yoGkqFYn36QrX7X4ONLCWk/+lKapZ7kQna3PjEofJ57qwavOA/uq0eo5I9koDwedhYhj0elVDqClvhL3rE0ZuAekVl59EFn38jVFSttrX6VYNHOfoiumNVxZIDOMqRCDBE=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=CrTCLZ93hwlX4ZwQ1q5UNKsWy1SPOSh5fzNi1ZAOwGE=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1795832181076365.8936751268392;
+	Fri, 27 Nov 2026 18:16:21 -0800 (PST)
 From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Fri, 27 Nov 2026 23:15:44 -0300
-Subject: [PATCH 7/9] drm/tyr: use FLUSH_CACHES when disabling an address
- space
+Date: Fri, 27 Nov 2026 23:15:46 -0300
+Subject: [PATCH 9/9] drm/tyr: disable an address space that faults
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -62,7 +61,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261127-tyr-mmu-irq-v1-7-2fcb9f9465cd@collabora.com>
+Message-Id: <20261127-tyr-mmu-irq-v1-9-2fcb9f9465cd@collabora.com>
 References: <20261127-tyr-mmu-irq-v1-0-2fcb9f9465cd@collabora.com>
 In-Reply-To: <20261127-tyr-mmu-irq-v1-0-2fcb9f9465cd@collabora.com>
 To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
@@ -75,42 +74,105 @@ Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
 X-Mailer: b4 0.15.2
 X-ZohoMailClient: External
 
-as_disable() sends FLUSH_MEM, which cleans and invalidates the L2 and
-load/store caches and then unlocks the address space. FLUSH_MEM is
-deprecated from Mali-Gx20 onwards.
+When an address space reports a page fault, the mmu IRQ handler logs the
+fault and masks its page-fault interrupt, but the address space stays
+mapped.
 
-Do the same with GPU_COMMAND FLUSH_CACHES followed by UNLOCK, as
-as_flush() and as_end_update() now do.
+Switch the faulting address space to UNMAPPED from the handler, so that
+every later access through it fails, like panthor does. Do it in place
+rather than evicting the VM: the VM keeps its slot, so the slot is not
+handed to another VM while the firmware or a command stream group (when
+implemented) may still use it by number. This matches panthor, which
+keeps ptdev->mmu->as.slots[as].vm and vm->as.id set when an address
+space faults.
 
 Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 ---
- drivers/gpu/drm/tyr/mmu/address_space.rs | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/tyr/driver.rs            |  2 +-
+ drivers/gpu/drm/tyr/mmu/address_space.rs |  2 +-
+ drivers/gpu/drm/tyr/mmu/irq.rs           | 10 ++++++++++
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index c88fc5194dc2..6b2dcef3e2df 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -165,7 +165,7 @@ fn probe<'bound>(
+ 
+             // SAFETY: The registration ends up in `TyrDrmRegistrationData`, which `_reg`
+             // drops at unbind, and every error path before that drops it.
+-            let mmu_irq = unsafe { mmu_irq_init(pdev, hw.clone(), &gpu_info) }?;
++            let mmu_irq = unsafe { mmu_irq_init(pdev, hw.clone(), &gpu_info, mmu.clone()) }?;
+ 
+             // SAFETY: The registration ends up in `TyrDrmRegistrationData`, which `_reg`
+             // drops at unbind, and every error path before that drops it.
 diff --git a/drivers/gpu/drm/tyr/mmu/address_space.rs b/drivers/gpu/drm/tyr/mmu/address_space.rs
-index fc617f282cbe..dddf5d41f3cc 100644
+index fa4c26a6eb12..6af45887ec61 100644
 --- a/drivers/gpu/drm/tyr/mmu/address_space.rs
 +++ b/drivers/gpu/drm/tyr/mmu/address_space.rs
-@@ -306,14 +306,17 @@ fn as_enable(
-         Ok(())
-     }
- 
--    /// Disables an AS slot and clears its configuration.
-+    /// Disables an AS slot, clears its configuration and flushes the L2 and load/store caches.
+@@ -309,7 +309,7 @@ fn as_enable(
+     /// Disables an AS slot, clears its configuration and flushes the L2 and load/store caches.
      ///
      /// Returns an error if the slot is invalid or if register writes/commands fail.
-     fn as_disable(&mut self, io: &IoMem<'_>, as_nr: usize) -> Result {
+-    fn as_disable(&mut self, io: &IoMem<'_>, as_nr: usize) -> Result {
++    pub(super) fn as_disable(&mut self, io: &IoMem<'_>, as_nr: usize) -> Result {
          self.validate_as_slot(as_nr)?;
  
-         // Flush AS before disabling
--        self.as_send_cmd_and_wait(io, as_nr, MmuCommand::FlushMem)?;
-+        self.flush_caches(io)?;
-+
-+        // Release any pending LOCK before disabling the address space.
-+        self.as_send_cmd_and_wait(io, as_nr, MmuCommand::Unlock)?;
+         // Release any pending LOCK before disabling the address space.
+diff --git a/drivers/gpu/drm/tyr/mmu/irq.rs b/drivers/gpu/drm/tyr/mmu/irq.rs
+index 53ff1b2151ee..d2cc76becd1e 100644
+--- a/drivers/gpu/drm/tyr/mmu/irq.rs
++++ b/drivers/gpu/drm/tyr/mmu/irq.rs
+@@ -32,6 +32,7 @@
+         TyrIrqRegistration,
+         TyrIrqTrait, //
+     },
++    mmu::Mmu,
+     regs::{
+         gpu_control::AS_PRESENT,
+         join_u64,
+@@ -56,6 +57,8 @@ pub(crate) struct MmuIrq<'a> {
+     dev: &'a Device<Bound>,
+     /// Shared gate that coordinates hardware access with GPU reset.
+     hw: Arc<HwGate<'a>>,
++    /// MMU, used to disable the address spaces that fault.
++    mmu: Arc<Mmu<'a>>,
+     /// Interrupt sources to unmask: the page-fault bit of each present address
+     /// space that has not faulted yet.
+     mask: Atomic<u32>,
+@@ -71,11 +74,13 @@ pub(crate) unsafe fn mmu_irq_init<'a>(
+     pdev: &'a platform::Device<Bound>,
+     hw: Arc<HwGate<'a>>,
+     gpu_info: &GpuInfo,
++    mmu: Arc<Mmu<'a>>,
+ ) -> Result<Pin<KBox<TyrIrqRegistration<'a, MmuIrq<'a>>>>> {
+     let present = AS_PRESENT::from_raw(gpu_info.as_present).present().get();
+     let mmu_irq = MmuIrq {
+         dev: pdev.as_ref(),
+         hw: hw.clone(),
++        mmu,
+         mask: Atomic::new(IRQ_MASK::zeroed().try_with_page_fault(present)?.into_raw()),
+     };
+     // Ensure interrupt sources are disabled until the handler is registered.
+@@ -146,6 +151,8 @@ fn mask(&self) -> u32 {
  
-         io.write(
-             TRANSTAB_LO::try_at(as_nr).ok_or(EINVAL)?,
+     fn handle(&self, status: u32) {
+         let faults = IRQ_RAWSTAT::from_raw(status).page_fault();
++
++        let mut as_manager = self.mmu.as_manager.lock();
+         let hw_guard = self.hw.access();
+         let io = hw_guard.iomem();
+ 
+@@ -156,6 +163,9 @@ fn handle(&self, status: u32) {
+             pending &= pending - 1;
+ 
+             let _ = self.report_fault(io, as_nr);
++            if let Err(e) = as_manager.as_disable(io, as_nr) {
++                dev_err!(self.dev, "Failed to disable AS{}: {:?}\n", as_nr, e);
++            }
+         }
+ 
+         // Nothing resolves these faults yet, and an address space that faulted
 
 -- 
 2.56.0
